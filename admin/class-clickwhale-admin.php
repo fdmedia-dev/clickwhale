@@ -41,6 +41,15 @@ class Clickwhale_Admin {
 	private $version;
 
 	/**
+	 * The options name to be used in this plugin
+	 *
+	 * @since  	1.0.0
+	 * @access 	private
+	 * @var  	string 		$option_name 	Option name of this plugin
+	 */
+	private $option_name = 'clickwhale';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -119,7 +128,15 @@ class Clickwhale_Admin {
 			'Links', 
 			'manage_options', 
 			$this->plugin_name, 
-			array( $this, 'include_admin_menu_linls_partial' )
+			array( $this, $this->plugin_name . '_links_page_handler' )
+		);
+		add_submenu_page(
+			$this->plugin_name,  
+			'Add New', 
+			'Add New Link', 
+			'manage_options', 
+			$this->plugin_name . '-edit-link', 
+			array( $this, $this->plugin_name . '_links_form_page_handler' )
 		);
 		add_submenu_page(
 			$this->plugin_name, 
@@ -145,23 +162,26 @@ class Clickwhale_Admin {
 			$this->plugin_name . '-tools', 
 			array( $this, 'include_admin_menu_tools_partial' )
 		);
-		add_submenu_page(
-			'', 
-			'Edit link', 
-			'Edit link', 
-			'manage_options', 
-			$this->plugin_name . '-edit-link', 
-			array( $this, 'include_admin_edit_link_partial' )
-		);
 	}
 	/**
-	* Include Menu Partial
-	*
-	* @since    1.0.0
-	*/
-	public function include_admin_menu_linls_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-links.php' );
+ 	 * Include Menu Partial
+	 *
+	 * @since    1.0.0
+	 */
+	public function clickwhale_links_page_handler() {
+		if (!class_exists('WP_List_Table')) {
+			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+		}
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
 	}
+	public function clickwhale_links_form_page_handler() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-edit-link.php' );
+	}
+
+
+	// empty pages
 	public function include_admin_menu_categories_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-categories.php' );
 	}
@@ -170,9 +190,6 @@ class Clickwhale_Admin {
 	}
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-tools.php' );
-	}
-	public function include_admin_edit_link_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-edit-link.php' );
 	}
 
 }
