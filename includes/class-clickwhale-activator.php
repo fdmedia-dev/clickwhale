@@ -42,7 +42,6 @@ class Clickwhale_Activator {
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		if(!maybe_create_table( $table_name,  $sql )){
 			dbDelta( $sql );
-			$this->add_test_data_to_database(); //test data
 		}
 	}
 
@@ -54,7 +53,7 @@ class Clickwhale_Activator {
 		$wpdb->insert($table_name, array(
 			'link_title' 		=> 'Link to Amazon Store',
 			'link_url'			=> 'https://amazon.com',
-			'link_slug' 		=> '/link/amazon',
+			'link_slug' 		=> 'amazon',
 			'link_redirection' 	=> 301,
 			'link_description' 	=> 'Link to Amazon Store Homepage',
 			'link_categories' 	=> '',
@@ -62,7 +61,7 @@ class Clickwhale_Activator {
 		$wpdb->insert($table_name, array(
 			'link_title' 		=> 'Link to Ebay Store',
 			'link_url'			=> 'https://ebay.com',
-			'link_slug' 		=> '/link/ebay',
+			'link_slug' 		=> 'ebay',
 			'link_redirection' 	=> 302,
 			'link_description' 	=> 'Link to Ebay Store Homepage or another text',
 			'link_categories' 	=> '',
@@ -70,7 +69,7 @@ class Clickwhale_Activator {
 		$wpdb->insert($table_name, array(
 			'link_title' 		=> 'Link to Rozetka Marketplace',
 			'link_url'			=> 'https://rozetka.com.ua',
-			'link_slug' 		=> '/link/rozetka',
+			'link_slug' 		=> 'rozetka',
 			'link_redirection' 	=> 302,
 			'link_description' 	=> 'Our biggest and finest marketplace',
 			'link_categories' 	=> '',
@@ -85,6 +84,7 @@ class Clickwhale_Activator {
 	public static function activate() {
 		// create a new object inside the static method to access non-static methods inside that class
 		(new self)->add_clickwhale_database();
+		(new self)->add_test_data_to_database(); //test data
 	}
 
 }

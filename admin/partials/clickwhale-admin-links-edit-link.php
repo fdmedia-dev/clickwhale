@@ -26,7 +26,11 @@ if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
     //$item_valid = clickwhale_validate_link($item);
     $item_validation = new Clickwhale_Link_Edit();
     $item_valid = $item_validation->clickwhale_validate_link($item);
+
     if ($item_valid === true) {
+
+        $item = $item_validation->clear_link_slug($item);
+
         if ($item['id'] == 0) {
             $result = $wpdb->insert($table_name, $item);
             $item['id'] = $wpdb->insert_id;
@@ -82,102 +86,102 @@ else {
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
                 <div id="post-body-content">
-                <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                    <tbody>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_title"><?php _e('Title', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                                <input 	id="link_title" 
-                                        name="link_title" 
-                                        type="text" 
-                                        style="width: 95%" 
-                                        value="<?php echo esc_attr($item['link_title'])?>"
-                                        size="50" 
-                                        class="code" 
-                                        placeholder="<?php _e('Link Title', 'clickwhale')?>" 
-                                        required>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_url"><?php _e('Target URL', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                                <input 	id="link_url" 
-                                        name="link_url" 
-                                        type="text" 
-                                        style="width: 95%" 
-                                        value="<?php echo esc_attr($item['link_url'])?>"
-                                        size="50" 
-                                        class="code" 
-                                        placeholder="<?php _e('Link Target URL', 'clickwhale')?>" 
-                                        required>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_slug"><?php _e('Slug', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                                <input 	id="link_slug" 
-                                        name="link_slug" 
-                                        type="text" 
-                                        style="width: 95%" 
-                                        value="<?php echo esc_attr($item['link_slug'])?>"
-                                        size="50" 
-                                        class="code" 
-                                        placeholder="<?php _e('Link Slug without /link/', 'clickwhale')?>" 
-                                        required>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_redirection"><?php _e('Redirection Type', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                            <?php $selected = isset( $item['link_redirection'] ) ? esc_attr( $item['link_redirection'][0] ) :''; ?>
-                            <select name="link_redirection" id="link_redirection">
-                                <option value="301" <?php selected( $item['link_redirection'], 301 ); ?>>301 redirect: Moved permanently</option>
-                                <option value="302" <?php selected( $item['link_redirection'], 302 ); ?>>302 redirect: Found / Moved temporarily</option>
-                                <option value="303" <?php selected( $item['link_redirection'], 303 ); ?>>303 redirect: See Other</option>
-                                <option value="307" <?php selected( $item['link_redirection'], 307 ); ?>>307 redirect: Temporarily Redirect</option>
-                                <option value="308" <?php selected( $item['link_redirection'], 308 ); ?>>308 redirect: Permanent Redirect</option>
-                            </select>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_description"><?php _e('Description', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                                <textarea 	id="link_description" 
-                                            name="link_description"
-                                            style="width: 95%"
-                                            rows="5"
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <tbody>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_title"><?php _e('Title', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input 	id="link_title" 
+                                            name="link_title" 
+                                            type="text" 
+                                            style="width: 95%" 
+                                            value="<?php echo esc_attr($item['link_title'])?>"
+                                            size="50" 
                                             class="code" 
-                                            placeholder="<?php _e('Description', 'clickwhale')?>"
-                                            ><?php echo esc_attr($item['link_description'])?></textarea>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="link_categories"><?php _e('Category', 'clickwhale')?></label>
-                            </th>
-                            <td>
-                                <input 	id="link_categories" 
-                                        name="link_categories" 
-                                        type="text" 
-                                        style="width: 95%" 
-                                        value="<?php echo esc_attr($item['link_categories'])?>"
-                                        size="50" 
-                                        class="code" 
-                                        placeholder="<?php _e('Categories in progress...', 'clickwhale')?>">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                            placeholder="<?php _e('Link Title', 'clickwhale')?>" 
+                                            required>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_url"><?php _e('Target URL', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input 	id="link_url" 
+                                            name="link_url" 
+                                            type="text" 
+                                            style="width: 95%" 
+                                            value="<?php echo esc_attr($item['link_url'])?>"
+                                            size="50" 
+                                            class="code" 
+                                            placeholder="<?php _e('Link Target URL', 'clickwhale')?>" 
+                                            required>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_slug"><?php _e('Slug', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input 	id="link_slug" 
+                                            name="link_slug" 
+                                            type="text" 
+                                            style="width: 95%" 
+                                            value="<?php echo esc_attr($item['link_slug'])?>"
+                                            size="50" 
+                                            class="code" 
+                                            placeholder="<?php _e('Link Slug without /link/', 'clickwhale')?>" 
+                                            required>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_redirection"><?php _e('Redirection Type', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                <?php $selected = isset( $item['link_redirection'] ) ? esc_attr( $item['link_redirection'][0] ) :''; ?>
+                                <select name="link_redirection" id="link_redirection">
+                                    <option value="301" <?php selected( $item['link_redirection'], 301 ); ?>>301 redirect: Moved permanently</option>
+                                    <option value="302" <?php selected( $item['link_redirection'], 302 ); ?>>302 redirect: Found / Moved temporarily</option>
+                                    <option value="303" <?php selected( $item['link_redirection'], 303 ); ?>>303 redirect: See Other</option>
+                                    <option value="307" <?php selected( $item['link_redirection'], 307 ); ?>>307 redirect: Temporarily Redirect</option>
+                                    <option value="308" <?php selected( $item['link_redirection'], 308 ); ?>>308 redirect: Permanent Redirect</option>
+                                </select>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_description"><?php _e('Description', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <textarea 	id="link_description" 
+                                                name="link_description"
+                                                style="width: 95%"
+                                                rows="5"
+                                                class="code" 
+                                                placeholder="<?php _e('Description', 'clickwhale')?>"
+                                                ><?php echo esc_attr($item['link_description'])?></textarea>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="link_categories"><?php _e('Category', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input 	id="link_categories" 
+                                            name="link_categories" 
+                                            type="text" 
+                                            style="width: 95%" 
+                                            value="<?php echo esc_attr($item['link_categories'])?>"
+                                            size="50" 
+                                            class="code" 
+                                            placeholder="<?php _e('Categories in progress...', 'clickwhale')?>">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <input type="submit" value="<?php _e('Save', 'clickwhale')?>" id="submit" class="button-primary" name="submit">
                 </div>
             </div>

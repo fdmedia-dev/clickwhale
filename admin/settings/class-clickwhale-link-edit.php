@@ -20,4 +20,18 @@ class Clickwhale_Link_Edit{
         return implode('<br />', $messages);
     }
 
+    public function clear_link_slug($item){
+
+        $slug = $item['link_slug'];
+        $slug = str_replace('\\', '/', $slug);
+
+        if($slug[0] === '/'){
+            $slug = ltrim($slug, $slug[0]);
+        }
+
+        $item['link_slug'] = $slug;
+
+        return $item;
+    }
+
 }
