@@ -136,7 +136,7 @@ class Clickwhale_Admin {
 			'Add New Link', 
 			'manage_options', 
 			$this->plugin_name . '-edit-link', 
-			array( $this, $this->plugin_name . '_links_form_page_handler' )
+			array( $this, $this->plugin_name . '_link_form_page_handler' )
 		);
 		add_submenu_page(
 			$this->plugin_name, 
@@ -144,7 +144,15 @@ class Clickwhale_Admin {
 			'Categories', 
 			'manage_options', 
 			$this->plugin_name . '-categories', 
-			array( $this, 'include_admin_menu_categories_partial' )
+			array( $this, $this->plugin_name . '_categories_page_handler' )
+		);
+		add_submenu_page(
+			$this->plugin_name . '-categories',  
+			'Add New Category', 
+			'Add New Category', 
+			'manage_options', 
+			$this->plugin_name . '-edit-category', 
+			array( $this, $this->plugin_name . '_category_form_page_handler' )
 		);
 		add_submenu_page(
 			$this->plugin_name, 
@@ -175,21 +183,34 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
 	}
-	public function clickwhale_links_form_page_handler() {
+	public function clickwhale_link_form_page_handler() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-edit-link.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-link-edit.php' );
 	}
-
+	public function clickwhale_categories_page_handler() {
+		if (!class_exists('WP_List_Table')) {
+			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+		}
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-categories-list-table.php' );
+	}
+	public function clickwhale_category_form_page_handler() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
+	}
 
 	// empty pages
-	public function include_admin_menu_categories_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-categories.php' );
-	}
 	public function include_admin_menu_settings_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-settings.php' );
 	}
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-tools.php' );
 	}
+
+
+	public function clickwhale_categories_limit_callback($limit){
+		return $limit;
+	}
+
 
 }

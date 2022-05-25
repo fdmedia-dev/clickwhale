@@ -8,13 +8,18 @@ $notice = '';
 // default $item which will be used for new records
 $default = array(
     'id' => 0,
-    'link_title' => '',
-    'link_url' => '',
-    'link_slug' => '',
-    'link_redirection' => '301',
-    'link_description' => '',
-    'link_categories' => null,
+    'created_at'=> '',
+    'updated_at'=> '',
+    'title' => '',
+    'url' => '',
+    'slug' => '',
+    'redirection' => '301',
+    'description' => '',
+    'categories' => null,
 );
+
+$link_edit = new Clickwhale_Link_Edit();
+$link_categories = $link_edit->get_link_categories();
 
 // here we are verifying does this request is post back and have correct nonce
 if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
@@ -22,14 +27,13 @@ if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
     $item = shortcode_atts($default, $_REQUEST);
     // validate data, and if all ok save item to database
     // if id is zero insert otherwise update
-    
-    //$item_valid = clickwhale_validate_link($item);
-    $item_validation = new Clickwhale_Link_Edit();
-    $item_valid = $item_validation->clickwhale_validate_link($item);
+
+    $item_valid = $link_edit->clickwhale_validate_link($item);
 
     if ($item_valid === true) {
 
-        $item = $item_validation->clear_link_slug($item);
+        $item = $link_edit->clear_link_slug($item);
+        $item['categories'] = serialize($item['categories']);
 
         if ($item['id'] == 0) {
             $result = $wpdb->insert($table_name, $item);
@@ -51,8 +55,7 @@ if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
         // if $item_valid not true it contains error message(s)
         $notice = $item_valid;
     }
-}
-else {
+} else {
     // if this is not post back we load item to edit or give new one to create
     $item = $default;
     if (isset($_REQUEST['id'])) {
@@ -78,7 +81,7 @@ else {
         <div id="message" class="updated"><p><?php echo $message ?></p></div>
     <?php } ?>
 
-    <form id="form" method="POST">
+    <form id="form_edit_link" method="POST">
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(basename(__FILE__))?>"/>
         <?php /* NOTICE: here we storing id to determine will be item added or updated */ ?>
         <input type="hidden" name="id" value="<?php echo $item['id'] ?>"/>
@@ -93,11 +96,11 @@ else {
                                     <label for="link_title"><?php _e('Title', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                    <input 	id="link_title" 
-                                            name="link_title" 
+                                    <input 	id="title" 
+                                            name="title" 
                                             type="text" 
                                             style="width: 95%" 
-                                            value="<?php echo esc_attr($item['link_title'])?>"
+                                            value="<?php echo esc_attr($item['title'])?>"
                                             size="50" 
                                             class="code" 
                                             placeholder="<?php _e('Link Title', 'clickwhale')?>" 
@@ -109,11 +112,11 @@ else {
                                     <label for="link_url"><?php _e('Target URL', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                    <input 	id="link_url" 
-                                            name="link_url" 
+                                    <input 	id="url" 
+                                            name="url" 
                                             type="text" 
                                             style="width: 95%" 
-                                            value="<?php echo esc_attr($item['link_url'])?>"
+                                            value="<?php echo esc_attr($item['url'])?>"
                                             size="50" 
                                             class="code" 
                                             placeholder="<?php _e('Link Target URL', 'clickwhale')?>" 
@@ -125,15 +128,16 @@ else {
                                     <label for="link_slug"><?php _e('Slug', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                    <input 	id="link_slug" 
-                                            name="link_slug" 
+                                    <input 	id="slug" 
+                                            name="slug" 
                                             type="text" 
                                             style="width: 95%" 
-                                            value="<?php echo esc_attr($item['link_slug'])?>"
+                                            value="<?php echo esc_attr($item['slug'])?>"
                                             size="50" 
                                             class="code" 
                                             placeholder="<?php _e('Link Slug without /link/', 'clickwhale')?>" 
                                             required>
+                                    <p id="slug__text">URL Preview: <?php echo get_bloginfo('url') ?>/link/<span><?php echo esc_attr($item['slug'])?></span></p>
                                 </td>
                             </tr>
                             <tr class="form-field">
@@ -141,13 +145,12 @@ else {
                                     <label for="link_redirection"><?php _e('Redirection Type', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                <?php $selected = isset( $item['link_redirection'] ) ? esc_attr( $item['link_redirection'][0] ) :''; ?>
-                                <select name="link_redirection" id="link_redirection">
-                                    <option value="301" <?php selected( $item['link_redirection'], 301 ); ?>>301 redirect: Moved permanently</option>
-                                    <option value="302" <?php selected( $item['link_redirection'], 302 ); ?>>302 redirect: Found / Moved temporarily</option>
-                                    <option value="303" <?php selected( $item['link_redirection'], 303 ); ?>>303 redirect: See Other</option>
-                                    <option value="307" <?php selected( $item['link_redirection'], 307 ); ?>>307 redirect: Temporarily Redirect</option>
-                                    <option value="308" <?php selected( $item['link_redirection'], 308 ); ?>>308 redirect: Permanent Redirect</option>
+                                <select name="redirection" id="redirection">
+                                    <option value="301" <?php selected( $item['redirection'], 301 ); ?>>301 redirect: Moved permanently</option>
+                                    <option value="302" <?php selected( $item['redirection'], 302 ); ?>>302 redirect: Found / Moved temporarily</option>
+                                    <option value="303" <?php selected( $item['redirection'], 303 ); ?>>303 redirect: See Other</option>
+                                    <option value="307" <?php selected( $item['redirection'], 307 ); ?>>307 redirect: Temporarily Redirect</option>
+                                    <option value="308" <?php selected( $item['redirection'], 308 ); ?>>308 redirect: Permanent Redirect</option>
                                 </select>
                                 </td>
                             </tr>
@@ -156,13 +159,13 @@ else {
                                     <label for="link_description"><?php _e('Description', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                    <textarea 	id="link_description" 
-                                                name="link_description"
+                                    <textarea 	id="description" 
+                                                name="description"
                                                 style="width: 95%"
                                                 rows="5"
                                                 class="code" 
                                                 placeholder="<?php _e('Description', 'clickwhale')?>"
-                                                ><?php echo esc_attr($item['link_description'])?></textarea>
+                                                ><?php echo esc_attr($item['description'])?></textarea>
                                 </td>
                             </tr>
                             <tr class="form-field">
@@ -170,18 +173,36 @@ else {
                                     <label for="link_categories"><?php _e('Category', 'clickwhale')?></label>
                                 </th>
                                 <td>
-                                    <input 	id="link_categories" 
-                                            name="link_categories" 
-                                            type="text" 
-                                            style="width: 95%" 
-                                            value="<?php echo esc_attr($item['link_categories'])?>"
-                                            size="50" 
-                                            class="code" 
-                                            placeholder="<?php _e('Categories in progress...', 'clickwhale')?>">
+                                    <?php 
+                                    if($link_categories) { 
+                                        $current_categories = isset($item['categories']) ? unserialize($item['categories']) : [];
+                                        foreach($link_categories as $category) {
+                                            ?>
+                                            <p>
+                                                <input  type="checkbox" 
+                                                        id="category-<?php echo $category->id ?>" 
+                                                        name="categories[]"
+                                                        value="<?php echo $category->id ?>"
+                                                        <?php
+                                                        if( $current_categories) {
+                                                            checked( in_array($category->id, $current_categories), 1 ); 
+                                                        }
+                                                        ?> 
+                                                        />
+                                                <label for="category-<?php echo $category->id ?>"><?php echo $category->title ?></label>
+                                            </p>
+                                        <?php 
+                                        }
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <input type="hidden" id="created_at" name="created_at" value="<?php echo $item['created_at'] ?>">
+                    <input type="hidden" id="updated_at" name="updated_at" value="">
+
                     <input type="submit" value="<?php _e('Save', 'clickwhale')?>" id="submit" class="button-primary" name="submit">
                 </div>
             </div>
