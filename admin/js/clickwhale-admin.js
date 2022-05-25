@@ -29,4 +29,55 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	// Link Live Preview
+
+	function padTo2Digits(num) {
+		return num.toString().padStart(2, '0');
+	}
+	
+	function formatDate(date) {
+	return (
+		[
+		date.getFullYear(),
+		padTo2Digits(date.getMonth() + 1),
+		padTo2Digits(date.getDate()),
+		].join('-') +
+		' ' +
+		[
+		padTo2Digits(date.getHours()),
+		padTo2Digits(date.getMinutes()),
+		padTo2Digits(date.getSeconds()),
+		].join(':')
+	);
+	}
+
+	$(document)
+		.on('keyup change', '#link_slug', function(){
+			var slug = $(this).val();
+
+			slug = slug.replace(/\s+/g, '-').toLowerCase();
+			slug = slug.indexOf('/') == 0 ? slug.substring(1) : slug;
+			slug = slug.replace(/\\/g, "/");
+			slug = slug.replace(/\/\//g, "/");
+			slug = slug.replace(/\/\/\//g, "/");
+			slug = slug.replace(/\/$/, '');
+
+			$('#link_slug__text').find('span').html(slug);
+		})
+		.on('click', '.slug-input--btn', function(e){
+			e.preventDefault();
+			var textToCopy = $(this).parent().find('input');
+			
+			textToCopy.select();
+			document.execCommand("copy");
+		})
+		.on('submit', '#form_edit_link', function(){
+			if($('#created_at').val() === ''){
+				$('#created_at').val(formatDate(new Date()));
+			}
+			$('#updated_at').val(formatDate(new Date()));
+			//console.log(formatDate(new Date()));
+		});
+
+
 })( jQuery );

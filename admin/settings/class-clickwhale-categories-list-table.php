@@ -3,15 +3,15 @@
     * Custom_Table_Example_List_Table class that will display our custom table
     * records in nice table
     */
-    class Clickwhale_links_List_Table extends WP_List_Table{
+    class Clickwhale_Categories_List_Table extends WP_List_Table{
 
         function __construct()
         {
             global $status, $page;
             parent::__construct(
                 array(
-                    'singular' => 'link',
-                    'plural' => 'links',
+                    'singular' => 'category',
+                    'plural' => 'categories',
                 )
             );
         }
@@ -49,7 +49,7 @@
             // also notice how we use $this->_args['singular'] so in this example it will
             // be something like &link=2
             $actions = array(
-                'edit' => sprintf('<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], __('Edit', 'clickwhale')),
+                'edit' => sprintf('<a href="?page=clickwhale-edit-category&id=%s">%s</a>', $item['id'], __('Edit', 'clickwhale')),
                 'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Delete', 'clickwhale')),
             );
     
@@ -58,38 +58,8 @@
                 $this->row_actions($actions)
             );
         }
-        function column_url($item) {
-            return $item['url'];
-        }
-        function column_slug($item) {
-            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"></a></div>';
-        }
-        function column_redirection($item) {
-            return $item['redirection'];
-        }
         function column_description($item) {
             return $item['description'];
-        }
-        function column_categories($item) {
-            $categories = unserialize($item['categories']);
-            $current_categories = '';
-
-            if($categories){
-                global $wpdb;
-                $categories_table = $wpdb->prefix . 'clickwhale_categories';
-                $lastElement = end($categories);
-                foreach($categories as $k => $v){
-                    $result = $wpdb->get_results( "SELECT * FROM $categories_table WHERE id=$v");
-                    if(!empty($result)) {
-                        $current_categories .= $result[0]->title;
-                        if($v != $lastElement) {
-                            $current_categories .= ', ';
-                        }
-                    }
-                }
-            }
-
-            return $current_categories;
         }
     
     
@@ -118,11 +88,7 @@
             $columns = array(
                 'cb'           => '<input type="checkbox" />', //Render a checkbox instead of text
                 'title'        => __('Title', 'clickwhale'),
-                'slug'         => __('Link', 'clickwhale'),
-                'url'          => __('Target URL', 'clickwhale'),
-                //'redirection'  => __('Redirection Type', 'clickwhale'),
-                //'description'  => __('Description', 'clickwhale'),
-                'categories'   => __('Categories', 'clickwhale'),
+                'description'  => __('Description', 'clickwhale'),
             );
             return $columns;
         }
@@ -137,9 +103,6 @@
         function get_sortable_columns() {
             $sortable_columns = array(
                 'title'        => __('Title', 'clickwhale'),
-                'url'          => __('Target URL', 'clickwhale'),
-                'slug'         => __('Slug', 'clickwhale'),
-                'redirection'  => __('Redirection Type', 'clickwhale'),
             );
             return $sortable_columns;
         }
@@ -167,7 +130,7 @@
         function process_bulk_action()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'clickwhale_links';
+            $table_name = $wpdb->prefix . 'clickwhale_categories';
     
             if ('delete' === $this->current_action()) {
                 $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
@@ -187,7 +150,7 @@
         function prepare_items()
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'clickwhale_links'; // do not forget about tables prefix
+            $table_name = $wpdb->prefix . 'clickwhale_categories'; // do not forget about tables prefix
     
             $per_page = 20; // constant, how much records will be shown per page
     

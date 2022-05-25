@@ -22,20 +22,42 @@
  */
 class Clickwhale_Activator {
 
-	private function add_clickwhale_database(){
+	private function add_clickwhale_links_database(){
 		global $wpdb;
         $table_name = $wpdb->prefix . 'clickwhale_links';
         $charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
-			link_title tinytext NOT NULL,
-			link_url varchar(255) DEFAULT '' NOT NULL,
-			link_slug varchar(255) DEFAULT '' NOT NULL,
-			link_redirection smallint(4) NOT NULL,
-			link_description tinytext DEFAULT '' NOT NULL,
-			link_categories tinytext NOT NULL,
+			title tinytext NOT NULL,
+			url varchar(255) DEFAULT '' NOT NULL,
+			slug varchar(255) DEFAULT '' NOT NULL,
+			redirection smallint(4) NOT NULL,
+			description tinytext DEFAULT '' NOT NULL,
+			categories tinytext NOT NULL,
+			created_at datetime,
+			updated_at datetime,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
 
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if(!maybe_create_table( $table_name,  $sql )){
+			dbDelta( $sql );
+		}
+	}
+
+	private function add_clickwhale_categories_database(){
+		global $wpdb;
+        $table_name = $wpdb->prefix . 'clickwhale_categories';
+        $charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			title tinytext NOT NULL,
+			slug varchar(255) DEFAULT '' NOT NULL,
+			description tinytext DEFAULT '' NOT NULL,
+			
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
@@ -51,28 +73,34 @@ class Clickwhale_Activator {
 		$table_name = $wpdb->prefix . 'clickwhale_links';
 	
 		$wpdb->insert($table_name, array(
-			'link_title' 		=> 'Link to Amazon Store',
-			'link_url'			=> 'https://amazon.com',
-			'link_slug' 		=> 'amazon',
-			'link_redirection' 	=> 301,
-			'link_description' 	=> 'Link to Amazon Store Homepage',
-			'link_categories' 	=> '',
+			'title' 		=> 'Link to Amazon Store',
+			'created_at'	=> '2022-01-03 12:24:24',
+			'updated_at'	=> '2022-01-04 13:34:34',
+			'url'			=> 'https://amazon.com',
+			'slug' 			=> 'amazon',
+			'redirection' 	=> 301,
+			'description' 	=> 'Link to Amazon Store Homepage',
+			'categories' 	=> '',
 		));
 		$wpdb->insert($table_name, array(
-			'link_title' 		=> 'Link to Ebay Store',
-			'link_url'			=> 'https://ebay.com',
-			'link_slug' 		=> 'ebay',
-			'link_redirection' 	=> 302,
-			'link_description' 	=> 'Link to Ebay Store Homepage or another text',
-			'link_categories' 	=> '',
+			'title' 		=> 'Link to Ebay Store',
+			'created_at'	=> '2022-01-03 12:24:24',
+			'updated_at'	=> '2022-01-04 13:34:34',
+			'url'			=> 'https://ebay.com',
+			'slug' 			=> 'ebay',
+			'redirection' 	=> 302,
+			'description' 	=> 'Link to Ebay Store Homepage or another text',
+			'categories' 	=> '',
 		));
 		$wpdb->insert($table_name, array(
-			'link_title' 		=> 'Link to Rozetka Marketplace',
-			'link_url'			=> 'https://rozetka.com.ua',
-			'link_slug' 		=> 'rozetka',
-			'link_redirection' 	=> 302,
-			'link_description' 	=> 'Our biggest and finest marketplace',
-			'link_categories' 	=> '',
+			'title' 		=> 'Link to Rozetka Marketplace',
+			'created_at'	=> '2022-01-03 12:24:24',
+			'updated_at'	=> '2022-01-04 13:34:34',
+			'url'			=> 'https://rozetka.com.ua',
+			'slug' 			=> 'rozetka',
+			'redirection' 	=> 302,
+			'description' 	=> 'Our biggest and finest marketplace',
+			'categories' 	=> '',
 		));
 	}
 
@@ -83,7 +111,8 @@ class Clickwhale_Activator {
 	 */
 	public static function activate() {
 		// create a new object inside the static method to access non-static methods inside that class
-		(new self)->add_clickwhale_database();
+		(new self)->add_clickwhale_links_database();
+		(new self)->add_clickwhale_categories_database();
 		(new self)->add_test_data_to_database(); //test data
 	}
 
