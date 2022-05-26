@@ -52,7 +52,7 @@
 	}
 
 	$(document)
-		.on('keyup change', '#link_slug', function(){
+		.on('keyup change', '#slug', function(){
 			var slug = $(this).val();
 
 			slug = slug.replace(/\s+/g, '-').toLowerCase();
@@ -62,7 +62,7 @@
 			slug = slug.replace(/\/\/\//g, "/");
 			slug = slug.replace(/\/$/, '');
 
-			$('#link_slug__text').find('span').html(slug);
+			$('#slug__text').find('span').html(slug);
 		})
 		.on('click', '.slug-input--btn', function(e){
 			e.preventDefault();
