@@ -66,10 +66,16 @@
 		})
 		.on('click', '.slug-input--btn', function(e){
 			e.preventDefault();
-			var textToCopy = $(this).parent().find('input');
 			
-			textToCopy.select();
+			var $temp = $('<input>'),
+				textToCopy = $(this).parent().find('input').val();
+				textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+
+			$('body').append($temp);
+			$temp.val(textToCopy).select();
 			document.execCommand("copy");
+			$temp.remove();
+
 		})
 		.on('submit', '#form_edit_link', function(){
 			if($('#created_at').val() === ''){

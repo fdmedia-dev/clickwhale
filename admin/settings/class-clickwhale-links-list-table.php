@@ -62,7 +62,7 @@
             return $item['url'];
         }
         function column_slug($item) {
-            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"></a></div>';
+            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"><span class="dashicons dashicons-clipboard"></span></a></div>';
         }
         function column_redirection($item) {
             return $item['redirection'];

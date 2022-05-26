@@ -106,7 +106,9 @@ class Clickwhale_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_localize_script($this->plugin_name, 'clickwhale_admin', array(
+			'siteurl' => home_url(),
+		));
 	}
 
 	/**
@@ -131,7 +133,7 @@ class Clickwhale_Admin {
 			array( $this, $this->plugin_name . '_links_page_handler' )
 		);
 		add_submenu_page(
-			$this->plugin_name,  
+			'',  
 			'Add New', 
 			'Add New Link', 
 			'manage_options', 
@@ -147,7 +149,7 @@ class Clickwhale_Admin {
 			array( $this, $this->plugin_name . '_categories_page_handler' )
 		);
 		add_submenu_page(
-			$this->plugin_name . '-categories',  
+			'',  
 			'Add New Category', 
 			'Add New Category', 
 			'manage_options', 
