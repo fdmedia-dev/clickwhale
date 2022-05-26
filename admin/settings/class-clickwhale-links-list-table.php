@@ -62,7 +62,7 @@
             return $item['url'];
         }
         function column_slug($item) {
-            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"></a></div>';
+            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"><span class="dashicons dashicons-clipboard"></span></a></div>';
         }
         function column_redirection($item) {
             return $item['redirection'];
@@ -206,7 +206,7 @@
     
             // prepare query params, as usual current page, order by and order direction
             $paged = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
-            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'title';
+            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'id';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
     
             // [REQUIRED] define $items array

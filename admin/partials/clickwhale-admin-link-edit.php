@@ -15,7 +15,7 @@ $default = array(
     'slug' => '',
     'redirection' => '301',
     'description' => '',
-    'categories' => null,
+    'categories' => '',
 );
 
 $link_edit = new Clickwhale_Link_Edit();
