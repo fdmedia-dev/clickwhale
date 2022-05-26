@@ -106,7 +106,8 @@ class Clickwhale_Public {
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit(parse_url( $url, PHP_URL_PATH ));
-		if($path && str_starts_with($path, '/link/')){
+		if(!is_admin() && $path && strpos($path, '/link/')){
+			$path = substr($path, strrpos($path, '/' )+1);
 			$path = str_replace('/link/','',$path);
 		};
 
