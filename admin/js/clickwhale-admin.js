@@ -36,54 +36,81 @@
 	}
 	
 	function formatDate(date) {
-	return (
-		[
-		date.getFullYear(),
-		padTo2Digits(date.getMonth() + 1),
-		padTo2Digits(date.getDate()),
-		].join('-') +
-		' ' +
-		[
-		padTo2Digits(date.getHours()),
-		padTo2Digits(date.getMinutes()),
-		padTo2Digits(date.getSeconds()),
-		].join(':')
-	);
+		return (
+			[
+			date.getFullYear(),
+			padTo2Digits(date.getMonth() + 1),
+			padTo2Digits(date.getDate()),
+			].join('-') +
+			' ' +
+			[
+			padTo2Digits(date.getHours()),
+			padTo2Digits(date.getMinutes()),
+			padTo2Digits(date.getSeconds()),
+			].join(':')
+		);
+	}
+	function setCurrentTopLevelPage(){
+		$('#toplevel_page_clickwhale, #toplevel_page_clickwhale > a')
+			.removeClass('wp-not-current-submenu')
+			.addClass('wp-has-submenu wp-has-current-submenu wp-menu-open');
+	}
+	function setCurrentSubmenuPage($item){
+		$('#toplevel_page_clickwhale a').each(function(){
+			var url = $(this).attr('href');
+			if(url.endsWith($item)){
+				$(this).parent().addClass('current');
+			}
+		});
 	}
 
-	$(document)
-		.on('keyup change', '#slug', function(){
-			var slug = $(this).val();
-
-			slug = slug.replace(/\s+/g, '-').toLowerCase();
-			slug = slug.indexOf('/') == 0 ? slug.substring(1) : slug;
-			slug = slug.replace(/\\/g, "/");
-			slug = slug.replace(/\/\//g, "/");
-			slug = slug.replace(/\/\/\//g, "/");
-			slug = slug.replace(/\/$/, '');
-
-			$('#slug__text').find('span').html(slug);
-		})
-		.on('click', '.slug-input--btn', function(e){
-			e.preventDefault();
-			
-			var $temp = $('<input>'),
-				textToCopy = $(this).parent().find('input').val();
-				textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
-
-			$('body').append($temp);
-			$temp.val(textToCopy).select();
-			document.execCommand("copy");
-			$temp.remove();
-
-		})
-		.on('submit', '#form_edit_link', function(){
-			if($('#created_at').val() === ''){
-				$('#created_at').val(formatDate(new Date()));
+	$(function() {
+		var urlSearchParams = new URLSearchParams(window.location.search),
+			params = Object.fromEntries(urlSearchParams.entries());
+		if(params !== 'undefined'){
+			if(params['page'] === 'clickwhale-edit-category'){
+				setCurrentTopLevelPage();
+				setCurrentSubmenuPage('clickwhale-categories');
 			}
-			$('#updated_at').val(formatDate(new Date()));
-			//console.log(formatDate(new Date()));
-		});
+			if(params['page'] === 'clickwhale-edit-link'){
+				setCurrentTopLevelPage();
+				setCurrentSubmenuPage('clickwhale');
+			}
+		}
+	
+		$(document)
+			.on('keyup change', '#slug', function(){
+				var slug = $(this).val();
 
+				slug = slug.replace(/\s+/g, '-').toLowerCase();
+				slug = slug.indexOf('/') == 0 ? slug.substring(1) : slug;
+				slug = slug.replace(/\\/g, "/");
+				slug = slug.replace(/\/\//g, "/");
+				slug = slug.replace(/\/\/\//g, "/");
+				slug = slug.replace(/\/$/, '');
+
+				$('#slug__text').find('span').html(slug);
+			})
+			.on('click', '.slug-input--btn', function(e){
+				e.preventDefault();
+				
+				var $temp = $('<input>'),
+					textToCopy = $(this).parent().find('input').val();
+					textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+
+				$('body').append($temp);
+				$temp.val(textToCopy).select();
+				document.execCommand("copy");
+				$temp.remove();
+
+			})
+			.on('submit', '#form_edit_link', function(){
+				if($('#created_at').val() === ''){
+					$('#created_at').val(formatDate(new Date()));
+				}
+				$('#updated_at').val(formatDate(new Date()));
+				//console.log(formatDate(new Date()));
+			});
+	});
 
 })( jQuery );
