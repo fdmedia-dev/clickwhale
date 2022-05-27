@@ -16,6 +16,41 @@
             );
         }
     
+        function extra_tablenav( $which ) {
+
+            global $wpdb;
+            $table_links = $wpdb->prefix . 'clickwhale_links';
+            $table_categories = $wpdb->prefix . 'clickwhale_categories';
+            $categories_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_categories");
+
+            if ( $categories_count > 0 && $which == "top" ){
+                ?>
+                <div class="alignleft actions bulkactions">
+                <?php
+                $cats = $wpdb->get_results("SELECT * FROM $table_categories order by title asc", ARRAY_A);
+                if( $cats ){
+                    ?>
+                    <select name="category" class="clickwhale-filter-categories">
+                        <option value="">All Categories</option>
+                        <?php
+                        foreach( $cats as $cat ){
+                            $selected = isset($_GET['category']) &&  $_GET['category'] == $cat['id'] ? ' selected = "selected"' : '';   
+                            ?>
+                                <option value="<?php echo $cat['id']; ?>" <?php echo $selected; ?>><?php echo $cat['title']; ?></option>
+                            <?php 
+                        }
+                        ?>
+                    </select>
+                    <input type="submit" class="button" value="<?php _e('Filter', 'clickehale'); ?>">
+                    <?php   
+                }
+                ?>  
+                </div>
+
+                <?php
+            }
+        }
+
         /**
             * [REQUIRED] this is a default column renderer
             *
@@ -71,7 +106,7 @@
             return $item['description'];
         }
         function column_categories($item) {
-            $categories = unserialize($item['categories']);
+            $categories = explode(',',$item['categories']);
             $current_categories = '';
 
             if($categories){
@@ -81,7 +116,7 @@
                 foreach($categories as $k => $v){
                     $result = $wpdb->get_results( "SELECT * FROM $categories_table WHERE id=$v");
                     if(!empty($result)) {
-                        $current_categories .= $result[0]->title;
+                        $current_categories .= '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale') . '&category='.$result[0]->id.'">' . $result[0]->title . '</a>';
                         if($v != $lastElement) {
                             $current_categories .= ', ';
                         }
@@ -136,10 +171,7 @@
             */
         function get_sortable_columns() {
             $sortable_columns = array(
-                'title'        => __('Title', 'clickwhale'),
-                'url'          => __('Target URL', 'clickwhale'),
-                'slug'         => __('Slug', 'clickwhale'),
-                'redirection'  => __('Redirection Type', 'clickwhale'),
+                'title'=>array('title',true),
             );
             return $sortable_columns;
         }
@@ -212,12 +244,37 @@
             // [REQUIRED] define $items array
             // notice that last argument is ARRAY_A, so we will retrieve array
             $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
-    
+
+            // Change query for category filter results
+            if( isset($_GET['category']) &&  $_GET['category'] > 0 ){
+                $category = $_GET['category'];
+                $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE categories = '$category' OR categories LIKE '$category,%' OR categories LIKE '%,$category,%' OR categories LIKE '%,$category' ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+            }
+
             // [REQUIRED] configure pagination
             $this->set_pagination_args(array(
-                'total_items' => $total_items, // total items defined above
-                'per_page' => $per_page, // per page constant defined at top of method
+                'total_items' => $total_items,                  // total items defined above
+                'per_page' => $per_page,                        // per page constant defined at top of method
                 'total_pages' => ceil($total_items / $per_page) // calculate pages count
             ));
+        }
+
+        public function no_items(){
+            _e( 'No links found.', 'clickwhale' );
+        }
+
+        public function display_tablenav( $which ) {
+            ?>
+            <div class="tablenav <?php echo esc_attr( $which ); ?>">
+                <div class="alignleft actions">
+                    <?php $this->bulk_actions( $which ); ?>
+                </div>
+                <?php
+                $this->extra_tablenav( $which );
+                $this->pagination( $which );
+                ?>
+                <br class="clear" />
+            </div>
+            <?php
         }
     }

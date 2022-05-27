@@ -16,7 +16,7 @@ $default = array(
 );
 
 // here we are verifying does this request is post back and have correct nonce
-if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
+if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
     // combine our default item with request params
     $item = shortcode_atts($default, $_REQUEST);
     // validate data, and if all ok save item to database

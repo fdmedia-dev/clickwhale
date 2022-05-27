@@ -61,6 +61,18 @@
         function column_description($item) {
             return $item['description'];
         }
+        function column_count($item) {
+            global $wpdb;
+            $categories_table = $wpdb->prefix . 'clickwhale_links';
+            $category = $item['id'];
+            $total = $wpdb->get_var("SELECT COUNT(*) FROM $categories_table WHERE categories = '$category' OR categories LIKE '$category,%' OR categories LIKE '%,$category,%' OR categories LIKE '%,$category'");
+            if($total){
+                return '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale') . '&category='.$category.'">' . $total . '</a>';
+            } else {
+                return;
+            }
+
+        }
     
     
         /**
@@ -86,9 +98,10 @@
             */
         function get_columns() {
             $columns = array(
-                'cb'           => '<input type="checkbox" />', //Render a checkbox instead of text
-                'title'        => __('Title', 'clickwhale'),
-                'description'  => __('Description', 'clickwhale'),
+                'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
+                'title'         => __('Title', 'clickwhale'),
+                'description'   => __('Description', 'clickwhale'),
+                'count'         => __('Count', 'clickwhale'),
             );
             return $columns;
         }
@@ -102,7 +115,7 @@
             */
         function get_sortable_columns() {
             $sortable_columns = array(
-                'title'        => __('Title', 'clickwhale'),
+                'title' =>  array('title',true),
             );
             return $sortable_columns;
         }
@@ -169,7 +182,7 @@
     
             // prepare query params, as usual current page, order by and order direction
             $paged = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
-            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'title';
+            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'id';
             $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
     
             // [REQUIRED] define $items array

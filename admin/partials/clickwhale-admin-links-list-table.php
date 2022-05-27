@@ -19,6 +19,9 @@ if ('delete' === $table->current_action()) {
     </h1>
     <?php echo $message; ?>
 
+    <hr class="wp-header-end">
+
+    <?php //$table->views(); ?>
     <form id="persons-table" method="GET">
         <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
         <?php $table->display() ?>
