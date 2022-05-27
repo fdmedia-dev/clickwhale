@@ -18,10 +18,12 @@
     
         function extra_tablenav( $which ) {
 
-            global $wpdb, $testiURL, $tablename, $tablet;
+            global $wpdb;
             $table_links = $wpdb->prefix . 'clickwhale_links';
-            $table_categories = $wpdb->prefix . 'clickwhale_categories';;
-            if ( $which == "top" ){
+            $table_categories = $wpdb->prefix . 'clickwhale_categories';
+            $categories_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_categories");
+
+            if ( $categories_count > 0 && $which == "top" ){
                 ?>
                 <div class="alignleft actions bulkactions">
                 <?php
@@ -44,6 +46,7 @@
                 }
                 ?>  
                 </div>
+
                 <?php
             }
         }
