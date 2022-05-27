@@ -116,7 +116,7 @@
                 foreach($categories as $k => $v){
                     $result = $wpdb->get_results( "SELECT * FROM $categories_table WHERE id=$v");
                     if(!empty($result)) {
-                        $current_categories .= $result[0]->title;
+                        $current_categories .= '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale') . '&category='.$result[0]->id.'">' . $result[0]->title . '</a>';
                         if($v != $lastElement) {
                             $current_categories .= ', ';
                         }
