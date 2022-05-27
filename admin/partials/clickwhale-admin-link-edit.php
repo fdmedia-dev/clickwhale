@@ -31,10 +31,10 @@ if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
     $item_valid = $link_edit->clickwhale_validate_link($item);
 
     if ($item_valid === true) {
-
         $item = $link_edit->clear_link_slug($item);
-        $item['categories'] = serialize($item['categories']);
-
+        //$item['categories'] = serialize($item['categories']);
+        $item['categories'] = implode(',', $item['categories']);
+        
         if ($item['id'] == 0) {
             $result = $wpdb->insert($table_name, $item);
             $item['id'] = $wpdb->insert_id;
@@ -175,7 +175,7 @@ if (wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
                                 <td>
                                     <?php 
                                     if($link_categories) { 
-                                        $current_categories = isset($item['categories']) ? unserialize($item['categories']) : [];
+                                        $current_categories = isset($item['categories']) ? explode(',',$item['categories']) : [];
                                         foreach($link_categories as $category) {
                                             ?>
                                             <p>
