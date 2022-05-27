@@ -31,7 +31,7 @@
                 if( $cats ){
                     ?>
                     <select name="category" class="clickwhale-filter-categories">
-                        <option value="">Filter by Category</option>
+                        <option value="">All Categories</option>
                         <?php
                         foreach( $cats as $cat ){
                             $selected = isset($_GET['category']) &&  $_GET['category'] == $cat['id'] ? ' selected = "selected"' : '';   
@@ -41,7 +41,7 @@
                         }
                         ?>
                     </select>
-                    <input type="submit" class="button">
+                    <input type="submit" class="button" value="<?php _e('Filter', 'clickehale'); ?>">
                     <?php   
                 }
                 ?>  
