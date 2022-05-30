@@ -99,6 +99,8 @@ class Clickwhale {
 	 */
 	private function load_dependencies() {
 
+		require plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -121,6 +123,11 @@ class Clickwhale {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-public.php';
+
+		/**
+		 * The class responsible for click tracking.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-clickwhale-click-track.php';
 
 		$this->loader = new Clickwhale_Loader();
 
