@@ -122,7 +122,10 @@ class Clickwhale_Admin {
 			'ClickWhale Links', 
 			'ClickWhale', 
 			'manage_options', 
-			$this->plugin_name
+			$this->plugin_name,
+			'',
+			'',
+			26
 		);
 		add_submenu_page(
 			$this->plugin_name, 

@@ -67,43 +67,6 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_test_data_to_database(){
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . 'clickwhale_links';
-	
-		$wpdb->insert($table_name, array(
-			'title' 		=> 'Link to Amazon Store',
-			'created_at'	=> '2022-01-03 12:24:24',
-			'updated_at'	=> '2022-01-04 13:34:34',
-			'url'			=> 'https://amazon.com',
-			'slug' 			=> 'amazon',
-			'redirection' 	=> 301,
-			'description' 	=> 'Link to Amazon Store Homepage',
-			'categories' 	=> '',
-		));
-		$wpdb->insert($table_name, array(
-			'title' 		=> 'Link to Ebay Store',
-			'created_at'	=> '2022-01-03 12:24:24',
-			'updated_at'	=> '2022-01-04 13:34:34',
-			'url'			=> 'https://ebay.com',
-			'slug' 			=> 'ebay',
-			'redirection' 	=> 302,
-			'description' 	=> 'Link to Ebay Store Homepage or another text',
-			'categories' 	=> '',
-		));
-		$wpdb->insert($table_name, array(
-			'title' 		=> 'Link to Rozetka Marketplace',
-			'created_at'	=> '2022-01-03 12:24:24',
-			'updated_at'	=> '2022-01-04 13:34:34',
-			'url'			=> 'https://rozetka.com.ua',
-			'slug' 			=> 'rozetka',
-			'redirection' 	=> 302,
-			'description' 	=> 'Our biggest and finest marketplace',
-			'categories' 	=> '',
-		));
-	}
-
 	/**
 	 * Actions on plugin activation
 	 *
@@ -113,7 +76,6 @@ class Clickwhale_Activator {
 		// create a new object inside the static method to access non-static methods inside that class
 		(new self)->add_clickwhale_links_database();
 		(new self)->add_clickwhale_categories_database();
-		(new self)->add_test_data_to_database(); //test data
 	}
 
 }
