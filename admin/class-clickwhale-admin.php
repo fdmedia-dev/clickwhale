@@ -124,7 +124,7 @@ class Clickwhale_Admin {
 			'manage_options', 
 			$this->plugin_name,
 			'',
-			'',
+			plugin_dir_url( __FILE__ ) . 'images/click-whale-bw.svg',
 			26
 		);
 		add_submenu_page(

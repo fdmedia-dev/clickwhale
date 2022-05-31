@@ -33,7 +33,12 @@ if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__
     if ($item_valid === true) {
         $item = $link_edit->clear_link_slug($item);
         //$item['categories'] = serialize($item['categories']);
-        $item['categories'] = implode(',', $item['categories']);
+        if($item['categories']){
+            $item['categories'] = implode(',', $item['categories']);
+        } else {
+            $item['categories'] = '';
+        }
+        
         
         if ($item['id'] == 0) {
             $result = $wpdb->insert($table_name, $item);

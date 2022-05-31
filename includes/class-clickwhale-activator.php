@@ -34,7 +34,7 @@ class Clickwhale_Activator {
 			slug varchar(255) DEFAULT '' NOT NULL,
 			redirection smallint(4) NOT NULL,
 			description tinytext DEFAULT '' NOT NULL,
-			categories tinytext NOT NULL,
+			categories tinytext,
 			created_at datetime,
 			updated_at datetime,
 			
@@ -67,6 +67,31 @@ class Clickwhale_Activator {
 		}
 	}
 
+	private function add_clickwhale_clicks_database(){
+		global $wpdb;
+        $table_name = $wpdb->prefix . 'clickwhale_clicks';
+        $charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			link_id mediumint(9) NOT NULL,
+			visitor_hash tinytext NOT NULL,
+			ip varchar(15) not NULL,
+			browser tinytext NOT NULL,
+			os tinytext NOT NULL,
+			device tinytext NOT NULL,
+			referer varchar(255) DEFAULT '' NOT NULL,
+			created_at datetime,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if(!maybe_create_table( $table_name,  $sql )){
+			dbDelta( $sql );
+		}
+	}
+
 	/**
 	 * Actions on plugin activation
 	 *
@@ -76,6 +101,7 @@ class Clickwhale_Activator {
 		// create a new object inside the static method to access non-static methods inside that class
 		(new self)->add_clickwhale_links_database();
 		(new self)->add_clickwhale_categories_database();
+		(new self)->add_clickwhale_clicks_database();
 	}
 
 }

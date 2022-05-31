@@ -1,0 +1,16 @@
+{
+    "name": "clickwhale/clickwhale",
+    "description": "Link Organizer and Traking Solution",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "peterkrupenya",
+            "email": "62963646+peterkrupenya@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "whichbrowser/parser": "dev-master"
+    }
+}

@@ -101,7 +101,7 @@ class Clickwhale_Public {
 	}
 
 	public function do_redirect_handler(){
-		global $wpdb, $wp;
+		global $wpdb;
 		$table_name = $wpdb->prefix . 'clickwhale_links';
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -114,9 +114,13 @@ class Clickwhale_Public {
 
 		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'");
         if(!empty($results)) {
-            wp_redirect($results[0]->url, $results[0]->redirection);
+			$track = new ClickWhale_Click_Track($results[0]->id);
+			$track->track();
+			
+			wp_redirect($results[0]->url, $results[0]->redirection);
 			exit;
 		}
+
 	}
 
 }
