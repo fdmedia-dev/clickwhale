@@ -238,14 +238,15 @@
             $table_links    = $wpdb->prefix . 'clickwhale_links';
             $table_clicks   = $wpdb->prefix . 'clickwhale_clicks';
     
-            $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
-            if (is_array($ids)) $ids = implode(',', $ids);
-
             if ('delete' === $this->current_action()) {
+                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                if (is_array($ids)) $ids = implode(',', $ids);
                 if (!empty($ids)) {
                     $wpdb->query("DELETE FROM $table_links WHERE id IN($ids)");
                 }
             } else  if ('reset' === $this->current_action()) {
+                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                if (is_array($ids)) $ids = implode(',', $ids);
                 if (!empty($ids)) {
                     $wpdb->query("DELETE FROM $table_clicks WHERE link_id IN($ids)");
                 }
