@@ -114,14 +114,11 @@ class Clickwhale_Public {
 
 		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'");
         if(!empty($results)) {
-            
-			$test = new ClickWhale_Click_Track(1);
-			$test->track();
+			$track = new ClickWhale_Click_Track($results[0]->id);
+			$track->track();
 			
 			wp_redirect($results[0]->url, $results[0]->redirection);
 			exit;
-
-			//var_dump($_SERVER);
 		}
 
 	}

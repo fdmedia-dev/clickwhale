@@ -34,7 +34,7 @@ class Clickwhale_Activator {
 			slug varchar(255) DEFAULT '' NOT NULL,
 			redirection smallint(4) NOT NULL,
 			description tinytext DEFAULT '' NOT NULL,
-			categories tinytext NOT NULL,
+			categories tinytext,
 			created_at datetime,
 			updated_at datetime,
 			
@@ -79,8 +79,8 @@ class Clickwhale_Activator {
 			ip varchar(15) not NULL,
 			browser tinytext NOT NULL,
 			os tinytext NOT NULL,
+			device tinytext NOT NULL,
 			referer varchar(255) DEFAULT '' NOT NULL,
-			host varchar(255) DEFAULT '' NOT NULL,
 			created_at datetime,
 			
 			PRIMARY KEY  (id)

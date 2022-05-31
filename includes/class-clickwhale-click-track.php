@@ -6,16 +6,16 @@ class ClickWhale_Click_Track{
      * @since    1.0.0
      * @access   protected
      */
-    protected int $link_id;
+    protected $link_id;
 
     /**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $link_id       Link id.
+	 * @param    string    $link_id       Link id.
 	 */
     public function __construct($link_id = 0){
-        $this->link_id = $link_id;
+        $this->link_id = (int) $link_id;
     }
 
     private function get_user_ip(){
@@ -27,63 +27,72 @@ class ClickWhale_Click_Track{
     }
 
     private function get_user_device_info(){
-        $result = new WhichBrowser\Parser(getallheaders(), [ 'detectBots' => false ]);
+        $result = new WhichBrowser\Parser(getallheaders(), [ 'detectBots' => true ]);
 
         $resultArr              = [];
-        $resultArr['browser']   = $result->browser->toString();
-        $resultArr['os']        = $result->os->toString();
+        //$resultArr['browser']   = $result->browser->toString(); // Chrome 27.0
+        $resultArr['os']        = $result->os->toString();      // Windows 10
+        $resultArr['type']      = $result->device->type;        // desktop
 
-        return $resultArr;
+        return $resultArr['type'] !== 'bot' ? $resultArr : false;
     }
 
-    private function get_user_browser_UA(){
-        $browser = new WhichBrowser\Model\Browser(getallheaders(), [ 'detectBots' => false ]);
-        $result = get_object_vars($browser);
+    private function get_user_agent_string(){
+        $browser    = new WhichBrowser\Model\Browser(getallheaders(), [ 'detectBots' => true ]);
+        $result     = get_object_vars($browser);
+
         return $result['User-Agent'];
     }
 
-    private function get_referer(){
-        $referer = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : 'direct';
+    private function get_link_referer(){
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+
         return $referer;
     }
 
-    private function get_host(){
-        return '';
-    }
-
-
     private function generate_hash(){
-        $ip = $this->get_user_ip();
-        $date = $this->get_user_salt();
-        $browser = $this->get_user_browser_UA();
-        $hash = $date . $ip . $browser;
+        $ip         = $this->get_user_ip();
+        $date       = $this->get_user_salt();
+        $browser    = $this->get_user_agent_string();
+        $hash       = $date . $ip . $browser;
 
         return hash('md5', $hash);
     }
 
     private function update_clicks_database(){
         global $wpdb;
+
 		$table_name = $wpdb->prefix . 'clickwhale_clicks';
         $device     = $this->get_user_device_info();
+        var_dump($device);
+        if($device) {
 
-        $item                   = [];
-        $item['link_id']        = $this->link_id;
-        $item['visitor_hash']   = $this->generate_hash();
-        $item['ip']             = $this->get_user_ip();
-        $item['browser']        = $device['browser'];
-        $item['os']             = $device['os'];
-        $item['referer']        = $this->get_referer();
-        $item['host']           = $this->get_host();
-        $item['created_at']     = date('Y-m-d H:m:s');
+            $id     = $this->link_id;
+            $hash   = $this->generate_hash();
+            $check  = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE link_id=$id AND visitor_hash='$hash'");
 
-        $result = $wpdb->insert($table_name, $item);
+            if(!$check){
+                $item                   = [];
+                $item['link_id']        = $id;
+                $item['visitor_hash']   = $hash;
+                $item['ip']             = $this->get_user_ip();
+                $item['browser']        = $this->get_user_agent_string();
+                $item['os']             = $device['os'];
+                $item['device']         = $device['type'];
+                $item['referer']        = $this->get_link_referer();
+                $item['created_at']     = date('Y-m-d H:m:s');
+
+                $result = $wpdb->insert($table_name, $item);
+            }
+        } else {
+            return false;
+        }
     }
 
     public function track(){
 
         $this->update_clicks_database();
 
-        //return $trackArr;
     }
 
 }
