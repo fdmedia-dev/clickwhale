@@ -76,7 +76,6 @@ class Clickwhale_Activator {
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			link_id mediumint(9) NOT NULL,
 			visitor_hash tinytext NOT NULL,
-			ip varchar(15) not NULL,
 			browser tinytext NOT NULL,
 			os tinytext NOT NULL,
 			device tinytext NOT NULL,
