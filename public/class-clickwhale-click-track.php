@@ -64,7 +64,7 @@ class ClickWhale_Click_Track{
 
 		$table_name = $wpdb->prefix . 'clickwhale_clicks';
         $device     = $this->get_user_device_info();
-        var_dump($device);
+        //var_dump($device);
         if($device) {
 
             $id     = $this->link_id;
@@ -75,7 +75,6 @@ class ClickWhale_Click_Track{
                 $item                   = [];
                 $item['link_id']        = $id;
                 $item['visitor_hash']   = $hash;
-                //$item['ip']             = $this->get_user_ip();
                 $item['browser']        = $this->get_user_agent_string();
                 $item['os']             = $device['os'];
                 $item['device']         = $device['type'];

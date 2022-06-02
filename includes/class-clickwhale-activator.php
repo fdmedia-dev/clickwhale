@@ -33,6 +33,8 @@ class Clickwhale_Activator {
 			url varchar(255) DEFAULT '' NOT NULL,
 			slug varchar(255) DEFAULT '' NOT NULL,
 			redirection smallint(4) NOT NULL,
+			nofollow smallint(1),
+			sponsored smallint(1),
 			description tinytext DEFAULT '' NOT NULL,
 			categories tinytext,
 			created_at datetime,

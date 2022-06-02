@@ -126,10 +126,12 @@ class Clickwhale_Admin_Settings {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
 	}
+
 	public function clickwhale_link_form_page_handler() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-link-edit.php' );
 	}
+
 	public function clickwhale_categories_page_handler() {
 		if (!class_exists('WP_List_Table')) {
 			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
@@ -137,15 +139,18 @@ class Clickwhale_Admin_Settings {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-categories-list-table.php' );
 	}
+
 	public function clickwhale_category_form_page_handler() {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
 	}
 
-	// empty pages
 	public function render_settings_page_content() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-settings-display.php' );
 	}
+
+    
+	// empty page
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-tools.php' );
 	}
@@ -159,9 +164,9 @@ class Clickwhale_Admin_Settings {
 	public function default_general_options() {
 
 		$defaults = array(
-			'redirect_type'		    =>	301,
-			'show_nofollow'		    =>	true,
-			'show_sponsored'		=>	false,
+			'redirect_type'	=>	301,
+			'nofollow'		=>	true,
+			'sponsored'		=>	false,
 		);
 
 		return $defaults;
@@ -182,7 +187,7 @@ class Clickwhale_Admin_Settings {
     /**
 	 * This function provides a simple description for the General Options page.
 	 *
-	 * It's called from the 'wppb-initialize_settings_options' function by being passed as a parameter
+	 * It's called from the 'initialize_settings_options' function by being passed as a parameter
 	 * in the add_settings_section function.
 	 */
 	public function general_options_callback() {
@@ -194,7 +199,7 @@ class Clickwhale_Admin_Settings {
     /**
 	 * This function provides a simple description for the Tracking Options page.
 	 *
-	 * It's called from the 'wppb-initialize_trcking_options' function by being passed as a parameter
+	 * It's called from the 'initialize_tracking_options' function by being passed as a parameter
 	 * in the add_settings_section function.
 	 */
 	public function tracking_options_callback() {
@@ -238,7 +243,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		add_settings_field(
-			'show_nofollow',
+			'nofollow',
 			__( 'Nofollow links', 'clickwhale' ),
 			array( $this, 'toggle_nofollow_callback'),
 			'clickwhale_general_options',
@@ -249,7 +254,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		add_settings_field(
-			'show_sponsored',
+			'sponsored',
 			__( 'Sponsored links', 'clickwhale' ),
 			array( $this, 'toggle_sponsored_callback'),
 			'clickwhale_general_options',
@@ -302,7 +307,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		add_settings_field(
-			'show_nofollow',
+			'nofollow',
 			__( 'Exclude Users by Role', 'clickwhale' ),
 			array( $this, 'exclude_users_by_role'),
 			'clickwhale_tracking_options',
@@ -353,8 +358,8 @@ class Clickwhale_Admin_Settings {
 
 		$options = get_option('clickwhale_general_options');
 
-		$html = '<input type="checkbox" id="show_nofollow" name="clickwhale_general_options[show_nofollow]" value="1" ' . checked( 1, isset( $options['show_nofollow'] ) ? $options['show_nofollow'] : 0, false ) . '/>';
-		$html .= '<label for="show_nofollow">&nbsp;'  . $args[0] . '</label>';
+		$html = '<input type="checkbox" id="nofollow" name="clickwhale_general_options[nofollow]" value="1" ' . checked( 1, isset( $options['nofollow'] ) ? $options['nofollow'] : 0, false ) . '/>';
+		$html .= '<label for="nofollow">&nbsp;'  . $args[0] . '</label>';
 
 		echo $html;
 
@@ -364,8 +369,8 @@ class Clickwhale_Admin_Settings {
 
 		$options = get_option('clickwhale_general_options');
 
-		$html = '<input type="checkbox" id="show_sponsored" name="clickwhale_general_options[show_sponsored]" value="1" ' . checked( 1, isset( $options['show_sponsored'] ) ? $options['show_sponsored'] : 0, false ) . '/>';
-		$html .= '<label for="show_sponsored">&nbsp;'  . $args[0] . '</label>';
+		$html = '<input type="checkbox" id="sponsored" name="clickwhale_general_options[sponsored]" value="1" ' . checked( 1, isset( $options['sponsored'] ) ? $options['sponsored'] : 0, false ) . '/>';
+		$html .= '<label for="sponsored">&nbsp;'  . $args[0] . '</label>';
         $html .= '<p>Recommended for affiliate links.</p>';
 
 		echo $html;
@@ -386,13 +391,20 @@ class Clickwhale_Admin_Settings {
     public function exclude_users_by_role($args) {
 
 		$options = get_option('clickwhale_tracking_options');
+		if(isset($options['exclude_users_by_role'])){
+			$check_administrator = checked( ( in_array('administrator', $options['exclude_users_by_role']) ), 1, false );
+			$check_editor = checked( ( in_array('editor', $options['exclude_users_by_role']) ), 1, false );
+			$check_author = checked( ( in_array('author', $options['exclude_users_by_role']) ), 1, false );
+		} else {
+			$check_administrator = $check_editor = $check_author = '';
+		}
         
         $html = '';
-		$html .= '<input type="checkbox" id="exclude_administrator" name="clickwhale_tracking_options[exclude_users_by_role][]" value="administrator" ' . checked( ( in_array('administrator', $options['exclude_users_by_role']) ), 1, false ) . '/>';
+		$html .= '<input type="checkbox" id="exclude_administrator" name="clickwhale_tracking_options[exclude_users_by_role][]" value="administrator" ' . $check_administrator . '/>';
 		$html .= '<label for="exclude_administrator">&nbsp;Administrator</label><br>';
-        $html .= '<input type="checkbox" id="exclude_editor" name="clickwhale_tracking_options[exclude_users_by_role][]" value="editor" ' . checked( ( in_array('editor', $options['exclude_users_by_role']) ), 1, false ) . '/>';
+        $html .= '<input type="checkbox" id="exclude_editor" name="clickwhale_tracking_options[exclude_users_by_role][]" value="editor" ' . $check_editor . '/>';
 		$html .= '<label for="exclude_editor">&nbsp;Editor</label><br>';
-        $html .= '<input type="checkbox" id="exclude_author" name="clickwhale_tracking_options[exclude_users_by_role][]" value="author" ' . checked( ( in_array('author', $options['exclude_users_by_role']) ), 1, false ) . '/>';
+        $html .= '<input type="checkbox" id="exclude_author" name="clickwhale_tracking_options[exclude_users_by_role][]" value="author" ' . $check_author . '/>';
 		$html .= '<label for="exclude_author">&nbsp;Author</label>';
         $html .= '<p>'  . $args[0] . '</p>';
 

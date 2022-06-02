@@ -124,11 +124,6 @@ class Clickwhale {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-public.php';
 
-		/**
-		 * The class responsible for click tracking.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-clickwhale-click-track.php';
-
 		$this->loader = new Clickwhale_Loader();
 
 	}

@@ -51,6 +51,25 @@ class Clickwhale_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->load_dependencies();
+
+	}
+
+		/**
+	 * Load the required dependencies for the Admin facing functionality.
+	 *
+	 * Include the following files that make up the plugin:
+	 *
+	 * - Clickwhale_Admin_Settings. Registers the admin settings and page.
+	 *
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_dependencies() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'public/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'public/class-clickwhale-wp-user.php';
 
 	}
 
@@ -101,6 +120,9 @@ class Clickwhale_Public {
 	}
 
 	public function do_redirect_handler(){
+
+		$user = new Clickwhale_WP_User($this->plugin_name, $this->version);
+
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'clickwhale_links';
 
@@ -114,9 +136,28 @@ class Clickwhale_Public {
 
 		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'");
         if(!empty($results)) {
-			$track = new ClickWhale_Click_Track($results[0]->id);
-			$track->track();
-			
+
+			if(!$user->disallow_track()){
+				$track = new ClickWhale_Click_Track($results[0]->id);
+				$track->track();
+			}
+			$nofollow 	= '';
+			$sponsored 	= '';
+			$sep 		= '';
+
+			if($results[0]->nofollow){
+				$nofollow = 'noindex, nofollow';
+			}
+			if($results[0]->sponsored){
+				$sponsored = 'sponsored';
+			}
+			if($results[0]->nofollow && $results[0]->sponsored){
+				$sep = ', ';
+			}
+			if($results[0]->nofollow || $results[0]->sponsored){
+				header('X-Robots-Tag: '. $nofollow . $sep . $sponsored . '');
+			}
+
 			wp_redirect($results[0]->url, $results[0]->redirection);
 			exit;
 		}

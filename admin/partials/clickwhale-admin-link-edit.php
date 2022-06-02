@@ -2,20 +2,23 @@
 global $wpdb;
 $table_name = $wpdb->prefix . 'clickwhale_links';
 
-$message = '';
-$notice = '';
+$message            = '';
+$notice             = '';
+$global_options     = get_option('clickwhale_general_options');
 
 // default $item which will be used for new records
 $default = array(
-    'id' => 0,
-    'created_at'=> '',
-    'updated_at'=> '',
-    'title' => '',
-    'url' => '',
-    'slug' => '',
-    'redirection' => '301',
-    'description' => '',
-    'categories' => '',
+    'id'            => 0,
+    'created_at'    => '',
+    'updated_at'    => '',
+    'title'         => '',
+    'url'           => '',
+    'slug'          => '',
+    'redirection'   => $global_options['redirect_type'],
+    'nofollow'      => '',
+    'sponsored'     => '',
+    'description'   => '',
+    'categories'    => '',
 );
 
 $link_edit = new Clickwhale_Link_Edit();
@@ -25,21 +28,19 @@ $link_categories = $link_edit->get_link_categories();
 if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__FILE__))) {
     // combine our default item with request params
     $item = shortcode_atts($default, $_REQUEST);
-    // validate data, and if all ok save item to database
-    // if id is zero insert otherwise update
 
+    // validate data, and if all ok save item to database
     $item_valid = $link_edit->clickwhale_validate_link($item);
 
     if ($item_valid === true) {
         $item = $link_edit->clear_link_slug($item);
-        //$item['categories'] = serialize($item['categories']);
         if($item['categories']){
             $item['categories'] = implode(',', $item['categories']);
         } else {
             $item['categories'] = '';
         }
         
-        
+        // if id is zero insert otherwise update
         if ($item['id'] == 0) {
             $result = $wpdb->insert($table_name, $item);
             $item['id'] = $wpdb->insert_id;
@@ -77,6 +78,7 @@ if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__
     <h1 class="wp-heading-inline">
         <?php _e('Edit link', 'clickwhale') ?>
         <a class="page-title-action" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale');?>"><?php _e('Back to list', 'clickwhale')?></a>
+        <a href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale-edit-link');?>" class="page-title-action"><?php _e('Add new', 'clickwhale') ?></a>
     </h1>
 
     <?php if (!empty($notice)) { ?>
@@ -157,6 +159,46 @@ if (isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], basename(__
                                     <option value="307" <?php selected( $item['redirection'], 307 ); ?>>307 redirect: Temporarily Redirect</option>
                                     <option value="308" <?php selected( $item['redirection'], 308 ); ?>>308 redirect: Permanent Redirect</option>
                                 </select>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="nofollow"><?php _e('Nofollow', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input  type="checkbox" 
+                                            id="nofollow" 
+                                            name="nofollow"
+                                            value="1"
+                                            <?php
+                                            if($item['id'] === 0 && isset($global_options['nofollow'])) {
+                                                echo 'checked';
+                                            } else {
+                                                checked( $item['nofollow'], 1 ); 
+                                            }
+                                            ?> 
+                                            />
+                                    <label for="nofollow"><?php _e('Check to mark link as nofollow & noindex', 'clickwhale') ?></label>
+                                </td>
+                            </tr>
+                            <tr class="form-field">
+                                <th valign="top" scope="row">
+                                    <label for="sponsored"><?php _e('Sponsored', 'clickwhale')?></label>
+                                </th>
+                                <td>
+                                    <input  type="checkbox" 
+                                            id="sponsored" 
+                                            name="sponsored"
+                                            value="1"
+                                            <?php
+                                            if($item['id'] === 0 && isset($global_options['sponsored'])) {
+                                                echo 'checked';
+                                            } else {
+                                                checked( $item['sponsored'], 1 ); 
+                                            }
+                                            ?> 
+                                            />
+                                    <label for="sponsored"><?php _e('Check to mark link as sponsored', 'clickwhale') ?></label>
                                 </td>
                             </tr>
                             <tr class="form-field">
