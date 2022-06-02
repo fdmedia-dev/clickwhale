@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '81347da62ad1be48755275833658411ab58d4a55',
+        'reference' => 'd203f357c917cff27a74c4bdac9866c32237ed84',
         'name' => 'clickwhale/clickwhale',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '81347da62ad1be48755275833658411ab58d4a55',
+            'reference' => 'd203f357c917cff27a74c4bdac9866c32237ed84',
             'dev_requirement' => false,
         ),
         'psr/cache' => array(

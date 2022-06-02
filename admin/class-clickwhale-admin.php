@@ -61,6 +61,29 @@ class Clickwhale_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->load_dependencies();
+
+	}
+
+	/**
+	 * Load the required dependencies for the Admin facing functionality.
+	 *
+	 * Include the following files that make up the plugin:
+	 *
+	 * - Clickwhale_Admin_Settings. Registers the admin settings and page.
+	 *
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_dependencies() {
+
+		/**
+		 * The class responsible for orchestrating the actions and filters of the
+		 * core plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-settings.php';
+
 	}
 
 	/**
@@ -110,108 +133,6 @@ class Clickwhale_Admin {
 			'siteurl' => home_url(),
 		));
 	}
-
-	/**
-	 * Add Admin Menu
-	 *
-	 * @since    1.0.0
-	 */
-	public function add_menu() {
-        // add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-        add_menu_page( 
-			'ClickWhale Links', 
-			'ClickWhale', 
-			'manage_options', 
-			$this->plugin_name,
-			'',
-			plugin_dir_url( __FILE__ ) . 'images/clickwhale-reduced.svg',
-			26
-		);
-		add_submenu_page(
-			$this->plugin_name, 
-			'ClickWhale Links', 
-			'Links', 
-			'manage_options', 
-			$this->plugin_name, 
-			array( $this, $this->plugin_name . '_links_page_handler' )
-		);
-		add_submenu_page(
-			'',  
-			'Add New', 
-			'Add New Link', 
-			'manage_options', 
-			$this->plugin_name . '-edit-link', 
-			array( $this, $this->plugin_name . '_link_form_page_handler' )
-		);
-		add_submenu_page(
-			$this->plugin_name, 
-			'ClickWhale Categories', 
-			'Categories', 
-			'manage_options', 
-			$this->plugin_name . '-categories', 
-			array( $this, $this->plugin_name . '_categories_page_handler' )
-		);
-		add_submenu_page(
-			'',  
-			'Add New Category', 
-			'Add New Category', 
-			'manage_options', 
-			$this->plugin_name . '-edit-category', 
-			array( $this, $this->plugin_name . '_category_form_page_handler' )
-		);
-		add_submenu_page(
-			$this->plugin_name, 
-			'ClickWhale Settings', 
-			'Settings', 
-			'manage_options', 
-			$this->plugin_name . '-settings', 
-			array( $this, 'include_admin_menu_settings_partial' )
-		);
-		add_submenu_page(
-			$this->plugin_name, 
-			'ClickWhale Tools', 
-			'Tools', 
-			'manage_options', 
-			$this->plugin_name . '-tools', 
-			array( $this, 'include_admin_menu_tools_partial' )
-		);
-	}
-	/**
- 	 * Include Menu Partial
-	 *
-	 * @since    1.0.0
-	 */
-	public function clickwhale_links_page_handler() {
-		if (!class_exists('WP_List_Table')) {
-			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
-	}
-	public function clickwhale_link_form_page_handler() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-link-edit.php' );
-	}
-	public function clickwhale_categories_page_handler() {
-		if (!class_exists('WP_List_Table')) {
-			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-categories-list-table.php' );
-	}
-	public function clickwhale_category_form_page_handler() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
-	}
-
-	// empty pages
-	public function include_admin_menu_settings_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-settings.php' );
-	}
-	public function include_admin_menu_tools_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-tools.php' );
-	}
-
 
 	public function clickwhale_categories_limit_callback($limit){
 		return $limit;

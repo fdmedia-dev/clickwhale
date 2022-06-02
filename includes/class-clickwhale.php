@@ -99,7 +99,7 @@ class Clickwhale {
 	 */
 	private function load_dependencies() {
 
-		require plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -123,11 +123,6 @@ class Clickwhale {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-public.php';
-
-		/**
-		 * The class responsible for click tracking.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-clickwhale-click-track.php';
 
 		$this->loader = new Clickwhale_Loader();
 
@@ -160,10 +155,15 @@ class Clickwhale {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_settings = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_settings_options' );
+		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_tracking_options' );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu' );
+
 		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
 		
 	}

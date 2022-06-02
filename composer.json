@@ -1,8 +1,13 @@
 {
     "name": "clickwhale/clickwhale",
-    "description": "Link Organizer and Traking Solution",
+    "description": "Link Organizer and Click Tracking Solution",
     "type": "project",
     "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Clickwhale\\Clickwhale\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "peterkrupenya",

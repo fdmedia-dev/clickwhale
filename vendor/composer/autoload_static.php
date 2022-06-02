@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3
+class ComposerStaticInite051209e17a2bcbd9a1a26992d27eb0b
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -14,6 +14,10 @@ class ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3
         'P' => 
         array (
             'Psr\\Cache\\' => 10,
+        ),
+        'C' => 
+        array (
+            'Clickwhale\\Clickwhale\\' => 22,
         ),
     );
 
@@ -27,6 +31,10 @@ class ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'Clickwhale\\Clickwhale\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
+        ),
     );
 
     public static $classMap = array (
@@ -36,9 +44,9 @@ class ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitfe346504fcaf04e8380b09348e4d52b3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite051209e17a2bcbd9a1a26992d27eb0b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite051209e17a2bcbd9a1a26992d27eb0b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite051209e17a2bcbd9a1a26992d27eb0b::$classMap;
 
         }, null, ClassLoader::class);
     }
