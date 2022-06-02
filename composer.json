@@ -1,0 +1,21 @@
+{
+    "name": "clickwhale/clickwhale",
+    "description": "Link Organizer and Click Tracking Solution",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Clickwhale\\Clickwhale\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "peterkrupenya",
+            "email": "62963646+peterkrupenya@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "whichbrowser/parser": "dev-master"
+    }
+}
