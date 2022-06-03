@@ -348,7 +348,7 @@ class Clickwhale_Admin_Settings {
         $html .= '</select>';
 
 		// Here, we'll take the first argument of the array and add it to a label next to the checkbox
-		$html .= '<p>'  . $args[0] . '</p>';
+		$html .= '<p class="description ">'  . $args[0] . '</p>';
 
 		echo $html;
 
@@ -371,7 +371,7 @@ class Clickwhale_Admin_Settings {
 
 		$html = '<input type="checkbox" id="sponsored" name="clickwhale_general_options[sponsored]" value="1" ' . checked( 1, isset( $options['sponsored'] ) ? $options['sponsored'] : 0, false ) . '/>';
 		$html .= '<label for="sponsored">&nbsp;'  . $args[0] . '</label>';
-        $html .= '<p>Recommended for affiliate links.</p>';
+        $html .= '<p class="description ">Recommended for affiliate links.</p>';
 
 		echo $html;
 
@@ -406,7 +406,7 @@ class Clickwhale_Admin_Settings {
 		$html .= '<label for="exclude_editor">&nbsp;Editor</label><br>';
         $html .= '<input type="checkbox" id="exclude_author" name="clickwhale_tracking_options[exclude_users_by_role][]" value="author" ' . $check_author . '/>';
 		$html .= '<label for="exclude_author">&nbsp;Author</label>';
-        $html .= '<p>'  . $args[0] . '</p>';
+        $html .= '<p class="description ">'  . $args[0] . '</p>';
 
 		echo $html;
 
