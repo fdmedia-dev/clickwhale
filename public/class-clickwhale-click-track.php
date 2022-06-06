@@ -69,9 +69,9 @@ class ClickWhale_Click_Track{
 
             $id     = $this->link_id;
             $hash   = $this->generate_hash();
-            $check  = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE link_id=$id AND visitor_hash='$hash'");
+            //$check  = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE link_id=$id AND visitor_hash='$hash'");
 
-            if(!$check){
+            //if(!$check){
                 $item                   = [];
                 $item['link_id']        = $id;
                 $item['visitor_hash']   = $hash;
@@ -82,7 +82,7 @@ class ClickWhale_Click_Track{
                 $item['created_at']     = date('Y-m-d H:m:s');
 
                 $result = $wpdb->insert($table_name, $item);
-            }
+            //}
         } else {
             return false;
         }
