@@ -67,7 +67,7 @@ else {
 <div class="wrap">
     <h1 class="wp-heading-inline">
         <?php _e('Edit Category', 'clickwhale') ?>
-        <a class="page-title-action" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale');?>"><?php _e('Back to list', 'clickwhale')?></a>
+        <a class="page-title-action" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=clickwhale-categories');?>"><?php _e('Back to list', 'clickwhale')?></a>
     </h1>
 
     <?php if (!empty($notice)) { ?>
