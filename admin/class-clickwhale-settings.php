@@ -60,7 +60,7 @@ class Clickwhale_Admin_Settings {
             'manage_options', 
             $this->plugin_name,
             '',
-            plugin_dir_url( __FILE__ ) . 'images/clickwhale-reduced.svg',
+            plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
             26
         );
         add_submenu_page(
@@ -149,10 +149,8 @@ class Clickwhale_Admin_Settings {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-settings-display.php' );
 	}
 
-    
-	// empty page
 	public function include_admin_menu_tools_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-menu-tools.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-tools-display.php' );
 	}
 
 
