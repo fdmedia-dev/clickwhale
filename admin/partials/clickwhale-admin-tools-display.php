@@ -8,22 +8,22 @@
     <?php $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] :  'migration_options'; ?>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=clickwhale-settings&tab=general_options" class="nav-tab <?php echo $active_tab == 'migration_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Migration Options', 'clickwhale' ); ?></a>
+        <a href="?page=clickwhale-tools&tab=migration_options" class="nav-tab <?php echo $active_tab == 'migration_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Migration', 'clickwhale' ); ?></a>
     </h2>
 
     <form method="post" action="options.php">
         <?php
-
-        //if( $active_tab == 'tracking_options' ) {
-            //settings_fields( 'clickwhale_tracking_options' );
-            //do_settings_sections( 'clickwhale_tracking_options' );
-        //} else {
-            //settings_fields( 'clickwhale_general_options' );
-            //do_settings_sections( 'clickwhale_general_options' );
-        //}
-
+        
+        if( $active_tab == 'migration_options' ) {
+            settings_fields( 'clickwhale_tools_migration_options' );
+            do_settings_sections( 'clickwhale_tools_migration_options' );
+            do_settings_sections( 'clickwhale_tools_migration_thirstyaffiliates_section' );
+            do_settings_sections( 'clickwhale_tools_migration_prettylinks_section' );
+        }
+        
         submit_button();
 
         ?>
     </form>
+    <div class="results"></div>
 </div>

@@ -120,18 +120,6 @@ class ClickWhale_Migration_Notice {
         ?>
         <script type='text/javascript'>
 		jQuery( document ).ready(function() {
-			jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.deactive', function(e){
-				e.preventDefault();
-				jQuery.post(ajaxurl, {
-					'action': 'clickwhale/admin/deactive_<?php echo $this->migrant ?>',
-					'security': '<?php echo $nonce; ?>',
-                    'plugin' : '<?php echo $this->migrant_file ?>',
-				}, function(response) {
-					if(response.success){
-						location.reload(true); 
-					}
-				});
-			})
 			
 			jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.button-dismiss', function(e){
                 e.preventDefault();

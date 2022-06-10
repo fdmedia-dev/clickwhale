@@ -13,8 +13,6 @@ class ClickWhale_Notice {
     private function load_dependencies() {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-clickwhale-migration-notice.php';
-		//require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-betterlinks-to-clickwhale.php';
-        //require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-thirstyaffiliates-to-clickwhale.php';
     
     }
 

@@ -177,6 +177,8 @@ class Clickwhale {
 		// BetterLinks
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_betterlinks_notice_hide', $plugin_ajax , 'migration_betterlinks_notice_hide');
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/deactive_betterlinks', $plugin_ajax, 'deactive_betterlinks');
+        
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale');
 	
 		// ThirstyAffiliates
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_thirstyaffiliates_notice_hide', $plugin_ajax , 'migration_thirstyaffiliates_notice_hide');

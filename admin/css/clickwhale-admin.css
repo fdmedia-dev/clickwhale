@@ -26,3 +26,8 @@ body > in1put{
 .clickwhale-notice span{
     margin-right: 20px;
 }
+
+.submit .button{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

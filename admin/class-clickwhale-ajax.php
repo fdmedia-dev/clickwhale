@@ -122,4 +122,18 @@ class Clickwhale_Ajax{
 
     }
 
+    public function migration_to_clickwhale() {
+
+        $plugins = new ClickWhale_Migration();
+
+        if ($plugins->check_betterlinks_active()) {
+            $migrator = new BetterLinks_To_Clickwhale();
+            $result = $migrator->run_migration();
+        }
+
+        wp_send_json_success($result);
+
+        wp_die();
+    }
+
 }
