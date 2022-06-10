@@ -1,0 +1,56 @@
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac crap
+.DS_Store
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# PhpStorm
+.idea
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+build/
+tmp/
+tests/clover.xml
+
+# Grunt, Bower, node etc.
+node_modules
+bower_components
+composer.phar
+package-lock.json
+.env.*.php
+.env.php
+
+# Folders to ignore
+cache
+
+# Temporary files
+*~
+*.log
+.cache
+*.db
+*.rar
+*.bak
+*.swp
+*.tmp
+*.zip
+*.tar
+*.tgz
+*.tar.gz
+*.gz
+
+# Other
+deploy.sh
