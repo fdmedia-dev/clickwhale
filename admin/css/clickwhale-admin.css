@@ -22,3 +22,12 @@ body > in1put{
     top: 5px;
     color: #bbbbbb;
 }
+
+.clickwhale-notice span{
+    margin-right: 20px;
+}
+
+.submit .button{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

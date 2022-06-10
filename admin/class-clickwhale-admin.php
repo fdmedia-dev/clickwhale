@@ -62,6 +62,8 @@ class Clickwhale_Admin {
 		$this->version = $version;
 
 		$this->load_dependencies();
+		$this->dispath_actions();
+		$this->migration();
 
 	}
 
@@ -78,12 +80,21 @@ class Clickwhale_Admin {
 	 */
 	private function load_dependencies() {
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-ajax.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-tools.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-notice.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-migration.php';
 
+	}
+
+	public function dispath_actions(){
+		new ClickWhale_Notice();
+	}
+
+	public function migration(){
+		$migration = new ClickWhale_Migration();
+		$migration->init();
 	}
 
 	/**
