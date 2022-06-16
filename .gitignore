@@ -54,3 +54,4 @@ cache
 
 # Other
 deploy.sh
+/nbproject/private/

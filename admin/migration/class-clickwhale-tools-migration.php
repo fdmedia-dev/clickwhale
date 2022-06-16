@@ -244,22 +244,41 @@ class Clickwhale_Tools_Migration {
 				}, function(response) {
 					if(response.success){
 						var data = response.data;
-						
-						for (var type in data) {
-							var categories = data[type].categories;
-							var links = data[type].links;
-							
-							//jQuery('.results').append('<h3>Categories</h3>');
-							for (var category in categories) {
-								jQuery('.results').append('<p>'+categories[category]+'</p>');
-							}
 
-							//jQuery('.results').append('<h3>Links</h3>');
-							for (var link in links) {
-								jQuery('.results').append('<p>'+links[link]+'</p>');
-							}
+						console.log(data);
 
+						for (var item in data) {
+
+							jQuery('<div>', {
+								id: 'clickwhale-result-'+item,
+								class: 'clickwhale_migration_results',
+							}).appendTo('#clickwhale_migration_results');
+
+							jQuery('#clickwhale-result-'+item).append('<h3>'+data[item].title+'</h3>');
+							if('string' === typeof data[item].data){
+								jQuery('#clickwhale-result-'+item).append('<p>'+data[item].data+'</p>');
+							} else if('object' === typeof data[item].data) {
+								
+								for (var type in data[item].data) {
+									var categories = data[item].data[type].categories;
+									var links = data[item].data[type].links;
+
+									console.log(categories);
+									console.log(links);
+									
+									for (var category in categories) {
+										jQuery('#clickwhale-result-'+item).append('<p>'+categories[category]+'</p>');
+									}
+
+									for (var link in links) {
+										jQuery('#clickwhale-result-'+item).append('<p>'+links[link]+'</p>');
+									}
+								}
+
+							}
 						}
+						
+						
 
 						//jQuery.post(ajaxurl, {
 						//	'action': 'clickwhale/admin/deactive_<?php //echo $this->migrant ?>',

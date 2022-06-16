@@ -31,3 +31,21 @@ body > in1put{
     margin-right: 10px;
     margin-bottom: 10px;
 }
+
+.clickwhale_migration_results{
+    background: #ffffff;
+    padding: 20px;
+    margin: 0 0 20px 0;
+    border-radius: 4px;
+}
+
+.clickwhale_migration_results h3{
+    margin: 0 0 10px;
+}
+
+.clickwhale_migration_results p{
+    margin: 0 0 10px;
+}
+.clickwhale_migration_results p:last-of-type{
+    margin-bottom: 0;
+}

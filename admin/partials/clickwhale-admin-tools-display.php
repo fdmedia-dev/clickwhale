@@ -13,6 +13,9 @@
 
     <form method="post" action="options.php">
         <?php
+
+
+
         
         if( $active_tab == 'migration_options' ) {
             settings_fields( 'clickwhale_tools_migration_options' );
@@ -25,5 +28,5 @@
 
         ?>
     </form>
-    <div class="results"></div>
+    <div id="clickwhale_migration_results"></div>
 </div>

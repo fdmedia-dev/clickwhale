@@ -63,8 +63,9 @@ class ClickWhale_Migration_Notice {
 
             $options_migrate = get_option('clickwhale_hide_' . $this->migrant . '_notice_migrate');
             $options_deactive = get_option('clickwhale_hide_' . $this->migrant . '_notice_deactive');
-            
-            if( !$options_migrate ) {
+            $is_tools_page = isset($_GET['page']) && $_GET['page'] == 'clickwhale-tools' ? true : false; 
+
+            if( !$options_migrate && !$is_tools_page ) {
                 add_action('admin_notices', [$this, 'migration_notice']);
                 add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
             } elseif ($options_migrate && !$options_deactive) {
@@ -86,7 +87,7 @@ class ClickWhale_Migration_Notice {
         <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo $this->migrant ?>-migrate">
             <p>
                 <span> <?php printf( __('You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.', 'clickwhale'), $this->migrant_full ); ?></span>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=clickwhale-tools&migration=' . $this->migrant)); ?>" class="button button-primary"><?php _e('Start Migration', 'clickwhale'); ?></a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=clickwhale-tools')); ?>" class="button button-primary"><?php _e('Start Migration', 'clickwhale'); ?></a>
                 <a href="#" class="button button-dismiss"><?php _e('Not now', 'clickwhale'); ?></a>
             </p>
         </div>

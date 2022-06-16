@@ -20,6 +20,9 @@ class ClickWhale_Migration {
         if ($this->check_betterlinks_active()) {
             require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-betterlinks-to-clickwhale.php';
         }
+        if ($this->check_thirstyaffiliates_active()) {
+            require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-thirstyaffiliates-to-clickwhale.php';
+        }
 
     }
 
