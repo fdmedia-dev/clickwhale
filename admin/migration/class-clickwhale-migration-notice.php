@@ -59,19 +59,29 @@ class ClickWhale_Migration_Notice {
 	 */
     public function init(){
         
-        if (in_array( $this->migrant_file, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )) {
+        $options_hide_migrate   = get_option('clickwhale_hide_notice_migrate');
+        $options_hide_deactive  = get_option('clickwhale_hide_notice_deactive');
+        $options_last_migration = get_option('clickwhale_tools_last_migration_options');
 
-            $options_migrate = get_option('clickwhale_hide_' . $this->migrant . '_notice_migrate');
-            $options_deactive = get_option('clickwhale_hide_' . $this->migrant . '_notice_deactive');
-            $is_tools_page = isset($_GET['page']) && $_GET['page'] == 'clickwhale-tools' ? true : false; 
+        $is_tools_page            = isset($_GET['page']) && $_GET['page'] == 'clickwhale-tools' ? true : false; 
+        $is_show_migration_notice = isset($options_hide_migrate[$this->migrant]) ? false : true; 
+        $is_show_deactive_notice  = isset($options_hide_deactive[$this->migrant]) ? false : true; 
 
-            if( !$options_migrate && !$is_tools_page ) {
-                add_action('admin_notices', [$this, 'migration_notice']);
-                add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
-            } elseif ($options_migrate && !$options_deactive) {
-                add_action('admin_notices', [$this, 'deactive_notice']);
-                add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
-            }
+        if( $is_show_migration_notice 
+            && !$is_tools_page
+            && !isset($options_last_migration[$this->migrant . '_last_migration'])  ) {
+
+            add_action('admin_notices', [$this, 'migration_notice']);
+            add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
+
+        }
+
+        if( $is_show_deactive_notice 
+            && !$is_tools_page
+            && isset($options_last_migration[$this->migrant . '_last_migration'])  ) {
+
+            add_action('admin_notices', [$this, 'deactive_notice']);
+            add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
 
         }
 
@@ -122,15 +132,20 @@ class ClickWhale_Migration_Notice {
         <script type='text/javascript'>
 		jQuery( document ).ready(function() {
 			
-			jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.button-dismiss', function(e){
+			jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.deactive', function(e){
                 e.preventDefault();
                 jQuery(this).closest('.clickwhale-notice').remove();
 
 				jQuery.post(ajaxurl, {
-					'action': 'clickwhale/admin/migration_<?php echo $this->migrant ?>_notice_hide',
+					'action': 'clickwhale/admin/migration_deactive',
 					'security': '<?php echo $nonce; ?>',
-					'type': 'deactive'
-				}, function(response) {});
+                    'plugin' : '<?php echo $this->migrant ?>',
+                    'target' : '<?php echo $this->migrant_file ?>'
+				}, function(response) {
+                    if(response.success){
+				    	location.reload(true); 
+					}
+                });
 			})
 
             jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-migrate').on('click', '.button-dismiss', function(e){
@@ -138,9 +153,22 @@ class ClickWhale_Migration_Notice {
                 jQuery(this).closest('.clickwhale-notice').remove();
                 
 				jQuery.post(ajaxurl, {
-					'action': 'clickwhale/admin/migration_<?php echo $this->migrant ?>_notice_hide',
+					'action': 'clickwhale/admin/migration_notice_hide',
 					'security': '<?php echo $nonce; ?>',
-					'type': 'migrate',
+                    'plugin': '<?php echo $this->migrant ?>',
+                    'type': 'migrate'
+				}, function(response) {});
+			});
+
+            jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.button-dismiss', function(e){
+                e.preventDefault();
+                jQuery(this).closest('.clickwhale-notice').remove();
+                
+				jQuery.post(ajaxurl, {
+					'action': 'clickwhale/admin/migration_notice_hide',
+					'security': '<?php echo $nonce; ?>',
+                    'plugin': '<?php echo $this->migrant ?>',
+                    'type': 'deactive'
 				}, function(response) {});
 			})
 		});

@@ -1,4 +1,5 @@
 <?php
+$migration = new ClickWhale_Migration();
 ?>
 
 <div class="wrap">
@@ -14,18 +15,30 @@
     <form method="post" action="options.php">
         <?php
 
-
-
-        
         if( $active_tab == 'migration_options' ) {
-            settings_fields( 'clickwhale_tools_migration_options' );
-            do_settings_sections( 'clickwhale_tools_migration_options' );
-            do_settings_sections( 'clickwhale_tools_migration_thirstyaffiliates_section' );
-            do_settings_sections( 'clickwhale_tools_migration_prettylinks_section' );
-        }
-        
-        submit_button();
+            $show_settings = false;
 
+            foreach($migration->available_migrations() as $item){
+                if ($migration->check_active($item['path'])) {
+                    $show_settings = true;
+
+                    settings_fields( 'clickwhale_tools_migration_options' );
+                    do_settings_sections( 'clickwhale_tools_migration_options' );
+                    echo '<div id="clickwhale-tools-migration-submit">';
+                    submit_button();
+                    echo '<span class="spinner"></span>';
+                    echo '</div>';
+
+                    break;
+                }
+            }
+
+            if(!$show_settings){ 
+                ?>
+                <h3 class=""><?php _e('No data to migrate! ', 'clickwhale'); ?></h3>
+                <p><?php _e('You do not have active plugins from which we can transfer data.', 'clickwhale'); ?></p>
+            <?php }
+        }
         ?>
     </form>
     <div id="clickwhale_migration_results"></div>

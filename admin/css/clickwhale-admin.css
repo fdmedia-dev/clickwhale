@@ -49,3 +49,8 @@ body > in1put{
 .clickwhale_migration_results p:last-of-type{
     margin-bottom: 0;
 }
+
+#spinner_migrate{
+    float: none;
+    margin-top: 0;
+}

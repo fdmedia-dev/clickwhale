@@ -81,4 +81,12 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
         ];
 
     }
+
+    public function process_migration_time() {
+        $migration_options = get_option('clickwhale_tools_migration_options');
+        
+        if(isset($migration_options['betterlinks_categories']) || isset($migration_options['betterlinks_links'])){
+            $this->set_migration_time('betterlinks_last_migration', wp_date('Y-m-d H:i:s'));
+        }
+    }
 }

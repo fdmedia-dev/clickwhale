@@ -12,15 +12,31 @@ class ClickWhale_Migration_Interface {
             $resutls[] = $this->process_links_data();
         }
 
+        $this->process_migration_time();
+
         return $resutls;
     }
 
     public function process_links_data() {
-
+        return [
+            'links' => [],
+        ];
     }
 
     public function process_categories_data() {
+        return [
+            'categories' => [],
+        ];
+    }
 
+    public function process_migration_time() {
+        return false;
+    }
+
+    public function set_migration_time($option, $time) {
+        $options = get_option('clickwhale_tools_last_migration_options');
+        $options[$option] = $time;
+        update_option('clickwhale_tools_last_migration_options', $options);
     }
 
     public function if_link_exists($slug) {

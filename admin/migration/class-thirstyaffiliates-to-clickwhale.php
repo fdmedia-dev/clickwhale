@@ -87,7 +87,6 @@ class ThirstyAffiliates_To_Clickwhale extends ClickWhale_Migration_Interface {
                 $message[] = $this->link_item_import_error( $item->post_title );
             }
         }
-
         return [
             'links' => $message,
         ];
@@ -122,11 +121,20 @@ class ThirstyAffiliates_To_Clickwhale extends ClickWhale_Migration_Interface {
             } else {
                 $message[] = $this->category_item_import_error( $item->name );
             }
+
         }
 
         return [
             'categories' => $message,
         ];
 
+    }
+
+    public function process_migration_time() {
+        $migration_options = get_option('clickwhale_tools_migration_options');
+        
+        if(isset($migration_options['thirstyaffiliates_categories']) || isset($migration_options['thirstyaffiliates_links'])){
+            $this->set_migration_time('thirstyaffiliates_last_migration', wp_date('Y-m-d H:i:s'));
+        }
     }
 }

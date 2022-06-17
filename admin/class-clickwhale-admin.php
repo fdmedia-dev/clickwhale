@@ -41,15 +41,6 @@ class Clickwhale_Admin {
 	private $version;
 
 	/**
-	 * The options name to be used in this plugin
-	 *
-	 * @since  	1.0.0
-	 * @access 	private
-	 * @var  	string 		$option_name 	Option name of this plugin
-	 */
-	private $option_name = 'clickwhale';
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -62,7 +53,6 @@ class Clickwhale_Admin {
 		$this->version = $version;
 
 		$this->load_dependencies();
-		$this->dispath_actions();
 		$this->migration();
 
 	}
@@ -83,13 +73,8 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-ajax.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-tools.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-notice.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-migration.php';
 
-	}
-
-	public function dispath_actions(){
-		new ClickWhale_Notice();
 	}
 
 	public function migration(){
