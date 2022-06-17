@@ -4,6 +4,8 @@
     * records in nice table
     */
     class Clickwhale_Categories_List_Table extends WP_List_Table{
+        
+        private $users_data;
 
         function __construct()
         {
@@ -14,6 +16,25 @@
                     'plural' => 'categories',
                 )
             );
+        }
+
+        private function get_users_data($search = ""){
+            global $wpdb;
+            $table = $wpdb->prefix . 'clickwhale_categories';
+
+            if (!empty($search)) {
+                return $wpdb->get_results(
+                    "SELECT id,title,description from $table 
+                     WHERE title Like '%{$search}%'  
+                     OR description Like '%{$search}%'",
+                    ARRAY_A
+                );
+            }else{
+                return $wpdb->get_results(
+                    "SELECT id,title,description from $table",
+                    ARRAY_A
+                );
+            }
         }
     
         /**
@@ -165,11 +186,17 @@
             global $wpdb;
             $table_name = $wpdb->prefix . 'clickwhale_categories'; // do not forget about tables prefix
     
-            $per_page = 20; // constant, how much records will be shown per page
-    
-            $columns = $this->get_columns();
-            $hidden = array();
-            $sortable = $this->get_sortable_columns();
+            if (isset($_GET['page']) && isset($_GET['s'])) {
+                $this->users_data = $this->get_users_data($_GET['s']);
+            } else {
+                $this->users_data = $this->get_users_data();
+            }
+
+            $per_page     = 20; // constant, how much records will be shown per page
+            $current_page = $this->get_pagenum();
+            $columns      = $this->get_columns();
+            $hidden       = array();
+            $sortable     = $this->get_sortable_columns();
     
             // here we configure table headers, defined in our methods
             $this->_column_headers = array($columns, $hidden, $sortable);
@@ -178,16 +205,26 @@
             $this->process_bulk_action();
     
             // will be used in pagination settings
-            $total_items = $wpdb->get_var("SELECT COUNT(id) FROM $table_name");
+            if (isset($_GET['page']) && isset($_GET['s'])) {
+                $total_items = count($this->users_data);
+                $this->users_data = array_slice($this->users_data, (($current_page - 1) * $per_page), $per_page);
+                usort($this->users_data, array(&$this, 'usort_reorder'));
+            } else {
+                $total_items = $wpdb->get_var("SELECT COUNT(id) FROM $table_name");
+            }
     
             // prepare query params, as usual current page, order by and order direction
-            $paged = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
+            $paged   = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'id';
-            $order = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
+            $order   = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'asc';
     
             // [REQUIRED] define $items array
             // notice that last argument is ARRAY_A, so we will retrieve array
-            $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+            if (isset($_GET['page']) && isset($_GET['s'])) {
+                $this->items = $this->users_data;
+            } else {
+                $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);$this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
+            }
     
             // [REQUIRED] configure pagination
             $this->set_pagination_args(array(
