@@ -89,7 +89,7 @@ class Clickwhale_Ajax{
         if(isset($_POST['name']) && isset($_POST['value'])){
             $options          = get_option('clickwhale_tools_migration_options');  
             $option           = $_POST['name'];
-            $value            = $_POST['value'];
+            $value            = boolval($_POST['value']);
             $options[$option] = $value;
 
             update_option('clickwhale_tools_migration_options', $options);
@@ -114,7 +114,7 @@ class Clickwhale_Ajax{
             if ($migration->check_active($item['path'])) {
                 $result           = [];
                 $result['title']  = $item['name'];
-        
+    
                 if( isset($options[$item['slug'].'_categories']) 
                     && $options[$item['slug'].'_categories'] !== false
                     || isset($options[$item['slug'].'_links'])
