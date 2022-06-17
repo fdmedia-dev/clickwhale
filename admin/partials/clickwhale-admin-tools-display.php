@@ -21,15 +21,22 @@ $migration = new ClickWhale_Migration();
             foreach($migration->available_migrations() as $item){
                 if ($migration->check_active($item['path'])) {
                     $show_settings = true;
+                    ?>
 
-                    settings_fields( 'clickwhale_tools_migration_options' );
-                    do_settings_sections( 'clickwhale_tools_migration_options' );
-                    echo '<div id="clickwhale-tools-migration-submit">';
-                    submit_button();
-                    echo '<span class="spinner"></span>';
-                    echo '</div>';
-
-                    break;
+                    <div class="clickwhale-migration-section clickwhale-migration-section-<?php echo $item['slug'] ?>">
+                        <?php
+                        settings_fields( 'clickwhale_tools_' . $item['slug'] . '_migration_options' );
+                        do_settings_sections( 'clickwhale_tools_' . $item['slug'] . '_migration_options' );
+                        ?>
+                        <div id="clickwhale-tools-migration-submit">
+                            <button type="button" 
+                                    class="button button_start_migrate"
+                                    data-migration="<?php echo $item['slug'] ?>"><?php _e('Start migration', 'clickwhale') ?></button>
+                            <span class="spinner"></span>
+                        </div>
+                        <div class="results"></div>
+                    </div>
+                    <?php
                 }
             }
 

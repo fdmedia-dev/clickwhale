@@ -172,6 +172,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax , 'migration_notice_hide');
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive');
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale');
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $plugin_ajax, 'save_migration_option');
 	}
 
 	/**

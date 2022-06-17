@@ -11,7 +11,7 @@ class Clickwhale_Tools_Migration {
         
 		// Actions
         add_action('admin_init', [$this, 'add_tools_migration_options']);
-        add_action('admin_init', [$this, 'register_tools_migration_setting']);
+        //add_action('admin_init', [$this, 'register_tools_migration_setting']);
 		add_action('admin_init', [$this, 'add_tools_migration_settings']);
 		add_action('admin_init', [$this, 'add_notice_migrate_options']);
 		add_action('admin_init', [$this, 'add_notice_deactive_options']);
@@ -105,14 +105,14 @@ class Clickwhale_Tools_Migration {
 					'clickwhale_tools_migration_' . $item['slug'] . '_section',			// ID used to identify this section and with which to register options
 					__( $item['name'], 'clickwhale' ),		            				// Title to be displayed on the administration page
 					function() use($item){$this->tools_migration_callback($item);},		// Callback used to render the description of the section
-					'clickwhale_tools_migration_options'								// Page on which to add this section of options
+					'clickwhale_tools_' . $item['slug'] . '_migration_options'								// Page on which to add this section of options
 				);
 
 				add_settings_field(
 					$item['slug'] . '_categories',
 					__( 'Categories', 'clickwhale' ),
 					function() use($item){$this->tools_migration_categories_callback($item);},
-					'clickwhale_tools_migration_options',
+					'clickwhale_tools_' . $item['slug'] . '_migration_options',
 					'clickwhale_tools_migration_' . $item['slug'] . '_section',
 					array()
 				);
@@ -121,9 +121,14 @@ class Clickwhale_Tools_Migration {
 					$item['slug'] . '_links',
 					__( 'Links', 'clickwhale' ),
 					function() use($item){$this->tools_migration_links_callback($item);},
-					'clickwhale_tools_migration_options',
+					'clickwhale_tools_' . $item['slug'] . '_migration_options',
 					'clickwhale_tools_migration_' . $item['slug'] . '_section',
 					array()
+				);
+
+				register_setting(
+					'clickwhale_tools_' . $item['slug'] . '_migration_options',
+					'clickwhale_tools_' . $item['slug'] . '_migration_options'
 				);
 			}
 		}
@@ -190,74 +195,82 @@ class Clickwhale_Tools_Migration {
 
 
 	public function admin_scripts() {
-		$nonce = wp_create_nonce('clickwhale_migration_admin_nonce');
+		$nonce = wp_create_nonce('migration_to_clickwhale');
 		?>
 		<script type='text/javascript'>	
 		
 		jQuery( document ).ready(function() {
-			var migrationButton = jQuery('<button>', {
-				id: 'button_migrate',
-				class: 'button button_start_migrate',
-				type: 'button',
-				text: 'Start Migration'
-			}).appendTo('#clickwhale-tools-migration-submit .submit');
 
-			var migrationSpinner = jQuery('<span>', {
-				id: 'spinner_migrate',
-				class: 'spinner',
-			}).appendTo('#clickwhale-tools-migration-submit .submit');
-			
-			jQuery(migrationButton).click(function(e){
-                e.preventDefault();
+			jQuery('.clickwhale-migration-section [type="checkbox"]').change(function(){
+				var migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
+					migrationButton   = jQuery(migrationContainer).find('.button_start_migrate'),
+					checkbox = jQuery(this),
+					name = jQuery(checkbox).attr('name'),
+					matches = name.match(/\[(.*?)\]/),
+					value = jQuery(checkbox).prop('checked') ? 1 : 0;
+
+				jQuery(migrationButton).prop('disabled', true);
 				
+				jQuery.post(ajaxurl, {
+					'security': '<?php echo $nonce ?>',
+					'action': 'clickwhale/admin/save_migration_option',
+					'name': matches[1],
+					'value': value
+				}, function(response) {
+					jQuery(migrationButton).prop('disabled', false);
+				})
+			})
+
+			jQuery('.button_start_migrate').click(function(e){
+				e.preventDefault();
+
+				var migrationContainer = jQuery(this).closest('.clickwhale-migration-section')
+					migrationButton    = jQuery(this),
+					migrationSpinner   = jQuery(migrationContainer).find('.spinner'),
+					migrationResult    = jQuery(migrationContainer).find('.results');
+
 				jQuery(migrationButton).prop('disabled', true);
 				jQuery(migrationSpinner).addClass("is-active");
+				jQuery(migrationResult).removeClass("is-active").html('');
 
 				jQuery.post(ajaxurl, {
+					'security': '<?php echo $nonce ?>',
 					'action': 'clickwhale/admin/migration_to_clickwhale',
+					'migrant': migrationButton.data('migration')
 				}, function(response) {
 					if(response.success){
-						var data = response.data;
+						var result = response.data;
+						
+						//console.log(result);
 
-						//console.log(data);
-
-						for (var item in data) {
-
-							var migrationResult = jQuery('<div>', {
-								id: 'clickwhale-result-'+item,
-								class: 'clickwhale_migration_results',
-							}).appendTo('#clickwhale_migration_results');
-
-							jQuery(migrationResult).append('<h3>'+data[item].title+'</h3>');
+						//jQuery(migrationResult).append('<h3>'+result.title+'</h3>');
+						
+						if('string' === typeof result.data){
+							jQuery(migrationResult).append('<p>'+result.data+'</p>');
+						} else if('object' === typeof result.data) {
 							
-							if('string' === typeof data[item].data){
-								jQuery(migrationResult).append('<p>'+data[item].data+'</p>');
-							} else if('object' === typeof data[item].data) {
-								
-								for (var type in data[item].data) {
-									var categories = data[item].data[type].categories;
-									var links = data[item].data[type].links;
+							for (var type in result.data) {
+								var categories = result.data[type].categories;
+								var links = result.data[type].links;
 
-									if(categories !== null){
-										for (var category in categories) {
-											jQuery(migrationResult).append('<p>'+categories[category]+'</p>');
-										}
-									}
-
-									if(links !== null){
-										for (var link in links) {
-											jQuery(migrationResult).append('<p>'+links[link]+'</p>');
-										}
+								if(categories !== null){
+									for (var category in categories) {
+										jQuery(migrationResult).append('<p>'+categories[category]+'</p>');
 									}
 								}
 
+								if(links !== null){
+									for (var link in links) {
+										jQuery(migrationResult).append('<p>'+links[link]+'</p>');
+									}
+								}
 							}
+
 						}
 
+						jQuery(migrationResult).addClass("is-active");
 						jQuery(migrationButton).prop('disabled', false);
 						jQuery(migrationSpinner).removeClass("is-active");
-						
-						
 
 					}
 				});

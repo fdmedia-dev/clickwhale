@@ -83,31 +83,53 @@ class Clickwhale_Ajax{
         wp_die();
     }
 
+    public function save_migration_option() {
+        check_ajax_referer('migration_to_clickwhale', 'security');
+
+        if(isset($_POST['name']) && isset($_POST['value'])){
+            $options          = get_option('clickwhale_tools_migration_options');  
+            $option           = $_POST['name'];
+            $value            = $_POST['value'];
+            $options[$option] = $value;
+
+            update_option('clickwhale_tools_migration_options', $options);
+            wp_send_json_success();
+        } else {
+            return false;
+        }
+    }
+
 
     public function migration_to_clickwhale() {
-        $result  = [];
-        $i       = 0;
-        $plugins = new ClickWhale_Migration();
-        $options = get_option('clickwhale_tools_migration_options');
+        check_ajax_referer('migration_to_clickwhale', 'security');
 
-        foreach ($plugins->available_migrations() as $item) {
-            if ($plugins->check_active($item['path'])) {
-                $result[$i]           = [];
-                $result[$i]['title']  = $item['name'];
+        $migration  = new ClickWhale_Migration();
+        $available  = $migration->available_migrations();
+        $options    = get_option('clickwhale_tools_migration_options');
+        $migrant    = isset($_POST['migrant']) ? sanitize_text_field($_POST['migrant']) : '';
+        $item       = $available[$migrant];
+        $result     = [];
+
+        if($item) {
+            if ($migration->check_active($item['path'])) {
+                $result           = [];
+                $result['title']  = $item['name'];
         
-                if(isset($options[$item['slug'].'_categories']) 
-                  || isset($options[$item['slug'].'_links'])
+                if( isset($options[$item['slug'].'_categories']) 
+                    && $options[$item['slug'].'_categories'] !== false
+                    || isset($options[$item['slug'].'_links'])
+                    && $options[$item['slug'].'_links'] !== false
                 ) {
-                    $migrator            = new $item['class']();
-                    $result[$i]['data']  = $migrator->run_migration(
-                        isset($options[$item['slug'].'_categories']), 
-                        isset($options[$item['slug'] . '_links'])
+                    $migrator        = new $item['class']();
+                    $result['data']  = $migrator->run_migration(
+                        $options[$item['slug'].'_categories'], 
+                        $options[$item['slug'] . '_links']
                     );
                 } else {
-                    $result[$i]['data']  = __('Nothing to migrate', 'clickwhale');
+                    $result['data']  = __('Nothing to migrate', 'clickwhale');
                 }
-                $i++;
             }
+
         }
 
         wp_send_json_success($result);
