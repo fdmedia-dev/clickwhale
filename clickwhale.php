@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              #
+ * @link              https://fdmedia.io
  * @since             1.0.0
  * @package           Clickwhale
  *
  * @wordpress-plugin
  * Plugin Name:       ClickWhale
- * Plugin URI:        #
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://fdmedia.io
+ * Description:       The best and full-featured affiliate link manager you ever need.
  * Version:           1.0.0
- * Author:            Rivo
- * Author URI:        #
+ * Author:            fdmedia
+ * Author URI:        https://fdmedia.io
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       clickwhale

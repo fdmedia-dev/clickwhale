@@ -44,91 +44,70 @@ class Clickwhale_Ajax{
 
 	}
 
-    public function migration_betterlinks_notice_hide() {
+    public function migration_notice_hide() {
+        $type   = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : '';
+        $plugin = isset($_POST['plugin']) ? sanitize_text_field($_POST['plugin']) : '';
 
-        check_ajax_referer('clickwhale_betterlinks_admin_nonce', 'security');
+        check_ajax_referer('clickwhale_' . $plugin . '_admin_nonce', 'security');
+
         if (!current_user_can('manage_options')) {
             wp_die();
         }
 
-        $type = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : '';
-
-        if ($type == 'deactive') {
-            $options_deactive = get_option('clickwhale_hide_betterlinks_notice_deactive');
-            $options_deactive['betterlinks'] = true;
-            update_option('clickwhale_hide_betterlinks_notice_deactive', $options_deactive);
-        } elseif ($type == 'migrate') {
-            $options_migrate = get_option('clickwhale_hide_betterlinks_notice_migrate');
-            $options_migrate['betterlinks'] = true;
-            update_option('clickwhale_hide_betterlinks_notice_migrate', $options_migrate);
+        if($type === 'migrate') {
+            $options_migrate = get_option('clickwhale_hide_notice_migrate');
+            $options_migrate[$plugin] = true;
+            update_option('clickwhale_hide_notice_migrate', $options_migrate);
+        } else if($type === 'deactive') {
+            $options_deactive = get_option('clickwhale_hide_notice_deactive');
+            $options_deactive[$plugin] = true;
+            update_option('clickwhale_hide_notice_deactive', $options_deactive);
         }
-
         wp_die();
-
     }
 
-    public function deactive_betterlinks() {
+    public function migration_deactive() {
+        $plugin = isset($_POST['plugin']) ? sanitize_text_field($_POST['plugin']) : '';
+        $target = isset($_POST['target']) ? sanitize_text_field($_POST['target']) : '';
 
-        check_ajax_referer('clickwhale_betterlinks_admin_nonce', 'security');
+        check_ajax_referer('clickwhale_' . $plugin . '_admin_nonce', 'security');
 
         if (!current_user_can('manage_options')) {
             wp_die();
         }
-        $target     = isset($_POST['plugin']) ? sanitize_text_field($_POST['plugin']) : '';
+        
         $deactivate = deactivate_plugins($target);
 
         wp_send_json_success($deactivate);
-        wp_die();
-
-    }
-
-    public function migration_thirstyaffiliates_notice_hide() {
-
-        check_ajax_referer('clickwhale_thirstyaffiliates_admin_nonce', 'security');
-
-        if (!current_user_can('manage_options')) {
-            wp_die();
-        }
-
-        $type = isset($_POST['type']) ? sanitize_text_field($_POST['type']) : '';
-
-        if ($type == 'deactive') {
-            $options_deactive = get_option('clickwhale_hide_thirstyaffiliates_notice_deactive');
-            $options_deactive['thirstyaffiliates'] = true;
-            update_option('clickwhale_hide_thirstyaffiliates_notice_deactive', $options_deactive);
-        } elseif ($type == 'migrate') {
-            $options_migrate = get_option('clickwhale_hide_thirstyaffiliates_notice_migrate');
-            $options_migrate['thirstyaffiliates'] = true;
-            update_option('clickwhale_hide_thirstyaffiliates_notice_migrate', $options_migrate);
-        }
 
         wp_die();
-
     }
 
-    public function deactive_thirstyaffiliates() {
-
-        check_ajax_referer('clickwhale_thirstyaffiliates_admin_nonce', 'security');
-
-        if (!current_user_can('manage_options')) {
-            wp_die();
-        }
-
-        $target     = isset($_POST['plugin']) ? sanitize_text_field($_POST['plugin']) : '';
-        $deactivate = deactivate_plugins($target);
-
-        wp_send_json_success($deactivate);
-        wp_die();
-
-    }
 
     public function migration_to_clickwhale() {
-
+        $result  = [];
+        $i       = 0;
         $plugins = new ClickWhale_Migration();
+        $options = get_option('clickwhale_tools_migration_options');
 
-        if ($plugins->check_betterlinks_active()) {
-            $migrator = new BetterLinks_To_Clickwhale();
-            $result = $migrator->run_migration();
+        foreach ($plugins->available_migrations() as $item) {
+            if ($plugins->check_active($item['path'])) {
+                $result[$i]           = [];
+                $result[$i]['title']  = $item['name'];
+        
+                if(isset($options[$item['slug'].'_categories']) 
+                  || isset($options[$item['slug'].'_links'])
+                ) {
+                    $migrator            = new $item['class']();
+                    $result[$i]['data']  = $migrator->run_migration(
+                        isset($options[$item['slug'].'_categories']), 
+                        isset($options[$item['slug'] . '_links'])
+                    );
+                } else {
+                    $result[$i]['data']  = __('Nothing to migrate', 'clickwhale');
+                }
+                $i++;
+            }
         }
 
         wp_send_json_success($result);

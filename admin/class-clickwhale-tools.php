@@ -44,44 +44,18 @@ class Clickwhale_Admin_Tools {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
-	}
-
-	public function available_migrations() {
-
-		$defaults = array(
-			'betterlinks',
-			'thirstyaffiliates',
-		);
-
-		return $defaults;
-
-	}
-
-	public function initialize_migrate_options() {
 		
-		$migrations = $this->available_migrations();
-
-		foreach($migrations as $k=>$v){
-			if( false == get_option( 'clickwhale_hide_' . $v . '_notice_migrate' ) ) {
-				add_option( 'clickwhale_hide_' . $v . '_notice_migrate', '' );
-			}
-		}
-		
+		$this->load_dependencies();
+		$this->tools_migration();
 
 	}
 
-	public function initialize_deactive_options() {
-
-		$migrations = $this->available_migrations();
-
-		foreach($migrations as $k=>$v){
-			if( false == get_option( 'clickwhale_hide_' . $v . '_notice_deactive' ) ) {
-				add_option( 'clickwhale_hide_' . $v . '_notice_deactive', '' );
-			}
-		}
-
+	private function load_dependencies() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-clickwhale-tools-migration.php';
 	}
 
+	public function tools_migration() {
+        new Clickwhale_Tools_Migration();
+    }
 
 }

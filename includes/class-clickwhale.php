@@ -163,26 +163,15 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_settings_options' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_tracking_options' );
 
-		$this->loader->add_action( 'admin_init', $plugin_tools, 'initialize_migrate_options' );
-		$this->loader->add_action( 'admin_init', $plugin_tools, 'initialize_deactive_options' );
-
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
 		
-		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
-
 		// AJAX
-		// BetterLinks
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_betterlinks_notice_hide', $plugin_ajax , 'migration_betterlinks_notice_hide');
-        $this->loader->add_action( 'wp_ajax_clickwhale/admin/deactive_betterlinks', $plugin_ajax, 'deactive_betterlinks');
-        
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax , 'migration_notice_hide');
+        $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive');
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale');
-	
-		// ThirstyAffiliates
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_thirstyaffiliates_notice_hide', $plugin_ajax , 'migration_thirstyaffiliates_notice_hide');
-        $this->loader->add_action( 'wp_ajax_clickwhale/admin/deactive_thirstyaffiliates', $plugin_ajax, 'deactive_thirstyaffiliates');
 	}
 
 	/**
