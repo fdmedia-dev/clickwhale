@@ -296,6 +296,8 @@ class Clickwhale_Tools_Migration {
 						jQuery(resetButton).prop('disabled', false);
 						jQuery(resetSpinner).removeClass("is-active");
 						jQuery(resetResult).html(response.data);
+
+						location.reload(true); 
 					}
 				});
 

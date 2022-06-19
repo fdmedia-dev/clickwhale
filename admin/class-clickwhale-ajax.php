@@ -153,7 +153,7 @@ class Clickwhale_Ajax{
         Update_option( 'clickwhale_hide_notice_migrate', [] );
         Update_option( 'clickwhale_hide_notice_deactive', [] );
 
-        $result = __('Successfully deleted', 'clickwhale');
+        $result = __('Successfully deleted! Page will reload...', 'clickwhale');
 
         wp_send_json_success($result);
 
