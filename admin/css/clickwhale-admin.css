@@ -63,3 +63,13 @@ body > in1put{
 .clickwhale-migration-section .results p:last-of-type{
     margin-bottom: 0;
 }
+
+#clickwhale-tools-migration-reset .spinner{
+    float: none;
+}
+#clickwhale-tools-migration-reset .results{
+    display: inline-block;
+    vertical-align: middle;
+    font-style: italic;
+    margin: 4px 10px 0;
+}

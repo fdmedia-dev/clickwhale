@@ -41,6 +41,7 @@ class Clickwhale_Ajax{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+        $this->migration = new ClickWhale_Migration();
 
 	}
 
@@ -103,15 +104,14 @@ class Clickwhale_Ajax{
     public function migration_to_clickwhale() {
         check_ajax_referer('migration_to_clickwhale', 'security');
 
-        $migration  = new ClickWhale_Migration();
-        $available  = $migration->available_migrations();
+        $available  = $this->migration->available_migrations();
         $options    = get_option('clickwhale_tools_migration_options');
         $migrant    = isset($_POST['migrant']) ? sanitize_text_field($_POST['migrant']) : '';
         $item       = $available[$migrant];
         $result     = [];
 
         if($item) {
-            if ($migration->check_active($item['path'])) {
+            if ($this->migration->check_active($item['path'])) {
                 $result           = [];
                 $result['title']  = $item['name'];
     
@@ -131,6 +131,29 @@ class Clickwhale_Ajax{
             }
 
         }
+
+        wp_send_json_success($result);
+
+        wp_die();
+    }
+
+    public function migration_reset() {
+        check_ajax_referer('migration_reset', 'security');
+
+        foreach($this->migration->available_migrations() as $item){
+
+            $migration_options[$item['slug'] . '_categories'] 	 = $item['data']['categories'] ? true : false;
+			$migration_options[$item['slug'] . '_links'] 	 	 = $item['data']['links'] ? true : false;
+
+            $last_migration_options[$item['slug'] . '_last_migration'] = '';
+        }
+
+        Update_option( 'clickwhale_tools_migration_options', $migration_options );
+        Update_option( 'clickwhale_tools_last_migration_options', $last_migration_options );
+        Update_option( 'clickwhale_hide_notice_migrate', [] );
+        Update_option( 'clickwhale_hide_notice_deactive', [] );
+
+        $result = __('Successfully deleted', 'clickwhale');
 
         wp_send_json_success($result);
 

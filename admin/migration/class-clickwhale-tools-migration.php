@@ -153,7 +153,7 @@ class Clickwhale_Tools_Migration {
 		$options = get_option( $this->last_migration );
 		$result  = '';
 
-		if(isset($options[$data])){
+		if(isset($options[$data]) && $options[$data] !== ''){
 			$result .= sprintf(__('Last migration at %1$s', 'clickwhale'), $options[$data]);
 			$result .= '<br>';
 		}
@@ -195,7 +195,8 @@ class Clickwhale_Tools_Migration {
 
 
 	public function admin_scripts() {
-		$nonce = wp_create_nonce('migration_to_clickwhale');
+		$nonce 			= wp_create_nonce('migration_to_clickwhale');
+		$nonce_reset 	= wp_create_nonce('migration_reset');
 		?>
 		<script type='text/javascript'>	
 		
@@ -274,6 +275,31 @@ class Clickwhale_Tools_Migration {
 
 					}
 				});
+			})
+
+			jQuery('.button_reset_migrate').click(function(e){
+				e.preventDefault();
+
+				var resetContainer = jQuery('#clickwhale-tools-migration-reset'),
+					resetButton    = jQuery(this),
+					resetSpinner   = jQuery(resetContainer).find('.spinner'),
+					resetResult    = jQuery(resetContainer).find('.results');
+
+				jQuery(resetButton).prop('disabled', true);
+				jQuery(resetSpinner).addClass("is-active");
+
+				jQuery.post(ajaxurl, {
+					'security': '<?php echo $nonce_reset ?>',
+					'action': 'clickwhale/admin/migration_reset'
+				}, function(response) {
+					if(response.success){
+						jQuery(resetButton).prop('disabled', false);
+						jQuery(resetSpinner).removeClass("is-active");
+						jQuery(resetResult).html(response.data);
+					}
+				});
+
+				
 			})
 		});
 		</script>

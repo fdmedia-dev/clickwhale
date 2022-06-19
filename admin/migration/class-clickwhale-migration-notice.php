@@ -69,7 +69,7 @@ class ClickWhale_Migration_Notice {
 
         if( $is_show_migration_notice 
             && !$is_tools_page
-            && !isset($options_last_migration[$this->migrant . '_last_migration'])  ) {
+            && $options_last_migration[$this->migrant . '_last_migration'] === '' ) {
 
             add_action('admin_notices', [$this, 'migration_notice']);
             add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
@@ -78,7 +78,7 @@ class ClickWhale_Migration_Notice {
 
         if( $is_show_deactive_notice 
             && !$is_tools_page
-            && isset($options_last_migration[$this->migrant . '_last_migration'])  ) {
+            && $options_last_migration[$this->migrant . '_last_migration'] !== '' ) {
 
             add_action('admin_notices', [$this, 'deactive_notice']);
             add_action('admin_print_footer_scripts', [$this, 'admin_scripts']);
