@@ -40,8 +40,14 @@ $migration = new ClickWhale_Migration();
                 }
             }
 
-            if(!$show_settings){ 
-                ?>
+            if($show_settings){
+            ?>
+            <div id="clickwhale-tools-migration-reset">
+                <button class="button button-primary button_reset_migrate" type="button"><?php _e('Set default options and clear cache', 'clickwhale') ?></button>
+                <span class="results"></span>
+                <span class="spinner"></span>
+            </div>
+            <?php } else { ?>
                 <h3 class=""><?php _e('No data to migrate! ', 'clickwhale'); ?></h3>
                 <p><?php _e('You do not have active plugins from which we can transfer data.', 'clickwhale'); ?></p>
             <?php }
