@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Clickwhale\\Clickwhale\\": "src/"
+            "Clickwhale\\": "src/"
         }
     },
     "authors": [
@@ -17,5 +17,51 @@
     "minimum-stability": "dev",
     "require": {
         "whichbrowser/parser": "dev-master"
+    },
+    "require-dev": {
+        "brianhenryie/strauss": "dev-master"
+    },
+    "scripts": {
+        "strauss": [
+            "vendor/bin/strauss"
+        ],
+        "post-install-cmd": [
+            "@strauss"
+        ],
+        "post-update-cmd": [
+            "@strauss"
+        ]
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "inc",
+            "namespace_prefix": "Clickwhale\\Vendor\\",
+            "classmap_prefix": "Clickwhale_Vendor_",
+            "constant_prefix": "CLICKWHALE_VENDOR_",
+            "packages": [
+            ],
+            "override_autoload": {
+            },
+            "exclude_from_copy": {
+                "packages": [
+                ],
+                "namespaces": [
+                ],
+                "file_patterns": [
+                ]
+            },
+            "exclude_from_prefix": {
+                "packages": [
+                ],
+                "namespaces": [
+                ],
+                "file_patterns": [
+                    "/^psr.*$/"
+                ]
+            },
+            "namespace_replacement_patterns" : {
+            },
+            "delete_vendor_files": false
+        }
     }
 }

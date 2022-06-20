@@ -27,7 +27,7 @@ class ClickWhale_Click_Track{
     }
 
     private function get_user_device_info(){
-        $result = new WhichBrowser\Parser(getallheaders(), [ 'detectBots' => true ]);
+        $result = new Clickwhale\Vendor\WhichBrowser\Parser(getallheaders(), [ 'detectBots' => true ]);
 
         $resultArr              = [];
         //$resultArr['browser']   = $result->browser->toString(); // Chrome 27.0
@@ -38,7 +38,7 @@ class ClickWhale_Click_Track{
     }
 
     private function get_user_agent_string(){
-        $browser    = new WhichBrowser\Model\Browser(getallheaders(), [ 'detectBots' => true ]);
+        $browser    = new Clickwhale\Vendor\WhichBrowser\Model\Browser(getallheaders(), [ 'detectBots' => true ]);
         $result     = get_object_vars($browser);
 
         return $result['User-Agent'];
