@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Clickwhale
  * @subpackage Clickwhale/includes
- * @author     Rivo <https://rivo.agency>
+ * @author     fdmedia <https://fdmedia.io>
  */
 class Clickwhale {
 
