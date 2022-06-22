@@ -14,7 +14,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       ClickWhale
- * Plugin URI:        https://fdmedia.io
+ * Plugin URI:        https://clickwhale.pro
  * Description:       The best and full-featured affiliate link manager you ever need.
  * Version:           1.0.0
  * Author:            fdmedia
