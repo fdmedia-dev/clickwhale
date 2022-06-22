@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '555698ed7cc08e3a438d5214eb4a6d60e26a6097',
+        'reference' => 'df25a0cc5518a4ab0e976f5a649531e040044f82',
         'name' => 'clickwhale/clickwhale',
         'dev' => true,
     ),
@@ -27,7 +27,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '555698ed7cc08e3a438d5214eb4a6d60e26a6097',
+            'reference' => 'df25a0cc5518a4ab0e976f5a649531e040044f82',
             'dev_requirement' => false,
         ),
         'composer/ca-bundle' => array(

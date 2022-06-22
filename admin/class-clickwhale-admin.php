@@ -18,7 +18,7 @@
  *
  * @package    Clickwhale
  * @subpackage Clickwhale/admin
- * @author     Rivo <https://rivo.agency>
+ * @author     fdmedia <https://fdmedia.io>
  */
 class Clickwhale_Admin {
 
@@ -27,7 +27,7 @@ class Clickwhale_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -36,21 +36,22 @@ class Clickwhale_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 		$this->load_dependencies();
 		$this->migration();
@@ -62,7 +63,10 @@ class Clickwhale_Admin {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
+	 * - Clickwhale_Ajax. Plugin Ajax actions
 	 * - Clickwhale_Admin_Settings. Registers the admin settings and page.
+	 * - Clickwhale_Admin_Tools. Registers the admin tools page.
+	 * - Clickwhale_Admin_Migration. Migrate links and categories to our plugin
 	 *
 	 *
 	 * @since    1.0.0
@@ -70,14 +74,22 @@ class Clickwhale_Admin {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-ajax.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-settings.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-tools.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/class-clickwhale-migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-ajax.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-migration.php';
+
+		if ( ! class_exists( 'WP_List_Table' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+		}
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
 
 	}
 
-	public function migration(){
+	public function migration() {
 		$migration = new ClickWhale_Migration();
 		$migration->init();
 	}
@@ -125,14 +137,35 @@ class Clickwhale_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script($this->plugin_name, 'clickwhale_admin', array(
+		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
 			'siteurl' => home_url(),
-		));
+		) );
 	}
 
-	public function clickwhale_categories_limit_callback($limit){
+	public function clickwhale_categories_limit_callback( $limit ) {
 		return $limit;
 	}
 
+	public function admin_scripts() {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale' ) {
+			?>
+            <script type='text/javascript'>
+                jQuery(document).ready(function () {
+                    jQuery('.slug-input--btn').click(function (e) {
+                        e.preventDefault();
+                        var $temp = jQuery('<input>'),
+                            textToCopy = jQuery(this).parent().find('input').val();
+
+                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+                        jQuery('body').append($temp);
+                        $temp.val(textToCopy).select();
+                        document.execCommand("copy");
+                        $temp.remove();
+                    });
+                });
+            </script>
+			<?php
+		}
+	}
 
 }

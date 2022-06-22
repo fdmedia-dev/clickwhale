@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Clickwhale
  * @subpackage Clickwhale/includes
- * @author     Rivo <https://rivo.agency>
+ * @author     fdmedia <https://fdmedia.io>
  */
 class Clickwhale {
 
@@ -35,7 +35,7 @@ class Clickwhale {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Clickwhale_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Clickwhale_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Clickwhale {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Clickwhale {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -154,10 +154,11 @@ class Clickwhale {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin 		= new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$plugin_settings 	= new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
-		$plugin_tools 		= new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
-		$plugin_ajax 		= new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin     = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_settings  = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+		$plugin_tools     = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
+		$plugin_ajax      = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$plugin_link_edit = new Clickwhale_Link_Edit( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_settings_options' );
@@ -166,14 +167,20 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'link_edit_fields', $plugin_link_edit, 'clickwhale_link_edit_fields' );
+
 		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
-		
+
 		// AJAX
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax , 'migration_notice_hide');
-        $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive');
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale');
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $plugin_ajax, 'save_migration_option');
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $plugin_ajax, 'migration_reset');
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax, 'migration_notice_hide' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $plugin_ajax, 'save_migration_option' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $plugin_ajax, 'migration_reset' );
+
+		if ( ! class_exists( 'Clickwhale_Pro' ) ) {
+			$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'admin_scripts' );
+		}
 	}
 
 	/**
@@ -189,7 +196,7 @@ class Clickwhale {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		
+
 		$this->loader->add_action( 'init', $plugin_public, 'do_redirect_handler' );
 
 	}
@@ -207,8 +214,8 @@ class Clickwhale {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -217,8 +224,8 @@ class Clickwhale {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Clickwhale_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -227,8 +234,8 @@ class Clickwhale {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

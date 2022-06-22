@@ -90,7 +90,8 @@
             "autoload": {
                 "psr-4": {
                     "WhichBrowser\\": [
-                        "src/"
+                        "src/",
+                        "tests/src/"
                     ]
                 }
             },

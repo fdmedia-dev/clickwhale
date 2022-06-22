@@ -18,7 +18,7 @@
  *
  * @package    Clickwhale
  * @subpackage Clickwhale/public
- * @author     Rivo <https://rivo.agency>
+ * @author     fdmedia <https://fdmedia.io>
  */
 class Clickwhale_Public {
 
