@@ -22,10 +22,10 @@
  */
 class Clickwhale_Activator {
 
-	private function add_clickwhale_links_database(){
+	private function add_clickwhale_links_database() {
 		global $wpdb;
-        $table_name = $wpdb->prefix . 'clickwhale_links';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'clickwhale_links';
+		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -43,16 +43,16 @@ class Clickwhale_Activator {
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		if(!maybe_create_table( $table_name,  $sql )){
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
 			dbDelta( $sql );
 		}
 	}
 
-	private function add_clickwhale_categories_database(){
+	private function add_clickwhale_categories_database() {
 		global $wpdb;
-        $table_name = $wpdb->prefix . 'clickwhale_categories';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'clickwhale_categories';
+		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -63,16 +63,16 @@ class Clickwhale_Activator {
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		if(!maybe_create_table( $table_name,  $sql )){
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
 			dbDelta( $sql );
 		}
 	}
 
-	private function add_clickwhale_clicks_database(){
+	private function add_clickwhale_clicks_database() {
 		global $wpdb;
-        $table_name = $wpdb->prefix . 'clickwhale_clicks';
-        $charset_collate = $wpdb->get_charset_collate();
+		$table_name      = $wpdb->prefix . 'clickwhale_clicks';
+		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql = "CREATE TABLE $table_name (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -87,8 +87,8 @@ class Clickwhale_Activator {
 			PRIMARY KEY  (id)
 		) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		if(!maybe_create_table( $table_name,  $sql )){
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
 			dbDelta( $sql );
 		}
 	}
@@ -100,9 +100,9 @@ class Clickwhale_Activator {
 	 */
 	public static function activate() {
 		// create a new object inside the static method to access non-static methods inside that class
-		(new self)->add_clickwhale_links_database();
-		(new self)->add_clickwhale_categories_database();
-		(new self)->add_clickwhale_clicks_database();
+		( new self )->add_clickwhale_links_database();
+		( new self )->add_clickwhale_categories_database();
+		( new self )->add_clickwhale_clicks_database();
 	}
 
 }

@@ -17,7 +17,7 @@
                 )
             );
         }
-    
+
         function extra_tablenav( $which ) {
 
             global $wpdb;
@@ -36,17 +36,17 @@
                         <option value="">All Categories</option>
                         <?php
                         foreach( $cats as $cat ){
-                            $selected = isset($_GET['category']) &&  $_GET['category'] == $cat['id'] ? ' selected = "selected"' : '';   
+                            $selected = isset($_GET['category']) &&  $_GET['category'] == $cat['id'] ? ' selected = "selected"' : '';
                             ?>
                                 <option value="<?php echo $cat['id']; ?>" <?php echo $selected; ?>><?php echo $cat['title']; ?></option>
-                            <?php 
+                            <?php
                         }
                         ?>
                     </select>
                     <input type="submit" class="button" value="<?php _e('Filter', 'clickehale'); ?>">
-                    <?php   
+                    <?php
                 }
-                ?>  
+                ?>
                 </div>
 
                 <?php
@@ -89,7 +89,7 @@
         /**
          * Render columns
          * method name must be like this: "column_[column_name]"
-         * 
+         *
          * @param $item - row (key, value array)
          * @return HTML
          */
@@ -111,7 +111,7 @@
                 'reset'=> sprintf('<a href="?page=%s&action=reset&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Reset', 'clickwhale')),
                 'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Delete', 'clickwhale')),
             );
-    
+
             return sprintf('%s %s',
                 $item['title'],
                 $this->row_actions($actions)
@@ -125,7 +125,7 @@
          * @return HTML
          */
         function column_slug($item) {
-            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" title="'. __('Copy Link', 'clickwhale' ) .'"><span class="dashicons dashicons-clipboard"></span></a></div>';
+            return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="link/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="'. __('Copy Link', 'clickwhale' ) .'"><span class="dashicons dashicons-clipboard"></span></a></div>';
         }
 
         /**
@@ -149,7 +149,7 @@
             if($item['categories']){
 
                 $categories = explode(',',$item['categories']);
-            
+
                 if($categories){
                     global $wpdb;
                     $categories_table = $wpdb->prefix . 'clickwhale_categories';
@@ -183,10 +183,10 @@
             $result     = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE link_id=$id");
 
             return $result;
-    
+
         }
-    
-    
+
+
         /**
          * [REQUIRED] this is how checkbox column renders
          *
@@ -200,7 +200,7 @@
                 $item['id']
             );
         }
-    
+
         /**
             * [REQUIRED] This method return columns to display in table
             * you can skip columns that you do not want to show
@@ -219,7 +219,7 @@
             );
             return $columns;
         }
-    
+
         /**
             * [OPTIONAL] This method return columns that may be used to sort table
             * all strings in array - is column names
@@ -233,7 +233,7 @@
             );
             return $sortable_columns;
         }
-    
+
         /**
             * Return array of bult actions if has any
             *
@@ -247,7 +247,7 @@
             );
             return $actions;
         }
-    
+
         /**
             * This method processes bulk actions
             * it can be outside of class
@@ -260,7 +260,7 @@
             global $wpdb;
             $table_links    = $wpdb->prefix . 'clickwhale_links';
             $table_clicks   = $wpdb->prefix . 'clickwhale_clicks';
-    
+
             if ('delete' === $this->current_action()) {
                 $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
                 if (is_array($ids)) $ids = implode(',', $ids);
@@ -275,7 +275,7 @@
                 }
             }
         }
-    
+
         /**
             * This is the most important method
             *
@@ -297,13 +297,13 @@
             $columns      = $this->get_columns();
             $hidden       = array();
             $sortable     = $this->get_sortable_columns();
-    
+
             // here we configure table headers, defined in our methods
             $this->_column_headers = array($columns, $hidden, $sortable);
-    
+
             //  process bulk action if any
             $this->process_bulk_action();
-    
+
             // will be used in pagination settings
             if (isset($_GET['page']) && isset($_GET['s'])) {
                 $total_items = count($this->users_data);
@@ -317,7 +317,7 @@
             $paged   = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
             $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'id';
             $order   = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
-    
+
             // [REQUIRED] define $items array
             // notice that last argument is ARRAY_A, so we will retrieve array
             if (isset($_GET['page']) && isset($_GET['s'])) {

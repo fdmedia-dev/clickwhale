@@ -120,28 +120,18 @@ class Clickwhale_Admin_Settings {
 	 * @since    1.0.0
 	 */
 	public function clickwhale_links_page_handler() {
-		if (!class_exists('WP_List_Table')) {
-			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
 	}
 
 	public function clickwhale_link_form_page_handler() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-link-edit.php' );
 	}
 
 	public function clickwhale_categories_page_handler() {
-		if (!class_exists('WP_List_Table')) {
-			require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-categories-list-table.php' );
 	}
 
 	public function clickwhale_category_form_page_handler() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
 	}
 
