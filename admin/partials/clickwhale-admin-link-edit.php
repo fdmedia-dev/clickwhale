@@ -1,19 +1,20 @@
 <?php
 global $wpdb;
-$table_name = $wpdb->prefix . 'clickwhale_links';
+$links_table      = $wpdb->prefix . 'clickwhale_links';
 
-$message        = '';
-$notice         = '';
+$message = '';
+$notice  = '';
 
-$link_edit       = new Clickwhale_Link_Edit();
+$link_edit = new Clickwhale_Link_Edit();
+
 // default $item which will be used for new records
-$default = $link_edit->get_defaults();
+$defaults        = apply_filters( 'link_defaults', $link_edit->get_defaults() );
 $link_categories = $link_edit->get_link_categories();
 
 // here we are verifying does this request is post back and have correct nonce
 if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basename( __FILE__ ) ) ) {
 	// combine our default item with request params
-	$item = shortcode_atts( $default, $_REQUEST );
+	$item = shortcode_atts( $defaults, $_REQUEST );
 
 	// validate data, and if all ok save item to database
 	$item_valid = $link_edit->clickwhale_validate_link( $item );
@@ -28,15 +29,21 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
 
 		// if id is zero insert otherwise update
 		if ( $item['id'] == 0 ) {
-			$result     = $wpdb->insert( $table_name, $item );
+			$result     = $wpdb->insert( $links_table, $item );
 			$item['id'] = $wpdb->insert_id;
+
+            do_action('clickwhale_insert_link_meta');
+
 			if ( $result ) {
 				$message = __( 'Item was successfully saved', 'clickwhale' );
 			} else {
 				$notice = __( 'There was an error while saving item', 'clickwhale' );
 			}
 		} else {
-			$result = $wpdb->update( $table_name, $item, array( 'id' => $item['id'] ) );
+			$result = $wpdb->update( $links_table, $item, array( 'id' => $item['id'] ) );
+
+			do_action('clickwhale_update_link_meta');
+
 			if ( $result ) {
 				$message = __( 'Item was successfully updated', 'clickwhale' );
 			} else {
@@ -49,11 +56,11 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
 	}
 } else {
 	// if this is not post back we load item to edit or give new one to create
-	$item = $default;
+	$item = $defaults;
 	if ( isset( $_REQUEST['id'] ) ) {
-		$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $_REQUEST['id'] ), ARRAY_A );
+		$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $links_table WHERE id = %d", $_REQUEST['id'] ), ARRAY_A );
 		if ( ! $item ) {
-			$item   = $default;
+			$item   = $defaults;
 			$notice = __( 'Item not found', 'clickwhale' );
 		}
 	}
@@ -137,7 +144,7 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
                             </td>
                         </tr>
 
-                        <?php do_action( 'link_edit_fields' ); ?>
+						<?php do_action( 'link_edit_fields' ); ?>
 
                         <tr class="form-field">
                             <th valign="top" scope="row">

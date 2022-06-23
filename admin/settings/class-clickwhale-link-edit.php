@@ -5,7 +5,13 @@ class Clickwhale_Link_Edit {
 
 	}
 
-	public function get_base_defaults() {
+	/**
+	 * Default values for new link
+	 * Could be hooked by filter "link_defaults"
+	 * @return array
+	 */
+	public function get_defaults() {
+		$fields         = [];
 		$global_options = get_option( 'clickwhale_general_options' );
 
 		return array(
@@ -21,24 +27,6 @@ class Clickwhale_Link_Edit {
 			'description' => '',
 			'categories'  => '',
 		);
-	}
-
-	public function get_pro_defaults() {
-		return array(
-			'utm_campaign' => '',
-			'utm_medium'   => '',
-			'utm_source'   => '',
-			'utm_term'     => '',
-			'utm_content'  => '',
-		);
-	}
-
-	public function get_defaults() {
-		if ( class_exists( 'Clickwhale_Pro' ) ) {
-			return array_merge( $this->get_base_defaults(), $this->get_pro_defaults() );
-		} else {
-			return $this->get_base_defaults();
-		}
 	}
 
 	public function clickwhale_validate_link( $item ) {
