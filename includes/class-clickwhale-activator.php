@@ -22,7 +22,7 @@
  */
 class Clickwhale_Activator {
 
-	private function add_clickwhale_links_database() {
+	private function add_clickwhale_links_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_links';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -49,7 +49,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_categories_database() {
+	private function add_clickwhale_categories_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_categories';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -69,7 +69,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_clicks_database() {
+	private function add_clickwhale_clicks_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_clicks';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -100,9 +100,9 @@ class Clickwhale_Activator {
 	 */
 	public static function activate() {
 		// create a new object inside the static method to access non-static methods inside that class
-		( new self )->add_clickwhale_links_database();
-		( new self )->add_clickwhale_categories_database();
-		( new self )->add_clickwhale_clicks_database();
+		( new self )->add_clickwhale_links_table();
+		( new self )->add_clickwhale_categories_table();
+		( new self )->add_clickwhale_clicks_table();
 	}
 
 }
