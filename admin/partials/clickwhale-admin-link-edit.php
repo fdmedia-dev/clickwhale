@@ -1,70 +1,8 @@
 <?php
-global $wpdb;
-$links_table      = $wpdb->prefix . 'clickwhale_links';
-
-$message = '';
-$notice  = '';
-
-$link_edit = new Clickwhale_Link_Edit();
-
-// default $item which will be used for new records
-$defaults        = apply_filters( 'link_defaults', $link_edit->get_defaults() );
-$link_categories = $link_edit->get_link_categories();
-
-// here we are verifying does this request is post back and have correct nonce
-if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basename( __FILE__ ) ) ) {
-	// combine our default item with request params
-	$item = shortcode_atts( $defaults, $_REQUEST );
-
-	// validate data, and if all ok save item to database
-	$item_valid = $link_edit->clickwhale_validate_link( $item );
-
-	if ( $item_valid === true ) {
-		$item = $link_edit->clear_link_slug( $item );
-		if ( $item['categories'] ) {
-			$item['categories'] = implode( ',', $item['categories'] );
-		} else {
-			$item['categories'] = '';
-		}
-
-		// if id is zero insert otherwise update
-		if ( $item['id'] == 0 ) {
-			$result     = $wpdb->insert( $links_table, $item );
-			$item['id'] = $wpdb->insert_id;
-
-            do_action('clickwhale_insert_link_meta');
-
-			if ( $result ) {
-				$message = __( 'Item was successfully saved', 'clickwhale' );
-			} else {
-				$notice = __( 'There was an error while saving item', 'clickwhale' );
-			}
-		} else {
-			$result = $wpdb->update( $links_table, $item, array( 'id' => $item['id'] ) );
-
-			do_action('clickwhale_update_link_meta');
-
-			if ( $result ) {
-				$message = __( 'Item was successfully updated', 'clickwhale' );
-			} else {
-				$notice = __( 'There was an error while updating item', 'clickwhale' );
-			}
-		}
-	} else {
-		// if $item_valid not true it contains error message(s)
-		$notice = $item_valid;
-	}
-} else {
-	// if this is not post back we load item to edit or give new one to create
-	$item = $defaults;
-	if ( isset( $_REQUEST['id'] ) ) {
-		$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $links_table WHERE id = %d", $_REQUEST['id'] ), ARRAY_A );
-		if ( ! $item ) {
-			$item   = $defaults;
-			$notice = __( 'Item not found', 'clickwhale' );
-		}
-	}
-}
+$link_edit       = new Clickwhale_Link_Edit();
+$item            = $link_edit->get_item( $_REQUEST );
+$item_categories = $link_edit->get_link_categories();
+$message         = get_transient( 'link-' . $item['id'] );
 ?>
 
 <div class="wrap">
@@ -76,16 +14,19 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
            class="page-title-action"><?php _e( 'Add new', 'clickwhale' ) ?></a>
     </h1>
 
-	<?php if ( ! empty( $notice ) ) { ?>
-        <div id="notice" class="error"><p><?php echo $notice ?></p></div>
-	<?php } ?>
 	<?php if ( ! empty( $message ) ) { ?>
-        <div id="message" class="updated"><p><?php echo $message ?></p></div>
+		<?php if ( $message === 'link_added' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Item was successfully saved', 'clickwhale' ) ?></p></div>
+		<?php } ?>
+		<?php if ( $message === 'link_updated' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Item was successfully updated', 'clickwhale' ) ?></p></div>
+		<?php } ?>
+		<?php delete_transient( 'link-' . $item['id'] ); ?>
 	<?php } ?>
 
-    <form id="form_edit_link" method="POST">
+    <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
+        <input type="hidden" name="action" value="save_update_link">
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
-		<?php /* NOTICE: here we storing id to determine will be item added or updated */ ?>
         <input type="hidden" name="id" value="<?php echo $item['id'] ?>"/>
 
         <div class="metabox-holder" id="poststuff">
@@ -123,8 +64,9 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
                                        class="code"
                                        placeholder="<?php _e( 'Link Slug without /link/', 'clickwhale' ) ?>"
                                        required>
-                                <p id="slug__text">URL Preview: <?php echo get_bloginfo( 'url' ) ?>
-                                    /link/<span><?php echo esc_attr( $item['slug'] ) ?></span></p>
+                                <p id="slug__text">
+									<?php echo 'URL Preview: ' . get_bloginfo( 'url' ) . '/link/<span>' . esc_attr( $item['slug'] ) . '</span>' ?>
+                                </p>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -230,9 +172,9 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
                             </th>
                             <td>
 								<?php
-								if ( $link_categories ) {
+								if ( $item_categories ) {
 									$current_categories = isset( $item['categories'] ) ? explode( ',', $item['categories'] ) : [];
-									foreach ( $link_categories as $category ) {
+									foreach ( $item_categories as $category ) {
 										?>
                                         <p>
                                             <input type="checkbox"
