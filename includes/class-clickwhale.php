@@ -160,6 +160,7 @@ class Clickwhale {
 		$plugin_ajax      = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$plugin_link_edit = new Clickwhale_Link_Edit( $this->get_plugin_name() );
 
+		// ACTIONS
 		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_settings_options' );
 		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_tracking_options' );
@@ -167,11 +168,9 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$this->loader->add_action( 'link_edit_fields', $plugin_link_edit, 'clickwhale_link_edit_fields' );
+		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $plugin_link_edit, 'save_update_link' );
+		$this->loader->add_action( 'admin_post_save_update_link', $plugin_link_edit, 'save_update_link' );
 
-		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
-
-		// AJAX
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax, 'migration_notice_hide' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale' );
@@ -181,6 +180,9 @@ class Clickwhale {
 		if ( ! class_exists( 'Clickwhale_Pro' ) ) {
 			$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'admin_scripts' );
 		}
+
+		// FILTERS
+		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
 	}
 
 	/**
