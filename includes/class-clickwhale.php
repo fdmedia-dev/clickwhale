@@ -177,9 +177,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $plugin_ajax, 'save_migration_option' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $plugin_ajax, 'migration_reset' );
 
-		if ( ! class_exists( 'Clickwhale_Pro' ) ) {
-			$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'admin_scripts' );
-		}
+		$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'admin_scripts' );
 
 		// FILTERS
 		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
