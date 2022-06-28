@@ -85,9 +85,6 @@ $message         = get_transient( 'link-' . $item['id'] );
                                        required>
                             </td>
                         </tr>
-
-						<?php do_action( 'link_edit_fields' ); ?>
-
                         <tr class="form-field">
                             <th valign="top" scope="row">
                                 <label for="link_redirection"><?php _e( 'Redirection Type', 'clickwhale' ) ?></label>
@@ -197,6 +194,8 @@ $message         = get_transient( 'link-' . $item['id'] );
                         </tr>
                         </tbody>
                     </table>
+
+	                <?php do_action( 'link_edit_fields' ); ?>
 
                     <input type="hidden" id="created_at" name="created_at" value="<?php echo $item['created_at'] ?>">
                     <input type="hidden" id="updated_at" name="updated_at" value="">
