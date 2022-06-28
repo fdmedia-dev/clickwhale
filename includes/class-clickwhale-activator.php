@@ -93,6 +93,26 @@ class Clickwhale_Activator {
 		}
 	}
 
+	private function add_clickwhale_links_meta_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_links_meta';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			id int(11) NOT NULL auto_increment,
+			meta_key varchar(255) default NULL,
+			meta_value longtext default NULL,
+			link_id int(11) NOT NULL,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
 	/**
 	 * Actions on plugin activation
 	 *
@@ -103,6 +123,7 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_links_table();
 		( new self )->add_clickwhale_categories_table();
 		( new self )->add_clickwhale_clicks_table();
+		( new self )->add_clickwhale_links_meta_table();
 	}
 
 }
