@@ -28,8 +28,8 @@ class Clickwhale_Tools_Migration {
 		$defaults = [];
 
 		foreach ( $this->migration->available_migrations() as $item ) {
-			$defaults[ $item['slug'] . '_categories' ] = $item['data']['categories'] ? true : false;
-			$defaults[ $item['slug'] . '_links' ]      = $item['data']['links'] ? true : false;
+			$defaults[ $item['slug'] . '_categories' ] = true;
+			$defaults[ $item['slug'] . '_links' ]      = true;
 		}
 
 		return $defaults;
@@ -65,20 +65,20 @@ class Clickwhale_Tools_Migration {
 	 * Add default last migration options if not exisit
 	 */
 	public function add_tools_last_migration_options() {
-		if ( false == get_option( $this->last_migration ) ) {
+		if ( ! get_option( $this->last_migration ) ) {
 			$defaults = $this->default_last_migration_options();
 			add_option( $this->last_migration, $defaults );
 		}
 	}
 
 	public function add_notice_migrate_options() {
-		if ( false == get_option( 'clickwhale_hide_notice_migrate' ) ) {
+		if ( ! get_option( 'clickwhale_hide_notice_migrate' ) ) {
 			add_option( 'clickwhale_hide_notice_migrate', [] );
 		}
 	}
 
 	public function add_notice_deactive_options() {
-		if ( false == get_option( 'clickwhale_hide_notice_deactive' ) ) {
+		if ( ! get_option( 'clickwhale_hide_notice_deactive' ) ) {
 			add_option( 'clickwhale_hide_notice_deactive', [] );
 		}
 	}
@@ -172,7 +172,7 @@ class Clickwhale_Tools_Migration {
 	 *
 	 */
 	public function tools_migration_callback( $item ) {
-		$result = $this->tools_migration_callback_count( $item['data'] );
+		$result = $this->tools_migration_callback_count( $this->migration->get_plugin_data($item['slug']) );
 		$result .= $this->tools_migration_callback_last_migration( $item['slug'] . '_last_migration' );
 		$result .= __( 'Set what you want to migrate from ' . $item['name'] . ' to CLickwhale', 'clickwhale' );
 
