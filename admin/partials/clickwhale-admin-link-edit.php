@@ -42,9 +42,8 @@ $message         = get_transient( 'link-' . $item['id'] );
                                 <input id="title"
                                        name="title"
                                        type="text"
-                                       style="width: 95%"
                                        value="<?php echo esc_attr( $item['title'] ) ?>"
-                                       size="50"
+                                       size="40"
                                        class="code"
                                        placeholder="<?php _e( 'Link Title', 'clickwhale' ) ?>"
                                        required>
@@ -188,14 +187,16 @@ $message         = get_transient( 'link-' . $item['id'] );
                                         </p>
 										<?php
 									}
-								}
-								?>
+								} else {
+									?>
+                                    <label><?php _e('No categories have been created yet', 'clickwhale') ?></label>
+								<?php } ?>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
-	                <?php do_action( 'link_edit_fields' ); ?>
+					<?php do_action( 'link_edit_fields' ); ?>
 
                     <input type="hidden" id="created_at" name="created_at" value="<?php echo $item['created_at'] ?>">
                     <input type="hidden" id="updated_at" name="updated_at" value="">
