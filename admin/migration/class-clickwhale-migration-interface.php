@@ -1,6 +1,6 @@
 <?php
 
-class ClickWhale_Migration_Interface {
+class Clickwhale_Migration_Interface {
 
     public function run_migration($categories, $links) {
         $resutls = [];

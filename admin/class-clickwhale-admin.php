@@ -90,7 +90,7 @@ class Clickwhale_Admin {
 	}
 
 	public function migration() {
-		$migration = new ClickWhale_Migration();
+		$migration = new Clickwhale_Migration();
 		$migration->init();
 	}
 

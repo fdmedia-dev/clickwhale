@@ -53,7 +53,6 @@ class Clickwhale_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 		$this->load_dependencies();
-
 	}
 
 	/**
@@ -69,6 +68,7 @@ class Clickwhale_Public {
 	 */
 	private function load_dependencies() {
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-click-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
 
@@ -142,7 +142,7 @@ class Clickwhale_Public {
 			$id = $results[0]->id;
 
 			if ( ! $user->disallow_track() ) {
-				$track = new ClickWhale_Click_Track( $id );
+				$track = new Clickwhale_Click_Track( $id );
 				$track->track();
 			}
 

@@ -1,6 +1,6 @@
 <?php
 
-class ClickWhale_Migration {
+class Clickwhale_Migration {
 
 	public function __construct() {
 	}
@@ -118,7 +118,7 @@ class ClickWhale_Migration {
 
 		foreach ( $available_migrations as $item ) {
 			if ( $this->check_active( $item['path'] ) ) {
-				$migration = new ClickWhale_Migration_Notice( $item['slug'], $item['name'], $item['path'] );
+				$migration = new Clickwhale_Migration_Notice( $item['slug'], $item['name'], $item['path'] );
 				$migration->init();
 			}
 		}
