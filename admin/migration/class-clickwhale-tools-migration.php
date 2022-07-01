@@ -7,7 +7,7 @@ class Clickwhale_Tools_Migration {
 		// Vars
 		$this->options        = 'clickwhale_tools_migration_options';
 		$this->last_migration = 'clickwhale_tools_last_migration_options';
-		$this->migration      = new ClickWhale_Migration();
+		$this->migration      = new Clickwhale_Migration();
 
 		// Actions
 		add_action( 'admin_init', [ $this, 'add_tools_migration_options' ] );

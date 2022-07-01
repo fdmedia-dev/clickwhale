@@ -42,7 +42,7 @@ class Clickwhale_Ajax {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->migration   = new ClickWhale_Migration();
+		$this->migration   = new Clickwhale_Migration();
 
 	}
 

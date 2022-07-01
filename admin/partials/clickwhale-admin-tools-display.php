@@ -1,5 +1,5 @@
 <?php
-$migration = new ClickWhale_Migration();
+$migration = new Clickwhale_Migration();
 ?>
 
 <div class="wrap">

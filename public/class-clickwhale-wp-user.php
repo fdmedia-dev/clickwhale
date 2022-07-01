@@ -11,7 +11,7 @@
  */
 
 /**
- * Class Clickwhale_WP_User
+ * class Clickwhale_WP_User
  *
  */
 class Clickwhale_WP_User {
