@@ -172,11 +172,12 @@ class Clickwhale_Tools_Migration {
 	 *
 	 */
 	public function tools_migration_callback( $item ) {
-		$result = $this->tools_migration_callback_count( $this->migration->get_plugin_data($item['slug']) );
+		$result = $this->tools_migration_callback_count( $this->migration->get_plugin_data( $item['slug'] ) );
 		$result .= $this->tools_migration_callback_last_migration( $item['slug'] . '_last_migration' );
 		$result .= __( 'Set what you want to migrate from ' . $item['name'] . ' to CLickwhale', 'clickwhale' );
-
-		echo '<p>' . $result . '</p>';
+		?>
+        <p><?php echo $result ?></p>
+		<?php
 	}
 
 	/**
@@ -184,20 +185,26 @@ class Clickwhale_Tools_Migration {
 	 */
 	public function tools_migration_categories_callback( $item ) {
 		$options = get_option( $this->options );
-
-		$html = '<input type="checkbox" id="' . $item['slug'] . '_categories" name="' . $this->options . '[' . $item['slug'] . '_categories]" value="1" ' . checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, false ) . '/>';
-		$html .= '<label for="' . $item['slug'] . '_categories">&nbsp;' . __( 'Migrate categories (add normal label)', 'clickwhale' ) . '</label>';
-
-		echo $html;
+		?>
+        <input type="checkbox"
+               id="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>"
+               name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_categories]' ) ?>"
+               value="1"
+			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories', 'clickwhale' ) ?></label>
+        <?php
 	}
 
 	public function tools_migration_links_callback( $item ) {
 		$options = get_option( $this->options );
-
-		$html = '<input type="checkbox" id="' . $item['slug'] . '_links" name="' . $this->options . '[' . $item['slug'] . '_links]" value="1" ' . checked( 1, isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0, false ) . '/>';
-		$html .= '<label for="' . $item['slug'] . '_links">&nbsp;' . __( 'Migrate links (add normal label)', 'clickwhale' ) . '</label>';
-
-		echo $html;
+		?>
+        <input type="checkbox"
+               id="<?php echo esc_attr( $item['slug'] . '_links' ) ?>"
+               name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_links]' ) ?>"
+               value="1"
+			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0, true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">&nbsp;<?php _e( 'Migrate links', 'clickwhale' ) ?></label>
+		<?php
 	}
 
 

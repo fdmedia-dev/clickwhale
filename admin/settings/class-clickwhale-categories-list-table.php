@@ -167,7 +167,7 @@
             $table_name = $wpdb->prefix . 'clickwhale_categories';
     
             if ('delete' === $this->current_action()) {
-                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                $ids = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : array();
                 if (is_array($ids)) $ids = implode(',', $ids);
     
                 if (!empty($ids)) {
@@ -187,7 +187,7 @@
             $table_name = $wpdb->prefix . 'clickwhale_categories'; // do not forget about tables prefix
     
             if (isset($_GET['page']) && isset($_GET['s'])) {
-                $this->users_data = $this->get_users_data($_GET['s']);
+                $this->users_data = $this->get_users_data(sanitize_text_field($_GET['s']));
             } else {
                 $this->users_data = $this->get_users_data();
             }

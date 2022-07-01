@@ -108,8 +108,8 @@
             // be something like &link=2
             $actions = array(
                 'edit' => sprintf('<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], __('Edit', 'clickwhale')),
-                'reset'=> sprintf('<a href="?page=%s&action=reset&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Reset', 'clickwhale')),
-                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', $_REQUEST['page'], $item['id'], __('Delete', 'clickwhale')),
+                'reset'=> sprintf('<a href="?page=%s&action=reset&id=%s">%s</a>', sanitize_text_field($_REQUEST['page']), $item['id'], __('Reset', 'clickwhale')),
+                'delete' => sprintf('<a href="?page=%s&action=delete&id=%s">%s</a>', sanitize_text_field($_REQUEST['page']), $item['id'], __('Delete', 'clickwhale')),
             );
 
             return sprintf('%s %s',
@@ -262,13 +262,13 @@
             $table_clicks   = $wpdb->prefix . 'clickwhale_clicks';
 
             if ('delete' === $this->current_action()) {
-                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                $ids = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : array();
                 if (is_array($ids)) $ids = implode(',', $ids);
                 if (!empty($ids)) {
                     $wpdb->query("DELETE FROM $table_links WHERE id IN($ids)");
                 }
             } else  if ('reset' === $this->current_action()) {
-                $ids = isset($_REQUEST['id']) ? $_REQUEST['id'] : array();
+                $ids = isset($_REQUEST['id']) ? sanitize_text_field($_REQUEST['id']) : array();
                 if (is_array($ids)) $ids = implode(',', $ids);
                 if (!empty($ids)) {
                     $wpdb->query("DELETE FROM $table_clicks WHERE link_id IN($ids)");
@@ -287,7 +287,7 @@
             $table_name = $wpdb->prefix . 'clickwhale_links'; // do not forget about tables prefix
 
             if (isset($_GET['page']) && isset($_GET['s'])) {
-                $this->users_data = $this->get_users_data($_GET['s']);
+                $this->users_data = $this->get_users_data(sanitize_text_field($_GET['s']));
             } else {
                 $this->users_data = $this->get_users_data();
             }
@@ -315,8 +315,8 @@
 
             // prepare query params, as usual current page, order by and order direction
             $paged   = isset($_REQUEST['paged']) ? ($per_page * max(0, intval($_REQUEST['paged']) - 1)) : 0;
-            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? $_REQUEST['orderby'] : 'id';
-            $order   = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? $_REQUEST['order'] : 'desc';
+            $orderby = (isset($_REQUEST['orderby']) && in_array($_REQUEST['orderby'], array_keys($this->get_sortable_columns()))) ? sanitize_text_field($_REQUEST['orderby']) : 'id';
+            $order   = (isset($_REQUEST['order']) && in_array($_REQUEST['order'], array('asc', 'desc'))) ? sanitize_text_field($_REQUEST['order']) : 'desc';
 
             // [REQUIRED] define $items array
             // notice that last argument is ARRAY_A, so we will retrieve array
@@ -328,7 +328,7 @@
 
             // Change query for category filter results
             if( isset($_GET['category']) &&  $_GET['category'] > 0 ){
-                $category = $_GET['category'];
+                $category = sanitize_text_field($_GET['category']);
                 $this->items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE categories = '$category' OR categories LIKE '$category,%' OR categories LIKE '%,$category,%' OR categories LIKE '%,$category' ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged), ARRAY_A);
             }
 
