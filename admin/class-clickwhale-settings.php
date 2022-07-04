@@ -46,6 +46,13 @@ class Clickwhale_Admin_Settings {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
+		// if custom slug doesn't isset we should add default value
+		$options = get_option( 'clickwhale_general_options' );
+		if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
+			$options['slug'] = 'link';
+			update_option( 'clickwhale_general_options', $options );
+		}
+
 	}
 
 	/**
