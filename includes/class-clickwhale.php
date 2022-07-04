@@ -58,6 +58,19 @@ class Clickwhale {
 	protected $version;
 
 	/**
+	 * Main plugins instance
+	 *
+	 * Ensures only one instance of this class
+	 * Its always good practice to user single instance of the class so we can modify hooks initialized on this class
+	 */
+	protected static $instance = NULL;
+
+	public static function getInstance() {
+		NULL === self::$instance and self::$instance = new self;
+		return self::$instance;
+	}
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -156,7 +169,7 @@ class Clickwhale {
 		$plugin_settings  = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
 		$plugin_tools     = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$plugin_ajax      = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$plugin_link_edit = new Clickwhale_Link_Edit( $this->get_plugin_name() );
+		$plugin_link_edit = new Clickwhale_Link_Edit();
 
 		// ACTIONS
 		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
@@ -165,6 +178,7 @@ class Clickwhale {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'clickwhale_admin_banner', $plugin_admin, 'clickwhale_admin_banner', 10 );
 
 		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $plugin_link_edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_link', $plugin_link_edit, 'save_update_link' );

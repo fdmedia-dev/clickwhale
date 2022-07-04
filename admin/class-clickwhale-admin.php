@@ -55,7 +55,6 @@ class Clickwhale_Admin {
 
 		$this->load_dependencies();
 		$this->migration();
-
 	}
 
 	/**
@@ -144,6 +143,25 @@ class Clickwhale_Admin {
 
 	public function clickwhale_categories_limit_callback( $limit ) {
 		return $limit;
+	}
+
+	public function clickwhale_admin_banner() {
+		$link_pro      = 'https://clickwhale.pro';
+		$link_helpdesk = 'https://clickwhale.pro/docs/';
+
+		$banner = '<div class="clickwhale-banner">';
+		$banner .= '<div class="clickwhale-banner--logo"><img src="' . esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) . '" alt="' . $this->plugin_name . '"></div>';
+		$banner .= '<div class="clickwhale-banner--links">';
+		if ( $link_helpdesk ) {
+			$banner .= '<a href="' . esc_attr( $link_helpdesk ) . '" class="clickwhale-banner--link" target="_blank">' . __( 'Need help?', $this->plugin_name ) . '</a>';
+		}
+		if ( $link_pro ) {
+			$banner .= '<a href="' . esc_attr( $link_pro ) . '" class="clickwhale-banner--button" target="_blank">' . __( 'Update to Pro', $this->plugin_name ) . '</a>';
+		}
+		$banner .= '</div>';
+		$banner .= '</div>';
+
+		echo $banner;
 	}
 
 	public function admin_scripts() {
