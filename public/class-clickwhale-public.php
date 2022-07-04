@@ -127,13 +127,15 @@ class Clickwhale_Public {
 		global $wpdb;
 		$table_name       = $wpdb->prefix . 'clickwhale_links';
 		$table_links_meta = $wpdb->prefix . 'clickwhale_links_meta';
+		$options          = get_option( 'clickwhale_general_options' );
+		$link_slug        = $options['slug'] . '/';
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 
-		if ( ! is_admin() && $path && strpos( $path, 'link/' ) ) {
-			$path = strstr( $path, 'link/' );
-			$path = str_replace( 'link/', '', $path );
+		if ( ! is_admin() && $path && strpos( $path, $link_slug ) ) {
+			$path = strstr( $path, $link_slug );
+			$path = str_replace( $link_slug, '', $path );
 		};
 
 		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'" );
