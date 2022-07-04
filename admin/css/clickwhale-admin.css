@@ -2,10 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
-body > in1put{
-    position: absolute;
-    opacity: 0;
-}
+
  .slug-input--wrap{
      position: relative;
  }

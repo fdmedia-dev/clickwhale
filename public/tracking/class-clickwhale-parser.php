@@ -49,12 +49,10 @@ class Clickwhale_Parser {
 
 		$os = new Clickwhale_OS( $ua );
 		if ( $os ) {
-			$name     = isset( $os->name ) ? $os->name : 'Unknown OS';
-			$version  = isset( $os->version ) ? ' ' . $os->version : '';
-			$this->os = $name . $version;
-			if ( ! $this->type ) {
-				$this->type = isset( $os->type ) ? $os->type : 'Unknown Device';
-			}
+			$name       = isset( $os->name ) ? $os->name : 'Unknown OS';
+			$version    = isset( $os->version ) ? ' ' . $os->version : '';
+			$this->os   = $name . $version;
+			$this->type = isset( $os->type ) ? $os->type : $this->type;
 		}
 	}
 

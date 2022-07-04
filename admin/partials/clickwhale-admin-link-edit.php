@@ -3,23 +3,26 @@ $link_edit       = new Clickwhale_Link_Edit();
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $message         = get_transient( 'link-' . $item['id'] );
+$options         = get_option( 'clickwhale_general_options' );
 ?>
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-		<?php _e( 'Edit link', 'clickwhale' ) ?>
+		<?php _e( 'Edit link', $this->plugin_name ); ?>
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to list', 'clickwhale' ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
         <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"
-           class="page-title-action"><?php _e( 'Add new', 'clickwhale' ) ?></a>
+           class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
     </h1>
 
 	<?php if ( ! empty( $message ) ) { ?>
 		<?php if ( $message === 'link_added' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Item was successfully saved', 'clickwhale' ) ?></p></div>
+            <div id="message" class="updated"><p><?php _e( 'Item was successfully saved', $this->plugin_name ) ?></p>
+            </div>
 		<?php } ?>
 		<?php if ( $message === 'link_updated' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Item was successfully updated', 'clickwhale' ) ?></p></div>
+            <div id="message" class="updated"><p><?php _e( 'Item was successfully updated', $this->plugin_name ) ?></p>
+            </div>
 		<?php } ?>
 		<?php delete_transient( 'link-' . $item['id'] ); ?>
 	<?php } ?>
@@ -36,7 +39,7 @@ $message         = get_transient( 'link-' . $item['id'] );
                         <tbody>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_title"><?php _e( 'Title', 'clickwhale' ) ?></label>
+                                <label for="link_title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <input id="title"
@@ -44,52 +47,50 @@ $message         = get_transient( 'link-' . $item['id'] );
                                        type="text"
                                        value="<?php echo esc_attr( $item['title'] ) ?>"
                                        size="40"
-                                       class="code"
-                                       placeholder="<?php _e( 'Link Title', 'clickwhale' ) ?>"
+                                       class="regular-text"
+                                       placeholder="<?php _e( 'Link Title', $this->plugin_name ) ?>"
                                        required>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_slug"><?php _e( 'Slug', 'clickwhale' ) ?></label>
+                                <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <input id="slug"
                                        name="slug"
                                        type="text"
-                                       style="width: 95%"
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
                                        size="50"
-                                       class="code"
-                                       placeholder="<?php _e( 'Link Slug without /link/', 'clickwhale' ) ?>"
+                                       class="regular-text"
+                                       placeholder="<?php printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options['slug'] ) ?>"
                                        required>
                                 <p id="slug__text">
-									<?php echo 'URL Preview: ' . get_bloginfo( 'url' ) . '/link/<span>' . esc_attr( $item['slug'] ) . '</span>' ?>
+									<?php echo __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options['slug'] . '/<span>' . esc_attr( $item['slug'] ) . '</span>' ?>
                                 </p>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_url"><?php _e( 'Target URL', 'clickwhale' ) ?></label>
+                                <label for="link_url"><?php _e( 'Target URL', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <input id="url"
                                        name="url"
                                        type="text"
-                                       style="width: 95%"
                                        value="<?php echo esc_attr( $item['url'] ) ?>"
                                        size="50"
-                                       class="code"
-                                       placeholder="<?php _e( 'Link Target URL', 'clickwhale' ) ?>"
+                                       class="regular-text"
+                                       placeholder="<?php _e( 'Link Target URL', $this->plugin_name ) ?>"
                                        required>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_redirection"><?php _e( 'Redirection Type', 'clickwhale' ) ?></label>
+                                <label for="link_redirection"><?php _e( 'Redirection Type', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <select name="redirection" id="redirection">
+                                <select name="redirection" id="redirection" class="regular-text">
                                     <option value="301" <?php selected( $item['redirection'], 301 ); ?>>301 redirect:
                                         Moved permanently
                                     </option>
@@ -110,7 +111,7 @@ $message         = get_transient( 'link-' . $item['id'] );
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="nofollow"><?php _e( 'Nofollow', 'clickwhale' ) ?></label>
+                                <label for="nofollow"><?php _e( 'Nofollow', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <input type="checkbox"
@@ -125,12 +126,12 @@ $message         = get_transient( 'link-' . $item['id'] );
 									}
 									?>
                                 />
-                                <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex', 'clickwhale' ) ?></label>
+                                <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex', $this->plugin_name ) ?></label>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="sponsored"><?php _e( 'Sponsored', 'clickwhale' ) ?></label>
+                                <label for="sponsored"><?php _e( 'Sponsored', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <input type="checkbox"
@@ -145,26 +146,25 @@ $message         = get_transient( 'link-' . $item['id'] );
 									}
 									?>
                                 />
-                                <label for="sponsored"><?php _e( 'Check to mark link as sponsored', 'clickwhale' ) ?></label>
+                                <label for="sponsored"><?php _e( 'Check to mark link as sponsored', $this->plugin_name ) ?></label>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_description"><?php _e( 'Description', 'clickwhale' ) ?></label>
+                                <label for="link_description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                     <textarea id="description"
                                               name="description"
-                                              style="width: 95%"
                                               rows="5"
-                                              class="code"
-                                              placeholder="<?php _e( 'Description', 'clickwhale' ) ?>"
+                                              class="regular-text"
+                                              placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
                                     ><?php echo esc_attr( $item['description'] ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th valign="top" scope="row">
-                                <label for="link_categories"><?php _e( 'Category', 'clickwhale' ) ?></label>
+                                <label for="link_categories"><?php _e( 'Category', $this->plugin_name ) ?></label>
                             </th>
                             <td>
 								<?php
@@ -189,7 +189,7 @@ $message         = get_transient( 'link-' . $item['id'] );
 									}
 								} else {
 									?>
-                                    <label><?php _e('No categories have been created yet', 'clickwhale') ?></label>
+                                    <label><?php _e( 'No categories have been created yet', $this->plugin_name ) ?></label>
 								<?php } ?>
                             </td>
                         </tr>
@@ -201,7 +201,8 @@ $message         = get_transient( 'link-' . $item['id'] );
                     <input type="hidden" id="created_at" name="created_at" value="<?php echo $item['created_at'] ?>">
                     <input type="hidden" id="updated_at" name="updated_at" value="">
 
-                    <input type="submit" value="<?php _e( 'Save', 'clickwhale' ) ?>" id="submit" class="button-primary"
+                    <input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"
+                           class="button-primary"
                            name="submit">
                 </div>
             </div>

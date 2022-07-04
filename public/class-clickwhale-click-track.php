@@ -37,10 +37,10 @@ class Clickwhale_Click_Track {
 	}
 
 	private function generate_hash() {
-		$ip      = $this->get_user_ip();
-		$date    = $this->get_user_salt();
-		$ua = $this->parser->ua;
-		$hash    = $date . $ip . $ua;
+		$ip   = $this->get_user_ip();
+		$date = $this->get_user_salt();
+		$ua   = $this->parser->ua;
+		$hash = $date . $ip . $ua;
 
 		return hash( 'md5', $hash );
 	}

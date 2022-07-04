@@ -56,8 +56,8 @@ class Clickwhale_Admin_Settings {
 
 		// add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 		add_menu_page(
-			'ClickWhale Links',
-			'ClickWhale',
+			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
+			__( 'Clickwhale', $this->plugin_name ),         // menu title
 			'manage_options',
 			$this->plugin_name,
 			'',
@@ -66,48 +66,48 @@ class Clickwhale_Admin_Settings {
 		);
 		add_submenu_page(
 			$this->plugin_name,
-			'ClickWhale Links',
-			'Links',
+			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
+			__( 'Links', $this->plugin_name ),              // menu title
 			'manage_options',
 			$this->plugin_name,
 			array( $this, $this->plugin_name . '_links_page_handler' )
 		);
 		add_submenu_page(
 			'',
-			'Add New',
-			'Add New Link',
+			__( 'Add New', $this->plugin_name ),
+			__( 'Add New Link', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-edit-link',
 			array( $this, $this->plugin_name . '_link_form_page_handler' )
 		);
 		add_submenu_page(
 			$this->plugin_name,
-			'ClickWhale Categories',
-			'Categories',
+			__( 'ClickWhale Categories', $this->plugin_name ),
+			__( 'Categories', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-categories',
 			array( $this, $this->plugin_name . '_categories_page_handler' )
 		);
 		add_submenu_page(
 			'',
-			'Add New Category',
-			'Add New Category',
+			__( 'Add New Category', $this->plugin_name ),
+			__( 'Add New Category', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-edit-category',
 			array( $this, $this->plugin_name . '_category_form_page_handler' )
 		);
 		add_submenu_page(
 			$this->plugin_name,
-			'ClickWhale Settings',
-			'Settings',
+			__( 'ClickWhale Settings', $this->plugin_name ),
+			__( 'Settings', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-settings',
 			array( $this, 'render_settings_page_content' )
 		);
 		add_submenu_page(
 			$this->plugin_name,
-			'ClickWhale Tools',
-			'Tools',
+			__( 'ClickWhale Tools', $this->plugin_name ),
+			__( 'Tools', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-tools',
 			array( $this, 'include_admin_menu_tools_partial' )
@@ -182,7 +182,7 @@ class Clickwhale_Admin_Settings {
 	public function general_options_callback() {
 		$options = get_option( 'clickwhale_general_options' );
 		//var_dump($options);
-		echo '<p>' . __( 'Set up ClickWhale plugin global options.', 'clickwhale' ) . '</p>';
+		echo '<p>' . __( 'Set up ClickWhale plugin global options.', $this->plugin_name ) . '</p>';
 	}
 
 	/**
@@ -194,7 +194,7 @@ class Clickwhale_Admin_Settings {
 	public function tracking_options_callback() {
 		$options = get_option( 'clickwhale_tracking_options' );
 		//var_dump($options);
-		echo '<p>' . __( 'Set up ClickWhale plugin global link tracking options.', 'clickwhale' ) . '</p>';
+		echo '<p>' . __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ) . '</p>';
 	}
 
 	/**
@@ -214,7 +214,7 @@ class Clickwhale_Admin_Settings {
 
 		add_settings_section(
 			'general_settings_section',                    // ID used to identify this section and with which to register options
-			__( 'General', 'clickwhale' ),                // Title to be displayed on the administration page
+			__( 'General', $this->plugin_name ),                // Title to be displayed on the administration page
 			array( $this, 'general_options_callback' ),    // Callback used to render the description of the section
 			'clickwhale_general_options'                // Page on which to add this section of options
 		);
@@ -222,7 +222,7 @@ class Clickwhale_Admin_Settings {
 		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field(
 			'redirection',                                // ID used to identify the field throughout the theme
-			__( 'Redirection Type', 'clickwhale' ),        // The label to the left of the option interface element
+			__( 'Redirection Type', $this->plugin_name ),        // The label to the left of the option interface element
 			array(
 				$this,
 				'set_redirection_callback'
@@ -230,29 +230,30 @@ class Clickwhale_Admin_Settings {
 			'clickwhale_general_options',                // The page on which this option will be displayed
 			'general_settings_section',                    // The name of the section to which this field belongs
 			array(                                        // The array of arguments to pass to the callback. In this case, just a description.
-				__( 'Set default redirection type which will be used for new links.', 'clickwhale' ),
+				__( 'Set default redirection type which will be used for new links.', $this->plugin_name ),
 			)
 		);
 
 		add_settings_field(
 			'nofollow',
-			__( 'Nofollow links', 'clickwhale' ),
+			__( 'Nofollow links', $this->plugin_name ),
 			array( $this, 'toggle_nofollow_callback' ),
 			'clickwhale_general_options',
 			'general_settings_section',
 			array(
-				__( 'Check to mark links as nofollow & noindex by default', 'clickwhale' ),
+				__( 'Check to mark links as nofollow & noindex by default', $this->plugin_name ),
 			)
 		);
 
 		add_settings_field(
 			'sponsored',
-			__( 'Sponsored links', 'clickwhale' ),
+			__( 'Sponsored links', $this->plugin_name ),
 			array( $this, 'toggle_sponsored_callback' ),
 			'clickwhale_general_options',
 			'general_settings_section',
 			array(
-				__( 'Check to mark links as sponsored by default.', 'clickwhale' ),
+				__( 'Check to mark links as sponsored by default.', $this->plugin_name ),
+				__( 'Recommended for affiliate links.', $this->plugin_name )
 			)
 		);
 
@@ -280,38 +281,38 @@ class Clickwhale_Admin_Settings {
 
 
 		add_settings_section(
-			'tracking_settings_section',                    // ID used to identify this section and with which to register options
-			__( 'Tracking', 'clickwhale' ),                    // Title to be displayed on the administration page
+			'tracking_settings_section',                          // ID used to identify this section and with which to register options
+			__( 'Tracking', $this->plugin_name ),                    // Title to be displayed on the administration page
 			array(
 				$this,
 				'tracking_options_callback'
 			),        // Callback used to render the description of the section
-			'clickwhale_tracking_options'                    // Page on which to add this section of options
+			'clickwhale_tracking_options'                       // Page on which to add this section of options
 		);
 
 		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field(
-			'redirection',                                // ID used to identify the field throughout the theme
-			__( 'Disable Click Tracking', 'clickwhale' ),        // The label to the left of the option interface element
+			'redirection',                                          // ID used to identify the field throughout the theme
+			__( 'Disable Click Tracking', $this->plugin_name ),        // The label to the left of the option interface element
 			array(
 				$this,
 				'toggle_click_tracking'
-			),    // The name of the function responsible for rendering the option interface
-			'clickwhale_tracking_options',                // The page on which this option will be displayed
-			'tracking_settings_section',                    // The name of the section to which this field belongs
-			array(                                        // The array of arguments to pass to the callback. In this case, just a description.
-				__( 'Check to disable click tracking for affiliate links.', 'clickwhale' ),
+			),                                                   // The name of the function responsible for rendering the option interface
+			'clickwhale_tracking_options',                  // The page on which this option will be displayed
+			'tracking_settings_section',                  // The name of the section to which this field belongs
+			array(                                               // The array of arguments to pass to the callback. In this case, just a description.
+				__( 'Check to disable click tracking for affiliate links.', $this->plugin_name ),
 			)
 		);
 
 		add_settings_field(
 			'nofollow',
-			__( 'Exclude Users by Role', 'clickwhale' ),
+			__( 'Exclude Users by Role', $this->plugin_name ),
 			array( $this, 'exclude_users_by_role' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
 			array(
-				__( 'Remove clicks by logged-in users with these roles.', 'clickwhale' ),
+				__( 'Remove clicks by logged-in users with these roles.', $this->plugin_name ),
 			)
 		);
 
@@ -334,12 +335,12 @@ class Clickwhale_Admin_Settings {
 		// First, we read the options collection
 		$options = get_option( 'clickwhale_general_options' );
 		?>
-        <select id="redirect_type" name="clickwhale_general_options[redirect_type]">
-            <option value="301" <?php selected( $options['redirect_type'], 301, true ) ?>><?php _e( '301 redirect: Moved permanently', 'clickwhale' ) ?></option>
-            <option value="302" <?php selected( $options['redirect_type'], 302, true ) ?>><?php _e( '302 redirect: Found / Moved temporarily', 'clickwhale' ) ?></option>
-            <option value="303" <?php selected( $options['redirect_type'], 303, true ) ?>><?php _e( '303 redirect: See Other', 'clickwhale', 'clickwhale' ) ?></option>
-            <option value="307" <?php selected( $options['redirect_type'], 307, true ) ?>><?php _e( '307 redirect: Temporarily Redirect', 'clickwhale' ) ?></option>
-            <option value="308" <?php selected( $options['redirect_type'], 308, true ) ?>><?php _e( '308 redirect: Permanent Redirect', 'clickwhale' ) ?></option>
+        <select id="redirect_type" name="clickwhale_general_options[redirect_type]" class="regular-text">
+            <option value="301" <?php selected( $options['redirect_type'], 301, true ) ?>><?php _e( '301 redirect: Moved permanently', $this->plugin_name ) ?></option>
+            <option value="302" <?php selected( $options['redirect_type'], 302, true ) ?>><?php _e( '302 redirect: Found / Moved temporarily', $this->plugin_name ) ?></option>
+            <option value="303" <?php selected( $options['redirect_type'], 303, true ) ?>><?php _e( '303 redirect: See Other', $this->plugin_name ) ?></option>
+            <option value="307" <?php selected( $options['redirect_type'], 307, true ) ?>><?php _e( '307 redirect: Temporarily Redirect', $this->plugin_name ) ?></option>
+            <option value="308" <?php selected( $options['redirect_type'], 308, true ) ?>><?php _e( '308 redirect: Permanent Redirect', $this->plugin_name ) ?></option>
         </select>
         <p class="description "><?php echo esc_html( $args[0] ) ?></p>
 		<?php
@@ -349,9 +350,11 @@ class Clickwhale_Admin_Settings {
 
 		$options = get_option( 'clickwhale_general_options' );
 		?>
-        <input type="checkbox" id="nofollow" name="clickwhale_general_options[nofollow]"
-               value="1" <?php checked( 1, isset( $options['nofollow'] ) ? $options['nofollow'] : 0, true ) ?>>
-        <label for="nofollow">&nbsp;<?php echo esc_attr( $args[0] ) ?></label>
+        <label for="nofollow">
+            <input type="checkbox" id="nofollow" name="clickwhale_general_options[nofollow]"
+                   value="1" <?php checked( 1, isset( $options['nofollow'] ) ? $options['nofollow'] : 0, true ) ?>>
+			<?php echo esc_attr( $args[0] ) ?>
+        </label>
 		<?php
 	}
 
@@ -359,10 +362,12 @@ class Clickwhale_Admin_Settings {
 
 		$options = get_option( 'clickwhale_general_options' );
 		?>
-        <input type="checkbox" id="sponsored" name="clickwhale_general_options[sponsored]"
-               value="1" <?php checked( 1, isset( $options['sponsored'] ) ? $options['sponsored'] : 0, true ) ?>>
-        <label for="sponsored">&nbsp;<?php echo esc_attr( $args[0] ) ?></label>
-        <p class="description "><?php _e( 'Recommended for affiliate links.', 'clickwhale' ) ?></p>
+        <label for="sponsored">
+            <input type="checkbox" id="sponsored" name="clickwhale_general_options[sponsored]"
+                   value="1" <?php checked( 1, isset( $options['sponsored'] ) ? $options['sponsored'] : 0, true ) ?>>
+			<?php echo esc_attr( $args[0] ) ?>
+        </label>
+        <p class="description "><?php echo esc_html( $args[1] ) ?></p>
 		<?php
 	}
 
@@ -370,9 +375,11 @@ class Clickwhale_Admin_Settings {
 
 		$options = get_option( 'clickwhale_tracking_options' );
 		?>
-        <input type="checkbox" id="disable_click_tracking" name="clickwhale_general_options[disable_click_tracking]"
-               value="1" <?php checked( 1, isset( $options['disable_click_tracking'] ) ? $options['disable_click_tracking'] : 0, true ) ?>>
-        <label for="disable_click_tracking">&nbsp;<?php echo esc_attr( $args[0] ) ?></label>
+        <label for="disable_click_tracking">
+            <input type="checkbox" id="disable_click_tracking" name="clickwhale_general_options[disable_click_tracking]"
+                   value="1" <?php checked( 1, isset( $options['disable_click_tracking'] ) ? $options['disable_click_tracking'] : 0, true ) ?>>
+			<?php echo esc_html( $args[0] ) ?>
+        </label>
 		<?php
 	}
 
@@ -387,15 +394,22 @@ class Clickwhale_Admin_Settings {
 			$check_administrator = $check_editor = $check_author = '';
 		}
 		?>
-        <input type="checkbox" id="exclude_administrator" name="clickwhale_tracking_options[exclude_users_by_role][]"
-               value="administrator" <?php echo esc_attr( $check_administrator ) ?>/>
-        <label for="exclude_administrator">&nbsp;Administrator</label><br>
-        <input type="checkbox" id="exclude_editor" name="clickwhale_tracking_options[exclude_users_by_role][]"
-               value="editor" <?php echo esc_attr( $check_editor ) ?>/>
-        <label for="exclude_editor">&nbsp;Editor</label><br>
-        <input type="checkbox" id="exclude_author" name="clickwhale_tracking_options[exclude_users_by_role][]"
-               value="author" <?php echo esc_attr( $check_author ) ?>/>
-        <label for="exclude_author">&nbsp;Author</label>
+        <label for="exclude_administrator">
+            <input type="checkbox" id="exclude_administrator"
+                   name="clickwhale_tracking_options[exclude_users_by_role][]"
+                   value="administrator" <?php echo esc_attr( $check_administrator ) ?>/>
+			<?php _e( 'Administrator', $this->plugin_name ); ?>
+        </label><br>
+        <label for="exclude_editor">
+            <input type="checkbox" id="exclude_editor" name="clickwhale_tracking_options[exclude_users_by_role][]"
+                   value="editor" <?php echo esc_attr( $check_editor ) ?>/>
+			<?php _e( 'Editor', $this->plugin_name ); ?>
+        </label><br>
+        <label for="exclude_author">
+            <input type="checkbox" id="exclude_author" name="clickwhale_tracking_options[exclude_users_by_role][]"
+                   value="author" <?php echo esc_attr( $check_author ) ?>/>
+			<?php _e( 'Author', $this->plugin_name ); ?>
+        </label>
 		<?php
 	}
 }
