@@ -145,7 +145,7 @@ class Clickwhale_Admin {
 		return $limit;
 	}
 
-	public function clickwhale_admin_banner() {
+	public function clickwhale_admin_banner_callback() {
 		$link_pro      = 'https://clickwhale.pro';
 		$link_helpdesk = 'https://clickwhale.pro/docs/';
 
