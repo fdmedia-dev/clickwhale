@@ -1,4 +1,5 @@
 <?php
+do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap clickwhale-settings-wrap">

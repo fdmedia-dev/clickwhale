@@ -4,6 +4,8 @@ $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $message         = get_transient( 'link-' . $item['id'] );
 $options         = get_option( 'clickwhale_general_options' );
+
+do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
