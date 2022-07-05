@@ -10,7 +10,7 @@ $table->prepare_items();
 
 $message = '';
 if ('delete' === $table->current_action()) {
-    $message = '<div class="updated below-h2" id="message"><p>' . sprintf(__('Items deleted: %d', 'clickwhale'), count($_REQUEST['id'])) . '</p></div>';
+	$message = '<div class="updated below-h2" id="message"><p>' . __( 'Items deleted', 'clickwhale' ) . '</p></div>';
 }
 
 do_action( 'clickwhale_admin_banner' );
