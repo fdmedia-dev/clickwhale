@@ -26,6 +26,7 @@ class PrettyLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
                     'url'         => $item->url,
                     'slug'        => $item->slug,
                     'redirection' => $item->redirect_type,
+                    'description' => isset( $item->description ) ? $item->description : '',
                     'nofollow'    => $item->nofollow,
                     'sponsored'   => $item->sponsored,
                     'categories'  => '',
