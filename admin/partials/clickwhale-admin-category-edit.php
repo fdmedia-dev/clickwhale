@@ -62,6 +62,8 @@ else {
         }
     }
 }
+
+do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">

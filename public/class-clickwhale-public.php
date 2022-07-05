@@ -27,7 +27,7 @@ class Clickwhale_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -36,26 +36,26 @@ class Clickwhale_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of the plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 		$this->load_dependencies();
-
 	}
 
-		/**
+	/**
 	 * Load the required dependencies for the Admin facing functionality.
 	 *
 	 * Include the following files that make up the plugin:
@@ -68,8 +68,9 @@ class Clickwhale_Public {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'public/class-clickwhale-click-track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'public/class-clickwhale-wp-user.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
 
 	}
 
@@ -119,46 +120,68 @@ class Clickwhale_Public {
 
 	}
 
-	public function do_redirect_handler(){
+	public function do_redirect_handler() {
 
-		$user = new Clickwhale_WP_User($this->plugin_name, $this->version);
+		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
 
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'clickwhale_links';
+		$table_name       = $wpdb->prefix . 'clickwhale_links';
+		$table_links_meta = $wpdb->prefix . 'clickwhale_links_meta';
+		$options          = get_option( 'clickwhale_general_options' );
+		$link_slug        = $options['slug'] . '/';
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-		$path = untrailingslashit(parse_url( $url, PHP_URL_PATH ));
+		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 
-		if(!is_admin() && $path && strpos($path, 'link/')){
-			$path = strstr($path, 'link/');
-			$path = str_replace('link/','',$path);
+		if ( ! is_admin() && $path && strpos( $path, $link_slug ) ) {
+			$path = strstr( $path, $link_slug );
+			$path = str_replace( $link_slug, '', $path );
 		};
 
-		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'");
-        if(!empty($results)) {
+		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'" );
+		if ( ! empty( $results ) ) {
 
-			if(!$user->disallow_track()){
-				$track = new ClickWhale_Click_Track($results[0]->id);
+			$id = $results[0]->id;
+
+			if ( ! $user->disallow_track() ) {
+				$track = new Clickwhale_Click_Track( $id );
 				$track->track();
 			}
-			$nofollow 	= '';
-			$sponsored 	= '';
-			$sep 		= '';
 
-			if($results[0]->nofollow){
+			// Set header
+			$nofollow  = '';
+			$sponsored = '';
+			$sep       = '';
+
+			if ( $results[0]->nofollow ) {
 				$nofollow = 'noindex, nofollow';
 			}
-			if($results[0]->sponsored){
+			if ( $results[0]->sponsored ) {
 				$sponsored = 'sponsored';
 			}
-			if($results[0]->nofollow && $results[0]->sponsored){
+			if ( $results[0]->nofollow && $results[0]->sponsored ) {
 				$sep = ', ';
 			}
-			if($results[0]->nofollow || $results[0]->sponsored){
-				header('X-Robots-Tag: '. $nofollow . $sep . $sponsored . '');
+			if ( $results[0]->nofollow || $results[0]->sponsored ) {
+				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
 			}
 
-			wp_redirect($results[0]->url, $results[0]->redirection);
+			// Set UTMs
+			$utm_campaign_var = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_campaign'" );
+			$utm_medium_var   = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_medium'" );
+			$utm_source_var   = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_source'" );
+			$utm_term_var     = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_term'" );
+			$utm_content_var  = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_content'" );
+
+			$utm_campaign = $utm_campaign_var ? '?utm_campaign=' . $utm_campaign_var : '';
+			$utm_medium   = $utm_medium_var ? '?utm_medium=' . $utm_medium_var : '';
+			$utm_source   = $utm_source_var ? '?utm_source=' . $utm_source_var : '';
+			$utm_term     = $utm_term_var ? '?utm_term=' . $utm_term_var : '';
+			$utm_content  = $utm_content_var ? '?utm_content=' . $utm_content_var : '';
+
+			// Final URL with/without UTMs
+			$link_url = $results[0]->url . $utm_campaign . $utm_medium . $utm_source . $utm_term . $utm_content;
+			wp_redirect( $link_url, $results[0]->redirection );
 			exit;
 		}
 

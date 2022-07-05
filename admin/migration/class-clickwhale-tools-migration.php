@@ -7,7 +7,7 @@ class Clickwhale_Tools_Migration {
 		// Vars
 		$this->options        = 'clickwhale_tools_migration_options';
 		$this->last_migration = 'clickwhale_tools_last_migration_options';
-		$this->migration      = new ClickWhale_Migration();
+		$this->migration      = new Clickwhale_Migration();
 
 		// Actions
 		add_action( 'admin_init', [ $this, 'add_tools_migration_options' ] );
@@ -28,8 +28,8 @@ class Clickwhale_Tools_Migration {
 		$defaults = [];
 
 		foreach ( $this->migration->available_migrations() as $item ) {
-			$defaults[ $item['slug'] . '_categories' ] = $item['data']['categories'] ? true : false;
-			$defaults[ $item['slug'] . '_links' ]      = $item['data']['links'] ? true : false;
+			$defaults[ $item['slug'] . '_categories' ] = true;
+			$defaults[ $item['slug'] . '_links' ]      = true;
 		}
 
 		return $defaults;
@@ -65,20 +65,20 @@ class Clickwhale_Tools_Migration {
 	 * Add default last migration options if not exisit
 	 */
 	public function add_tools_last_migration_options() {
-		if ( false == get_option( $this->last_migration ) ) {
+		if ( ! get_option( $this->last_migration ) ) {
 			$defaults = $this->default_last_migration_options();
 			add_option( $this->last_migration, $defaults );
 		}
 	}
 
 	public function add_notice_migrate_options() {
-		if ( false == get_option( 'clickwhale_hide_notice_migrate' ) ) {
+		if ( ! get_option( 'clickwhale_hide_notice_migrate' ) ) {
 			add_option( 'clickwhale_hide_notice_migrate', [] );
 		}
 	}
 
 	public function add_notice_deactive_options() {
-		if ( false == get_option( 'clickwhale_hide_notice_deactive' ) ) {
+		if ( ! get_option( 'clickwhale_hide_notice_deactive' ) ) {
 			add_option( 'clickwhale_hide_notice_deactive', [] );
 		}
 	}
@@ -172,11 +172,12 @@ class Clickwhale_Tools_Migration {
 	 *
 	 */
 	public function tools_migration_callback( $item ) {
-		$result = $this->tools_migration_callback_count( $item['data'] );
+		$result = $this->tools_migration_callback_count( $this->migration->get_plugin_data( $item['slug'] ) );
 		$result .= $this->tools_migration_callback_last_migration( $item['slug'] . '_last_migration' );
 		$result .= __( 'Set what you want to migrate from ' . $item['name'] . ' to CLickwhale', 'clickwhale' );
-
-		echo '<p>' . $result . '</p>';
+		?>
+        <p><?php echo $result ?></p>
+		<?php
 	}
 
 	/**
@@ -184,20 +185,26 @@ class Clickwhale_Tools_Migration {
 	 */
 	public function tools_migration_categories_callback( $item ) {
 		$options = get_option( $this->options );
-
-		$html = '<input type="checkbox" id="' . $item['slug'] . '_categories" name="' . $this->options . '[' . $item['slug'] . '_categories]" value="1" ' . checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, false ) . '/>';
-		$html .= '<label for="' . $item['slug'] . '_categories">&nbsp;' . __( 'Migrate categories (add normal label)', 'clickwhale' ) . '</label>';
-
-		echo $html;
+		?>
+        <input type="checkbox"
+               id="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>"
+               name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_categories]' ) ?>"
+               value="1"
+			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories', 'clickwhale' ) ?></label>
+        <?php
 	}
 
 	public function tools_migration_links_callback( $item ) {
 		$options = get_option( $this->options );
-
-		$html = '<input type="checkbox" id="' . $item['slug'] . '_links" name="' . $this->options . '[' . $item['slug'] . '_links]" value="1" ' . checked( 1, isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0, false ) . '/>';
-		$html .= '<label for="' . $item['slug'] . '_links">&nbsp;' . __( 'Migrate links (add normal label)', 'clickwhale' ) . '</label>';
-
-		echo $html;
+		?>
+        <input type="checkbox"
+               id="<?php echo esc_attr( $item['slug'] . '_links' ) ?>"
+               name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_links]' ) ?>"
+               value="1"
+			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0, true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">&nbsp;<?php _e( 'Migrate links', 'clickwhale' ) ?></label>
+		<?php
 	}
 
 

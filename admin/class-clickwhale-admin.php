@@ -55,7 +55,6 @@ class Clickwhale_Admin {
 
 		$this->load_dependencies();
 		$this->migration();
-
 	}
 
 	/**
@@ -90,7 +89,7 @@ class Clickwhale_Admin {
 	}
 
 	public function migration() {
-		$migration = new ClickWhale_Migration();
+		$migration = new Clickwhale_Migration();
 		$migration->init();
 	}
 
@@ -144,6 +143,34 @@ class Clickwhale_Admin {
 
 	public function clickwhale_categories_limit_callback( $limit ) {
 		return $limit;
+	}
+
+	public function clickwhale_admin_banner_callback() {
+		$link_helpdesk = 'https://clickwhale.pro/docs/';
+		?>
+
+        <div class="clickwhale-banner">
+            <div class="clickwhale-banner--logo"><img
+                        src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
+                        alt="<?php echo $this->plugin_name ?>"></div>
+            <div class="clickwhale-banner--links">
+				<?php if ( $link_helpdesk ) { ?>
+                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--link"
+                       target="_blank"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
+				<?php } ?>
+				<?php do_action( 'clickwhale_admin_banner_button_pro' ) ?>
+            </div>
+        </div>
+		<?php
+	}
+
+	public function clickwhale_admin_banner_button_pro_callback( ) {
+		$link_pro = 'https://clickwhale.pro';
+		?>
+        <a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
+			<?php _e( 'Update to Pro', $this->plugin_name ) ?>
+        </a>
+		<?php
 	}
 
 	public function admin_scripts() {

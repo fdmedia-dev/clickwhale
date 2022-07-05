@@ -6,7 +6,7 @@
  * @link       #
  * @since      1.0.0
  */
-class ClickWhale_Migration_Notice {
+class Clickwhale_Migration_Notice {
 
     /**
 	 * Plugin name

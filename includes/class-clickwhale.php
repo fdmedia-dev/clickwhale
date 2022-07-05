@@ -78,7 +78,6 @@ class Clickwhale {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
 	}
 
 	/**
@@ -99,8 +98,6 @@ class Clickwhale {
 	 */
 	private function load_dependencies() {
 
-		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'inc/autoload.php';
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -153,34 +150,37 @@ class Clickwhale {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
+		global $Clickwhale_Admin; // for add_/remove_action - https://www.forumming.com/question/354/remove-action-from-a-plugin-class-forced-to-use-global-instance
 
-		$plugin_admin     = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$plugin_settings  = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
-		$plugin_tools     = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
-		$plugin_ajax      = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$plugin_link_edit = new Clickwhale_Link_Edit( $this->get_plugin_name() );
+		$Clickwhale_Admin          = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Link_Edit      = new Clickwhale_Link_Edit();
 
-		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
-		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_settings_options' );
-		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_tracking_options' );
+		// ACTIONS
+		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'setup_plugin_options_menu' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'initialize_settings_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'initialize_tracking_options' );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback', 10 ); // banner in admin part
+		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback', 10 ); // button to pro version
 
-		$this->loader->add_action( 'link_edit_fields', $plugin_link_edit, 'clickwhale_link_edit_fields' );
+		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
+		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 
-		$this->loader->add_filter( 'clickwhale_categories_limit', $plugin_admin, 'clickwhale_categories_limit_callback' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax, 'migration_notice_hide' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax, 'migration_deactive' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $Clickwhale_Ajax, 'migration_to_clickwhale' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $Clickwhale_Ajax, 'save_migration_option' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
 
-		// AJAX
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $plugin_ajax, 'migration_notice_hide' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $plugin_ajax, 'migration_deactive' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $plugin_ajax, 'migration_to_clickwhale' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $plugin_ajax, 'save_migration_option' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $plugin_ajax, 'migration_reset' );
+		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
 
-		if ( ! class_exists( 'Clickwhale_Pro' ) ) {
-			$this->loader->add_action( 'admin_print_footer_scripts', $plugin_admin, 'admin_scripts' );
-		}
+		// FILTERS
+		$this->loader->add_filter( 'clickwhale_categories_limit', $Clickwhale_Admin, 'clickwhale_categories_limit_callback' );
 	}
 
 	/**

@@ -1,113 +1,127 @@
 <?php
 
-class ClickWhale_Migration {
+class Clickwhale_Migration {
 
-    public function __construct() {
-    }
+	public function __construct() {
+	}
 
-    public function init() {
-        $this->load_dependencies();
-        $this->dispath_actions();
-    }
+	public function init() {
+		$this->load_dependencies();
+		$this->dispath_actions();
+	}
 
-    private function load_dependencies() {
+	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-clickwhale-migration-interface.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-clickwhale-migration-notice.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/class-clickwhale-migration-interface.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/class-clickwhale-migration-notice.php';
 
-        // load classes if plugin active
-        foreach ($this->available_migrations() as $item) {
-            if ($this->check_active($item['path'])) {
-                require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-' . $item['slug'] . '-to-clickwhale.php';
-            }
-        }
+		// load classes if plugin active
+		foreach ( $this->available_migrations() as $item ) {
+			if ( $this->check_active( $item['path'] ) ) {
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/class-' . $item['slug'] . '-to-clickwhale.php';
+			}
+		}
 
-    }
+	}
 
-    /**
-     * Set target plugin data for migration
-     */
-    public function available_migrations() {
+	/**
+	 * Set target plugin data for migration
+	 */
+	public function available_migrations() {
 
 		return array(
-			'betterlinks' => array(
-                'slug'  => 'betterlinks',
-                'name'  => 'Betterlinks',
-                'path'  => 'betterlinks/betterlinks.php',
-                'class' => 'BetterLinks_To_Clickwhale',
-                'data'  => $this->count_betterlinks_data(),
-            ),
-            'thirstyaffiliates' => array(
-                'slug'  => 'thirstyaffiliates',
-                'name'  => 'ThirstyAffiliates',
-                'path'  => 'thirstyaffiliates/thirstyaffiliates.php',
-                'class' => 'ThirstyAffiliates_To_Clickwhale',
-                'data'  => $this->count_thirstyaffiliates_data(),
-            ),
-            'prettylinks' => array(
-                'slug'  => 'prettylinks',
-                'name'  => 'PrettyLinks',
-                'path'  => 'pretty-link/pretty-link.php',
-                'class' => 'PrettyLinks_To_Clickwhale',
-                'data'  => $this->count_prettylinks_data(),
-            )
+			'betterlinks'       => array(
+				'slug'  => 'betterlinks',
+				'name'  => 'Betterlinks',
+				'path'  => 'betterlinks/betterlinks.php',
+				'class' => 'BetterLinks_To_Clickwhale',
+			),
+			'thirstyaffiliates' => array(
+				'slug'  => 'thirstyaffiliates',
+				'name'  => 'ThirstyAffiliates',
+				'path'  => 'thirstyaffiliates/thirstyaffiliates.php',
+				'class' => 'ThirstyAffiliates_To_Clickwhale',
+			),
+			'prettylinks'       => array(
+				'slug'  => 'prettylinks',
+				'name'  => 'PrettyLinks',
+				'path'  => 'pretty-link/pretty-link.php',
+				'class' => 'PrettyLinks_To_Clickwhale',
+			)
 		);
 	}
 
-    public function check_active($path) {
-        return in_array( $path, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
-    }
+	public function check_active( $path ) {
+		return in_array( $path, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
+	}
 
-    /**
-     * Count links and categories for plugins
-     */
-    public function count_betterlinks_data(){
-        global $wpdb;
+	/**
+	 * Count links and categories for plugins
+	 */
+	public function get_plugin_data( $plugin ) {
+		switch ( $plugin ) {
+			case 'betterlinks':
+				$data = $this->count_betterlinks_data();
+				break;
+			case 'thirstyaffiliates':
+				$data = $this->count_thirstyaffiliates_data();
+				break;
+			case 'prettylinks':
+				$data = $this->count_prettylinks_data();
+				break;
+		}
 
-        $result             = [];
-        $table_links        = $wpdb->prefix . 'betterlinks';
-        $table_categories   = $wpdb->prefix . 'betterlinks_terms';
+		return $data;
+	}
 
-        $result['links']      = $wpdb->get_var("SELECT COUNT(*) FROM $table_links");
-        $result['categories'] = $wpdb->get_var("SELECT COUNT(*) FROM $table_categories");
+	public function count_betterlinks_data() {
+		global $wpdb;
 
-        return $result;
-    }
+		$result           = [];
+		$table_links      = $wpdb->prefix . 'betterlinks';
+		$table_categories = $wpdb->prefix . 'betterlinks_terms';
 
-    public function count_thirstyaffiliates_data(){
-        global $wpdb;
-        
-        $result             = [];
-        $table_links        = $wpdb->prefix . 'posts';
-        $table_categories   = $wpdb->prefix . 'term_taxonomy';
+		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links" );
+		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_categories" );
 
-        $result['links']      = $wpdb->get_var("SELECT COUNT(*) FROM $table_links WHERE post_type='thirstylink' AND post_status='publish'");
-        $result['categories'] = $wpdb->get_var("SELECT COUNT(*) FROM $table_categories WHERE taxonomy='thirstylink-category'");
 
-        return $result;
-    }
+		return $result;
+	}
 
-    public function count_prettylinks_data(){
-        global $wpdb;
-        
-        $result      = [];
-        $table_links = $wpdb->prefix . 'prli_links';
+	public function count_thirstyaffiliates_data() {
+		global $wpdb;
 
-        $result['links']      = $wpdb->get_var("SELECT COUNT(*) FROM $table_links");
-        $result['categories'] = '';
+		$result           = [];
+		$table_links      = $wpdb->prefix . 'posts';
+		$table_categories = $wpdb->prefix . 'term_taxonomy';
 
-        return $result;
-    }
+		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links WHERE post_type='thirstylink' AND post_status='publish'" );
+		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_categories WHERE taxonomy='thirstylink-category'" );
 
-    public function dispath_actions(){
-        $available_migrations = $this->available_migrations();
+		return $result;
+	}
 
-        foreach($available_migrations as $item){
-            if($this->check_active($item['path'])){
-              $migration = new ClickWhale_Migration_Notice($item['slug'], $item['name'], $item['path']);
-              $migration->init(); 
-            }
-        }
+	public function count_prettylinks_data() {
+		global $wpdb;
+
+		$result               = [];
+		$result['categories'] = '';
+		$table_links          = $wpdb->prefix . 'prli_links';
+
+		$result['links'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links" );
+
+		return $result;
+	}
+
+	public function dispath_actions() {
+		$available_migrations = $this->available_migrations();
+
+		foreach ( $available_migrations as $item ) {
+			if ( $this->check_active( $item['path'] ) ) {
+				$migration = new Clickwhale_Migration_Notice( $item['slug'], $item['name'], $item['path'] );
+				$migration->init();
+			}
+		}
 	}
 
 }
