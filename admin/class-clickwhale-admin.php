@@ -156,12 +156,16 @@ class Clickwhale_Admin {
 			$banner .= '<a href="' . esc_attr( $link_helpdesk ) . '" class="clickwhale-banner--link" target="_blank">' . __( 'Need help?', $this->plugin_name ) . '</a>';
 		}
 		if ( $link_pro ) {
-			$banner .= '<a href="' . esc_attr( $link_pro ) . '" class="clickwhale-banner--button" target="_blank">' . __( 'Update to Pro', $this->plugin_name ) . '</a>';
+			$banner .= do_action('clickwhale_admin_banner_button_pro');
 		}
 		$banner .= '</div>';
 		$banner .= '</div>';
 
 		echo $banner;
+	}
+
+	public function clickwhale_admin_banner_button_pro_callback( $link ) {
+		return '<a href="' . esc_attr( $link ) . '" class="clickwhale-banner--button" target="_blank">' . __( 'Update to Pro', $this->plugin_name ) . '</a>';
 	}
 
 	public function admin_scripts() {
