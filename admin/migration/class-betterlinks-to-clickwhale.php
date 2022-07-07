@@ -5,23 +5,18 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 	public function process_links_data() {
 		global $wpdb;
 
-		$message                       = [];
-		$table_betterlinks_links       = $wpdb->prefix . 'betterlinks';
-		$table_betterlinks_categories  = $wpdb->prefix . 'betterlinks_terms';
-		$table_betterlinks_relatioship = $wpdb->prefix . 'betterlinks_terms_relationships';
-		$table_clickwhale_categories   = $wpdb->prefix . 'clickwhale_categories';
-
-		$data = $wpdb->get_results( "SELECT * FROM $table_betterlinks_links" );
+		$message = [];
+		$data    = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks" );
 
 		foreach ( $data as $item ) {
 
 			if ( count( $this->if_link_exists( $item->link_slug ) ) === 0 ) {
 
-				$category_id = $wpdb->get_var( "SELECT $table_clickwhale_categories.id 
-                    FROM $table_clickwhale_categories, $table_betterlinks_categories, $table_betterlinks_relatioship 
-                    WHERE $table_betterlinks_categories.ID=$table_betterlinks_relatioship.term_id 
-                    AND $table_betterlinks_relatioship.link_id=$item->ID 
-                    AND $table_betterlinks_categories.term_slug=$table_clickwhale_categories.slug" );
+				$category_id = $wpdb->get_var( $wpdb->prepare( "SELECT {$wpdb->prefix}clickwhale_categories.id 
+                    FROM {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}betterlinks_terms, {$wpdb->prefix}betterlinks_terms_relationships 
+                    WHERE {$wpdb->prefix}betterlinks_terms.ID={$wpdb->prefix}betterlinks_terms_relationships.term_id 
+                    AND {$wpdb->prefix}betterlinks_terms_relationships.link_id=%d 
+                    AND {$wpdb->prefix}betterlinks_terms.term_slug={$wpdb->prefix}clickwhale_categories.slug", $item->ID ) );
 
 				$array = array(
 					'title'       => $item->link_title,
@@ -55,10 +50,8 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 		$message = [];
 
 		global $wpdb;
-		$table_clickwhale_categories  = $wpdb->prefix . 'clickwhale_categories';
-		$table_betterlinks_categories = $wpdb->prefix . 'betterlinks_terms';
 
-		$data_betterlink = $wpdb->get_results( "SELECT * FROM $table_betterlinks_categories" );
+		$data_betterlink = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
 
 		foreach ( $data_betterlink as $item ) {
 

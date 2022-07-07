@@ -27,7 +27,7 @@ class Clickwhale_Activator {
 		$table_name      = $wpdb->prefix . 'clickwhale_links';
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_links (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			title tinytext NOT NULL,
 			url varchar(255) DEFAULT '' NOT NULL,
@@ -54,7 +54,7 @@ class Clickwhale_Activator {
 		$table_name      = $wpdb->prefix . 'clickwhale_categories';
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_categories (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			title tinytext NOT NULL,
 			slug varchar(255) DEFAULT '' NOT NULL,
@@ -74,7 +74,7 @@ class Clickwhale_Activator {
 		$table_name      = $wpdb->prefix . 'clickwhale_clicks';
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_clicks (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			link_id mediumint(9) NOT NULL,
 			visitor_hash tinytext NOT NULL,
@@ -98,7 +98,7 @@ class Clickwhale_Activator {
 		$table_name      = $wpdb->prefix . 'clickwhale_links_meta';
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE $table_name (
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_links_meta (
 			id int(11) NOT NULL auto_increment,
 			meta_key varchar(255) default NULL,
 			meta_value longtext default NULL,

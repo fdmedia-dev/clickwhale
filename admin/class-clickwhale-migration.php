@@ -77,12 +77,10 @@ class Clickwhale_Migration {
 	public function count_betterlinks_data() {
 		global $wpdb;
 
-		$result           = [];
-		$table_links      = $wpdb->prefix . 'betterlinks';
-		$table_categories = $wpdb->prefix . 'betterlinks_terms';
+		$result = [];
 
-		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links" );
-		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_categories" );
+		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks" );
+		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks_terms" );
 
 
 		return $result;
@@ -91,12 +89,10 @@ class Clickwhale_Migration {
 	public function count_thirstyaffiliates_data() {
 		global $wpdb;
 
-		$result           = [];
-		$table_links      = $wpdb->prefix . 'posts';
-		$table_categories = $wpdb->prefix . 'term_taxonomy';
+		$result = [];
 
-		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links WHERE post_type='thirstylink' AND post_status='publish'" );
-		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_categories WHERE taxonomy='thirstylink-category'" );
+		$result['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type='thirstylink' AND post_status='publish'" );
+		$result['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}term_taxonomy WHERE taxonomy='thirstylink-category'" );
 
 		return $result;
 	}
@@ -106,9 +102,8 @@ class Clickwhale_Migration {
 
 		$result               = [];
 		$result['categories'] = '';
-		$table_links          = $wpdb->prefix . 'prli_links';
 
-		$result['links'] = $wpdb->get_var( "SELECT COUNT(*) FROM $table_links" );
+		$result['links'] = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}prli_links" );
 
 		return $result;
 	}

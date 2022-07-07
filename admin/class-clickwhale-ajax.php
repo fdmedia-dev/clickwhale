@@ -90,8 +90,8 @@ class Clickwhale_Ajax {
 
 		if ( isset( $_POST['name'] ) && isset( $_POST['value'] ) ) {
 			$options            = get_option( 'clickwhale_tools_migration_options' );
-			$option             = $_POST['name'];
-			$value              = boolval( $_POST['value'] );
+			$option             = sanitize_text_field( $_POST['name'] );
+			$value              = boolval( sanitize_text_field( $_POST['value'] ) );
 			$options[ $option ] = $value;
 
 			update_option( 'clickwhale_tools_migration_options', $options );
@@ -127,7 +127,7 @@ class Clickwhale_Ajax {
 						$options[ $item['slug'] . '_links' ]
 					);
 				} else {
-					$result['data'] = __( 'Nothing to migrate', 'clickwhale' );
+					$result['data'] = __( 'Nothing to migrate', $this->plugin_name );
 				}
 			}
 
@@ -154,7 +154,7 @@ class Clickwhale_Ajax {
 		update_option( 'clickwhale_hide_notice_migrate', [] );
 		update_option( 'clickwhale_hide_notice_deactive', [] );
 
-		$result = __( 'Successfully deleted! Page will reload...', 'clickwhale' );
+		$result = __( 'Successfully deleted! Page will reload...', $this->plugin_name );
 
 		wp_send_json_success( $result );
 

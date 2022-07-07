@@ -32,12 +32,11 @@ class Clickwhale_Link_Edit {
 	public function get_item( $request ) {
 		global $wpdb;
 
-		$notice      = '';
-		$links_table = $wpdb->prefix . 'clickwhale_links';
-		$defaults    = apply_filters( 'link_defaults', $this->get_defaults() );
+		$notice   = '';
+		$defaults = apply_filters( 'link_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $links_table WHERE id = %d", $request['id'] ), ARRAY_A );
+			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
 			if ( ! $item ) {
 				$item   = $defaults;
 				$notice = __( 'Item not found', 'clickwhale' );
@@ -105,8 +104,8 @@ class Clickwhale_Link_Edit {
 
 	public function get_link_categories() {
 		global $wpdb;
-		$categories_table = $wpdb->prefix . 'clickwhale_categories';
-		$results          = $wpdb->get_results( "SELECT * FROM $categories_table" );
+
+		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories" );
 		if ( ! empty( $results ) ) {
 			return $results;
 		}
@@ -141,7 +140,6 @@ class Clickwhale_Link_Edit {
 			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
 			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
 		}
-
 
 
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];

@@ -250,7 +250,7 @@ class Clickwhale_Tools_Migration {
                         jQuery(migrationResult).removeClass("is-active").html('');
 
                         jQuery.post(ajaxurl, {
-                            'security': '<?php echo $nonce ?>',
+                            'security': '<?php echo esc_attr( $nonce) ?>',
                             'action': 'clickwhale/admin/migration_to_clickwhale',
                             'migrant': migrationButton.data('migration')
                         }, function (response) {
@@ -258,8 +258,6 @@ class Clickwhale_Tools_Migration {
                                 var result = response.data;
 
                                 //console.log(result);
-
-                                //jQuery(migrationResult).append('<h3>'+result.title+'</h3>');
 
                                 if ('string' === typeof result.data) {
                                     jQuery(migrationResult).append('<p>' + result.data + '</p>');

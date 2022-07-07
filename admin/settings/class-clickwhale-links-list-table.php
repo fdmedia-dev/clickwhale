@@ -21,19 +21,18 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	function extra_tablenav( $which ) {
 
 		global $wpdb;
-		$table_links      = $wpdb->prefix . 'clickwhale_links';
-		$table_categories = $wpdb->prefix . 'clickwhale_categories';
-		$categories_count = $wpdb->get_var( "SELECT COUNT(*) FROM $table_categories" );
+
+		$categories_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_categories" );
 
 		if ( $categories_count > 0 && $which == "top" ) {
 			?>
             <div class="alignleft actions bulkactions">
 				<?php
-				$cats = $wpdb->get_results( "SELECT * FROM $table_categories order by title asc", ARRAY_A );
+				$cats = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories order by title asc", ARRAY_A );
 				if ( $cats ) {
 					?>
                     <select name="category" class="clickwhale-filter-categories">
-                        <option value="">All Categories</option>
+                        <option value=""><?php _e( 'All Categories', 'clickwhale' ) ?></option>
 						<?php
 						foreach ( $cats as $cat ) {
 							$selected = isset( $_GET['category'] ) && $_GET['category'] == $cat['id'] ? ' selected = "selected"' : '';
@@ -43,7 +42,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 						}
 						?>
                     </select>
-                    <input type="submit" class="button" value="<?php _e( 'Filter', 'clickehale' ); ?>">
+                    <input type="submit" class="button" value="<?php _e( 'Filter', 'clickwhale' ); ?>">
 					<?php
 				}
 				?>
@@ -55,11 +54,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 	private function get_users_data( $search = "" ) {
 		global $wpdb;
-		$table = $wpdb->prefix . 'clickwhale_links';
 
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from $table 
+				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links
                      WHERE title Like '%{$search}%' 
                      OR url Like '%{$search}%' 
                      OR slug Like '%{$search}%' 
@@ -68,7 +66,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			);
 		} else {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from $table",
+				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links",
 				ARRAY_A
 			);
 		}
@@ -101,13 +99,14 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_title( $item ) {
 		// links going to /admin.php?page=[your_plugin_page][&other_params]
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
+		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], $item['title'] );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
 			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>', sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset', 'clickwhale' ) ),
@@ -115,7 +114,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		);
 
 		return sprintf( '%s %s',
-			$item['title'],
+			$title,
 			$this->row_actions( $actions )
 		);
 	}
@@ -149,7 +148,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_categories( $item ) {
 		$current_categories = '';
@@ -159,10 +158,11 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 			if ( $categories ) {
 				global $wpdb;
-				$categories_table = $wpdb->prefix . 'clickwhale_categories';
-				$lastElement      = end( $categories );
+
+				$lastElement = end( $categories );
 				foreach ( $categories as $k => $v ) {
-					$result = $wpdb->get_results( "SELECT * FROM $categories_table WHERE id=$v" );
+					$v      = intval( $v );
+					$result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories WHERE id={$v}" );
 					if ( ! empty( $result ) ) {
 						$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&category=' . $result[0]->id . '">' . $result[0]->title . '</a>';
 						if ( $v != $lastElement ) {
@@ -181,17 +181,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_clicks( $item ) {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'clickwhale_clicks';
-		$id         = $item['id'];
-		$result     = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name WHERE link_id=$id" );
-
-		return $result;
-
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id=%d", intval( $item['id'] ) ) );
 	}
 
 
@@ -200,7 +195,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_cb( $item ) {
 		return sprintf(
@@ -217,7 +212,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	function get_columns() {
-		$columns = array(
+		return array(
 			'cb'         => '<input type="checkbox" />',             //Render a checkbox instead of text
 			'title'      => __( 'Title', 'clickwhale' ),
 			'slug'       => __( 'Link', 'clickwhale' ),
@@ -225,8 +220,6 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'categories' => __( 'Categories', 'clickwhale' ),
 			'clicks'     => __( 'Clicks', 'clickwhale' ),
 		);
-
-		return $columns;
 	}
 
 	/**
@@ -237,11 +230,9 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	function get_sortable_columns() {
-		$sortable_columns = array(
+		return array(
 			'title' => array( 'title', true ),
 		);
-
-		return $sortable_columns;
 	}
 
 	/**
@@ -250,12 +241,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	function get_bulk_actions() {
-		$actions = array(
+		return array(
 			'reset'  => 'Reset',
 			'delete' => 'Delete'
 		);
-
-		return $actions;
 	}
 
 	/**
@@ -267,24 +256,44 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 */
 	function process_bulk_action() {
 		global $wpdb;
-		$table_links  = $wpdb->prefix . 'clickwhale_links';
-		$table_clicks = $wpdb->prefix . 'clickwhale_clicks';
 
-		if ( 'delete' === $this->current_action() ) {
-			$ids = isset( $_REQUEST['id'] ) ? sanitize_text_field( $_REQUEST['id'] ) : array();
-			if ( is_array( $ids ) ) {
-				$ids = implode( ',', $ids );
+		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
+			if ( is_array( $_REQUEST['id'] ) ) {
+				foreach ( $_REQUEST['id'] as $id ) {
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
+							intval( $id )
+						)
+					);
+				}
+			} else {
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
+						intval( $_REQUEST['id'] )
+					)
+				);
 			}
-			if ( ! empty( $ids ) ) {
-				$wpdb->query( "DELETE FROM $table_links WHERE id IN($ids)" );
-			}
-		} else if ( 'reset' === $this->current_action() ) {
-			$ids = isset( $_REQUEST['id'] ) ? sanitize_text_field( $_REQUEST['id'] ) : array();
-			if ( is_array( $ids ) ) {
-				$ids = implode( ',', $ids );
-			}
-			if ( ! empty( $ids ) ) {
-				$wpdb->query( "DELETE FROM $table_clicks WHERE link_id IN($ids)" );
+		}
+
+		if ( 'reset' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
+			if ( is_array( $_REQUEST['id'] ) ) {
+				foreach ( $_REQUEST['id'] as $id ) {
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+							intval( $id )
+						)
+					);
+				}
+			} else {
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+						intval( $_REQUEST['id'] )
+					)
+				);
 			}
 		}
 	}
@@ -296,13 +305,6 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 */
 	function prepare_items() {
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'clickwhale_links'; // do not forget about tables prefix
-
-		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->users_data = $this->get_users_data( sanitize_text_field( $_GET['s'] ) );
-		} else {
-			$this->users_data = $this->get_users_data();
-		}
 
 		$per_page     = 20; // constant, how much records will be shown per page
 		$current_page = $this->get_pagenum();
@@ -318,11 +320,13 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
+			$this->users_data = $this->get_users_data( sanitize_text_field( $_GET['s'] ) );
 			$total_items      = count( $this->users_data );
 			$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 			usort( $this->users_data, array( &$this, 'usort_reorder' ) );
 		} else {
-			$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM $table_name" );
+			$this->users_data = $this->get_users_data();
+			$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_links" );
 		}
 
 		// prepare query params, as usual current page, order by and order direction
@@ -338,13 +342,13 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
 			$this->items = $this->users_data;
 		} else {
-			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 		}
 
 		// Change query for category filter results
 		if ( isset( $_GET['category'] ) && $_GET['category'] > 0 ) {
 			$category    = sanitize_text_field( $_GET['category'] );
-			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE categories = '$category' OR categories LIKE '$category,%' OR categories LIKE '%,$category,%' OR categories LIKE '%,$category' ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE categories = '{$category}' OR categories LIKE '{$category},%' OR categories LIKE '%,{$category},%' OR categories LIKE '%,{$category}' ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 		}
 
 		// [REQUIRED] configure pagination

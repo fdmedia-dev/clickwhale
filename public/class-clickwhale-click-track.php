@@ -27,7 +27,7 @@ class Clickwhale_Click_Track {
 	}
 
 	private function get_user_salt() {
-		return date( 'Y-m-d' );
+		return gmdate( 'Y-m-d' );
 	}
 
 	private function get_link_referer() {
@@ -64,7 +64,7 @@ class Clickwhale_Click_Track {
 			$item['os']           = $this->parser->os;
 			$item['device']       = $this->parser->type;
 			$item['referer']      = $this->get_link_referer();
-			$item['created_at']   = date( 'Y-m-d H:m:s' );
+			$item['created_at']   = gmdate( 'Y-m-d H:m:s' );
 
 			$result = $wpdb->insert( $table_name, $item );
 			//}

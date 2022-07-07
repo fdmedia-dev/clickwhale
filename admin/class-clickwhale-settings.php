@@ -360,7 +360,7 @@ class Clickwhale_Admin_Settings {
         <label for="nofollow">
             <input type="checkbox" id="nofollow" name="clickwhale_general_options[nofollow]"
                    value="1" <?php checked( 1, isset( $options['nofollow'] ) ? $options['nofollow'] : 0, true ) ?>>
-			<?php echo esc_attr( $args[0] ) ?>
+			<?php echo esc_html( $args[0] ) ?>
         </label>
 		<?php
 	}
@@ -372,7 +372,7 @@ class Clickwhale_Admin_Settings {
         <label for="sponsored">
             <input type="checkbox" id="sponsored" name="clickwhale_general_options[sponsored]"
                    value="1" <?php checked( 1, isset( $options['sponsored'] ) ? $options['sponsored'] : 0, true ) ?>>
-			<?php echo esc_attr( $args[0] ) ?>
+			<?php echo esc_html( $args[0] ) ?>
         </label>
         <p class="description "><?php echo esc_html( $args[1] ) ?></p>
 		<?php

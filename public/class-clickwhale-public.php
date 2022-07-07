@@ -125,10 +125,8 @@ class Clickwhale_Public {
 		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
 
 		global $wpdb;
-		$table_name       = $wpdb->prefix . 'clickwhale_links';
-		$table_links_meta = $wpdb->prefix . 'clickwhale_links_meta';
-		$options          = get_option( 'clickwhale_general_options' );
-		$link_slug        = $options['slug'] . '/';
+		$options   = get_option( 'clickwhale_general_options' );
+		$link_slug = $options['slug'] . '/';
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
@@ -138,10 +136,10 @@ class Clickwhale_Public {
 			$path = str_replace( $link_slug, '', $path );
 		};
 
-		$results = $wpdb->get_results( "SELECT * FROM $table_name WHERE slug = '{$path}'" );
+		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '{$path}'" );
 		if ( ! empty( $results ) ) {
 
-			$id = $results[0]->id;
+			$id = intval( $results[0]->id );
 
 			if ( ! $user->disallow_track() ) {
 				$track = new Clickwhale_Click_Track( $id );
@@ -167,11 +165,11 @@ class Clickwhale_Public {
 			}
 
 			// Set UTMs
-			$utm_campaign_var = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_campaign'" );
-			$utm_medium_var   = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_medium'" );
-			$utm_source_var   = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_source'" );
-			$utm_term_var     = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_term'" );
-			$utm_content_var  = $wpdb->get_var( "SELECT meta_value FROM $table_links_meta WHERE link_id=$id AND meta_key='utm_content'" );
+			$utm_campaign_var = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_campaign'", $id ) );
+			$utm_medium_var   = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_medium'", $id ) );
+			$utm_source_var   = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_source'", $id ) );
+			$utm_term_var     = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_term'", $id ) );
+			$utm_content_var  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_content'", $id ) );
 
 			$utm_campaign = $utm_campaign_var ? '?utm_campaign=' . $utm_campaign_var : '';
 			$utm_medium   = $utm_medium_var ? '?utm_medium=' . $utm_medium_var : '';

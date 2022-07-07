@@ -32,7 +32,7 @@ do_action( 'clickwhale_admin_banner' );
     <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_link">
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
-        <input type="hidden" name="id" value="<?php echo $item['id'] ?>"/>
+        <input type="hidden" name="id" value="<?php echo esc_attr( $item['id'] ) ?>"/>
 
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
@@ -65,10 +65,11 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
                                        size="50"
                                        class="regular-text"
-                                       placeholder="<?php printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options['slug'] ) ?>"
+                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options['slug'] ) ) ?>"
                                        required>
                                 <p id="slug__text">
-									<?php echo __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options['slug'] . '/<span>' . esc_attr( $item['slug'] ) . '</span>' ?>
+									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options['slug'] . '/'; ?>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
                         </tr>
@@ -93,20 +94,20 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <select name="redirection" id="redirection" class="regular-text">
-                                    <option value="301" <?php selected( $item['redirection'], 301 ); ?>>301 redirect:
-                                        Moved permanently
+                                    <option value="301" <?php selected( $item['redirection'], 301 ); ?>>
+                                        301 redirect: Moved permanently
                                     </option>
-                                    <option value="302" <?php selected( $item['redirection'], 302 ); ?>>302 redirect:
-                                        Found / Moved temporarily
+                                    <option value="302" <?php selected( $item['redirection'], 302 ); ?>>
+                                        302 redirect: Found / Moved temporarily
                                     </option>
-                                    <option value="303" <?php selected( $item['redirection'], 303 ); ?>>303 redirect:
-                                        See Other
+                                    <option value="303" <?php selected( $item['redirection'], 303 ); ?>>
+                                        303 redirect: See Other
                                     </option>
-                                    <option value="307" <?php selected( $item['redirection'], 307 ); ?>>307 redirect:
-                                        Temporarily Redirect
+                                    <option value="307" <?php selected( $item['redirection'], 307 ); ?>>
+                                        307 redirect: Temporarily Redirect
                                     </option>
-                                    <option value="308" <?php selected( $item['redirection'], 308 ); ?>>308 redirect:
-                                        Permanent Redirect
+                                    <option value="308" <?php selected( $item['redirection'], 308 ); ?>>
+                                        308 redirect: Permanent Redirect
                                     </option>
                                 </select>
                             </td>
@@ -176,16 +177,16 @@ do_action( 'clickwhale_admin_banner' );
 										?>
                                         <p>
                                             <input type="checkbox"
-                                                   id="category-<?php echo $category->id ?>"
+                                                   id="category-<?php echo esc_attr( $category->id ) ?>"
                                                    name="categories[]"
-                                                   value="<?php echo $category->id ?>"
+                                                   value="<?php echo esc_attr( $category->id ) ?>"
 												<?php
 												if ( $current_categories ) {
 													checked( in_array( $category->id, $current_categories ), 1 );
 												}
 												?>
                                             />
-                                            <label for="category-<?php echo $category->id ?>"><?php echo $category->title ?></label>
+                                            <label for="category-<?php echo esc_attr( $category->id ) ?>"><?php echo esc_attr( $category->title ) ?></label>
                                         </p>
 										<?php
 									}
@@ -200,7 +201,8 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php do_action( 'link_edit_fields' ); ?>
 
-                    <input type="hidden" id="created_at" name="created_at" value="<?php echo $item['created_at'] ?>">
+                    <input type="hidden" id="created_at" name="created_at"
+                           value="<?php echo esc_attr( $item['created_at'] ) ?>">
                     <input type="hidden" id="updated_at" name="updated_at" value="">
 
                     <input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"

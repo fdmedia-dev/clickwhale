@@ -7,7 +7,7 @@ do_action( 'clickwhale_admin_banner' );
     <h1 class="wp-heading-inline"><?php _e( 'ClickWhale Tools', 'clickwhale' ); ?></h1>
 	<?php settings_errors(); ?>
 
-	<?php $active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'migration_options'; ?>
+	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
 
     <h2 class="nav-tab-wrapper">
         <a href="?page=clickwhale-tools&tab=migration_options"
@@ -33,7 +33,7 @@ do_action( 'clickwhale_admin_banner' );
                         <div id="clickwhale-tools-migration-submit">
                             <button type="button"
                                     class="button button_start_migrate"
-                                    data-migration="<?php echo $item['slug'] ?>"><?php _e( 'Start migration', 'clickwhale' ) ?></button>
+                                    data-migration="<?php echo esc_attr( $item['slug'] ) ?>"><?php _e( 'Start migration', 'clickwhale' ) ?></button>
                             <span class="spinner"></span>
                         </div>
                         <div class="results"></div>
