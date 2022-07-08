@@ -12,6 +12,8 @@ do_action( 'clickwhale_admin_banner' );
     <h2 class="nav-tab-wrapper">
         <a href="?page=clickwhale-tools&tab=migration_options"
            class="nav-tab <?php echo $active_tab == 'migration_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Migration', 'clickwhale' ); ?></a>
+        <a href="?page=clickwhale-tools&tab=reset_options"
+           class="nav-tab <?php echo $active_tab == 'reset_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Reset', 'clickwhale' ); ?></a>
     </h2>
 
     <form method="post" action="options.php">
@@ -55,7 +57,20 @@ do_action( 'clickwhale_admin_banner' );
                 <p><?php _e( 'You do not have active plugins from which we can transfer data.', 'clickwhale' ); ?></p>
 			<?php }
 		}
+		if ( $active_tab == 'reset_options' ) {
+			?>
+            <div id="clickwhale-tools-db-reset">
+				<?php
+				settings_fields( 'clickwhale_tools_reset_options' );
+				do_settings_sections( 'clickwhale_tools_reset_options' );
+				?>
+                <button id="button-reset-db" class="button button-primary"
+                        type="button"><?php _e( 'Reset database tables', 'clickwhale' ) ?></button>
+                <span class="spinner"></span>
+                <div class="results"></div>
+            </div>
+			<?php
+		}
 		?>
     </form>
-    <div id="clickwhale_migration_results"></div>
 </div>
