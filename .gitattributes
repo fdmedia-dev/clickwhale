@@ -7,6 +7,8 @@
 /build/ export-ignore
 /assets/ export-ignore
 /tests/ export-ignore
+/.github/
+/.wordpress.org/
 composer.json export-ignore
 composer.lock export-ignore
 Gruntfile.js export-ignore
