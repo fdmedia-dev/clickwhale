@@ -113,12 +113,4 @@ class Clickwhale_Migration_Interface {
 		return $wpdb->insert_id;
 	}
 
-	public function run_links_meta_migration( $is, $data ) {
-
-	}
-
-	public function admin_scripts() {
-
-	}
-
 }
