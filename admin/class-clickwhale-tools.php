@@ -62,7 +62,8 @@ class Clickwhale_Admin_Tools {
 	}
 
 	public function tools_reset_db() {
-		new Clickwhale_Tools_Reset_DB( $this->plugin_name );
+		$reset = new ClickwhaleToolsResetDB( $this->plugin_name );
+		$reset->init();
 	}
 
 }

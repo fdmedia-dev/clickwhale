@@ -193,13 +193,13 @@ class Clickwhale {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Clickwhale_Public( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Public = new Clickwhale_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_scripts' );
 
-		$this->loader->add_action( 'init', $plugin_public, 'do_redirect_handler' );
-
+		$this->loader->add_action( 'init', $Clickwhale_Public, 'do_redirect_handler' );
+		$this->loader->add_filter( 'clickwhale_url_params', $Clickwhale_Public, 'clickwhale_url_params_callback', 10, 2 );
 	}
 
 	/**

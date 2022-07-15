@@ -176,7 +176,7 @@ class Clickwhale_Tools_Migration {
 		$result .= $this->tools_migration_callback_last_migration( $item['slug'] . '_last_migration' );
 		$result .= __( 'Set what you want to migrate from ' . $item['name'] . ' to CLickwhale', 'clickwhale' );
 		?>
-        <p><?php echo $result ?></p>
+        <p><?php echo esc_html( $result ); ?></p>
 		<?php
 	}
 

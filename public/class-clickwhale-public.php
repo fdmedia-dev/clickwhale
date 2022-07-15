@@ -120,6 +120,10 @@ class Clickwhale_Public {
 
 	}
 
+	public function clickwhale_url_params_callback( $url ) {
+		return $url;
+	}
+
 	public function do_redirect_handler() {
 
 		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
@@ -164,11 +168,7 @@ class Clickwhale_Public {
 				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
 			}
 
-			// Set UTMs
-			$utm_string = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_string'", $id ) );
-
-			// Final URL with/without UTMs
-			$link_url = $results[0]->url . $utm_string;
+			$link_url = apply_filters( 'clickwhale_url_params', $results[0]->url, $id );
 			wp_redirect( $link_url, $results[0]->redirection );
 			exit;
 		}
