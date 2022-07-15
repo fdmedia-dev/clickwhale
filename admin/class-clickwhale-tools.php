@@ -58,11 +58,12 @@ class Clickwhale_Admin_Tools {
 	}
 
 	public function tools_migration() {
-		new Clickwhale_Tools_Migration();
+		$migration = new Clickwhale_Tools_Migration();
 	}
 
 	public function tools_reset_db() {
-		new Clickwhale_Tools_Reset_DB( $this->plugin_name );
+		$reset = new Clickwhale_Tools_Reset_DB( $this->plugin_name );
+		$reset->init();
 	}
 
 }

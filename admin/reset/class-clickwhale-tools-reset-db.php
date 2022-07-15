@@ -11,8 +11,10 @@ class Clickwhale_Tools_Reset_DB {
 	private $plugin_name;
 
 	public function __construct( $plugin_name ) {
-
 		$this->plugin_name = $plugin_name;
+	}
+
+	public function init() {
 		add_action( 'admin_init', [ $this, 'initialize_reset_options' ] );
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}

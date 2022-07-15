@@ -166,22 +166,23 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 		$result = [];
+		$text   = __( 'Table has been reset', $this->plugin_name );
 
 		$result[] = array(
 			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories" ),
-			'text'   => sprintf( __( 'Table %1$s has been reset', $this->plugin_name ), 'clickwhale_categories' ),
+			'text'   => $text . ': ' . 'clickwhale_categories',
 		);
 		$result[] = array(
 			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_clicks" ),
-			'text'   => sprintf( __( 'Table %1$s has been reset', $this->plugin_name ), 'clickwhale_clicks' ),
+			'text'   => $text . ': ' . 'clickwhale_clicks',
 		);
 		$result[] = array(
 			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links" ),
-			'text'   => sprintf( __( 'Table %1$s has been reset', $this->plugin_name ), 'clickwhale_links' ),
+			'text'   => $text . ': ' . 'clickwhale_links',
 		);
 		$result[] = array(
 			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" ),
-			'text'   => sprintf( __( 'Table %1$s has been reset', $this->plugin_name ), 'clickwhale_links_meta' ),
+			'text'   => $text . ': ' . 'clickwhale_links_meta',
 		);
 
 		activate_clickwhale();
