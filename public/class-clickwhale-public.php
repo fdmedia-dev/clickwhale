@@ -120,7 +120,7 @@ class Clickwhale_Public {
 
 	}
 
-	public function clickwhale_url_params_callback( $url, $id ) {
+	public function clickwhale_url_params_callback( $url ) {
 		return $url;
 	}
 
@@ -168,7 +168,6 @@ class Clickwhale_Public {
 				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
 			}
 
-			//$params = do_action('add_utm_string', $id);
 			$link_url = apply_filters( 'clickwhale_url_params', $results[0]->url, $id );
 			wp_redirect( $link_url, $results[0]->redirection );
 			exit;
