@@ -8,28 +8,27 @@ class PrettyLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 		$message = [];
 		$data    = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links" );
 
-		// in future for pro version
-		//$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links WHERE post_type='pretty-link' AND post_status='publish'");
-
-
 		foreach ( $data as $item ) {
 
 			if ( count( $this->if_link_exists( $item->slug ) ) === 0 ) {
 
-				$array = array(
+				$category_id = $this->get_categories_string( $this->get_custom_post_type_categories( $item->link_cpt_id ) );
+				$link_data   = $this->link_url_parse( $item->url );
+				$array       = array(
 					'title'       => $item->name,
-					'url'         => $item->url,
+					'url'         => $link_data['url'],
 					'slug'        => $item->slug,
 					'redirection' => $item->redirect_type,
 					'description' => isset( $item->description ) ? $item->description : '',
 					'nofollow'    => $item->nofollow,
 					'sponsored'   => $item->sponsored,
-					'categories'  => '',
+					'categories'  => ! is_null( $category_id ) ? $category_id : '',
 					'created_at'  => $item->created_at,
 					'updated_at'  => $item->updated_at,
 				);
 
-				$this->run_links_migration( $array );
+				$insert_id = $this->run_links_migration( $array );
+				do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
 
 				$message[] = $this->link_item_import_success( $item->name );
 			} else {
@@ -41,6 +40,12 @@ class PrettyLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 			'links' => $message,
 		];
 
+	}
+
+	public function process_categories_data() {
+		return [
+			'categories' => $this->prepare_categories_data( $this->get_custom_term_taxonomy_ids( 'pretty-link-category' ) ),
+		];
 	}
 
 	public function process_migration_time() {

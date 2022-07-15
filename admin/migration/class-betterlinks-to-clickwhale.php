@@ -18,9 +18,10 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
                     AND {$wpdb->prefix}betterlinks_terms_relationships.link_id=%d 
                     AND {$wpdb->prefix}betterlinks_terms.term_slug={$wpdb->prefix}clickwhale_categories.slug", $item->ID ) );
 
-				$array = array(
+				$link_data = $this->link_url_parse( $item->target_url );
+				$array     = array(
 					'title'       => $item->link_title,
-					'url'         => $item->target_url,
+					'url'         => $link_data['url'],
 					'slug'        => $item->link_slug,
 					'redirection' => $item->redirect_type,
 					'description' => isset( $item->link_note ) ? $item->link_note : '',
@@ -31,7 +32,8 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'updated_at'  => $item->link_modified,
 				);
 
-				$this->run_links_migration( $array );
+				$insert_id = $this->run_links_migration( $array );
+				do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
 
 				$message[] = $this->link_item_import_success( $item->link_title );
 			} else {
@@ -46,11 +48,9 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 	}
 
 	public function process_categories_data() {
-
-		$message = [];
-
 		global $wpdb;
 
+		$message         = [];
 		$data_betterlink = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
 
 		foreach ( $data_betterlink as $item ) {
