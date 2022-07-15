@@ -48,11 +48,9 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 	}
 
 	public function process_categories_data() {
-
-		$message = [];
-
 		global $wpdb;
 
+		$message         = [];
 		$data_betterlink = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
 
 		foreach ( $data_betterlink as $item ) {
