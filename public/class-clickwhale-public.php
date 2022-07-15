@@ -120,6 +120,10 @@ class Clickwhale_Public {
 
 	}
 
+	public function clickwhale_url_params_callback( $url, $id ) {
+		return $url;
+	}
+
 	public function do_redirect_handler() {
 
 		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
@@ -164,21 +168,8 @@ class Clickwhale_Public {
 				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
 			}
 
-			// Set UTMs
-			$utm_campaign_var = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_campaign'", $id ) );
-			$utm_medium_var   = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_medium'", $id ) );
-			$utm_source_var   = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_source'", $id ) );
-			$utm_term_var     = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_term'", $id ) );
-			$utm_content_var  = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM {$wpdb->prefix}clickwhale_links_meta WHERE link_id=%d AND meta_key='utm_content'", $id ) );
-
-			$utm_campaign = $utm_campaign_var ? '?utm_campaign=' . $utm_campaign_var : '';
-			$utm_medium   = $utm_medium_var ? '?utm_medium=' . $utm_medium_var : '';
-			$utm_source   = $utm_source_var ? '?utm_source=' . $utm_source_var : '';
-			$utm_term     = $utm_term_var ? '?utm_term=' . $utm_term_var : '';
-			$utm_content  = $utm_content_var ? '?utm_content=' . $utm_content_var : '';
-
-			// Final URL with/without UTMs
-			$link_url = $results[0]->url . $utm_campaign . $utm_medium . $utm_source . $utm_term . $utm_content;
+			//$params = do_action('add_utm_string', $id);
+			$link_url = apply_filters( 'clickwhale_url_params', $results[0]->url, $id );
 			wp_redirect( $link_url, $results[0]->redirection );
 			exit;
 		}
