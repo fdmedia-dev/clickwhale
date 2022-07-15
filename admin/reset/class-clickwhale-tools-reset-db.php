@@ -1,6 +1,6 @@
 <?php
 
-class Clickwhale_Tools_Reset_DB {
+class ClickwhaleToolsResetDB {
 	/**
 	 * The ID of this plugin.
 	 *
