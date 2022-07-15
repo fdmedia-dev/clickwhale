@@ -39,6 +39,34 @@ class Clickwhale_Migration_Interface {
 		update_option( 'clickwhale_tools_last_migration_options', $options );
 	}
 
+	public function link_url_parse( $url ) {
+		$result        = [];
+		$result['url'] = $url;
+		$utms_params   = [ 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ];
+
+		$url_array = parse_url( $url );
+		parse_str( $url_array['query'], $params );
+
+		if ( $params ) {
+			$result['url'] = str_replace( '?' . $url_array['query'], '', $url );
+
+			foreach ( $utms_params as $utm ) {
+				if ( isset( $params[ $utm ] ) ) {
+					$utms[ $utm ] = $params[ $utm ] ? $params[ $utm ] : '';
+					unset( $params[ $utm ] );
+				}
+			}
+			$result['params'] = $params;
+			$result['utms']   = $utms;
+		}
+
+		if ( $result['params'] ) {
+			$result['url'] = $result['url'] . '?' . http_build_query( $result['params'] );
+		}
+
+		return $result;
+	}
+
 	public function if_link_exists( $slug ) {
 		global $wpdb;
 
@@ -70,8 +98,8 @@ class Clickwhale_Migration_Interface {
 	public function run_links_migration( $data ) {
 		global $wpdb;
 
-		$table  = $wpdb->prefix . 'clickwhale_links';
-		$result = $wpdb->insert( $table, $data );
+		$table = $wpdb->prefix . 'clickwhale_links';
+		$wpdb->insert( $table, $data );
 
 		return $wpdb->insert_id;
 	}
@@ -79,10 +107,14 @@ class Clickwhale_Migration_Interface {
 	public function run_categories_migration( $data ) {
 		global $wpdb;
 
-		$table  = $wpdb->prefix . 'clickwhale_categories';
-		$result = $wpdb->insert( $table, $data );
+		$table = $wpdb->prefix . 'clickwhale_categories';
+		$wpdb->insert( $table, $data );
 
 		return $wpdb->insert_id;
+	}
+
+	public function run_links_meta_migration( $is, $data ) {
+
 	}
 
 	public function admin_scripts() {

@@ -62,9 +62,11 @@ class ThirstyAffiliates_To_Clickwhale extends ClickWhale_Migration_Interface {
 				}
 				$category_id = implode( ',', $category_id );
 
+				$link_data = $this->link_url_parse( get_post_meta( $item->ID, '_ta_destination_url', true ) );
+
 				$array = array(
 					'title'       => $item->post_title,
-					'url'         => get_post_meta( $item->ID, '_ta_destination_url', true ),
+					'url'         => $link_data['url'],
 					'slug'        => $item->post_name,
 					'redirection' => $redirection,
 					'nofollow'    => $nofollow,
@@ -74,7 +76,8 @@ class ThirstyAffiliates_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'updated_at'  => $item->post_modified,
 				);
 
-				$this->run_links_migration( $array );
+				$insert_id = $this->run_links_migration( $array );
+				do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
 
 				$message[] = $this->link_item_import_success( $item->post_title );
 			} else {
