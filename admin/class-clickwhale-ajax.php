@@ -161,4 +161,35 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	public function clickwhale_reset() {
+		check_ajax_referer( 'clickwhale_reset', 'security' );
+
+		global $wpdb;
+		$result = [];
+		$text   = __( 'Table has been reset', $this->plugin_name );
+
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories" ),
+			'text'   => $text . ': ' . 'clickwhale_categories',
+		);
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_clicks" ),
+			'text'   => $text . ': ' . 'clickwhale_clicks',
+		);
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links" ),
+			'text'   => $text . ': ' . 'clickwhale_links',
+		);
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" ),
+			'text'   => $text . ': ' . 'clickwhale_links_meta',
+		);
+
+		activate_clickwhale();
+
+		wp_send_json_success( $result );
+
+		wp_die();
+	}
+
 }

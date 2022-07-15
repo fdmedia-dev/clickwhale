@@ -20,7 +20,7 @@ class Clickwhale_Admin_Tools {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -29,33 +29,41 @@ class Clickwhale_Admin_Tools {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
-    	/**
+	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		
+		$this->version     = $version;
+
 		$this->load_dependencies();
 		$this->tools_migration();
+		$this->tools_reset_db();
 
 	}
 
 	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) .  'admin/migration/class-clickwhale-tools-migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/class-clickwhale-tools-migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/reset/class-clickwhale-tools-reset-db.php';
 	}
 
 	public function tools_migration() {
-        new Clickwhale_Tools_Migration();
-    }
+		new Clickwhale_Tools_Migration();
+	}
+
+	public function tools_reset_db() {
+		$reset = new ClickwhaleToolsResetDB( $this->plugin_name );
+		$reset->init();
+	}
 
 }

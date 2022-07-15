@@ -192,7 +192,7 @@ class Clickwhale_Tools_Migration {
                value="1"
 			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, true ) ?>/>
         <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories', 'clickwhale' ) ?></label>
-        <?php
+		<?php
 	}
 
 	public function tools_migration_links_callback( $item ) {
@@ -240,8 +240,8 @@ class Clickwhale_Tools_Migration {
                     jQuery('.button_start_migrate').click(function (e) {
                         e.preventDefault();
 
-                        var migrationContainer = jQuery(this).closest('.clickwhale-migration-section')
-                        migrationButton = jQuery(this),
+                        var migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
+                            migrationButton = jQuery(this),
                             migrationSpinner = jQuery(migrationContainer).find('.spinner'),
                             migrationResult = jQuery(migrationContainer).find('.results');
 
@@ -250,7 +250,7 @@ class Clickwhale_Tools_Migration {
                         jQuery(migrationResult).removeClass("is-active").html('');
 
                         jQuery.post(ajaxurl, {
-                            'security': '<?php echo esc_attr( $nonce) ?>',
+                            'security': '<?php echo esc_attr( $nonce ) ?>',
                             'action': 'clickwhale/admin/migration_to_clickwhale',
                             'migrant': migrationButton.data('migration')
                         }, function (response) {
