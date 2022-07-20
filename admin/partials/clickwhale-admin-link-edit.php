@@ -162,7 +162,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_attr( $item['description'] ) ?></textarea>
+                                    ><?php echo esc_html( $item['description'] ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">

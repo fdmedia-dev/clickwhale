@@ -157,6 +157,7 @@ class Clickwhale {
 		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit      = new Clickwhale_Link_Edit();
+		$Clickwhale_Linkpage_Edit  = new Clickwhale_Linkpage_Edit();
 
 		// ACTIONS
 		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'setup_plugin_options_menu' );
@@ -170,6 +171,8 @@ class Clickwhale {
 
 		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
+		$this->loader->add_action( 'admin_post_nopriv_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
+		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
 
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax, 'migration_notice_hide' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax, 'migration_deactive' );
@@ -197,8 +200,8 @@ class Clickwhale {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_scripts' );
-
 		$this->loader->add_action( 'init', $Clickwhale_Public, 'do_redirect_handler' );
+
 		$this->loader->add_filter( 'clickwhale_url_params', $Clickwhale_Public, 'clickwhale_url_params_callback', 10, 2 );
 	}
 

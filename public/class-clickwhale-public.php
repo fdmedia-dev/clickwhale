@@ -53,6 +53,9 @@ class Clickwhale_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 		$this->load_dependencies();
+
+		$pages = new Clickwhale_Link_Pages();
+		$pages->init();
 	}
 
 	/**
@@ -71,6 +74,7 @@ class Clickwhale_Public {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-click-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-link-pages.php';
 
 	}
 
@@ -174,5 +178,4 @@ class Clickwhale_Public {
 		}
 
 	}
-
 }

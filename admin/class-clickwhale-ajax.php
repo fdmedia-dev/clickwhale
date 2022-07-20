@@ -184,6 +184,14 @@ class Clickwhale_Ajax {
 			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" ),
 			'text'   => $text . ': ' . 'clickwhale_links_meta',
 		);
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_linkpages" ),
+			'text'   => $text . ': ' . 'clickwhale_linkpages',
+		);
+		$result[] = array(
+			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_linkpages_meta" ),
+			'text'   => $text . ': ' . 'clickwhale_linkpages_meta',
+		);
 
 		activate_clickwhale();
 

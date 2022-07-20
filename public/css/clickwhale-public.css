@@ -2,3 +2,144 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+.virtual-page-template-default {
+    margin-top: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+    background-color: #FDD231;
+    color: #1A1C1D;
+}
+
+.virtual-page-template-default * {
+    box-sizing: border-box;
+}
+
+.linkpage-public--wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.linkpage-public--inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 700px;
+    width: 100%;
+}
+
+.linkpage-public--logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1.5rem;
+    border-radius: 50%;
+    border: 2px dashed #ffffff;
+    overflow: hidden;
+}
+
+.linkpage-public--logo.default-logo img {
+    position: relative;
+    top: -4px;
+    left: -4px;
+    width: 60px;
+    height: auto;
+}
+
+.linkpage-public--title {
+    text-align: center;
+    font-size: 3rem;
+    line-height: 1.2em;
+    color: #1A1C1D;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.linkpage-public--description {
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1.2em;
+    color: #9F7E05;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.linkpage-public--links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.linkpage-public--links > a {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, .3);
+    border-radius: 10px;
+    color: #1A1C1D;
+    font-size: 1rem;
+    line-height: 1.2em;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: normal;
+    padding: 1.2rem 2rem;
+    transition: all .3s ease-in-out;
+    text-align: center;
+}
+
+.linkpage-public--links > a:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
+    color: #397EFF;
+}
+
+@media (min-width: 1600px) {
+    .linkpage-public--inner {
+        max-width: 1200px;
+    }
+
+    .linkpage-public--logo {
+        width: 275px;
+        height: 275px;
+        margin-bottom: 3rem;
+    }
+
+    .linkpage-public--logo.default-logo img {
+        position: relative;
+        top: -15px;
+        left: -15px;
+        width: 150px;
+        height: auto;
+    }
+
+    .linkpage-public--title {
+        font-size: 4rem;
+        line-height: 1.2em;
+    }
+
+    .linkpage-public--description {
+        font-size: 2rem;
+        line-height: 1.2em;
+        margin-bottom: 5rem;
+    }
+
+    .linkpage-public--links > a {
+        font-size: 2rem;
+        line-height: 1.2em;
+        padding: 3rem 5rem;
+    }
+}
