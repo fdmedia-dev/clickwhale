@@ -105,6 +105,22 @@ class Clickwhale_Admin_Settings {
 		);
 		add_submenu_page(
 			$this->plugin_name,
+			__( 'Clickwhale Link Pages', $this->plugin_name ),
+			__( 'Link Pages', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-linkpages',
+			array( $this, $this->plugin_name . '_linkpages_page_handler' )
+		);
+		add_submenu_page(
+			'',
+			__( 'Add New Link Page', $this->plugin_name ),
+			__( 'Add New Link Page', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-edit-linkpage',
+			array( $this, $this->plugin_name . '_linkpage_form_page_handler' )
+		);
+		add_submenu_page(
+			$this->plugin_name,
 			__( 'ClickWhale Settings', $this->plugin_name ),
 			__( 'Settings', $this->plugin_name ),
 			'manage_options',
@@ -141,6 +157,14 @@ class Clickwhale_Admin_Settings {
 
 	public function clickwhale_category_form_page_handler() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
+	}
+
+	public function clickwhale_linkpages_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpages-list-table.php' );
+	}
+
+	public function clickwhale_linkpage_form_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpage-edit.php' );
 	}
 
 	public function render_settings_page_content() {

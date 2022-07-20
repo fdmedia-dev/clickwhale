@@ -113,6 +113,49 @@ class Clickwhale_Activator {
 		}
 	}
 
+	private function add_clickwhale_linkpages_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_linkpages';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_linkpages (
+			id int(11) NOT NULL AUTO_INCREMENT,
+			title tinytext NOT NULL,
+			description tinytext DEFAULT '' NOT NULL,
+			slug tinytext NOT NULL,
+			views int(11) NOT NULL,
+			links longtext default NULL,
+			created_at datetime,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+	private function add_clickwhale_linkpages_meta_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_linkpages_meta';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_linkpages_meta (
+			id int(11) NOT NULL auto_increment,
+			meta_key varchar(255) default NULL,
+			meta_value longtext default NULL,
+			linkpage_id int(11) NOT NULL,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
 	/**
 	 * Actions on plugin activation
 	 *
@@ -124,6 +167,8 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_categories_table();
 		( new self )->add_clickwhale_clicks_table();
 		( new self )->add_clickwhale_links_meta_table();
+		( new self )->add_clickwhale_linkpages_table();
+		( new self )->add_clickwhale_linkpages_meta_table();
 	}
 
 }
