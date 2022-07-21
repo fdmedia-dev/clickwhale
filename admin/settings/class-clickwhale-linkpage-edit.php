@@ -7,6 +7,7 @@ class Clickwhale_Linkpage_Edit {
 
 	public function init() {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+		var_dump( $this );
 	}
 
 	/**
@@ -25,6 +26,15 @@ class Clickwhale_Linkpage_Edit {
 			'description' => '',
 			'links'       => '',
 		);
+	}
+
+	/**
+	 * Filter function
+	 * return number of links available on linkpage
+	 * @return mixed|void
+	 */
+	private function get_linkpages_links_limit() {
+		return apply_filters( 'clickwhale_linkpages_links_limit', 5 );
 	}
 
 	public function get_item( $request ) {
@@ -95,7 +105,12 @@ class Clickwhale_Linkpage_Edit {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
-                    var wrap = jQuery('.linkpage-wrap');
+                    var wrap = jQuery('.linkpage-wrap'),
+                        limit = <?php echo $this->get_linkpages_links_limit() ?>;
+
+                    if (jQuery('.linkpage-row').length >= limit) {
+                        jQuery('#add-pagelink-link').prop('disabled', true);
+                    }
 
                     jQuery(wrap).sortable({
                         placeholder: "ui-state-highlight"
@@ -105,18 +120,27 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#add-pagelink-link').click(function (e) {
                         e.preventDefault();
 
-                        var links = jQuery('#add-pagelink-select'),
+                        var links_count = jQuery('.linkpage-row').length,
+                            links = jQuery('#add-pagelink-select'),
                             link_text = links.find('option:selected').text(),
                             link_id = links.find('option:selected').val(),
                             link_title_ph = "<?php _e( 'Link Title', 'clickwhale' ); ?>",
                             template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + '</div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
 
-                        wrap.append(template);
+                        if (links_count < limit) {
+                            wrap.append(template);
+                        }
+                        if ((links_count + 1) === limit) {
+                            jQuery('#add-pagelink-link').prop('disabled', true);
+                        }
 
                     });
 
                     jQuery(document).on('click', '.linkpage-row--remove', function () {
                         jQuery(this).parent().remove();
+                        if (jQuery('.linkpage-row').length < limit) {
+                            jQuery('#add-pagelink-link').prop('disabled', false);
+                        }
                     });
                 });
             </script>

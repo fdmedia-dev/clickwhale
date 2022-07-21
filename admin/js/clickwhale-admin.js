@@ -76,6 +76,10 @@
 				setCurrentTopLevelPage();
 				setCurrentSubmenuPage('clickwhale');
 			}
+			if(params['page'] === 'clickwhale-edit-linkpage'){
+				setCurrentTopLevelPage();
+				setCurrentSubmenuPage('clickwhale-linkpages');
+			}
 		}
 	
 		$(document)

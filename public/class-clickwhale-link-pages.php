@@ -64,7 +64,7 @@ class Clickwhale_Link_Pages {
 			foreach ( $linkpages as $linkpage ) {
 				$content                = [];
 				$content['description'] = $linkpage['description'];
-				$content['links']       = $linkpage['links'];
+				$content['links']       = maybe_unserialize( $linkpage['links'] );
 
 				$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
 				           ->setTitle( $linkpage['title'] )

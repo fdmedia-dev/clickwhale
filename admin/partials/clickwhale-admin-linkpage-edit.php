@@ -1,4 +1,9 @@
 <?php
+if ( $_GET['id'] === '0' && $this->get_linkpages_count() >= $this->get_linkpages_limit() ) {
+	wp_die( __( 'You have reached the page limit', $this->plugin_name ) );
+}
+
+
 $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
@@ -13,8 +18,12 @@ do_action( 'clickwhale_admin_banner' );
 		<?php _e( 'Edit Link Page', $this->plugin_name ); ?>
         <a class="page-title-action"
            href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
-        <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
-           class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
+
+		<?php if ( $this->get_linkpages_count() < $this->get_linkpages_limit() ) { ?>
+            <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
+               class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
+		<?php } ?>
+
     </h1>
 
     <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
@@ -52,7 +61,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( $item['description'] ) ?></textarea>
+                                    ><?php echo wp_kses( $item['description'], wp_kses_allowed_html( 'post' ) ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -125,11 +134,15 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
 
+					<?php do_action( 'linkpage_edit_fields' ) ?>
+
                     <input type="hidden" id="created_at" name="created_at"
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">
+
                     <input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"
                            class="button-primary"
                            name="submit">
+
                 </div>
             </div>
         </div>
