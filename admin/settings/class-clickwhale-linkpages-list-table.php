@@ -154,6 +154,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( 'title' ) : 'id';
+		$order   = '';
 		if ( isset( $_REQUEST['order'] ) ) {
 			$order = $_REQUEST['order'] === 'asc' ? 'asc' : 'desc';
 		}
