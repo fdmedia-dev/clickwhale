@@ -2,13 +2,30 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+:root {
+    --page-bg-color: #FDD231;
+    --text-color: #1A1C1D;
+    --link-bg-color: #fee06f;
+    --link-bg-hover: #ffffff;
+    --link-color: #1a1c1d;
+    --link-hover: #397eff;
+}
+
+html, body {
+    height: 100%;
+}
+
+html > body {
+    height: 100%;
+}
+
 .virtual-page-template-default {
     margin-top: 0;
     padding: 0;
     border: none;
     box-sizing: border-box;
-    background-color: #FDD231;
-    color: #1A1C1D;
+    background-color: var(--page-bg-color);
+    color: var(--text-color);
 }
 
 .virtual-page-template-default * {
@@ -37,27 +54,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
     margin-bottom: 1.5rem;
-    border-radius: 50%;
-    border: 2px dashed #ffffff;
-    overflow: hidden;
+    padding: 5px;
 }
 
-.linkpage-public--logo.default-logo img {
+.linkpage-public--logo img {
     position: relative;
-    top: -4px;
-    left: -4px;
-    width: 60px;
+    width: 100%;
+    max-width: 200px;
     height: auto;
+    max-height: 150px;
 }
 
 .linkpage-public--title {
     text-align: center;
-    font-size: 3rem;
+    font-size: 3.5rem;
     line-height: 1.2em;
-    color: #1A1C1D;
+    color: var(--text-color);
     font-weight: 700;
     margin-bottom: 1.2rem;
     max-width: 800px;
@@ -68,7 +81,8 @@
     text-align: center;
     font-size: 1.5rem;
     line-height: 1.2em;
-    color: #9F7E05;
+    color: var(--text-color);
+    opacity: .7;
     margin-bottom: 3rem;
     max-width: 800px;
     width: 100%;
@@ -88,9 +102,9 @@
     width: 100%;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, .3);
+    background-color: var(--link-bg-color);
     border-radius: 10px;
-    color: #1A1C1D;
+    color: var(--link-color);
     font-size: 1rem;
     line-height: 1.2em;
     text-decoration: none;
@@ -102,28 +116,73 @@
 }
 
 .linkpage-public--links > a:hover {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: var(--link-bg-hover);
     box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
-    color: #397EFF;
+    color: var(--link-hover);
+}
+
+.linkpage-public--social {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 40px 0 0 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.linkpage-public--social > li > a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.linkpage-public--social > li > a svg {
+    display: block;
+    width: 36px;
+    height: 36px;
+}
+
+.linkpage-public--social > li > a:hover {
+    opacity: .7;
+}
+
+.linkpage-public--copyright {
+    display: inline-block;
+    margin-top: 40px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: var(--text-color)
+}
+
+.linkpage-public--copyright:hover {
+    opacity: .7;
+}
+
+@media (min-width: 1300px) and (max-width: 1600px) {
+    .linkpage-public--inner {
+        max-width: 800px;
+    }
+    .linkpage-public--links > a {
+        padding: 1.2em 3em;
+        font-size: 1em;
+    }
 }
 
 @media (min-width: 1600px) {
     .linkpage-public--inner {
-        max-width: 1200px;
+        max-width: 900px;
     }
 
     .linkpage-public--logo {
-        width: 275px;
-        height: 275px;
         margin-bottom: 3rem;
     }
 
-    .linkpage-public--logo.default-logo img {
+    .linkpage-public--logo img {
         position: relative;
-        top: -15px;
-        left: -15px;
-        width: 150px;
-        height: auto;
+        max-width: 275px;
+        max-height: 275px;
     }
 
     .linkpage-public--title {
@@ -138,8 +197,7 @@
     }
 
     .linkpage-public--links > a {
-        font-size: 2rem;
-        line-height: 1.2em;
-        padding: 3rem 5rem;
+        padding: 1.2em 3em;
+        font-size: 1.2em;
     }
 }

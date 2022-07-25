@@ -9,11 +9,6 @@
  * @package    Clickwhale
  * @subpackage Clickwhale/admin
  */
-
-/**
- * Class WordPress_Plugin_Template_Settings
- *
- */
 class Clickwhale_Admin_Settings {
 	/**
 	 * The ID of this plugin.
@@ -61,6 +56,48 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function setup_plugin_options_menu() {
 
+		$subpages = array(
+			array(
+				'page_title' => 'Clickwhale Links',
+				'menu_title' => 'Links',
+				'slug'       => $this->plugin_name,
+				'handler'    => '_links',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New',
+				'menu_title' => 'Add New Link',
+				'slug'       => $this->plugin_name . '-edit-link',
+				'handler'    => '_link_form'
+			),
+			array(
+				'page_title' => 'Clickwhale Categories',
+				'menu_title' => 'Categories',
+				'slug'       => $this->plugin_name . '-categories',
+				'handler'    => '_categories',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New Category',
+				'menu_title' => 'Add New Category',
+				'slug'       => $this->plugin_name . '-edit-category',
+				'handler'    => '_category_form'
+			),
+			array(
+				'page_title' => 'Clickwhale Link Pages',
+				'menu_title' => 'Link Pages',
+				'slug'       => $this->plugin_name . '-linkpages',
+				'handler'    => '_linkpages',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New Link Page',
+				'menu_title' => 'Add New Link Page',
+				'slug'       => $this->plugin_name . '-edit-linkpage',
+				'handler'    => '_linkpage_form'
+			),
+		);
+
 		// add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 		add_menu_page(
 			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
@@ -71,54 +108,19 @@ class Clickwhale_Admin_Settings {
 			plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
 			26
 		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
-			__( 'Links', $this->plugin_name ),              // menu title
-			'manage_options',
-			$this->plugin_name,
-			array( $this, $this->plugin_name . '_links_page_handler' )
-		);
-		add_submenu_page(
-			'',
-			__( 'Add New', $this->plugin_name ),
-			__( 'Add New Link', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-edit-link',
-			array( $this, $this->plugin_name . '_link_form_page_handler' )
-		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'ClickWhale Categories', $this->plugin_name ),
-			__( 'Categories', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-categories',
-			array( $this, $this->plugin_name . '_categories_page_handler' )
-		);
-		add_submenu_page(
-			'',
-			__( 'Add New Category', $this->plugin_name ),
-			__( 'Add New Category', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-edit-category',
-			array( $this, $this->plugin_name . '_category_form_page_handler' )
-		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Clickwhale Link Pages', $this->plugin_name ),
-			__( 'Link Pages', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-linkpages',
-			array( $this, $this->plugin_name . '_linkpages_page_handler' )
-		);
-		add_submenu_page(
-			'',
-			__( 'Add New Link Page', $this->plugin_name ),
-			__( 'Add New Link Page', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-edit-linkpage',
-			array( $this, $this->plugin_name . '_linkpage_form_page_handler' )
-		);
+
+		foreach ( $subpages as $subpage ) {
+			$parent = isset( $subpage['parent'] ) ? $subpage['parent'] : '';
+			add_submenu_page(
+				$parent,
+				sprintf( __( '%1$s', $this->plugin_name ), $subpage['page_title'] ),
+				sprintf( __( '%1$s', $this->plugin_name ), $subpage['menu_title'] ),
+				'manage_options',
+				$subpage['slug'],
+				array( $this, $this->plugin_name . $subpage['handler'] . '_page_handler' )
+			);
+		}
+
 		add_submenu_page(
 			$this->plugin_name,
 			__( 'ClickWhale Settings', $this->plugin_name ),
@@ -442,5 +444,25 @@ class Clickwhale_Admin_Settings {
 			<?php _e( 'Author', $this->plugin_name ); ?>
         </label>
 		<?php
+	}
+
+	/**
+	 * Count linkpages in DB
+	 *
+	 * @return string|null
+	 */
+	private function get_linkpages_count() {
+		global $wpdb;
+
+		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_linkpages" ) );
+	}
+
+	/**
+	 * Filter function
+	 * return number of available linkpages
+	 * @return mixed|void
+	 */
+	private function get_linkpages_limit() {
+		return apply_filters( 'clickwhale_linkpages_limit', 1 );
 	}
 }

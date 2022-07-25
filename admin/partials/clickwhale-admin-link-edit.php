@@ -37,10 +37,10 @@ do_action( 'clickwhale_admin_banner' );
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
                 <div id="post-body-content">
-                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                    <table style="width: 100%;" class="form-table">
                         <tbody>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -55,7 +55,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -74,7 +74,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_url"><?php _e( 'Target URL', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -89,7 +89,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_redirection"><?php _e( 'Redirection Type', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -113,7 +113,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="nofollow"><?php _e( 'Nofollow', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -133,7 +133,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="sponsored"><?php _e( 'Sponsored', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -153,7 +153,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -166,7 +166,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_categories"><?php _e( 'Category', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -199,7 +199,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
 
-					<?php do_action( 'link_edit_fields' ); ?>
+					<?php do_action( 'clickwhale_link_edit_fields' ); ?>
 
                     <input type="hidden" id="created_at" name="created_at"
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">

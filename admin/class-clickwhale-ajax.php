@@ -166,32 +166,10 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 		$result = [];
-		$text   = __( 'Table has been reset', $this->plugin_name );
+		$text   = __( 'All plugin tables has been reset', $this->plugin_name );
 
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories" ),
-			'text'   => $text . ': ' . 'clickwhale_categories',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_clicks" ),
-			'text'   => $text . ': ' . 'clickwhale_clicks',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links" ),
-			'text'   => $text . ': ' . 'clickwhale_links',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" ),
-			'text'   => $text . ': ' . 'clickwhale_links_meta',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_linkpages" ),
-			'text'   => $text . ': ' . 'clickwhale_linkpages',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_linkpages_meta" ),
-			'text'   => $text . ': ' . 'clickwhale_linkpages_meta',
-		);
+		$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_clicks, {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_links_meta, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_linkpages_meta" );
+		$result['text']   = $text;
 
 		activate_clickwhale();
 

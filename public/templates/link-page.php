@@ -1,48 +1,42 @@
 <?php
-global $post, $wp_query;
+global $post;
 
-$logo        = isset( $post->post_content['logo'] ) ? $post->post_content['logo'] : get_bloginfo( 'url' ) . '/wp-content/plugins/clickwhale/admin/images/click-whale.svg';
-$logo_class  = isset( $post->post_content['logo'] ) ? 'custom-logo' : 'default-logo';
-$title       = $post->post_title;
-$description = $post->post_content['description'];
-$links       = maybe_unserialize( $post->post_content['links'] );
+$linkpage = new Clickwhale_Public_Linkpage( $post );
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html lang="en">
 <head>
-
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <title><?php echo $title ?></title>
+    <title><?php echo $linkpage->get_title() ?></title>
 
 	<?php wp_head(); ?>
-
+	<?php echo $linkpage->get_styles() ?>
 </head>
 
 <body <?php body_class(); ?>>
 <div class="linkpage-public--wrap">
     <div class="linkpage-public--inner">
-        <div class="linkpage-public--logo <?php echo $logo_class ?>">
-            <img src="<?php echo esc_url( $logo ); ?>" alt="">
-        </div>
-        <div class="linkpage-public--title"><?php echo $title ?></div>
-        <div class="linkpage-public--description"><?php echo $description ?></div>
 
-		<?php if ( $links ) { ?>
-            <div class="linkpage-public--links">
-				<?php
-				foreach ( $links as $link ) {
-					$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
-					if ( $link_data ) {
-						$link_title = $link['title'] ? $link['title'] : $link_data['title'];
-						?>
-                        <a href="<?php echo esc_url( $link_data['slug'] ) ?>"><?php echo esc_html( $link_title ) ?></a>
-					<?php } ?>
-				<?php } ?>
-            </div>
+        <div class="linkpage-public--logo">
+            <img src="<?php echo esc_url( $linkpage->get_logo() ); ?>" alt="">
+        </div>
+
+        <div class="linkpage-public--title"><?php echo $linkpage->get_title() ?></div>
+
+		<?php if ( $linkpage->get_description() ) { ?>
+            <div class="linkpage-public--description"><?php echo $linkpage->get_description() ?></div>
 		<?php } ?>
+
+        <div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
+
+		<?php if ( $linkpage->get_socails() ) { ?>
+            <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
+		<?php } ?>
+
+		<?php echo $linkpage->get_copyright() ?>
 
     </div>
 </div>
