@@ -51,6 +51,7 @@ do_action( 'clickwhale_admin_banner' );
                         </ul>
                         <div id="lp-tab-settings">
                             <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                                <caption>Linkpage main settings</caption>
                                 <tbody>
                                 <tr class="form-field">
                                     <th valign="top" scope="row">
