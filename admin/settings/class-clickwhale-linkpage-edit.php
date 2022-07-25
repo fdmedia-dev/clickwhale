@@ -7,17 +7,14 @@ class Clickwhale_Linkpage_Edit {
 
 	public function init() {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-		var_dump( $this );
 	}
 
 	/**
 	 * Default values for new link
-	 * Could be hooked by filter "link_defaults"
+	 * Could be hooked by filter "clickwhale_link_defaults"
 	 * @return array
 	 */
 	public function get_defaults() {
-		$fields = [];
-
 		return array(
 			'id'          => 0,
 			'created_at'  => '',
@@ -34,14 +31,14 @@ class Clickwhale_Linkpage_Edit {
 	 * @return mixed|void
 	 */
 	private function get_linkpages_links_limit() {
-		return apply_filters( 'clickwhale_linkpages_links_limit', 5 );
+		return apply_filters( 'clickwhale_linkpage_links_limit', 5 );
 	}
 
 	public function get_item( $request ) {
 		global $wpdb;
 
 		$notice   = '';
-		$defaults = apply_filters( 'linkpage_defaults', $this->get_defaults() );
+		$defaults = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
 			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
@@ -77,8 +74,11 @@ class Clickwhale_Linkpage_Edit {
 	function save_update_linkpage() {
 		global $wpdb;
 		$linkpages_table = $wpdb->prefix . 'clickwhale_linkpages';
-		$item            = array_intersect_key( $_POST, $this->get_defaults() );
+		$defaults        = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
+		$item            = array_intersect_key( $_POST, $defaults );
 		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+
+		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
 		$result = $wpdb->update(
 			$linkpages_table,
@@ -94,10 +94,11 @@ class Clickwhale_Linkpage_Edit {
 			$item['id'] = $wpdb->insert_id;
 		}
 
-
-		$url = 'admin.php?page=clickwhale-edit-linkpage&id=' . $item['id'];
-		wp_redirect( admin_url( $url ) );
-		die;
+		if ( $item['id'] !== '0' ) {
+			$url = 'admin.php?page=clickwhale-edit-linkpage&id=' . $item['id'];
+			wp_redirect( admin_url( $url ) );
+			die;
+		}
 	}
 
 	public function admin_scripts() {

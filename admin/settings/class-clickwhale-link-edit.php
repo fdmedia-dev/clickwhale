@@ -7,11 +7,10 @@ class Clickwhale_Link_Edit {
 
 	/**
 	 * Default values for new link
-	 * Could be hooked by filter "link_defaults"
+	 * Could be hooked by filter "clickwhale_link_defaults"
 	 * @return array
 	 */
 	public function get_defaults() {
-		$fields         = [];
 		$global_options = get_option( 'clickwhale_general_options' );
 
 		return array(
@@ -33,7 +32,7 @@ class Clickwhale_Link_Edit {
 		global $wpdb;
 
 		$notice   = '';
-		$defaults = apply_filters( 'link_defaults', $this->get_defaults() );
+		$defaults = apply_filters( 'clickwhale_link_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
 			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );

@@ -1,9 +1,10 @@
 <?php
-if ( $_GET['id'] === '0' && $this->get_linkpages_count() >= $this->get_linkpages_limit() ) {
+// if limit reached
+if ( ! isset( $_GET['id'] ) && $this->get_linkpages_count() >= $this->get_linkpages_limit() ) {
 	wp_die( __( 'You have reached the page limit', $this->plugin_name ) );
 }
 
-
+// init class
 $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
@@ -79,6 +80,9 @@ do_action( 'clickwhale_admin_banner' );
                                        required>
                             </td>
                         </tr>
+
+						<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
+
                         <tr>
                             <td colspan="2">
                                 <hr>
@@ -130,11 +134,10 @@ do_action( 'clickwhale_admin_banner' );
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
 
-					<?php do_action( 'linkpage_edit_fields' ) ?>
+					<?php do_action( 'clickwhale_linkpage_style_fields', $item ) ?>
 
                     <input type="hidden" id="created_at" name="created_at"
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">

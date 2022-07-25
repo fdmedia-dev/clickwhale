@@ -257,8 +257,6 @@ class Clickwhale_Tools_Migration {
                             if (response.success) {
                                 var result = response.data;
 
-                                //console.log(result);
-
                                 if ('string' === typeof result.data) {
                                     jQuery(migrationResult).append('<p>' + result.data + '</p>');
                                 } else if ('object' === typeof result.data) {

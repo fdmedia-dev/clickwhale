@@ -43,13 +43,13 @@
     border-radius: 50%;
     border: 2px dashed #ffffff;
     overflow: hidden;
+    padding: 5px;
 }
 
-.linkpage-public--logo.default-logo img {
+.linkpage-public--logo img {
     position: relative;
-    top: -4px;
-    left: -4px;
-    width: 60px;
+    width: 100%;
+    max-width: 100%;
     height: auto;
 }
 

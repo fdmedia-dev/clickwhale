@@ -123,8 +123,11 @@ class Clickwhale_Activator {
 			title tinytext NOT NULL,
 			description tinytext DEFAULT '' NOT NULL,
 			slug tinytext NOT NULL,
+			logo int(11) NOT NULL,
 			views int(11) NOT NULL,
 			links longtext default NULL,
+			styles longtext default NULL,
+			social longtext default NULL,
 			created_at datetime,
 			
 			PRIMARY KEY  (id)
@@ -168,7 +171,7 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_clicks_table();
 		( new self )->add_clickwhale_links_meta_table();
 		( new self )->add_clickwhale_linkpages_table();
-		( new self )->add_clickwhale_linkpages_meta_table();
+		//( new self )->add_clickwhale_linkpages_meta_table();
 	}
 
 }

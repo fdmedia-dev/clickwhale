@@ -199,7 +199,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
 
-					<?php do_action( 'link_edit_fields' ); ?>
+					<?php do_action( 'clickwhale_link_edit_fields' ); ?>
 
                     <input type="hidden" id="created_at" name="created_at"
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">

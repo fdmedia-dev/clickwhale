@@ -1,6 +1,6 @@
 <?php
 
-class Clickwhale_Link_Pages {
+class Clickwhale_Linkpages {
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -62,13 +62,9 @@ class Clickwhale_Link_Pages {
 		$linkpages = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages", ARRAY_A );
 		if ( $linkpages ) {
 			foreach ( $linkpages as $linkpage ) {
-				$content                = [];
-				$content['description'] = $linkpage['description'];
-				$content['links']       = maybe_unserialize( $linkpage['links'] );
-
 				$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
 				           ->setTitle( $linkpage['title'] )
-				           ->setContent( $content )
+				           ->setContent( $linkpage )
 				           ->setTemplate( 'link-page.php' );
 			}
 		}

@@ -100,7 +100,6 @@
 					$('#created_at').val(formatDate(new Date()));
 				}
 				$('#updated_at').val(formatDate(new Date()));
-				//console.log(formatDate(new Date()));
 			});
 	});
 
