@@ -54,7 +54,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <caption>Linkpage main settings</caption>
                                 <tbody>
                                 <tr class="form-field">
-                                    <th >
+                                    <th scope="row">
                                         <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -69,7 +69,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th >
+                                    <th scope="row">
                                         <label for="description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -82,7 +82,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th >
+                                    <th scope="row">
                                         <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -105,7 +105,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th >
+                                    <th scope="row">
                                         <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>

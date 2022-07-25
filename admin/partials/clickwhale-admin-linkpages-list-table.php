@@ -2,7 +2,7 @@
 
 global $wpdb;
 
-$table = new Clickwhale_Linkpages_List_Table();
+$table = new ClickwhaleLinkpagesListTable();
 $table->prepare_items();
 
 $message = '';

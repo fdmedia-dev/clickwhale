@@ -4,7 +4,7 @@
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
  */
-class Clickwhale_Linkpages_List_Table extends WP_List_Table {
+class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	private $users_data;
 
@@ -16,25 +16,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 				'plural'   => 'links',
 			)
 		);
-	}
-
-	private function get_users_data( $search = "" ) {
-		global $wpdb;
-
-		if ( ! empty( $search ) ) {
-			return $wpdb->get_results(
-				"SELECT id,title,slug,description,views from {$wpdb->prefix}clickwhale_linkpages
-                     WHERE title Like '%{$search}%' 
-                     OR slug Like '%{$search}%' 
-                     OR description Like '%{$search}%'",
-				ARRAY_A
-			);
-		} else {
-			return $wpdb->get_results(
-				"SELECT id,title,slug,description,views from {$wpdb->prefix}clickwhale_linkpages",
-				ARRAY_A
-			);
-		}
 	}
 
 	/**
@@ -217,19 +198,12 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 		$this->process_bulk_action();
 
 		// will be used in pagination settings
-		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->users_data = $this->get_users_data( sanitize_text_field( $_GET['s'] ) );
-			$total_items      = count( $this->users_data );
-			$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
-			usort( $this->users_data, array( &$this, 'usort_reorder' ) );
-		} else {
-			$this->users_data = $this->get_users_data();
-			$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
-		}
+		$this->users_data = $this->get_users_data();
+		$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
 
 		// prepare query params, as usual current page, order by and order direction
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( 'title' ) : 'id';
 		$order   = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array(
 				'asc',
 				'desc'
@@ -237,11 +211,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array
-		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->items = $this->users_data;
-		} else {
-			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
-		}
+		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 
 		// [REQUIRED] configure pagination
 		$this->set_pagination_args( array(

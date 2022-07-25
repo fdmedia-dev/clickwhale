@@ -95,7 +95,7 @@ do_action( 'clickwhale_admin_banner' );
                     <table style="width: 100%;" class="form-table">
                         <tbody>
                         <tr class="form-field">
-                            <th >
+                            <th scope="row">
                                 <label for="link_title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -112,7 +112,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
 
                         <tr class="form-field">
-                            <th >
+                            <th scope="row">
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -127,7 +127,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th >
+                            <th scope="row">
                                 <label for="link_description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                             </th>
                             <td>
