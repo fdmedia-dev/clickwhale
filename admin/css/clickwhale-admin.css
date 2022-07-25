@@ -182,17 +182,11 @@
 .linkpage-row--drag::after,
 .linkpage-row--remove::before,
 .linkpage-row--remove::after {
+    position: relative;
     display: block;
     width: 16px;
     height: 2px;
     background-color: #141414;
-}
-
-.linkpage-row--drag::before,
-.linkpage-row--drag::after,
-.linkpage-row--remove::before,
-.linkpage-row--remove::after {
-    position: relative;
     content: '';
 }
 
@@ -245,9 +239,6 @@
     padding: 0;
     z-index: 1;
     bottom: -1px;
-}
-
-.clickwhale-tabs ul > li.ui-tabs-active {
 }
 
 .clickwhale-tabs ul > li > a {

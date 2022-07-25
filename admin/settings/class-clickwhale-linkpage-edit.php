@@ -1,10 +1,6 @@
 <?php
 
 class Clickwhale_Linkpage_Edit {
-	function __construct() {
-
-	}
-
 	public function init() {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
@@ -37,7 +33,6 @@ class Clickwhale_Linkpage_Edit {
 	public function get_item( $request ) {
 		global $wpdb;
 
-		$notice   = '';
 		$defaults = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {

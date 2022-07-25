@@ -27,7 +27,7 @@ do_action( 'clickwhale_admin_banner' );
 
 		<?php if ( isset( $item['slug'] ) && $item['slug'] !== '' ) { ?>
             <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>"
-               target="_blank"
+               target="_blank" rel="noopener"
                class="page-title-action"><?php _e( 'View Page', $this->plugin_name ) ?></a>
 		<?php } ?>
     </h1>
@@ -50,11 +50,11 @@ do_action( 'clickwhale_admin_banner' );
                                    class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li>
                         </ul>
                         <div id="lp-tab-settings">
-                            <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                            <table style="width: 100%;" class="form-table">
                                 <caption>Linkpage main settings</caption>
                                 <tbody>
                                 <tr class="form-field">
-                                    <th valign="top" scope="row">
+                                    <th >
                                         <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -69,7 +69,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th valign="top" scope="row">
+                                    <th >
                                         <label for="description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -82,7 +82,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th valign="top" scope="row">
+                                    <th >
                                         <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
@@ -105,7 +105,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </td>
                                 </tr>
                                 <tr class="form-field">
-                                    <th valign="top" scope="row">
+                                    <th >
                                         <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>

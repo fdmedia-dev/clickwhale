@@ -1,10 +1,6 @@
 <?php
 
 class Clickwhale_Link_Edit {
-	function __construct() {
-
-	}
-
 	/**
 	 * Default values for new link
 	 * Could be hooked by filter "clickwhale_link_defaults"
