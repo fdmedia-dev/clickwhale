@@ -204,11 +204,9 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		// prepare query params, as usual current page, order by and order direction
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'], array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( 'title' ) : 'id';
-		$order   = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array(
-				'asc',
-				'desc'
-			) ) ) ? sanitize_text_field( $_REQUEST['order'] ) : 'desc';
-
+		if ( isset( $_REQUEST['order'] ) ) {
+			$order = $_REQUEST['order'] === 'asc' ? 'asc' : 'desc';
+		}
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array
 		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );

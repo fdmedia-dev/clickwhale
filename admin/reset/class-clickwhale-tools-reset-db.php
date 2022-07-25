@@ -63,12 +63,9 @@ class ClickwhaleToolsResetDB {
                                 'action': 'clickwhale/admin/clickwhale_reset',
                             }, function (response) {
                                 if (response.success) {
-                                    var data = response.data;
-                                    for (item in data) {
-                                        var itemClass = data[item].status ? 'success' : 'error',
-                                            itemText = data[item].text;
-                                        jQuery(resetDbResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
-                                    }
+                                    var itemClass = response.data.status ? 'success' : 'error',
+                                        itemText = response.data.text;
+                                    jQuery(resetDbResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
 
                                     jQuery(resetDbButton).prop('disabled', false);
                                     jQuery(resetDbSpinner).removeClass("is-active");
