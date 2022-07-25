@@ -32,6 +32,12 @@ $linkpage = new Clickwhale_Public_Linkpage( $post );
 
         <div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
 
+		<?php if ( $linkpage->get_socails() ) { ?>
+            <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
+		<?php } ?>
+
+		<?php echo $linkpage->get_copyright() ?>
+
     </div>
 </div>
 </body>

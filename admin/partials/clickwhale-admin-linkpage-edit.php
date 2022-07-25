@@ -25,6 +25,11 @@ do_action( 'clickwhale_admin_banner' );
                class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
 		<?php } ?>
 
+		<?php if ( isset( $item['slug'] ) && $item['slug'] !== '' ) { ?>
+            <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>"
+               target="_blank"
+               class="page-title-action"><?php _e( 'View Page', $this->plugin_name ) ?></a>
+		<?php } ?>
     </h1>
 
     <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
@@ -35,109 +40,125 @@ do_action( 'clickwhale_admin_banner' );
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
                 <div id="post-body-content">
-                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <tbody>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                <input id="title"
-                                       name="title"
-                                       type="text"
-                                       value="<?php echo esc_attr( $item['title'] ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="<?php _e( 'Link Page Title', $this->plugin_name ) ?>"
-                                       required>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="description"><?php _e( 'Description', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
+                    <div id="clickwhale-tabs" class="clickwhale-tabs">
+                        <ul>
+                            <li><a href="#lp-tab-settings"
+                                   class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
+                            <li><a href="#lp-tab-customization"
+                                   class=""><?php _e( 'Customization', 'clickwhale' ); ?></a></li>
+                            <li><a href="#lp-tab-social"
+                                   class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li>
+                        </ul>
+                        <div id="lp-tab-settings">
+                            <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                                <tbody>
+                                <tr class="form-field">
+                                    <th valign="top" scope="row">
+                                        <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
+                                    </th>
+                                    <td>
+                                        <input id="title"
+                                               name="title"
+                                               type="text"
+                                               value="<?php echo esc_attr( $item['title'] ) ?>"
+                                               size="40"
+                                               class="regular-text"
+                                               placeholder="<?php _e( 'Link Page Title', $this->plugin_name ) ?>"
+                                               required>
+                                    </td>
+                                </tr>
+                                <tr class="form-field">
+                                    <th valign="top" scope="row">
+                                        <label for="description"><?php _e( 'Description', $this->plugin_name ) ?></label>
+                                    </th>
+                                    <td>
                                     <textarea id="description"
                                               name="description"
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
                                     ><?php echo wp_kses( $item['description'], wp_kses_allowed_html( 'post' ) ) ?></textarea>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                <input id="slug"
-                                       name="slug"
-                                       type="text"
-                                       value="<?php echo esc_attr( $item['slug'] ) ?>"
-                                       size="50"
-                                       class="regular-text"
-                                       placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
-                                       required>
-                            </td>
-                        </tr>
+                                    </td>
+                                </tr>
+                                <tr class="form-field">
+                                    <th valign="top" scope="row">
+                                        <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
+                                    </th>
+                                    <td>
+                                        <input id="slug"
+                                               name="slug"
+                                               type="text"
+                                               value="<?php echo esc_attr( $item['slug'] ) ?>"
+                                               size="50"
+                                               class="regular-text"
+                                               placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
+                                               required>
+                                    </td>
+                                </tr>
 
-						<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
+								<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
 
-                        <tr>
-                            <td colspan="2">
-                                <hr>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th valign="top" scope="row">
-                                <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                <select id="add-pagelink-select" class="regular-text">
-									<?php foreach ( $links as $link ) { ?>
-                                        <option value="<?php echo esc_attr( $link['id'] ) ?>">
-											<?php echo esc_html( $link['title'] ) ?>
-                                        </option>
-									<?php } ?>
-                                </select>
-                                <button type="button" class="button" id="add-pagelink-link">
-									<?php _e( 'Add link to page', $this->plugin_name ) ?>
-                                </button>
+                                <tr>
+                                    <td colspan="2">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr class="form-field">
+                                    <th valign="top" scope="row">
+                                        <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
+                                    </th>
+                                    <td>
+                                        <select id="add-pagelink-select" class="regular-text">
+											<?php foreach ( $links as $link ) { ?>
+                                                <option value="<?php echo esc_attr( $link['id'] ) ?>">
+													<?php echo esc_html( $link['title'] ) ?>
+                                                </option>
+											<?php } ?>
+                                        </select>
+                                        <button type="button" class="button" id="add-pagelink-link">
+											<?php _e( 'Add link to page', $this->plugin_name ) ?>
+                                        </button>
 
-                                <div class="linkpage-wrap">
+                                        <div class="linkpage-wrap">
 
-									<?php
-									$links = maybe_unserialize( $item['links'] );
-									if ( $links ) {
-										foreach ( $links as $link ) {
-											$link_data = $linkpage_edit->get_link( $link['id'] );
-											?>
-                                            <div class="linkpage-row">
-                                                <input type="hidden"
-                                                       name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
-                                                       value="<?php echo esc_attr( $link['id'] ) ?>">
-                                                <div class="linkpage-row--drag"></div>
-                                                <div class="linkpage-link"><?php echo esc_html( $link_data['title'] ) ?></div>
-                                                <div class="linkpage-link--title">
-                                                    <input type="text"
-                                                           name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
-                                                           value="<?php echo esc_html( $link['title'] ) ?>"
-                                                           placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
-                                                </div>
-                                                <div class="linkpage-row--remove"></div>
-                                            </div>
 											<?php
-										}
-									}
-									?>
+											$links = maybe_unserialize( $item['links'] );
+											if ( $links ) {
+												foreach ( $links as $link ) {
+													$link_data = $linkpage_edit->get_link( $link['id'] );
+													?>
+                                                    <div class="linkpage-row">
+                                                        <input type="hidden"
+                                                               name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
+                                                               value="<?php echo esc_attr( $link['id'] ) ?>">
+                                                        <div class="linkpage-row--drag"></div>
+                                                        <div class="linkpage-link"><?php echo esc_html( $link_data['title'] ) ?></div>
+                                                        <div class="linkpage-link--title">
+                                                            <input type="text"
+                                                                   name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
+                                                                   value="<?php echo esc_html( $link['title'] ) ?>"
+                                                                   placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
+                                                        </div>
+                                                        <div class="linkpage-row--remove"></div>
+                                                    </div>
+													<?php
+												}
+											}
+											?>
 
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-					<?php do_action( 'clickwhale_linkpage_style_fields', $item ) ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="lp-tab-customization">
+							<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
+                        </div>
+                        <div id="lp-tab-social">
+							<?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
+                        </div>
+                    </div>
 
                     <input type="hidden" id="created_at" name="created_at"
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">

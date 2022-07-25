@@ -106,6 +106,9 @@ class Clickwhale_Linkpage_Edit {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
+
+                    jQuery("#clickwhale-tabs").tabs();
+
                     var wrap = jQuery('.linkpage-wrap'),
                         limit = <?php echo $this->get_linkpages_links_limit() ?>;
 
