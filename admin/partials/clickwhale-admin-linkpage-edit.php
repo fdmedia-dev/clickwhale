@@ -51,7 +51,7 @@ do_action( 'clickwhale_admin_banner' );
                         </ul>
                         <div id="lp-tab-settings">
                             <table style="width: 100%;" class="form-table">
-                                <caption>Linkpage main settings</caption>
+                                <caption hidden>Linkpage main settings</caption>
                                 <tbody>
                                 <tr class="form-field">
                                     <th scope="row">
@@ -96,9 +96,34 @@ do_action( 'clickwhale_admin_banner' );
                                                required>
                                     </td>
                                 </tr>
-
-								<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
-
+								<?php $logo_id = isset( $item['logo'] ) ? $item['logo'] : ''; ?>
+                                <tr class="form-field">
+                                    <th scope="row">
+                                        <label for="logo"><?php _e( 'Page logo', $this->plugin_name ) ?></label>
+                                    </th>
+                                    <td>
+                                        <div class="logo-field">
+											<?php
+											if ( $logo_id ) {
+												$image = wp_get_attachment_image_src( $logo_id );
+												?>
+                                                <a href="#" class="linkpage-logo-upload">
+                                                    <img src="<?php echo esc_url( $image[0] ) ?>"/>
+                                                </a>
+                                                <a href="#" class="linkpage-logo-remove">Remove image</a>
+                                                <input type="hidden" name="logo" value="<?php esc_attr( $logo_id ); ?>">
+											<?php } else { ?>
+                                                <a href="#" class="linkpage-logo-upload">
+													<?php _e( 'Upload image' ) ?>
+                                                </a>
+                                                <a href="#" class="linkpage-logo-remove" style="display:none">
+													<?php _e( 'Remove image' ) ?>
+                                                </a>
+                                                <input type="hidden" name="logo" value="">
+											<?php } ?>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td colspan="2">
                                         <hr>
@@ -150,13 +175,16 @@ do_action( 'clickwhale_admin_banner' );
                                         </div>
                                     </td>
                                 </tr>
+								<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="lp-tab-customization">
+							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
 							<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
                         </div>
                         <div id="lp-tab-social">
+							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
 							<?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
                         </div>
                     </div>

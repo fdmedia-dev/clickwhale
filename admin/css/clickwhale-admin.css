@@ -267,3 +267,13 @@
     background: #f0f0f1;
     color: #000;
 }
+
+.clickwhale-linkpage--message {
+    background: #e2e3e5;
+    border: 1px solid #d3d6d8;
+    margin: 5px 0 15px;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    max-width: 800px;
+    color: #41464b;
+}
