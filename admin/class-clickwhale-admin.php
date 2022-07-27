@@ -179,6 +179,14 @@ class Clickwhale_Admin {
 		<?php
 	}
 
+	public function clickwhale_admin_pro_message_callback() {
+		?>
+        <div class="clickwhale-linkpage--message">
+			<?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
+        </div>
+		<?php
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale' ) {
 			?>
