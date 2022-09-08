@@ -153,17 +153,26 @@ class Clickwhale_Admin_Settings {
 	public function default_options() {
 		return array(
 			'general'  => array(
-				'redirect_type' => 301,
-				'nofollow'      => true,
-				'sponsored'     => false,
+				'name'    => __( 'General', $this->plugin_name ),
+				'options' => array(
+					'redirect_type' => 301,
+					'nofollow'      => true,
+					'sponsored'     => false,
+				)
 			),
 			'tracking' => array(
-				'disable_click_tracking' => false,
-				'exclude_users_by_role'  => [ 'administrator' ],
+				'name'    => __( 'Tracking', $this->plugin_name ),
+				'options' => array(
+					'disable_click_tracking' => false,
+					'exclude_users_by_role'  => [ 'administrator' ],
+				)
 			),
 			'other'    => array(
-				'slug'         => 'link',
-				'affiliate_id' => '',
+				'name'    => __( 'Other', $this->plugin_name ),
+				'options' => array(
+					'slug'         => 'link',
+					'affiliate_id' => '',
+				)
 			)
 		);
 	}
@@ -180,7 +189,7 @@ class Clickwhale_Admin_Settings {
 	}
 
 	public function other_options_callback() {
-		echo '<p>' . __( 'Set up ClickWhale plugin other options.', $this->plugin_name ) . '</p>';
+		echo '<p>' . __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ) . '</p>';
 	}
 
 	/**
@@ -194,24 +203,29 @@ class Clickwhale_Admin_Settings {
 		$default_array = $this->default_options();
 
 		// Create options
-		if ( ! get_option( 'clickwhale_general_options' ) ) {
-			add_option( 'clickwhale_general_options', $default_array['general'] );
-		}
-		if ( ! get_option( 'clickwhale_tracking_options' ) ) {
-			add_option( 'clickwhale_tracking_options', $default_array['tracking'] );
-		}
-		if ( ! get_option( 'clickwhale_other_options' ) ) {
-			add_option( 'clickwhale_other_options', $default_array['other'] );
+		if ( $default_array ) {
+			foreach ( $default_array as $k => $v ) {
+				if ( ! get_option( 'clickwhale_' . $k . '_options' ) ) {
+					add_option( 'clickwhale_' . $k . '_options', $v['options'] );
+				}
+
+				add_settings_section(
+					$k . '_settings_section',
+					$v['name'],
+					array( $this, $k . '_options_callback' ),
+					'clickwhale_' . $k . '_options'
+				);
+
+				// Finally, we register the fields with WordPress
+				register_setting(
+					'clickwhale_' . $k . '_options',
+					'clickwhale_' . $k . '_options'
+				);
+			}
 		}
 
 		// Add fields
 		// General
-		add_settings_section(
-			'general_settings_section',
-			__( 'General', $this->plugin_name ),
-			array( $this, 'general_options_callback' ),
-			'clickwhale_general_options'
-		);
 		add_settings_field(
 			'redirection',
 			__( 'Redirection Type', $this->plugin_name ),
@@ -241,12 +255,6 @@ class Clickwhale_Admin_Settings {
 		);
 
 		// Tracking
-		add_settings_section(
-			'tracking_settings_section',
-			__( 'Tracking', $this->plugin_name ),
-			array( $this, 'tracking_options_callback' ),
-			'clickwhale_tracking_options'
-		);
 		add_settings_field(
 			'redirection',
 			__( 'Disable Click Tracking', $this->plugin_name ),
@@ -265,12 +273,6 @@ class Clickwhale_Admin_Settings {
 		);
 
 		// Other
-		add_settings_section(
-			'other_settings_section',
-			__( 'Other settings', $this->plugin_name ),
-			array( $this, 'other_options_callback' ),
-			'clickwhale_other_options'
-		);
 		add_settings_field(
 			'slug',
 			__( 'Link slug', $this->plugin_name ),
@@ -286,21 +288,6 @@ class Clickwhale_Admin_Settings {
 			'clickwhale_other_options',
 			'other_settings_section',
 			array( __( 'Enter your Affiliate ID.', $this->plugin_name ), )
-		);
-
-
-		// Finally, we register the fields with WordPress
-		register_setting(
-			'clickwhale_general_options',
-			'clickwhale_general_options'
-		);
-		register_setting(
-			'clickwhale_tracking_options',
-			'clickwhale_tracking_options'
-		);
-		register_setting(
-			'clickwhale_other_options',
-			'clickwhale_other_options'
 		);
 	}
 
