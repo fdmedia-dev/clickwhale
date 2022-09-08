@@ -235,10 +235,11 @@ class Clickwhale_Admin_Settings {
 		add_settings_field(
 			'redirection',
 			__( 'Redirection Type', $this->plugin_name ),
-			array( $this, 'render_select' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
 			array(
+				'control'     => 'select',
 				'id'          => 'redirect_type',
 				'name'        => 'clickwhale_general_options[redirect_type]',
 				'value'       => $general_options['redirect_type'],
@@ -255,23 +256,25 @@ class Clickwhale_Admin_Settings {
 		add_settings_field(
 			'nofollow',
 			__( 'Nofollow links', $this->plugin_name ),
-			array( $this, 'render_checkbox' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
 			array(
-				'id'    => 'nofollow',
-				'name'  => 'clickwhale_general_options[nofollow]',
-				'value' => isset( $general_options['nofollow'] ) ? 1 : 0,
-				'label' => __( 'Check to mark links as nofollow & noindex by default', $this->plugin_name ),
+				'control' => 'checkbox',
+				'id'      => 'nofollow',
+				'name'    => 'clickwhale_general_options[nofollow]',
+				'value'   => isset( $general_options['nofollow'] ) ? 1 : 0,
+				'label'   => __( 'Check to mark links as nofollow & noindex by default', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
 			'sponsored',
 			__( 'Sponsored links', $this->plugin_name ),
-			array( $this, 'render_checkbox' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
 			array(
+				'control'     => 'checkbox',
 				'id'          => 'sponsored',
 				'name'        => 'clickwhale_general_options[sponsored]',
 				'value'       => isset( $general_options['sponsored'] ) ? 1 : 0,
@@ -282,23 +285,25 @@ class Clickwhale_Admin_Settings {
 		add_settings_field(
 			'disable_click_tracking',
 			__( 'Disable Click Tracking', $this->plugin_name ),
-			array( $this, 'render_checkbox' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
 			array(
-				'id'    => 'disable_click_tracking',
-				'name'  => 'clickwhale_tracking_options[disable_click_tracking]',
-				'value' => isset( $tracking_options['disable_click_tracking'] ) ? 1 : 0,
-				'label' => __( 'Check to disable click tracking for affiliate links', $this->plugin_name ),
+				'control' => 'checkbox',
+				'id'      => 'disable_click_tracking',
+				'name'    => 'clickwhale_tracking_options[disable_click_tracking]',
+				'value'   => isset( $tracking_options['disable_click_tracking'] ) ? 1 : 0,
+				'label'   => __( 'Check to disable click tracking for affiliate links', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
 			'exclude_users_by_role',
 			__( 'Exclude Users by Role', $this->plugin_name ),
-			array( $this, 'render_checkbox_multiple' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
 			array(
+				'control'     => 'checkboxes',
 				'id'          => 'exclude_users_by_role',
 				'name'        => 'clickwhale_tracking_options[exclude_users_by_role][]',
 				'value'       => $tracking_options['exclude_users_by_role'],
@@ -313,10 +318,11 @@ class Clickwhale_Admin_Settings {
 		add_settings_field(
 			'slug',
 			__( 'Link slug', $this->plugin_name ),
-			array( $this, 'render_input' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_other_options',
 			'other_settings_section',
 			array(
+				'control'     => 'input',
 				'id'          => 'slug',
 				'name'        => 'clickwhale_other_options[slug]',
 				'type'        => 'text',
@@ -328,10 +334,11 @@ class Clickwhale_Admin_Settings {
 		add_settings_field(
 			'affiliate_id',
 			__( 'Affiliate ID', $this->plugin_name ),
-			array( $this, 'render_input' ),
+			array( $this, 'render_controls' ),
 			'clickwhale_other_options',
 			'other_settings_section',
 			array(
+				'control'     => 'input',
 				'id'          => 'slug',
 				'name'        => 'clickwhale_other_options[affiliate_id]',
 				'type'        => 'text',
@@ -349,52 +356,47 @@ class Clickwhale_Admin_Settings {
 	 * to be displayed next to the checkbox.
 	 */
 
-	public function render_checkbox( $args ) {
-		$checkbox = '<label for="' . esc_attr( $args['id'] ) . '">';
-		$checkbox .= '<input type="checkbox" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="1" ' . checked( 1, $args['value'], false ) . ' />';
-		$checkbox .= $args['label'];
-		$checkbox .= '</label>';
-		if ( isset( $args['description'] ) ) {
-			$checkbox .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
-		}
+	public function render_controls( $args ) {
 
-		echo $checkbox;
-	}
+		$item  = '';
+		$id    = $args['id'];
+		$name  = $args['name'];
+		$value = $args['value'];
 
-	public function render_checkbox_multiple( $args ) {
-		$checkboxes = '';
-		foreach ( $args['options'] as $k => $v ) {
-			$checkboxes .= '<label for="' . esc_attr( $k ) . '">';
-			$checkboxes .= '<input type="checkbox" id="' . esc_attr( $k ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $args['value'] ), 1, false ) . ' />';
-			$checkboxes .= $v;
-			$checkboxes .= '</label><br>';
-		}
-		if ( isset( $args['description'] ) ) {
-			$checkboxes .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
-		}
+		switch ( $args['control'] ) {
+			case 'input':
+				$item .= '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
+				break;
 
-		echo $checkboxes;
-	}
+			case 'checkbox':
+				$item .= '<label for="' . esc_attr( $id ) . '">';
+				$item .= '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="1" ' . checked( 1, $value, false ) . ' />';
+				$item .= $args['label'];
+				$item .= '</label>';
+				break;
 
-	public function render_input( $args ) {
-		$input = '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" value="' . esc_attr( $args['value'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
-		if ( isset( $args['description'] ) ) {
-			$input .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
-		}
-		echo $input;
-	}
+			case 'checkboxes':
+				foreach ( $args['options'] as $k => $v ) {
+					$item .= '<label for="' . esc_attr( $k ) . '">';
+					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
+					$item .= $v;
+					$item .= '</label><br>';
+				}
+				break;
 
-	public function render_select( $args ) {
-		$select = '<select  id="' . esc_attr( $args['id'] ) . '" name="' . esc_attr( $args['name'] ) . '" class="regular-text">';
-		foreach ( $args['options'] as $k => $v ) {
-			$select .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $args['value'], false ) . '>' . $v . '</option>';
+			case 'select':
+				$item .= '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" class="regular-text">';
+				foreach ( $args['options'] as $k => $v ) {
+					$item .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $value, false ) . '>' . $v . '</option>';
+				}
+				$item .= '</select>';
+				break;
 		}
-		$select .= '</select>';
 
 		if ( isset( $args['description'] ) ) {
-			$select .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
+			$item .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
 		}
 
-		echo $select;
+		echo $item;
 	}
 }
