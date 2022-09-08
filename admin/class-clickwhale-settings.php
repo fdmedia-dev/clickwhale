@@ -259,7 +259,8 @@ class Clickwhale_Admin_Settings {
 			__( 'Redirection Type', $this->plugin_name ),        // The label to the left of the option interface element
 			array(
 				$this,
-				'set_redirection_callback'                      // The name of the function responsible for rendering the option interface
+				'set_redirection_callback'
+				// The name of the function responsible for rendering the option interface
 			),
 			'clickwhale_general_options',                    // The page on which this option will be displayed
 			'general_settings_section',                    // The name of the section to which this field belongs
@@ -481,26 +482,6 @@ class Clickwhale_Admin_Settings {
 		<?php
 	}
 
-<<<<<<< HEAD
-	/**
-	 * Count linkpages in DB
-	 *
-	 * @return string|null
-	 */
-	private function get_linkpages_count() {
-		global $wpdb;
-
-		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_linkpages" ) );
-	}
-
-	/**
-	 * Filter function
-	 * return number of available linkpages
-	 * @return mixed|void
-	 */
-	private function get_linkpages_limit() {
-		return apply_filters( 'clickwhale_linkpages_limit', 1 );
-=======
 	public function set_slug_callback( $args ) {
 
 		$options = get_option( 'clickwhale_other_options' );
@@ -521,6 +502,25 @@ class Clickwhale_Admin_Settings {
                value="<?php echo esc_attr( $ref ) ?>" placeholder="123456">
         <p class="description"><?php echo esc_html( $args[0] ) ?></p>
 		<?php
->>>>>>> 3-other
+	}
+
+	/**
+	 * Count linkpages in DB
+	 *
+	 * @return string|null
+	 */
+	private function get_linkpages_count() {
+		global $wpdb;
+
+		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_linkpages" ) );
+	}
+
+	/**
+	 * Filter function
+	 * return number of available linkpages
+	 * @return mixed|void
+	 */
+	private function get_linkpages_limit() {
+		return apply_filters( 'clickwhale_linkpages_limit', 1 );
 	}
 }
