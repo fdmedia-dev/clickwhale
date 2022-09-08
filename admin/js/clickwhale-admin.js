@@ -93,11 +93,10 @@
                     }
                 }
 
-// Iterate over arr and remove the items by key
+                // Iterate over arr and remove the items by key
                 for (var i = 0; i < arr.length; i++) {
                     localStorage.removeItem(arr[i]);
                 }
-                localStorage.removeItem
             })
             .on('keyup change', '#slug', function () {
                 var slug = $(this).val();

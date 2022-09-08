@@ -108,7 +108,7 @@ do_action( 'clickwhale_admin_banner' );
 												$image = wp_get_attachment_image_src( $logo_id );
 												?>
                                                 <a href="#" class="linkpage-logo-upload">
-                                                    <img src="<?php echo esc_url( $image[0] ) ?>"/>
+                                                    <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
                                                 </a>
                                                 <a href="#" class="linkpage-logo-remove">Remove image</a>
                                                 <input type="hidden" name="logo" value="<?php esc_attr( $logo_id ); ?>">
