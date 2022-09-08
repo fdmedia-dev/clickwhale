@@ -134,8 +134,8 @@ class Clickwhale_Public {
 		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
 
 		global $wpdb;
-		$options   = get_option( 'clickwhale_general_options' );
-		$link_slug = $options['slug'] . '/';
+		$options_other   = get_option( 'clickwhale_other_options' );
+		$link_slug = $options_other['slug'] . '/';
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );

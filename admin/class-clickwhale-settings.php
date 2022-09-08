@@ -42,10 +42,10 @@ class Clickwhale_Admin_Settings {
 		$this->version     = $version;
 
 		// if custom slug doesn't isset we should add default value
-		$options = get_option( 'clickwhale_general_options' );
+		$options = get_option( 'clickwhale_other_options' );
 		if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
 			$options['slug'] = 'link';
-			update_option( 'clickwhale_general_options', $options );
+			update_option( 'clickwhale_other_options', $options );
 		}
 
 	}
@@ -206,28 +206,30 @@ class Clickwhale_Admin_Settings {
 
 	}
 
-	/**
-	 * This function provides a simple description for the General Options page.
-	 *
-	 * It's called from the 'initialize_settings_options' function by being passed as a parameter
-	 * in the add_settings_section function.
-	 */
-	public function general_options_callback() {
-		$options = get_option( 'clickwhale_general_options' );
-		//var_dump($options);
-		echo '<p>' . __( 'Set up ClickWhale plugin global options.', $this->plugin_name ) . '</p>';
+	public function default_other_options() {
+
+		$defaults = array(
+			'slug'         => 'link',
+			'affiliate_id' => '',
+		);
+
+		return $defaults;
+
 	}
 
 	/**
-	 * This function provides a simple description for the Tracking Options page.
-	 *
-	 * It's called from the 'initialize_tracking_options' function by being passed as a parameter
-	 * in the add_settings_section function.
+	 * This functions provides a simple description for the Options page.
 	 */
+	public function general_options_callback() {
+		echo '<p>' . __( 'Set up ClickWhale plugin global options.', $this->plugin_name ) . '</p>';
+	}
+
 	public function tracking_options_callback() {
-		$options = get_option( 'clickwhale_tracking_options' );
-		//var_dump($options);
 		echo '<p>' . __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ) . '</p>';
+	}
+
+	public function other_options_callback() {
+		echo '<p>' . __( 'Set up ClickWhale plugin other options.', $this->plugin_name ) . '</p>';
 	}
 
 	/**
@@ -244,25 +246,24 @@ class Clickwhale_Admin_Settings {
 			add_option( 'clickwhale_general_options', $default_array );
 		}
 
-
 		add_settings_section(
 			'general_settings_section',                    // ID used to identify this section and with which to register options
-			__( 'General', $this->plugin_name ),                // Title to be displayed on the administration page
-			array( $this, 'general_options_callback' ),    // Callback used to render the description of the section
-			'clickwhale_general_options'                // Page on which to add this section of options
+			__( 'General', $this->plugin_name ),              // Title to be displayed on the administration page
+			array( $this, 'general_options_callback' ),       // Callback used to render the description of the section
+			'clickwhale_general_options'                 // Page on which to add this section of options
 		);
 
 		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field(
-			'redirection',                                // ID used to identify the field throughout the theme
+			'redirection',                                    // ID used to identify the field throughout the theme
 			__( 'Redirection Type', $this->plugin_name ),        // The label to the left of the option interface element
 			array(
 				$this,
-				'set_redirection_callback'
-			),    // The name of the function responsible for rendering the option interface
-			'clickwhale_general_options',                // The page on which this option will be displayed
+				'set_redirection_callback'                      // The name of the function responsible for rendering the option interface
+			),
+			'clickwhale_general_options',                    // The page on which this option will be displayed
 			'general_settings_section',                    // The name of the section to which this field belongs
-			array(                                        // The array of arguments to pass to the callback. In this case, just a description.
+			array(                                                // The array of arguments to pass to the callback. In this case, just a description.
 				__( 'Set default redirection type which will be used for new links.', $this->plugin_name ),
 			)
 		);
@@ -314,28 +315,19 @@ class Clickwhale_Admin_Settings {
 
 
 		add_settings_section(
-			'tracking_settings_section',                          // ID used to identify this section and with which to register options
-			__( 'Tracking', $this->plugin_name ),                    // Title to be displayed on the administration page
-			array(
-				$this,
-				'tracking_options_callback'
-			),        // Callback used to render the description of the section
-			'clickwhale_tracking_options'                       // Page on which to add this section of options
+			'tracking_settings_section',
+			__( 'Tracking', $this->plugin_name ),
+			array( $this, 'tracking_options_callback' ),
+			'clickwhale_tracking_options'
 		);
 
-		// Next, we'll introduce the fields for toggling the visibility of content elements.
 		add_settings_field(
-			'redirection',                                          // ID used to identify the field throughout the theme
-			__( 'Disable Click Tracking', $this->plugin_name ),        // The label to the left of the option interface element
-			array(
-				$this,
-				'toggle_click_tracking'
-			),                                                   // The name of the function responsible for rendering the option interface
-			'clickwhale_tracking_options',                  // The page on which this option will be displayed
-			'tracking_settings_section',                  // The name of the section to which this field belongs
-			array(                                               // The array of arguments to pass to the callback. In this case, just a description.
-				__( 'Check to disable click tracking for affiliate links.', $this->plugin_name ),
-			)
+			'redirection',
+			__( 'Disable Click Tracking', $this->plugin_name ),
+			array( $this, 'toggle_click_tracking' ),
+			'clickwhale_tracking_options',
+			'tracking_settings_section',
+			array( __( 'Check to disable click tracking for affiliate links.', $this->plugin_name ), )
 		);
 
 		add_settings_field(
@@ -344,15 +336,58 @@ class Clickwhale_Admin_Settings {
 			array( $this, 'exclude_users_by_role' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
-			array(
-				__( 'Remove clicks by logged-in users with these roles.', $this->plugin_name ),
-			)
+			array( __( 'Remove clicks by logged-in users with these roles.', $this->plugin_name ), )
 		);
 
 		// Finally, we register the fields with WordPress
 		register_setting(
 			'clickwhale_tracking_options',
 			'clickwhale_tracking_options'
+		);
+
+	}
+
+	/**
+	 * Initializes the plugin other options page by registering the Sections,
+	 * Fields, and Settings.
+	 *
+	 * This function is registered with the 'admin_init' hook.
+	 */
+	public function initialize_other_options() {
+
+		if ( false == get_option( 'clickwhale_other_options' ) ) {
+			$default_array = $this->default_other_options();
+			add_option( 'clickwhale_other_options', $default_array );
+		}
+
+		add_settings_section(
+			'other_settings_section',
+			__( 'Other settings', $this->plugin_name ),
+			array( $this, 'other_options_callback' ),
+			'clickwhale_other_options'
+		);
+
+		add_settings_field(
+			'slug',
+			__( 'Link slug', $this->plugin_name ),
+			array( $this, 'set_slug_callback' ),
+			'clickwhale_other_options',
+			'other_settings_section',
+			array( __( 'Set slug you want use for links. Default is "link".', $this->plugin_name ), )
+		);
+		add_settings_field(
+			'ref',
+			__( 'Affiliate ID', $this->plugin_name ),
+			array( $this, 'set_ref_callback' ),
+			'clickwhale_other_options',
+			'other_settings_section',
+			array( __( 'Enter your Affiliate ID.', $this->plugin_name ), )
+		);
+
+		// Finally, we register the fields with WordPress
+		register_setting(
+			'clickwhale_other_options',
+			'clickwhale_other_options'
 		);
 
 	}
@@ -446,6 +481,7 @@ class Clickwhale_Admin_Settings {
 		<?php
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Count linkpages in DB
 	 *
@@ -464,5 +500,27 @@ class Clickwhale_Admin_Settings {
 	 */
 	private function get_linkpages_limit() {
 		return apply_filters( 'clickwhale_linkpages_limit', 1 );
+=======
+	public function set_slug_callback( $args ) {
+
+		$options = get_option( 'clickwhale_other_options' );
+		$slug    = isset( $options['slug'] ) ? $options['slug'] : 'link';
+		?>
+        <input type="text" id="slug" name="clickwhale_other_options[slug]" class="regular-text"
+               value="<?php echo esc_attr( $slug ) ?>" placeholder="link">
+        <p class="description"><?php echo esc_html( $args[0] ) ?></p>
+		<?php
+	}
+
+	public function set_ref_callback( $args ) {
+
+		$options = get_option( 'clickwhale_other_options' );
+		$ref     = isset( $options['affiliate_id'] ) ? $options['affiliate_id'] : '';
+		?>
+        <input type="text" id="affiliate_id" name="clickwhale_other_options[affiliate_id]" class="regular-text"
+               value="<?php echo esc_attr( $ref ) ?>" placeholder="123456">
+        <p class="description"><?php echo esc_html( $args[0] ) ?></p>
+		<?php
+>>>>>>> 3-other
 	}
 }
