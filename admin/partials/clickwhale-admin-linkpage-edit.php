@@ -122,6 +122,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 <input type="hidden" name="logo" value="">
 											<?php } ?>
                                         </div>
+                                        <p><?php _e('Max logo size 275px * 275px','clickwhale'); ?></p>
                                     </td>
                                 </tr>
                                 <tr>

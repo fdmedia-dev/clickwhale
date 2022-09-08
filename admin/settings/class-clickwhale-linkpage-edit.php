@@ -101,8 +101,19 @@ class Clickwhale_Linkpage_Edit {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
+                    var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
 
-                    jQuery("#clickwhale-tabs").tabs();
+
+                    if (localStorage.getItem('tab-' + page_id)) {
+                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                    } else {
+                        jQuery('#clickwhale-tabs').tabs();
+                    }
+
+                    jQuery('#clickwhale-tabs li').click(function () {
+                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                        console.log(localStorage.getItem('tab-' + page_id));
+                    });
 
                     var wrap = jQuery('.linkpage-wrap'),
                         limit = <?php echo $this->get_linkpages_links_limit() ?>;
