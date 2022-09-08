@@ -205,8 +205,10 @@ class Clickwhale_Admin_Settings {
 		// Create options
 		if ( $default_array ) {
 			foreach ( $default_array as $k => $v ) {
-				if ( ! get_option( 'clickwhale_' . $k . '_options' ) ) {
-					add_option( 'clickwhale_' . $k . '_options', $v['options'] );
+				$option_name = 'clickwhale_' . $k . '_options';
+
+				if ( ! get_option( $option_name ) ) {
+					add_option( $option_name, $v['options'] );
 				}
 
 				add_settings_section(
@@ -218,14 +220,13 @@ class Clickwhale_Admin_Settings {
 
 				// Finally, we register the fields with WordPress
 				register_setting(
-					'clickwhale_' . $k . '_options',
-					'clickwhale_' . $k . '_options'
+					$option_name,
+					$option_name
 				);
 			}
 		}
 
 		// Add fields
-		// General
 		add_settings_field(
 			'redirection',
 			__( 'Redirection Type', $this->plugin_name ),
@@ -253,8 +254,6 @@ class Clickwhale_Admin_Settings {
 				__( 'Recommended for affiliate links.', $this->plugin_name )
 			)
 		);
-
-		// Tracking
 		add_settings_field(
 			'redirection',
 			__( 'Disable Click Tracking', $this->plugin_name ),
@@ -271,8 +270,6 @@ class Clickwhale_Admin_Settings {
 			'tracking_settings_section',
 			array( __( 'Remove clicks by logged-in users with these roles.', $this->plugin_name ), )
 		);
-
-		// Other
 		add_settings_field(
 			'slug',
 			__( 'Link slug', $this->plugin_name ),
