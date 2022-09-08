@@ -359,18 +359,18 @@ class Clickwhale_Admin_Settings {
 	public function render_controls( $args ) {
 
 		$item  = '';
-		$id    = $args['id'];
-		$name  = $args['name'];
+		$id    = 'id="' . $args['id'] . '"';
+		$name  = 'name="' . esc_attr( $args['name'] ) . '"';
 		$value = $args['value'];
 
 		switch ( $args['control'] ) {
 			case 'input':
-				$item .= '<input type="' . esc_attr( $args['type'] ) . '" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
+				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
 				break;
 
 			case 'checkbox':
-				$item .= '<label for="' . esc_attr( $id ) . '">';
-				$item .= '<input type="checkbox" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="1" ' . checked( 1, $value, false ) . ' />';
+				$item .= '<label for="' . $args['id'] . '">';
+				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value, false ) . ' />';
 				$item .= $args['label'];
 				$item .= '</label>';
 				break;
@@ -378,19 +378,22 @@ class Clickwhale_Admin_Settings {
 			case 'checkboxes':
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label for="' . esc_attr( $k ) . '">';
-					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
+					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" ' . $name . ' value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
 					$item .= $v;
 					$item .= '</label><br>';
 				}
 				break;
 
 			case 'select':
-				$item .= '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" class="regular-text">';
+				$item .= '<select ' . $id . ' ' . $name . ' class="regular-text">';
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $value, false ) . '>' . $v . '</option>';
 				}
 				$item .= '</select>';
 				break;
+
+			default:
+				$item .= 'Undefined control type';
 		}
 
 		if ( isset( $args['description'] ) ) {
