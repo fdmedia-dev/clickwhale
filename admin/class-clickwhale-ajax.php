@@ -30,6 +30,7 @@ class Clickwhale_Ajax {
 	 */
 	private $version;
 
+	private static $instance;
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -44,6 +45,17 @@ class Clickwhale_Ajax {
 		$this->version     = $version;
 		$this->migration   = new Clickwhale_Migration();
 
+	}
+
+	/**
+	 * @return Clickwhale_Ajax
+	 */
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	public function migration_notice_hide() {

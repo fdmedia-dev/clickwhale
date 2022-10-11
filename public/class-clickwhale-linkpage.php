@@ -76,8 +76,7 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_copyright() {
-		$id  = $this->options['affiliate_id'];
-		$ref = $id ? '?ref=' . $id : '';
+		$ref = isset( $this->options['affiliate_id'] ) ? '?ref=' . $this->options['affiliate_id'] : '';
 
 		return '<a class="linkpage-public--copyright" href="https://clickwhale.pro/' . $ref . '">Clickwhale Copyright</a>';
 	}
