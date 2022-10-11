@@ -102,12 +102,12 @@ class Clickwhale_Tools_Migration {
 		foreach ( $this->migration->available_migrations() as $item ) {
 			if ( $this->migration->check_active( $item['path'] ) ) {
 				add_settings_section(
-					'clickwhale_tools_migration_' . $item['slug'] . '_section',            // ID used to identify this section and with which to register options
-					__( $item['name'], 'clickwhale' ),                                    // Title to be displayed on the administration page
+					'clickwhale_tools_migration_' . $item['slug'] . '_section',
+					__( $item['name'], 'clickwhale' ),
 					function () use ( $item ) {
 						$this->tools_migration_callback( $item );
-					},        // Callback used to render the description of the section
-					'clickwhale_tools_' . $item['slug'] . '_migration_options'                                // Page on which to add this section of options
+					},
+					'clickwhale_tools_' . $item['slug'] . '_migration_options'
 				);
 
 				add_settings_field(
@@ -172,11 +172,13 @@ class Clickwhale_Tools_Migration {
 	 *
 	 */
 	public function tools_migration_callback( $item ) {
+		$allowed_html = wp_kses_allowed_html( 'post' );
+
 		$result = $this->tools_migration_callback_count( $this->migration->get_plugin_data( $item['slug'] ) );
 		$result .= $this->tools_migration_callback_last_migration( $item['slug'] . '_last_migration' );
 		$result .= __( 'Set what you want to migrate from ' . $item['name'] . ' to CLickwhale', 'clickwhale' );
 		?>
-        <p><?php echo esc_html( $result ); ?></p>
+        <p><?php echo wp_kses( $result, $allowed_html ); ?></p>
 		<?php
 	}
 
