@@ -163,7 +163,7 @@ class Clickwhale_Admin_Settings {
 
 		add_submenu_page(
 			$this->plugin_name,
-			__( 'ClickWhale Settings', $this->plugin_name ),
+			__( 'Settings', $this->plugin_name ),
 			__( 'Settings', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-settings',
@@ -171,7 +171,7 @@ class Clickwhale_Admin_Settings {
 		);
 		add_submenu_page(
 			$this->plugin_name,
-			__( 'ClickWhale Tools', $this->plugin_name ),
+			__( 'Tools', $this->plugin_name ),
 			__( 'Tools', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-tools',
