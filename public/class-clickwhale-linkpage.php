@@ -3,11 +3,10 @@
 class Clickwhale_Public_Linkpage {
 	private $post;
 
-	private $options;
-
 	public function __construct( $post ) {
-		$this->post    = $post;
-		$this->options = get_option( 'clickwhale_general_options' );
+		$this->post            = $post;
+		$this->general_options = get_option( 'clickwhale_general_options' );
+		$this->other_options   = get_option( 'clickwhale_other_options' );
 	}
 
 	public function get_title() {
@@ -32,7 +31,7 @@ class Clickwhale_Public_Linkpage {
 		if ( $links ) {
 			foreach ( $links as $link ) {
 				$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
-				$url       = get_bloginfo( 'url' ) . '/' . $this->options['slug'] . '/' . $link_data['slug'];
+				$url       = get_bloginfo( 'url' ) . '/' . $this->general_options['slug'] . '/' . $link_data['slug'];
 				if ( $link_data ) {
 					$link_title = $link['title'] ? $link['title'] : $link_data['title'];
 					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( $link_title ) . '</a>';
@@ -76,8 +75,8 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_copyright() {
-		$ref = isset( $this->options['affiliate_id'] ) ? '?ref=' . $this->options['affiliate_id'] : '';
+		$ref = isset( $this->other_options['affiliate_id'] ) ? '?ref=' . $this->other_options['affiliate_id'] : '';
 
-		return '<a class="linkpage-public--copyright" href="https://clickwhale.pro/' . $ref . '">Clickwhale Copyright</a>';
+		return '<a class="linkpage-public--copyright" target="_blank" href="https://clickwhale.pro/' . $ref . '">Clickwhale Copyright</a>';
 	}
 }

@@ -13,17 +13,25 @@ do_action( 'clickwhale_admin_banner' );
            class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Options', 'clickwhale' ); ?></a>
         <a href="?page=clickwhale-settings&tab=tracking_options"
            class="nav-tab <?php echo $active_tab == 'tracking_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Tracking Options', 'clickwhale' ); ?></a>
+        <a href="?page=clickwhale-settings&tab=other_options"
+           class="nav-tab <?php echo $active_tab == 'other_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Other Options', 'clickwhale' ); ?></a>
     </h2>
 
     <form method="post" action="options.php">
 		<?php
 
-		if ( $active_tab == 'tracking_options' ) {
-			settings_fields( 'clickwhale_tracking_options' );
-			do_settings_sections( 'clickwhale_tracking_options' );
-		} else {
-			settings_fields( 'clickwhale_general_options' );
-			do_settings_sections( 'clickwhale_general_options' );
+		switch ( $active_tab ) {
+			case 'tracking_options':
+				settings_fields( 'clickwhale_tracking_options' );
+				do_settings_sections( 'clickwhale_tracking_options' );
+				break;
+			case 'other_options':
+				settings_fields( 'clickwhale_other_options' );
+				do_settings_sections( 'clickwhale_other_options' );
+				break;
+			default:
+				settings_fields( 'clickwhale_general_options' );
+				do_settings_sections( 'clickwhale_general_options' );
 		}
 
 		submit_button();

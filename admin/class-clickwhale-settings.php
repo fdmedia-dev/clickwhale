@@ -100,8 +100,8 @@ class Clickwhale_Admin_Settings {
 				'handler'    => '_category_form'
 			),
 			array(
-				'page_title' => 'Clickwhale Link Pages',
-				'menu_title' => 'Link Pages',
+				'page_title' => 'Clickwhale Linkpages',
+				'menu_title' => 'Linkpages',
 				'slug'       => $this->plugin_name . '-linkpages',
 				'handler'    => '_linkpages',
 				'parent'     => $this->plugin_name,
