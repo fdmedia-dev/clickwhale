@@ -67,7 +67,9 @@ class Clickwhale_Public_Linkpage {
 		$socials     = maybe_unserialize( $this->post->post_content['social'] );
 		if ( $socials ) {
 			foreach ( $socials as $k => $v ) {
-				$social_html .= ' <li><a href = "' . $v . '" target = "_blank" > ' . $social_svg[ $k ] . '</a ></li > ';
+				if ( $v ) {
+					$social_html .= ' <li><a href = "' . $v . '" target = "_blank" > ' . $social_svg[ $k ] . '</a ></li > ';
+				}
 			}
 		}
 
