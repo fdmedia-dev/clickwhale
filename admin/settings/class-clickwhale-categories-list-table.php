@@ -70,7 +70,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
-		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%d">%s</a>', intval( $item['id'] ), $item['title'] );
+		$title   = sprintf( '<a href="?page=clickwhale-edit-category&id=%d">%s</a>', intval( $item['id'] ), $item['title'] );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-category&id=%d">%s</a>', intval( $item['id'] ), __( 'Edit', 'clickwhale' ) ),
 			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%d">%s</a>', sanitize_text_field( $_REQUEST['page'] ), intval( $item['id'] ), __( 'Delete', 'clickwhale' ) ),

@@ -160,8 +160,9 @@ class Clickwhale {
 		$Clickwhale_Linkpage_Edit  = new Clickwhale_Linkpage_Edit();
 
 		// ACTIONS
-		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'setup_plugin_options_menu' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'initialize_settings_options' );
+		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'add_plugin_menu' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
