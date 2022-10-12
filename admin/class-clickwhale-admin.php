@@ -157,6 +157,7 @@ class Clickwhale_Admin {
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( "jquery-ui-tabs" );
+		wp_enqueue_media();
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
 			'siteurl' => home_url(),
