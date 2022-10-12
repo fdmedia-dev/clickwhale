@@ -99,7 +99,7 @@ class Clickwhale_Admin_Settings {
 
 		$subpages = array(
 			array(
-				'page_title' => 'Clickwhale Links',
+				'page_title' => 'Links',
 				'menu_title' => 'Links',
 				'slug'       => $this->plugin_name,
 				'handler'    => '_links',
@@ -112,7 +112,7 @@ class Clickwhale_Admin_Settings {
 				'handler'    => '_link_form'
 			),
 			array(
-				'page_title' => 'Clickwhale Categories',
+				'page_title' => 'Categories',
 				'menu_title' => 'Categories',
 				'slug'       => $this->plugin_name . '-categories',
 				'handler'    => '_categories',
@@ -125,7 +125,7 @@ class Clickwhale_Admin_Settings {
 				'handler'    => '_category_form'
 			),
 			array(
-				'page_title' => 'Clickwhale Linkpages',
+				'page_title' => 'Linkpages',
 				'menu_title' => 'Linkpages',
 				'slug'       => $this->plugin_name . '-linkpages',
 				'handler'    => '_linkpages',
