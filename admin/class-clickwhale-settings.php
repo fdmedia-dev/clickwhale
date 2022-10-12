@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The settings of the plugin.
  *
@@ -7,11 +8,6 @@
  *
  * @package    Clickwhale
  * @subpackage Clickwhale/admin
- */
-
-/**
- * Class WordPress_Plugin_Template_Settings
- *
  */
 class Clickwhale_Admin_Settings {
 	/**
@@ -22,6 +18,7 @@ class Clickwhale_Admin_Settings {
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
+
 	/**
 	 * The version of this plugin.
 	 *
@@ -32,6 +29,11 @@ class Clickwhale_Admin_Settings {
 	private $version;
 
 	/**
+	 * @var Clickwhale_Admin_Settings
+	 */
+	private static $instance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
@@ -40,14 +42,28 @@ class Clickwhale_Admin_Settings {
 	 * @since    1.0.0
 	 */
 	public function __construct( $plugin_name, $version ) {
+
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
 		// if custom slug doesn't isset we should add default value
-		$options = get_option( 'clickwhale_other_options' );
+		$options = get_option( 'clickwhale_general_options' );
 		if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
 			$options['slug'] = 'link';
-			update_option( 'clickwhale_other_options', $options );
+			update_option( 'clickwhale_general_options', $options );
 		}
+
+	}
+
+	/**
+	 * @return Clickwhale_Admin_Settings
+	 */
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -55,6 +71,49 @@ class Clickwhale_Admin_Settings {
 	 * 'Clickwhale' menu.
 	 */
 	public function setup_plugin_options_menu() {
+
+		$subpages = array(
+			array(
+				'page_title' => 'Clickwhale Links',
+				'menu_title' => 'Links',
+				'slug'       => $this->plugin_name,
+				'handler'    => '_links',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New',
+				'menu_title' => 'Add New Link',
+				'slug'       => $this->plugin_name . '-edit-link',
+				'handler'    => '_link_form'
+			),
+			array(
+				'page_title' => 'Clickwhale Categories',
+				'menu_title' => 'Categories',
+				'slug'       => $this->plugin_name . '-categories',
+				'handler'    => '_categories',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New Category',
+				'menu_title' => 'Add New Category',
+				'slug'       => $this->plugin_name . '-edit-category',
+				'handler'    => '_category_form'
+			),
+			array(
+				'page_title' => 'Clickwhale Linkpages',
+				'menu_title' => 'Linkpages',
+				'slug'       => $this->plugin_name . '-linkpages',
+				'handler'    => '_linkpages',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => 'Add New Link Page',
+				'menu_title' => 'Add New Link Page',
+				'slug'       => $this->plugin_name . '-edit-linkpage',
+				'handler'    => '_linkpage_form'
+			),
+		);
+
 		// add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 		add_menu_page(
 			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
@@ -65,38 +124,19 @@ class Clickwhale_Admin_Settings {
 			plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
 			26
 		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
-			__( 'Links', $this->plugin_name ),              // menu title
-			'manage_options',
-			$this->plugin_name,
-			array( $this, $this->plugin_name . '_links_page_handler' )
-		);
-		add_submenu_page(
-			'',
-			__( 'Add New', $this->plugin_name ),
-			__( 'Add New Link', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-edit-link',
-			array( $this, $this->plugin_name . '_link_form_page_handler' )
-		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'ClickWhale Categories', $this->plugin_name ),
-			__( 'Categories', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-categories',
-			array( $this, $this->plugin_name . '_categories_page_handler' )
-		);
-		add_submenu_page(
-			'',
-			__( 'Add New Category', $this->plugin_name ),
-			__( 'Add New Category', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-edit-category',
-			array( $this, $this->plugin_name . '_category_form_page_handler' )
-		);
+
+		foreach ( $subpages as $subpage ) {
+			$parent = isset( $subpage['parent'] ) ? $subpage['parent'] : '';
+			add_submenu_page(
+				$parent,
+				sprintf( __( '%1$s', $this->plugin_name ), $subpage['page_title'] ),
+				sprintf( __( '%1$s', $this->plugin_name ), $subpage['menu_title'] ),
+				'manage_options',
+				$subpage['slug'],
+				array( $this, $this->plugin_name . $subpage['handler'] . '_page_handler' )
+			);
+		}
+
 		add_submenu_page(
 			$this->plugin_name,
 			__( 'ClickWhale Settings', $this->plugin_name ),
@@ -113,6 +153,7 @@ class Clickwhale_Admin_Settings {
 			$this->plugin_name . '-tools',
 			array( $this, 'include_admin_menu_tools_partial' )
 		);
+
 	}
 
 	/**
@@ -136,6 +177,14 @@ class Clickwhale_Admin_Settings {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
 	}
 
+	public function clickwhale_linkpages_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpages-list-table.php' );
+	}
+
+	public function clickwhale_linkpage_form_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpage-edit.php' );
+	}
+
 	public function render_settings_page_content() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-settings-display.php' );
 	}
@@ -143,6 +192,7 @@ class Clickwhale_Admin_Settings {
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-tools-display.php' );
 	}
+
 
 	/**
 	 * Provides default values for the General Options.
@@ -198,20 +248,25 @@ class Clickwhale_Admin_Settings {
 	 * This function is registered with the 'admin_init' hook.
 	 */
 	public function initialize_settings_options() {
+
 		$default_array = $this->default_options();
+
 		// Create options
 		if ( $default_array ) {
 			foreach ( $default_array as $k => $v ) {
 				$option_name = 'clickwhale_' . $k . '_options';
+
 				if ( ! get_option( $option_name ) ) {
 					add_option( $option_name, $v['options'] );
 				}
+
 				add_settings_section(
 					$k . '_settings_section',
 					$v['name'],
 					array( $this, $k . '_options_callback' ),
 					'clickwhale_' . $k . '_options'
 				);
+
 				// Finally, we register the fields with WordPress
 				register_setting(
 					$option_name,
@@ -219,9 +274,12 @@ class Clickwhale_Admin_Settings {
 				);
 			}
 		}
+
 		$general_options  = get_option( 'clickwhale_general_options' );
 		$tracking_options = get_option( 'clickwhale_tracking_options' );
 		$other_options    = get_option( 'clickwhale_other_options' );
+
+
 		// Add fields
 		add_settings_field(
 			'redirection',
@@ -346,21 +404,26 @@ class Clickwhale_Admin_Settings {
 	 * It accepts an array or arguments and expects the first element in the array to be the description
 	 * to be displayed next to the checkbox.
 	 */
+
 	public function render_controls( $args ) {
+
 		$item  = '';
 		$id    = 'id="' . $args['id'] . '"';
 		$name  = 'name="' . esc_attr( $args['name'] ) . '"';
 		$value = $args['value'];
+
 		switch ( $args['control'] ) {
 			case 'input':
 				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
 				break;
+
 			case 'checkbox':
 				$item .= '<label for="' . $args['id'] . '">';
 				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value, false ) . ' />';
 				$item .= $args['label'];
 				$item .= '</label>';
 				break;
+
 			case 'checkboxes':
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label for="' . esc_attr( $k ) . '">';
@@ -369,6 +432,7 @@ class Clickwhale_Admin_Settings {
 					$item .= '</label><br>';
 				}
 				break;
+
 			case 'select':
 				$item .= '<select ' . $id . ' ' . $name . ' class="regular-text">';
 				foreach ( $args['options'] as $k => $v ) {
@@ -376,12 +440,15 @@ class Clickwhale_Admin_Settings {
 				}
 				$item .= '</select>';
 				break;
+
 			default:
 				$item .= 'Undefined control type';
 		}
+
 		if ( isset( $args['description'] ) ) {
 			$item .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
 		}
+
 		echo $item;
 	}
 

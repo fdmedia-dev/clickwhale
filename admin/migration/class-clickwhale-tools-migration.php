@@ -102,12 +102,12 @@ class Clickwhale_Tools_Migration {
 		foreach ( $this->migration->available_migrations() as $item ) {
 			if ( $this->migration->check_active( $item['path'] ) ) {
 				add_settings_section(
-					'clickwhale_tools_migration_' . $item['slug'] . '_section',            // ID used to identify this section and with which to register options
-					__( $item['name'], 'clickwhale' ),                                    // Title to be displayed on the administration page
+					'clickwhale_tools_migration_' . $item['slug'] . '_section',
+					__( $item['name'], 'clickwhale' ),
 					function () use ( $item ) {
 						$this->tools_migration_callback( $item );
-					},        // Callback used to render the description of the section
-					'clickwhale_tools_' . $item['slug'] . '_migration_options'                                // Page on which to add this section of options
+					},
+					'clickwhale_tools_' . $item['slug'] . '_migration_options'
 				);
 
 				add_settings_field(

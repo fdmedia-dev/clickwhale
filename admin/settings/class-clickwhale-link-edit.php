@@ -136,7 +136,6 @@ class Clickwhale_Link_Edit {
 			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
 		}
 
-
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;

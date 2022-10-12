@@ -23,12 +23,12 @@ class Clickwhale_Linkpages {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPageInterface.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPageControllerInterface.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPageTemplateLoaderInterface.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPageController.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/link-pages/ClickwhaleLinkPageTemplateLoader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPageInterface.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPageControllerInterface.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPageTemplateLoaderInterface.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPageController.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/linkpages/ClickwhaleLinkPageTemplateLoader.php';
 	}
 
 	public function init() {
@@ -65,7 +65,7 @@ class Clickwhale_Linkpages {
 				$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
 				           ->setTitle( $linkpage['title'] )
 				           ->setContent( $linkpage )
-				           ->setTemplate( 'link-page.php' );
+				           ->setTemplate( 'linkpage.php' );
 			}
 		}
 	}

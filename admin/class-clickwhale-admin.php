@@ -41,6 +41,11 @@ class Clickwhale_Admin {
 	private $version;
 
 	/**
+	 * @var Clickwhale_Admin
+	 */
+	private static $instance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
@@ -55,6 +60,17 @@ class Clickwhale_Admin {
 
 		$this->load_dependencies();
 		$this->migration();
+	}
+
+	/**
+	 * @return Clickwhale_Admin
+	 */
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
