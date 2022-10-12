@@ -46,13 +46,6 @@ class Clickwhale_Admin_Settings {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
-		// if custom slug doesn't isset we should add default value
-		//$options = get_option( 'clickwhale_general_options' );
-		//if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
-		//	$options['slug'] = 'link';
-		//	update_option( 'clickwhale_general_options', $options );
-		//}
-
 	}
 
 	/**
@@ -340,9 +333,9 @@ class Clickwhale_Admin_Settings {
 			array(
 				'control'     => 'input',
 				'id'          => 'slug',
-				'name'        => 'clickwhale_other_options[slug]',
+				'name'        => 'clickwhale_general_options[slug]',
 				'type'        => 'text',
-				'value'       => isset( $other_options['slug'] ) ? $other_options['slug'] : 'link',
+				'value'       => isset( $general_options['slug'] ) ? $general_options['slug'] : 'link',
 				'placeholder' => 'link',
 				'description' => __( 'Set the default slug you want to use for new links.', $this->plugin_name ),
 			)

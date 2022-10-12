@@ -131,7 +131,7 @@ class Clickwhale_Public {
 
 	public function do_redirect_handler() {
 
-		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
+		$user = new Clickwhale_WP_User();
 
 		global $wpdb;
 		$options_other   = get_option( 'clickwhale_other_options' );
