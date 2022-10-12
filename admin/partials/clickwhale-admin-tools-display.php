@@ -4,7 +4,7 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'ClickWhale Tools', 'clickwhale' ); ?></h1>
+    <h1 class="wp-heading-inline"><?php _e( 'Tools', 'clickwhale' ); ?></h1>
 	<?php settings_errors(); ?>
 
 	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
