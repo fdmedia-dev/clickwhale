@@ -89,6 +89,13 @@ class Clickwhale_Admin {
 	 */
 	private function load_dependencies() {
 
+		// Helpers
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-links-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-categories-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-linkpages-helper.php';
+
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-ajax.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';

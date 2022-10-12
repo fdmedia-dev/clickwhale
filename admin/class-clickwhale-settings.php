@@ -47,11 +47,11 @@ class Clickwhale_Admin_Settings {
 		$this->version     = $version;
 
 		// if custom slug doesn't isset we should add default value
-		$options = get_option( 'clickwhale_general_options' );
-		if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
-			$options['slug'] = 'link';
-			update_option( 'clickwhale_general_options', $options );
-		}
+		//$options = get_option( 'clickwhale_general_options' );
+		//if ( ! isset( $options['slug'] ) || $options['slug'] === '' ) {
+		//	$options['slug'] = 'link';
+		//	update_option( 'clickwhale_general_options', $options );
+		//}
 
 	}
 
@@ -67,10 +67,42 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
+	 * Provides default values Options.
+	 *
+	 * @return array
+	 */
+	public function default_options() {
+		return array(
+			'general'  => array(
+				'name'    => __( 'General', $this->plugin_name ),
+				'options' => array(
+					'redirect_type' => 301,
+					'nofollow'      => true,
+					'sponsored'     => false,
+					'slug'          => 'link',
+				)
+			),
+			'tracking' => array(
+				'name'    => __( 'Tracking', $this->plugin_name ),
+				'options' => array(
+					'disable_click_tracking' => false,
+					'exclude_users_by_role'  => [ 'administrator' ],
+				)
+			),
+			'other'    => array(
+				'name'    => __( 'Other', $this->plugin_name ),
+				'options' => array(
+					'affiliate_id' => '',
+				)
+			)
+		);
+	}
+
+	/**
 	 * This function introduces the theme options into the 'Settings' menu and into a top-level
 	 * 'Clickwhale' menu.
 	 */
-	public function setup_plugin_options_menu() {
+	public function add_plugin_menu() {
 
 		$subpages = array(
 			array(
@@ -114,10 +146,9 @@ class Clickwhale_Admin_Settings {
 			),
 		);
 
-		// add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 		add_menu_page(
-			__( 'Clickwhale Links', $this->plugin_name ),   // page_title
-			__( 'Clickwhale', $this->plugin_name ),         // menu title
+			__( 'Clickwhale Links', $this->plugin_name ),
+			__( 'Clickwhale', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name,
 			'',
@@ -193,39 +224,6 @@ class Clickwhale_Admin_Settings {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-tools-display.php' );
 	}
 
-
-	/**
-	 * Provides default values for the General Options.
-	 *
-	 * @return array
-	 */
-	public function default_options() {
-		return array(
-			'general'  => array(
-				'name'    => __( 'General', $this->plugin_name ),
-				'options' => array(
-					'redirect_type' => 301,
-					'nofollow'      => true,
-					'sponsored'     => false,
-				)
-			),
-			'tracking' => array(
-				'name'    => __( 'Tracking', $this->plugin_name ),
-				'options' => array(
-					'disable_click_tracking' => false,
-					'exclude_users_by_role'  => [ 'administrator' ],
-				)
-			),
-			'other'    => array(
-				'name'    => __( 'Other', $this->plugin_name ),
-				'options' => array(
-					'slug'         => 'link',
-					'affiliate_id' => '',
-				)
-			)
-		);
-	}
-
 	/**
 	 * This functions provides a simple description for the Options page.
 	 */
@@ -241,24 +239,31 @@ class Clickwhale_Admin_Settings {
 		echo '<p>' . __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ) . '</p>';
 	}
 
+	public function add_default_options() {
+		if ( $this->default_options() ) {
+			foreach ( $this->default_options() as $k => $v ) {
+				$option_name = 'clickwhale_' . $k . '_options';
+				if ( ! get_option( $option_name ) ) {
+					add_option( $option_name, $v['options'] );
+				}
+			}
+		}
+	}
+
 	/**
 	 * Initializes the plugin settings options page by registering the Sections,
 	 * Fields, and Settings.
 	 *
 	 * This function is registered with the 'admin_init' hook.
 	 */
-	public function initialize_settings_options() {
+	public function add_settings_fields() {
 
-		$default_array = $this->default_options();
+		$general_options  = get_option( 'clickwhale_general_options' );
+		$tracking_options = get_option( 'clickwhale_tracking_options' );
+		$other_options    = get_option( 'clickwhale_other_options' );
 
-		// Create options
-		if ( $default_array ) {
-			foreach ( $default_array as $k => $v ) {
-				$option_name = 'clickwhale_' . $k . '_options';
-
-				if ( ! get_option( $option_name ) ) {
-					add_option( $option_name, $v['options'] );
-				}
+		if ( $this->default_options() ) {
+			foreach ( $this->default_options() as $k => $v ) {
 
 				add_settings_section(
 					$k . '_settings_section',
@@ -267,18 +272,13 @@ class Clickwhale_Admin_Settings {
 					'clickwhale_' . $k . '_options'
 				);
 
-				// Finally, we register the fields with WordPress
 				register_setting(
-					$option_name,
-					$option_name
+					'clickwhale_' . $k . '_options',
+					'clickwhale_' . $k . '_options'
 				);
+
 			}
 		}
-
-		$general_options  = get_option( 'clickwhale_general_options' );
-		$tracking_options = get_option( 'clickwhale_tracking_options' );
-		$other_options    = get_option( 'clickwhale_other_options' );
-
 
 		// Add fields
 		add_settings_field(
@@ -332,6 +332,22 @@ class Clickwhale_Admin_Settings {
 			)
 		);
 		add_settings_field(
+			'slug',
+			__( 'Link slug', $this->plugin_name ),
+			array( $this, 'render_controls' ),
+			'clickwhale_general_options',
+			'general_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'slug',
+				'name'        => 'clickwhale_other_options[slug]',
+				'type'        => 'text',
+				'value'       => isset( $other_options['slug'] ) ? $other_options['slug'] : 'link',
+				'placeholder' => 'link',
+				'description' => __( 'Set the default slug you want to use for new links.', $this->plugin_name ),
+			)
+		);
+		add_settings_field(
 			'disable_click_tracking',
 			__( 'Disable Click Tracking', $this->plugin_name ),
 			array( $this, 'render_controls' ),
@@ -365,22 +381,6 @@ class Clickwhale_Admin_Settings {
 			)
 		);
 		add_settings_field(
-			'slug',
-			__( 'Link slug', $this->plugin_name ),
-			array( $this, 'render_controls' ),
-			'clickwhale_other_options',
-			'other_settings_section',
-			array(
-				'control'     => 'input',
-				'id'          => 'slug',
-				'name'        => 'clickwhale_other_options[slug]',
-				'type'        => 'text',
-				'value'       => isset( $other_options['slug'] ) ? $other_options['slug'] : 'link',
-				'placeholder' => 'link',
-				'description' => __( 'Set slug you want use for links. Default is "link".', $this->plugin_name ),
-			)
-		);
-		add_settings_field(
 			'affiliate_id',
 			__( 'Affiliate ID', $this->plugin_name ),
 			array( $this, 'render_controls' ),
@@ -388,7 +388,7 @@ class Clickwhale_Admin_Settings {
 			'other_settings_section',
 			array(
 				'control'     => 'input',
-				'id'          => 'slug',
+				'id'          => 'affiliate_id',
 				'name'        => 'clickwhale_other_options[affiliate_id]',
 				'type'        => 'text',
 				'value'       => $other_options['affiliate_id'],
@@ -406,69 +406,6 @@ class Clickwhale_Admin_Settings {
 	 */
 
 	public function render_controls( $args ) {
-
-		$item  = '';
-		$id    = 'id="' . $args['id'] . '"';
-		$name  = 'name="' . esc_attr( $args['name'] ) . '"';
-		$value = $args['value'];
-
-		switch ( $args['control'] ) {
-			case 'input':
-				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
-				break;
-
-			case 'checkbox':
-				$item .= '<label for="' . $args['id'] . '">';
-				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value, false ) . ' />';
-				$item .= $args['label'];
-				$item .= '</label>';
-				break;
-
-			case 'checkboxes':
-				foreach ( $args['options'] as $k => $v ) {
-					$item .= '<label for="' . esc_attr( $k ) . '">';
-					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" ' . $name . ' value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
-					$item .= $v;
-					$item .= '</label><br>';
-				}
-				break;
-
-			case 'select':
-				$item .= '<select ' . $id . ' ' . $name . ' class="regular-text">';
-				foreach ( $args['options'] as $k => $v ) {
-					$item .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $value, false ) . '>' . $v . '</option>';
-				}
-				$item .= '</select>';
-				break;
-
-			default:
-				$item .= 'Undefined control type';
-		}
-
-		if ( isset( $args['description'] ) ) {
-			$item .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
-		}
-
-		echo $item;
-	}
-
-	/**
-	 * Count linkpages in DB
-	 *
-	 * @return string|null
-	 */
-	private function get_linkpages_count() {
-		global $wpdb;
-
-		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_linkpages" ) );
-	}
-
-	/**
-	 * Filter function
-	 * return number of available linkpages
-	 * @return mixed|void
-	 */
-	private function get_linkpages_limit() {
-		return apply_filters( 'clickwhale_linkpages_limit', 1 );
+		echo ClickwhaleHepler::render_contol( $args );
 	}
 }

@@ -2,7 +2,7 @@
 global $wpdb;
 $table_name  = $wpdb->prefix . 'clickwhale_categories';
 $total_items = $wpdb->get_var( "SELECT COUNT(id) FROM $table_name" );
-$limit       = apply_filters( 'clickwhale_categories_limit', 10 );
+$limit       = ClickwhaleCategoriesHelper::get_limit();
 
 $message = '';
 $notice  = '';

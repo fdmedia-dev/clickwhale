@@ -1,0 +1,57 @@
+<?php
+
+class ClickwhaleHepler {
+	/**
+	 * Return HTML marckup for add_settings_field function
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public static function render_contol( $args ) {
+
+		$item  = '';
+		$id    = 'id="' . $args['id'] . '"';
+		$name  = 'name="' . esc_attr( $args['name'] ) . '"';
+		$value = $args['value'];
+
+		switch ( $args['control'] ) {
+			case 'input':
+				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
+				break;
+
+			case 'checkbox':
+				$item .= '<label for="' . $args['id'] . '">';
+				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value, false ) . ' />';
+				$item .= $args['label'];
+				$item .= '</label>';
+				break;
+
+			case 'checkboxes':
+				foreach ( $args['options'] as $k => $v ) {
+					$item .= '<label for="' . esc_attr( $k ) . '">';
+					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" ' . $name . ' value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
+					$item .= $v;
+					$item .= '</label><br>';
+				}
+				break;
+
+			case 'select':
+				$item .= '<select ' . $id . ' ' . $name . ' class="regular-text">';
+				foreach ( $args['options'] as $k => $v ) {
+					$item .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $value, false ) . '>' . $v . '</option>';
+				}
+				$item .= '</select>';
+				break;
+
+			default:
+				$item .= 'Undefined control type';
+		}
+
+		if ( isset( $args['description'] ) ) {
+			$item .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
+		}
+
+		return $item;
+	}
+}
