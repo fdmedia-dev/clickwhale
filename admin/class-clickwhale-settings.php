@@ -337,7 +337,7 @@ class Clickwhale_Admin_Settings {
 				'type'        => 'text',
 				'value'       => isset( $general_options['slug'] ) ? $general_options['slug'] : 'link',
 				'placeholder' => 'link',
-				'description' => __( 'Set the default slug you want to use for new links.', $this->plugin_name ),
+				'description' => __( '<strong>Important:</strong> Once you change the link slug, all existing links will be updated automatically.<br>You may have to update placed links in your content manually.', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
@@ -351,7 +351,7 @@ class Clickwhale_Admin_Settings {
 				'id'      => 'disable_click_tracking',
 				'name'    => 'clickwhale_tracking_options[disable_click_tracking]',
 				'value'   => isset( $tracking_options['disable_click_tracking'] ) ? 1 : 0,
-				'label'   => __( 'Check to disable click tracking for affiliate links', $this->plugin_name ),
+				'label'   => __( 'Check to disable click tracking for links', $this->plugin_name ),
 			)
 		);
 		add_settings_field(

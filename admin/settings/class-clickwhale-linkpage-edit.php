@@ -101,6 +101,8 @@ class Clickwhale_Linkpage_Edit {
 	}
 
 	public function admin_scripts() {
+		$nonce       = wp_create_nonce( 'linkpage_slug' );
+		$nonce_reset = wp_create_nonce( 'linkpage_slug' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
@@ -190,6 +192,40 @@ class Clickwhale_Linkpage_Edit {
                         button.next().val(''); // emptying the hidden field
                         button.hide().prev().html('Upload image');
                     });
+
+                /**
+                 * Check slug
+                 */
+                jQuery('#form_edit_linkpage').on('blur', '#slug', function (e) {
+
+                    var slug = jQuery(this),
+                        linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]');
+
+                    linkpageSubmit.prop('disabled', true);
+
+                    jQuery.post(ajaxurl, {
+                        'security': '<?php echo $nonce ?>',
+                        'action': 'clickwhale/admin/check_linkpage_slug',
+                        'slug': slug.val()
+                    }, function (response) {
+                        // slug exists
+                        if (response.data === true) {
+                            slug.addClass('error');
+                            jQuery('#slug-description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
+                        }
+                        // slug doesn't exists
+                        if (response.data === false) {
+                            slug.removeClass('error');
+                            jQuery('#slug-description').text('');
+                            linkpageSubmit.prop('disabled', false);
+                        }
+                        // slug empty or error
+                        if (response.data === 'error') {
+                            slug.addClass('error');
+                            jQuery('#slug-description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
+                        }
+                    })
+                });
 
             });
         </script>

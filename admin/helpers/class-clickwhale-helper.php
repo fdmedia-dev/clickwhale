@@ -49,7 +49,7 @@ class ClickwhaleHepler {
 		}
 
 		if ( isset( $args['description'] ) ) {
-			$item .= '<p class="description ">' . esc_html( $args['description'] ) . '</p>';
+			$item .= '<p class="description ">' . $args['description'] . '</p>';
 		}
 
 		return $item;

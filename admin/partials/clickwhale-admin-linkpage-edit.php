@@ -32,7 +32,7 @@ do_action( 'clickwhale_admin_banner' );
 		<?php } ?>
     </h1>
 
-    <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
+    <form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_linkpage">
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
         <input type="hidden" name="id" value="<?php echo esc_attr( $item['id'] ) ?>"/>
@@ -94,6 +94,7 @@ do_action( 'clickwhale_admin_banner' );
                                                class="regular-text"
                                                placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                                required>
+                                        <p id="slug-description"></p>
                                     </td>
                                 </tr>
 								<?php $logo_id = isset( $item['logo'] ) ? $item['logo'] : ''; ?>
@@ -122,7 +123,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 <input type="hidden" name="logo" value="">
 											<?php } ?>
                                         </div>
-                                        <p><?php _e('Max logo size 275px * 275px','clickwhale'); ?></p>
+                                        <p><?php _e( 'Max logo size 275px * 275px', 'clickwhale' ); ?></p>
                                     </td>
                                 </tr>
                                 <tr>
