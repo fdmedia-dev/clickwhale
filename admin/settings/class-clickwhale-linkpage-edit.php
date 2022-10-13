@@ -143,7 +143,7 @@ class Clickwhale_Linkpage_Edit {
                     }
                     if ((links_count + 1) === limit) {
                         jQuery('#add-pagelink-link').prop('disabled', true);
-                        jQuery('.linkpage-wrap').append('<div class="info notice"><p><?php printf( 'Only %d links are available in free version', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></p></div>')
+                        jQuery('<div class="links-info"><?php printf( 'Only %d links are available in free version', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.linkpage-wrap');
                     }
 
                 });

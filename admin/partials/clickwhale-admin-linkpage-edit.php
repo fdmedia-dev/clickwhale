@@ -179,6 +179,9 @@ do_action( 'clickwhale_admin_banner' );
 											?>
 
                                         </div>
+										<?php if ( count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
+                                            <div class="links-info"><?php printf( ' Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
+										<?php } ?>
                                     </td>
                                 </tr>
 								<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
