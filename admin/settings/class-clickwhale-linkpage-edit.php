@@ -22,15 +22,6 @@ class Clickwhale_Linkpage_Edit {
 		);
 	}
 
-	/**
-	 * Filter function
-	 * return number of links available on the linkpage
-	 * @return mixed|void
-	 */
-	private function get_linkpages_links_limit() {
-		return apply_filters( 'clickwhale_linkpage_links_limit', 5 );
-	}
-
 	public function get_item( $request ) {
 		global $wpdb;
 
@@ -124,7 +115,7 @@ class Clickwhale_Linkpage_Edit {
 				<?php } ?>
 
                 var wrap = jQuery('.linkpage-wrap'),
-                    limit = <?php echo $this->get_linkpages_links_limit() ?>;
+                    limit = <?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>;
 
                 if (jQuery('.linkpage-row').length >= limit) {
                     jQuery('#add-pagelink-link').prop('disabled', true);
@@ -152,20 +143,22 @@ class Clickwhale_Linkpage_Edit {
                     }
                     if ((links_count + 1) === limit) {
                         jQuery('#add-pagelink-link').prop('disabled', true);
+                        jQuery('.linkpage-wrap').append('<div class="info notice"><p><?php printf( 'Only %d links are available in free version', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></p></div>')
                     }
 
                 });
 
-                // Remove added link row
+
                 jQuery(document)
+                    // Remove added link row
                     .on('click', '.linkpage-row--remove', function () {
                         jQuery(this).parent().remove();
                         if (jQuery('.linkpage-row').length < limit) {
                             jQuery('#add-pagelink-link').prop('disabled', false);
                         }
                     })
+                    // Logo upload
                     .on('click', '.linkpage-logo-upload', function (e) {
-
                         e.preventDefault();
 
                         var button = jQuery(this),
@@ -185,11 +178,12 @@ class Clickwhale_Linkpage_Edit {
                             }).open();
 
                     })
+                    // logo remove
                     .on('click', '.linkpage-logo-remove', function (e) {
-
                         e.preventDefault();
 
                         var button = jQuery(this);
+
                         button.next().val(''); // emptying the hidden field
                         button.hide().prev().html('Upload image');
                     });
