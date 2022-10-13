@@ -31,6 +31,7 @@ class Clickwhale_Ajax {
 	private $version;
 
 	private static $instance;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -184,6 +185,20 @@ class Clickwhale_Ajax {
 		$result['text']   = $text;
 
 		activate_clickwhale();
+
+		wp_send_json_success( $result );
+
+		wp_die();
+	}
+
+	public function check_linkpage_slug() {
+		check_ajax_referer( 'linkpage_slug', 'security' );
+
+		if ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) {
+			$result = ClickwhaleLinkpagesHelper::slug_exists( sanitize_text_field( $_POST['slug'] ) );
+		} else {
+			$result = 'error';
+		}
 
 		wp_send_json_success( $result );
 
