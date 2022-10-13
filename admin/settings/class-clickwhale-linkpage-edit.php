@@ -62,7 +62,7 @@ class Clickwhale_Linkpage_Edit {
 		global $wpdb;
 
 		return $wpdb->get_results(
-			"SELECT id,title from {$wpdb->prefix}clickwhale_links",
+			"SELECT id,title,url from {$wpdb->prefix}clickwhale_links",
 			ARRAY_A
 		);
 	}
@@ -142,9 +142,10 @@ class Clickwhale_Linkpage_Edit {
                     var links_count = jQuery('.linkpage-row').length,
                         links = jQuery('#add-pagelink-select'),
                         link_text = links.find('option:selected').text(),
+                        link_url = links.find('option:selected').data('url'),
                         link_id = links.find('option:selected').val(),
                         link_title_ph = "<?php _e( 'Link Title', 'clickwhale' ); ?>",
-                        template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + '</div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
+                        template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + ' <span>' + link_url + '</span></div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
 
                     if (links_count < limit) {
                         wrap.append(template);
