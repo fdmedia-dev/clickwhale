@@ -138,7 +138,8 @@ do_action( 'clickwhale_admin_banner' );
                                     <td>
                                         <select id="add-pagelink-select" class="regular-text">
 											<?php foreach ( $links as $link ) { ?>
-                                                <option value="<?php echo esc_attr( $link['id'] ) ?>">
+                                                <option value="<?php echo esc_attr( $link['id'] ) ?>"
+                                                        data-url="<?php echo esc_url( $link['url'] ) ?>">
 													<?php echo esc_html( $link['title'] ) ?>
                                                 </option>
 											<?php } ?>
@@ -160,7 +161,10 @@ do_action( 'clickwhale_admin_banner' );
                                                                name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
                                                                value="<?php echo esc_attr( $link['id'] ) ?>">
                                                         <div class="linkpage-row--drag"></div>
-                                                        <div class="linkpage-link"><?php echo esc_html( $link_data['title'] ) ?></div>
+                                                        <div class="linkpage-link">
+															<?php echo esc_html( $link_data['title'] ) ?>
+                                                            <span><?php echo esc_url( $link_data['url'] ) ?></span>
+                                                        </div>
                                                         <div class="linkpage-link--title">
                                                             <input type="text"
                                                                    name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"

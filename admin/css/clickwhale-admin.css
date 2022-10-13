@@ -143,7 +143,7 @@
 .linkpage-wrap {
     position: relative;
     display: flex;
-    gap: 10px;
+    gap: 5px;
     flex-direction: column;
     margin-top: 10px;
 }
@@ -157,6 +157,20 @@
     border: 1px solid #dcdcde;
     border-radius: 5px;
     gap: 5px;
+    background: #ffffff;
+}
+
+.linkpage-row.ui-sortable-helper {
+    cursor: move;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .1);
+}
+
+.linkpage-row--drag {
+    cursor: move;
+}
+
+.linkpage-row--remove {
+    cursor: pointer;
 }
 
 .linkpage-row--drag,
@@ -171,7 +185,6 @@
     height: 32px;
     background-color: #ffffff;
     border-radius: 5px;
-    cursor: pointer;
 }
 
 .linkpage-row--remove {
@@ -202,6 +215,16 @@
 .linkpage-link,
 .linkpage-link--title {
     flex: 1;
+}
+
+.linkpage-link span {
+    display: block;
+    font-size: 12px;
+    opacity: .7;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    overflow: hidden;
 }
 
 .linkpage-link--title input[type="text"] {
@@ -279,5 +302,6 @@
 }
 
 #form_edit_linkpage .error {
-    border-color: red !important;
+    border-color: #dc3232;
+    background: #ffebee;
 }
