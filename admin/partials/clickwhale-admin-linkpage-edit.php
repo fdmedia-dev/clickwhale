@@ -41,14 +41,14 @@ do_action( 'clickwhale_admin_banner' );
             <div id="post-body">
                 <div id="post-body-content">
                     <div id="clickwhale-tabs" class="clickwhale-tabs">
-                        <ul>
+                        <!-- ul>
                             <li><a href="#lp-tab-settings"
                                    class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
                             <li><a href="#lp-tab-customization"
                                    class=""><?php _e( 'Customization', 'clickwhale' ); ?></a></li>
                             <li><a href="#lp-tab-social"
                                    class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li>
-                        </ul>
+                        </ul -->
                         <div id="lp-tab-settings">
                             <table style="width: 100%;" class="form-table">
                                 <caption hidden>Linkpage main settings</caption>
@@ -185,14 +185,14 @@ do_action( 'clickwhale_admin_banner' );
                                 </tbody>
                             </table>
                         </div>
-                        <div id="lp-tab-customization">
+                        <!-- div id="lp-tab-customization">
 							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
 							<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
                         </div>
                         <div id="lp-tab-social">
 							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
 							<?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
-                        </div>
+                        </div -->
                     </div>
 
                     <input type="hidden" id="created_at" name="created_at"
