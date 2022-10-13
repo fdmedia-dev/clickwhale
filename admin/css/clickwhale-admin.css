@@ -197,15 +197,15 @@
 .linkpage-row--remove::after {
     position: relative;
     display: block;
-    width: 16px;
-    height: 2px;
+    width: 10px;
+    height: 1px;
     background-color: #141414;
     content: '';
 }
 
 .linkpage-row--remove::before {
     transform: rotate(45deg);
-    top: 2px;
+    top: 1px;
 }
 
 .linkpage-row--remove::after {

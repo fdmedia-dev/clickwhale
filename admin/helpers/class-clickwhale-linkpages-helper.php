@@ -15,6 +15,15 @@ class ClickwhaleLinkpagesHelper {
 
 	/**
 	 * Filter function
+	 * return number of available links on linkpage
+	 * @return mixed|void
+	 */
+	public static function get_links_limit() {
+		return apply_filters( 'clickwhale_linkpage_links_limit', 10 );
+	}
+
+	/**
+	 * Filter function
 	 * return number of available linkpages
 	 * @return mixed|void
 	 */
