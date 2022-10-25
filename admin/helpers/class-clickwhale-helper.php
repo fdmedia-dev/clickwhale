@@ -29,8 +29,12 @@ class ClickwhaleHepler {
 
 			case 'checkboxes':
 				foreach ( $args['options'] as $k => $v ) {
-					$item .= '<label for="' . esc_attr( $k ) . '">';
-					$item .= '<input type="checkbox" id="' . esc_attr( $k ) . '" ' . $name . ' value="' . esc_attr( $v ) . '" ' . checked( in_array( $v, $value ), 1, false ) . ' />';
+					$item .= '<label for="' . esc_attr( $args['id'] . '_' . $k ) . '">';
+					if ( is_array( $value ) ) {
+						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( in_array( $k, $value ), 1, false ) . ' />';
+					} else {
+						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" />';
+					}
 					$item .= $v;
 					$item .= '</label><br>';
 				}

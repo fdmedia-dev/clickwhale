@@ -39,7 +39,10 @@ class ClickwhaleLinkPageController implements ClickwhaleLinkPageControllerInterf
 		$this->pages->rewind();
 		$path = trim( $this->getPathInfo(), '/' );
 		while ( $this->pages->valid() ) {
-			if ( trim( $this->pages->current()->getUrl(), '/' ) === $path ) {
+			// check url
+			// 1. if virtual page url is matches to $path
+			// 2. if virtual page url has GET params and only contains part of the $path
+			if ( trim( $this->pages->current()->getUrl(), '/' ) === $path || str_contains( $path, trim( $this->pages->current()->getUrl(), '/' ) ) ) {
 				$this->matched = $this->pages->current();
 
 				return true;
