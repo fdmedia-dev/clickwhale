@@ -66,7 +66,8 @@ class Clickwhale_Click_Track {
 			$item['referer']      = $this->get_link_referer();
 			$item['created_at']   = gmdate( 'Y-m-d H:m:s' );
 
-			$result = $wpdb->insert( $table_name, $item );
+			return $wpdb->insert( $table_name, $item );
+
 			//}
 		} else {
 			return false;

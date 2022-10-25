@@ -23,6 +23,16 @@ class Clickwhale_WP_User {
 	public function __construct() {
 	}
 
+	public static function get_all_roles() {
+		global $wp_roles;
+
+		foreach ( $wp_roles->roles as $k => $v ) {
+			$roles[ $k ] = $v['name'];
+		}
+
+		return $roles;
+	}
+
 	/**
 	 * Get ID of about logged-in user
 	 *
@@ -64,7 +74,7 @@ class Clickwhale_WP_User {
 	public function get_disallowed_user_roles() {
 		$tracking_options = $this->get_track_options();
 
-		return isset( $tracking_options['exclude_users_by_role'] ) ? $tracking_options['exclude_users_by_role'] : '';
+		return isset( $tracking_options['exclude_user_link_click_by_role'] ) ? $tracking_options['exclude_user_link_click_by_role'] : '';
 	}
 
 	/**
@@ -81,7 +91,8 @@ class Clickwhale_WP_User {
 			// if current user role in array of disalowed roles
 			return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
 		} else {
-			return false; // user can be tracked
+			// user can be tracked
+			return false;
 		}
 	}
 
