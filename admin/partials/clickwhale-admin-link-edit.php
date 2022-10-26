@@ -1,5 +1,7 @@
 <?php
-$link_edit       = new Clickwhale_Link_Edit();
+$link_edit = new Clickwhale_Link_Edit();
+$link_edit->init();
+
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $message         = get_transient( 'link-' . $item['id'] );
@@ -10,7 +12,15 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-		<?php _e( 'Edit link', $this->plugin_name ); ?>
+
+		<?php
+		if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
+			_e( 'Edit link', $this->plugin_name );
+		} else {
+			_e( 'Add new link', $this->plugin_name );
+		}
+		?>
+
         <a class="page-title-action"
            href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
         <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"

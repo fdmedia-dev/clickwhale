@@ -59,13 +59,15 @@ do_action( 'clickwhale_admin_banner' );
 		}
 		if ( $active_tab == 'reset_options' ) {
 			?>
-            <div id="clickwhale-tools-db-reset">
+            <div id="clickwhale-tools-reset">
 				<?php
-				settings_fields( 'clickwhale_tools_reset_options' );
-				do_settings_sections( 'clickwhale_tools_reset_options' );
+				settings_fields( 'clickwhale_tools_reset_settings' );
+				do_settings_sections( 'clickwhale_tools_reset_settings' );
 				?>
                 <button id="button-reset-db" class="button button-primary"
                         type="button"><?php _e( 'Reset database tables', 'clickwhale' ) ?></button>
+                <button id="button-reset-settings" class="button button-primary"
+                        type="button"><?php _e( 'Reset settings', 'clickwhale' ) ?></button>
                 <span class="spinner"></span>
                 <div class="results"></div>
             </div>

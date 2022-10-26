@@ -179,10 +179,40 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 		$result = [];
-		$text   = __( 'All plugin tables has been reset', $this->plugin_name );
 
-		$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_clicks, {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_links_meta, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_linkpages_meta" );
-		$result['text']   = $text;
+		if ( ! isset( $_POST['reset'] ) ) {
+			wp_send_json_error();
+			wp_die();
+		}
+
+		switch ( $_POST['reset'] ) {
+			case 'db':
+				//result text
+				$text = __( 'All plugin tables has been reset', $this->plugin_name );
+
+				//drop tables
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_clicks, {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_links_meta, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_linkpages_meta" );
+
+				break;
+			case 'settings':
+				//result text
+				$text = __( 'All plugin settings has been restored', $this->plugin_name );
+
+				// delete all options
+				delete_option( 'clickwhale_general_options' );
+				delete_option( 'clickwhale_tracking_options' );
+				delete_option( 'clickwhale_other_options' );
+
+				// init settings class and set defaults
+				$settings = Clickwhale_Admin_Settings::getInstance();
+				$settings->add_default_options();
+
+				$result['status'] = true;
+
+				break;
+		}
+
+		$result['text'] = $text;
 
 		activate_clickwhale();
 

@@ -41,7 +41,7 @@ class Clickwhale_Admin_Settings {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function init( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;

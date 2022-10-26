@@ -153,11 +153,13 @@ class Clickwhale {
 		global $Clickwhale_Admin; // for add_/remove_action - https://www.forumming.com/question/354/remove-action-from-a-plugin-class-forced-to-use-global-instance
 
 		$Clickwhale_Admin          = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings();
 		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Link_Edit      = new Clickwhale_Link_Edit();
+		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
 		$Clickwhale_Linkpage_Edit  = new Clickwhale_Linkpage_Edit();
+
+		$Clickwhale_Admin_Settings->init( $this->get_plugin_name(), $this->get_version() );
 
 		// ACTIONS
 		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'add_plugin_menu' );
