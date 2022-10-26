@@ -34,6 +34,11 @@ class Clickwhale_Linkpages {
 	public function init() {
 		global $wpdb;
 
+		$table_linkpages = $wpdb->prefix . 'clickwhale_linkpages';
+		if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_linkpages'" ) != $table_linkpages ) {
+			return;
+		}
+
 		$controller = new ClickwhaleLinkPageController ( new ClickwhaleLinkPageTemplateLoader );
 		add_action( 'init', array( $controller, 'init' ) );
 
