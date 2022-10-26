@@ -1,6 +1,21 @@
 <?php
 
 class Clickwhale_Link_Edit {
+
+	private static $instance;
+
+	public function init() {
+		add_filter( 'admin_title', array( $this, 'set_link_page_title' ), 20, 2 );
+	}
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 	/**
 	 * Default values for new link
 	 * Could be hooked by filter "clickwhale_link_defaults"
@@ -110,7 +125,7 @@ class Clickwhale_Link_Edit {
 		return implode( ',', $categories );
 	}
 
-	function save_update_link() {
+	public function save_update_link() {
 		global $wpdb;
 		$links_table        = $wpdb->prefix . 'clickwhale_links';
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
@@ -139,5 +154,9 @@ class Clickwhale_Link_Edit {
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
+	}
+
+	public function set_link_page_title( $admin_title, $title ) {
+		return 'Edit Link' . $admin_title;
 	}
 }
