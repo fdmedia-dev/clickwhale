@@ -70,7 +70,7 @@ class Clickwhale_Linkpage_Edit {
 		// Try to insert new data into DB
 		$result = $wpdb->insert(
 			$linkpages_table,
-			$item,
+			$item
 		);
 
 		if ( false === $result || $result < 1 ) {
@@ -126,34 +126,32 @@ class Clickwhale_Linkpage_Edit {
                 });
                 wrap.disableSelection();
 
-                // Add link row
-                jQuery('#add-pagelink-link').click(function (e) {
-                    e.preventDefault();
-
-                    var links_count = jQuery('.linkpage-row').length,
-                        links = jQuery('#add-pagelink-select'),
-                        link_text = links.find('option:selected').text(),
-                        link_url = links.find('option:selected').data('url'),
-                        link_id = links.find('option:selected').val(),
-                        link_title_ph = "<?php _e( 'Link Title', 'clickwhale' ); ?>",
-                        template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + ' <span>' + link_url + '</span></div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
-
-                    if (links_count < limit) {
-                        wrap.append(template);
-                    }
-                    if ((links_count + 1) === limit) {
-                        jQuery('#add-pagelink-link').prop('disabled', true);
-                        jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.linkpage-wrap');
-                    }
-
-                });
-
-
                 jQuery(document)
+                    // Add link row
+                    .on('click', '#add-pagelink-link', function (e) {
+                        e.preventDefault();
+
+                        var links_count = jQuery('.linkpage-row').length,
+                            links = jQuery('#add-pagelink-select'),
+                            link_text = links.find('option:selected').text(),
+                            link_url = links.find('option:selected').data('url'),
+                            link_id = links.find('option:selected').val(),
+                            link_title_ph = "<?php _e( 'Link Title', 'clickwhale' ); ?>",
+                            template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + ' <span>' + link_url + '</span></div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
+
+                        if (links_count < limit) {
+                            wrap.append(template);
+                        }
+                        if ((links_count + 1) === limit) {
+                            jQuery('#add-pagelink-link').prop('disabled', true);
+                            jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.linkpage-wrap');
+                        }
+                    })
                     // Remove added link row
                     .on('click', '.linkpage-row--remove', function () {
                         jQuery(this).parent().remove();
                         if (jQuery('.linkpage-row').length < limit) {
+                            jQuery('.links-info').remove();
                             jQuery('#add-pagelink-link').prop('disabled', false);
                         }
                     })

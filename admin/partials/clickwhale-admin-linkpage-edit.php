@@ -8,8 +8,8 @@ if ( ! isset( $_GET['id'] ) && ClickwhaleLinkpagesHelper::get_linkpages_count() 
 $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
-$item  = $linkpage_edit->get_item( $_REQUEST );
-$links = $linkpage_edit->get_links();
+$item  			= $linkpage_edit->get_item( $_REQUEST );
+$linkpage_links = $linkpage_edit->get_links();
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -136,51 +136,55 @@ do_action( 'clickwhale_admin_banner' );
                                         <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
                                     </th>
                                     <td>
-                                        <select id="add-pagelink-select" class="regular-text">
-											<?php foreach ( $links as $link ) { ?>
-                                                <option value="<?php echo esc_attr( $link['id'] ) ?>"
-                                                        data-url="<?php echo esc_url( $link['url'] ) ?>">
-													<?php echo esc_html( $link['title'] ) ?>
-                                                </option>
-											<?php } ?>
-                                        </select>
-                                        <button type="button" class="button" id="add-pagelink-link">
-											<?php _e( 'Add link to page', $this->plugin_name ) ?>
-                                        </button>
+										<?php if ( $linkpage_links ) { ?>
+                                            <select id="add-pagelink-select" class="regular-text">
+												<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
+                                                    <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
+                                                            data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
+														<?php echo esc_html( $linkpage_link['title'] ) ?>
+                                                    </option>
+												<?php } ?>
+                                            </select>
+                                            <button type="button" class="button" id="add-pagelink-link">
+												<?php _e( 'Add link to page', $this->plugin_name ) ?>
+                                            </button>
 
-                                        <div class="linkpage-wrap">
+                                            <div class="linkpage-wrap">
 
-											<?php
-											$links = maybe_unserialize( $item['links'] );
-											if ( $links ) {
-												foreach ( $links as $link ) {
-													$link_data = $linkpage_edit->get_link( $link['id'] );
-													?>
-                                                    <div class="linkpage-row">
-                                                        <input type="hidden"
-                                                               name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
-                                                               value="<?php echo esc_attr( $link['id'] ) ?>">
-                                                        <div class="linkpage-row--drag"></div>
-                                                        <div class="linkpage-link">
-															<?php echo esc_html( $link_data['title'] ) ?>
-                                                            <span><?php echo esc_url( $link_data['url'] ) ?></span>
+												<?php
+												$links = maybe_unserialize( $item['links'] );
+												if ( $links ) {
+													foreach ( $links as $link ) {
+														$link_data = $linkpage_edit->get_link( $link['id'] );
+														?>
+                                                        <div class="linkpage-row">
+                                                            <input type="hidden"
+                                                                   name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
+                                                                   value="<?php echo esc_attr( $link['id'] ) ?>">
+                                                            <div class="linkpage-row--drag"></div>
+                                                            <div class="linkpage-link">
+																<?php echo esc_html( $link_data['title'] ) ?>
+                                                                <span><?php echo esc_url( $link_data['url'] ) ?></span>
+                                                            </div>
+                                                            <div class="linkpage-link--title">
+                                                                <input type="text"
+                                                                       name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
+                                                                       value="<?php echo esc_html( $link['title'] ) ?>"
+                                                                       placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
+                                                            </div>
+                                                            <div class="linkpage-row--remove"></div>
                                                         </div>
-                                                        <div class="linkpage-link--title">
-                                                            <input type="text"
-                                                                   name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
-                                                                   value="<?php echo esc_html( $link['title'] ) ?>"
-                                                                   placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
-                                                        </div>
-                                                        <div class="linkpage-row--remove"></div>
-                                                    </div>
-													<?php
+														<?php
+													}
 												}
-											}
-											?>
+												?>
 
-                                        </div>
-										<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-                                            <div class="links-info"><?php printf( ' Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
+                                            </div>
+											<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
+                                                <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
+											<?php } ?>
+										<?php } else { ?>
+                                            <div><?php _e( 'No links have been added yet'); ?></div>
 										<?php } ?>
                                     </td>
                                 </tr>
