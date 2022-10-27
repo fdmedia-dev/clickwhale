@@ -141,7 +141,7 @@ class Clickwhale_Link_Edit {
 		if ( false === $result || $result < 1 ) {
 			$wpdb->insert(
 				$links_table,
-				$item,
+				$item
 			);
 			$item['id'] = $wpdb->insert_id;
 			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );

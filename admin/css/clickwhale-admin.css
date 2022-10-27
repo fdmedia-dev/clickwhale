@@ -140,6 +140,12 @@
     }
 }
 
+.linkpage-logo-upload img{
+    max-width: 150px;
+    display: block;
+    height: auto;
+}
+
 .linkpage-wrap {
     position: relative;
     display: flex;
