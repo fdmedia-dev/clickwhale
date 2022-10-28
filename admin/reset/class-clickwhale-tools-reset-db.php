@@ -106,7 +106,7 @@ class ClickwhaleToolsResetDB {
                                 resetType = 'settings';
                                 break;
                             case 'button-reset-db':
-                                esetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
                                 resetType = 'db';
                                 break;
                             case 'button-reset-stats':
