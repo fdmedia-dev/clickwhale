@@ -187,35 +187,35 @@ class Clickwhale_Admin_Settings {
 	 * @since    1.0.0
 	 */
 	public function clickwhale_links_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-links-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/links/links-list-table.php' );
 	}
 
 	public function clickwhale_link_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-link-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/links/link-edit.php' );
 	}
 
 	public function clickwhale_categories_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-categories-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/categories/categories-list-table.php' );
 	}
 
 	public function clickwhale_category_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-category-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/categories/category-edit.php' );
 	}
 
 	public function clickwhale_linkpages_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpages-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/linkpages/linkpages-list-table.php' );
 	}
 
 	public function clickwhale_linkpage_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-linkpage-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/linkpages/linkpage-edit.php' );
 	}
 
 	public function render_settings_page_content() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-settings-display.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/settings/settings.php' );
 	}
 
 	public function include_admin_menu_tools_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/clickwhale-admin-tools-display.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tools/tools.php' );
 	}
 
 	/**
