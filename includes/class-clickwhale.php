@@ -158,6 +158,7 @@ class Clickwhale {
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
 		$Clickwhale_Linkpage_Edit  = new Clickwhale_Linkpage_Edit();
+		$Clickwhale_Tools_Reset    = ClickwhaleToolsResetDB::getInstance();
 
 		$Clickwhale_Admin_Settings->init( $this->get_plugin_name(), $this->get_version() );
 
@@ -186,6 +187,11 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $Clickwhale_Ajax, 'clickwhale_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_linkpage_slug', $Clickwhale_Ajax, 'check_linkpage_slug' );
+
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
+		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
 
 		// FILTERS
 		$this->loader->add_filter( 'clickwhale_categories_limit', $Clickwhale_Admin, 'clickwhale_categories_limit_callback' );

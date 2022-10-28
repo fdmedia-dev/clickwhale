@@ -186,6 +186,14 @@ class Clickwhale_Ajax {
 		}
 
 		switch ( $_POST['reset'] ) {
+			case 'stats':
+				//result text
+				$text = __( 'All statistic has been reset', $this->plugin_name );
+
+				//drop tables
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_clicks" );
+
+				break;
 			case 'db':
 				//result text
 				$text = __( 'All plugin tables has been reset', $this->plugin_name );
