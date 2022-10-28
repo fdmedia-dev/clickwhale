@@ -10,31 +10,72 @@ class ClickwhaleToolsResetDB {
 	 */
 	private $plugin_name;
 
-	public function __construct( $plugin_name ) {
+	private static $instance;
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	public function init( $plugin_name ) {
 		$this->plugin_name = $plugin_name;
 	}
 
-	public function init() {
-		add_action( 'admin_init', [ $this, 'initialize_reset_options' ] );
-		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-	}
-
-	public function initialize_reset_options() {
+	public function initialize_reset_settings_options() {
 		add_settings_section(
 			'reset_settings_section',
-			__( 'Reset DB tables and plugin settings', $this->plugin_name ),
+			__( 'Reset plugin options', $this->plugin_name ),
 			array( $this, 'reset_settings_callback' ),
 			'clickwhale_tools_reset_settings'
 		);
 
 		register_setting(
-			'clickwhale_tools_reset_settings',
-			'clickwhale_tools_reset_settings'
+			'clickwhale_tools_reset_db_settings',
+			'clickwhale_tools_reset_db_settings'
+		);
+	}
+
+	public function initialize_reset_db_options() {
+		add_settings_section(
+			'reset_db_settings_section',
+			__( 'Delete all plugin data', $this->plugin_name ),
+			array( $this, 'reset_db_settings_callback' ),
+			'clickwhale_tools_reset_db_settings'
+		);
+
+		register_setting(
+			'clickwhale_tools_reset_db_settings',
+			'clickwhale_tools_reset_db_settings'
+		);
+	}
+
+	public function initialize_reset_stats_options() {
+		add_settings_section(
+			'reset_stats_settings_section',
+			__( 'Reset all statistics', $this->plugin_name ),
+			array( $this, 'reset_stats_settings_callback' ),
+			'clickwhale_tools_reset_stats_settings'
+		);
+
+		register_setting(
+			'clickwhale_tools_reset_stats_settings',
+			'clickwhale_tools_reset_stats_settings'
 		);
 	}
 
 	public function reset_settings_callback() {
-		echo '<p>' . __( 'Reset all plugin tables (you will lost all links, categories and linkpages) and restore default values.', $this->plugin_name ) . '</p>';
+		echo '<p>' . __( 'At this point you can reset plugin setting to default values.', $this->plugin_name ) . '</p>';
+	}
+
+	public function reset_db_settings_callback() {
+		echo '<p>' . __( 'At this point. you can delete all entries (links, categories and stats) from the database tables of our plugin.', $this->plugin_name ) . '</p>';
+	}
+
+	public function reset_stats_settings_callback() {
+		echo '<p>' . __( 'In case you want to clean up your stats, you can remove all previously counted clicks from the database here.', $this->plugin_name ) . '</p>';
 	}
 
 	public function admin_scripts() {
@@ -48,10 +89,10 @@ class ClickwhaleToolsResetDB {
                     jQuery('#clickwhale-tools-reset').on('click', 'button', function (e) {
                         e.preventDefault();
 
-                        var resetContainer = jQuery(this).closest('#clickwhale-tools-reset'),
+                        var buttonContainer = jQuery(this).parent(),
                             resetButton = jQuery(this),
-                            resetSpinner = jQuery(resetContainer).find('.spinner'),
-                            resetResult = jQuery(resetContainer).find('.results'),
+                            resetSpinner = jQuery(buttonContainer).find('.spinner'),
+                            resetResult = jQuery(buttonContainer).find('.results'),
                             resetConfirm,
                             resetType;
 
@@ -59,13 +100,21 @@ class ClickwhaleToolsResetDB {
                         jQuery(resetSpinner).addClass("is-active");
                         jQuery(resetResult).html('');
 
-                        if (resetButton.attr('id') === 'button-reset-db') {
-                            resetConfirm = '<?php _e( 'This action will reset plugin tables and delete all existing data. Do you really want to do it?', $this->plugin_name ) ?>';
-                            resetType = 'db';
-                        } else {
-                            resetConfirm = '<?php _e( 'This action restore all plugin settings to default. Do you really want to do it?', $this->plugin_name ) ?>';
-                            resetType = 'settings';
+                        switch (resetButton.attr('id')) {
+                            case 'button-reset-settings':
+                                resetConfirm = '<?php _e( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'settings';
+                                break;
+                            case 'button-reset-db':
+                                esetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'db';
+                                break;
+                            case 'button-reset-stats':
+                                resetConfirm = '<?php _e( 'Are you sure? This action will reset all statistic. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'stats';
+                                break;
                         }
+
                         if (window.confirm(resetConfirm)) {
                             jQuery.post(ajaxurl, {
                                 'security': '<?php echo esc_attr( $nonce ) ?>',

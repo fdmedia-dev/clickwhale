@@ -60,16 +60,39 @@ do_action( 'clickwhale_admin_banner' );
 		if ( $active_tab == 'reset_options' ) {
 			?>
             <div id="clickwhale-tools-reset">
+	            <?php
+	            settings_fields( 'clickwhale_tools_reset_settings' );
+	            do_settings_sections( 'clickwhale_tools_reset_settings' );
+	            ?>
+                <p class="submit">
+                    <button id="button-reset-settings" class="button button-primary"
+                            type="button"><?php _e( 'Restore default settings', 'clickwhale' ) ?></button>
+                    <span class="spinner"></span>
+                    <span class="results"></span>
+                </p>
+                <hr>
 				<?php
-				settings_fields( 'clickwhale_tools_reset_settings' );
-				do_settings_sections( 'clickwhale_tools_reset_settings' );
+				settings_fields( 'clickwhale_tools_reset_db_settings' );
+				do_settings_sections( 'clickwhale_tools_reset_db_settings' );
 				?>
-                <button id="button-reset-db" class="button button-primary"
-                        type="button"><?php _e( 'Reset database tables', 'clickwhale' ) ?></button>
-                <button id="button-reset-settings" class="button button-primary"
-                        type="button"><?php _e( 'Reset settings', 'clickwhale' ) ?></button>
-                <span class="spinner"></span>
-                <div class="results"></div>
+                <p class="submit">
+                    <button id="button-reset-db" class="button button-primary"
+                            type="button"><?php _e( 'Delete all plugin data now', 'clickwhale' ) ?></button>
+                    <span class="spinner"></span>
+                    <span class="results"></span>
+                </p>
+                <hr>
+				<?php
+				settings_fields( 'clickwhale_tools_reset_stats_settings' );
+				do_settings_sections( 'clickwhale_tools_reset_stats_settings' );
+				?>
+                <p class="submit">
+                    <button id="button-reset-stats" class="button button-primary"
+                            type="button"><?php _e( 'Reset all clicks data now', 'clickwhale' ) ?></button>
+                    <span class="spinner"></span>
+                    <span class="results"></span>
+                </p>
+
             </div>
 			<?php
 		}
