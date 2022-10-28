@@ -131,11 +131,11 @@ class Clickwhale_Public {
 
 	public function do_redirect_handler() {
 
-		$user = new Clickwhale_WP_User();
-
 		global $wpdb;
-		$options   = get_option( 'clickwhale_general_options' );
-		$link_slug = $options['slug'] . '/';
+		$options_general = get_option( 'clickwhale_general_options' );
+		$options_traking = get_option( 'clickwhale_tracking_options' );
+		$link_slug       = $options_general['slug'] . '/';
+		$tracking_method = $options_traking['tracking_method'];
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
@@ -150,12 +150,10 @@ class Clickwhale_Public {
 
 			$id = intval( $results[0]->id );
 
-			if ( ! $user->disallow_track() ) {
-				$track = new Clickwhale_Click_Track( $id );
-				$track->track();
-			}
+			// Track click on link
+			new Clickwhale_Click_Track( $id );
 
-			// Set header
+			// Set headers
 			$nofollow  = '';
 			$sponsored = '';
 			$sep       = '';

@@ -21,15 +21,24 @@ class ClickwhaleHepler {
 				break;
 
 			case 'checkbox':
-				$item .= '<label for="' . $args['id'] . '">';
+				$item .= '<fieldset>';
+				if ( isset( $args['screenreader'] ) ) {
+					$item .= '<legend class="screen-reader-text"><span>' . $args['screenreader'] . '</span></legend>';
+				}
+				$item .= '<label>';
 				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value, false ) . ' />';
 				$item .= $args['label'];
 				$item .= '</label>';
+				$item .= '</fieldset>';
 				break;
 
 			case 'checkboxes':
+				$item .= '<fieldset>';
+				if ( isset( $args['screenreader'] ) ) {
+					$item .= '<legend class="screen-reader-text"><span>' . $args['screenreader'] . '</span></legend>';
+				}
 				foreach ( $args['options'] as $k => $v ) {
-					$item .= '<label for="' . esc_attr( $args['id'] . '_' . $k ) . '">';
+					$item .= '<label>';
 					if ( is_array( $value ) ) {
 						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( in_array( $k, $value ), 1, false ) . ' />';
 					} else {
@@ -38,6 +47,20 @@ class ClickwhaleHepler {
 					$item .= $v;
 					$item .= '</label><br>';
 				}
+				$item .= '</fieldset>';
+				break;
+			case 'radio':
+				$item .= '<fieldset>';
+				if ( isset( $args['screenreader'] ) ) {
+					$item .= '<legend class="screen-reader-text"><span>' . $args['screenreader'] . '</span></legend>';
+				}
+				foreach ( $args['options'] as $k => $v ) {
+					$item .= '<label>';
+					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $k, $value, false ) . ' />';
+					$item .= '<span>' . $v . '</span>';
+					$item .= '</label><br>';
+				}
+				$item .= '</fieldset>';
 				break;
 
 			case 'select':

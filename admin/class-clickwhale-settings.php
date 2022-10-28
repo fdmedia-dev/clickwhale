@@ -72,7 +72,7 @@ class Clickwhale_Admin_Settings {
 					'redirect_type' => 301,
 					'nofollow'      => true,
 					'sponsored'     => false,
-					'slug'          => 'link',
+					'slug'          => 'link'
 				)
 			),
 			'tracking' => array(
@@ -80,13 +80,13 @@ class Clickwhale_Admin_Settings {
 				'options' => array(
 					'disable_click_tracking'             => false,
 					'exclude_user_link_click_by_role'    => [ 'administrator' ],
-					'exclude_user_linkpage_view_by_role' => [ 'administrator' ],
+					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
 				)
 			),
 			'other'    => array(
 				'name'    => __( 'Other', $this->plugin_name ),
 				'options' => array(
-					'affiliate_id' => '',
+					'affiliate_id' => ''
 				)
 			)
 		);
