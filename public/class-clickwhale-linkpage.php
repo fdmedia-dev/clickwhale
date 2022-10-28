@@ -77,8 +77,10 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_copyright() {
-		$ref = isset( $this->other_options['affiliate_id'] ) ? '?ref=' . $this->other_options['affiliate_id'] : '';
+		$ref            = isset( $this->other_options['affiliate_id'] ) && $this->other_options['affiliate_id'] ? '?ref=' . $this->other_options['affiliate_id'] : '';
+		$copyright_link = 'https://clickwhale.pro?utm_source=user+site&utm_medium=linkpage&utm_campaign=ClickWhale+-+Free+Version';
+		$img            = '<img src="' . esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark-white.svg' ) . '" alt="Clickwhale">';
 
-		return '<a class="linkpage-public--copyright" target="_blank" href="https://clickwhale.pro/' . $ref . '">Clickwhale Copyright</a>';
+		return '<a class="linkpage-public--copyright" target="_blank" href="https://clickwhale.pro/' . $ref . '">Powered by ' . $img . '</a>';
 	}
 }

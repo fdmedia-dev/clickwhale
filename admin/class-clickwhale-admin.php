@@ -212,7 +212,7 @@ class Clickwhale_Admin {
 	}
 
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale' ) {
+		if ( isset( $_GET['page'] ) && ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) ) {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {

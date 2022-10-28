@@ -52,14 +52,14 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	}
 
 	/**
+	 * Link url with copy button
+	 *
 	 * @param $item - row (key, value array)
 	 *
 	 * @return string
 	 */
 	function column_slug( $item ) {
-		$options = get_option( 'clickwhale_general_options' );
-
-		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $options['slug'] . '/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
 	/**
@@ -73,6 +73,17 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		return 'in progress...';
 	}
 
+	/**
+	 * @param $item - row (key, value array)
+	 *
+	 * @return string
+	 */
+	function column_links( $item ) {
+		$links = maybe_unserialize( $item['links'] );
+		$count = $links ? count( $links ) : 0;
+
+		return $count . ' / ' . ClickwhaleLinkpagesHelper::get_links_limit();
+	}
 
 	/**
 	 * @param $item - row (key, value array)
@@ -91,9 +102,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 */
 	function get_columns() {
 		return array(
-			'cb'    => '<input type="checkbox" />',             //Render a checkbox instead of text
+			'cb'    => '<input type="checkbox" />',
 			'title' => __( 'Title', 'clickwhale' ),
-			//'slug'  => __( 'Link', 'clickwhale' ),
+			'slug'  => __( 'Link', 'clickwhale' ),
+			'links' => __( 'Links', 'clickwhale' ),
 			'views' => __( 'Views', 'clickwhale' ),
 		);
 	}

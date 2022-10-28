@@ -9,6 +9,7 @@ class Clickwhale_Click_Track {
 	 */
 	protected $link_id;
 	protected $parser;
+	protected $user;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -20,6 +21,11 @@ class Clickwhale_Click_Track {
 	public function __construct( $link_id = 0 ) {
 		$this->link_id = (int) $link_id;
 		$this->parser  = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
+		$this->user    = new Clickwhale_WP_User();
+
+		if ( ! $this->user->disallow_track() ) {
+			$this->update_clicks_database();
+		}
 	}
 
 	private function get_user_ip() {
@@ -49,7 +55,7 @@ class Clickwhale_Click_Track {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . 'clickwhale_clicks';
-		//var_dump($device);
+
 		if ( ! $this->parser->bot ) {
 
 			$id   = $this->link_id;
@@ -72,12 +78,6 @@ class Clickwhale_Click_Track {
 		} else {
 			return false;
 		}
-	}
-
-	public function track() {
-
-		$this->update_clicks_database();
-
 	}
 
 }
