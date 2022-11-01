@@ -73,8 +73,17 @@ class Clickwhale_WP_User {
 	 */
 	public function get_disallowed_user_roles() {
 		$tracking_options = $this->get_track_options();
+		$roles            = [];
 
-		return isset( $tracking_options['exclude_user_link_click_by_role'] ) ? $tracking_options['exclude_user_link_click_by_role'] : '';
+		if ( isset( $tracking_options['exclude_user_link_click_by_role'] ) ) {
+			$roles['click'] = $tracking_options['exclude_user_link_click_by_role'];
+		}
+
+		if ( isset( $tracking_options['exclude_user_linkpage_view_by_role'] ) ) {
+			$roles['view'] = $tracking_options['exclude_user_linkpage_view_by_role'];
+		}
+
+		return $roles;
 	}
 
 	/**
@@ -83,13 +92,13 @@ class Clickwhale_WP_User {
 	 * @return      bool
 	 * @since       1.0.0
 	 */
-	public function is_user_untracked() {
+	public function is_user_untracked( $event ) {
 		$current_user_roles = $this->get_current_user_roles();
 		$disallowed_roles   = $this->get_disallowed_user_roles();
 
-		if ( is_array( $current_user_roles ) && is_array( $disallowed_roles ) ) {
+		if ( is_array( $current_user_roles ) && is_array( $disallowed_roles ) && isset( $disallowed_roles[ $event ] ) ) {
 			// if current user role in array of disalowed roles
-			return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
+			return count( array_intersect( $current_user_roles, $disallowed_roles[ $event ] ) ) > 0;
 		} else {
 			// user can be tracked
 			return false;
@@ -114,8 +123,8 @@ class Clickwhale_WP_User {
 	 * @return      bool
 	 * @since       1.0.0
 	 */
-	public function disallow_track() {
-		return $this->is_track_disabled() || $this->is_user_untracked();
+	public function disallow_track( $event ) {
+		return $this->is_track_disabled() || $this->is_user_untracked( $event );
 	}
 
 }

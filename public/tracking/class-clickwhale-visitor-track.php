@@ -9,16 +9,18 @@ class Clickwhale_Visitor_Track {
 	protected $hash;
 
 	public $visitor_id;
+	public $event;
 
-	public function __construct() {
+	public function __construct( $event ) {
 		$this->parser = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
 		$this->user   = new Clickwhale_WP_User();
 		$this->ua     = $this->parser->ua;
 		$this->os     = $this->parser->os;
 		$this->device = $this->parser->type;
 		$this->hash   = $this->generate_hash();
+		$this->event  = $event;
 
-		if ( ! $this->user->disallow_track() && ! $this->parser->bot ) {
+		if ( ! $this->user->disallow_track($this->event) && ! $this->parser->bot ) {
 			$visitor = $this->get_visitor_id( $this->hash );
 			if ( ! $visitor ) {
 				$this->visitor_id = $this->update_visitors_database();

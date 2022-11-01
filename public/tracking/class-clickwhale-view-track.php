@@ -20,7 +20,7 @@ class Clickwhale_View_Track {
 	 */
 	public function __construct( $linkpage_id = 0 ) {
 		$this->linkpage_id = (int) $linkpage_id;
-		$this->visitor     = new Clickwhale_Visitor_Track();
+		$this->visitor     = new Clickwhale_Visitor_Track('view');
 
 		if ( $this->visitor->visitor_id ) {
 			$this->update_track_database( $this->visitor->visitor_id );
