@@ -79,9 +79,9 @@ class Clickwhale_Linkpage_Edit {
 
 		// Check if linkpage exists and then update or insert
 		// in some cases default check (not false and < 0) goes wrong
-		$linkpage = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d", $item['id'] ) );
+		$linkpage = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d", $item['id'] ) );
 		if ( $linkpage ) {
-			$result = $wpdb->update(
+			$wpdb->update(
 				$linkpages_table,
 				$item,
 				array( 'id' => $item['id'] )
