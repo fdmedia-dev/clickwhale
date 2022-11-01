@@ -10,11 +10,11 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_title() {
-		return wp_kses( $this->post->post_title, wp_kses_allowed_html( 'post' ) );
+		return wp_kses( wp_unslash( $this->post->post_title), wp_kses_allowed_html( 'post' ) );
 	}
 
 	public function get_description() {
-		return isset( $this->post->post_content['description'] ) ? wp_kses( $this->post->post_content['description'], wp_kses_allowed_html( 'post' ) ) : '';
+		return isset( $this->post->post_content['description'] ) ? wp_kses( wp_unslash( $this->post->post_content['description']), wp_kses_allowed_html( 'post' ) ) : '';
 	}
 
 	public function get_logo() {
