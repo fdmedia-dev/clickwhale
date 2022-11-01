@@ -282,7 +282,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 				foreach ( $_REQUEST['id'] as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(
-							"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+							"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
 							intval( $id )
 						)
 					);
@@ -290,7 +290,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			} else {
 				$wpdb->query(
 					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+						"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
 						intval( $_REQUEST['id'] )
 					)
 				);
