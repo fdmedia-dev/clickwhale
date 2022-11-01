@@ -157,7 +157,7 @@ class Clickwhale {
 		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
-		$Clickwhale_Linkpage_Edit  = new Clickwhale_Linkpage_Edit();
+		$Clickwhale_Linkpage_Edit  = Clickwhale_Linkpage_Edit::getInstance();
 		$Clickwhale_Tools_Reset    = ClickwhaleToolsResetDB::getInstance();
 
 		$Clickwhale_Admin_Settings->init( $this->get_plugin_name(), $this->get_version() );

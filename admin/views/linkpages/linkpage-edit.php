@@ -8,7 +8,7 @@ if ( ! isset( $_GET['id'] ) && ClickwhaleLinkpagesHelper::get_linkpages_count() 
 $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
-$item  			= $linkpage_edit->get_item( $_REQUEST );
+$item           = $linkpage_edit->get_item( $_REQUEST );
 $linkpage_links = $linkpage_edit->get_links();
 
 do_action( 'clickwhale_admin_banner' );
@@ -61,7 +61,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <input id="title"
                                                name="title"
                                                type="text"
-                                               value="<?php echo esc_attr( $item['title'] ) ?>"
+                                               value="<?php echo esc_attr( wp_unslash( $item['title'] ) ) ?>"
                                                size="40"
                                                class="regular-text"
                                                placeholder="<?php _e( 'Link Page Title', $this->plugin_name ) ?>"
@@ -78,7 +78,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo wp_kses( $item['description'], wp_kses_allowed_html( 'post' ) ) ?></textarea>
+                                    ><?php echo wp_kses( wp_unslash( $item['description']), wp_kses_allowed_html( 'post' ) ) ?></textarea>
                                     </td>
                                 </tr>
                                 <tr class="form-field">
@@ -184,7 +184,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
 											<?php } ?>
 										<?php } else { ?>
-                                            <div><?php _e( 'No links have been added yet'); ?></div>
+                                            <div><?php _e( 'No links have been added yet' ); ?></div>
 										<?php } ?>
                                     </td>
                                 </tr>

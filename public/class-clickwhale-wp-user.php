@@ -52,7 +52,7 @@ class Clickwhale_WP_User {
 	public function get_current_user_roles() {
 		$id = $this->get_loggedin_user_id();
 
-		return $user_meta = $id ? get_userdata( $id )->roles : false;
+		return $id ? get_userdata( $id )->roles : false;
 	}
 
 	/**

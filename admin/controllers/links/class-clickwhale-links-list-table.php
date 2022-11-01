@@ -186,7 +186,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	function column_clicks( $item ) {
 		global $wpdb;
 
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id=%d", intval( $item['id'] ) ) );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE link_id=%d AND event_type='click'", intval( $item['id'] ) ) );
 	}
 
 

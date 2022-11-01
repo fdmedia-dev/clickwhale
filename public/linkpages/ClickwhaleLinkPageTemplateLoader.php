@@ -31,8 +31,20 @@ class ClickwhaleLinkPageTemplateLoader implements ClickwhaleLinkPageTemplateLoad
 	}
 
 	public function load() {
+		global $wp_query;
+
 		do_action( 'template_redirect' );
 		$template = $this->wpscap_locate_template( array_filter( $this->templates ), true );
+		if (array_key_exists('virtualpage', $wp_query->query_vars))
+		{
+			switch ($wp_query->query_vars['clickwhale_virtual_page_template'])
+			{
+				case '1' :
+					include 'page-register.php';
+					break;
+			}
+			exit();
+		}
 		$filtered = apply_filters( 'template_include',
 			apply_filters( 'clickwhale_virtual_page_template', $template )
 		);

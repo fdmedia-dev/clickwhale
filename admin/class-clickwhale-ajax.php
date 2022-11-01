@@ -199,7 +199,7 @@ class Clickwhale_Ajax {
 				$text = __( 'All plugin tables has been reset', $this->plugin_name );
 
 				//drop tables
-				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_clicks, {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_links_meta, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_linkpages_meta" );
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_clicks, {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_meta, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_linkpages_meta" );
 
 				break;
 			case 'settings':
