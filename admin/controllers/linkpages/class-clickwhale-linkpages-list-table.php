@@ -7,7 +7,6 @@
 class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	function __construct() {
-		global $status, $page;
 		parent::__construct(
 			array(
 				'singular' => 'linkpage',
@@ -70,7 +69,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	function column_views( $item ) {
 		global $wpdb;
 
-		return 'in progress...';
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE linkpage_id=%d AND event_type='view'", intval( $item['id'] ) ) );
 	}
 
 	/**

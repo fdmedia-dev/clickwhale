@@ -95,21 +95,22 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-categories-helper.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-linkpages-helper.php';
 
-
+		// Settings
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-ajax.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-migration.php';
 
+		// Controllers
 		if ( ! class_exists( 'WP_List_Table' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-linkpages-list-table.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-linkpage-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-links-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-link-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-categories-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpage-edit.php';
 
 	}
 

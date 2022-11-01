@@ -1,8 +1,18 @@
 <?php
 
 class Clickwhale_Linkpage_Edit {
+	private static $instance;
+
 	public function init() {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+	}
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -67,21 +77,20 @@ class Clickwhale_Linkpage_Edit {
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
-		// Try to insert new data into DB
-		$result = $wpdb->insert(
-			$linkpages_table,
-			$item
-		);
-
-		if ( false === $result || $result < 1 ) {
-			// if insert fails (error or is exists)
-			$wpdb->update(
+		// Check if linkpage exists and then update or insert
+		// in some cases default check (not false and < 0) goes wrong
+		$linkpage = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d", $item['id'] ) );
+		if ( $linkpage ) {
+			$result = $wpdb->update(
 				$linkpages_table,
 				$item,
 				array( 'id' => $item['id'] )
 			);
 		} else {
-			// if insert success
+			$wpdb->insert(
+				$linkpages_table,
+				$item
+			);
 			$item['id'] = $wpdb->insert_id;
 		}
 

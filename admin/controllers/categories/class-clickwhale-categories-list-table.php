@@ -9,7 +9,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	private $users_data;
 
 	function __construct() {
-		global $status, $page;
 		parent::__construct(
 			array(
 				'singular' => 'category',

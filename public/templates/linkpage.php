@@ -2,6 +2,7 @@
 global $post;
 
 $linkpage = new Clickwhale_Public_Linkpage( $post );
+$view     = new Clickwhale_View_Track( $post->post_content['id'] );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,9 +21,7 @@ $linkpage = new Clickwhale_Public_Linkpage( $post );
 <div class="linkpage-public--wrap">
     <div class="linkpage-public--inner">
 
-        <div class="linkpage-public--logo">
-            <img src="<?php echo esc_url( $linkpage->get_logo() ); ?>" alt="">
-        </div>
+        <div class="linkpage-public--logo"><?php echo $linkpage->get_logo(); ?></div>
 
         <div class="linkpage-public--title"><?php echo $linkpage->get_title() ?></div>
 
@@ -36,10 +35,11 @@ $linkpage = new Clickwhale_Public_Linkpage( $post );
             <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
 		<?php } ?>
 
-		<?php echo $linkpage->get_copyright() ?>
-
     </div>
+
+	<?php echo $linkpage->get_copyright() ?>
 </div>
+<?php wp_footer(); ?>
 </body>
 </html>
 

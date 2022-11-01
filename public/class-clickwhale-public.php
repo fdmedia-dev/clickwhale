@@ -72,7 +72,9 @@ class Clickwhale_Public {
 	private function load_dependencies() {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-visitor-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-view-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpages.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpage.php';
@@ -130,12 +132,10 @@ class Clickwhale_Public {
 	}
 
 	public function do_redirect_handler() {
-
 		global $wpdb;
+
 		$options_general = get_option( 'clickwhale_general_options' );
-		$options_traking = get_option( 'clickwhale_tracking_options' );
 		$link_slug       = $options_general['slug'] . '/';
-		$tracking_method = $options_traking['tracking_method'];
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );

@@ -187,35 +187,35 @@ class Clickwhale_Admin_Settings {
 	 * @since    1.0.0
 	 */
 	public function clickwhale_links_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/links/links-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/links-list-table.php' );
 	}
 
 	public function clickwhale_link_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/links/link-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/link-edit.php' );
 	}
 
 	public function clickwhale_categories_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/categories/categories-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/categories-list-table.php' );
 	}
 
 	public function clickwhale_category_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/categories/category-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/category-edit.php' );
 	}
 
 	public function clickwhale_linkpages_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/linkpages/linkpages-list-table.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpages-list-table.php' );
 	}
 
 	public function clickwhale_linkpage_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/linkpages/linkpage-edit.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpage-edit.php' );
 	}
 
 	public function render_settings_page_content() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/settings/settings.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/settings/settings.php' );
 	}
 
 	public function include_admin_menu_tools_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/tools/tools.php' );
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
 	}
 
 	/**

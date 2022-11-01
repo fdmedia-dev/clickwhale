@@ -22,33 +22,6 @@
  */
 class Clickwhale_Activator {
 
-	private function add_clickwhale_links_table() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . 'clickwhale_links';
-		$charset_collate = $wpdb->get_charset_collate();
-
-		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_links (
-			id mediumint(9) NOT NULL AUTO_INCREMENT,
-			title tinytext NOT NULL,
-			url varchar(255) DEFAULT '' NOT NULL,
-			slug varchar(255) DEFAULT '' NOT NULL,
-			redirection smallint(4) NOT NULL,
-			nofollow smallint(1),
-			sponsored smallint(1),
-			description tinytext DEFAULT '' NOT NULL,
-			categories tinytext,
-			created_at datetime,
-			updated_at datetime,
-			
-			PRIMARY KEY  (id)
-		) $charset_collate;";
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		if ( ! maybe_create_table( $table_name, $sql ) ) {
-			dbDelta( $sql );
-		}
-	}
-
 	private function add_clickwhale_categories_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_categories';
@@ -69,40 +42,23 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_clicks_table() {
+	private function add_clickwhale_links_table() {
 		global $wpdb;
-		$table_name      = $wpdb->prefix . 'clickwhale_clicks';
+		$table_name      = $wpdb->prefix . 'clickwhale_links';
 		$charset_collate = $wpdb->get_charset_collate();
 
-		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_clicks (
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_links (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
-			link_id mediumint(9) NOT NULL,
-			visitor_hash tinytext NOT NULL,
-			browser tinytext NOT NULL,
-			os tinytext NOT NULL,
-			device tinytext NOT NULL,
-			referer varchar(255) DEFAULT '' NOT NULL,
+			title tinytext NOT NULL,
+			url varchar(255) DEFAULT '' NOT NULL,
+			slug varchar(255) DEFAULT '' NOT NULL,
+			redirection smallint(4) NOT NULL,
+			nofollow smallint(1),
+			sponsored smallint(1),
+			description tinytext DEFAULT '' NOT NULL,
+			categories tinytext,
 			created_at datetime,
-			
-			PRIMARY KEY  (id)
-		) $charset_collate;";
-
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		if ( ! maybe_create_table( $table_name, $sql ) ) {
-			dbDelta( $sql );
-		}
-	}
-
-	private function add_clickwhale_links_meta_table() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . 'clickwhale_links_meta';
-		$charset_collate = $wpdb->get_charset_collate();
-
-		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_links_meta (
-			id int(11) NOT NULL auto_increment,
-			meta_key varchar(255) default NULL,
-			meta_value longtext default NULL,
-			link_id int(11) NOT NULL,
+			updated_at datetime,
 			
 			PRIMARY KEY  (id)
 		) $charset_collate;";
@@ -139,6 +95,72 @@ class Clickwhale_Activator {
 		}
 	}
 
+	private function add_clickwhale_meta_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_meta';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_meta (
+			id int(11) NOT NULL auto_increment,
+			meta_key varchar(255) default NULL,
+			meta_value longtext default NULL,
+			link_id int(11) NOT NULL,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+	private function add_clickwhale_visitors_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_visitors';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_visitors (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			hash tinytext NOT NULL,
+			browser tinytext NOT NULL,
+			os tinytext NOT NULL,
+			device tinytext NOT NULL,
+			created_at datetime,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+	private function add_clickwhale_track_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_track';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_track (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			event_type tinytext NOT NULL,
+			link_id mediumint(9) DEFAULT 0,
+			linkpage_id mediumint(9) DEFAULT 0,
+			visitor_id mediumint(9) NOT NULL,
+			referer varchar(255) DEFAULT '' NOT NULL,
+			created_at datetime,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+
 	/**
 	 * Actions on plugin activation
 	 *
@@ -146,11 +168,12 @@ class Clickwhale_Activator {
 	 */
 	public static function activate() {
 		// create a new object inside the static method to access non-static methods inside that class
-		( new self )->add_clickwhale_links_table();
 		( new self )->add_clickwhale_categories_table();
-		( new self )->add_clickwhale_clicks_table();
-		( new self )->add_clickwhale_links_meta_table();
+		( new self )->add_clickwhale_links_table();
 		( new self )->add_clickwhale_linkpages_table();
+		( new self )->add_clickwhale_meta_table();
+		( new self )->add_clickwhale_visitors_table();
+		( new self )->add_clickwhale_track_table();
 	}
 
 }

@@ -36,8 +36,13 @@ html > body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 20px;
+    min-height: 100%;
+}
+
+.admin-bar .linkpage-public--wrap {
+    min-height: calc(100% - 32px);
 }
 
 .linkpage-public--inner {
@@ -161,11 +166,12 @@ html > body {
     white-space: nowrap;
 }
 
-.linkpage-public--copyright img{
+.linkpage-public--copyright img,
+.linkpage-public--copyright svg {
     display: block;
     width: 120px;
     height: auto;
-    margin-top: -13px;
+    margin-top: -15px;
 }
 
 .linkpage-public--copyright:hover {
@@ -176,6 +182,7 @@ html > body {
     .linkpage-public--inner {
         max-width: 800px;
     }
+
     .linkpage-public--links > a {
         padding: 1.2em 3em;
         font-size: 1em;
