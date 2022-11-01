@@ -6,7 +6,6 @@ $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $message         = get_transient( 'link-' . $item['id'] );
 $options         = get_option( 'clickwhale_general_options' );
-$options_other   = get_option( 'clickwhale_other_options' );
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -76,10 +75,10 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
                                        size="50"
                                        class="regular-text"
-                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options_other['slug'] ) ) ?>"
+                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options['slug'] ) ) ?>"
                                        required>
                                 <p id="slug__text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options_other['slug'] . '/'; ?>
+									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options['slug'] . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>

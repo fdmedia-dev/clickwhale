@@ -127,7 +127,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_slug( $item ) {
-		$options = get_option( 'clickwhale_other_options' );
+		$options = get_option( 'clickwhale_general_options' );
 
 		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $options['slug'] . '/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
