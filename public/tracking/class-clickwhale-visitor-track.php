@@ -6,28 +6,22 @@ class Clickwhale_Visitor_Track {
 	protected $ua;
 	protected $os;
 	protected $device;
+	protected $date;
 	protected $hash;
 
 	public $visitor_id;
 	public $event;
 
 	public function __construct( $event ) {
-		$this->parser = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
-		$this->user   = new Clickwhale_WP_User();
-		$this->ua     = $this->parser->ua;
-		$this->os     = $this->parser->os;
-		$this->device = $this->parser->type;
-		$this->hash   = $this->generate_hash();
-		$this->event  = $event;
-
-		if ( ! $this->user->disallow_track($this->event) && ! $this->parser->bot ) {
-			$visitor = $this->get_visitor_id( $this->hash );
-			if ( ! $visitor ) {
-				$this->visitor_id = $this->update_visitors_database();
-			} else {
-				$this->visitor_id = intval( $visitor[0]['id'] );
-			}
-		}
+		$this->parser     = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
+		$this->user       = new Clickwhale_WP_User();
+		$this->ua         = $this->parser->ua;
+		$this->os         = $this->parser->os;
+		$this->device     = $this->parser->type;
+		$this->date       = gmdate( 'Y-m-d H:i:s' );
+		$this->hash       = $this->generate_hash();
+		$this->event      = $event;
+		$this->visitor_id = $this->proceed_visitor();
 	}
 
 	private function get_user_ip() {
@@ -42,13 +36,44 @@ class Clickwhale_Visitor_Track {
 		return hash( 'md5', $this->get_user_salt() . $this->get_user_ip() );
 	}
 
-	public function get_visitor_id( $hash ) {
+	public function get_visitor_by_hash( $hash ) {
 		global $wpdb;
 
-		return $wpdb->get_results( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}clickwhale_visitors WHERE hash=%s", $hash ), ARRAY_A );
+		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_visitors WHERE hash=%s AND expired=0", $hash ), ARRAY_A );
 	}
 
-	private function update_visitors_database() {
+	/**
+	 * @return int
+	 */
+	public function proceed_visitor() {
+
+		if ( ! $this->user->disallow_track( $this->event ) && ! $this->parser->bot ) {
+			$visitor           = $this->get_visitor_by_hash( $this->hash );
+			$tracking_options  = get_option( 'clickwhale_tracking_options' );
+			$tracking_duration = $tracking_options['tracking_duration'];
+
+			if ( ! $visitor ) {
+				$id = $this->add_visitor_to_database( $tracking_duration );
+			} else {
+				if ( $visitor['expired_at'] < $this->date ) {
+					$this->change_visitor_expired( $visitor['id'] );
+					$id = $this->add_visitor_to_database( $tracking_duration );
+				} else {
+					$id = $visitor['id'];
+				}
+			}
+		}
+
+		return intval( $id );
+	}
+
+	private function change_visitor_expired( $id ) {
+		global $wpdb;
+
+		return $wpdb->update( $wpdb->prefix . 'clickwhale_visitors', array( 'expired' => 1 ), array( 'id' => $id ) );
+	}
+
+	private function add_visitor_to_database( $duration ) {
 		global $wpdb;
 
 		$table_visitors        = $wpdb->prefix . 'clickwhale_visitors';
@@ -57,7 +82,8 @@ class Clickwhale_Visitor_Track {
 		$visitor['browser']    = $this->ua;
 		$visitor['os']         = $this->os;
 		$visitor['device']     = $this->device;
-		$visitor['created_at'] = gmdate( 'Y-m-d H:m:s' );
+		$visitor['created_at'] = $this->date;
+		$visitor['expired_at'] = gmdate( 'Y-m-d H:i:s', strtotime( '+' . $duration . ' days', strtotime( $this->date ) ) );
 
 		$wpdb->insert( $table_visitors, $visitor );
 

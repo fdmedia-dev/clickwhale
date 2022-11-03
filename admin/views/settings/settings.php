@@ -1,5 +1,7 @@
 <?php
 do_action( 'clickwhale_admin_banner' );
+
+$tracking_options = get_option( 'clickwhale_tracking_options' );
 ?>
 
 <div class="wrap clickwhale-settings-wrap">

@@ -40,7 +40,7 @@ class Clickwhale_View_Track {
 		$item['linkpage_id'] = $this->linkpage_id;
 		$item['visitor_id']  = $visitor_id;
 		$item['referer']     = $this->get_link_referer();
-		$item['created_at']  = gmdate( 'Y-m-d H:m:s' );
+		$item['created_at']  = gmdate( 'Y-m-d H:i:s' );
 
 		return $wpdb->insert( $table_name, $item );
 	}

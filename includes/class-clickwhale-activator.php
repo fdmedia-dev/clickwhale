@@ -127,6 +127,8 @@ class Clickwhale_Activator {
 			os tinytext NOT NULL,
 			device tinytext NOT NULL,
 			created_at datetime,
+			expired_at datetime,
+			expired boolean DEFAULT 0,
 			
 			PRIMARY KEY  (id)
 		) $charset_collate;";

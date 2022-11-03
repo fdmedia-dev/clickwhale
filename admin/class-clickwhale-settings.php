@@ -78,6 +78,7 @@ class Clickwhale_Admin_Settings {
 			'tracking' => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
+					'tracking duration'                  => 30,
 					'disable_click_tracking'             => false,
 					'exclude_user_link_click_by_role'    => [ 'administrator' ],
 					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
@@ -255,6 +256,9 @@ class Clickwhale_Admin_Settings {
 		$general_options  = get_option( 'clickwhale_general_options' );
 		$tracking_options = get_option( 'clickwhale_tracking_options' );
 		$other_options    = get_option( 'clickwhale_other_options' );
+		$duration         = apply_filters( 'clickwhale_tracking_duration', array(
+			30 => __( '30 days', $this->plugin_name ),
+		) );
 
 		if ( $this->default_options() ) {
 			foreach ( $this->default_options() as $k => $v ) {
@@ -339,6 +343,20 @@ class Clickwhale_Admin_Settings {
 				'value'       => isset( $general_options['slug'] ) ? $general_options['slug'] : 'link',
 				'placeholder' => 'link',
 				'description' => __( '<strong>Important:</strong> Once you change the link slug, all existing links will be updated automatically.<br>You may have to update placed links in your content manually.', $this->plugin_name ),
+			)
+		);
+		add_settings_field(
+			'tracking_duration',
+			__( 'Tracking Duration', $this->plugin_name ),
+			array( $this, 'render_controls' ),
+			'clickwhale_tracking_options',
+			'tracking_settings_section',
+			array(
+				'control' => 'select',
+				'id'      => 'tracking_duration',
+				'name'    => 'clickwhale_tracking_options[tracking_duration]',
+				'value'   => $tracking_options['tracking_duration'],
+				'options' => $duration
 			)
 		);
 		add_settings_field(
