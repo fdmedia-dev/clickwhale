@@ -78,7 +78,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo wp_kses( wp_unslash( $item['description']), wp_kses_allowed_html( 'post' ) ) ?></textarea>
+                                    ><?php echo wp_kses( wp_unslash( $item['description'] ), wp_kses_allowed_html( 'post' ) ) ?></textarea>
                                     </td>
                                 </tr>
                                 <tr class="form-field">
@@ -112,7 +112,8 @@ do_action( 'clickwhale_admin_banner' );
                                                     <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
                                                 </a>
                                                 <a href="#" class="linkpage-logo-remove">Remove image</a>
-                                                <input type="hidden" name="logo" value="<?php esc_attr( $logo_id ); ?>">
+                                                <input type="hidden" name="logo"
+                                                       value="<?php echo esc_attr( $logo_id ); ?>">
 											<?php } else { ?>
                                                 <a href="#" class="linkpage-logo-upload">
 													<?php _e( 'Upload image' ) ?>
