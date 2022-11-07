@@ -94,7 +94,10 @@ do_action( 'clickwhale_admin_banner' );
                                                class="regular-text"
                                                placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                                required>
-                                        <p id="slug-description"></p>
+                                        <p id="slug__text">
+		                                    <?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+		                                    <?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+                                        </p>
                                     </td>
                                 </tr>
 								<?php $logo_id = isset( $item['logo'] ) ? $item['logo'] : ''; ?>
