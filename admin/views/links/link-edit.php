@@ -57,7 +57,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <input id="title"
                                        name="title"
                                        type="text"
-                                       value="<?php echo esc_attr( $item['title'] ) ?>"
+                                       value="<?php echo esc_attr( wp_unslash($item['title']) ) ?>"
                                        size="40"
                                        class="regular-text"
                                        placeholder="<?php _e( 'Link Title', $this->plugin_name ) ?>"
@@ -172,7 +172,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( $item['description'] ) ?></textarea>
+                                    ><?php echo esc_html( wp_unslash( $item['description']) ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">

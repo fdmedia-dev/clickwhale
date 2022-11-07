@@ -106,7 +106,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
-		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], $item['title'] );
+		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], wp_unslash( $item['title']) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
 			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>', sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset', 'clickwhale' ) ),
@@ -164,7 +164,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 					$v      = intval( $v );
 					$result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories WHERE id={$v}" );
 					if ( ! empty( $result ) ) {
-						$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&category=' . $result[0]->id . '">' . $result[0]->title . '</a>';
+						$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&category=' . $result[0]->id . '">' . wp_unslash( $result[0]->title) . '</a>';
 						if ( $v != $lastElement ) {
 							$current_categories .= ', ';
 						}

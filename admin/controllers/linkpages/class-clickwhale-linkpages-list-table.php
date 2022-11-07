@@ -37,7 +37,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 * @return string
 	 */
 	function column_title( $item ) {
-		$title   = sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], $item['title'] );
+		$title   = sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], wp_unslash( $item['title']) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
 			'view'   => '<a href="' . get_bloginfo( 'url' ) . '/' . $item['slug'] . '" target="_blank">View</a>',

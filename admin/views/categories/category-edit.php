@@ -103,7 +103,7 @@ do_action( 'clickwhale_admin_banner' );
                                        name="title"
                                        type="text"
                                        style="width: 95%"
-                                       value="<?php echo esc_attr( $item['title'] ) ?>"
+                                       value="<?php echo esc_attr( wp_unslash( $item['title']) ) ?>"
                                        size="50"
                                        class="code"
                                        placeholder="<?php _e( 'Category Title', $this->plugin_name ) ?>"
@@ -137,7 +137,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="code"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( $item['description'] ) ?></textarea>
+                                    ><?php echo esc_html( wp_unslash( $item['description']) ) ?></textarea>
                             </td>
                         </tr>
                         </tbody>

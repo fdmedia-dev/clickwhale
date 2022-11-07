@@ -37,7 +37,7 @@ class Clickwhale_Public_Linkpage {
 				$url       = get_bloginfo( 'url' ) . '/' . $this->general_options['slug'] . '/' . $link_data['slug'];
 				if ( $link_data ) {
 					$link_title = $link['title'] ? $link['title'] : $link_data['title'];
-					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( $link_title ) . '</a>';
+					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( wp_unslash( $link_title) ) . '</a>';
 				}
 			}
 		}
