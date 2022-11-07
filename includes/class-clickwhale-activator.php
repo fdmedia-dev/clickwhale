@@ -80,7 +80,6 @@ class Clickwhale_Activator {
 			description tinytext DEFAULT '' NOT NULL,
 			slug tinytext NOT NULL,
 			logo int(11) NOT NULL,
-			views int(11) NOT NULL,
 			links longtext default NULL,
 			styles longtext default NULL,
 			social longtext default NULL,
@@ -128,7 +127,6 @@ class Clickwhale_Activator {
 			device tinytext NOT NULL,
 			created_at datetime,
 			expired_at datetime,
-			expired boolean DEFAULT 0,
 			
 			PRIMARY KEY  (id)
 		) $charset_collate;";

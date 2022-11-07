@@ -39,7 +39,7 @@ class Clickwhale_Visitor_Track {
 	public function get_visitor_by_hash( $hash ) {
 		global $wpdb;
 
-		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_visitors WHERE hash=%s AND expired=0", $hash ), ARRAY_A );
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_visitors WHERE hash=%s", $hash ), ARRAY_A );
 	}
 
 	/**
@@ -48,29 +48,20 @@ class Clickwhale_Visitor_Track {
 	public function proceed_visitor() {
 
 		if ( ! $this->user->disallow_track( $this->event ) && ! $this->parser->bot ) {
-			$visitor           = $this->get_visitor_by_hash( $this->hash );
+			$visitor_arr       = $this->get_visitor_by_hash( $this->hash );
+			$visitor           = end( $visitor_arr );
 			$tracking_options  = get_option( 'clickwhale_tracking_options' );
 			$tracking_duration = $tracking_options['tracking_duration'];
 
-			if ( ! $visitor ) {
+			if ( ! $visitor_arr || $visitor['expired_at'] < $this->date ) {
 				$id = $this->add_visitor_to_database( $tracking_duration );
 			} else {
-				if ( $visitor['expired_at'] < $this->date ) {
-					$this->change_visitor_expired( $visitor['id'] );
-					$id = $this->add_visitor_to_database( $tracking_duration );
-				} else {
-					$id = $visitor['id'];
-				}
+				$id = $visitor['id'];
 			}
+
 		}
 
 		return intval( $id );
-	}
-
-	private function change_visitor_expired( $id ) {
-		global $wpdb;
-
-		return $wpdb->update( $wpdb->prefix . 'clickwhale_visitors', array( 'expired' => 1 ), array( 'id' => $id ) );
 	}
 
 	private function add_visitor_to_database( $duration ) {
