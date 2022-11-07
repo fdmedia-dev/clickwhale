@@ -22,11 +22,17 @@ do_action( 'clickwhale_admin_banner' );
 		<?php } ?>
     </h1>
 
+
 	<?php if ( ! empty( $message ) ) { ?>
         <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
 	<?php } ?>
 
     <hr class="wp-header-end">
+
+	<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit() ) { ?>
+        <div class="links-info"><?php printf( 'Currently, a maximum of %d %s can be created', array( ClickwhaleLinkpagesHelper::get_limit() ), ClickwhaleLinkpagesHelper::get_limit() === 1 ? 'link page' : 'link pages' ); ?></div>
+        <hr class="wp-header-end">
+	<?php } ?>
 
     <form method="GET">
         <input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
