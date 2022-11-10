@@ -95,8 +95,9 @@ do_action( 'clickwhale_admin_banner' );
                                                placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                                required>
                                         <p id="slug__text">
-		                                    <?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-		                                    <?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+											<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+											<?php echo esc_html( $url ) ?>
+                                            <span><?php echo esc_html( $item['slug'] ) ?></span>
                                         </p>
                                     </td>
                                 </tr>
@@ -145,7 +146,7 @@ do_action( 'clickwhale_admin_banner' );
 												<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
                                                     <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
                                                             data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
-														<?php echo esc_html( $linkpage_link['title'] ) ?>
+														<?php echo esc_html( wp_unslash( $linkpage_link['title'] ) ) ?>
                                                     </option>
 												<?php } ?>
                                             </select>
@@ -167,13 +168,13 @@ do_action( 'clickwhale_admin_banner' );
                                                                    value="<?php echo esc_attr( $link['id'] ) ?>">
                                                             <div class="linkpage-row--drag"></div>
                                                             <div class="linkpage-link">
-																<?php echo esc_html( $link_data['title'] ) ?>
+																<?php echo esc_html( wp_unslash( $link_data['title']) ) ?>
                                                                 <span><?php echo esc_url( $link_data['url'] ) ?></span>
                                                             </div>
                                                             <div class="linkpage-link--title">
                                                                 <input type="text"
                                                                        name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
-                                                                       value="<?php echo esc_html( $link['title'] ) ?>"
+                                                                       value="<?php echo esc_html( wp_unslash($link['title']) ) ?>"
                                                                        placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
                                                             </div>
                                                             <div class="linkpage-row--remove"></div>

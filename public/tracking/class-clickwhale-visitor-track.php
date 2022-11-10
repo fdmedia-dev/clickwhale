@@ -48,10 +48,16 @@ class Clickwhale_Visitor_Track {
 	public function proceed_visitor() {
 
 		if ( ! $this->user->disallow_track( $this->event ) && ! $this->parser->bot ) {
-			$visitor_arr       = $this->get_visitor_by_hash( $this->hash );
-			$visitor           = end( $visitor_arr );
-			$tracking_options  = get_option( 'clickwhale_tracking_options' );
-			$tracking_duration = $tracking_options['tracking_duration'];
+			$visitor_arr      = $this->get_visitor_by_hash( $this->hash );
+			$visitor          = end( $visitor_arr );
+			$tracking_options = get_option( 'clickwhale_tracking_options' );
+			if ( isset( $tracking_options['tracking_duration'] ) && $tracking_options['tracking_duration'] !== '' ) {
+				$tracking_duration = $tracking_options['tracking_duration'];
+			} else {
+				$settings          = Clickwhale_Admin_Settings::getInstance();
+				$defaults          = $settings->default_options();
+				$tracking_duration = $defaults['tracking']['options']['tracking_duration'];
+			}
 
 			if ( ! $visitor_arr || $visitor['expired_at'] < $this->date ) {
 				$id = $this->add_visitor_to_database( $tracking_duration );

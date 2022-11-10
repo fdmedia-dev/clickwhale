@@ -4,8 +4,9 @@ $link_edit->init();
 
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
+$options_general = get_option( 'clickwhale_general_options' );
+$option_slug     = $link_edit->get_item_option( 'general', 'slug' );
 $message         = get_transient( 'link-' . $item['id'] );
-$options         = get_option( 'clickwhale_general_options' );
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -57,7 +58,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <input id="title"
                                        name="title"
                                        type="text"
-                                       value="<?php echo esc_attr( wp_unslash($item['title']) ) ?>"
+                                       value="<?php echo esc_attr( wp_unslash( $item['title'] ) ) ?>"
                                        size="40"
                                        class="regular-text"
                                        placeholder="<?php _e( 'Link Title', $this->plugin_name ) ?>"
@@ -75,10 +76,10 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
                                        size="50"
                                        class="regular-text"
-                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $options['slug'] ) ) ?>"
+                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $option_slug ) ) ?>"
                                        required>
                                 <p id="slug__text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $options['slug'] . '/'; ?>
+									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $option_slug . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
@@ -127,19 +128,21 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="nofollow"><?php _e( 'Nofollow', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input type="checkbox"
-                                       id="nofollow"
-                                       name="nofollow"
-                                       value="1"
-									<?php
-									if ( $item['id'] === 0 && isset( $global_options['nofollow'] ) ) {
-										echo 'checked';
-									} else {
-										checked( $item['nofollow'], 1 );
-									}
-									?>
-                                />
-                                <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex', $this->plugin_name ) ?></label>
+                                <fieldset>
+                                    <input type="checkbox"
+                                           id="nofollow"
+                                           name="nofollow"
+                                           value="1"
+										<?php
+										if ( $item['id'] === 0 && isset( $options_general['nofollow'] ) ) {
+											echo 'checked';
+										} else {
+											checked( 1, $item['nofollow'] );
+										}
+										?>
+                                    />
+                                    <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex', $this->plugin_name ) ?></label>
+                                </fieldset>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -147,19 +150,21 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="sponsored"><?php _e( 'Sponsored', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input type="checkbox"
-                                       id="sponsored"
-                                       name="sponsored"
-                                       value="1"
-									<?php
-									if ( $item['id'] === 0 && isset( $global_options['sponsored'] ) ) {
-										echo 'checked';
-									} else {
-										checked( $item['sponsored'], 1 );
-									}
-									?>
-                                />
-                                <label for="sponsored"><?php _e( 'Check to mark link as sponsored', $this->plugin_name ) ?></label>
+                                <fieldset>
+                                    <input type="checkbox"
+                                           id="sponsored"
+                                           name="sponsored"
+                                           value="1"
+										<?php
+										if ( $item['id'] === 0 && isset( $options_general['sponsored'] ) ) {
+											echo 'checked';
+										} else {
+											checked( 1, $item['sponsored'] );
+										}
+										?>
+                                    />
+                                    <label for="sponsored"><?php _e( 'Check to mark link as sponsored', $this->plugin_name ) ?></label>
+                                </fieldset>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -172,7 +177,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( wp_unslash( $item['description']) ) ?></textarea>
+                                    ><?php echo esc_html( wp_unslash( $item['description'] ) ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -192,11 +197,11 @@ do_action( 'clickwhale_admin_banner' );
                                                    value="<?php echo esc_attr( $category->id ) ?>"
 												<?php
 												if ( $current_categories ) {
-													checked( in_array( $category->id, $current_categories ), 1 );
+													checked( 1, in_array( $category->id, $current_categories ) );
 												}
 												?>
                                             />
-                                            <label for="category-<?php echo esc_attr( $category->id ) ?>"><?php echo esc_attr( $category->title ) ?></label>
+                                            <label for="category-<?php echo esc_attr( $category->id ) ?>"><?php echo esc_attr( wp_unslash( $category->title ) ) ?></label>
                                         </p>
 										<?php
 									}

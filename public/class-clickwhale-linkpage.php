@@ -32,12 +32,19 @@ class Clickwhale_Public_Linkpage {
 		$html  = '';
 		$links = maybe_unserialize( $this->post->post_content['links'] );
 		if ( $links ) {
+			if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
+				$option_slug = $options_general['slug'];
+			} else {
+				$settings    = Clickwhale_Admin_Settings::getInstance();
+				$defaults    = $settings->default_options();
+				$option_slug = $defaults['general']['options']['slug'];
+			}
 			foreach ( $links as $link ) {
 				$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
-				$url       = get_bloginfo( 'url' ) . '/' . $this->general_options['slug'] . '/' . $link_data['slug'];
+				$url       = get_bloginfo( 'url' ) . '/' . $option_slug . '/' . $link_data['slug'];
 				if ( $link_data ) {
 					$link_title = $link['title'] ? $link['title'] : $link_data['title'];
-					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( wp_unslash( $link_title) ) . '</a>';
+					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
 				}
 			}
 		}

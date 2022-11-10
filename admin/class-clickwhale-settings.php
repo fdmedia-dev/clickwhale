@@ -70,16 +70,16 @@ class Clickwhale_Admin_Settings {
 				'name'    => __( 'General', $this->plugin_name ),
 				'options' => array(
 					'redirect_type' => 301,
-					'nofollow'      => true,
-					'sponsored'     => false,
+					'nofollow'      => 1,
+					'sponsored'     => 0,
 					'slug'          => 'link'
 				)
 			),
 			'tracking' => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
-					'tracking duration'                  => 30,
-					'disable_click_tracking'             => false,
+					'tracking_duration'                  => 30,
+					'disable_click_tracking'             => 0,
 					'exclude_user_link_click_by_role'    => [ 'administrator' ],
 					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
 				)
@@ -253,6 +253,7 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_settings_fields() {
 
+		$defaults         = $this->default_options();
 		$general_options  = get_option( 'clickwhale_general_options' );
 		$tracking_options = get_option( 'clickwhale_tracking_options' );
 		$other_options    = get_option( 'clickwhale_other_options' );
@@ -260,8 +261,8 @@ class Clickwhale_Admin_Settings {
 			30 => __( '30 days', $this->plugin_name ),
 		) );
 
-		if ( $this->default_options() ) {
-			foreach ( $this->default_options() as $k => $v ) {
+		if ( $defaults ) {
+			foreach ( $defaults as $k => $v ) {
 
 				add_settings_section(
 					$k . '_settings_section',
@@ -289,7 +290,7 @@ class Clickwhale_Admin_Settings {
 				'control'     => 'select',
 				'id'          => 'redirect_type',
 				'name'        => 'clickwhale_general_options[redirect_type]',
-				'value'       => $general_options['redirect_type'],
+				'value'       => isset( $general_options['redirect_type'] ) && $general_options['redirect_type'] !== '' && is_int( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
 				'options'     => array(
 					301 => __( '301 redirect: Moved permanently', $this->plugin_name ),
 					302 => __( '302 redirect: Found / Moved temporarily', $this->plugin_name ),
@@ -340,7 +341,7 @@ class Clickwhale_Admin_Settings {
 				'id'          => 'slug',
 				'name'        => 'clickwhale_general_options[slug]',
 				'type'        => 'text',
-				'value'       => isset( $general_options['slug'] ) ? $general_options['slug'] : 'link',
+				'value'       => isset( $general_options['slug'] ) && $general_options['slug'] !== '' ? $general_options['slug'] : $defaults['general']['options']['slug'],
 				'placeholder' => 'link',
 				'description' => __( '<strong>Important:</strong> Once you change the link slug, all existing links will be updated automatically.<br>You may have to update placed links in your content manually.', $this->plugin_name ),
 			)
@@ -355,7 +356,7 @@ class Clickwhale_Admin_Settings {
 				'control' => 'select',
 				'id'      => 'tracking_duration',
 				'name'    => 'clickwhale_tracking_options[tracking_duration]',
-				'value'   => isset( $tracking_options['tracking_duration'] ) ? $tracking_options['tracking_duration'] : 30,
+				'value'   => isset( $tracking_options['tracking_duration'] ) ? $tracking_options['tracking_duration'] : $defaults['tracking']['options']['tracking_duration'],
 				'options' => $duration
 			)
 		);
@@ -383,7 +384,7 @@ class Clickwhale_Admin_Settings {
 				'control'     => 'checkboxes',
 				'id'          => 'exclude_user_link_click_by_role',
 				'name'        => 'clickwhale_tracking_options[exclude_user_link_click_by_role][]',
-				'value'       => isset( $tracking_options['exclude_user_link_click_by_role'] ) ? $tracking_options['exclude_user_link_click_by_role'] : '',
+				'value'       => isset( $tracking_options['exclude_user_link_click_by_role'] ) ? $tracking_options['exclude_user_link_click_by_role'] : 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
 				'description' => __( 'Do not track clicks on links for users of specified roles', $this->plugin_name ),
 			)
@@ -398,7 +399,7 @@ class Clickwhale_Admin_Settings {
 				'control'     => 'checkboxes',
 				'id'          => 'exclude_user_linkpage_view_by_role',
 				'name'        => 'clickwhale_tracking_options[exclude_user_linkpage_view_by_role][]',
-				'value'       => isset( $tracking_options['exclude_user_linkpage_view_by_role'] ) ? $tracking_options['exclude_user_linkpage_view_by_role'] : '',
+				'value'       => isset( $tracking_options['exclude_user_linkpage_view_by_role'] ) ? $tracking_options['exclude_user_linkpage_view_by_role'] : 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
 				'description' => __( 'Do not track linkpage views for users of specified roles', $this->plugin_name ),
 			)
@@ -414,7 +415,7 @@ class Clickwhale_Admin_Settings {
 				'id'          => 'affiliate_id',
 				'name'        => 'clickwhale_other_options[affiliate_id]',
 				'type'        => 'text',
-				'value'       => $other_options['affiliate_id'],
+				'value'       => isset( $other_options['affiliate_id'] ) ? $other_options['affiliate_id'] : $defaults['other']['options']['affiliate_id'],
 				'placeholder' => '123456',
 				'description' => __( 'Enter your Affiliate ID.', $this->plugin_name ),
 			)

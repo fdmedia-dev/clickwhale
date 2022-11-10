@@ -22,8 +22,6 @@ class Clickwhale_Link_Edit {
 	 * @return array
 	 */
 	public function get_defaults() {
-		$global_options = get_option( 'clickwhale_general_options' );
-
 		return array(
 			'id'          => 0,
 			'created_at'  => '',
@@ -31,7 +29,7 @@ class Clickwhale_Link_Edit {
 			'title'       => '',
 			'url'         => '',
 			'slug'        => '',
-			'redirection' => $global_options['redirect_type'],
+			'redirection' => $this->get_item_option( 'general', 'redirect_type' ),
 			'nofollow'    => '',
 			'sponsored'   => '',
 			'description' => '',
@@ -56,6 +54,19 @@ class Clickwhale_Link_Edit {
 		}
 
 		return $item;
+	}
+
+	public static function get_item_option( $group, $name ) {
+		$options = get_option( 'clickwhale_' . $group . '_options' );
+		if ( isset( $options[ $name ] ) && $options[ $name ] !== '' ) {
+			$option = $options[ $name ];
+		} else {
+			$settings = Clickwhale_Admin_Settings::getInstance();
+			$defaults = $settings->default_options();
+			$option   = $defaults[ $group ]['options'][ $name ];
+		}
+
+		return $option;
 	}
 
 	public function clickwhale_validate_link( $item ) {
@@ -131,6 +142,8 @@ class Clickwhale_Link_Edit {
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
 		$item               = $this->clear_link_slug( $item );
 		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
+		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
+		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
 
 		$result = $wpdb->update(
 			$links_table,

@@ -135,7 +135,13 @@ class Clickwhale_Public {
 		global $wpdb;
 
 		$options_general = get_option( 'clickwhale_general_options' );
-		$link_slug       = $options_general['slug'] . '/';
+		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
+			$link_slug = $options_general['slug'] . '/';
+		} else {
+			$settings  = Clickwhale_Admin_Settings::getInstance();
+			$defaults  = $settings->default_options();
+			$link_slug = $defaults['general']['options']['slug'] . '/';
+		}
 
 		// if PHP Warning: Undefined array key "HTTP_HOST"
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
