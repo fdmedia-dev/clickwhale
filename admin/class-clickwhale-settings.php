@@ -355,7 +355,7 @@ class Clickwhale_Admin_Settings {
 				'control' => 'select',
 				'id'      => 'tracking_duration',
 				'name'    => 'clickwhale_tracking_options[tracking_duration]',
-				'value'   => $tracking_options['tracking_duration'],
+				'value'   => isset( $tracking_options['tracking_duration'] ) ? $tracking_options['tracking_duration'] : 30,
 				'options' => $duration
 			)
 		);

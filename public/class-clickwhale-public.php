@@ -137,6 +137,11 @@ class Clickwhale_Public {
 		$options_general = get_option( 'clickwhale_general_options' );
 		$link_slug       = $options_general['slug'] . '/';
 
+		// if PHP Warning: Undefined array key "HTTP_HOST"
+		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			$_SERVER['HTTP_HOST'] = 'localhost';
+		}
+
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 
