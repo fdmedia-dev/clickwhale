@@ -47,6 +47,8 @@ class Clickwhale_Visitor_Track {
 	 */
 	public function proceed_visitor() {
 
+		$id = 0;
+
 		if ( ! $this->user->disallow_track( $this->event ) && ! $this->parser->bot ) {
 			$visitor_arr      = $this->get_visitor_by_hash( $this->hash );
 			$visitor          = end( $visitor_arr );
