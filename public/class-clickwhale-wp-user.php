@@ -114,7 +114,7 @@ class Clickwhale_WP_User {
 	public function is_track_disabled() {
 		$tracking_options = $this->get_track_options();
 
-		return isset( $tracking_options['disable_click_tracking'] ) ? $tracking_options['disable_click_tracking'] : false;
+		return isset( $tracking_options['disable_tracking'] ) ? $tracking_options['disable_tracking'] : false;
 	}
 
 	/**

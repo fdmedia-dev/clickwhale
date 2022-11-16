@@ -79,7 +79,7 @@ class Clickwhale_Admin_Settings {
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
 					'tracking_duration'                  => 30,
-					'disable_click_tracking'             => 0,
+					'disable_tracking'             => 0,
 					'exclude_user_link_click_by_role'    => [ 'administrator' ],
 					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
 				)
@@ -372,17 +372,17 @@ class Clickwhale_Admin_Settings {
 			)
 		);
 		add_settings_field(
-			'disable_click_tracking',
-			__( 'Disable Click Tracking', $this->plugin_name ),
+			'disable_tracking',
+			__( 'Disable Tracking', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
 			array(
 				'control' => 'checkbox',
-				'id'      => 'disable_click_tracking',
-				'name'    => 'clickwhale_tracking_options[disable_click_tracking]',
-				'value'   => isset( $tracking_options['disable_click_tracking'] ) ? 1 : 0,
-				'label'   => __( 'Check to disable click tracking for links', $this->plugin_name ),
+				'id'      => 'disable_tracking',
+				'name'    => 'clickwhale_tracking_options[disable_tracking]',
+				'value'   => isset( $tracking_options['disable_tracking'] ) ? 1 : 0,
+				'label'   => __( 'Check to disable tracking', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
