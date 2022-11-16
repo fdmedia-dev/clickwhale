@@ -178,7 +178,7 @@ class Clickwhale_Admin {
 	}
 
 	public function clickwhale_admin_banner_callback() {
-		$link_helpdesk = 'ttps://clickwhale.pro/contact/';
+		$link_helpdesk = 'https://clickwhale.pro/contact/';
 		?>
 
         <div class="clickwhale-banner">
