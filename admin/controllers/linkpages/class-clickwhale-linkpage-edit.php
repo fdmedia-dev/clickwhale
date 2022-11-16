@@ -109,6 +109,14 @@ class Clickwhale_Linkpage_Edit {
 		die;
 	}
 
+	public function set_edit_linkpage_page_title( $admin_title, $title ) {
+		return 'Edit Link Page' . $admin_title;
+	}
+
+	public function set_add_linkpage_page_title( $admin_title, $title ) {
+		return 'Add Link Page' . $admin_title;
+	}
+
 	public function admin_scripts() {
 		$nonce                     = wp_create_nonce( 'linkpage_slug' );
 		$nonce_reset               = wp_create_nonce( 'linkpage_slug' );
@@ -131,15 +139,15 @@ class Clickwhale_Linkpage_Edit {
 
 				<?php if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' && isset( $_GET['id'] ) ) { ?>
 
-                    var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
 
-                    if (localStorage.getItem('tab-' + page_id)) {
-                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
-                    }
+                if (localStorage.getItem('tab-' + page_id)) {
+                    jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                }
 
-                    jQuery('#clickwhale-tabs li').click(function () {
-                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
-                    });
+                jQuery('#clickwhale-tabs li').click(function () {
+                    localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                });
 
 				<?php } ?>
 

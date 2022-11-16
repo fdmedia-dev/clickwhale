@@ -18,7 +18,7 @@ do_action( 'clickwhale_admin_banner' );
 		if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
 			_e( 'Edit link', $this->plugin_name );
 		} else {
-			_e( 'Add new link', $this->plugin_name );
+			_e( 'Add Link', $this->plugin_name );
 		}
 		?>
 

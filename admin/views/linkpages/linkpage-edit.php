@@ -21,7 +21,15 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-		<?php _e( 'Edit Link Page', $this->plugin_name ); ?>
+
+		<?php
+		if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
+			_e( 'Edit Link Page', $this->plugin_name );
+		} else {
+			_e( 'Add Link Page', $this->plugin_name );
+		}
+		?>
+
         <a class="page-title-action"
            href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
 

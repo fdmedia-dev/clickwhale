@@ -5,7 +5,6 @@ class Clickwhale_Link_Edit {
 	private static $instance;
 
 	public function init() {
-		add_filter( 'admin_title', array( $this, 'set_link_page_title' ), 20, 2 );
 	}
 
 	public static function getInstance() {
@@ -169,7 +168,11 @@ class Clickwhale_Link_Edit {
 		die;
 	}
 
-	public function set_link_page_title( $admin_title, $title ) {
+	public function set_edit_link_page_title( $admin_title, $title ) {
 		return 'Edit Link' . $admin_title;
+	}
+
+	public function set_add_link_page_title( $admin_title, $title ) {
+		return 'Add Link' . $admin_title;
 	}
 }

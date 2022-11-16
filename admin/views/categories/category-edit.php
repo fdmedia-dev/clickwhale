@@ -68,7 +68,14 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-		<?php _e( 'Edit Category', $this->plugin_name ) ?>
+	    <?php
+	    if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
+		    _e( 'Edit Category', $this->plugin_name );
+	    } else {
+		    _e( 'Add Category', $this->plugin_name );
+	    }
+	    ?>
+
 		<?php if ( $total_items < $limit ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-category' ); ?>"
                class="page-title-action"><?php _e( 'Add new', 'clickwhale' ) ?></a>

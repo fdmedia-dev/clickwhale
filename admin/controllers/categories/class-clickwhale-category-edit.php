@@ -1,6 +1,15 @@
 <?php
 
 class Clickwhale_Category_Edit {
+	private static $instance;
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	public function clickwhale_validate_category( $item ) {
 		$messages = array();
@@ -22,6 +31,14 @@ class Clickwhale_Category_Edit {
 		$item['slug'] = $slug;
 
 		return $item;
+	}
+
+	public function set_edit_category_page_title( $admin_title, $title ) {
+		return 'Edit Category' . $admin_title;
+	}
+
+	public function set_add_category_page_title( $admin_title, $title ) {
+		return 'Add Category' . $admin_title;
 	}
 
 }

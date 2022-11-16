@@ -157,6 +157,7 @@ class Clickwhale {
 		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
+		$Clickwhale_Category_Edit  = Clickwhale_Category_Edit::getInstance();
 		$Clickwhale_Linkpage_Edit  = Clickwhale_Linkpage_Edit::getInstance();
 		$Clickwhale_Tools_Reset    = ClickwhaleToolsResetDB::getInstance();
 
@@ -195,6 +196,31 @@ class Clickwhale {
 
 		// FILTERS
 		$this->loader->add_filter( 'clickwhale_categories_limit', $Clickwhale_Admin, 'clickwhale_categories_limit_callback' );
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-link' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_edit_link_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_add_link_page_title', 10, 2 );
+			}
+		}
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-category' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_edit_category_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_add_category_page_title', 10, 2 );
+			}
+		}
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_edit_linkpage_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_add_linkpage_page_title', 10, 2 );
+			}
+		}
+
 	}
 
 	/**
