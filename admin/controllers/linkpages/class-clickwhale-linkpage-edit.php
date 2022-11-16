@@ -29,6 +29,14 @@ class Clickwhale_Linkpage_Edit {
 			'description' => '',
 			'links'       => '',
 			'logo'        => '',
+			'styles'      => array(
+				'bg_color'            => '#fdd231',
+				'text_color'          => '#1a1c1d',
+				'link_bg_color'       => '#fee06f',
+				'link_color'          => '#1a1c1d',
+				'link_bg_color_hover' => '#ffffff',
+				'link_color_hover'    => '#397eff',
+			),
 		);
 	}
 
@@ -74,6 +82,7 @@ class Clickwhale_Linkpage_Edit {
 		$defaults        = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
 		$item            = array_intersect_key( $_POST, $defaults );
 		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
@@ -101,25 +110,36 @@ class Clickwhale_Linkpage_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce       = wp_create_nonce( 'linkpage_slug' );
-		$nonce_reset = wp_create_nonce( 'linkpage_slug' );
+		$nonce                     = wp_create_nonce( 'linkpage_slug' );
+		$nonce_reset               = wp_create_nonce( 'linkpage_slug' );
+		$nonce_reset_customization = wp_create_nonce( 'linkpage_reset_customization' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
 
-                jQuery('#clickwhale-tabs').tabs();
+                jQuery('input[name*="color"]').wpColorPicker();
+
+                jQuery('#clickwhale-tabs').tabs({
+                    activate: function (event, ui) {
+                        if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-customization') {
+                            jQuery('#reset-customization').show();
+                        } else {
+                            jQuery('#reset-customization').hide();
+                        }
+                    }
+                });
 
 				<?php if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' && isset( $_GET['id'] ) ) { ?>
 
-                var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                    var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
 
-                if (localStorage.getItem('tab-' + page_id)) {
-                    jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
-                }
+                    if (localStorage.getItem('tab-' + page_id)) {
+                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                    }
 
-                jQuery('#clickwhale-tabs li').click(function () {
-                    localStorage.setItem('tab-' + page_id, jQuery(this).index());
-                });
+                    jQuery('#clickwhale-tabs li').click(function () {
+                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                    });
 
 				<?php } ?>
 
@@ -227,6 +247,17 @@ class Clickwhale_Linkpage_Edit {
                             jQuery('#slug-description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
                         }
                     })
+                });
+
+                jQuery('#reset-customization').click(function (e) {
+                    e.preventDefault();
+                    if (window.confirm('<?php _e( 'Are you sure? This action customization settings to default. This process cannot be undone!', 'clickwhale' ) ?>')) {
+                        $defaults = <?php echo json_encode( $this->get_defaults() ) ?>;
+
+                        jQuery.each($defaults.styles, function (key, val) {
+                            jQuery('[name="styles[' + key + ']"').wpColorPicker('color', val);
+                        });
+                    }
                 });
 
             });

@@ -139,7 +139,7 @@ class Clickwhale_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
@@ -166,6 +166,7 @@ class Clickwhale_Admin {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( "jquery-ui-tabs" );
 		wp_enqueue_media();
+		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
 			'siteurl' => home_url(),
