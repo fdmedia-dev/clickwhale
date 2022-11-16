@@ -66,7 +66,7 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function default_options() {
 		return array(
-			'general'  => array(
+			'general'   => array(
 				'name'    => __( 'General', $this->plugin_name ),
 				'options' => array(
 					'redirect_type' => 301,
@@ -75,7 +75,7 @@ class Clickwhale_Admin_Settings {
 					'slug'          => 'link'
 				)
 			),
-			'tracking' => array(
+			'tracking'  => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
 					'tracking_duration'                  => 30,
@@ -84,7 +84,13 @@ class Clickwhale_Admin_Settings {
 					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
 				)
 			),
-			'other'    => array(
+			'linkpages' => array(
+				'name'    => __( 'Link Pages', $this->plugin_name ),
+				'options' => array(
+					'linkpage_links_target' => 0
+				)
+			),
+			'other'     => array(
 				'name'    => __( 'Other', $this->plugin_name ),
 				'options' => array(
 					'affiliate_id' => ''
@@ -230,6 +236,10 @@ class Clickwhale_Admin_Settings {
 		echo '<p>' . __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ) . '</p>';
 	}
 
+	public function linkpages_options_callback() {
+		echo '<p>' . __( 'Global settings for the Link Pages.', $this->plugin_name ) . '</p>';
+	}
+
 	public function other_options_callback() {
 		echo '<p>' . __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ) . '</p>';
 	}
@@ -253,11 +263,12 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_settings_fields() {
 
-		$defaults         = $this->default_options();
-		$general_options  = get_option( 'clickwhale_general_options' );
-		$tracking_options = get_option( 'clickwhale_tracking_options' );
-		$other_options    = get_option( 'clickwhale_other_options' );
-		$duration         = apply_filters( 'clickwhale_tracking_duration', array(
+		$defaults          = $this->default_options();
+		$general_options   = get_option( 'clickwhale_general_options' );
+		$tracking_options  = get_option( 'clickwhale_tracking_options' );
+		$linkpages_options = get_option( 'clickwhale_linkpages_options' );
+		$other_options     = get_option( 'clickwhale_other_options' );
+		$duration          = apply_filters( 'clickwhale_tracking_duration', array(
 			30 => __( '30 days', $this->plugin_name ),
 		) );
 
@@ -402,6 +413,20 @@ class Clickwhale_Admin_Settings {
 				'value'       => isset( $tracking_options['exclude_user_linkpage_view_by_role'] ) ? $tracking_options['exclude_user_linkpage_view_by_role'] : 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
 				'description' => __( 'Do not track linkpage views for users of specified roles', $this->plugin_name ),
+			)
+		);
+		add_settings_field(
+			'linkpage_links_target',
+			__( 'Linkpage Links Target', $this->plugin_name ),
+			array( $this, 'render_controls' ),
+			'clickwhale_linkpages_options',
+			'linkpages_settings_section',
+			array(
+				'control' => 'checkbox',
+				'id'      => 'linkpage_links_target',
+				'name'    => 'clickwhale_linkpages_options[linkpage_links_target]',
+				'value'   => isset( $linkpages_options['linkpage_links_target'] ) ? 1 : 0,
+				'label'   => __( 'Check to open links in a new tab/window.', $this->plugin_name ),
 			)
 		);
 		add_settings_field(

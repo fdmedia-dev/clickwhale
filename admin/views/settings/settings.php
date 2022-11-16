@@ -15,6 +15,8 @@ $tracking_options = get_option( 'clickwhale_tracking_options' );
            class="nav-tab <?php echo $active_tab == 'general_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'General Options', 'clickwhale' ); ?></a>
         <a href="?page=clickwhale-settings&tab=tracking_options"
            class="nav-tab <?php echo $active_tab == 'tracking_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Tracking Options', 'clickwhale' ); ?></a>
+        <a href="?page=clickwhale-settings&tab=linkpages_options"
+           class="nav-tab <?php echo $active_tab == 'linkpages_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Link Pages', 'clickwhale' ); ?></a>
         <a href="?page=clickwhale-settings&tab=other_options"
            class="nav-tab <?php echo $active_tab == 'other_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Other Options', 'clickwhale' ); ?></a>
     </h2>
@@ -26,6 +28,10 @@ $tracking_options = get_option( 'clickwhale_tracking_options' );
 			case 'tracking_options':
 				settings_fields( 'clickwhale_tracking_options' );
 				do_settings_sections( 'clickwhale_tracking_options' );
+				break;
+			case 'linkpages_options':
+				settings_fields( 'clickwhale_linkpages_options' );
+				do_settings_sections( 'clickwhale_linkpages_options' );
 				break;
 			case 'other_options':
 				settings_fields( 'clickwhale_other_options' );

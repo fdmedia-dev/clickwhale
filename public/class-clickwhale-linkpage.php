@@ -1,12 +1,16 @@
 <?php
 
 class Clickwhale_Public_Linkpage {
-	private $post;
+	private object $post;
+	private $general_options;
+	private $linkpages_options;
+	private $other_options;
 
 	public function __construct( $post ) {
-		$this->post            = $post;
-		$this->general_options = get_option( 'clickwhale_general_options' );
-		$this->other_options   = get_option( 'clickwhale_other_options' );
+		$this->post              = $post;
+		$this->general_options   = get_option( 'clickwhale_general_options' );
+		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
+		$this->other_options     = get_option( 'clickwhale_other_options' );
 	}
 
 	public function get_title() {
@@ -29,11 +33,12 @@ class Clickwhale_Public_Linkpage {
 
 	public function get_links() {
 		global $wpdb;
+
 		$html  = '';
 		$links = maybe_unserialize( $this->post->post_content['links'] );
 		if ( $links ) {
-			if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
-				$option_slug = $options_general['slug'];
+			if ( isset( $this->general_options['slug'] ) && $this->general_options['slug'] !== '' ) {
+				$option_slug = $this->general_options['slug'];
 			} else {
 				$settings    = Clickwhale_Admin_Settings::getInstance();
 				$defaults    = $settings->default_options();
@@ -44,7 +49,8 @@ class Clickwhale_Public_Linkpage {
 				$url       = get_bloginfo( 'url' ) . '/' . $option_slug . '/' . $link_data['slug'];
 				if ( $link_data ) {
 					$link_title = $link['title'] ? $link['title'] : $link_data['title'];
-					$html       .= '<a href="' . esc_url( $url ) . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
+					$target     = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
+					$html       .= '<a href="' . esc_url( $url ) . '" target="' . esc_attr( $target ) . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
 				}
 			}
 		}
