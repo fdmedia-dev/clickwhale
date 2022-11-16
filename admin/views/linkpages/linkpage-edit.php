@@ -55,7 +55,7 @@ do_action( 'clickwhale_admin_banner' );
                 <ul>
                     <li><a href="#lp-tab-settings"
                            class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
-                    <li><a href="#lp-tab-customization"
+                    <li><a href="#lp-tab-colors"
                            class=""><?php _e( 'Colors', 'clickwhale' ); ?></a></li>
                     <!--li><a href="#lp-tab-social"
                                    class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li-->
@@ -208,7 +208,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
                 </div>
-                <div id="lp-tab-customization">
+                <div id="lp-tab-colors">
 
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
@@ -321,9 +321,9 @@ do_action( 'clickwhale_admin_banner' );
                    name="submit">
 
             <input type="button" value="<?php _e( 'Reset colors', $this->plugin_name ) ?>"
-                   id="reset-customization"
+                   id="reset-colors"
                    class="button"
-                   name="reset-customization"
+                   name="reset-colors"
                    style="display: none">
 
         </div>

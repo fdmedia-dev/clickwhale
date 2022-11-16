@@ -118,21 +118,19 @@ class Clickwhale_Linkpage_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce                     = wp_create_nonce( 'linkpage_slug' );
-		$nonce_reset               = wp_create_nonce( 'linkpage_slug' );
-		$nonce_reset_customization = wp_create_nonce( 'linkpage_reset_customization' );
+		$nonce = wp_create_nonce( 'linkpage_slug' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
 
-                jQuery('input[name*="color"]').wpColorPicker();
+                jQuery('input[name^="styles"]').wpColorPicker();
 
                 jQuery('#clickwhale-tabs').tabs({
                     activate: function (event, ui) {
-                        if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-customization') {
-                            jQuery('#reset-customization').show();
+                        if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-colors') {
+                            jQuery('#reset-colors').show();
                         } else {
-                            jQuery('#reset-customization').hide();
+                            jQuery('#reset-colors').hide();
                         }
                     }
                 });
@@ -257,9 +255,9 @@ class Clickwhale_Linkpage_Edit {
                     })
                 });
 
-                jQuery('#reset-customization').click(function (e) {
+                jQuery('#reset-colors').click(function (e) {
                     e.preventDefault();
-                    if (window.confirm('<?php _e( 'Are you sure? This action customization settings to default. This process cannot be undone!', 'clickwhale' ) ?>')) {
+                    if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!', 'clickwhale' ) ?>')) {
                         $defaults = <?php echo json_encode( $this->get_defaults() ) ?>;
 
                         jQuery.each($defaults.styles, function (key, val) {
