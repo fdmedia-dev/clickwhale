@@ -79,7 +79,7 @@ class Clickwhale_Admin_Settings {
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
 					'tracking_duration'                  => 30,
-					'disable_tracking'             => 0,
+					'disable_tracking'                   => 0,
 					'exclude_user_link_click_by_role'    => [ 'administrator' ],
 					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
 				)
@@ -107,41 +107,41 @@ class Clickwhale_Admin_Settings {
 
 		$subpages = array(
 			array(
-				'page_title' => 'Links',
-				'menu_title' => 'Links',
+				'page_title' => __( 'Links', $this->plugin_name ),
+				'menu_title' => __( 'Links', $this->plugin_name ),
 				'slug'       => $this->plugin_name,
 				'handler'    => '_links',
 				'parent'     => $this->plugin_name,
 			),
 			array(
-				'page_title' => 'Add New',
-				'menu_title' => 'Add New Link',
+				'page_title' => __( 'Add New', $this->plugin_name ),
+				'menu_title' => __( 'Add New Link', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-link',
 				'handler'    => '_link_form'
 			),
 			array(
-				'page_title' => 'Categories',
-				'menu_title' => 'Categories',
+				'page_title' => __( 'Categories', $this->plugin_name ),
+				'menu_title' => __( 'Categories', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-categories',
 				'handler'    => '_categories',
 				'parent'     => $this->plugin_name,
 			),
 			array(
-				'page_title' => 'Add New Category',
-				'menu_title' => 'Add New Category',
+				'page_title' => __( 'Add New Category', $this->plugin_name ),
+				'menu_title' => __( 'Add New Category', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-category',
 				'handler'    => '_category_form'
 			),
 			array(
-				'page_title' => 'Link Pages',
-				'menu_title' => 'Link Pages',
+				'page_title' => __( 'Link Pages', $this->plugin_name ),
+				'menu_title' => __( 'Link Pages', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-linkpages',
 				'handler'    => '_linkpages',
 				'parent'     => $this->plugin_name,
 			),
 			array(
-				'page_title' => 'Add New Link Page',
-				'menu_title' => 'Add New Link Page',
+				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
+				'menu_title' => __( 'Add New Link Page', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-linkpage',
 				'handler'    => '_linkpage_form'
 			),
@@ -161,8 +161,8 @@ class Clickwhale_Admin_Settings {
 			$parent = isset( $subpage['parent'] ) ? $subpage['parent'] : '';
 			add_submenu_page(
 				$parent,
-				sprintf( __( '%1$s', $this->plugin_name ), $subpage['page_title'] ),
-				sprintf( __( '%1$s', $this->plugin_name ), $subpage['menu_title'] ),
+				$subpage['page_title'],
+				$subpage['menu_title'],
 				'edit_pages',
 				$subpage['slug'],
 				array( $this, $this->plugin_name . $subpage['handler'] . '_page_handler' )
