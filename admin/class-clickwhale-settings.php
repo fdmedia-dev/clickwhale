@@ -150,7 +150,7 @@ class Clickwhale_Admin_Settings {
 		add_menu_page(
 			__( 'Clickwhale Links', $this->plugin_name ),
 			__( 'Clickwhale', $this->plugin_name ),
-			'manage_options',
+			'edit_pages',
 			$this->plugin_name,
 			'',
 			plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
@@ -163,7 +163,7 @@ class Clickwhale_Admin_Settings {
 				$parent,
 				sprintf( __( '%1$s', $this->plugin_name ), $subpage['page_title'] ),
 				sprintf( __( '%1$s', $this->plugin_name ), $subpage['menu_title'] ),
-				'manage_options',
+				'edit_pages',
 				$subpage['slug'],
 				array( $this, $this->plugin_name . $subpage['handler'] . '_page_handler' )
 			);
