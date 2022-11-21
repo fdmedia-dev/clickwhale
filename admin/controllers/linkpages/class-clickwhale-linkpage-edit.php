@@ -123,7 +123,7 @@ class Clickwhale_Linkpage_Edit {
         <script type='text/javascript'>
             jQuery(document).ready(function () {
 
-                jQuery('input[name^="styles"]').wpColorPicker();
+                jQuery('.cw-color-control').wpColorPicker();
 
                 jQuery('#clickwhale-tabs').tabs({
                     activate: function (event, ui) {
