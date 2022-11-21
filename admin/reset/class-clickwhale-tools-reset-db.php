@@ -10,31 +10,72 @@ class ClickwhaleToolsResetDB {
 	 */
 	private $plugin_name;
 
-	public function __construct( $plugin_name ) {
+	private static $instance;
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	public function init( $plugin_name ) {
 		$this->plugin_name = $plugin_name;
 	}
 
-	public function init() {
-		add_action( 'admin_init', [ $this, 'initialize_reset_options' ] );
-		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-	}
-
-	public function initialize_reset_options() {
+	public function initialize_reset_settings_options() {
 		add_settings_section(
 			'reset_settings_section',
-			__( 'Reset BD tables', $this->plugin_name ),
-			array( $this, 'reset_options_callback' ),
-			'clickwhale_tools_reset_options'
+			__( 'Reset plugin options', $this->plugin_name ),
+			array( $this, 'reset_settings_callback' ),
+			'clickwhale_tools_reset_settings'
 		);
 
 		register_setting(
-			'clickwhale_tools_reset_options',
-			'clickwhale_tools_reset_options'
+			'clickwhale_tools_reset_db_settings',
+			'clickwhale_tools_reset_db_settings'
 		);
 	}
 
-	public function reset_options_callback() {
-		echo '<p>' . __( 'Reset all plugin tables.', $this->plugin_name ) . '</p>';
+	public function initialize_reset_db_options() {
+		add_settings_section(
+			'reset_db_settings_section',
+			__( 'Delete all plugin data', $this->plugin_name ),
+			array( $this, 'reset_db_settings_callback' ),
+			'clickwhale_tools_reset_db_settings'
+		);
+
+		register_setting(
+			'clickwhale_tools_reset_db_settings',
+			'clickwhale_tools_reset_db_settings'
+		);
+	}
+
+	public function initialize_reset_stats_options() {
+		add_settings_section(
+			'reset_stats_settings_section',
+			__( 'Reset all statistics', $this->plugin_name ),
+			array( $this, 'reset_stats_settings_callback' ),
+			'clickwhale_tools_reset_stats_settings'
+		);
+
+		register_setting(
+			'clickwhale_tools_reset_stats_settings',
+			'clickwhale_tools_reset_stats_settings'
+		);
+	}
+
+	public function reset_settings_callback() {
+		echo '<p>' . __( 'At this point you can reset plugin setting to default values.', $this->plugin_name ) . '</p>';
+	}
+
+	public function reset_db_settings_callback() {
+		echo '<p>' . __( 'At this point. you can delete all entries (links, categories and stats) from the database tables of our plugin.', $this->plugin_name ) . '</p>';
+	}
+
+	public function reset_stats_settings_callback() {
+		echo '<p>' . __( 'In case you want to clean up your stats, you can remove all previously counted clicks from the database here.', $this->plugin_name ) . '</p>';
 	}
 
 	public function admin_scripts() {
@@ -45,38 +86,53 @@ class ClickwhaleToolsResetDB {
             <script type='text/javascript'>
 
                 jQuery(document).ready(function () {
-                    jQuery('#button-reset-db').click(function (e) {
+                    jQuery('#clickwhale-tools-reset').on('click', 'button', function (e) {
                         e.preventDefault();
 
-                        var resetDbContainer = jQuery(this).closest('#clickwhale-tools-db-reset'),
-                            resetDbButton = jQuery(this),
-                            resetDbSpinner = jQuery(resetDbContainer).find('.spinner'),
-                            resetDbResult = jQuery(resetDbContainer).find('.results');
+                        var buttonContainer = jQuery(this).parent(),
+                            resetButton = jQuery(this),
+                            resetSpinner = jQuery(buttonContainer).find('.spinner'),
+                            resetResult = jQuery(buttonContainer).find('.results'),
+                            resetConfirm,
+                            resetType;
 
-                        jQuery(resetDbButton).prop('disabled', true);
-                        jQuery(resetDbSpinner).addClass("is-active");
-                        jQuery(resetDbResult).html('');
+                        jQuery(resetButton).prop('disabled', true);
+                        jQuery(resetSpinner).addClass("is-active");
+                        jQuery(resetResult).html('');
 
-                        if (window.confirm("<?php _e( 'This action will reset plugin tables and delete all existing data. Do you really want to do it?', $this->plugin_name ) ?>")) {
+                        switch (resetButton.attr('id')) {
+                            case 'button-reset-settings':
+                                resetConfirm = '<?php _e( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'settings';
+                                break;
+                            case 'button-reset-db':
+                                resetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'db';
+                                break;
+                            case 'button-reset-stats':
+                                resetConfirm = '<?php _e( 'Are you sure? This action will reset all statistic. This process cannot be undone!', $this->plugin_name ) ?>';
+                                resetType = 'stats';
+                                break;
+                        }
+
+                        if (window.confirm(resetConfirm)) {
                             jQuery.post(ajaxurl, {
                                 'security': '<?php echo esc_attr( $nonce ) ?>',
                                 'action': 'clickwhale/admin/clickwhale_reset',
+                                'reset': resetType,
                             }, function (response) {
                                 if (response.success) {
-                                    var data = response.data;
-                                    for (item in data) {
-                                        var itemClass = data[item].status ? 'success' : 'error',
-                                            itemText = data[item].text;
-                                        jQuery(resetDbResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
-                                    }
+                                    var itemClass = response.data.status ? 'success' : 'error',
+                                        itemText = response.data.text;
+                                    jQuery(resetResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
 
-                                    jQuery(resetDbButton).prop('disabled', false);
-                                    jQuery(resetDbSpinner).removeClass("is-active");
+                                    jQuery(resetButton).prop('disabled', false);
+                                    jQuery(resetSpinner).removeClass("is-active");
                                 }
                             });
                         } else {
-                            jQuery(resetDbButton).prop('disabled', false);
-                            jQuery(resetDbSpinner).removeClass("is-active");
+                            jQuery(resetButton).prop('disabled', false);
+                            jQuery(resetSpinner).removeClass("is-active");
                         }
                     });
                 });

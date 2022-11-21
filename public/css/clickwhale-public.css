@@ -2,3 +2,220 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+:root {
+    --page-bg-color: #FDD231;
+    --text-color: #1A1C1D;
+    --link-bg-color: #fee06f;
+    --link-bg-hover: #ffffff;
+    --link-color: #1a1c1d;
+    --link-hover: #397eff;
+}
+
+html, body {
+    height: 100%;
+}
+
+html > body {
+    height: 100%;
+}
+
+.virtual-page-template-default {
+    margin-top: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+    background-color: var(--page-bg-color);
+    color: var(--text-color);
+}
+
+.virtual-page-template-default * {
+    box-sizing: border-box;
+}
+
+.linkpage-public--wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    min-height: 100%;
+}
+
+.admin-bar .linkpage-public--wrap {
+    min-height: calc(100% - 32px);
+}
+
+.linkpage-public--inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 700px;
+    width: 100%;
+}
+
+.linkpage-public--logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 5px;
+}
+
+.linkpage-public--logo img {
+    position: relative;
+    min-width: 150px;
+    max-width: 200px;
+    height: auto;
+    max-height: 150px;
+}
+
+.linkpage-public--title {
+    text-align: center;
+    font-size: 3.5rem;
+    line-height: 1.2em;
+    color: var(--text-color);
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.linkpage-public--description {
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1.2em;
+    color: var(--text-color);
+    opacity: .7;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.linkpage-public--links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.linkpage-public--links > a {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--link-bg-color);
+    border-radius: 10px;
+    color: var(--link-color);
+    font-size: 1rem;
+    line-height: 1.2em;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: normal;
+    padding: 1.2rem 2rem;
+    transition: all .3s ease-in-out;
+    text-align: center;
+}
+
+.linkpage-public--links > a:hover {
+    background-color: var(--link-bg-hover);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
+    color: var(--link-hover);
+}
+
+.linkpage-public--social {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    margin: 40px 0 0 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.linkpage-public--social > li > a {
+    display: block;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.linkpage-public--social > li > a svg {
+    display: block;
+    width: 36px;
+    height: 36px;
+}
+
+.linkpage-public--social > li > a:hover {
+    opacity: .7;
+}
+
+.linkpage-public--copyright {
+    display: flex;
+    align-items: inherit;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.linkpage-public--copyright img,
+.linkpage-public--copyright svg {
+    display: block;
+    width: 120px;
+    height: auto;
+    margin-top: -15px;
+}
+
+.linkpage-public--copyright:hover {
+    opacity: .7;
+}
+
+@media (min-width: 1300px) and (max-width: 1600px) {
+    .linkpage-public--inner {
+        max-width: 800px;
+    }
+
+    .linkpage-public--links > a {
+        padding: 1.2em 3em;
+        font-size: 1em;
+    }
+}
+
+@media (min-width: 1600px) {
+    .linkpage-public--inner {
+        max-width: 900px;
+    }
+
+    .linkpage-public--logo {
+        margin-bottom: 3rem;
+    }
+
+    .linkpage-public--logo img {
+        position: relative;
+        max-width: 275px;
+        max-height: 275px;
+    }
+
+    .linkpage-public--title {
+        font-size: 4rem;
+        line-height: 1.2em;
+    }
+
+    .linkpage-public--description {
+        font-size: 2rem;
+        line-height: 1.2em;
+        margin-bottom: 5rem;
+    }
+
+    .linkpage-public--links > a {
+        padding: 1.2em 3em;
+        font-size: 1.2em;
+    }
+}

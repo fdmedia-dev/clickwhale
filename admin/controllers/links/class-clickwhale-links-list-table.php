@@ -106,7 +106,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
-		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], $item['title'] );
+		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], wp_unslash( $item['title'] ) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
 			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>', sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset', 'clickwhale' ) ),
@@ -127,9 +127,16 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_slug( $item ) {
-		$options = get_option( 'clickwhale_other_options' );
+		$options_general = get_option( 'clickwhale_general_options' );
+		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
+			$slug = $options_general['slug'];
+		} else {
+			$settings = Clickwhale_Admin_Settings::getInstance();
+			$defaults = $settings->default_options();
+			$slug     = $defaults['general']['options']['slug'];
+		}
 
-		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $options['slug'] . '/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $slug . '/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
 	/**
@@ -164,7 +171,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 					$v      = intval( $v );
 					$result = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories WHERE id={$v}" );
 					if ( ! empty( $result ) ) {
-						$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&category=' . $result[0]->id . '">' . $result[0]->title . '</a>';
+						$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&category=' . $result[0]->id . '">' . wp_unslash( $result[0]->title ) . '</a>';
 						if ( $v != $lastElement ) {
 							$current_categories .= ', ';
 						}
@@ -186,7 +193,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	function column_clicks( $item ) {
 		global $wpdb;
 
-		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id=%d", intval( $item['id'] ) ) );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE link_id=%d AND event_type='click'", intval( $item['id'] ) ) );
 	}
 
 
@@ -282,7 +289,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 				foreach ( $_REQUEST['id'] as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(
-							"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+							"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
 							intval( $id )
 						)
 					);
@@ -290,7 +297,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			} else {
 				$wpdb->query(
 					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_clicks WHERE link_id IN(%d)",
+						"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
 						intval( $_REQUEST['id'] )
 					)
 				);

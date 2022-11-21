@@ -1,19 +1,26 @@
 <?php
 
 class Clickwhale_Link_Edit {
-	function __construct() {
 
+	private static $instance;
+
+	public function init() {
+	}
+
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
 	 * Default values for new link
-	 * Could be hooked by filter "link_defaults"
+	 * Could be hooked by filter "clickwhale_link_defaults"
 	 * @return array
 	 */
 	public function get_defaults() {
-		$fields         = [];
-		$global_options = get_option( 'clickwhale_general_options' );
-
 		return array(
 			'id'          => 0,
 			'created_at'  => '',
@@ -21,7 +28,7 @@ class Clickwhale_Link_Edit {
 			'title'       => '',
 			'url'         => '',
 			'slug'        => '',
-			'redirection' => $global_options['redirect_type'],
+			'redirection' => $this->get_item_option( 'general', 'redirect_type' ),
 			'nofollow'    => '',
 			'sponsored'   => '',
 			'description' => '',
@@ -33,7 +40,7 @@ class Clickwhale_Link_Edit {
 		global $wpdb;
 
 		$notice   = '';
-		$defaults = apply_filters( 'link_defaults', $this->get_defaults() );
+		$defaults = apply_filters( 'clickwhale_link_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
 			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
@@ -46,6 +53,19 @@ class Clickwhale_Link_Edit {
 		}
 
 		return $item;
+	}
+
+	public static function get_item_option( $group, $name ) {
+		$options = get_option( 'clickwhale_' . $group . '_options' );
+		if ( isset( $options[ $name ] ) && $options[ $name ] !== '' ) {
+			$option = $options[ $name ];
+		} else {
+			$settings = Clickwhale_Admin_Settings::getInstance();
+			$defaults = $settings->default_options();
+			$option   = $defaults[ $group ]['options'][ $name ];
+		}
+
+		return $option;
 	}
 
 	public function clickwhale_validate_link( $item ) {
@@ -115,12 +135,14 @@ class Clickwhale_Link_Edit {
 		return implode( ',', $categories );
 	}
 
-	function save_update_link() {
+	public function save_update_link() {
 		global $wpdb;
 		$links_table        = $wpdb->prefix . 'clickwhale_links';
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
 		$item               = $this->clear_link_slug( $item );
 		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
+		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
+		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
 
 		$result = $wpdb->update(
 			$links_table,
@@ -131,7 +153,7 @@ class Clickwhale_Link_Edit {
 		if ( false === $result || $result < 1 ) {
 			$wpdb->insert(
 				$links_table,
-				$item,
+				$item
 			);
 			$item['id'] = $wpdb->insert_id;
 			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );
@@ -141,9 +163,16 @@ class Clickwhale_Link_Edit {
 			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
 		}
 
-
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
+	}
+
+	public function set_edit_link_page_title( $admin_title, $title ) {
+		return 'Edit Link' . $admin_title;
+	}
+
+	public function set_add_link_page_title( $admin_title, $title ) {
+		return 'Add Link' . $admin_title;
 	}
 }

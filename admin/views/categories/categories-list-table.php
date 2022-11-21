@@ -3,7 +3,7 @@
 global $wpdb;
 $categories_table = $wpdb->prefix . 'clickwhale_categories';
 $total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM $categories_table" );
-$limit            = apply_filters( 'clickwhale_categories_limit', 10 );
+$limit            = ClickwhaleCategoriesHelper::get_limit();
 
 $table = new Clickwhale_Categories_List_Table();
 $table->prepare_items();

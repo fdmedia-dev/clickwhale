@@ -153,22 +153,33 @@ class Clickwhale {
 		global $Clickwhale_Admin; // for add_/remove_action - https://www.forumming.com/question/354/remove-action-from-a-plugin-class-forced-to-use-global-instance
 
 		$Clickwhale_Admin          = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings();
 		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Link_Edit      = new Clickwhale_Link_Edit();
+		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
+		$Clickwhale_Category_Edit  = Clickwhale_Category_Edit::getInstance();
+		$Clickwhale_Linkpage_Edit  = Clickwhale_Linkpage_Edit::getInstance();
+		$Clickwhale_Tools_Reset    = ClickwhaleToolsResetDB::getInstance();
+
+		$Clickwhale_Admin_Settings->init( $this->get_plugin_name(), $this->get_version() );
 
 		// ACTIONS
-		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'setup_plugin_options_menu' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'initialize_settings_options' );
+		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'add_plugin_menu' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback', 10 ); // banner in admin part
-		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback', 10 ); // button to pro version
+		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
+		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback' ); // banner in admin part
+		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
+		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'clickwhale_admin_pro_message_callback' ); // button to pro version
 
 		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
+
+		$this->loader->add_action( 'admin_post_nopriv_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
+		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
 
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax, 'migration_notice_hide' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax, 'migration_deactive' );
@@ -176,11 +187,40 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $Clickwhale_Ajax, 'save_migration_option' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $Clickwhale_Ajax, 'clickwhale_reset' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_linkpage_slug', $Clickwhale_Ajax, 'check_linkpage_slug' );
 
-		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
+		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
+		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
 
 		// FILTERS
 		$this->loader->add_filter( 'clickwhale_categories_limit', $Clickwhale_Admin, 'clickwhale_categories_limit_callback' );
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-link' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_edit_link_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_add_link_page_title', 10, 2 );
+			}
+		}
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-category' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_edit_category_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_add_category_page_title', 10, 2 );
+			}
+		}
+
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+			if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_edit_linkpage_page_title', 10, 2 );
+			} else {
+				$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_add_linkpage_page_title', 10, 2 );
+			}
+		}
+
 	}
 
 	/**
@@ -196,8 +236,8 @@ class Clickwhale {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_scripts' );
-
 		$this->loader->add_action( 'init', $Clickwhale_Public, 'do_redirect_handler' );
+
 		$this->loader->add_filter( 'clickwhale_url_params', $Clickwhale_Public, 'clickwhale_url_params_callback', 10, 2 );
 	}
 

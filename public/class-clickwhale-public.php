@@ -53,6 +53,9 @@ class Clickwhale_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 		$this->load_dependencies();
+
+		$pages = new Clickwhale_Linkpages();
+		$pages->init();
 	}
 
 	/**
@@ -69,8 +72,12 @@ class Clickwhale_Public {
 	private function load_dependencies() {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-visitor-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-click-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-view-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpages.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpage.php';
 
 	}
 
@@ -125,12 +132,21 @@ class Clickwhale_Public {
 	}
 
 	public function do_redirect_handler() {
-
-		$user = new Clickwhale_WP_User( $this->plugin_name, $this->version );
-
 		global $wpdb;
-		$options_other   = get_option( 'clickwhale_other_options' );
-		$link_slug = $options_other['slug'] . '/';
+
+		$options_general = get_option( 'clickwhale_general_options' );
+		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
+			$link_slug = $options_general['slug'] . '/';
+		} else {
+			$settings  = Clickwhale_Admin_Settings::getInstance();
+			$defaults  = $settings->default_options();
+			$link_slug = $defaults['general']['options']['slug'] . '/';
+		}
+
+		// if PHP Warning: Undefined array key "HTTP_HOST"
+		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			$_SERVER['HTTP_HOST'] = 'localhost';
+		}
 
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
@@ -145,12 +161,10 @@ class Clickwhale_Public {
 
 			$id = intval( $results[0]->id );
 
-			if ( ! $user->disallow_track() ) {
-				$track = new Clickwhale_Click_Track( $id );
-				$track->track();
-			}
+			// Track click on link
+			new Clickwhale_Click_Track( $id );
 
-			// Set header
+			// Set headers
 			$nofollow  = '';
 			$sponsored = '';
 			$sep       = '';
@@ -174,5 +188,4 @@ class Clickwhale_Public {
 		}
 
 	}
-
 }

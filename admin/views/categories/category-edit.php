@@ -2,7 +2,7 @@
 global $wpdb;
 $table_name  = $wpdb->prefix . 'clickwhale_categories';
 $total_items = $wpdb->get_var( "SELECT COUNT(id) FROM $table_name" );
-$limit       = apply_filters( 'clickwhale_categories_limit', 10 );
+$limit       = ClickwhaleCategoriesHelper::get_limit();
 
 $message = '';
 $notice  = '';
@@ -68,7 +68,14 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-		<?php _e( 'Edit Category', $this->plugin_name ) ?>
+	    <?php
+	    if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
+		    _e( 'Edit Category', $this->plugin_name );
+	    } else {
+		    _e( 'Add Category', $this->plugin_name );
+	    }
+	    ?>
+
 		<?php if ( $total_items < $limit ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-category' ); ?>"
                class="page-title-action"><?php _e( 'Add new', 'clickwhale' ) ?></a>
@@ -92,10 +99,10 @@ do_action( 'clickwhale_admin_banner' );
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
                 <div id="post-body-content">
-                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                    <table style="width: 100%;" class="form-table">
                         <tbody>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -103,7 +110,7 @@ do_action( 'clickwhale_admin_banner' );
                                        name="title"
                                        type="text"
                                        style="width: 95%"
-                                       value="<?php echo esc_attr( $item['title'] ) ?>"
+                                       value="<?php echo esc_attr( wp_unslash( $item['title']) ) ?>"
                                        size="50"
                                        class="code"
                                        placeholder="<?php _e( 'Category Title', $this->plugin_name ) ?>"
@@ -112,7 +119,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
 
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -127,7 +134,7 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
                         <tr class="form-field">
-                            <th valign="top" scope="row">
+                            <th scope="row">
                                 <label for="link_description"><?php _e( 'Description', $this->plugin_name ) ?></label>
                             </th>
                             <td>
@@ -137,7 +144,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="code"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( $item['description'] ) ?></textarea>
+                                    ><?php echo esc_html( wp_unslash( $item['description']) ) ?></textarea>
                             </td>
                         </tr>
                         </tbody>

@@ -41,6 +41,11 @@ class Clickwhale_Admin {
 	private $version;
 
 	/**
+	 * @var Clickwhale_Admin
+	 */
+	private static $instance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
@@ -55,6 +60,17 @@ class Clickwhale_Admin {
 
 		$this->load_dependencies();
 		$this->migration();
+	}
+
+	/**
+	 * @return Clickwhale_Admin
+	 */
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -73,18 +89,28 @@ class Clickwhale_Admin {
 	 */
 	private function load_dependencies() {
 
+		// Helpers
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-links-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-categories-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-linkpages-helper.php';
+
+		// Settings
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-ajax.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-migration.php';
 
+		// Controllers
 		if ( ! class_exists( 'WP_List_Table' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-links-list-table.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-link-edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-categories-list-table.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/settings/class-clickwhale-category-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-links-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-link-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-categories-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpage-edit.php';
 
 	}
 
@@ -113,7 +139,7 @@ class Clickwhale_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
@@ -135,6 +161,12 @@ class Clickwhale_Admin {
 		 * class.
 		 */
 
+		wp_enqueue_script( 'jquery-ui-droppable' );
+		wp_enqueue_script( 'jquery-ui-draggable' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( "jquery-ui-tabs" );
+		wp_enqueue_media();
+		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
 			'siteurl' => home_url(),
@@ -146,7 +178,7 @@ class Clickwhale_Admin {
 	}
 
 	public function clickwhale_admin_banner_callback() {
-		$link_helpdesk = 'https://clickwhale.pro/docs/';
+		$link_helpdesk = 'https://clickwhale.pro/contact/';
 		?>
 
         <div class="clickwhale-banner">
@@ -155,16 +187,16 @@ class Clickwhale_Admin {
                         alt="<?php echo $this->plugin_name ?>"></div>
             <div class="clickwhale-banner--links">
 				<?php if ( $link_helpdesk ) { ?>
-                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--link"
+                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
                        target="_blank"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
 				<?php } ?>
-				<?php do_action( 'clickwhale_admin_banner_button_pro' ) ?>
+				<?php //do_action( 'clickwhale_admin_banner_button_pro' ) ?>
             </div>
         </div>
 		<?php
 	}
 
-	public function clickwhale_admin_banner_button_pro_callback( ) {
+	public function clickwhale_admin_banner_button_pro_callback() {
 		$link_pro = 'https://clickwhale.pro';
 		?>
         <a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
@@ -173,8 +205,16 @@ class Clickwhale_Admin {
 		<?php
 	}
 
+	public function clickwhale_admin_pro_message_callback() {
+		?>
+        <div class="clickwhale-linkpage--message">
+			<?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
+        </div>
+		<?php
+	}
+
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale' ) {
+		if ( isset( $_GET['page'] ) && ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) ) {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {

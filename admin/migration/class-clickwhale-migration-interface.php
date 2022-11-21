@@ -147,7 +147,6 @@ class Clickwhale_Migration_Interface {
 		return sprintf( __( '<strong>Import failed!</strong> Category "%1$s" already exists', 'clickwhale' ), $item );
 	}
 
-
 	public function run_links_migration( $data ) {
 		global $wpdb;
 

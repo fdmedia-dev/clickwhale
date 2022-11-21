@@ -30,6 +30,8 @@ class Clickwhale_Ajax {
 	 */
 	private $version;
 
+	private static $instance;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -44,6 +46,17 @@ class Clickwhale_Ajax {
 		$this->version     = $version;
 		$this->migration   = new Clickwhale_Migration();
 
+	}
+
+	/**
+	 * @return Clickwhale_Ajax
+	 */
+	public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
 	public function migration_notice_hide() {
@@ -166,26 +179,64 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 		$result = [];
-		$text   = __( 'Table has been reset', $this->plugin_name );
 
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_categories" ),
-			'text'   => $text . ': ' . 'clickwhale_categories',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_clicks" ),
-			'text'   => $text . ': ' . 'clickwhale_clicks',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links" ),
-			'text'   => $text . ': ' . 'clickwhale_links',
-		);
-		$result[] = array(
-			'status' => $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" ),
-			'text'   => $text . ': ' . 'clickwhale_links_meta',
-		);
+		if ( ! isset( $_POST['reset'] ) ) {
+			wp_send_json_error();
+			wp_die();
+		}
+
+		switch ( $_POST['reset'] ) {
+			case 'stats':
+				//result text
+				$text = __( 'All statistic has been reset', $this->plugin_name );
+
+				//drop tables
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_track, {$wpdb->prefix}clickwhale_visitors" );
+
+				break;
+			case 'db':
+				//result text
+				$text = __( 'All plugin tables has been reset', $this->plugin_name );
+
+				//drop tables
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_meta, {$wpdb->prefix}clickwhale_track, {$wpdb->prefix}clickwhale_visitors" );
+
+				break;
+			case 'settings':
+				//result text
+				$text = __( 'All plugin settings has been restored', $this->plugin_name );
+
+				// delete all options
+				delete_option( 'clickwhale_general_options' );
+				delete_option( 'clickwhale_tracking_options' );
+				delete_option( 'clickwhale_other_options' );
+
+				// init settings class and set defaults
+				$settings = Clickwhale_Admin_Settings::getInstance();
+				$settings->add_default_options();
+
+				$result['status'] = true;
+
+				break;
+		}
+
+		$result['text'] = $text;
 
 		activate_clickwhale();
+
+		wp_send_json_success( $result );
+
+		wp_die();
+	}
+
+	public function check_linkpage_slug() {
+		check_ajax_referer( 'linkpage_slug', 'security' );
+
+		if ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) {
+			$result = ClickwhaleLinkpagesHelper::slug_exists( sanitize_text_field( $_POST['slug'] ) );
+		} else {
+			$result = 'error';
+		}
 
 		wp_send_json_success( $result );
 
