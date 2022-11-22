@@ -97,7 +97,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="slug"
+                                <input id="cw-slug"
                                        name="slug"
                                        type="text"
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
@@ -105,10 +105,10 @@ do_action( 'clickwhale_admin_banner' );
                                        class="regular-text"
                                        placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                        required>
-                                <p id="slug__text">
+                                <p id="cw-slug--description"></p>
+                                <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?>
-                                    <span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
                         </tr>
