@@ -140,7 +140,7 @@
     }
 }
 
-.linkpage-logo-upload img{
+.linkpage-logo-upload img {
     max-width: 150px;
     display: block;
     height: auto;
@@ -322,7 +322,12 @@
     color: #41464b;
 }
 
+#form_edit_link .error,
 #form_edit_linkpage .error {
     border-color: #dc3232;
     background: #ffebee;
+}
+
+#cw-slug--description {
+    color: #dc3232;
 }
