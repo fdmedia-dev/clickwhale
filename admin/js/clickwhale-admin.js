@@ -33,16 +33,14 @@
         var urlSearchParams = new URLSearchParams(window.location.search),
             params = Object.fromEntries(urlSearchParams.entries());
         if (params !== 'undefined') {
+            setCurrentTopLevelPage();
             if (params['page'] === 'clickwhale-edit-category') {
-                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale-categories');
             }
             if (params['page'] === 'clickwhale-edit-link') {
-                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale');
             }
             if (params['page'] === 'clickwhale-edit-linkpage') {
-                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale-linkpages');
             }
         }
@@ -414,7 +412,7 @@
         // Remove accent characters/diacritics from the string.
         function removeAccents(str) {
             diacriticsMap = getDiacriticsRemovalMap();
-            return str.replace(/[^\u0000-\u007E]/g, function (a) {
+            return str.replace(/[^\u007E]/g, function (a) {
                 return diacriticsMap[a] || a;
             });
         }
