@@ -131,7 +131,7 @@
                 removeHTMLEntities(
                     removeAccents(
                         // Strip any HTML tags.
-                        title.replace(/<[^>]+>/ig, '')
+                        title.replace(/(<([^>]+)>)/gi, '')
                     ).toLowerCase()
                         // Replace &nbsp;, &ndash;, and &mdash with a dash (-).
                         .replace(/&(?:(?:nbsp)|(?:ndash)|(?:mdash));/g, '-')
