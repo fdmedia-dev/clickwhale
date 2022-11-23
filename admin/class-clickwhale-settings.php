@@ -401,7 +401,7 @@ class Clickwhale_Admin_Settings {
 		);
 		add_settings_field(
 			'linkpage_links_target',
-			__( 'Linkpage Links Target', $this->plugin_name ),
+			__( 'Link Page Links Target', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_linkpages_options',
 			'linkpages_settings_section',
