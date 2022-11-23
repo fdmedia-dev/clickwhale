@@ -382,7 +382,7 @@ class Clickwhale_Admin_Settings {
 				'id'      => 'disable_tracking',
 				'name'    => 'clickwhale_tracking_options[disable_tracking]',
 				'value'   => isset( $tracking_options['disable_tracking'] ) ? 1 : 0,
-				'label'   => __( 'Check to disable tracking', $this->plugin_name ),
+				'label'   => __( 'Check to disable tracking of views and clicks', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
