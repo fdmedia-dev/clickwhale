@@ -178,13 +178,17 @@ class Clickwhale_Admin {
 	}
 
 	public function clickwhale_admin_banner_callback() {
-		$link_helpdesk = 'https://clickwhale.pro/contact/';
+		$link_helpdesk = 'https://clickwhale.pro/contact/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=help-link';
 		?>
 
         <div class="clickwhale-banner">
-            <div class="clickwhale-banner--logo"><img
-                        src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
-                        alt="<?php echo $this->plugin_name ?>"></div>
+            <div class="clickwhale-banner--logo">
+                <a href="https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link"
+                   target="_blank">
+                    <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
+                         alt="<?php echo $this->plugin_name ?>">
+                </a>
+            </div>
             <div class="clickwhale-banner--links">
 				<?php if ( $link_helpdesk ) { ?>
                     <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
