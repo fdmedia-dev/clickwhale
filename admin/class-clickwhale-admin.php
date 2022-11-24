@@ -178,13 +178,15 @@ class Clickwhale_Admin {
 	}
 
 	public function clickwhale_admin_banner_callback() {
+		$link_logo     = 'https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
 		$link_helpdesk = 'https://clickwhale.pro/contact/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=help-link';
 		?>
 
         <div class="clickwhale-banner">
             <div class="clickwhale-banner--logo">
-                <a href="https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link"
-                   target="_blank">
+                <a href="<?php echo $link_logo ?>"
+                   target="_blank"
+                   rel="noopener">
                     <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
                          alt="<?php echo $this->plugin_name ?>">
                 </a>
@@ -192,7 +194,7 @@ class Clickwhale_Admin {
             <div class="clickwhale-banner--links">
 				<?php if ( $link_helpdesk ) { ?>
                     <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
-                       target="_blank"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
+                       target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
 				<?php } ?>
 				<?php //do_action( 'clickwhale_admin_banner_button_pro' ) ?>
             </div>
