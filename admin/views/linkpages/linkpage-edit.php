@@ -218,7 +218,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // PAGE BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[bg_color]"><?php _e( 'Site background', $this->plugin_name ); ?></label>
+                                <label for="styles[bg_color]"><?php _e( 'Site Background', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[bg_color]"
@@ -231,7 +231,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[text_color]"><?php _e( 'Page text color', $this->plugin_name ); ?></label>
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[text_color]"
@@ -253,7 +253,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color]"><?php _e( 'Background color', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
@@ -266,7 +266,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK BACKGROUND:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"
@@ -279,7 +279,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color]"><?php _e( 'Text color', $this->plugin_name ); ?></label>
+                                <label for="styles[link_color]"><?php _e( 'Text Color', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color]"
@@ -293,7 +293,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK TEXT COLOR:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color_hover]"><?php _e( 'Text color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color_hover]"
@@ -320,7 +320,7 @@ do_action( 'clickwhale_admin_banner' );
                    class="button-primary"
                    name="submit">
 
-            <input type="button" value="<?php _e( 'Reset colors', $this->plugin_name ) ?>"
+            <input type="button" value="<?php _e( 'Reset Colors', $this->plugin_name ) ?>"
                    id="reset-colors"
                    class="button"
                    name="reset-colors"
