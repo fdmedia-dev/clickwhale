@@ -80,8 +80,7 @@ class Clickwhale_Admin_Settings {
 				'options' => array(
 					'tracking_duration'                  => 30,
 					'disable_tracking'                   => 0,
-					'exclude_user_link_click_by_role'    => [ 'administrator' ],
-					'exclude_user_linkpage_view_by_role' => [ 'administrator' ]
+					'exclude_user_by_role'    => [ 'administrator' ]
 				)
 			),
 			'linkpages' => array(
@@ -386,33 +385,18 @@ class Clickwhale_Admin_Settings {
 			)
 		);
 		add_settings_field(
-			'exclude_user_link_click_by_role',
-			__( 'Exclude click tracking on links from roles', $this->plugin_name ),
+			'exclude_user_by_role',
+			__( 'Exclude User Roles', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
 			array(
 				'control'     => 'checkboxes',
-				'id'          => 'exclude_user_link_click_by_role',
-				'name'        => 'clickwhale_tracking_options[exclude_user_link_click_by_role][]',
-				'value'       => isset( $tracking_options['exclude_user_link_click_by_role'] ) ? $tracking_options['exclude_user_link_click_by_role'] : 0,
+				'id'          => 'exclude_user_by_role',
+				'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
+				'value'       => isset( $tracking_options['exclude_user_by_role'] ) ? $tracking_options['exclude_user_by_role'] : 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
-				'description' => __( 'Do not track clicks on links for users of specified roles', $this->plugin_name ),
-			)
-		);
-		add_settings_field(
-			'exclude_user_linkpage_view_by_role',
-			__( 'Exclude view tracking on linkpage from roles', $this->plugin_name ),
-			array( $this, 'render_controls' ),
-			'clickwhale_tracking_options',
-			'tracking_settings_section',
-			array(
-				'control'     => 'checkboxes',
-				'id'          => 'exclude_user_linkpage_view_by_role',
-				'name'        => 'clickwhale_tracking_options[exclude_user_linkpage_view_by_role][]',
-				'value'       => isset( $tracking_options['exclude_user_linkpage_view_by_role'] ) ? $tracking_options['exclude_user_linkpage_view_by_role'] : 0,
-				'options'     => Clickwhale_WP_User::get_all_roles(),
-				'description' => __( 'Do not track linkpage views for users of specified roles', $this->plugin_name ),
+				'description' => __( 'Check the user roles that should be excluded from tracking.', $this->plugin_name ),
 			)
 		);
 		add_settings_field(
