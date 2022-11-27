@@ -77,7 +77,7 @@ class Clickwhale_Activator {
 		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_linkpages (
 			id int(11) NOT NULL AUTO_INCREMENT,
 			title tinytext NOT NULL,
-			description tinytext DEFAULT '' NOT NULL,
+			description mediumtext DEFAULT '' NOT NULL,
 			slug tinytext NOT NULL,
 			logo int(11) NOT NULL,
 			links longtext default NULL,
