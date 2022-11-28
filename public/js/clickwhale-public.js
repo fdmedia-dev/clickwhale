@@ -30,7 +30,7 @@
      */
 
     $(function() {
-        if ($('.linkpage-public--wrap').length) {
+        if ($('.linkpage-public--wrap')) {
             $('body').addClass('cw-virtual-page-template');
         }
     });
