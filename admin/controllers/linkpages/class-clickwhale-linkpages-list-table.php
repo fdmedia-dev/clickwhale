@@ -180,8 +180,8 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 		// Change query for author filter results
 		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
-			$author      = sanitize_text_field( $_GET['author'] );
-			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE author = '{$author}' LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+			$author      = sanitize_text_field( intval( $_GET['author'] ) );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE author = %d LIMIT %d OFFSET %d", $author, $per_page, $paged ), ARRAY_A );
 		}
 
 		$this->set_pagination_args( array(
