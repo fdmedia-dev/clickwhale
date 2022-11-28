@@ -23,6 +23,7 @@ class PrettyLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'nofollow'    => $item->nofollow,
 					'sponsored'   => $item->sponsored,
 					'categories'  => ! is_null( $category_id ) ? $category_id : '',
+					'author'   => $this->process_author(),
 					'created_at'  => $item->created_at,
 					'updated_at'  => $item->updated_at,
 				);

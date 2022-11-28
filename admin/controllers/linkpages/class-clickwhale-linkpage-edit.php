@@ -83,6 +83,7 @@ class Clickwhale_Linkpage_Edit {
 		$item            = array_intersect_key( $_POST, $defaults );
 		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
 		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
+		$item['author']  = get_current_user_id();
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 

@@ -143,6 +143,7 @@ class Clickwhale_Link_Edit {
 		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
 		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
+		$item['author']  = get_current_user_id();
 
 		$result = $wpdb->update(
 			$links_table,

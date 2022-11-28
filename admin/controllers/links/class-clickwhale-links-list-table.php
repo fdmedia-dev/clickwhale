@@ -57,7 +57,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links
+				"SELECT id,title,url,slug,description,categories,author from {$wpdb->prefix}clickwhale_links
                      WHERE title Like '%{$search}%' 
                      OR url Like '%{$search}%' 
                      OR slug Like '%{$search}%' 
@@ -66,7 +66,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			);
 		} else {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links",
+				"SELECT id,title,url,slug,description,categories,author from {$wpdb->prefix}clickwhale_links",
 				ARRAY_A
 			);
 		}
@@ -196,6 +196,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE link_id=%d AND event_type='click'", intval( $item['id'] ) ) );
 	}
 
+	function column_author( $item ) {
+		$user_info = get_userdata( $item['author'] );
+
+		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
+	}
+
 
 	/**
 	 * [REQUIRED] this is how checkbox column renders
@@ -226,6 +232,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'url'        => __( 'Target URL', 'clickwhale' ),
 			'categories' => __( 'Categories', 'clickwhale' ),
 			'clicks'     => __( 'Clicks', 'clickwhale' ),
+			'author'     => __( 'Author', 'clickwhale' )
 		);
 	}
 
@@ -356,6 +363,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		if ( isset( $_GET['category'] ) && $_GET['category'] > 0 ) {
 			$category    = sanitize_text_field( $_GET['category'] );
 			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE categories = '{$category}' OR categories LIKE '{$category},%' OR categories LIKE '%,{$category},%' OR categories LIKE '%,{$category}' ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+		}
+
+		// Change query for author filter results
+		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
+			$author      = sanitize_text_field( $_GET['author'] );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE author = '{$author}' LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 		}
 
 		// [REQUIRED] configure pagination

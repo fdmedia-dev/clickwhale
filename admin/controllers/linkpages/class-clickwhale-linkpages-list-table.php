@@ -37,7 +37,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 * @return string
 	 */
 	function column_title( $item ) {
-		$title   = sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], wp_unslash( $item['title']) );
+		$title   = sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], wp_unslash( $item['title'] ) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
 			'view'   => '<a href="' . get_bloginfo( 'url' ) . '/' . $item['slug'] . '" target="_blank">View</a>',
@@ -72,6 +72,12 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE linkpage_id=%d AND event_type='view'", intval( $item['id'] ) ) );
 	}
 
+	function column_author( $item ) {
+		$user_info = get_userdata( $item['author'] );
+
+		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
+	}
+
 	/**
 	 * @param $item - row (key, value array)
 	 *
@@ -101,11 +107,12 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 */
 	function get_columns() {
 		return array(
-			'cb'    => '<input type="checkbox" />',
-			'title' => __( 'Title', 'clickwhale' ),
-			'slug'  => __( 'Link', 'clickwhale' ),
-			'links' => __( 'Links', 'clickwhale' ),
-			'views' => __( 'Views', 'clickwhale' ),
+			'cb'     => '<input type="checkbox" />',
+			'title'  => __( 'Title', 'clickwhale' ),
+			'slug'   => __( 'Link', 'clickwhale' ),
+			'links'  => __( 'Links', 'clickwhale' ),
+			'views'  => __( 'Views', 'clickwhale' ),
+			'author' => __( 'Author', 'clickwhale' ),
 		);
 	}
 
@@ -170,6 +177,12 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 			$order = $_REQUEST['order'] === 'asc' ? 'asc' : 'desc';
 		}
 		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+
+		// Change query for author filter results
+		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
+			$author      = sanitize_text_field( $_GET['author'] );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE author = '{$author}' LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
+		}
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
