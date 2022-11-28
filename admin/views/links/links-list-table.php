@@ -17,7 +17,7 @@ do_action( 'clickwhale_admin_banner' );
     <h1 class="wp-heading-inline">
 		<?php echo esc_html( get_admin_page_title() ); ?>
         <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"
-           class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
+           class="page-title-action"><?php _e( 'Add New', $this->plugin_name ) ?></a>
     </h1>
 
 	<?php if ( ! empty( $message ) ) { ?>

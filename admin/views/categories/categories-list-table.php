@@ -22,7 +22,7 @@ do_action( 'clickwhale_admin_banner' );
 		<?php echo esc_html( get_admin_page_title() ); ?>
 		<?php if ( $total_items < $limit ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-category' ); ?>"
-               class="page-title-action"><?php _e( 'Add new', 'clickwhale' ) ?></a>
+               class="page-title-action"><?php _e( 'Add New', 'clickwhale' ) ?></a>
 		<?php } ?>
     </h1>
 
