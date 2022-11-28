@@ -29,10 +29,4 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(function() {
-        if ($('.linkpage-public--wrap').lenght) {
-            $('body').addClass('cw-virtual-page-template');
-        }
-    });
-
 })(jQuery);
