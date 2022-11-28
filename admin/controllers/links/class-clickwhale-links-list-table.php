@@ -80,7 +80,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return HTML
 	 */
-	function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
 	}
 
@@ -101,7 +101,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 		// links going to /admin.php?page=[your_plugin_page][&other_params]
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
@@ -126,7 +126,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_slug( $item ) {
+	public function column_slug( $item ) {
 		$options_general = get_option( 'clickwhale_general_options' );
 		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
 			$slug = $options_general['slug'];
@@ -146,7 +146,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return HTML
 	 */
-	function column_url( $item ) {
+	public function column_url( $item ) {
 		return $item['url'];
 	}
 
@@ -157,7 +157,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_categories( $item ) {
+	public function column_categories( $item ) {
 		$current_categories = '';
 		if ( $item['categories'] ) {
 
@@ -190,13 +190,13 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_clicks( $item ) {
+	public function column_clicks( $item ) {
 		global $wpdb;
 
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE link_id=%d AND event_type='click'", intval( $item['id'] ) ) );
 	}
 
-	function column_author( $item ) {
+	public function column_author( $item ) {
 		$user_info = get_userdata( $item['author'] );
 
 		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
@@ -210,7 +210,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']

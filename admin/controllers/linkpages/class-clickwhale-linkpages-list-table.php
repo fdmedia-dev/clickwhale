@@ -36,7 +36,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 		$title   = sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], wp_unslash( $item['title'] ) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'], __( 'Edit', 'clickwhale' ) ),
@@ -57,7 +57,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_slug( $item ) {
+	public function column_slug( $item ) {
 		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
@@ -66,13 +66,13 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_views( $item ) {
+	public function column_views( $item ) {
 		global $wpdb;
 
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE linkpage_id=%d AND event_type='view'", intval( $item['id'] ) ) );
 	}
 
-	function column_author( $item ) {
+	public function column_author( $item ) {
 		$user_info = get_userdata( $item['author'] );
 
 		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
@@ -83,7 +83,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_links( $item ) {
+	public function column_links( $item ) {
 		$links = maybe_unserialize( $item['links'] );
 		$count = $links ? count( $links ) : 0;
 
@@ -95,7 +95,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']
@@ -105,7 +105,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_columns() {
+	public function get_columns() {
 		return array(
 			'cb'     => '<input type="checkbox" />',
 			'title'  => __( 'Title', 'clickwhale' ),
