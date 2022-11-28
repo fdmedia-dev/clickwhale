@@ -380,7 +380,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e( 'No links found.', 'clickwhale' );
+		_e( 'No Links Found.', 'clickwhale' );
 	}
 
 	public function display_tablenav( $which ) {

@@ -168,21 +168,16 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		}
 		$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages ORDER BY $orderby $order LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 
-		// Change query for author filter results
 		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
 			$author      = sanitize_text_field( intval( $_GET['author'] ) );
 			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE author = %d LIMIT %d OFFSET %d", $author, $per_page, $paged ), ARRAY_A );
 		}
 
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,
 			'per_page'    => $per_page,
+			'total_items' => $total_items,
 			'total_pages' => ceil( $total_items / $per_page )
 		) );
-	}
-
-	public function no_items() {
-		_e( 'No Link Pages Found.', 'clickwhale' );
 	}
 
 	public function display_tablenav( $which ) {
@@ -197,5 +192,9 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
             <br class="clear"/>
         </div>
 		<?php
+	}
+
+	public function no_items() {
+		_e( 'No Link Pages Found.', 'clickwhale' );
 	}
 }
