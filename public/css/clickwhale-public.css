@@ -15,21 +15,9 @@ html, body {
     height: 100%;
 }
 
-html > body {
+html > body,
+body > .linkpage-public--wrap {
     height: 100%;
-}
-
-.cw-virtual-page-template {
-    margin-top: 0;
-    padding: 0;
-    border: none;
-    box-sizing: border-box;
-    background-color: var(--page-bg-color);
-    color: var(--text-color);
-}
-
-.cw-virtual-page-template * {
-    box-sizing: border-box;
 }
 
 .linkpage-public--wrap {
@@ -39,6 +27,15 @@ html > body {
     justify-content: space-between;
     padding: 20px;
     min-height: 100%;
+    margin-top: 0;
+    border: none;
+    box-sizing: border-box;
+    background-color: var(--page-bg-color);
+    color: var(--text-color);
+}
+
+.linkpage-public--wrap * {
+    box-sizing: border-box;
 }
 
 .admin-bar .linkpage-public--wrap {
