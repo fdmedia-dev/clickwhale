@@ -19,7 +19,7 @@ html > body {
     height: 100%;
 }
 
-.virtual-page-template-default {
+.cw-virtual-page-template {
     margin-top: 0;
     padding: 0;
     border: none;
@@ -28,7 +28,7 @@ html > body {
     color: var(--text-color);
 }
 
-.virtual-page-template-default * {
+.cw-virtual-page-template * {
     box-sizing: border-box;
 }
 
