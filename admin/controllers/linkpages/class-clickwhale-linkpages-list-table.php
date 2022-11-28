@@ -140,20 +140,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
 			if ( is_array( $_REQUEST['id'] ) ) {
 				foreach ( $_REQUEST['id'] as $id ) {
-					$wpdb->query(
-						$wpdb->prepare(
-							"DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-							intval( $id )
-						)
-					);
+					$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)", intval( $id ) ) );
 				}
 			} else {
-				$wpdb->query(
-					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-						intval( $_REQUEST['id'] )
-					)
-				);
+				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)", intval( $_REQUEST['id'] ) ) );
 			}
 		}
 	}
@@ -192,7 +182,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e( 'No linkpages found.', 'clickwhale' );
+		_e( 'No Link Pages Found.', 'clickwhale' );
 	}
 
 	public function display_tablenav( $which ) {
