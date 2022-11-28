@@ -66,7 +66,7 @@ do_action( 'clickwhale_admin_banner' );
 	            ?>
                 <p class="submit">
                     <button id="button-reset-settings" class="button button-primary"
-                            type="button"><?php _e( 'Restore default settings', 'clickwhale' ) ?></button>
+                            type="button"><?php _e( 'Restore Default Settings', 'clickwhale' ) ?></button>
                     <span class="spinner"></span>
                     <span class="results"></span>
                 </p>
@@ -77,7 +77,7 @@ do_action( 'clickwhale_admin_banner' );
 				?>
                 <p class="submit">
                     <button id="button-reset-db" class="button button-primary"
-                            type="button"><?php _e( 'Delete all plugin data now', 'clickwhale' ) ?></button>
+                            type="button"><?php _e( 'Delete all Plugin Data Now', 'clickwhale' ) ?></button>
                     <span class="spinner"></span>
                     <span class="results"></span>
                 </p>
@@ -88,7 +88,7 @@ do_action( 'clickwhale_admin_banner' );
 				?>
                 <p class="submit">
                     <button id="button-reset-stats" class="button button-primary"
-                            type="button"><?php _e( 'Reset all clicks data now', 'clickwhale' ) ?></button>
+                            type="button"><?php _e( 'Reset all Tracking Data now', 'clickwhale' ) ?></button>
                     <span class="spinner"></span>
                     <span class="results"></span>
                 </p>
