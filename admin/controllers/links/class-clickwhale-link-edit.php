@@ -122,9 +122,9 @@ class Clickwhale_Link_Edit {
 	 *
 	 * @return bool
 	 */
-	public static function check_slug( $slug ) {
+	public static function check_slug( $slug, $id ) {
 		global $wpdb;
-		if ( $wpdb->get_row( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug='$slug'", 'ARRAY_A' ) ) {
+		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d", $slug, $id ), 'ARRAY_A' ) ) {
 			return true;
 		} else {
 			return false;
@@ -192,7 +192,8 @@ class Clickwhale_Link_Edit {
                         'security': '<?php echo $nonce ?>',
                         'action': 'clickwhale/admin/check_slug',
                         'type': 'link',
-                        'slug': slug.val()
+                        'slug': slug.val(),
+                        'id': <?php echo esc_attr( intval( $_GET['id'] ) ); ?>
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {

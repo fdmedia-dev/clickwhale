@@ -59,7 +59,7 @@
                     localStorage.removeItem(arr[i]);
                 }
             })
-            .on('keyup change', '#cw-slug', function () {
+            .on('blur', '#cw-slug', function () {
                 var slug = wpCWSanitizeTitle($(this).val());
                 $(this).val(slug);
                 $('#cw-slug--text').find('span').html(slug);
@@ -170,6 +170,8 @@
          */
         function replaceSpacesWithDash(str) {
             return str
+                //remove the white space at the start of the string
+                .replace(/^\s+/g, '')
                 // Replace one or more blank spaces with a single dash (-)
                 .replace(/ +/g, '-')
                 // Replace two or more dashes (-) with a single dash (-).

@@ -232,13 +232,11 @@ class Clickwhale_Ajax {
 	public function check_slug() {
 		check_ajax_referer( 'check_slug', 'security' );
 
-		if ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) {
-			if ( isset( $_POST['type'] ) ) {
-				if ( $_POST['type'] === 'linkpage' ) {
-					$result = Clickwhale_Linkpage_Edit::check_slug( sanitize_title( $_POST['slug'] ) );
-				} else {
-					$result = Clickwhale_Link_Edit::check_slug( sanitize_title( $_POST['slug'] ) );
-				}
+		if ( ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) ) {
+			if ( $_POST['type'] === 'linkpage' ) {
+				$result = Clickwhale_Linkpage_Edit::check_slug( sanitize_title( $_POST['slug'] ) );
+			} else {
+				$result = Clickwhale_Link_Edit::check_slug( sanitize_title( $_POST['slug'] ), $_POST['id'] );
 			}
 		} else {
 			$result = 'error';
