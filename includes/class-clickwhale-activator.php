@@ -57,6 +57,7 @@ class Clickwhale_Activator {
 			sponsored smallint(1),
 			description tinytext DEFAULT '' NOT NULL,
 			categories tinytext,
+			author mediumint(9) DEFAULT 0,
 			created_at datetime,
 			updated_at datetime,
 			
@@ -83,6 +84,7 @@ class Clickwhale_Activator {
 			links longtext default NULL,
 			styles longtext default NULL,
 			social longtext default NULL,
+			author mediumint(9) DEFAULT 0,
 			created_at datetime,
 			
 			PRIMARY KEY  (id)
