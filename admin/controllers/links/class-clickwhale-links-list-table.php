@@ -57,7 +57,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links
+				"SELECT id,title,url,slug,description,categories,author from {$wpdb->prefix}clickwhale_links
                      WHERE title Like '%{$search}%' 
                      OR url Like '%{$search}%' 
                      OR slug Like '%{$search}%' 
@@ -66,7 +66,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			);
 		} else {
 			return $wpdb->get_results(
-				"SELECT id,title,url,slug,description,categories from {$wpdb->prefix}clickwhale_links",
+				"SELECT id,title,url,slug,description,categories,author from {$wpdb->prefix}clickwhale_links",
 				ARRAY_A
 			);
 		}
@@ -80,7 +80,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return HTML
 	 */
-	function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
 	}
 
@@ -101,7 +101,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_title( $item ) {
+	public function column_title( $item ) {
 		// links going to /admin.php?page=[your_plugin_page][&other_params]
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
@@ -126,7 +126,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_slug( $item ) {
+	public function column_slug( $item ) {
 		$options_general = get_option( 'clickwhale_general_options' );
 		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
 			$slug = $options_general['slug'];
@@ -146,7 +146,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return HTML
 	 */
-	function column_url( $item ) {
+	public function column_url( $item ) {
 		return $item['url'];
 	}
 
@@ -157,7 +157,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_categories( $item ) {
+	public function column_categories( $item ) {
 		$current_categories = '';
 		if ( $item['categories'] ) {
 
@@ -190,10 +190,16 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_clicks( $item ) {
+	public function column_clicks( $item ) {
 		global $wpdb;
 
 		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE link_id=%d AND event_type='click'", intval( $item['id'] ) ) );
+	}
+
+	public function column_author( $item ) {
+		$user_info = get_userdata( $item['author'] );
+
+		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
 	}
 
 
@@ -204,7 +210,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']
@@ -226,6 +232,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'url'        => __( 'Target URL', 'clickwhale' ),
 			'categories' => __( 'Categories', 'clickwhale' ),
 			'clicks'     => __( 'Clicks', 'clickwhale' ),
+			'author'     => __( 'Author', 'clickwhale' )
 		);
 	}
 
@@ -358,6 +365,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE categories = '{$category}' OR categories LIKE '{$category},%' OR categories LIKE '%,{$category},%' OR categories LIKE '%,{$category}' ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d", $per_page, $paged ), ARRAY_A );
 		}
 
+		// Change query for author filter results
+		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
+			$author      = sanitize_text_field( intval( $_GET['author'] ) );
+			$this->items = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE author = %d LIMIT %d OFFSET %d", $author, $per_page, $paged ), ARRAY_A );
+		}
+
 		// [REQUIRED] configure pagination
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,                  // total items defined above
@@ -367,7 +380,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e( 'No links found.', 'clickwhale' );
+		_e( 'No Links Found.', 'clickwhale' );
 	}
 
 	public function display_tablenav( $which ) {
