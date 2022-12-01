@@ -21,7 +21,7 @@ class Clickwhale_Click_Track {
 	 */
 	public function __construct( $link_id = 0 ) {
 		$this->link_id = (int) $link_id;
-		$this->visitor = new Clickwhale_Visitor_Track( 'click' );
+		$this->visitor = new Clickwhale_Visitor_Track();
 
 		if ( $this->visitor->visitor_id ) {
 			$this->update_track_database( $this->visitor->visitor_id );

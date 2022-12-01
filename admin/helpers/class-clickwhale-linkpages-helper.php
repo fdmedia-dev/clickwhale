@@ -31,13 +31,4 @@ class ClickwhaleLinkpagesHelper {
 		return apply_filters( 'clickwhale_linkpages_limit', 1 );
 	}
 
-	public static function slug_exists( $slug ) {
-		global $wpdb;
-		if ( $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name='$slug'", 'ARRAY_A' ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

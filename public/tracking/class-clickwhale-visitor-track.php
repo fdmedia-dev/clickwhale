@@ -10,9 +10,8 @@ class Clickwhale_Visitor_Track {
 	protected $hash;
 
 	public $visitor_id;
-	public $event;
 
-	public function __construct( $event ) {
+	public function __construct() {
 		$this->parser     = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
 		$this->user       = new Clickwhale_WP_User();
 		$this->ua         = $this->parser->ua;
@@ -20,7 +19,6 @@ class Clickwhale_Visitor_Track {
 		$this->device     = $this->parser->type;
 		$this->date       = gmdate( 'Y-m-d H:i:s' );
 		$this->hash       = $this->generate_hash();
-		$this->event      = $event;
 		$this->visitor_id = $this->proceed_visitor();
 	}
 
@@ -49,7 +47,7 @@ class Clickwhale_Visitor_Track {
 
 		$id = 0;
 
-		if ( ! $this->user->disallow_track( $this->event ) && ! $this->parser->bot ) {
+		if ( ! $this->user->disallow_track() && ! $this->parser->bot ) {
 			$visitor_arr      = $this->get_visitor_by_hash( $this->hash );
 			$visitor          = end( $visitor_arr );
 			$tracking_options = get_option( 'clickwhale_tracking_options' );

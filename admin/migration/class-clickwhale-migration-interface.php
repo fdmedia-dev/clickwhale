@@ -29,6 +29,10 @@ class Clickwhale_Migration_Interface {
 		];
 	}
 
+	public function process_author() {
+		return get_current_user_id();
+	}
+
 	public function process_migration_time() {
 		return false;
 	}

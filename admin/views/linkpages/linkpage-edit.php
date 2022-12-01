@@ -97,7 +97,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="slug"
+                                <input id="cw-slug"
                                        name="slug"
                                        type="text"
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
@@ -105,10 +105,10 @@ do_action( 'clickwhale_admin_banner' );
                                        class="regular-text"
                                        placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                        required>
-                                <p id="slug__text">
+                                <p id="cw-slug--description"></p>
+                                <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?>
-                                    <span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
                         </tr>
@@ -222,6 +222,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[bg_color]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set page background color', $this->plugin_name ) ?></p>
@@ -235,6 +236,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[text_color]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['text_color'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set page text color', $this->plugin_name ) ?></p>
@@ -257,6 +259,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set link background color (normal state)', $this->plugin_name ) ?></p>
@@ -270,6 +273,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color_hover'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set link background color (hover/active)', $this->plugin_name ) ?></p>
@@ -283,6 +287,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[link_color]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set link text color (normal state)', $this->plugin_name ) ?></p>
@@ -297,6 +302,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <input name="styles[link_color_hover]"
+                                       class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color_hover'] ) ?>"/>
                                 <p class="description"><?php _e( 'Set link text color (hover/active)', $this->plugin_name ) ?></p>
