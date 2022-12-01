@@ -1,7 +1,7 @@
 <?php
 
 class Clickwhale_Public_Linkpage {
-	private object $post;
+	private $post;
 	private $general_options;
 	private $linkpages_options;
 	private $other_options;
