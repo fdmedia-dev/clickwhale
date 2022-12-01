@@ -64,26 +64,16 @@ class Clickwhale_Migration_Notice {
 		$options_hide_deactive  = get_option( 'clickwhale_hide_notice_deactive' );
 		$options_last_migration = get_option( 'clickwhale_tools_last_migration_options' );
 
-		$is_tools_page            = isset( $_GET['page'] ) && $_GET['page'] == 'clickwhale-tools' ? true : false;
-		$is_show_migration_notice = isset( $options_hide_migrate[ $this->migrant ] ) ? false : true;
-		$is_show_deactive_notice  = isset( $options_hide_deactive[ $this->migrant ] ) ? false : true;
+		$is_tools_page = isset( $_GET['page'] ) && $_GET['page'] == 'clickwhale-tools';
 
-		if ( $is_show_migration_notice
-		     && ! $is_tools_page
-		     && $options_last_migration[ $this->migrant . '_last_migration' ] === '' ) {
-
+		if ( ! $options_hide_migrate[ $this->migrant ] && ! $is_tools_page ) {
 			add_action( 'admin_notices', [ $this, 'migration_notice' ] );
 			add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-
 		}
 
-		if ( $is_show_deactive_notice
-		     && ! $is_tools_page
-		     && $options_last_migration[ $this->migrant . '_last_migration' ] !== '' ) {
-
+		if ( ! $options_hide_deactive[ $this->migrant ] && ! $is_tools_page ) {
 			add_action( 'admin_notices', [ $this, 'deactive_notice' ] );
 			add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-
 		}
 
 	}
@@ -151,7 +141,7 @@ class Clickwhale_Migration_Notice {
                     });
                 })
 
-                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant) ?>-migrate').on('click', '.button-dismiss', function (e) {
+                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-migrate').on('click', '.button-dismiss', function (e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 
@@ -164,7 +154,7 @@ class Clickwhale_Migration_Notice {
                     });
                 });
 
-                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant) ?>-deactive').on('click', '.button-dismiss', function (e) {
+                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-deactive').on('click', '.button-dismiss', function (e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 

@@ -127,16 +127,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_slug( $item ) {
-		$options_general = get_option( 'clickwhale_general_options' );
-		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
-			$slug = $options_general['slug'];
-		} else {
-			$settings = Clickwhale_Admin_Settings::getInstance();
-			$defaults = $settings->default_options();
-			$slug     = $defaults['general']['options']['slug'];
-		}
-
-		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $slug . '/' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
 	/**

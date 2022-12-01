@@ -134,29 +134,17 @@ class Clickwhale_Public {
 	public function do_redirect_handler() {
 		global $wpdb;
 
-		$options_general = get_option( 'clickwhale_general_options' );
-		if ( isset( $options_general['slug'] ) && $options_general['slug'] !== '' ) {
-			$link_slug = $options_general['slug'] . '/';
-		} else {
-			$settings  = Clickwhale_Admin_Settings::getInstance();
-			$defaults  = $settings->default_options();
-			$link_slug = $defaults['general']['options']['slug'] . '/';
-		}
-
 		// if PHP Warning: Undefined array key "HTTP_HOST"
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
 			$_SERVER['HTTP_HOST'] = 'localhost';
 		}
-
 		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
-
-		if ( ! is_admin() && $path && strpos( $path, $link_slug ) ) {
-			$path = strstr( $path, $link_slug );
-			$path = str_replace( $link_slug, '', $path );
+		if ( ! is_admin() && $path ) {
+			$path    = ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $path ), '/' );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'", $path ) );
 		};
 
-		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '{$path}'" );
 		if ( ! empty( $results ) ) {
 
 			$id = intval( $results[0]->id );

@@ -2,13 +2,11 @@
 
 class Clickwhale_Public_Linkpage {
 	private $post;
-	private $general_options;
 	private $linkpages_options;
 	private $other_options;
 
 	public function __construct( $post ) {
 		$this->post              = $post;
-		$this->general_options   = get_option( 'clickwhale_general_options' );
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
 		$this->other_options     = get_option( 'clickwhale_other_options' );
 	}
@@ -37,16 +35,9 @@ class Clickwhale_Public_Linkpage {
 		$html  = '';
 		$links = maybe_unserialize( $this->post->post_content['links'] );
 		if ( $links ) {
-			if ( isset( $this->general_options['slug'] ) && $this->general_options['slug'] !== '' ) {
-				$option_slug = $this->general_options['slug'];
-			} else {
-				$settings    = Clickwhale_Admin_Settings::getInstance();
-				$defaults    = $settings->default_options();
-				$option_slug = $defaults['general']['options']['slug'];
-			}
 			foreach ( $links as $link ) {
 				$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
-				$url       = get_bloginfo( 'url' ) . '/' . $option_slug . '/' . $link_data['slug'];
+				$url       = get_bloginfo( 'url' ) . '/' .  $link_data['slug'];
 				if ( $link_data ) {
 					$link_title = $link['title'] ? $link['title'] : $link_data['title'];
 					$target     = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';

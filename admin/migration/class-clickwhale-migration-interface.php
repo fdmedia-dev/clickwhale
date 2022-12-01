@@ -56,23 +56,25 @@ class Clickwhale_Migration_Interface {
 		$utms_params   = [ 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ];
 
 		$url_array = parse_url( $url );
-		parse_str( $url_array['query'], $params );
+		if ( isset( $url_array['query'] ) && $url_array['query'] !== '' ) {
+			parse_str( $url_array['query'], $params );
 
-		if ( $params ) {
-			$result['url'] = str_replace( '?' . $url_array['query'], '', $url );
+			if ( $params ) {
+				$result['url'] = str_replace( '?' . $url_array['query'], '', $url );
 
-			foreach ( $utms_params as $utm ) {
-				if ( isset( $params[ $utm ] ) ) {
-					$utms[ $utm ] = $params[ $utm ] ? $params[ $utm ] : '';
-					unset( $params[ $utm ] );
+				foreach ( $utms_params as $utm ) {
+					if ( isset( $params[ $utm ] ) && $params[ $utm ] !== '' ) {
+						$utms[ $utm ] = $params[ $utm ];
+						unset( $params[ $utm ] );
+					}
 				}
+				$result['params'] = $params;
+				$result['utms']   = $utms;
 			}
-			$result['params'] = $params;
-			$result['utms']   = $utms;
-		}
 
-		if ( $result['params'] ) {
-			$result['url'] = $result['url'] . '?' . http_build_query( $result['params'] );
+			if ( $result['params'] ) {
+				$result['url'] = $result['url'] . '?' . http_build_query( $result['params'] );
+			}
 		}
 
 		return $result;

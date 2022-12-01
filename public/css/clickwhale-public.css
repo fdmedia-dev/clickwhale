@@ -15,9 +15,12 @@ html, body {
     height: 100%;
 }
 
-html > body,
-body > .linkpage-public--wrap {
+html > body {
     height: 100%;
+}
+
+body > .linkpage-public--wrap {
+    min-height: 100%;
 }
 
 .linkpage-public--wrap {
@@ -36,10 +39,6 @@ body > .linkpage-public--wrap {
 
 .linkpage-public--wrap * {
     box-sizing: border-box;
-}
-
-.admin-bar .linkpage-public--wrap {
-    min-height: calc(100% - 32px);
 }
 
 .linkpage-public--inner {
