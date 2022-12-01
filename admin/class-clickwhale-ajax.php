@@ -144,10 +144,19 @@ class Clickwhale_Ajax {
 				}
 			}
 
+			$options_migrate             = get_option( 'clickwhale_hide_notice_migrate' );
+			$options_migrate[ $migrant ] = true;
+			update_option( 'clickwhale_hide_notice_migrate', $options_migrate );
+
+			$options_deactive             = get_option( 'clickwhale_hide_notice_deactive' );
+			$options_deactive[ $migrant ] = false;
+			update_option( 'clickwhale_hide_notice_deactive', $options_deactive );
+
+			wp_send_json_success( $result );
+
+		} else {
+			wp_send_json_error();
 		}
-
-		wp_send_json_success( $result );
-
 		wp_die();
 	}
 
@@ -156,16 +165,17 @@ class Clickwhale_Ajax {
 
 		foreach ( $this->migration->available_migrations() as $item ) {
 
-			$migration_options[ $item['slug'] . '_categories' ] = $item['data']['categories'] ? true : false;
-			$migration_options[ $item['slug'] . '_links' ]      = $item['data']['links'] ? true : false;
-
+			$migration_options[ $item['slug'] . '_categories' ]          = $item['data']['categories'] ? true : false;
+			$migration_options[ $item['slug'] . '_links' ]               = $item['data']['links'] ? true : false;
+			$notice_migrate_options[ $item['slug'] ]                     = false;
+			$notice_deactive_options[ $item['slug'] ]                    = true;
 			$last_migration_options[ $item['slug'] . '_last_migration' ] = '';
 		}
 
 		update_option( 'clickwhale_tools_migration_options', $migration_options );
 		update_option( 'clickwhale_tools_last_migration_options', $last_migration_options );
-		update_option( 'clickwhale_hide_notice_migrate', [] );
-		update_option( 'clickwhale_hide_notice_deactive', [] );
+		update_option( 'clickwhale_hide_notice_migrate', $notice_migrate_options );
+		update_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
 
 		$result = __( 'Successfully deleted! Page will reload...', $this->plugin_name );
 

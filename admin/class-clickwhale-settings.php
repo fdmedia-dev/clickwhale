@@ -72,15 +72,15 @@ class Clickwhale_Admin_Settings {
 					'redirect_type' => 301,
 					'nofollow'      => 1,
 					'sponsored'     => 0,
-					'slug'          => 'link'
+					'slug'          => ''
 				)
 			),
 			'tracking'  => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
-					'tracking_duration'                  => 30,
-					'disable_tracking'                   => 0,
-					'exclude_user_by_role'    => [ 'administrator' ]
+					'tracking_duration'    => 30,
+					'disable_tracking'     => 0,
+					'exclude_user_by_role' => [ 'administrator' ]
 				)
 			),
 			'linkpages' => array(
@@ -351,8 +351,8 @@ class Clickwhale_Admin_Settings {
 				'id'          => 'slug',
 				'name'        => 'clickwhale_general_options[slug]',
 				'type'        => 'text',
-				'value'       => isset( $general_options['slug'] ) && $general_options['slug'] !== '' ? $general_options['slug'] : $defaults['general']['options']['slug'],
-				'placeholder' => 'link',
+				'value'       => $general_options['slug'],
+				'placeholder' => '',
 				'description' => __( '<strong>Important:</strong> Once you change the link slug, all existing links will be updated automatically.<br>You may have to update placed links in your content manually.', $this->plugin_name ),
 			)
 		);

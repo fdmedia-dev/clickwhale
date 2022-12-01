@@ -135,7 +135,6 @@ class Clickwhale_Link_Edit {
 		global $wpdb;
 		$links_table        = $wpdb->prefix . 'clickwhale_links';
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
-		$item['slug']       = sanitize_title( $item['slug'] );
 		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
 		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;

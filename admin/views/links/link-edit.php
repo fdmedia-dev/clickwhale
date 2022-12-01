@@ -5,8 +5,12 @@ $link_edit->init();
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $options_general = get_option( 'clickwhale_general_options' );
-$option_slug     = $link_edit->get_item_option( 'general', 'slug' );
-$message         = get_transient( 'link-' . $item['id'] );
+if ( $item['slug'] ) {
+	$slug = $item['slug'];
+} else {
+	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== '' ? $options_general['slug'] . '/' : '';
+}
+$message = get_transient( 'link-' . $item['id'] );
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -73,14 +77,14 @@ do_action( 'clickwhale_admin_banner' );
                                 <input id="cw-slug"
                                        name="slug"
                                        type="text"
-                                       value="<?php echo esc_attr( $item['slug'] ) ?>"
+                                       value="<?php echo esc_attr( $slug ) ?>"
                                        size="50"
                                        class="regular-text"
-                                       placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $option_slug ) ) ?>"
+                                       placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
                                        required>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $option_slug . '/'; ?>
+									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>

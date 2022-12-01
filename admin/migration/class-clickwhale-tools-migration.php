@@ -73,13 +73,23 @@ class Clickwhale_Tools_Migration {
 
 	public function add_notice_migrate_options() {
 		if ( ! get_option( 'clickwhale_hide_notice_migrate' ) ) {
-			add_option( 'clickwhale_hide_notice_migrate', [] );
+
+			foreach ( $this->migration->available_migrations() as $item ) {
+				$notice_migrate_options[ $item['slug'] ] = false;
+			}
+
+			add_option( 'clickwhale_hide_notice_migrate', $notice_migrate_options );
 		}
 	}
 
 	public function add_notice_deactive_options() {
 		if ( ! get_option( 'clickwhale_hide_notice_deactive' ) ) {
-			add_option( 'clickwhale_hide_notice_deactive', [] );
+
+			foreach ( $this->migration->available_migrations() as $item ) {
+				$notice_deactive_options[ $item['slug'] ] = true;
+			}
+
+			add_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
 		}
 	}
 
