@@ -31,7 +31,7 @@ do_action( 'clickwhale_admin_banner' );
 		?>
 
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
 
 		<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() < ClickwhaleLinkpagesHelper::get_limit() ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
