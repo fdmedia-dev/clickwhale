@@ -353,7 +353,7 @@ class Clickwhale_Admin_Settings {
 				'type'        => 'text',
 				'value'       => $general_options['slug'],
 				'placeholder' => '',
-				'description' => __( '<strong>Important:</strong> Once you change the link slug, all existing links will be updated automatically.<br>You may have to update placed links in your content manually.', $this->plugin_name ),
+				'description' => __( 'At this point, you can enter the default slug for new links.<br><strong>Important:</strong> If you change the slug, your existing links will not be changed.', $this->plugin_name ),
 			)
 		);
 		add_settings_field(

@@ -27,7 +27,7 @@ do_action( 'clickwhale_admin_banner' );
 		?>
 
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to list', $this->plugin_name ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
         <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"
            class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
     </h1>
@@ -96,7 +96,7 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <input id="url"
                                        name="url"
-                                       type="text"
+                                       type="url"
                                        value="<?php echo esc_attr( $item['url'] ) ?>"
                                        size="50"
                                        class="regular-text"

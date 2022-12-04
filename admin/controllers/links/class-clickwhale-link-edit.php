@@ -138,7 +138,7 @@ class Clickwhale_Link_Edit {
 		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
 		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
-		$item['author']  = get_current_user_id();
+		$item['author']     = get_current_user_id();
 
 		$result = $wpdb->update(
 			$links_table,
@@ -193,7 +193,7 @@ class Clickwhale_Link_Edit {
                         'action': 'clickwhale/admin/check_slug',
                         'type': 'link',
                         'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( $_GET['id'] ) ); ?>
+                        'id': <?php echo esc_attr( intval( isset( $_GET['id'] ) ? $_GET['id'] : 0 ) ); ?>
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {
