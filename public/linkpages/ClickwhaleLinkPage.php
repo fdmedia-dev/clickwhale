@@ -54,7 +54,7 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 				'post_excerpt'   => '',
 				'post_parent'    => 0,
 				'menu_order'     => 0,
-				'post_type'      => 'virtual-page',
+				'post_type'      => 'page',
 				'post_status'    => 'publish',
 				'comment_status' => 'closed',
 				'ping_status'    => 'closed',

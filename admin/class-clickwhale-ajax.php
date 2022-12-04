@@ -229,11 +229,15 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
-	public function check_linkpage_slug() {
-		check_ajax_referer( 'linkpage_slug', 'security' );
+	public function check_slug() {
+		check_ajax_referer( 'check_slug', 'security' );
 
-		if ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) {
-			$result = ClickwhaleLinkpagesHelper::slug_exists( sanitize_text_field( $_POST['slug'] ) );
+		if ( ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) ) {
+			if ( $_POST['type'] === 'linkpage' ) {
+				$result = Clickwhale_Linkpage_Edit::check_slug( sanitize_title( $_POST['slug'] ) );
+			} else {
+				$result = Clickwhale_Link_Edit::check_slug( sanitize_title( $_POST['slug'] ), $_POST['id'] );
+			}
 		} else {
 			$result = 'error';
 		}

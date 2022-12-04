@@ -70,7 +70,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="slug"
+                                <input id="cw-slug"
                                        name="slug"
                                        type="text"
                                        value="<?php echo esc_attr( $item['slug'] ) ?>"
@@ -78,7 +78,8 @@ do_action( 'clickwhale_admin_banner' );
                                        class="regular-text"
                                        placeholder="<?php esc_attr( printf( __( 'Link Slug without /%1$s/', $this->plugin_name ), $option_slug ) ) ?>"
                                        required>
-                                <p id="slug__text">
+                                <p id="cw-slug--description"></p>
+                                <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/' . $option_slug . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
@@ -91,7 +92,7 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <input id="url"
                                        name="url"
-                                       type="text"
+                                       type="url"
                                        value="<?php echo esc_attr( $item['url'] ) ?>"
                                        size="50"
                                        class="regular-text"

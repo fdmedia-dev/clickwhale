@@ -28,6 +28,7 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'nofollow'    => isset( $item->nofollow ) && $item->nofollow == 1 ? $item->nofollow : '',
 					'sponsored'   => isset( $item->sponsored ) && $item->sponsored == 1 ? $item->sponsored : '',
 					'categories'  => ! is_null( $category_id ) ? $category_id : '',
+					'author'   => $this->process_author(),
 					'created_at'  => $item->link_date,
 					'updated_at'  => $item->link_modified,
 				);

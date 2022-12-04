@@ -76,19 +76,39 @@ class Clickwhale_Linkpage_Edit {
 		);
 	}
 
-	function save_update_linkpage() {
+	/**
+	 * Check if Link page slug already exists
+	 *
+	 * @param string $slug
+	 *
+	 * @return bool
+	 */
+	public static function check_slug( $slug ) {
+		global $wpdb;
+		if ( $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name='$slug'", 'ARRAY_A' ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	public function save_update_linkpage() {
 		global $wpdb;
 		$linkpages_table = $wpdb->prefix . 'clickwhale_linkpages';
 		$defaults        = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
 		$item            = array_intersect_key( $_POST, $defaults );
+		$item['slug']    = sanitize_title( $item['slug'] );
 		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
 		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
+		$item['author']  = get_current_user_id();
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
 		// Check if linkpage exists and then update or insert
 		// in some cases default check (not false and < 0) goes wrong
 		$linkpage = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d", $item['id'] ) );
+
 		if ( $linkpage ) {
 			$wpdb->update(
 				$linkpages_table,
@@ -118,7 +138,7 @@ class Clickwhale_Linkpage_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce = wp_create_nonce( 'linkpage_slug' );
+		$nonce = wp_create_nonce( 'check_slug' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
@@ -224,7 +244,7 @@ class Clickwhale_Linkpage_Edit {
                 /**
                  * Check slug
                  */
-                jQuery('#form_edit_linkpage').on('blur', '#slug', function (e) {
+                jQuery('#form_edit_linkpage').on('blur', '#cw-slug', function (e) {
 
                     var slug = jQuery(this),
                         linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]');
@@ -233,24 +253,25 @@ class Clickwhale_Linkpage_Edit {
 
                     jQuery.post(ajaxurl, {
                         'security': '<?php echo $nonce ?>',
-                        'action': 'clickwhale/admin/check_linkpage_slug',
+                        'action': 'clickwhale/admin/check_slug',
+                        'type': 'linkpage',
                         'slug': slug.val()
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {
                             slug.addClass('error');
-                            jQuery('#slug-description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
                         }
                         // slug doesn't exists
                         if (response.data === false) {
                             slug.removeClass('error');
-                            jQuery('#slug-description').text('');
+                            jQuery('#cw-slug--description').text('');
                             linkpageSubmit.prop('disabled', false);
                         }
                         // slug empty or error
                         if (response.data === 'error') {
                             slug.addClass('error');
-                            jQuery('#slug-description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
                         }
                     })
                 });
