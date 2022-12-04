@@ -92,7 +92,7 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <input id="url"
                                        name="url"
-                                       type="text"
+                                       type="url"
                                        value="<?php echo esc_attr( $item['url'] ) ?>"
                                        size="50"
                                        class="regular-text"
