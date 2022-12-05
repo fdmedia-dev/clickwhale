@@ -28,13 +28,15 @@ class BetterLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'nofollow'    => isset( $item->nofollow ) && $item->nofollow == 1 ? $item->nofollow : '',
 					'sponsored'   => isset( $item->sponsored ) && $item->sponsored == 1 ? $item->sponsored : '',
 					'categories'  => ! is_null( $category_id ) ? $category_id : '',
-					'author'   => $this->process_author(),
+					'author'      => $this->process_author(),
 					'created_at'  => $item->link_date,
 					'updated_at'  => $item->link_modified,
 				);
 
 				$insert_id = $this->run_links_migration( $array );
-				do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
+				if ( isset( $link_data['utms'] ) ) {
+					do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
+				}
 
 				$message[] = $this->link_item_import_success( $item->link_title );
 			} else {

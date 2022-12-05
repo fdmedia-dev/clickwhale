@@ -72,15 +72,15 @@ class Clickwhale_Admin_Settings {
 					'redirect_type' => 301,
 					'nofollow'      => 1,
 					'sponsored'     => 0,
-					'slug'          => 'link'
+					'slug'          => ''
 				)
 			),
 			'tracking'  => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'options' => array(
-					'tracking_duration'                  => 30,
-					'disable_tracking'                   => 0,
-					'exclude_user_by_role'    => [ 'administrator' ]
+					'tracking_duration'    => 30,
+					'disable_tracking'     => 0,
+					'exclude_user_by_role' => [ 'administrator' ]
 				)
 			),
 			'linkpages' => array(
@@ -351,8 +351,8 @@ class Clickwhale_Admin_Settings {
 				'id'          => 'slug',
 				'name'        => 'clickwhale_general_options[slug]',
 				'type'        => 'text',
-				'value'       => isset( $general_options['slug'] ) && $general_options['slug'] !== '' ? $general_options['slug'] : $defaults['general']['options']['slug'],
-				'placeholder' => 'link',
+				'value'       => $general_options['slug'],
+				'placeholder' => '',
 				'description' => __( 'At this point, you can enter the default slug for new links.<br><strong>Important:</strong> If you change the slug, your existing links will not be changed.', $this->plugin_name ),
 			)
 		);

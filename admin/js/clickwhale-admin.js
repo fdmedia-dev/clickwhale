@@ -33,14 +33,16 @@
         var urlSearchParams = new URLSearchParams(window.location.search),
             params = Object.fromEntries(urlSearchParams.entries());
         if (params !== 'undefined') {
-            setCurrentTopLevelPage();
             if (params['page'] === 'clickwhale-edit-category') {
+                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale-categories');
             }
             if (params['page'] === 'clickwhale-edit-link') {
+                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale');
             }
             if (params['page'] === 'clickwhale-edit-linkpage') {
+                setCurrentTopLevelPage();
                 setCurrentSubmenuPage('clickwhale-linkpages');
             }
         }
@@ -136,14 +138,18 @@
                         // Replace &nbsp;, &ndash;, and &mdash with a dash (-).
                         .replace(/&(?:(?:nbsp)|(?:ndash)|(?:mdash));/g, '-')
                 )
-                    // Replace any forward slashes (/) or periods (.) with a dash (-).
-                    .replace(/[\/\.]/g, '-')
+                    // Replace any periods (.) with a dash (-).
+                    //.replace(/[\/\.]/g, '-')
+                    .replace(/[\.]/g, '-')
                     // Replace anything that is not a:
                     // word character
                     // space
                     // nor a dash (-)
+                    // nor a forward slash (/)
                     // with an empty string (i.e. remove it).
-                    .replace(/[^\w\s-]+/g, '')
+                    .replace(/[^\w\s-/]+/g, '')
+                    // replace multiple slashes with single
+                    .replace(/\/\/+/g, '/')
             )
         );
 

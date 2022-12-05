@@ -23,13 +23,15 @@ class PrettyLinks_To_Clickwhale extends ClickWhale_Migration_Interface {
 					'nofollow'    => $item->nofollow,
 					'sponsored'   => $item->sponsored,
 					'categories'  => ! is_null( $category_id ) ? $category_id : '',
-					'author'   => $this->process_author(),
+					'author'      => $this->process_author(),
 					'created_at'  => $item->created_at,
 					'updated_at'  => $item->updated_at,
 				);
 
 				$insert_id = $this->run_links_migration( $array );
-				do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
+				if ( isset( $link_data['utms'] ) ) {
+					do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
+				}
 
 				$message[] = $this->link_item_import_success( $item->name );
 			} else {
