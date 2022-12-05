@@ -115,7 +115,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php $logo_id = isset( $item['logo'] ) ? $item['logo'] : ''; ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="logo"><?php _e( 'Page logo', $this->plugin_name ) ?></label>
+                                <label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <div class="logo-field">
@@ -162,7 +162,7 @@ do_action( 'clickwhale_admin_banner' );
 										<?php } ?>
                                     </select>
                                     <button type="button" class="button" id="add-pagelink-link">
-										<?php _e( 'Add link to page', $this->plugin_name ) ?>
+										<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
                                     </button>
 
                                     <div class="linkpage-wrap">

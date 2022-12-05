@@ -147,8 +147,8 @@ class Clickwhale_Admin_Settings {
 		);
 
 		add_menu_page(
-			__( 'Clickwhale Links', $this->plugin_name ),
-			__( 'Clickwhale', $this->plugin_name ),
+			__( 'ClickWhale Links', $this->plugin_name ),
+			__( 'ClickWhale', $this->plugin_name ),
 			'edit_pages',
 			$this->plugin_name,
 			'',
@@ -313,7 +313,7 @@ class Clickwhale_Admin_Settings {
 		);
 		add_settings_field(
 			'nofollow',
-			__( 'Nofollow links', $this->plugin_name ),
+			__( 'Nofollow Links', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -327,7 +327,7 @@ class Clickwhale_Admin_Settings {
 		);
 		add_settings_field(
 			'sponsored',
-			__( 'Sponsored links', $this->plugin_name ),
+			__( 'Sponsored Links', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -342,7 +342,7 @@ class Clickwhale_Admin_Settings {
 		);
 		add_settings_field(
 			'slug',
-			__( 'Link slug', $this->plugin_name ),
+			__( 'Link Slug', $this->plugin_name ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
