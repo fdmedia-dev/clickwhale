@@ -104,7 +104,6 @@
     line-height: 1em;
     font-weight: 700;
     color: #242424;
-    text-decoration: none;
     transition: all .3s ease-in-out;
     text-decoration: underline;
 }
