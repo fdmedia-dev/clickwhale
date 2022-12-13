@@ -71,10 +71,11 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 == Screenshots ==
 
 1. Link Manager
-2. Link Edit Screen
-3. Link Pages
-4. Link Pages: Customizations
-5. Link Pages: Link Management
+2. Links: Overview Page
+3. Link Edit Screen
+4. Link Pages
+5. Link Pages: Customizations
+6. Link Pages: Link Management
 
 == Changelog ==
 
