@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ClickWhale\n"
-"POT-Creation-Date: 2022-12-05 13:20+0200\n"
-"PO-Revision-Date: 2022-12-05 13:20+0200\n"
+"POT-Creation-Date: 2022-12-13 17:37+0200\n"
+"PO-Revision-Date: 2022-12-13 17:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,15 +21,22 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: admin/class-clickwhale-admin.php:197
+#: admin/class-clickwhale-admin.php:198
+#, php-format
+msgid ""
+"You like ClickWhale? Then please <a href=\"%1$s\" target=\"_blank\">leave a "
+"review here</a>"
+msgstr ""
+
+#: admin/class-clickwhale-admin.php:208
 msgid "Need help?"
 msgstr ""
 
-#: admin/class-clickwhale-admin.php:209
+#: admin/class-clickwhale-admin.php:220
 msgid "Update to Pro"
 msgstr ""
 
-#: admin/class-clickwhale-admin.php:217
+#: admin/class-clickwhale-admin.php:228
 msgid "Available only in PRO version"
 msgstr ""
 
@@ -114,6 +121,7 @@ msgid "ClickWhale Links"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
+#. Author of the plugin/theme
 #: admin/class-clickwhale-settings.php:151
 msgid "ClickWhale"
 msgstr ""
@@ -782,17 +790,10 @@ msgid "Reset all Tracking Data now"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
 msgid "https://clickwhale.pro"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "The best and full-featured affiliate link manager you ever need."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "fdmedia"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "https://fdmedia.io"
+msgid "Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress."
 msgstr ""
