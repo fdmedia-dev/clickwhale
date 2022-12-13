@@ -180,6 +180,7 @@ class Clickwhale_Admin {
 	public function clickwhale_admin_banner_callback() {
 		$link_logo     = 'https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
 		$link_helpdesk = 'https://clickwhale.pro/contact/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=help-link';
+		$link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
 		?>
 
         <div class="clickwhale-banner">
@@ -192,6 +193,16 @@ class Clickwhale_Admin {
                 </a>
             </div>
             <div class="clickwhale-banner--links">
+				<?php if ( $link_review ) { ?>
+                    <div class="clickwhale-banner--link-review">
+						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', $this->plugin_name ), esc_url( $link_review ) ); ?>
+                        <span class="dashicons dashicons-star-filled">
+                        </span><span class="dashicons dashicons-star-filled">
+                        </span><span class="dashicons dashicons-star-filled">
+                        </span><span class="dashicons dashicons-star-filled">
+                        </span><span class="dashicons dashicons-star-filled"></span>
+                    </div>
+				<?php } ?>
 				<?php if ( $link_helpdesk ) { ?>
                     <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
                        target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>

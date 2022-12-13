@@ -99,32 +99,39 @@
     gap: 20px;
 }
 
-.clickwhale-banner--links > a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
+.clickwhale-banner--links a {
     font-size: 14px;
     line-height: 1em;
+    font-weight: 700;
     color: #242424;
-    text-decoration: none;
     transition: all .3s ease-in-out;
+    text-decoration: underline;
 }
 
-.clickwhale-banner--links > a.clickwhale-banner--button {
+.clickwhale-banner--links a:hover {
+    text-decoration: none;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button {
     padding: 12px 20px;
     color: #ffffff;
     background-color: #007AFF;
     border-radius: 4px;
+    text-decoration: none;
 }
 
-.clickwhale-banner--links > a:hover {
+.clickwhale-banner--links a:hover {
     color: #007AFF;
 }
 
-.clickwhale-banner--links > a.clickwhale-banner--button:hover {
+.clickwhale-banner--links a.clickwhale-banner--button:hover {
     background-color: #ffffff;
     color: #007AFF;
+}
+
+.clickwhale-banner--link-review span.dashicons{
+    font-size: 16px;
+    line-height: 1em;
 }
 
 @media (max-width: 768px) {

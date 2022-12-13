@@ -15,10 +15,10 @@
  * @wordpress-plugin
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
- * Description:       The best and full-featured affiliate link manager you ever need.
+ * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
  * Version:           1.0.0
- * Author:            fdmedia
- * Author URI:        https://fdmedia.io
+ * Author:            ClickWhale
+ * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       clickwhale
