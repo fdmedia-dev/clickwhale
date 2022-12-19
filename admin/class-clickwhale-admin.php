@@ -196,11 +196,13 @@ class Clickwhale_Admin {
 				<?php if ( $link_review ) { ?>
                     <div class="clickwhale-banner--link-review">
 						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', $this->plugin_name ), esc_url( $link_review ) ); ?>
-                        <span class="dashicons dashicons-star-filled">
-                        </span><span class="dashicons dashicons-star-filled">
-                        </span><span class="dashicons dashicons-star-filled">
-                        </span><span class="dashicons dashicons-star-filled">
-                        </span><span class="dashicons dashicons-star-filled"></span>
+                        <span class="clickwhale-banner--link-review--raiting">
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                            <span class="dashicons dashicons-star-filled"></span>
+                        </span>
                     </div>
 				<?php } ?>
 				<?php if ( $link_helpdesk ) { ?>
