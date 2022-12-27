@@ -99,45 +99,46 @@
     gap: 20px;
 }
 
-.clickwhale-banner--links > a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
+.clickwhale-banner--links a {
     font-size: 14px;
     line-height: 1em;
+    font-weight: 700;
     color: #242424;
-    text-decoration: none;
     transition: all .3s ease-in-out;
+    text-decoration: underline;
 }
 
-.clickwhale-banner--links > a.clickwhale-banner--button {
+.clickwhale-banner--links a:hover {
+    text-decoration: none;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button {
     padding: 12px 20px;
     color: #ffffff;
     background-color: #007AFF;
     border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
 }
 
-.clickwhale-banner--links > a:hover {
+.clickwhale-banner--links a:hover {
     color: #007AFF;
 }
 
-.clickwhale-banner--links > a.clickwhale-banner--button:hover {
+.clickwhale-banner--links a.clickwhale-banner--button:hover {
     background-color: #ffffff;
     color: #007AFF;
 }
-
-@media (max-width: 768px) {
-    .clickwhale-banner {
-        flex-direction: column;
-        gap: 15px;
-        padding: 1em;
-        margin-left: -20px;
-    }
-
-    .clickwhale-banner--logo img {
-        margin-top: 0;
-    }
+.clickwhale-banner--link-review--raiting{
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.clickwhale-banner--link-review span.dashicons {
+    position: relative;
+    font-size: 16px;
+    line-height: 1em;
+    top: 2px;
 }
 
 .linkpage-logo-upload img {
@@ -330,4 +331,38 @@
 
 #cw-slug--description {
     color: #dc3232;
+}
+
+@media (max-width: 768px) {
+    .clickwhale-banner {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px 30px;
+        margin: 0 0 0 -10px;
+    }
+
+    .clickwhale-banner--logo img {
+        margin-top: 0;
+    }
+
+    .clickwhale-banner--links {
+        flex-direction: column;
+        margin: 0 -10px;
+    }
+
+    .clickwhale-banner--link-review {
+        text-align: center;
+    }
+
+    .clickwhale-banner--link-review--raiting {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: row nowrap;
+        margin-top: 5px;
+    }
+
+    .clickwhale-banner--links a.clickwhale-banner--button {
+        width: 100%;
+    }
 }
