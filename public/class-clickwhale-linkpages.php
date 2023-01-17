@@ -69,7 +69,7 @@ class Clickwhale_Linkpages {
 			foreach ( $linkpages as $linkpage ) {
 				$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
 				           ->setTitle( $linkpage['title'] )
-				           ->setContent( $linkpage )
+				           ->setLinkpage( $linkpage )
 				           ->setTemplate( 'linkpage.php' );
 			}
 		}

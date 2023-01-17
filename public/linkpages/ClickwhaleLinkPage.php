@@ -5,13 +5,15 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 	private $url;
 	private $title;
 	private $content;
+	private $linkpage;
 	private $template;
 	private $wp_post;
 
-	function __construct( $url, $title = 'Untitled', $template = 'page.php' ) {
+	function __construct( $url, $title = 'Untitled', $template = 'page.php', $linkpage = 0 ) {
 		$this->url = filter_var( $url, FILTER_SANITIZE_URL );
 		$this->setTitle( $title );
 		$this->setTemplate( $template );
+		$this->setLinkpage( $linkpage );
 	}
 
 	function getUrl() {
@@ -34,6 +36,12 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 
 	function setContent( $content ) {
 		$this->content = $content;
+
+		return $this;
+	}
+
+	function setLinkpage( $linkpage ) {
+		$this->linkpage = $linkpage;
 
 		return $this;
 	}
@@ -67,7 +75,8 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 				'post_date_gmt'  => current_time( 'mysql', 1 ),
 				'post_author'    => is_user_logged_in() ? get_current_user_id() : 0,
 				'is_virtual'     => true,
-				'filter'         => 'raw'
+				'filter'         => 'raw',
+				'linkpage'       => $this->linkpage ?: '',
 			);
 			$this->wp_post = new WP_Post( (object) $post );
 		}
