@@ -2,7 +2,7 @@
 global $post;
 
 $linkpage = new Clickwhale_Public_Linkpage( $post );
-$view     = new Clickwhale_View_Track( $post->post_content['id'] );
+$view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 ?>
 <!DOCTYPE html>
 <html lang="en">
