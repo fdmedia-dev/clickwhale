@@ -15,6 +15,7 @@ $linkpage_links = $linkpage_edit->get_links();
 
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
+$social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -57,9 +58,12 @@ do_action( 'clickwhale_admin_banner' );
                            class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
                     <li><a href="#lp-tab-colors"
                            class=""><?php _e( 'Colors', 'clickwhale' ); ?></a></li>
+                    <li><a href="#lp-tab-seo"
+                           class=""><?php _e( 'SEO', 'clickwhale' ); ?></a></li>
                     <!--li><a href="#lp-tab-social"
                                    class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li-->
                 </ul>
+
                 <div id="lp-tab-settings">
                     <table style="width: 100%;" class="form-table">
                         <caption hidden>Linkpage main settings</caption>
@@ -208,6 +212,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
                 </div>
+
                 <div id="lp-tab-colors">
 
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
@@ -313,10 +318,53 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
                 </div>
+
+                <div id="lp-tab-seo">
+					<?php
+					$seoTitle       = isset( $social['seo']['title'] ) ? $social['seo']['title'] : $item['title'];
+					$seoDescription = isset( $social['seo']['description'] ) ? $social['seo']['description'] : get_bloginfo( 'description' );
+					?>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <tbody>
+                        <caption hidden>Link Page SEO options</caption>
+
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][title]"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialSeoTitle"
+                                       name="social[seo][title]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="Some Title Placeholder Text">
+                                <p class="description"><?php _e( 'Set page SEO title', $this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][description]"><?php _e( 'SEO Description', $this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialSeoTitle"
+                                       name="social[seo][description]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="Some Title Placeholder Text">
+                                <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <!--div id="lp-tab-social">
-							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
-							<?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
-                        </div -->
+                    <?php do_action( 'clickwhale_admin_pro_message' ); ?>
+                    <?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
+                </div -->
             </div>
 
             <input type="hidden" id="created_at" name="created_at"

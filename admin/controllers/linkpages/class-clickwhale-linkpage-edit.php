@@ -37,6 +37,10 @@ class Clickwhale_Linkpage_Edit {
 				'link_bg_color_hover' => '#ffffff',
 				'link_color_hover'    => '#397eff',
 			),
+			'social'      => array(
+				'networks' => array(),
+				'seo'      => array()
+			)
 		);
 	}
 
@@ -101,6 +105,7 @@ class Clickwhale_Linkpage_Edit {
 		$item['slug']    = sanitize_title( $item['slug'] );
 		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
 		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
+		$item['social']  = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
 		$item['author']  = get_current_user_id();
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
