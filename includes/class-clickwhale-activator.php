@@ -162,6 +162,15 @@ class Clickwhale_Activator {
 		}
 	}
 
+	/**
+	 * @since    1.0.1
+	 */
+	private function modify_columns() {
+		global $wpdb;
+
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id" );
+	}
+
 
 	/**
 	 * Actions on plugin activation
@@ -176,6 +185,7 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_meta_table();
 		( new self )->add_clickwhale_visitors_table();
 		( new self )->add_clickwhale_track_table();
+		( new self )->modify_columns();
 	}
 
 }
