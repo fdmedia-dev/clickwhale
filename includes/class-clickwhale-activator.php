@@ -168,7 +168,9 @@ class Clickwhale_Activator {
 	private function modify_columns() {
 		global $wpdb;
 
+		if ( CLICKWHALE_VERSION > '1.0.0' ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id" );
+		}
 	}
 
 
