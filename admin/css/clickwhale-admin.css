@@ -155,6 +155,20 @@
     margin-top: 10px;
 }
 
+.custom-links-action-wrap{
+    display: none;
+    padding: 10px 0;
+}
+
+.custom-links-action-wrap--inner{
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
+}
+.custom-links-action-wrap--inner input{
+    flex: 1;
+}
+
 .linkpage-row {
     position: relative;
     display: flex;

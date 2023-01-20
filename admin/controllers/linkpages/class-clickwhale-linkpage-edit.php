@@ -137,6 +137,40 @@ class Clickwhale_Linkpage_Edit {
 		return 'Add Link Page' . $admin_title;
 	}
 
+	public function render_cw_link( $data ) {
+		$output = '';
+		$id     = $data['id'];
+		$link   = $this->get_link( $id );
+
+		$output .= '<div class="linkpage-row">';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '"/>';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . esc_attr( $data['type'] ?? 'cw_link' ) . '"/>';
+		$output .= '<div class="linkpage-row--drag"></div>';
+		$output .= '<div class="linkpage-link">' . esc_html( wp_unslash( $link['title'] ) ) . '<span>' . esc_url( $link['url'] ) . '</span></div>';
+		$output .= '<div class="linkpage-link--title"><input type="text" name="links[' . esc_attr( $id ) . '][title]" value="' . esc_html( wp_unslash( $data['title'] ) ) . '" placeholder="' . __( 'Link Title', 'clickwhale' ) . '"></div>';
+		$output .= '<div class="linkpage-row--remove"></div>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	public function render_custom_link( $data ) {
+		$output = '';
+		$id     = $data['id'];
+
+		$output .= '<div class="linkpage-row">';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '">';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . $data['type'] . '">';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][title]" value="' . $data['title'] . '">';
+		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][url]" value="' . $data['url'] . '">';
+		$output .= '<div class="linkpage-row--drag"></div>';
+		$output .= '<div class="linkpage-link">' . esc_html( wp_unslash( $data['title'] ) ) . '<span>' . esc_url( $data['url'] ) . '</span></div>';
+		$output .= '<div class="linkpage-row--remove"></div>';
+		$output .= '</div>';
+
+		return $output;
+	}
+
 	public function admin_scripts() {
 		$nonce = wp_create_nonce( 'check_slug' );
 		?>
@@ -182,26 +216,52 @@ class Clickwhale_Linkpage_Edit {
                 wrap.disableSelection();
 
                 jQuery(document)
+                    .on('change', '#add-pagelink-select', function (e) {
+                        if (this.value === 'custom') {
+                            jQuery('#add-pagelink-link').prop('disabled', true);
+                            jQuery('.custom-links-action-wrap').show();
+                        } else {
+                            jQuery('#add-pagelink-link').prop('disabled', false);
+                            jQuery('.custom-links-action-wrap').hide();
+                        }
+                    })
                     // Add link row
                     .on('click', '#add-pagelink-link', function (e) {
                         e.preventDefault();
 
-                        var links_count = jQuery('.linkpage-row').length,
-                            links = jQuery('#add-pagelink-select'),
-                            link_text = links.find('option:selected').text(),
-                            link_url = links.find('option:selected').data('url'),
-                            link_id = links.find('option:selected').val(),
-                            link_title_ph = "<?php _e( 'Link Title', 'clickwhale' ); ?>",
-                            template = '<div class="linkpage-row"><input type="hidden" name="links[' + link_id + '][id]" value="' + link_id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link_text + ' <span>' + link_url + '</span></div><div class="linkpage-link--title"><input type="text" name="links[' + link_id + '][title]" placeholder="' + link_title_ph + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
+                        var links = jQuery('#add-pagelink-select'),
+                            link = get_new_link_data('cw_link', links.find('option:selected').text(), links.find('option:selected').data('url'), links.find('option:selected').val()),
+                            template = '<div class="linkpage-row"><input type="hidden" name="links[' + link.id + '][type]" value="' + link.type + '"><input type="hidden" name="links[' + link.id + '][id]" value="' + link.id + '"><div class="linkpage-row--drag"></div><div class="linkpage-link">' + link.title + ' <span>' + link.url + '</span></div><div class="linkpage-link--title"><input type="text" name="links[' + link.id + '][title]" placeholder="' + link.placeholder + '"></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
 
-                        if (links_count < limit) {
-                            wrap.append(template);
+                        if (count_links() < limit) {
+                            append_link(wrap, template);
                         }
-                        if ((links_count + 1) === limit) {
-                            jQuery('#add-pagelink-link').prop('disabled', true);
-                            jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.linkpage-wrap');
+                        if ((count_links() + 1) === limit) {
+                            links_limit_warning();
                         }
                     })
+
+                    // add custom link
+                    .on('click', '#add-custom-link', function (e) {
+                        e.preventDefault();
+
+                        var link = get_new_link_data('custom_link', jQuery('input[name="custom-link-title"]').val(), jQuery('input[name="custom-link-url"]').val()),
+                            i_type = '<input type="hidden" name="links[' + link.id + '][type]" value="' + link.type + '">',
+                            i_id = '<input type="hidden" name="links[' + link.id + '][id]" value="' + link.id + '">',
+                            i_title = '<input type="hidden" name="links[' + link.id + '][title]" value="' + link.title + '">',
+                            i_url = '<input type="hidden" name="links[' + link.id + '][url]" value="' + link.url + '">',
+                            template = '<div class="linkpage-row">' + i_type + i_id + i_title + i_url + '<div class="linkpage-row--drag"></div><div class="linkpage-link">' + link.title + ' <span>' + link.url + '</span></div><div class="linkpage-link--image"></div><div class="linkpage-row--remove"></div></div>';
+
+                        jQuery('.custom-links-action-wrap input').val('');
+
+                        if (count_links() < limit) {
+                            append_link(wrap, template);
+                        }
+                        if ((count_links() + 1) === limit) {
+                            links_limit_warning();
+                        }
+                    })
+
                     // Remove added link row
                     .on('click', '.linkpage-row--remove', function () {
                         jQuery(this).parent().remove();
@@ -286,6 +346,35 @@ class Clickwhale_Linkpage_Edit {
                         });
                     }
                 });
+
+                function count_links() {
+                    return jQuery('.linkpage-row').length;
+                }
+
+                function get_new_link_data(type, title, url, id = link_uniqid()) {
+                    return {
+                        type: type,
+                        id: id,
+                        title: title.trim(),
+                        url: url,
+                        placeholder: "<?php _e( 'Link Title', 'clickwhale' ); ?>"
+                    }
+                }
+
+                function append_link(target, template) {
+                    target.append(template);
+                }
+
+                function links_limit_warning() {
+                    jQuery('#add-pagelink-link').prop('disabled', true);
+                    jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.linkpage-wrap');
+                }
+
+                function link_uniqid(prefix = "", random = false) {
+                    const sec = Date.now() * 1000 + Math.random() * 1000;
+                    const id = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
+                    return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
+                };
 
             });
         </script>

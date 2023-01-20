@@ -154,16 +154,40 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
 								<?php if ( $linkpage_links ) { ?>
                                     <select id="add-pagelink-select" class="regular-text">
-										<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
-                                            <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
-                                                    data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
-												<?php echo esc_html( wp_unslash( $linkpage_link['title'] ) ) ?>
-                                            </option>
-										<?php } ?>
+                                        <option value="" disabled selected>Select Link</option>
+                                        <optgroup label="<?php _e( 'ClickWhale Links', $this->plugin_name ) ?>">
+											<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
+                                                <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
+                                                        data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
+													<?php echo esc_html( wp_unslash( $linkpage_link['title'] ) ) ?>
+                                                </option>
+											<?php } ?>
+                                        </optgroup>
+                                        <optgroup label="<?php _e( 'Other Links', $this->plugin_name ) ?>">
+                                            <option value="custom"><?php _e( 'Custom Link', $this->plugin_name ) ?></option>
+                                        </optgroup>
                                     </select>
-                                    <button type="button" class="button" id="add-pagelink-link">
+                                    <button type="button" class="button" id="add-pagelink-link" disabled>
 										<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
                                     </button>
+
+                                    <div class="custom-links-action-wrap">
+                                        <div class="custom-links-action-wrap--inner">
+                                            <input type="text"
+                                                   name="custom-link-title"
+                                                   placeholder="Link Title"
+                                                   value=""
+                                                   class="regular-text">
+                                            <input type="url"
+                                                   name="custom-link-url"
+                                                   placeholder="Link Url"
+                                                   value=""
+                                                   class="regular-text">
+                                            <button type="button" class="button" id="add-custom-link">
+												<?php _e( 'Add Custom Link', $this->plugin_name ) ?>
+                                            </button>
+                                        </div>
+                                    </div>
 
                                     <div class="linkpage-wrap">
 
@@ -171,26 +195,15 @@ do_action( 'clickwhale_admin_banner' );
 										$links = maybe_unserialize( $item['links'] );
 										if ( $links ) {
 											foreach ( $links as $link ) {
-												$link_data = $linkpage_edit->get_link( $link['id'] );
-												?>
-                                                <div class="linkpage-row">
-                                                    <input type="hidden"
-                                                           name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
-                                                           value="<?php echo esc_attr( $link['id'] ) ?>">
-                                                    <div class="linkpage-row--drag"></div>
-                                                    <div class="linkpage-link">
-														<?php echo esc_html( wp_unslash( $link_data['title'] ) ) ?>
-                                                        <span><?php echo esc_url( $link_data['url'] ) ?></span>
-                                                    </div>
-                                                    <div class="linkpage-link--title">
-                                                        <input type="text"
-                                                               name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
-                                                               value="<?php echo esc_html( wp_unslash( $link['title'] ) ) ?>"
-                                                               placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
-                                                    </div>
-                                                    <div class="linkpage-row--remove"></div>
-                                                </div>
-												<?php
+
+												if ( isset( $link['type'] ) && $link['type'] == 'custom_link' ) {
+													echo $linkpage_edit->render_custom_link( $link );
+												} else {
+													echo $linkpage_edit->render_cw_link( $link );
+												};
+
+												//$link_data = $link['type'] == 'cw_link' ? $linkpage_edit->get_link( $link['id'] ) : $link;
+
 											}
 										}
 										?>
