@@ -17,12 +17,12 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_description() {
-		return isset( $this->post->post_content['description'] ) ? wp_kses( wp_unslash( $this->post->post_content['description'] ), wp_kses_allowed_html( 'post' ) ) : '';
+		return isset( $this->post->linkpage['description'] ) ? wp_kses( wp_unslash( $this->post->linkpage['description'] ), wp_kses_allowed_html( 'post' ) ) : '';
 	}
 
 	public function get_logo() {
-		if ( isset( $this->post->post_content['logo'] ) && $this->post->post_content['logo'] ) {
-			$img = wp_get_attachment_image_url( $this->post->post_content['logo'], 'medium' );
+		if ( isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo'] ) {
+			$img = wp_get_attachment_image_url( $this->post->linkpage['logo'], 'medium' );
 		} else {
 			$img = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
 		}
@@ -34,7 +34,7 @@ class Clickwhale_Public_Linkpage {
 		global $wpdb;
 
 		$html  = '';
-		$links = maybe_unserialize( $this->post->post_content['links'] );
+		$links = maybe_unserialize( $this->post->linkpage['links'] );
 		if ( $links ) {
 			foreach ( $links as $link ) {
 
@@ -70,7 +70,7 @@ class Clickwhale_Public_Linkpage {
 	public function get_styles() {
 		$style = '';
 
-		$styles = maybe_unserialize( $this->post->post_content['styles'] );
+		$styles = maybe_unserialize( $this->post->linkpage['styles'] );
 		if ( $styles ) {
 			$style .= ':root{ --page-bg-color: ' . $styles['bg_color'] . '; --text-color: ' . $styles['text_color'] . '; --link-bg-color: ' . $styles['link_bg_color'] . '; --link-color: ' . $styles['link_color'] . '; --link-bg-hover: ' . $styles['link_bg_color_hover'] . '; --link-hover: ' . $styles['link_color_hover'] . ';  }';
 		}
@@ -89,7 +89,7 @@ class Clickwhale_Public_Linkpage {
 	public function get_socails() {
 		$social_html = '';
 		$social_svg  = $this->socials_svg();
-		$socials     = maybe_unserialize( $this->post->post_content['social'] );
+		$socials     = maybe_unserialize( $this->post->linkpage['social'] );
 		if ( $socials ) {
 			foreach ( $socials as $k => $v ) {
 				if ( $v ) {
