@@ -60,7 +60,7 @@ class Clickwhale_Linkpage_Edit {
 	public static function get_post_types(): array {
 		$posts      = [];
 		$args       = array(
-			'public'   => true,
+			'public' => true,
 		);
 		$post_types = get_post_types( $args, 'objects' );
 		unset( $post_types['attachment'] );
@@ -163,8 +163,9 @@ class Clickwhale_Linkpage_Edit {
 		$output         = '';
 		$id             = $data['id'];
 		$post_type_name = get_post_type_object( $data['type'] )->labels->singular_name;
+		$post_status    = ( get_post_status( $data['post_id'] ) && get_post_status( $data['post_id'] ) === 'publish' ) ? '' : 'unavailable-link';
 
-		$output .= '<div class="linkpage-row">';
+		$output .= '<div class="linkpage-row ' . $post_status . '">';
 		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . $data['type'] . '">';
 		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '">';
 		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][post_id]" value="' . esc_attr( $data['post_id'] ) . '">';

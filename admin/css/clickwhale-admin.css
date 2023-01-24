@@ -297,6 +297,20 @@
 	max-width: 100%;
 }
 
+.unavailable-link{
+	border-color: #dc3232;
+	background: #ffebee;
+}
+.unavailable-link * {
+	color: rgba(0, 0, 0, .3) !important;
+	opacity: 1 !important;
+}
+
+.unavailable-link input{
+	pointer-events: none!important;
+	opacity: .5 !important;
+}
+
 .links-info {
 	display: block;
 	width: 100%;

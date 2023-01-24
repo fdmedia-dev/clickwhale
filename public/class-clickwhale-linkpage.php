@@ -43,13 +43,14 @@ class Clickwhale_Public_Linkpage {
 				if ( isset( $link['type'] ) ) {
 					if ( $link['type'] == 'custom_link' ) {
 
-                        $html .= '<a class="cw-custom-link cw-track" href="' . esc_url( $link['url'] ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link['title'] ) ) . '</a>';
+						$html .= '<a class="cw-custom-link cw-track" href="' . esc_url( $link['url'] ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link['title'] ) ) . '</a>';
 
-                    } else if ( array_key_exists( $link['type'], Clickwhale_Linkpage_Edit::get_post_types() ) ) {
+					} else if ( array_key_exists( $link['type'], Clickwhale_Linkpage_Edit::get_post_types() ) ) {
 
-                        $link_title = $link['title'] ?: get_the_title($link['post_id']);
-						$html       .= '<a class="cw-post-type-link cw-track" href="' . esc_url( get_permalink( $link['post_id'] ) ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
-
+						if ( get_post_status( $link['post_id'] ) && get_post_status( $link['post_id'] ) === 'publish' ) {
+							$link_title = $link['title'] ?: get_the_title( $link['post_id'] );
+							$html       .= '<a class="cw-post-type-link cw-track" href="' . esc_url( get_permalink( $link['post_id'] ) ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
+						}
 					} else {
 
 						$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
