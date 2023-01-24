@@ -197,15 +197,7 @@ do_action( 'clickwhale_admin_banner' );
 									$links = maybe_unserialize( $item['links'] );
 									if ( $links ) {
 										foreach ( $links as $link ) {
-											if ( isset( $link['type'] ) ) {
-												if ( $link['type'] == 'custom_link' ) {
-													echo $linkpage_edit->render_custom_link( $link );
-												} else if ( array_key_exists( $link['type'], $post_type_links ) ) {
-													echo $linkpage_edit->render_post_type_link( $link );
-												} else {
-													echo $linkpage_edit->render_cw_link( $link );
-												}
-											}
+											echo $linkpage_edit->render_link($link);
 										}
 									}
 									?>

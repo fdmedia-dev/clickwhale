@@ -177,9 +177,6 @@
 	flex: 3;
 }
 
-.add-links-button-wrap {;
-}
-
 .custom-links-action-wrap {
 	display: flex;
 	flex-flow: row wrap;
@@ -287,12 +284,12 @@
 	border: 1px dashed #dcdcde;
 }
 
-.row--custom-link .linkpage-link {
+.row--custom_link .linkpage-link {
 	display: flex;
 	gap: 4px;
 }
 
-.row--custom-link .linkpage-link input {
+.row--custom_link .linkpage-link input {
 	width: 100%;
 	max-width: 100%;
 }

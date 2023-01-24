@@ -46,7 +46,8 @@ class Clickwhale_Linkpage_Edit {
 		$defaults = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
+			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE id = %d",
+				intval( $request['id'] ) ), ARRAY_A );
 			if ( ! $item ) {
 				$item = $defaults;
 			}
@@ -112,7 +113,8 @@ class Clickwhale_Linkpage_Edit {
 
 		// Check if linkpage exists and then update or insert
 		// in some cases default check (not false and < 0) goes wrong
-		$linkpage = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d", $item['id'] ) );
+		$linkpage = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d",
+			$item['id'] ) );
 
 		if ( $linkpage ) {
 			$wpdb->update(
@@ -142,60 +144,74 @@ class Clickwhale_Linkpage_Edit {
 		return 'Add Link Page' . $admin_title;
 	}
 
-	public function render_cw_link( $data ): string {
+	public function render_link( array $data ): string {
 		$output = '';
-		$id     = $data['id'];
-		$link   = $this->get_link( $id );
 
-		$output .= '<div class="linkpage-row">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . esc_attr( $data['type'] ?? 'cw_link' ) . '"/>';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '"/>';
+		$id                = esc_attr( $data['id'] );
+		$type              = isset( $data['type'] ) ? esc_attr( $data['type'] ) : 'cw_link';
+		$title             = esc_attr( wp_unslash( $data['title'] ) );
+		$custom_title      = $title;
+		$url               = '';
+		$is_post_type      = array_key_exists( $type, Clickwhale_Linkpage_Edit::get_post_types() );
+		$title_placeholder = __( 'Custom Title', 'clickwhale' );
+		$row_class         = $type ? 'row--' . $type : '';
+
+		if ( $type === 'custom_link' ) {
+			$url               = esc_url( $data['url'] );
+			$title_placeholder = __( 'Link Title', 'clickwhale' );
+			$url_placeholder   = __( 'Link URL', 'clickwhale' );
+		} elseif ( $is_post_type ) {
+			$post_id        = esc_attr( $data['post_id'] );
+			$row_class      .= get_post_status( $post_id ) === 'publish' ? '' : ' unavailable-link';
+			$title          = get_the_title( $post_id );
+			$post_type_name = get_post_type_object( $type )->labels->singular_name;
+			$origin         = __( 'Original', 'clickwhale' ) . ' ' . $post_type_name . ': ';
+		} else {
+			$link  = $this->get_link( $id );
+			$title = esc_attr( wp_unslash( $link['title'] ) );
+			$url   = esc_url( $link['url'] );
+		}
+
+		//$link   = $this->get_link( $id );
+
+		$output .= '<div class="linkpage-row ' . $row_class . '">';
+		$output .= '<input type="hidden" name="links[' . $id . '][type]" value="' . $type . '"/>';
+		$output .= '<input type="hidden" name="links[' . $id . '][id]" value="' . $id . '">';
+
+		if ( $is_post_type ) {
+			$output .= '<input type="hidden" name="links[' . $id . '][post_id]" value="' . $post_id . '">';
+		}
 		$output .= '<div class="linkpage-row--drag" title="' . __( 'Change Order', 'clickwhale' ) . '"></div>';
-		$output .= '<div class="linkpage-link">' . esc_html( wp_unslash( $link['title'] ) ) . '<span>' . esc_url( $link['url'] ) . '</span></div>';
-		$output .= '<div class="linkpage-link--title"><input type="text" name="links[' . esc_attr( $id ) . '][title]" value="' . esc_html( wp_unslash( $data['title'] ) ) . '" placeholder="' . __( 'Custom Title', 'clickwhale' ) . '"></div>';
-		$output .= '<div class="linkpage-row--remove" title="' . __( 'Remove Item', 'clickwhale' ) . '"></div>';
-		$output .= '</div>';
 
-		return $output;
-	}
+		if ( $type === 'custom_link' ) {
+			$output .= '<div class="linkpage-link">';
+			$output .= '<input type="text" name="links[' . $id . '][title]" class="regular-text" value="' . $title . '" placeholder="' . $title_placeholder . '" required>';
+			$output .= '<input type="url" name="links[' . $id . '][url]" class="regular-text" value="' . $url . '"  placeholder="' . $url_placeholder . '" required>';
+			$output .= '</div>';
+		} else {
+			$output .= '<div class="linkpage-link">';
+			$output .= $title;
+			$output .= '<span>';
+			if ( $is_post_type ) {
+				$output .= $origin;
+				$output .= '<a href="' . get_permalink( $post_id ) . '" target="_blank">' . get_the_title( $post_id ) . '</a>';
+			} else {
+				$output .= $url;
+			}
+			$output .= '</span>';
+			$output .= '</div>';
 
-	public function render_post_type_link( $data ): string {
-		$output         = '';
-		$id             = $data['id'];
-		$post_type_name = get_post_type_object( $data['type'] )->labels->singular_name;
-		$post_status    = ( get_post_status( $data['post_id'] ) && get_post_status( $data['post_id'] ) === 'publish' ) ? '' : 'unavailable-link';
+			$output .= '<div class="linkpage-link--title">';
+			$output .= '<input type="text" name="links[' . $id . '][title]" value="' . $custom_title . '" placeholder="' . $title_placeholder . '">';
+			$output .= '</div>';
+		}
 
-		$output .= '<div class="linkpage-row ' . $post_status . '">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . $data['type'] . '">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][post_id]" value="' . esc_attr( $data['post_id'] ) . '">';
-		$output .= '<div class="linkpage-row--drag" title="' . __( 'Change Order', 'clickwhale' ) . '"></div>';
-		$output .= '<div class="linkpage-link">' . get_the_title( $data['post_id'] );
-		$output .= '<span>' . __( 'Original', 'clickwhale' ) . ' ' . $post_type_name . ': <a href="' . get_permalink( $data['post_id'] ) . '" target="_blank">' . get_the_title( $data['post_id'] ) . '</a></span></div>';
-		$output .= '<div class="linkpage-link--title"><input type="text" name="links[' . esc_attr( $id ) . '][title]" value="' . esc_html( wp_unslash( $data['title'] ) ) . '" placeholder="' . __( 'Custom Title', 'clickwhale' ) . '"></div>';
 		$output .= '<div class="linkpage-row--remove" title="' . __( 'Remove item', 'clickwhale' ) . '"></div>';
 		$output .= '</div>';
 
 		return $output;
 	}
 
-	public function render_custom_link( $data ) {
-		$output = '';
-		$id     = $data['id'];
-
-		$output .= '<div class="linkpage-row row--custom-link">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][type]" value="' . $data['type'] . '">';
-		$output .= '<input type="hidden" name="links[' . esc_attr( $id ) . '][id]" value="' . esc_attr( $id ) . '">';
-		$output .= '<div class="linkpage-row--drag"></div>';
-		$output .= '<div class="linkpage-link">';
-		$output .= '<input type="text" name="links[' . esc_attr( $id ) . '][title]" class="regular-text" value="' . esc_attr( wp_unslash( $data['title'] ) ) . '" placeholder="' . __( 'Link Title', 'clickwhale' ) . '" required>';
-		$output .= '<input type="url" name="links[' . esc_attr( $id ) . '][url]" class="regular-text" value="' . esc_url( $data['url'] ) . '"  placeholder="' . __( 'Link URL', 'clickwhale' ) . '" required>';
-		$output .= '</div>';
-		$output .= '<div class="linkpage-row--remove"></div>';
-		$output .= '</div>';
-
-		return $output;
-	}
 
 	public function admin_scripts() {
 		$nonce              = wp_create_nonce( 'check_slug' );
@@ -345,7 +361,7 @@ class Clickwhale_Linkpage_Edit {
                                     templateURL +
                                     '</div>' +
                                     '<div class="linkpage-link--title">' +
-                                    '<input type="text" name="links[' + link.id + '][title]" placeholder="' + link.placeholder.title + '">' +
+                                    '<input type="text" name="links[' + link.id + '][title]" placeholder="' + link.placeholder.customTitle + '">' +
                                     '</div>' +
                                     '<div class="linkpage-row--remove" title="' + removeTooltip + '"></div>' +
                                     '</div>';
@@ -359,7 +375,7 @@ class Clickwhale_Linkpage_Edit {
                                     jQuery('input[name="custom-link-url"]').val()
                                 ),
                                 template = '' +
-                                    '<div class="linkpage-row row--custom-link">' +
+                                    '<div class="linkpage-row row--custom_link">' +
                                     '<input type="hidden" name="links[' + c_link.id + '][type]" value="' + c_link.type + '">' +
                                     '<input type="hidden" name="links[' + c_link.id + '][id]" value="' + c_link.id + '">' +
                                     '<div class="linkpage-row--drag" title="' + dragTooltip + '"></div>' +
@@ -439,7 +455,8 @@ class Clickwhale_Linkpage_Edit {
                         // slug exists
                         if (response.data === true) {
                             slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+								'clickwhale' ) ?>');
                         }
                         // slug doesn't exists
                         if (response.data === false) {
@@ -458,7 +475,8 @@ class Clickwhale_Linkpage_Edit {
                 jQuery('#reset-colors').click(function (e) {
                     e.preventDefault();
                     var $defaults;
-                    if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!', 'clickwhale' ) ?>')) {
+                    if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!',
+						'clickwhale' ) ?>')) {
                         $defaults = <?php echo json_encode( $this->get_defaults() ) ?>;
 
                         jQuery.each($defaults.styles, function (key, val) {
@@ -494,6 +512,7 @@ class Clickwhale_Linkpage_Edit {
                         postId: postId,
                         placeholder: {
                             title: "<?php _e( 'Link Title', 'clickwhale' ); ?>",
+                            customTitle: "<?php _e( 'Custom Title', 'clickwhale' ); ?>",
                             url: "<?php _e( 'Link URL', 'clickwhale' ); ?>"
                         }
                     }
@@ -505,7 +524,8 @@ class Clickwhale_Linkpage_Edit {
 
                 function links_limit_warning() {
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.links-list-wrap');
+                    jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
+						ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.links-list-wrap');
                 }
 
                 function link_uniqid(prefix = "", random = false) {
