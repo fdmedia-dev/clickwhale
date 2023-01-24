@@ -9,10 +9,9 @@ $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
 // ITEM
-$defaults       = $linkpage_edit->get_defaults();
-$item           = $linkpage_edit->get_item( $_REQUEST );
-$linkpage_links = $linkpage_edit->get_links();
-
+$defaults        = $linkpage_edit->get_defaults();
+$item            = $linkpage_edit->get_item( $_REQUEST );
+$post_type_links = $linkpage_edit->get_post_types();
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 
@@ -149,71 +148,71 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
+                                <label for="links"><?php _e( 'Add Link to Page', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-								<?php if ( $linkpage_links ) { ?>
-                                    <select id="add-pagelink-select" class="regular-text">
-                                        <option value="" disabled selected>Select Link</option>
-                                        <optgroup label="<?php _e( 'ClickWhale Links', $this->plugin_name ) ?>">
-											<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
-                                                <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
-                                                        data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
-													<?php echo esc_html( wp_unslash( $linkpage_link['title'] ) ) ?>
-                                                </option>
+                                <div class="add-links-wrap">
+                                    <div class="add-links-type-wrap">
+                                        <select id="add-links-type" class="add-links-type regular-text">
+                                            <option value="" disabled selected>Select Link Type</option>
+                                            <option value="cw_link"><?php _e( 'ClickWhale Link', $this->plugin_name ) ?></option>
+											<?php foreach ( $post_type_links as $name => $singular_name ) { ?>
+                                                <option value="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $singular_name ); ?></option>
 											<?php } ?>
-                                        </optgroup>
-                                        <optgroup label="<?php _e( 'Other Links', $this->plugin_name ) ?>">
-                                            <option value="custom"><?php _e( 'Custom Link', $this->plugin_name ) ?></option>
-                                        </optgroup>
-                                    </select>
-                                    <button type="button" class="button" id="add-pagelink-link" disabled>
-										<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
-                                    </button>
+                                            <option value="cw_custom"><?php _e( 'Custom Link', $this->plugin_name ) ?></option>
+                                        </select>
+                                    </div>
+                                    <div class="add-links-inputs-wrap">
+                                        <div id="links-post-type" class="">
+                                            <select name="add-links-select" id="add-links-select" class="regular-text"
+                                                    disabled>
+                                                <option value="" disabled selected>Select items...</option>
+                                            </select>
+                                        </div>
+                                        <div id="links-cw-custom" class="hidden">
+                                            <div class="custom-links-action-wrap">
+                                                <input type="text"
+                                                       name="custom-link-title"
+                                                       placeholder="Link Title"
+                                                       value=""
+                                                       class="regular-text">
+                                                <input type="url"
+                                                       name="custom-link-url"
+                                                       placeholder="Link Url"
+                                                       value=""
+                                                       class="regular-text">
+                                            </div>
 
-                                    <div class="custom-links-action-wrap">
-                                        <div class="custom-links-action-wrap--inner">
-                                            <input type="text"
-                                                   name="custom-link-title"
-                                                   placeholder="Link Title"
-                                                   value=""
-                                                   class="regular-text">
-                                            <input type="url"
-                                                   name="custom-link-url"
-                                                   placeholder="Link Url"
-                                                   value=""
-                                                   class="regular-text">
-                                            <button type="button" class="button" id="add-custom-link">
-												<?php _e( 'Add Custom Link', $this->plugin_name ) ?>
-                                            </button>
                                         </div>
                                     </div>
+                                    <div class="add-links-button-wrap">
+                                        <button type="button" class="button" id="add-links-button" disabled>
+											<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="links-list-wrap">
 
-                                    <div class="linkpage-wrap">
-
-										<?php
-										$links = maybe_unserialize( $item['links'] );
-										if ( $links ) {
-											foreach ( $links as $link ) {
-
-												if ( isset( $link['type'] ) && $link['type'] == 'custom_link' ) {
+									<?php
+									$links = maybe_unserialize( $item['links'] );
+									if ( $links ) {
+										foreach ( $links as $link ) {
+											if ( isset( $link['type'] ) ) {
+												if ( $link['type'] == 'custom_link' ) {
 													echo $linkpage_edit->render_custom_link( $link );
+												} else if ( array_key_exists( $link['type'], $post_type_links ) ) {
+													echo $linkpage_edit->render_post_type_link( $link );
 												} else {
 													echo $linkpage_edit->render_cw_link( $link );
-												};
-
-												//$link_data = $link['type'] == 'cw_link' ? $linkpage_edit->get_link( $link['id'] ) : $link;
-
+												}
 											}
 										}
-										?>
+									}
+									?>
 
-                                    </div>
-									<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-                                        <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
-									<?php } ?>
-								<?php } else { ?>
-                                    <div><?php _e( 'No links have been added yet' ); ?></div>
+                                </div>
+								<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
+                                    <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
 								<?php } ?>
                             </td>
                         </tr>

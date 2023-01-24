@@ -40,14 +40,25 @@ class Clickwhale_Public_Linkpage {
 
 				$target = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
 
-				if ( isset( $link['type'] ) && $link['type'] == 'custom_link' ) {
-					$html .= '<a class="cw-custom-link" href="' . esc_url( $link['url'] ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link['title'] ) ) . '</a>';
-				} else {
-					$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
-					$url       = get_bloginfo( 'url' ) . '/' . $link_data['slug'];
-					if ( $link_data ) {
-						$link_title = $link['title'] ? $link['title'] : $link_data['title'];
-						$html       .= '<a href="' . esc_url( $url ) . '" target="' . esc_attr( $target ) . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
+				if ( isset( $link['type'] ) ) {
+					if ( $link['type'] == 'custom_link' ) {
+
+                        $html .= '<a class="cw-custom-link cw-track" href="' . esc_url( $link['url'] ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link['title'] ) ) . '</a>';
+
+                    } else if ( array_key_exists( $link['type'], Clickwhale_Linkpage_Edit::get_post_types() ) ) {
+
+                        $link_title = $link['title'] ?: get_the_title($link['post_id']);
+						$html       .= '<a class="cw-post-type-link cw-track" href="' . esc_url( get_permalink( $link['post_id'] ) ) . '" target="' . esc_attr( $target ) . '" data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
+
+					} else {
+
+						$link_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ), ARRAY_A );
+						$url       = get_bloginfo( 'url' ) . '/' . $link_data['slug'];
+						if ( $link_data ) {
+							$link_title = $link['title'] ?: $link_data['title'];
+							$html       .= '<a class="cw-link" href="' . esc_url( $url ) . '" target="' . esc_attr( $target ) . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
+						}
+
 					}
 				}
 			}
@@ -103,7 +114,7 @@ class Clickwhale_Public_Linkpage {
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
-                jQuery('.linkpage-public--links').on('click', '.cw-custom-link', function (e) {
+                jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
 
                     jQuery.post(clickwhale_public_js.ajaxurl, {
