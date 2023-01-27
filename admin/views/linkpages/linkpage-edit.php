@@ -30,7 +30,8 @@ do_action( 'clickwhale_admin_banner' );
 		?>
 
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(),
+			   'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
 
 		<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() < ClickwhaleLinkpagesHelper::get_limit() ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
@@ -88,7 +89,8 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo wp_kses( wp_unslash( $item['description'] ), wp_kses_allowed_html( 'post' ) ) ?></textarea>
+                                    ><?php echo wp_kses( wp_unslash( $item['description'] ),
+		                                    wp_kses_allowed_html( 'post' ) ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -106,7 +108,8 @@ do_action( 'clickwhale_admin_banner' );
                                        required>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+									<?php $url = __( 'URL Preview',
+											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
@@ -154,19 +157,21 @@ do_action( 'clickwhale_admin_banner' );
                                 <div class="add-links-wrap">
                                     <div class="add-links-type-wrap">
                                         <select id="add-links-type" class="add-links-type regular-text">
-                                            <option value="" disabled selected>Select Link Type</option>
-                                            <option value="cw_link"><?php _e( 'ClickWhale Link', $this->plugin_name ) ?></option>
+                                            <option></option>
+                                            <option value="cw_link"><?php _e( 'ClickWhale Link',
+													$this->plugin_name ) ?></option>
 											<?php foreach ( $post_type_links as $name => $singular_name ) { ?>
                                                 <option value="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $singular_name ); ?></option>
 											<?php } ?>
-                                            <option value="cw_custom"><?php _e( 'Custom Link', $this->plugin_name ) ?></option>
+                                            <option value="cw_custom"><?php _e( 'Custom Link',
+													$this->plugin_name ) ?></option>
                                         </select>
                                     </div>
                                     <div class="add-links-inputs-wrap">
                                         <div id="links-post-type" class="">
                                             <select name="add-links-select" id="add-links-select" class="regular-text"
                                                     disabled>
-                                                <option value="" disabled selected>Select items...</option>
+                                                <option></option>
                                             </select>
                                         </div>
                                         <div id="links-cw-custom" class="hidden">
@@ -197,14 +202,15 @@ do_action( 'clickwhale_admin_banner' );
 									$links = maybe_unserialize( $item['links'] );
 									if ( $links ) {
 										foreach ( $links as $link ) {
-											echo $linkpage_edit->render_link($link);
+											echo $linkpage_edit->render_link( $link );
 										}
 									}
 									?>
 
                                 </div>
 								<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-                                    <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
+                                    <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
+											ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
 								<?php } ?>
                             </td>
                         </tr>
@@ -222,21 +228,24 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // PAGE BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[bg_color]"><?php _e( 'Site Background', $this->plugin_name ); ?></label>
+                                <label for="styles[bg_color]"><?php _e( 'Site Background',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[bg_color]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set page background color', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set page background color',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[text_color]"><?php _e( 'Page Text Color', $this->plugin_name ); ?></label>
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[text_color]"
@@ -259,28 +268,32 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color]"><?php _e( 'Background Color', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link background color (normal state)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link background color (normal state)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
 						<?php // LINK BACKGROUND:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color_hover'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link background color (hover/active)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link background color (hover/active)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
@@ -294,7 +307,8 @@ do_action( 'clickwhale_admin_banner' );
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link text color (normal state)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link text color (normal state)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
                         </tbody>
@@ -302,14 +316,16 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK TEXT COLOR:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color_hover]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color_hover'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link text color (hover/active)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link text color (hover/active)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
                         </tbody>

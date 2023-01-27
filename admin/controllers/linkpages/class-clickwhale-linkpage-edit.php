@@ -262,6 +262,17 @@ class Clickwhale_Linkpage_Edit {
                 });
                 wrap.disableSelection();
 
+                jQuery('#add-links-type').select2({
+                    placeholder: '<?php _e('Select link Type', 'clickwhale') ?>',
+                    width: '100%',
+                    minimumResultsForSearch: -1
+                });
+                jQuery('#add-links-select').select2({
+                    placeholder: '<?php _e('Select Item', 'clickwhale') ?>',
+                    width: '100%',
+                    minimumResultsForSearch: 10
+                });
+
                 jQuery(document)
                     .on('change', '#add-links-type', function () {
                         var linksType = jQuery(this).val();
@@ -285,7 +296,7 @@ class Clickwhale_Linkpage_Edit {
                                         jQuery(linksButton).prop('disabled', false);
 
                                         for (var link in links) {
-                                            linksSelectOptions += ('<option value="' + links[link].id + '" data-url="' + links[link].url + '">' + links[link].title + '</option>')
+                                            linksSelectOptions += ('<option value="' + links[link].id + '" data-url="' + links[link].url + '">' + links[link].title + ' (' + links[link].url + ')</option>')
                                         }
                                         jQuery(linksSelect).append(linksSelectOptions);
                                     } else {
