@@ -284,6 +284,16 @@
 	border: 1px dashed #dcdcde;
 }
 
+.select2-container .select2-selection--single{
+	height: 30px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	line-height: 30px;
+}
+.select2-results__option{
+	margin: 0;
+}
+
 .row--custom_link .linkpage-link {
 	display: flex;
 	gap: 4px;
