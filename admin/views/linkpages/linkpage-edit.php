@@ -9,10 +9,9 @@ $linkpage_edit = new Clickwhale_Linkpage_Edit();
 $linkpage_edit->init();
 
 // ITEM
-$defaults       = $linkpage_edit->get_defaults();
-$item           = $linkpage_edit->get_item( $_REQUEST );
-$linkpage_links = $linkpage_edit->get_links();
-
+$defaults        = $linkpage_edit->get_defaults();
+$item            = $linkpage_edit->get_item( $_REQUEST );
+$post_type_links = $linkpage_edit->get_post_types();
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 
@@ -31,7 +30,8 @@ do_action( 'clickwhale_admin_banner' );
 		?>
 
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(),
+			   'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
 
 		<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() < ClickwhaleLinkpagesHelper::get_limit() ) { ?>
             <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
@@ -89,7 +89,8 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="regular-text"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo wp_kses( wp_unslash( $item['description'] ), wp_kses_allowed_html( 'post' ) ) ?></textarea>
+                                    ><?php echo wp_kses( wp_unslash( $item['description'] ),
+		                                    wp_kses_allowed_html( 'post' ) ) ?></textarea>
                             </td>
                         </tr>
                         <tr class="form-field">
@@ -107,7 +108,8 @@ do_action( 'clickwhale_admin_banner' );
                                        required>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+									<?php $url = __( 'URL Preview',
+											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
                                 </p>
                             </td>
@@ -149,58 +151,66 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
+                                <label for="links"><?php _e( 'Add Link to Page', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-								<?php if ( $linkpage_links ) { ?>
-                                    <select id="add-pagelink-select" class="regular-text">
-										<?php foreach ( $linkpage_links as $linkpage_link ) { ?>
-                                            <option value="<?php echo esc_attr( $linkpage_link['id'] ) ?>"
-                                                    data-url="<?php echo esc_url( $linkpage_link['url'] ) ?>">
-												<?php echo esc_html( wp_unslash( $linkpage_link['title'] ) ) ?>
-                                            </option>
-										<?php } ?>
-                                    </select>
-                                    <button type="button" class="button" id="add-pagelink-link">
-										<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
-                                    </button>
-
-                                    <div class="linkpage-wrap">
-
-										<?php
-										$links = maybe_unserialize( $item['links'] );
-										if ( $links ) {
-											foreach ( $links as $link ) {
-												$link_data = $linkpage_edit->get_link( $link['id'] );
-												?>
-                                                <div class="linkpage-row">
-                                                    <input type="hidden"
-                                                           name="links[<?php echo esc_attr( $link['id'] ) ?>][id]"
-                                                           value="<?php echo esc_attr( $link['id'] ) ?>">
-                                                    <div class="linkpage-row--drag"></div>
-                                                    <div class="linkpage-link">
-														<?php echo esc_html( wp_unslash( $link_data['title'] ) ) ?>
-                                                        <span><?php echo esc_url( $link_data['url'] ) ?></span>
-                                                    </div>
-                                                    <div class="linkpage-link--title">
-                                                        <input type="text"
-                                                               name="links[<?php echo esc_attr( $link['id'] ) ?>][title]"
-                                                               value="<?php echo esc_html( wp_unslash( $link['title'] ) ) ?>"
-                                                               placeholder="<?php _e( 'Link Title', 'clickwhale' ); ?>">
-                                                    </div>
-                                                    <div class="linkpage-row--remove"></div>
-                                                </div>
-												<?php
-											}
-										}
-										?>
-
+                                <div class="add-links-wrap">
+                                    <div class="add-links-type-wrap">
+                                        <select id="add-links-type" class="add-links-type regular-text">
+                                            <option></option>
+                                            <option value="cw_link"><?php _e( 'ClickWhale Link',
+													$this->plugin_name ) ?></option>
+											<?php foreach ( $post_type_links as $name => $singular_name ) { ?>
+                                                <option value="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $singular_name ); ?></option>
+											<?php } ?>
+                                            <option value="cw_custom"><?php _e( 'Custom Link',
+													$this->plugin_name ) ?></option>
+                                        </select>
                                     </div>
-									<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-                                        <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added', ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
-									<?php } ?>
-								<?php } else { ?>
-                                    <div><?php _e( 'No links have been added yet' ); ?></div>
+                                    <div class="add-links-inputs-wrap">
+                                        <div id="links-post-type" class="">
+                                            <select name="add-links-select" id="add-links-select" class="regular-text"
+                                                    disabled>
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div id="links-cw-custom" class="hidden">
+                                            <div class="custom-links-action-wrap">
+                                                <input type="text"
+                                                       name="custom-link-title"
+                                                       placeholder="Link Title"
+                                                       value=""
+                                                       class="regular-text">
+                                                <input type="url"
+                                                       name="custom-link-url"
+                                                       placeholder="Link Url"
+                                                       value=""
+                                                       class="regular-text">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="add-links-button-wrap">
+                                        <button type="button" class="button" id="add-links-button" disabled>
+											<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="links-list-wrap">
+
+									<?php
+									$links = maybe_unserialize( $item['links'] );
+									if ( $links ) {
+										foreach ( $links as $link ) {
+											echo $linkpage_edit->render_link( $link );
+										}
+									}
+									?>
+
+                                </div>
+								<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
+                                    <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
+											ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
 								<?php } ?>
                             </td>
                         </tr>
@@ -218,21 +228,24 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // PAGE BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[bg_color]"><?php _e( 'Site Background', $this->plugin_name ); ?></label>
+                                <label for="styles[bg_color]"><?php _e( 'Site Background',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[bg_color]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set page background color', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set page background color',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[text_color]"><?php _e( 'Page Text Color', $this->plugin_name ); ?></label>
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[text_color]"
@@ -255,28 +268,32 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color]"><?php _e( 'Background Color', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link background color (normal state)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link background color (normal state)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
 						<?php // LINK BACKGROUND:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color_hover'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link background color (hover/active)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link background color (hover/active)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
 
@@ -290,7 +307,8 @@ do_action( 'clickwhale_admin_banner' );
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link text color (normal state)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link text color (normal state)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
                         </tbody>
@@ -298,14 +316,16 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK TEXT COLOR:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)', $this->plugin_name ); ?></label>
+                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)',
+										$this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color_hover]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_color_hover'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link text color (hover/active)', $this->plugin_name ) ?></p>
+                                <p class="description"><?php _e( 'Set link text color (hover/active)',
+										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
                         </tbody>

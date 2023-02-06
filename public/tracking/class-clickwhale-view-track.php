@@ -37,6 +37,7 @@ class Clickwhale_View_Track {
 		$table_name          = $wpdb->prefix . 'clickwhale_track';
 		$item                = [];
 		$item['event_type']  = 'view';
+		$item['link_id']     = 0;
 		$item['linkpage_id'] = $this->linkpage_id;
 		$item['visitor_id']  = $visitor_id;
 		$item['referer']     = $this->get_link_referer();
