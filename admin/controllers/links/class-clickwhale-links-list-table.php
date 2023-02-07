@@ -342,10 +342,13 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
 				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
-		$order   = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array(
+		$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
+		$order    = ( isset( $orderArg ) && in_array( $orderArg, array(
 				'asc',
 				'desc'
-			) ) ) ? sanitize_text_field( $_REQUEST['order'] ) : 'desc';
+			) ) ) ? $orderArg : 'desc';
+		$orderby  = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
+				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {

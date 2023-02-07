@@ -177,12 +177,13 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->process_bulk_action();
 
-		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		$order   = ( isset( $_REQUEST['order'] ) && in_array( $_REQUEST['order'], array(
+		$paged    = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+		$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
+		$order    = ( isset( $orderArg ) && in_array( $orderArg, array(
 				'asc',
 				'desc'
-			) ) ) ? sanitize_text_field( $_REQUEST['order'] ) : 'desc';
-		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
+			) ) ) ? $orderArg : 'desc';
+		$orderby  = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
 				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
 
 		// [REQUIRED] define $items array
