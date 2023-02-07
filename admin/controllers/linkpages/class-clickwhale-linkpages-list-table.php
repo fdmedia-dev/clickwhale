@@ -173,18 +173,19 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		$hidden      = [];
 		$sortable    = $this->get_sortable_columns();
 		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+		$orderByArg  = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
+		$orderArg    = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->process_bulk_action();
 
-		$paged    = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-		$order    = ( isset( $orderArg ) && in_array( $orderArg, array(
+		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $orderByArg,
+				array_keys( $this->get_sortable_columns() ) ) ) ? $orderByArg : 'id';
+		$order   = ( isset( $_REQUEST['order'] ) && in_array( $orderArg, array(
 				'asc',
 				'desc'
 			) ) ) ? $orderArg : 'desc';
-		$orderby  = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
-				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
 
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array

@@ -331,6 +331,8 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		$columns      = $this->get_columns();
 		$hidden       = array();
 		$sortable     = $this->get_sortable_columns();
+		$orderArg     = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
+		$orderByArg   = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
 
 		// here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
@@ -340,15 +342,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		// prepare query params, as usual current page, order by and order direction
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
-				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
-		$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-		$order    = ( isset( $orderArg ) && in_array( $orderArg, array(
+		$order   = ( isset( $_REQUEST['order'] ) && in_array( $orderArg, array(
 				'asc',
 				'desc'
 			) ) ) ? $orderArg : 'desc';
-		$orderby  = ( isset( $_REQUEST['orderby'] ) && in_array( $_REQUEST['orderby'],
-				array_keys( $this->get_sortable_columns() ) ) ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $orderByArg,
+				array_keys( $this->get_sortable_columns() ) ) ) ? $orderByArg : 'id';
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
