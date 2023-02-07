@@ -378,7 +378,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		// Change query for category filter results
 		if ( isset( $_GET['category'] ) && $_GET['category'] > 0 ) {
-			$category = sanitize_text_field( $_GET['category'] );
+			$category = htmlspecialchars( $_REQUEST['category'], ENT_QUOTES );
 
 			$this->items = $wpdb->get_results( $wpdb->prepare(
 				"SELECT *, COALESCE(track.clicks,0) AS clicks_count 
