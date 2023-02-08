@@ -14,6 +14,7 @@ $item            = $linkpage_edit->get_item( $_REQUEST );
 $post_type_links = $linkpage_edit->get_post_types();
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
+$social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -57,9 +58,12 @@ do_action( 'clickwhale_admin_banner' );
                            class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
                     <li><a href="#lp-tab-colors"
                            class=""><?php _e( 'Colors', 'clickwhale' ); ?></a></li>
+                    <li><a href="#lp-tab-seo"
+                           class=""><?php _e( 'SEO', 'clickwhale' ); ?></a></li>
                     <!--li><a href="#lp-tab-social"
                                    class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li-->
                 </ul>
+
                 <div id="lp-tab-settings">
                     <table style="width: 100%;" class="form-table">
                         <caption hidden>Linkpage main settings</caption>
@@ -114,7 +118,7 @@ do_action( 'clickwhale_admin_banner' );
                                 </p>
                             </td>
                         </tr>
-						<?php $logo_id = isset( $item['logo'] ) ? $item['logo'] : ''; ?>
+						<?php $logo_id = $item['logo'] ?? ''; ?>
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
@@ -218,6 +222,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
                 </div>
+
                 <div id="lp-tab-colors">
 
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
@@ -333,10 +338,120 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
                 </div>
+
+                <div id="lp-tab-seo">
+					<?php
+					$seoTitle         = $social['seo']['title'] ?? $item['title'];
+					$seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description' );
+					$seoOGTitle       = $social['seo']['ogtitle'] ?? '';
+					$seoOGDescription = $social['seo']['ogdescription'] ?? '';
+					$seoOGImageId     = $social['seo']['ogimage'] ?? '';
+					?>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <tbody>
+                        <caption hidden>Link Page SEO options</caption>
+
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][title]"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialSeoTitle"
+                                       name="social[seo][title]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="Some Title Placeholder Text">
+                                <p class="description"><?php _e( 'Set page SEO title', $this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][description]"><?php _e( 'SEO Description',
+										$this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialSeoDescription"
+                                       name="social[seo][description]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="Some Title Placeholder Text">
+                                <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][ogtitle]"><?php _e( 'Open Graph Title (Optional)',
+										$this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialOGTitle"
+                                       name="social[seo][ogtitle]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoOGTitle ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>">
+                                <p class="description"><?php _e( 'The title of your page for social network. By default this is Link Page title.',
+										$this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][ogdescription]"><?php _e( 'Open Graph Description (Optional)',
+										$this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input id="socialOGDescription"
+                                       name="social[seo][ogdescription]"
+                                       type="text"
+                                       value="<?php echo esc_attr( wp_unslash( $seoOGDescription ) ) ?>"
+                                       size="40"
+                                       class="regular-text"
+                                       placeholder="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>">
+                                <p class="description"><?php _e( 'The description of your page for social network. By default this is SEO description.',
+										$this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Image', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <div class="logo-field">
+									<?php
+									if ( $seoOGImageId ) {
+										$ogImage = wp_get_attachment_image_src( $seoOGImageId );
+										?>
+                                        <a href="#" class="linkpage-logo-upload">
+                                            <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage[0] ) ?>"/>
+                                        </a>
+                                        <a href="#" class="linkpage-logo-remove">Remove image</a>
+                                        <input type="hidden" name="social[seo][ogimage]"
+                                               value="<?php echo esc_attr( $seoOGImageId ); ?>">
+									<?php } else { ?>
+                                        <a href="#" class="linkpage-logo-upload">
+											<?php _e( 'Upload image' ) ?>
+                                        </a>
+                                        <a href="#" class="linkpage-logo-remove" style="display:none">
+											<?php _e( 'Remove image' ) ?>
+                                        </a>
+                                        <input type="hidden" name="social[seo][ogimage]" value="">
+									<?php } ?>
+                                </div>
+                                <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <!--div id="lp-tab-social">
-							<?php do_action( 'clickwhale_admin_pro_message' ); ?>
-							<?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
-                        </div -->
+                    <?php do_action( 'clickwhale_admin_pro_message' ); ?>
+                    <?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
+                </div -->
             </div>
 
             <input type="hidden" id="created_at" name="created_at"

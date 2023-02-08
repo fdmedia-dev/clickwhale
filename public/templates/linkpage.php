@@ -11,7 +11,6 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <title><?php echo $linkpage->get_title() ?></title>
 
 	<?php wp_head(); ?>
 	<?php echo $linkpage->get_styles() ?>

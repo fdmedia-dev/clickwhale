@@ -4,18 +4,125 @@ class Clickwhale_Public_Linkpage {
 	private $post;
 	private $linkpages_options;
 	private $other_options;
+	private $data;
+	private $social;
 
 	public function __construct( $post ) {
 		$this->post              = $post;
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
 		$this->other_options     = get_option( 'clickwhale_other_options' );
+		$this->data              = maybe_unserialize( $this->post->linkpage );
+		$this->social            = maybe_unserialize( $this->data['social'] );
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
+
+		add_action( 'wp_head', [ $this, 'start_wp_head_buffer' ], 0 );
+		add_action( 'wp_head', [ $this, 'end_wp_head_buffer' ], PHP_INT_MAX );
+
+		// Remove Yoast SEO Data
+		add_filter( 'wpseo_json_ld_output', '__return_false' );
 	}
 
+	function start_wp_head_buffer() {
+		ob_start();
+	}
+
+	function end_wp_head_buffer() {
+		$in = ob_get_clean();
+
+		// replace <title>
+		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->set_wp_title() . '</title>', $in );
+
+		$dom = new DOMDocument;
+		$dom->loadHTML( $in, LIBXML_HTML_NODEFDTD );
+		$xpath = new DOMXPath( $dom );
+
+		$tags = array(
+			'description'   => array(
+				'name'    => 'description',
+				'content' => esc_attr( $this->set_wp_description() )
+			),
+			'ogtitle'       => array(
+				'name'    => 'og:title',
+				'content' =>
+					isset( $this->social['seo']['ogtitle'] ) && $this->social['seo']['ogtitle']
+						? esc_attr( $this->social['seo']['ogtitle'] )
+						: esc_attr( $this->set_wp_title() )
+			),
+			'ogurl'         => array(
+				'name'    => 'og:url',
+				'content' => esc_url( home_url( '/' . $this->data['slug'] . '/' ) )
+			),
+			'ogimage'       => array(
+				'name'    => 'og:image',
+				'content' =>
+					isset( $this->social['seo']['ogimage'] ) && $this->social['seo']['ogimage']
+						? esc_url( wp_get_attachment_image_src( $this->social['seo']['ogimage'], 'full' )[0] )
+						: esc_url( wp_get_attachment_image_src( $this->data['logo'], 'full' )[0] ),
+			),
+			'ogtype'        => array(
+				'name'    => 'og:type',
+				'content' => 'website'
+			),
+			'ogdescription' => array(
+				'name'    => 'og:description',
+				'content' =>
+					isset( $this->social['seo']['ogdescription'] ) && $this->social['seo']['ogdescription']
+						? esc_attr( $this->social['seo']['ogdescription'] )
+						: esc_attr( $this->set_wp_description() )
+			),
+			'ogtype'        => array(
+				'name'    => 'og:locale',
+				'content' => get_bloginfo( 'language' )
+			),
+		);
+
+		foreach ( $tags as $k => $v ) {
+			$metaTag = $xpath->query( '//meta[@property="' . $v['name'] . '"]' )[0];
+			if ( $metaTag ) {
+				$metaTag->setAttribute( 'content', $v['content'] );
+			} else {
+				$newMetaTag = $dom->createElement( "meta" );
+				$newMetaTag->setAttribute( "name", $v['name'] );
+				$newMetaTag->setAttribute( "content", $v['content'] );
+				$dom->appendChild( $newMetaTag );
+			}
+		}
+
+		$in = $dom->saveHTML();
+
+		$in = str_replace( array( '<html>', '</html>', '<head>', '</head>' ), '', $in );
+
+		echo $in;
+	}
+
+	/**
+	 * Set <title> tag in <head>
+	 * @return mixed|string
+	 */
+	public function set_wp_title() {
+		return isset( $this->social['seo']['title'] ) && $this->social['seo']['title']
+			? $this->social['seo']['title']
+			: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
+	}
+
+	public function set_wp_description() {
+		return isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
+			? $this->social['seo']['description']
+			: get_bloginfo( 'description' );
+	}
+
+	/**
+	 * Get link Page Title from DB
+	 * @return string
+	 */
 	public function get_title() {
 		return wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
 	}
 
+	/**
+	 * Get LInk Page Description from DB
+	 * @return string
+	 */
 	public function get_description() {
 		return isset( $this->post->linkpage['description'] ) ? wp_kses( wp_unslash( $this->post->linkpage['description'] ),
 			wp_kses_allowed_html( 'post' ) ) : '';
