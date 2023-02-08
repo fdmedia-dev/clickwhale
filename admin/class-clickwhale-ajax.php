@@ -40,7 +40,7 @@ class Clickwhale_Ajax {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
@@ -49,11 +49,14 @@ class Clickwhale_Ajax {
 	}
 
 	/**
+	 * @param $plugin_name
+	 * @param $version
+	 *
 	 * @return Clickwhale_Ajax
 	 */
-	public static function getInstance() {
+	public static function getInstance( $plugin_name, $version ): Clickwhale_Ajax {
 		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
+			self::$instance = new self( $plugin_name, $version );
 		}
 
 		return self::$instance;
@@ -109,6 +112,7 @@ class Clickwhale_Ajax {
 
 			update_option( 'clickwhale_tools_migration_options', $options );
 			wp_send_json_success();
+			wp_die();
 		} else {
 			return false;
 		}
@@ -122,7 +126,6 @@ class Clickwhale_Ajax {
 		$options   = get_option( 'clickwhale_tools_migration_options' );
 		$migrant   = isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '';
 		$item      = $available[ $migrant ];
-		$result    = [];
 
 		if ( $item ) {
 			if ( $this->migration->check_active( $item['path'] ) ) {
@@ -165,8 +168,8 @@ class Clickwhale_Ajax {
 
 		foreach ( $this->migration->available_migrations() as $item ) {
 
-			$migration_options[ $item['slug'] . '_categories' ]          = $item['data']['categories'] ? true : false;
-			$migration_options[ $item['slug'] . '_links' ]               = $item['data']['links'] ? true : false;
+			$migration_options[ $item['slug'] . '_categories' ]          = (bool) $item['data']['categories'];
+			$migration_options[ $item['slug'] . '_links' ]               = (bool) $item['data']['links'];
 			$notice_migrate_options[ $item['slug'] ]                     = false;
 			$notice_deactive_options[ $item['slug'] ]                    = true;
 			$last_migration_options[ $item['slug'] . '_last_migration' ] = '';
@@ -253,6 +256,78 @@ class Clickwhale_Ajax {
 		}
 
 		wp_send_json_success( $result );
+
+		wp_die();
+	}
+
+	public function get_posts_by_post_type() {
+		check_ajax_referer( 'get_posts_by_post_type', 'security' );
+
+		if ( ! isset( $_POST['post_type'] ) || ! $_POST['post_type'] ) {
+			wp_send_json_error( 'Post Type Error!' );
+			wp_die();
+		}
+
+		$result = [];
+		$args   = array(
+			'numberposts' => - 1,
+			'post_type'   => $_POST['post_type'],
+			'orderby'     => 'title',
+			'order'       => 'ASC',
+			'post_status' => 'publish'
+		);
+		$posts  = get_posts( $args );
+
+		if ( $posts ) {
+			foreach ( $posts as $post ) {
+				$result['posts'][] = array(
+					'id'    => $post->ID,
+					'title' => $post->post_title,
+					'url'   => get_permalink( $post->ID ),
+				);
+			}
+
+		} else {
+			$result['posts'] = false;
+		}
+
+		wp_send_json_success( $result );
+		wp_die();
+	}
+
+	public function get_cw_links() {
+		check_ajax_referer( 'get_cw_links', 'security' );
+
+		global $wpdb;
+
+		$result          = [];
+		$result['links'] = $wpdb->get_results(
+			"SELECT id,title,url from {$wpdb->prefix}clickwhale_links",
+			ARRAY_A
+		);
+
+		if ( ! $result['links'] ) {
+			wp_send_json_error( 'ClickWhale Links Not Found!' );
+			wp_die();
+		}
+
+		wp_send_json_success( $result );
+		wp_die();
+	}
+
+	public function track_custom_link() {
+		check_ajax_referer( 'track_custom_link', 'security' );
+
+		if ( ! isset( $_POST['id'] ) || ! $_POST['id'] ) {
+			wp_send_json_error( 'Track Error!' );
+
+			wp_die();
+		}
+
+		// Track click on link
+		$track = new Clickwhale_Click_Track( $_POST['id'], true );
+
+		wp_send_json_success();
 
 		wp_die();
 	}

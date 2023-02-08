@@ -124,7 +124,8 @@ class Clickwhale_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_localize_script( $this->plugin_name, 'clickwhale_public_js',
+			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	public function clickwhale_url_params_callback( $url ) {

@@ -11,6 +11,7 @@ class Clickwhale_Click_Track {
 	protected $linkage_id;
 	protected $user;
 	protected $visitor;
+	protected $is_custom;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -19,9 +20,10 @@ class Clickwhale_Click_Track {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $link_id = 0 ) {
-		$this->link_id = (int) $link_id;
-		$this->visitor = new Clickwhale_Visitor_Track();
+	public function __construct( string $link_id = '', bool $is_custom = false ) {
+		$this->link_id   = $link_id;
+		$this->is_custom = $is_custom;
+		$this->visitor   = new Clickwhale_Visitor_Track();
 
 		if ( $this->visitor->visitor_id ) {
 			$this->update_track_database( $this->visitor->visitor_id );
@@ -51,14 +53,15 @@ class Clickwhale_Click_Track {
 	private function update_track_database( $visitor_id ) {
 		global $wpdb;
 
-		$table_name          = $wpdb->prefix . 'clickwhale_track';
-		$item                = [];
-		$item['event_type']  = 'click';
-		$item['link_id']     = $this->link_id;
-		$item['linkpage_id'] = $this->get_linkpage_id() ? $this->get_linkpage_id() : 0;
-		$item['visitor_id']  = $visitor_id;
-		$item['referer']     = $this->get_link_referer();
-		$item['created_at']  = gmdate( 'Y-m-d H:i:s' );
+		$table_name             = $wpdb->prefix . 'clickwhale_track';
+		$item                   = [];
+		$item['event_type']     = 'click';
+		$item['link_id']        = ! $this->is_custom ? $this->link_id : 0;
+		$item['custom_link_id'] = $this->is_custom ? $this->link_id : '';
+		$item['linkpage_id']    = $this->get_linkpage_id() ? $this->get_linkpage_id() : 0;
+		$item['visitor_id']     = $visitor_id;
+		$item['referer']        = $this->get_link_referer();
+		$item['created_at']     = gmdate( 'Y-m-d H:i:s' );
 
 		return $wpdb->insert( $table_name, $item );
 	}

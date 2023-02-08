@@ -168,8 +168,11 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
+		if(isset($_GET['page']) && substr( $_GET['page'], 0, strlen('clickwhale') ) === 'clickwhale') {
+			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
+		}
+
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
 		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback' ); // banner in admin part
 		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
@@ -188,6 +191,8 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $Clickwhale_Ajax, 'clickwhale_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug', $Clickwhale_Ajax, 'check_slug' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $Clickwhale_Ajax, 'get_posts_by_post_type' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
@@ -233,10 +238,13 @@ class Clickwhale {
 	private function define_public_hooks() {
 
 		$Clickwhale_Public = new Clickwhale_Public( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Ajax   = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $Clickwhale_Public, 'do_redirect_handler' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/public/track_custom_link', $Clickwhale_Ajax, 'track_custom_link' );
+		$this->loader->add_action( 'wp_ajax_nopriv_clickwhale/public/track_custom_link', $Clickwhale_Ajax, 'track_custom_link' );
 
 		$this->loader->add_filter( 'clickwhale_url_params', $Clickwhale_Public, 'clickwhale_url_params_callback', 10, 2 );
 	}

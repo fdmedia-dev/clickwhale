@@ -2,7 +2,7 @@
 global $post;
 
 $linkpage = new Clickwhale_Public_Linkpage( $post );
-$view     = new Clickwhale_View_Track( $post->post_content['id'] );
+$view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,8 +31,10 @@ $view     = new Clickwhale_View_Track( $post->post_content['id'] );
 
         <div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
 
-		<?php if ( $linkpage->get_socails() ) { ?>
-            <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
+		<?php if ( 'local' !== wp_get_environment_type() ) { ?>
+			<?php if ( $linkpage->get_socails() ) { ?>
+                <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
+			<?php } ?>
 		<?php } ?>
 
     </div>
