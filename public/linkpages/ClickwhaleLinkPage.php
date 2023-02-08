@@ -29,7 +29,7 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 	}
 
 	public function setTitle( $title ) {
-		$this->title = filter_var( $title, FILTER_SANITIZE_STRING );
+		$this->title = filter_var( $title, FILTER_UNSAFE_RAW );
 
 		return $this;
 	}
