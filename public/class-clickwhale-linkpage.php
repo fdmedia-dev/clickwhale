@@ -15,6 +15,12 @@ class Clickwhale_Public_Linkpage {
 		$this->social            = maybe_unserialize( $this->data['social'] );
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
 
+		// Change Robots Tag
+		if ( get_option( 'blog_public' ) !== '0' ) {
+			add_filter( 'wp_robots', [ $this, 'robots_tag' ], PHP_INT_MAX );
+		}
+
+		// Meta tag manipulation
 		add_action( 'wp_head', [ $this, 'start_wp_head_buffer' ], 0 );
 		add_action( 'wp_head', [ $this, 'end_wp_head_buffer' ], PHP_INT_MAX );
 
@@ -22,11 +28,40 @@ class Clickwhale_Public_Linkpage {
 		add_filter( 'wpseo_json_ld_output', '__return_false' );
 	}
 
-	function start_wp_head_buffer() {
+	public function robots_tag( $robots ) {
+		$robots     = [];
+		$robotsData = isset( $this->social['seo']['robots'] ) ? maybe_unserialize( $this->social['seo']['robots'] ) : false;
+
+		// by default we need set this values
+		$robots['index']  = ! isset( $this->social['seo']['robots']['noindex'] );
+		$robots['follow'] = ! isset( $this->social['seo']['robots']['nofollow'] );
+
+		if ( $robotsData ) {
+
+			// replace if needed
+			$robots['index']  = ! in_array( 'noindex', $robotsData );
+			$robots['follow'] = ! in_array( 'nofollow', $robotsData );
+
+			foreach ( $robotsData as $robot ) {
+				if ( 'nosnippet' === $robot ) {
+					unset( $robots['max-snippet'] );
+				}
+				$robots[ $robot ] = true;
+			}
+
+			if ( in_array( 'noindex', $robotsData ) && in_array( 'nofollow', $robotsData ) ) {
+				unset( $robots['max-snippet'] );
+			}
+		}
+
+		return $robots;
+	}
+
+	public function start_wp_head_buffer() {
 		ob_start();
 	}
 
-	function end_wp_head_buffer() {
+	public function end_wp_head_buffer() {
 		$in = ob_get_clean();
 
 		// replace <title>
@@ -70,7 +105,7 @@ class Clickwhale_Public_Linkpage {
 						? esc_attr( $this->social['seo']['ogdescription'] )
 						: esc_attr( $this->set_wp_description() )
 			),
-			'ogtype'        => array(
+			'locale'        => array(
 				'name'    => 'og:locale',
 				'content' => get_bloginfo( 'language' )
 			),
@@ -99,13 +134,13 @@ class Clickwhale_Public_Linkpage {
 	 * Set <title> tag in <head>
 	 * @return mixed|string
 	 */
-	public function set_wp_title() {
+	private function set_wp_title() {
 		return isset( $this->social['seo']['title'] ) && $this->social['seo']['title']
 			? $this->social['seo']['title']
 			: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
 	}
 
-	public function set_wp_description() {
+	private function set_wp_description() {
 		return isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
 			? $this->social['seo']['description']
 			: get_bloginfo( 'description' );
