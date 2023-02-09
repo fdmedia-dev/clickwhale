@@ -12,24 +12,59 @@ $linkpage_edit->init();
 $defaults        = $linkpage_edit->get_defaults();
 $item            = $linkpage_edit->get_item( $_REQUEST );
 $post_type_links = $linkpage_edit->get_post_types();
+
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 $social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
 
+// HEADING
+if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
+	$pageHeading = __( 'Edit Link Page', $this->plugin_name );
+} else {
+	$pageHeading = __( 'Add Link Page', $this->plugin_name );
+}
+
+// LP IMAGE
+$logo_id = $item['logo'] ?? '';
+
+// LP SEO ROBOTS
+$seoTitle         = $social['seo']['title'] ?? $item['title'];
+$seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description' );
+$robots           = array(
+	'noindex'      => array(
+		'title'       => 'No Index',
+		'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.",
+			$this->plugin_name )
+	),
+	'nofollow'     => array(
+		'title'       => 'No Follow',
+		'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages",
+			$this->plugin_name )
+	),
+	'noarchive'    => array(
+		'title'       => 'No Archive',
+		'description' => "Do not show a cached link in search results."
+	),
+	'nosnippet'    => array(
+		'title'       => 'No Snippet',
+		'description' => "Do not show a text snippet or video preview in the search results for this page."
+	),
+	'noimageindex' => array(
+		'title'       => 'No Image Index',
+		'description' => "Do not index images on this page."
+	)
+);
+$seoOGTitle       = $social['seo']['ogtitle'] ?? '';
+$seoOGDescription = $social['seo']['ogdescription'] ?? '';
+$seoOGImageId     = $social['seo']['ogimage'] ?? '';
+
+// BANNER
 do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
     <h1 class="wp-heading-inline">
-
-		<?php
-		if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
-			_e( 'Edit Link Page', $this->plugin_name );
-		} else {
-			_e( 'Add Link Page', $this->plugin_name );
-		}
-		?>
-
+		<?php echo $pageHeading ?>
         <a class="page-title-action"
            href="<?php echo get_admin_url( get_current_blog_id(),
 			   'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
@@ -118,7 +153,6 @@ do_action( 'clickwhale_admin_banner' );
                                 </p>
                             </td>
                         </tr>
-						<?php $logo_id = $item['logo'] ?? ''; ?>
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
@@ -228,7 +262,6 @@ do_action( 'clickwhale_admin_banner' );
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <tbody>
-                        <caption hidden>Link Page customization options</caption>
 
 						<?php // PAGE BACKGROUND ?>
                         <tr class="form-field">
@@ -268,7 +301,6 @@ do_action( 'clickwhale_admin_banner' );
                     <h2><?php _e( 'Links', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <tbody>
-                        <caption hidden>Link Page links customization options</caption>
 
 						<?php // LINK BACKGROUND ?>
                         <tr class="form-field">
@@ -338,18 +370,11 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
                 </div>
-
                 <div id="lp-tab-seo">
-					<?php
-					$seoTitle         = $social['seo']['title'] ?? $item['title'];
-					$seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description' );
-					$seoOGTitle       = $social['seo']['ogtitle'] ?? '';
-					$seoOGDescription = $social['seo']['ogdescription'] ?? '';
-					$seoOGImageId     = $social['seo']['ogimage'] ?? '';
-					?>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <tbody>
-                        <caption hidden>Link Page SEO options</caption>
+
+                        <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
 
                         <tr class="form-field">
                             <th scope="row">
@@ -382,6 +407,64 @@ do_action( 'clickwhale_admin_banner' );
                                 <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
                             </td>
                         </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="social[seo][robots]">
+									<?php _e( 'Robots Meta', $this->plugin_name ) ?>
+                                </label>
+                            </th>
+                            <td>
+								<?php if ( get_option( 'blog_public' ) === '0' ) { ?>
+                                    <div class="links-info">
+										<?php printf(
+											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',
+												$this->plugin_name ),
+											esc_url( admin_url( 'options-reading.php' ) )
+										); ?>
+                                    </div>
+								<?php } ?>
+
+								<?php
+								if ( $robots ) {
+									$current_robots =
+										isset( $social['seo']['robots'] )
+											? maybe_unserialize( $social['seo']['robots'] )
+											: [];
+									foreach ( $robots as $robotKey => $robotVal ) {
+										?>
+                                        <p>
+                                            <input type="checkbox"
+                                                   id="robots-<?php echo esc_attr( $robotKey ) ?>"
+                                                   name="social[seo][robots][]"
+                                                   value="<?php echo esc_attr( $robotKey ) ?>"
+												<?php
+												if ( $current_robots ) {
+													checked( 1, in_array( $robotKey, $current_robots ) );
+												}
+												if ( get_option( 'blog_public' ) === '0' ) { ?>
+                                                    disabled
+												<?php } ?>
+                                            />
+                                            <label for="category-<?php echo esc_attr( $robotKey ) ?>">
+												<?php echo esc_attr( wp_unslash( $robotVal['title'] ) ) ?>
+                                                <small>(<?php echo esc_attr( wp_unslash( $robotVal['description'] ) ) ?>
+                                                    )</small>
+                                            </label>
+                                        </p>
+										<?php
+									}
+								}
+								?>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <hr>
+
+                    <h2><?php _e( 'Open Graph Options', $this->plugin_name ); ?></h2>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <tbody>
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="social[seo][ogtitle]"><?php _e( 'Open Graph Title (Optional)',
