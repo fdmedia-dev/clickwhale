@@ -12,11 +12,11 @@ class Clickwhale_Public_Linkpage {
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
 		$this->other_options     = get_option( 'clickwhale_other_options' );
 		$this->data              = maybe_unserialize( $this->post->linkpage );
-		$this->social            = maybe_unserialize( $this->data['social'] );
+		$this->social            = isset( this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
 
 		// Change Robots Tag
-		if ( get_option( 'blog_public' ) !== '0' ) {
+		if ( get_option( 'blog_public' ) === '1' && isset( $this->social['seo']['robots'] ) ) {
 			add_filter( 'wp_robots', [ $this, 'robots_tag' ], PHP_INT_MAX );
 		}
 
@@ -236,6 +236,10 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_socails() {
+		if ( ! isset( $this->post->linkpage['social'] ) ) {
+			return;
+		}
+
 		$social_html = '';
 		$social_svg  = $this->socials_svg();
 		$socials     = maybe_unserialize( $this->post->linkpage['social'] );
