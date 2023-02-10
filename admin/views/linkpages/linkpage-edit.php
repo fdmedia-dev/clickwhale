@@ -441,7 +441,7 @@ do_action( 'clickwhale_admin_banner' );
 												if ( $current_robots ) {
 													checked( 1, in_array( $robotKey, $current_robots ) );
 												}
-												if ( get_option( 'blog_public' ) === '0' ) { ?>
+												if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                                     disabled
 												<?php } ?>
                                             />
