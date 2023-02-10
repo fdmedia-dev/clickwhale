@@ -53,7 +53,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		}
 	}
 
-	private function get_users_data( $search = "", $order, $orderby ) {
+	private function get_users_data( $order, $orderby, $search = "" ) {
 		global $wpdb;
 
 		if ( ! empty( $search ) ) {
@@ -331,8 +331,8 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		$columns      = $this->get_columns();
 		$hidden       = array();
 		$sortable     = $this->get_sortable_columns();
-		$orderArg     = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-		$orderByArg   = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
+		$orderArg     = isset( $_REQUEST['order'] ) ? htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES ) : false;
+		$orderByArg   = isset( $_REQUEST['orderby'] ) ? htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES ) : false;
 
 		// here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
@@ -351,12 +351,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->users_data = $this->get_users_data( sanitize_text_field( $_GET['s'] ), $order, $orderby );
+			$this->users_data = $this->get_users_data( $order, $orderby, sanitize_text_field( $_GET['s'] ) );
 			$total_items      = count( $this->users_data );
 			$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 			usort( $this->users_data, array( &$this, 'usort_reorder' ) );
 		} else {
-			$this->users_data = $this->get_users_data( null, $order, $orderby );
+			$this->users_data = $this->get_users_data( $order, $orderby );
 			$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_links" );
 		}
 
