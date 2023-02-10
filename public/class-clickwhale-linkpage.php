@@ -16,7 +16,7 @@ class Clickwhale_Public_Linkpage {
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
 
 		// Change Robots Tag
-		if ( ( get_option( 'blog_public' ) || get_option( 'blog_public' ) === '1' ) && isset( $this->social['seo']['robots'] ) ) {
+		if ( ( get_option( 'blog_public' ) || get_option( 'blog_public' ) === '1' ) ) {
 			add_filter( 'wp_robots', [ $this, 'robots_tag' ], PHP_INT_MAX );
 		}
 
@@ -29,10 +29,9 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function robots_tag( $robots ) {
-		$robots     = [];
 		$robotsData = isset( $this->social['seo']['robots'] ) ? maybe_unserialize( $this->social['seo']['robots'] ) : false;
 
-		// by default we need set this values
+		// by default we need set this values because without SEO Plugin it can be empty
 		$robots['index']  = ! isset( $this->social['seo']['robots']['noindex'] );
 		$robots['follow'] = ! isset( $this->social['seo']['robots']['nofollow'] );
 
