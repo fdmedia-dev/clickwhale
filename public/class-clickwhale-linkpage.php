@@ -237,7 +237,7 @@ class Clickwhale_Public_Linkpage {
 
 	public function get_socails() {
 		if ( ! isset( $this->post->linkpage['social'] ) ) {
-			return;
+			return false;
 		}
 
 		$social_html = '';
