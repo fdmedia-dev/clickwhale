@@ -101,7 +101,7 @@ do_action( 'clickwhale_admin_banner' );
 
                 <div id="lp-tab-settings">
                     <table style="width: 100%;" class="form-table">
-                        <caption hidden>Linkpage main settings</caption>
+                        <caption hidden>Linkpage Main Settings</caption>
                         <tbody>
                         <tr class="form-field">
                             <th scope="row">
@@ -261,6 +261,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Customization Options</caption>
                         <tbody>
 
 						<?php // PAGE BACKGROUND ?>
@@ -300,6 +301,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'Links', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Links Customization Options</caption>
                         <tbody>
 
 						<?php // LINK BACKGROUND ?>
@@ -372,6 +374,7 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
                 <div id="lp-tab-seo">
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page SEO Options</caption>
                         <tbody>
 
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
@@ -463,6 +466,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'Open Graph Options', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Open Graph Options</caption>
                         <tbody>
                         <tr class="form-field">
                             <th scope="row">
