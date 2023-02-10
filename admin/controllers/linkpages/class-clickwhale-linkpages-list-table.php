@@ -173,8 +173,8 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		$hidden      = [];
 		$sortable    = $this->get_sortable_columns();
 		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
-		$orderByArg  = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-		$orderArg    = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
+		$orderByArg  = isset( $_REQUEST['orderby'] ) ? htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES ) : false;
+		$orderArg    = isset( $_REQUEST['order'] ) ? htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES ) : false;
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->process_bulk_action();
