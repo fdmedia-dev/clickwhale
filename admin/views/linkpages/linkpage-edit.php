@@ -413,8 +413,7 @@ do_action( 'clickwhale_admin_banner' );
                                 </label>
                             </th>
                             <td>
-                                <?php var_dump(get_option( 'blog_public' )); ?>
-								<?php if ( get_option( 'blog_public' ) !== '1' ) { ?>
+	                            <?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                     <div class="links-info">
 										<?php printf(
 											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',

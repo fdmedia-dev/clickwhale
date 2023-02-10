@@ -16,7 +16,7 @@ class Clickwhale_Public_Linkpage {
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
 
 		// Change Robots Tag
-		if ( get_option( 'blog_public' ) === '1' && isset( $this->social['seo']['robots'] ) ) {
+		if ( ( get_option( 'blog_public' ) || get_option( 'blog_public' ) === '1' ) && isset( $this->social['seo']['robots'] ) ) {
 			add_filter( 'wp_robots', [ $this, 'robots_tag' ], PHP_INT_MAX );
 		}
 
