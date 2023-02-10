@@ -30,10 +30,8 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 
         <div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
 
-		<?php if ( 'local' !== wp_get_environment_type() ) { ?>
-			<?php if ( $linkpage->get_socails() ) { ?>
-                <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
-			<?php } ?>
+		<?php if ( $linkpage->get_socails() ) { ?>
+            <ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
 		<?php } ?>
 
     </div>
