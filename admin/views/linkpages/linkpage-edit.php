@@ -378,7 +378,7 @@ do_action( 'clickwhale_admin_banner' );
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="social[seo][title]"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                                <label for="socialSeoTitle"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input id="socialSeoTitle"
@@ -393,7 +393,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="social[seo][description]"><?php _e( 'SEO Description',
+                                <label for="socialSeoDescription"><?php _e( 'SEO Description',
 										$this->plugin_name ); ?></label>
                             </th>
                             <td>
@@ -409,7 +409,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="social[seo][robots]">
+                                <label>
 									<?php _e( 'Robots Meta', $this->plugin_name ) ?>
                                 </label>
                             </th>
@@ -445,7 +445,7 @@ do_action( 'clickwhale_admin_banner' );
                                                     disabled
 												<?php } ?>
                                             />
-                                            <label for="category-<?php echo esc_attr( $robotKey ) ?>">
+                                            <label for="robots-<?php echo esc_attr( $robotKey ) ?>">
 												<?php echo esc_attr( wp_unslash( $robotVal['title'] ) ) ?>
                                                 <small>(<?php echo esc_attr( wp_unslash( $robotVal['description'] ) ) ?>
                                                     )</small>
@@ -467,7 +467,7 @@ do_action( 'clickwhale_admin_banner' );
                         <tbody>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="social[seo][ogtitle]"><?php _e( 'Open Graph Title (Optional)',
+                                <label for="socialOGTitle"><?php _e( 'Open Graph Title (Optional)',
 										$this->plugin_name ); ?></label>
                             </th>
                             <td>
@@ -484,7 +484,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="social[seo][ogdescription]"><?php _e( 'Open Graph Description (Optional)',
+                                <label for="socialOGDescription"><?php _e( 'Open Graph Description (Optional)',
 										$this->plugin_name ); ?></label>
                             </th>
                             <td>
