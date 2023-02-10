@@ -12,7 +12,7 @@ class Clickwhale_Public_Linkpage {
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
 		$this->other_options     = get_option( 'clickwhale_other_options' );
 		$this->data              = maybe_unserialize( $this->post->linkpage );
-		$this->social            = isset( this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
+		$this->social            = isset( $this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
 
 		// Change Robots Tag
