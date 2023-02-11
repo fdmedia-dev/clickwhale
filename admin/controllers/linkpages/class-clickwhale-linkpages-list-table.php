@@ -168,24 +168,27 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	function prepare_items() {
 		global $wpdb;
 
-		$per_page    = 20;
-		$columns     = $this->get_columns();
-		$hidden      = [];
-		$sortable    = $this->get_sortable_columns();
-		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
-		$orderByArg  = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-		$orderArg    = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-
+		$per_page              = 20;
+		$orderby               = 'id';
+		$order                 = 'desc';
+		$columns               = $this->get_columns();
+		$hidden                = [];
+		$sortable              = $this->get_sortable_columns();
+		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
 		$this->_column_headers = array( $columns, $hidden, $sortable );
+
 		$this->process_bulk_action();
 
-		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		$orderby = ( isset( $_REQUEST['orderby'] ) && in_array( $orderByArg,
-				array_keys( $this->get_sortable_columns() ) ) ) ? $orderByArg : 'id';
-		$order   = ( isset( $_REQUEST['order'] ) && in_array( $orderArg, array(
-				'asc',
-				'desc'
-			) ) ) ? $orderArg : 'desc';
+		if ( isset( $_REQUEST['orderby'] ) ) {
+			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
+			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
+		}
+		if ( isset( $_REQUEST['order'] ) ) {
+			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
+			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
+		}
+
+		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		// [REQUIRED] define $items array
 		// notice that last argument is ARRAY_A, so we will retrieve array
