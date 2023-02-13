@@ -163,7 +163,7 @@ class Clickwhale_Activator {
 	}
 
 	/**
-	 * @since    1.0.1
+	 * @since    1.1.1
 	 */
 	private function modify_columns() {
 		global $wpdb;

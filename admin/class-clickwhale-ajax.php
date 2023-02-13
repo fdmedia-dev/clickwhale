@@ -260,6 +260,10 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * @since 1.1.0
+	 * @return void
+	 */
 	public function get_posts_by_post_type() {
 		check_ajax_referer( 'get_posts_by_post_type', 'security' );
 
@@ -295,6 +299,10 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * @since 1.1.0
+	 * @return void
+	 */
 	public function get_cw_links() {
 		check_ajax_referer( 'get_cw_links', 'security' );
 
@@ -315,6 +323,10 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * @since 1.1.0
+	 * @return void
+	 */
 	public function track_custom_link() {
 		check_ajax_referer( 'track_custom_link', 'security' );
 
