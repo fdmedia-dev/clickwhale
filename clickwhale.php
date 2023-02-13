@@ -9,7 +9,7 @@
  * that starts the plugin.
  *
  * @link              https://fdmedia.io
- * @since             1.§.0
+ * @since             1.1.0
  * @package           Clickwhale
  *
  * @wordpress-plugin
