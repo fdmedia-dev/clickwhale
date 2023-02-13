@@ -5,46 +5,54 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 	private $url;
 	private $title;
 	private $content;
+	private $linkpage;
 	private $template;
 	private $wp_post;
 
-	function __construct( $url, $title = 'Untitled', $template = 'page.php' ) {
+	public function __construct( $url, $title = 'Untitled', $template = 'page.php', $linkpage = 0 ) {
 		$this->url = filter_var( $url, FILTER_SANITIZE_URL );
 		$this->setTitle( $title );
 		$this->setTemplate( $template );
+		$this->setLinkpage( $linkpage );
 	}
 
-	function getUrl() {
+	public function getUrl() {
 		return $this->url;
 	}
 
-	function getTemplate() {
+	public function getTemplate() {
 		return $this->template;
 	}
 
-	function getTitle() {
+	public function getTitle() {
 		return $this->title;
 	}
 
-	function setTitle( $title ) {
-		$this->title = filter_var( $title, FILTER_SANITIZE_STRING );
+	public function setTitle( $title ) {
+		$this->title = filter_var( $title, FILTER_UNSAFE_RAW );
 
 		return $this;
 	}
 
-	function setContent( $content ) {
+	public function setContent( $content ) {
 		$this->content = $content;
 
 		return $this;
 	}
 
-	function setTemplate( $template ) {
+	public function setLinkpage( $linkpage ) {
+		$this->linkpage = $linkpage;
+
+		return $this;
+	}
+
+	public function setTemplate( $template ) {
 		$this->template = $template;
 
 		return $this;
 	}
 
-	function asWpPost() {
+	public function asWpPost() {
 		if ( is_null( $this->wp_post ) ) {
 			$post          = array(
 				'ID'             => 0,
@@ -67,7 +75,8 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 				'post_date_gmt'  => current_time( 'mysql', 1 ),
 				'post_author'    => is_user_logged_in() ? get_current_user_id() : 0,
 				'is_virtual'     => true,
-				'filter'         => 'raw'
+				'filter'         => 'raw',
+				'linkpage'       => $this->linkpage ?: '',
 			);
 			$this->wp_post = new WP_Post( (object) $post );
 		}
