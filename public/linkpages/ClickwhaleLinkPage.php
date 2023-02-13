@@ -40,6 +40,12 @@ class ClickwhaleLinkPage implements ClickwhaleLinkPageInterface {
 		return $this;
 	}
 
+	/**
+	 * @param $linkpage
+	 * @since 1.1.0
+	 *
+	 * @return $this
+	 */
 	public function setLinkpage( $linkpage ) {
 		$this->linkpage = $linkpage;
 

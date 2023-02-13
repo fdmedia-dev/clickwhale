@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://fdmedia.io
- * @since             1.0.0
+ * @since             1.1.0
  * @package           Clickwhale
  *
  * @wordpress-plugin
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+
