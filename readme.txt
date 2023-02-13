@@ -3,7 +3,7 @@ Contributors: flowdee
 Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
-Requires PHP: 5.6.0
+Requires PHP: 7.0.0
 Tested up to: 6.1.1
 Stable tag: 1.1.0
 License: GPLv2 or later
@@ -89,6 +89,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * New: Sort Links by clicks
 * Fix: Error 500 when viewing a Link Page
 * Tweak: CSS/JS
+* Info: PHP version changed from 5.6.0 to 7.0.0
 
 == Upgrade Notice ==
 
