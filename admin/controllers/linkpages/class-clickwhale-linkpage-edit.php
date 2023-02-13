@@ -62,6 +62,10 @@ class Clickwhale_Linkpage_Edit {
 		return $item;
 	}
 
+	/**
+     * @since 1.1.0
+	 * @return array
+	 */
 	public static function get_post_types(): array {
 		$posts      = [];
 		$args       = array(

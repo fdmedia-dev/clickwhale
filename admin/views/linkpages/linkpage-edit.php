@@ -390,7 +390,7 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>"
                                        size="40"
                                        class="regular-text"
-                                       placeholder="Some Title Placeholder Text">
+                                       placeholder="">
                                 <p class="description"><?php _e( 'Set page SEO title', $this->plugin_name ) ?></p>
                             </td>
                         </tr>
@@ -406,7 +406,7 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>"
                                        size="40"
                                        class="regular-text"
-                                       placeholder="Some Title Placeholder Text">
+                                       placeholder="">
                                 <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
                             </td>
                         </tr>

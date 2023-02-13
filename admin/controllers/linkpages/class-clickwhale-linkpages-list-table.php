@@ -67,7 +67,8 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
+	 * @since 1.1.0
+     *
 	 * @return string
 	 */
 	public function column_views_count( $item ) {
@@ -76,7 +77,8 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
+	 * @since 1.1.0
+     *
 	 * @return string
 	 */
 	public function column_clicks_count( $item ) {

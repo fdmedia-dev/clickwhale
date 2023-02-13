@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 5.6.0
 Tested up to: 6.1.1
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,14 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 = Version 1.0.0 (11th December 2022) =
 * Initial Release
+
+= Version 1.1.0 (13th February 2023) =
+* New: Link Page SEO and Open Graph settings
+* New: Adding custom links, posts, pages, custom post types to Link Page
+* New: Sort Link Pages by views and clicks
+* New: Sort Links by clicks
+* Fix: Error 500 when viewing a Link Page
+* Tweak: CSS/JS
 
 == Upgrade Notice ==
 

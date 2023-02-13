@@ -28,7 +28,13 @@ class Clickwhale_Public_Linkpage {
 		add_filter( 'wpseo_json_ld_output', '__return_false' );
 	}
 
-	public function robots_tag( $robots ) {
+	/**
+	 * @param $robots
+	 * @since 1.1.0
+     *
+	 * @return mixed
+	 */
+    public function robots_tag( $robots ) {
 		$robotsData = isset( $this->social['seo']['robots'] ) ? maybe_unserialize( $this->social['seo']['robots'] ) : false;
 
 		// by default we need set this values because without SEO Plugin it can be empty
@@ -56,11 +62,22 @@ class Clickwhale_Public_Linkpage {
 		return $robots;
 	}
 
-	public function start_wp_head_buffer() {
+	/**
+     * @since 1.1.0
+     *
+	 * @return void
+	 */
+    public function start_wp_head_buffer() {
 		ob_start();
 	}
 
-	public function end_wp_head_buffer() {
+	/**
+     * @since 1.1.0
+     *
+	 * @return void
+	 * @throws DOMException
+	 */
+    public function end_wp_head_buffer() {
 		$in = ob_get_clean();
 
 		// replace <title>
@@ -131,6 +148,8 @@ class Clickwhale_Public_Linkpage {
 
 	/**
 	 * Set <title> tag in <head>
+     * @since 1.1.0
+     *
 	 * @return mixed|string
 	 */
 	private function set_wp_title() {
@@ -139,7 +158,12 @@ class Clickwhale_Public_Linkpage {
 			: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
 	}
 
-	private function set_wp_description() {
+	/**
+     * @since 1.1.0
+     *
+	 * @return mixed|string|null
+	 */
+    private function set_wp_description() {
 		return isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
 			? $this->social['seo']['description']
 			: get_bloginfo( 'description' );

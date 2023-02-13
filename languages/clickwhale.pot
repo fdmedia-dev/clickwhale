@@ -1,285 +1,56 @@
-#, fuzzy
+# Copyright (C) 2023 ClickWhale
+# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: ClickWhale\n"
-"POT-Creation-Date: 2022-12-13 17:37+0200\n"
-"PO-Revision-Date: 2022-12-13 17:36+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: ClickWhale 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/clickwhale\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: clickwhale.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
+"POT-Creation-Date: 2023-02-13T08:54:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: clickwhale\n"
 
-#: admin/class-clickwhale-admin.php:198
-#, php-format
-msgid ""
-"You like ClickWhale? Then please <a href=\"%1$s\" target=\"_blank\">leave a "
-"review here</a>"
-msgstr ""
-
-#: admin/class-clickwhale-admin.php:208
-msgid "Need help?"
-msgstr ""
-
-#: admin/class-clickwhale-admin.php:220
-msgid "Update to Pro"
-msgstr ""
-
-#: admin/class-clickwhale-admin.php:228
-msgid "Available only in PRO version"
-msgstr ""
-
-#: admin/class-clickwhale-ajax.php:143
-msgid "Nothing to migrate"
-msgstr ""
-
-#: admin/class-clickwhale-ajax.php:180
-msgid "Successfully deleted! Page will reload..."
-msgstr ""
-
-#: admin/class-clickwhale-ajax.php:201
-msgid "All statistic has been reset"
-msgstr ""
-
-#: admin/class-clickwhale-ajax.php:209
-msgid "All plugin tables has been reset"
-msgstr ""
-
-#: admin/class-clickwhale-ajax.php:217
-msgid "All plugin settings has been restored"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:70
-#: admin/views/linkpages/linkpage-edit.php:213
-msgid "General"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:79
-msgid "Tracking"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:87
-#: admin/class-clickwhale-settings.php:135
-#: admin/class-clickwhale-settings.php:136 admin/views/settings/settings.php:19
-msgid "Link Pages"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:93
-msgid "Other"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:109
-#: admin/class-clickwhale-settings.php:110
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:113
-#: admin/migration/class-clickwhale-tools-migration.php:136
-#: admin/views/linkpages/linkpage-edit.php:152
-#: admin/views/linkpages/linkpage-edit.php:250
-msgid "Links"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:116
-#: admin/views/categories/categories-list-table.php:25
-#: admin/views/categories/category-edit.php:83
-#: admin/views/links/link-edit.php:32 admin/views/links/links-list-table.php:20
-msgid "Add New"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:117
-msgid "Add New Link"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:122
-#: admin/class-clickwhale-settings.php:123
-#: admin/controllers/links/class-clickwhale-links-list-table.php:224
-#: admin/migration/class-clickwhale-tools-migration.php:125
-msgid "Categories"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:129
-#: admin/class-clickwhale-settings.php:130
-msgid "Add New Category"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:142
-#: admin/class-clickwhale-settings.php:143
-msgid "Add New Link Page"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:150
-msgid "ClickWhale Links"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-#. Author of the plugin/theme
-#: admin/class-clickwhale-settings.php:151
+#. Plugin Name of the plugin
+#. Author of the plugin
 msgid "ClickWhale"
 msgstr ""
 
-#: admin/class-clickwhale-settings.php:173
-#: admin/class-clickwhale-settings.php:174
-#: admin/views/linkpages/linkpage-edit.php:57
-#: admin/views/settings/settings.php:8
-msgid "Settings"
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://clickwhale.pro"
 msgstr ""
 
-#: admin/class-clickwhale-settings.php:181
-#: admin/class-clickwhale-settings.php:182 admin/views/tools/tools.php:7
-msgid "Tools"
+#. Description of the plugin
+msgid "Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress."
 msgstr ""
 
-#: admin/class-clickwhale-settings.php:231
-msgid "Set up ClickWhale plugin global options."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:235
-msgid "Set up ClickWhale plugin global link tracking options."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:239
-msgid "Global settings for the Link Pages."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:243
-msgid "Set up other ClickWhale plugin useful options."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:271
-msgid "30 days"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:295 admin/views/links/link-edit.php:109
-msgid "Redirection Type"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:305
-msgid "301 redirect: Moved permanently"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:306
-msgid "302 redirect: Found / Moved temporarily"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:307
-msgid "303 redirect: See Other"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:308
-msgid "307 redirect: Temporarily Redirect"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:309
-msgid "308 redirect: Permanent Redirect"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:311
-msgid "Set default redirection type which will be used for new links."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:316
-msgid "Nofollow Links"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:325
-msgid "Check to mark links as nofollow & noindex by default"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:330
-msgid "Sponsored Links"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:339
-msgid "Check to mark links as sponsored by default."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:340
-msgid "Recommended for affiliate links."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:345 admin/views/links/link-edit.php:83
-msgid "Link Slug"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:356
-msgid ""
-"At this point, you can enter the default slug for new links."
-"<br><strong>Important:</strong> If you change the slug, your existing links "
-"will not be changed."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:361
-msgid "Tracking Duration"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:375
-msgid "Disable Tracking"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:384
-msgid "Check to disable tracking of views and clicks"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:389
-msgid "Exclude User Roles"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:399
-msgid "Check the user roles that should be excluded from tracking."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:404
-msgid "Links: Target"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:413
-msgid "Check to open links in a new tab/window."
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:418
-msgid "Affiliate ID"
-msgstr ""
-
-#: admin/class-clickwhale-settings.php:429
-msgid "Enter your Affiliate ID."
+#: admin/class-clickwhale-admin.php:232
+msgid "Available only in PRO version"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:74
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:42
-#: admin/controllers/links/class-clickwhale-links-list-table.php:111
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:44
+#: admin/controllers/links/class-clickwhale-links-list-table.php:122
 msgid "Edit"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:75
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:44
-#: admin/controllers/links/class-clickwhale-links-list-table.php:113
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:47
+#: admin/controllers/links/class-clickwhale-links-list-table.php:126
 msgid "Delete"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:126
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:111
-#: admin/controllers/links/class-clickwhale-links-list-table.php:221
-#: admin/views/categories/category-edit.php:106
-#: admin/views/linkpages/linkpage-edit.php:69
-#: admin/views/links/link-edit.php:59
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:125
+#: admin/controllers/links/class-clickwhale-links-list-table.php:236
 msgid "Title"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:127
-#: admin/views/categories/category-edit.php:138
-#: admin/views/categories/category-edit.php:146
-#: admin/views/linkpages/linkpage-edit.php:84
-#: admin/views/linkpages/linkpage-edit.php:91
-#: admin/views/links/link-edit.php:177 admin/views/links/link-edit.php:184
 msgid "Description"
 msgstr ""
 
@@ -292,55 +63,97 @@ msgstr ""
 msgid "Title is required"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:52
-#: admin/controllers/links/class-clickwhale-link-edit.php:50
-#: admin/views/categories/category-edit.php:61
-msgid "Item not found"
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:165
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:535
+msgid "Custom Title"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:194
-#: admin/views/linkpages/linkpage-edit.php:189
-#: admin/views/links/link-edit.php:68
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:170
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:534
 msgid "Link Title"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:263
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:171
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:536
+msgid "Link URL"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:177
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:372
+msgid "Original"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:193
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:356
+msgid "Change Order"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:218
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:357
+msgid "Remove item"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:275
+msgid "Select link Type"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:280
+msgid "Select Item"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:478
 #: admin/controllers/links/class-clickwhale-link-edit.php:201
 msgid "This slug is already in use! Please enter another slug"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:274
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:490
 #: admin/controllers/links/class-clickwhale-link-edit.php:212
 msgid "Please enter slug"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:281
-msgid ""
-"Are you sure? This action will set colors to default. This process cannot be "
-"undone!"
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:498
+msgid "Are you sure? This action will set colors to default. This process cannot be undone!"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:61
-#: admin/controllers/links/class-clickwhale-links-list-table.php:130
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:568
+msgid "Nothing found"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:64
+#: admin/controllers/links/class-clickwhale-links-list-table.php:143
 msgid "Copy Link"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:112
-#: admin/controllers/links/class-clickwhale-links-list-table.php:222
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:126
+#: admin/controllers/links/class-clickwhale-links-list-table.php:237
 msgid "Link"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:114
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:127
+#: admin/migration/class-clickwhale-tools-migration.php:136
+msgid "Links"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:128
 msgid "Views"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:115
-#: admin/controllers/links/class-clickwhale-links-list-table.php:226
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:129
+#: admin/controllers/links/class-clickwhale-links-list-table.php:240
+msgid "Clicks"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:130
+#: admin/controllers/links/class-clickwhale-links-list-table.php:241
 msgid "Author"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:198
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:265
 msgid "No Link Pages Found."
+msgstr ""
+
+#: admin/controllers/links/class-clickwhale-link-edit.php:50
+msgid "Item not found"
 msgstr ""
 
 #: admin/controllers/links/class-clickwhale-link-edit.php:79
@@ -356,65 +169,50 @@ msgstr ""
 msgid "Wrong redirection code"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-link-edit.php:88
-msgid "Redirection code can not be less than zero"
-msgstr ""
-
-#: admin/controllers/links/class-clickwhale-link-edit.php:91
-msgid "Redirection code must be number"
-msgstr ""
-
-#: admin/controllers/links/class-clickwhale-links-list-table.php:35
+#: admin/controllers/links/class-clickwhale-links-list-table.php:36
 msgid "All Categories"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:45
+#: admin/controllers/links/class-clickwhale-links-list-table.php:46
 msgid "Filter"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:112
+#: admin/controllers/links/class-clickwhale-links-list-table.php:124
 #: admin/views/tools/tools.php:16
 msgid "Reset"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:223
-#: admin/views/links/link-edit.php:94
+#: admin/controllers/links/class-clickwhale-links-list-table.php:238
 msgid "Target URL"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:225
-msgid "Clicks"
+#: admin/controllers/links/class-clickwhale-links-list-table.php:239
+#: admin/migration/class-clickwhale-tools-migration.php:125
+msgid "Categories"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:374
+#: admin/controllers/links/class-clickwhale-links-list-table.php:417
 msgid "No Links Found."
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-interface.php:84
-#, php-format
 msgid "Link \"%1$s\" imported successfully."
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-interface.php:88
-#, php-format
 msgid "<strong>Import failed!</strong> Link %1$s already exists"
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-interface.php:149
-#, php-format
 msgid "Category \"%1$s\" imported successfully."
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-interface.php:153
-#, php-format
 msgid "<strong>Import failed!</strong> Category \"%1$s\" already exists"
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-notice.php:90
-#, php-format
-msgid ""
-"You are already using %1$s on your website. To migrate your %1$s data to "
-"Clickwhale, click here."
+msgid "You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here."
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-notice.php:92
@@ -426,14 +224,10 @@ msgid "Not now"
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-notice.php:108
-#, php-format
-msgid ""
-"All %1$s data have been successfully migrated to Clickwhale. You can now "
-"safely deactivate %1$s on your website."
+msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
 msgstr ""
 
 #: admin/migration/class-clickwhale-migration-notice.php:110
-#, php-format
 msgid "Deactivate %1$s"
 msgstr ""
 
@@ -458,12 +252,10 @@ msgid "category"
 msgstr ""
 
 #: admin/migration/class-clickwhale-tools-migration.php:161
-#, php-format
 msgid "Found %1$s %2$s and %3$s %4$s."
 msgstr ""
 
 #: admin/migration/class-clickwhale-tools-migration.php:173
-#, php-format
 msgid "Last migration at %1$s"
 msgstr ""
 
@@ -479,56 +271,13 @@ msgstr ""
 msgid "Migrate links"
 msgstr ""
 
-#: admin/reset/class-clickwhale-tools-reset-db.php:30
-msgid "Reset plugin options"
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:44
-msgid "Delete all plugin data"
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:58
-msgid "Reset all statistics"
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:70
-msgid "At this point you can reset plugin setting to default values."
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:74
-msgid ""
-"At this point. you can delete all entries (links, categories and stats) from "
-"the database tables of our plugin."
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:78
-msgid ""
-"In case you want to clean up your stats, you can remove all previously "
-"counted clicks from the database here."
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:105
-msgid ""
-"Are you sure? This action restore all plugin settings to default. This "
-"process cannot be undone!"
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:109
-msgid ""
-"Are you sure? This action will reset plugin tables and delete all existing "
-"data. This process cannot be undone!"
-msgstr ""
-
-#: admin/reset/class-clickwhale-tools-reset-db.php:113
-msgid ""
-"Are you sure? This action will reset all statistic. This process cannot be "
-"undone!"
-msgstr ""
-
 #: admin/views/categories/categories-list-table.php:13
-#: admin/views/linkpages/linkpages-list-table.php:10
-#: admin/views/links/links-list-table.php:10
 msgid "Items deleted"
+msgstr ""
+
+#: admin/views/categories/categories-list-table.php:25
+#: admin/views/categories/category-edit.php:83
+msgid "Add New"
 msgstr ""
 
 #: admin/views/categories/categories-list-table.php:36
@@ -536,213 +285,25 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: admin/views/categories/category-edit.php:37
-#: admin/views/links/link-edit.php:37
-msgid "Item was successfully saved"
+#: admin/views/linkpages/linkpage-edit.php:93
+#: admin/views/settings/settings.php:8
+msgid "Settings"
 msgstr ""
 
-#: admin/views/categories/category-edit.php:39
-msgid "There was an error while saving item"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:44
-#: admin/views/links/link-edit.php:41
-msgid "Item was successfully updated"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:46
-msgid "There was an error while updating item"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:73
-msgid "Edit Category"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:75
-msgid "Add Category"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:80
-#: admin/views/linkpages/linkpage-edit.php:34
-#: admin/views/links/link-edit.php:30
-msgid "Back to List"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:116
-msgid "Category Title"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:123
-#: admin/views/linkpages/linkpage-edit.php:97
-#: admin/views/links/link-edit.php:74
-msgid "Slug"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:133
-msgid "Category Slug"
-msgstr ""
-
-#: admin/views/categories/category-edit.php:154
-msgid "Save category"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:4
-msgid "You have reached the page limit"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:27
-msgid "Edit Link Page"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:29
-msgid "Add Link Page"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:38
-#: admin/views/linkpages/linkpages-list-table.php:21
-msgid "Add new"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:44
-msgid "View Page"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:59
+#: admin/views/linkpages/linkpage-edit.php:95
 msgid "Colors"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:61
+#: admin/views/linkpages/linkpage-edit.php:97
+msgid "SEO"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:99
 msgid "Social"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:78
-msgid "Link Page Title"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:106
-msgid "Linkpage Slug"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:110
-#: admin/views/links/link-edit.php:87
-msgid "URL Preview"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:118
-msgid "Page Logo"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:134
-msgid "Upload image"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:137
-msgid "Remove image"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:142
+#: admin/views/linkpages/linkpage-edit.php:182
 msgid "Max logo size 275px * 275px"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:165
-msgid "Add Link to Page"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:203
-msgid "No links have been added yet"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:221
-msgid "Site Background"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:228
-msgid "Set page background color"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:235
-msgid "Page Text Color"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:242
-msgid "Set page text color"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:258
-msgid "Background Color"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:265
-msgid "Set link background color (normal state)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:272
-msgid "Background Color (hover/active)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:279
-msgid "Set link background color (hover/active)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:286
-msgid "Text Color"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:293
-msgid "Set link text color (normal state)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:301
-msgid "Text Color (hover/active)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:308
-msgid "Set link text color (hover/active)"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:325
-#: admin/views/links/link-edit.php:228
-msgid "Save"
-msgstr ""
-
-#: admin/views/linkpages/linkpage-edit.php:329
-msgid "Reset Colors"
-msgstr ""
-
-#: admin/views/links/link-edit.php:23
-msgid "Edit link"
-msgstr ""
-
-#: admin/views/links/link-edit.php:25
-msgid "Add Link"
-msgstr ""
-
-#: admin/views/links/link-edit.php:103
-msgid "Link Target URL"
-msgstr ""
-
-#: admin/views/links/link-edit.php:133
-msgid "Nofollow"
-msgstr ""
-
-#: admin/views/links/link-edit.php:149
-msgid "Check to mark link as nofollow & noindex"
-msgstr ""
-
-#: admin/views/links/link-edit.php:155
-msgid "Sponsored"
-msgstr ""
-
-#: admin/views/links/link-edit.php:171
-msgid "Check to mark link as sponsored"
-msgstr ""
-
-#: admin/views/links/link-edit.php:190
-msgid "Category"
-msgstr ""
-
-#: admin/views/links/link-edit.php:215
-msgid "No categories have been created yet"
 msgstr ""
 
 #: admin/views/settings/settings.php:15
@@ -753,8 +314,16 @@ msgstr ""
 msgid "Tracking Options"
 msgstr ""
 
+#: admin/views/settings/settings.php:19
+msgid "Link Pages"
+msgstr ""
+
 #: admin/views/settings/settings.php:21
 msgid "Other Options"
+msgstr ""
+
+#: admin/views/tools/tools.php:7
+msgid "Tools"
 msgstr ""
 
 #: admin/views/tools/tools.php:14
@@ -787,13 +356,4 @@ msgstr ""
 
 #: admin/views/tools/tools.php:91
 msgid "Reset all Tracking Data now"
-msgstr ""
-
-#. Plugin URI of the plugin/theme
-#. Author URI of the plugin/theme
-msgid "https://clickwhale.pro"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid "Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress."
 msgstr ""
