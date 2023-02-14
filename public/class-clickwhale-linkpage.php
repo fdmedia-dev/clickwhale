@@ -30,11 +30,12 @@ class Clickwhale_Public_Linkpage {
 
 	/**
 	 * @param $robots
-	 * @since 1.1.0
-     *
+	 *
 	 * @return mixed
+	 * @since 1.1.0
+	 *
 	 */
-    public function robots_tag( $robots ) {
+	public function robots_tag( $robots ) {
 		$robotsData = isset( $this->social['seo']['robots'] ) ? maybe_unserialize( $this->social['seo']['robots'] ) : false;
 
 		// by default we need set this values because without SEO Plugin it can be empty
@@ -63,25 +64,25 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	/**
-     * @since 1.1.0
-     *
 	 * @return void
+	 * @since 1.1.0
+	 *
 	 */
-    public function start_wp_head_buffer() {
+	public function start_wp_head_buffer() {
 		ob_start();
 	}
 
 	/**
-     * @since 1.1.0
-     *
 	 * @return void
 	 * @throws DOMException
+	 * @since 1.1.0
+	 *
 	 */
-    public function end_wp_head_buffer() {
+	public function end_wp_head_buffer() {
 		$in = ob_get_clean();
 
 		// replace <title>
-		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->set_wp_title() . '</title>', $in );
+		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->get_og_defaults()['title'] . '</title>', $in );
 
 		$dom = new DOMDocument;
 		$dom->loadHTML( $in, LIBXML_HTML_NODEFDTD );
@@ -90,14 +91,14 @@ class Clickwhale_Public_Linkpage {
 		$tags = array(
 			'description'   => array(
 				'name'    => 'description',
-				'content' => esc_attr( $this->set_wp_description() )
+				'content' => esc_attr( $this->get_og_defaults()['description'] )
 			),
 			'ogtitle'       => array(
 				'name'    => 'og:title',
 				'content' =>
 					isset( $this->social['seo']['ogtitle'] ) && $this->social['seo']['ogtitle']
 						? esc_attr( $this->social['seo']['ogtitle'] )
-						: esc_attr( $this->set_wp_title() )
+						: esc_attr( $this->get_og_defaults()['title'] )
 			),
 			'ogurl'         => array(
 				'name'    => 'og:url',
@@ -108,7 +109,7 @@ class Clickwhale_Public_Linkpage {
 				'content' =>
 					isset( $this->social['seo']['ogimage'] ) && $this->social['seo']['ogimage']
 						? esc_url( wp_get_attachment_image_src( $this->social['seo']['ogimage'], 'full' )[0] )
-						: esc_url( wp_get_attachment_image_src( $this->data['logo'], 'full' )[0] ),
+						: $this->get_og_defaults()['image'],
 			),
 			'ogtype'        => array(
 				'name'    => 'og:type',
@@ -119,7 +120,7 @@ class Clickwhale_Public_Linkpage {
 				'content' =>
 					isset( $this->social['seo']['ogdescription'] ) && $this->social['seo']['ogdescription']
 						? esc_attr( $this->social['seo']['ogdescription'] )
-						: esc_attr( $this->set_wp_description() )
+						: esc_attr( $this->get_og_defaults()['description'] )
 			),
 			'locale'        => array(
 				'name'    => 'og:locale',
@@ -128,14 +129,18 @@ class Clickwhale_Public_Linkpage {
 		);
 
 		foreach ( $tags as $k => $v ) {
-			$metaTag = $xpath->query( '//meta[@property="' . $v['name'] . '"]' )[0];
-			if ( $metaTag ) {
-				$metaTag->setAttribute( 'content', $v['content'] );
-			} else {
-				$newMetaTag = $dom->createElement( "meta" );
-				$newMetaTag->setAttribute( "name", $v['name'] );
-				$newMetaTag->setAttribute( "content", $v['content'] );
-				$dom->appendChild( $newMetaTag );
+			if ( $v['content'] ) {
+
+				$metaTag = $xpath->query( '//meta[@property="' . $v['name'] . '"]' )[0];
+				if ( $metaTag ) {
+					$metaTag->setAttribute( 'content', $v['content'] );
+				} else {
+					$newMetaTag = $dom->createElement( "meta" );
+					$newMetaTag->setAttribute( "name", $v['name'] );
+					$newMetaTag->setAttribute( "content", $v['content'] );
+					$dom->appendChild( $newMetaTag );
+				}
+
 			}
 		}
 
@@ -147,26 +152,26 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	/**
-	 * Set <title> tag in <head>
-     * @since 1.1.0
-     *
+	 * Get Open Graph Data
 	 * @return mixed|string
+	 * @since 1.1.1
+	 *
 	 */
-	private function set_wp_title() {
-		return isset( $this->social['seo']['title'] ) && $this->social['seo']['title']
-			? $this->social['seo']['title']
-			: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
-	}
-
-	/**
-     * @since 1.1.0
-     *
-	 * @return mixed|string|null
-	 */
-    private function set_wp_description() {
-		return isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
-			? $this->social['seo']['description']
-			: get_bloginfo( 'description' );
+	private function get_og_defaults() {
+		return array(
+			'title'       =>
+				isset( $this->social['seo']['title'] ) && $this->social['seo']['title']
+					? $this->social['seo']['title']
+					: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) ),
+			'description' =>
+				isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
+					? $this->social['seo']['description']
+					: get_bloginfo( 'description' ),
+			'image'        =>
+				isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo']
+					? esc_url( wp_get_attachment_image_src( $this->post->linkpage['logo'], 'full' )[0] )
+					: esc_url( plugin_dir_url( __FILE__ ) . 'images/click-whale.svg' )
+		);
 	}
 
 	/**
