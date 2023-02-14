@@ -79,8 +79,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
-= Version 1.0.0 (11th December 2022) =
-* Initial Release
+= Version 1.1.1 (14th February 2023) =
+* Fix: Error 500 when open any page/post without created Link Pages
+* Fix: Activation/Reactivation Error
+* Fix: Warning on Link page if custom logo not uploaded
 
 = Version 1.1.0 (13th February 2023) =
 * New: Link Page SEO and Open Graph settings
@@ -90,6 +92,9 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * Fix: Error 500 when viewing a Link Page
 * Tweak: CSS/JS
 * Info: PHP version changed from 5.6.0 to 7.0.0
+
+= Version 1.0.0 (11th December 2022) =
+* Initial Release
 
 == Upgrade Notice ==
 
