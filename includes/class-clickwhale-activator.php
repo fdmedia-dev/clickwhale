@@ -169,7 +169,11 @@ class Clickwhale_Activator {
 		global $wpdb;
 
 		if ( CLICKWHALE_VERSION > '1.0.0' ) {
-			$wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id" );
+			maybe_add_column(
+				$wpdb->prefix . "clickwhale_track",
+				"custom_link_id",
+				"ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id"
+			);
 		}
 	}
 
