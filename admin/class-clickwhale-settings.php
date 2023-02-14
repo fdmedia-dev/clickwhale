@@ -144,6 +144,19 @@ class Clickwhale_Admin_Settings {
 				'slug'       => $this->plugin_name . '-edit-linkpage',
 				'handler'    => '_linkpage_form'
 			),
+			array(
+				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
+				'menu_title' => __( 'Tracking Codes', $this->plugin_name ),
+				'slug'       => $this->plugin_name . '-tracking-codes',
+				'handler'    => '_tracking_codes',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
+				'menu_title' => __( 'Add New Tracking Code', $this->plugin_name ),
+				'slug'       => $this->plugin_name . '-edit-tracking-code',
+				'handler'    => '_tracking_code_form'
+			),
 		);
 
 		add_menu_page(
@@ -222,6 +235,17 @@ class Clickwhale_Admin_Settings {
 
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
+	}
+
+	/**
+	 * @since 1.2.0
+	 */
+	public function clickwhale_tracking_codes_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-codes-list-table.php' );
+	}
+
+	public function clickwhale_tracking_code_form_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-code-edit.php' );
 	}
 
 	/**
@@ -308,7 +332,8 @@ class Clickwhale_Admin_Settings {
 					307 => __( '307 redirect: Temporarily Redirect', $this->plugin_name ),
 					308 => __( '308 redirect: Permanent Redirect', $this->plugin_name )
 				),
-				'description' => __( 'Set default redirection type which will be used for new links.', $this->plugin_name ),
+				'description' => __( 'Set default redirection type which will be used for new links.',
+					$this->plugin_name ),
 			)
 		);
 		add_settings_field(
@@ -353,7 +378,8 @@ class Clickwhale_Admin_Settings {
 				'type'        => 'text',
 				'value'       => $general_options['slug'],
 				'placeholder' => '',
-				'description' => __( 'At this point, you can enter the default slug for new links.<br><strong>Important:</strong> If you change the slug, your existing links will not be changed.', $this->plugin_name ),
+				'description' => __( 'At this point, you can enter the default slug for new links.<br><strong>Important:</strong> If you change the slug, your existing links will not be changed.',
+					$this->plugin_name ),
 			)
 		);
 		add_settings_field(
@@ -396,7 +422,8 @@ class Clickwhale_Admin_Settings {
 				'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
 				'value'       => isset( $tracking_options['exclude_user_by_role'] ) ? $tracking_options['exclude_user_by_role'] : 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
-				'description' => __( 'Check the user roles that should be excluded from tracking.', $this->plugin_name ),
+				'description' => __( 'Check the user roles that should be excluded from tracking.',
+					$this->plugin_name ),
 			)
 		);
 		add_settings_field(
