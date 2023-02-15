@@ -79,7 +79,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
-= Version 1.1.1 (15th February 2023) =
+= Version 1.1.2 (15th February 2023) =
 * Minor improvements
 
 = Version 1.1.1 (14th February 2023) =
