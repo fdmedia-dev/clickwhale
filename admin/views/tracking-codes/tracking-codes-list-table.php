@@ -7,17 +7,23 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-	<h1 class="wp-heading-inline">
-		<?php echo esc_html( get_admin_page_title() ); ?>
-	</h1>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => esc_html( get_admin_page_title() ),
+			'is_list'      => true,
+			'link_to_edit' => 'clickwhale-edit-tracking-code',
+		)
+	);
+	?>
 
 	<?php if ( ! empty( $message ) ) { ?>
-		<div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
+        <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
 	<?php } ?>
 
-	<form method="GET">
-		<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
+    <form method="GET">
+        <input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
 		<?php //$table->display(); ?>
-	</form>
+    </form>
 
 </div>
