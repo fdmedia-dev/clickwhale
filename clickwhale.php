@@ -16,11 +16,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
-<<<<<<< HEAD
  * Version:           1.2.0
-=======
- * Version:           1.1.1
->>>>>>> master
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+
