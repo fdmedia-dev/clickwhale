@@ -31,7 +31,7 @@ do_action( 'clickwhale_admin_banner' );
 
 	<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit() ) { ?>
         <div class="notice notice-info"><p><?php printf( 'Currently, a maximum of %d %s can be created.',
-					array( ClickwhaleLinkpagesHelper::get_limit() ),
+					ClickwhaleLinkpagesHelper::get_limit(),
 					ClickwhaleLinkpagesHelper::get_limit() === 1 ? 'link page' : 'link pages' ); ?></p></div>
         <hr class="wp-header-end">
 	<?php } ?>

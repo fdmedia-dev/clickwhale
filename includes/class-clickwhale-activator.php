@@ -163,12 +163,42 @@ class Clickwhale_Activator {
 	}
 
 	/**
+	 * @return void
+	 * @since 1.2.0
+	 */
+	private function add_clickwhale_tracking_codes_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . 'clickwhale_tracking_codes';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE {$wpdb->prefix}clickwhale_tracking_codes (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			title tinytext NOT NULL,
+			description mediumtext NOT NULL,
+			type varchar(255) DEFAULT '' NOT NULL,
+			code longtext NOT NULL,
+			position longtext NOT NULL,
+			is_active tinyint(1) DEFAULT 0 NOT NULL,
+			author mediumint(9) DEFAULT 0 NOT NULL,
+			created_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL ,
+			updated_at datetime DEFAULT '0000-00-00 00:00:00' NOT NULL ,
+			
+			PRIMARY KEY  (id)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+	/**
 	 * @since    1.1.1
 	 */
 	private function modify_columns() {
 		global $wpdb;
 
-		if ( CLICKWHALE_VERSION > '1.0.0' ) {
+		if ( version_compare( CLICKWHALE_VERSION, '1.0.0', '>' ) ) {
 			maybe_add_column(
 				$wpdb->prefix . "clickwhale_track",
 				"custom_link_id",
@@ -191,6 +221,7 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_meta_table();
 		( new self )->add_clickwhale_visitors_table();
 		( new self )->add_clickwhale_track_table();
+		( new self )->add_clickwhale_tracking_codes_table();
 		( new self )->modify_columns();
 	}
 

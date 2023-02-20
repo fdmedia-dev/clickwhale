@@ -17,6 +17,7 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 </head>
 
 <body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
 <div class="linkpage-public--wrap">
     <div class="linkpage-public--inner">
 

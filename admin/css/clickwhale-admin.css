@@ -298,6 +298,10 @@
 	margin: 0;
 }
 
+.select2-container--default .select2-selection--multiple {
+	padding-bottom: 0
+}
+
 .row--custom_link .linkpage-link {
 	display: flex;
 	gap: 4px;
@@ -415,6 +419,86 @@ td > .links-info {
 .linkpages .column-views_count {
 	width: 10%;
 	text-align: left;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer {
+	min-height: 300px !important;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::before,
+#form_edit_tracking_code .CodeMirror-sizer::after {
+	color: #bbb;
+	display: block;
+	font-size: 13px;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::before {
+	content: "<!-- begin code -->";
+	padding-bottom: 5px;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::after {
+	position: absolute;
+	content: "<!-- end code -->";
+	bottom: 0;
+	padding-top: 5px;
+}
+
+table.tracking-codes .column-is_active {
+	width: 50px;
+}
+
+.clickwhale-checkbox--toggle {
+	display: inline-block;
+	height: 20px;
+	position: relative;
+	width: 36px;
+}
+
+.clickwhale-checkbox--toggle input {
+	display: none;
+	height: 0;
+	opacity: 0;
+	width: 0;
+}
+
+.clickwhale-checkbox--toggle .clickwhale-checkbox--toggle-slider {
+	background-color: #ccc;
+	border-radius: 20px;
+	bottom: 0;
+	cursor: pointer;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: all .3s ease-in;
+}
+
+.clickwhale-checkbox--toggle .clickwhale-checkbox--toggle-slider::before {
+	background-color: white;
+	border-radius: 50%;
+	bottom: 3px;
+	content: "";
+	height: 14px;
+	left: 3px;
+	position: absolute;
+	transition: all .3s ease-in;
+	width: 14px;
+}
+
+.clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider {
+	background: #007AFF;
+}
+
+.clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider::before {
+	left: 19px;
+}
+
+.cw-posts-row{
+	margin-top: 15px;
+}
+.cw-posts-row--select{
+	display: none;
 }
 
 @media (max-width: 768px) {

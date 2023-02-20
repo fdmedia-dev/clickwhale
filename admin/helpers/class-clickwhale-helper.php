@@ -8,16 +8,27 @@ class ClickwhaleHepler {
 	 *
 	 * @return string
 	 */
-	public static function render_contol( $args ) {
+	public static function render_control( array $args, bool $row = false ): string {
 
-		$item  = '';
-		$id    = 'id="' . $args['id'] . '"';
-		$name  = 'name="' . esc_attr( $args['name'] ) . '"';
-		$value = $args['value'];
+		$item     = '';
+		$id       = 'id="' . $args['id'] . '"';
+		$name     = 'name="' . esc_attr( $args['name'] ) . '"';
+		$value    = $args['value'];
+		$required = isset( $args['required'] ) && $args['required'] ? 'required' : '';
+		if ( isset( $args['default'] ) && $args['default'] ) {
+			$value = $value ?: $args['default'];
+		}
+
+		if ( $row ) {
+			$rowLabel = $args['row_label'] ?? '';
+			$item     .= '<tr class="form-field">';
+			$item     .= '<th scope="row"><label for="' . $args['id'] . '">' . $rowLabel . '</label></th>';
+			$item     .= '<td>';
+		}
 
 		switch ( $args['control'] ) {
 			case 'input':
-				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text">';
+				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text" ' . $required . '>';
 				break;
 
 			case 'checkbox':
@@ -67,12 +78,23 @@ class ClickwhaleHepler {
 				break;
 
 			case 'select':
-				$item .= '<select ' . $id . ' ' . $name . ' class="regular-text">';
+				$multiple = isset( $args['multiple'] ) && $args['multiple'] ? ' multiple' : '';
+				$item     .= '<select ' . $id . ' ' . $name . $multiple . ' class="regular-text">';
 				foreach ( $args['options'] as $k => $v ) {
-					$item .= '<option value="' . esc_attr( $k ) . '" ' . selected( $k, $value,
-							false ) . '>' . $v . '</option>';
+					if ( $multiple && is_array( $value ) ) {
+						$selected = in_array( $k, $value ) ? ' selected' : '';
+					} else {
+						$selected = selected( $k, $value, false );
+					}
+
+					$item .= '<option value="' . esc_attr( $k ) . '" ' . $selected . '>' . $v . '</option>';
 				}
 				$item .= '</select>';
+				break;
+
+			case 'textarea':
+				$placeholder = $args['placeholder'] ?? '';
+				$item        .= '<textarea ' . $id . ' ' . $name . ' placeholder="' . esc_attr( $placeholder ) . '" class="regular-text" rows="5" ' . $required . '>' . esc_attr( $value ) . '</textarea>';
 				break;
 
 			default:
@@ -81,6 +103,11 @@ class ClickwhaleHepler {
 
 		if ( isset( $args['description'] ) ) {
 			$item .= '<p class="description ">' . $args['description'] . '</p>';
+		}
+
+		if ( $row ) {
+			$item .= '</td>';
+			$item .= '</tr>';
 		}
 
 		return $item;
@@ -125,7 +152,7 @@ class ClickwhaleHepler {
 		}
 
 		$limit = isset( $data['is_limit'] ) && $data['is_limit'];
-		if ( ( isset( $data['link_to_edit'] ) && $data['link_to_edit'] ) && !$limit ) {
+		if ( ( isset( $data['link_to_edit'] ) && $data['link_to_edit'] ) && ! $limit ) {
 			$linkToEditArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_edit'] ) ),
 				'title' => __( 'Add New', 'clickwhale' )

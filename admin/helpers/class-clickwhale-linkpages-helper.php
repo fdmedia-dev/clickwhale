@@ -31,4 +31,36 @@ class ClickwhaleLinkpagesHelper {
 		return apply_filters( 'clickwhale_linkpages_limit', 1 );
 	}
 
+	/**
+	 * Check if linkpage with slug exists
+	 * @param string $slug
+	 *
+	 * @return string|null
+	 * @since 1.2.0
+	 */
+	public static function is_linkpage( string $slug ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE slug=%s", $slug )
+		);
+
+	}
+
+	/**
+	 * Return Linkpage ID by its slug
+	 *
+	 * @param string $slug
+	 *
+	 * @return string|null
+	 * @since 1.2.0
+	 */
+	public static function get_linkpage_id_by_slug( string $slug ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}clickwhale_linkpages WHERE slug=%s", $slug )
+		);
+	}
+
 }

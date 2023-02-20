@@ -152,14 +152,15 @@ class Clickwhale {
 	private function define_admin_hooks() {
 		global $Clickwhale_Admin; // for add_/remove_action - https://www.forumming.com/question/354/remove-action-from-a-plugin-class-forced-to-use-global-instance
 
-		$Clickwhale_Admin          = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Admin_Settings = new Clickwhale_Admin_Settings();
-		$Clickwhale_Admin_Tools    = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Ajax           = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Link_Edit      = Clickwhale_Link_Edit::getInstance();
-		$Clickwhale_Category_Edit  = Clickwhale_Category_Edit::getInstance();
-		$Clickwhale_Linkpage_Edit  = Clickwhale_Linkpage_Edit::getInstance();
-		$Clickwhale_Tools_Reset    = ClickwhaleToolsResetDB::getInstance();
+		$Clickwhale_Admin              = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Settings     = new Clickwhale_Admin_Settings();
+		$Clickwhale_Admin_Tools        = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Ajax               = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Link_Edit          = Clickwhale_Link_Edit::getInstance();
+		$Clickwhale_Category_Edit      = Clickwhale_Category_Edit::getInstance();
+		$Clickwhale_Linkpage_Edit      = Clickwhale_Linkpage_Edit::getInstance();
+		$Clickwhale_Tracking_Code_Edit = ClickwhaleTrackingCodeEdit::getInstance();
+		$Clickwhale_Tools_Reset        = ClickwhaleToolsResetDB::getInstance();
 
 		$Clickwhale_Admin_Settings->init( $this->get_plugin_name(), $this->get_version() );
 
@@ -168,7 +169,7 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
 
-		if(isset($_GET['page']) && substr( $_GET['page'], 0, strlen('clickwhale') ) === 'clickwhale') {
+		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
 			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
 		}
@@ -178,11 +179,11 @@ class Clickwhale {
 		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'clickwhale_admin_pro_message_callback' ); // button to pro version
 
-		$this->loader->add_action( 'admin_post_nopriv_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 
-		$this->loader->add_action( 'admin_post_nopriv_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
 		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
+
+		$this->loader->add_action( 'admin_post_save_update_tracking_code', $Clickwhale_Tracking_Code_Edit, 'save_update_tracking_code' );
 
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax, 'migration_notice_hide' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax, 'migration_deactive' );
@@ -193,6 +194,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug', $Clickwhale_Ajax, 'check_slug' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $Clickwhale_Ajax, 'get_posts_by_post_type' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );
 
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
