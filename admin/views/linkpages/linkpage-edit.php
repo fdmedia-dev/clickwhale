@@ -17,13 +17,6 @@ $post_type_links = $linkpage_edit->get_post_types();
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 $social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
 
-// HEADING
-if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
-	$pageHeading = __( 'Edit Link Page', $this->plugin_name );
-} else {
-	$pageHeading = __( 'Add Link Page', $this->plugin_name );
-}
-
 // LP IMAGE
 $logo_id = $item['logo'] ?? '';
 
@@ -63,23 +56,19 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">
-		<?php echo $pageHeading ?>
-        <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(),
-			   'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
 
-		<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() < ClickwhaleLinkpagesHelper::get_limit() ) { ?>
-            <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
-               class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
-		<?php } ?>
-
-		<?php if ( isset( $item['slug'] ) && $item['slug'] !== '' ) { ?>
-            <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>"
-               target="_blank" rel="noopener"
-               class="page-title-action"><?php _e( 'View Page', $this->plugin_name ) ?></a>
-		<?php } ?>
-    </h1>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => __( 'Link Page', $this->plugin_name ),
+			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
+			'link_to_list' => 'clickwhale-linkpages',
+			'link_to_edit' => 'clickwhale-edit-linkpage',
+			'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ),
+			'is_limit'     => ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit()
+		)
+	);
+	?>
 
     <form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_linkpage">
@@ -416,7 +405,7 @@ do_action( 'clickwhale_admin_banner' );
                                 </label>
                             </th>
                             <td>
-	                            <?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
+								<?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                     <div class="links-info">
 										<?php printf(
 											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',

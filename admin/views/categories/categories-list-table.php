@@ -18,13 +18,16 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
 
-    <h1 class="wp-heading-inline">
-		<?php echo esc_html( get_admin_page_title() ); ?>
-		<?php if ( $total_items < $limit ) { ?>
-            <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-category' ); ?>"
-               class="page-title-action"><?php _e( 'Add New', 'clickwhale' ) ?></a>
-		<?php } ?>
-    </h1>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => esc_html( get_admin_page_title() ),
+			'is_list'      => true,
+			'link_to_edit' => 'clickwhale-edit-category',
+			'is_limit'     => ClickwhaleCategoriesHelper::get_categories_count() >= ClickwhaleCategoriesHelper::get_limit()
+		)
+	);
+	?>
 
 	<?php if ( ! empty( $message ) ) { ?>
         <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>

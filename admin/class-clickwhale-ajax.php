@@ -76,7 +76,7 @@ class Clickwhale_Ajax {
 			$options_migrate            = get_option( 'clickwhale_hide_notice_migrate' );
 			$options_migrate[ $plugin ] = true;
 			update_option( 'clickwhale_hide_notice_migrate', $options_migrate );
-		} else if ( $type === 'deactive' ) {
+		} elseif ( $type === 'deactive' ) {
 			$options_deactive            = get_option( 'clickwhale_hide_notice_deactive' );
 			$options_deactive[ $plugin ] = true;
 			update_option( 'clickwhale_hide_notice_deactive', $options_deactive );
@@ -261,8 +261,8 @@ class Clickwhale_Ajax {
 	}
 
 	/**
-	 * @since 1.1.0
 	 * @return void
+	 * @since 1.1.0
 	 */
 	public function get_posts_by_post_type() {
 		check_ajax_referer( 'get_posts_by_post_type', 'security' );
@@ -300,8 +300,8 @@ class Clickwhale_Ajax {
 	}
 
 	/**
-	 * @since 1.1.0
 	 * @return void
+	 * @since 1.1.0
 	 */
 	public function get_cw_links() {
 		check_ajax_referer( 'get_cw_links', 'security' );
@@ -324,8 +324,8 @@ class Clickwhale_Ajax {
 	}
 
 	/**
-	 * @since 1.1.0
 	 * @return void
+	 * @since 1.1.0
 	 */
 	public function track_custom_link() {
 		check_ajax_referer( 'track_custom_link', 'security' );
@@ -338,6 +338,28 @@ class Clickwhale_Ajax {
 
 		// Track click on link
 		$track = new Clickwhale_Click_Track( $_POST['id'], true );
+
+		wp_send_json_success();
+
+		wp_die();
+	}
+
+	/**
+	 * @return void
+	 * @since 1.2.0
+	 */
+	public function tracking_code_toggle_active() {
+		global $wpdb;
+
+		check_ajax_referer( 'clickwhale_tracking_codes', 'security' );
+
+		$tracking_codes_table = $wpdb->prefix . 'clickwhale_tracking_codes';
+		$data                 = array( 'is_active' => $_POST['status'] );
+		$where                = array( 'id' => intval( sanitize_text_field( $_POST['id'] ) ) );
+
+		$wpdb->update( $tracking_codes_table, $data, $where );
+
+		exit( var_dump( $wpdb->last_query ) );
 
 		wp_send_json_success();
 

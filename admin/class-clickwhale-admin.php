@@ -94,6 +94,7 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-links-helper.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-categories-helper.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-linkpages-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/helpers/class-clickwhale-tracking-codes-helper.php';
 
 		// Settings
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-ajax.php';
@@ -111,6 +112,8 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpage-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-codes-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-code-edit.php';
 
 	}
 
@@ -139,8 +142,10 @@ class Clickwhale_Admin {
 		 */
 
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), '4.1.0-rc.0', 'all' );
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(),
+			'4.1.0-rc.0', 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-admin.css', array(),
+			$this->version, 'all' );
 	}
 
 	/**
@@ -168,8 +173,11 @@ class Clickwhale_Admin {
 		wp_enqueue_script( "jquery-ui-tabs" );
 		wp_enqueue_media();
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_script( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), '4.1.0-rc.0', false );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+		wp_enqueue_script( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
+			array( 'jquery' ), '4.1.0-rc.0', false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ),
+			$this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
 			'siteurl' => home_url(),
 		) );
@@ -197,7 +205,8 @@ class Clickwhale_Admin {
             <div class="clickwhale-banner--links">
 				<?php if ( $link_review ) { ?>
                     <div class="clickwhale-banner--link-review">
-						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', $this->plugin_name ), esc_url( $link_review ) ); ?>
+						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>',
+							$this->plugin_name ), esc_url( $link_review ) ); ?>
                         <span class="clickwhale-banner--link-review--raiting">
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
@@ -235,25 +244,50 @@ class Clickwhale_Admin {
 	}
 
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) ) {
-			?>
-            <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('.slug-input--btn').click(function (e) {
-                        e.preventDefault();
-                        var $temp = jQuery('<input>'),
-                            textToCopy = jQuery(this).parent().find('input').val();
+		if ( isset( $_GET['page'] ) ) {
 
-                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
-                        jQuery('body').append($temp);
-                        $temp.val(textToCopy).select();
-                        document.execCommand("copy");
-                        $temp.remove();
+
+			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
+				?>
+                <script type='text/javascript'>
+                    jQuery(document).ready(function () {
+                        jQuery('.slug-input--btn').click(function (e) {
+                            e.preventDefault();
+                            var $temp = jQuery('<input>'),
+                                textToCopy = jQuery(this).parent().find('input').val();
+
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+                            jQuery('body').append($temp);
+                            $temp.val(textToCopy).select();
+                            document.execCommand("copy");
+                            $temp.remove();
+                        });
                     });
-                });
-            </script>
-			<?php
+                </script>
+				<?php
+			}
+			if ( $_GET['page'] === 'clickwhale-tracking-codes' ) {
+				$nonce = wp_create_nonce( 'clickwhale_tracking_codes' );
+				?>
+                <script type='text/javascript'>
+                    jQuery(document).ready(function () {
+                        jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').change(function () {
+                            var active = this.checked,
+                                id = this.dataset.id;
+
+                            jQuery.post(ajaxurl, {
+                                'security': '<?php echo $nonce ?>',
+                                'action': 'clickwhale/admin/tracking_code_toggle_active',
+                                'status': active ? 1 : 0,
+                                'id': id
+                            }, function (response) {
+
+                            })
+                        });
+                    });
+                </script>
+				<?php
+			}
 		}
 	}
-
 }
