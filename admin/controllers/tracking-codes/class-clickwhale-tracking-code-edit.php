@@ -98,9 +98,32 @@ class ClickwhaleTrackingCodeEdit {
 
 		$tracking_codes_table = $wpdb->prefix . 'clickwhale_tracking_codes';
 		$item                 = array_intersect_key( $_POST, $this->get_defaults() );
+		$item['description']  = esc_html( $item['description'] );
 		$item['author']       = get_current_user_id();
-		$item['position']     = maybe_serialize( $item['position'] );
-		$item['is_active']    = $item['is_active'] ?? 0;
+
+		// unset inactive include options
+		if ( ! isset( $item['position']['post_types_included']['cw_linkpage']['active'] ) ) {
+			unset( $item['position']['post_types_included']['cw_linkpage'] );
+		}
+		if ( ! isset( $item['position']['post_types_included']['post']['active'] ) ) {
+			unset( $item['position']['post_types_included']['post'] );
+		}
+		if ( ! isset( $item['position']['post_types_included']['page']['active'] ) ) {
+			unset( $item['position']['post_types_included']['page'] );
+		}
+
+		// unset inactive exclude options
+		if ( ! isset( $item['position']['post_types_excluded']['cw_linkpage']['active'] ) ) {
+			unset( $item['position']['post_types_excluded']['cw_linkpage'] );
+		}
+		if ( ! isset( $item['position']['post_types_excluded']['post']['active'] ) ) {
+			unset( $item['position']['post_types_excluded']['post'] );
+		}
+		if ( ! isset( $item['position']['post_types_excluded']['page']['active'] ) ) {
+			unset( $item['position']['post_types_excluded']['page'] );
+		}
+		$item['position']  = maybe_serialize( $item['position'] );
+		$item['is_active'] = $item['is_active'] ?? 0;
 
 		$result = $wpdb->update(
 			$tracking_codes_table,
@@ -133,20 +156,30 @@ class ClickwhaleTrackingCodeEdit {
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
-
-                var postsSelect = jQuery('#position_post_id');
-
                 jQuery('#position_code').select2({
                     placeholder: '<?php _e( 'Select Code position', 'clickwhale' ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
-                jQuery('#position_linkpage_ids, #position_page_ids, #position_post_ids').select2({
-                    placeholder: '<?php _e( 'Select LP', 'clickwhale' ) ?>',
+                jQuery('#position_include_linkpage_ids, #position_exclude_linkpage_ids').select2({
+                    placeholder: '<?php _e( 'Select Linkpages', 'clickwhale' ) ?>',
                     width: '100%',
                     multiple: true,
                     minimumResultsForSearch: 10
                 });
+                jQuery('#position_include_page_ids, #position_exclude_page_ids').select2({
+                    placeholder: '<?php _e( 'Select Pages', 'clickwhale' ) ?>',
+                    width: '100%',
+                    multiple: true,
+                    minimumResultsForSearch: 10
+                });
+                jQuery('#position_include_post_ids, #position_exclude_post_ids').select2({
+                    placeholder: '<?php _e( 'Select Posts', 'clickwhale' ) ?>',
+                    width: '100%',
+                    multiple: true,
+                    minimumResultsForSearch: 10
+                });
+
 
                 if (jQuery('#code').length) {
                     var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
@@ -163,9 +196,11 @@ class ClickwhaleTrackingCodeEdit {
 
                 // Toggle pages select
                 if (jQuery('[name="position[pages]"]:checked').val() !== 'all') {
-                    jQuery('.cw-posts-row').show();
+                    jQuery('.cw-posts-row--included').show();
+                    jQuery('.cw-posts-row--excluded').hide();
                 } else {
-                    jQuery('.cw-posts-row').hide();
+                    jQuery('.cw-posts-row--included').hide();
+                    jQuery('.cw-posts-row--excluded').show();
                 }
 
                 // Toggle page select
@@ -183,9 +218,11 @@ class ClickwhaleTrackingCodeEdit {
                 jQuery(document)
                     .on('change', '[name="position[pages]"]', function () {
                         if (jQuery(this).val() !== 'all') {
-                            jQuery('.cw-posts-row').show();
+                            jQuery('.cw-posts-row--included').show();
+                            jQuery('.cw-posts-row--excluded').hide();
                         } else {
-                            jQuery('.cw-posts-row').hide();
+                            jQuery('.cw-posts-row--included').hide();
+                            jQuery('.cw-posts-row--excluded').show();
                         }
                     })
                     .on('change', '.cw-posts-row [type="checkbox"]', function () {

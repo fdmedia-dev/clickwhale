@@ -101,18 +101,18 @@ do_action( 'clickwhale_admin_banner' );
 						);
 						?>
 
-						<?php
-						if ( $linkpages ) {
-							?>
-                            <div class="cw-posts-row">
+                        <br>
+
+                        <?php if ( $linkpages ) { ?>
+                            <div class="cw-posts-row cw-posts-row--included">
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
 										'control' => 'checkbox',
-										'id'      => 'position_cw_linkpage',
-										'name'    => 'position[post_types][cw_linkpage][active]',
-										'value'   => $item['position']['post_types']['cw_linkpage']['active'] ?? 0,
-										'label'   => __( 'ClickWhale Link Pages', $this->plugin_name ),
+										'id'      => 'position_include_cw_linkpage',
+										'name'    => 'position[post_types_included][cw_linkpage][active]',
+										'value'   => $item['position']['post_types_included']['cw_linkpage']['active'] ?? '0',
+										'label'   => __( 'Include ClickWhale Link Pages', $this->plugin_name ),
 									),
 									false
 								);
@@ -122,11 +122,41 @@ do_action( 'clickwhale_admin_banner' );
 									echo ClickwhaleHepler::render_control(
 										array(
 											'control'  => 'select',
-											'id'       => 'position_linkpage_ids',
-											'name'     => 'position[post_types][cw_linkpage][ids][]',
-											'value'    => $item['position']['post_types']['cw_linkpage']['ids'] ?? '',
+											'id'       => 'position_include_linkpage_ids',
+											'name'     => 'position[post_types_included][cw_linkpage][ids][]',
+											'value'    => $item['position']['post_types_included']['cw_linkpage']['ids'] ?? '',
 											'options'  => $tracking_code->get_linkpages(),
 											'default'  => 'all',
+											'multiple' => true
+										),
+										false
+									);
+									?>
+                                </div>
+                            </div>
+                            <div class="cw-posts-row cw-posts-row--excluded">
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'control' => 'checkbox',
+										'id'      => 'position_exclude_cw_linkpage',
+										'name'    => 'position[post_types_excluded][cw_linkpage][active]',
+										'value'   => $item['position']['post_types_excluded']['cw_linkpage']['active'] ?? '0',
+										'label'   => __( 'Exclude ClickWhale Link Pages', $this->plugin_name ),
+									),
+									false
+								);
+								?>
+                                <div class="cw-posts-row--select">
+									<?php
+									echo ClickwhaleHepler::render_control(
+										array(
+											'control'  => 'select',
+											'id'       => 'position_exclude_linkpage_ids',
+											'name'     => 'position[post_types_excluded][cw_linkpage][ids][]',
+											'value'    => $item['position']['post_types_excluded']['cw_linkpage']['ids'] ?? '',
+											'options'  => $tracking_code->get_linkpages(),
+											'default'  => '',
 											'multiple' => true
 										),
 										false
@@ -137,15 +167,15 @@ do_action( 'clickwhale_admin_banner' );
 						<?php } ?>
 
 						<?php if ( $posts ) { ?>
-                            <div class="cw-posts-row">
+                            <div class="cw-posts-row cw-posts-row--included">
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
 										'control' => 'checkbox',
-										'id'      => 'position_post',
-										'name'    => 'position[post_types][post][active]',
-										'value'   => $item['position']['post_types']['post']['active'] ?? 0,
-										'label'   => __( 'Posts', $this->plugin_name ),
+										'id'      => 'position_include_post',
+										'name'    => 'position[post_types_included][post][active]',
+										'value'   => $item['position']['post_types_included']['post']['active'] ?? '0',
+										'label'   => __( 'Include Posts', $this->plugin_name ),
 									),
 									false
 								);
@@ -155,11 +185,41 @@ do_action( 'clickwhale_admin_banner' );
 									echo ClickwhaleHepler::render_control(
 										array(
 											'control'  => 'select',
-											'id'       => 'position_post_ids',
-											'name'     => 'position[post_types][post][ids][]',
-											'value'    => $item['position']['post_types']['post']['ids'] ?? '',
+											'id'       => 'position_include_post_ids',
+											'name'     => 'position[post_types_included][post][ids][]',
+											'value'    => $item['position']['post_types_included']['post']['ids'] ?? '',
 											'options'  => $posts,
 											'default'  => 'all',
+											'multiple' => true
+										),
+										false
+									);
+									?>
+                                </div>
+                            </div>
+                            <div class="cw-posts-row cw-posts-row--excluded">
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'control' => 'checkbox',
+										'id'      => 'position_exclude_post',
+										'name'    => 'position[post_types_excluded][post][active]',
+										'value'   => $item['position']['post_types_excluded']['post']['active'] ?? '0',
+										'label'   => __( 'Exclude Posts', $this->plugin_name ),
+									),
+									false
+								);
+								?>
+                                <div class="cw-posts-row--select">
+									<?php
+									echo ClickwhaleHepler::render_control(
+										array(
+											'control'  => 'select',
+											'id'       => 'position_exclude_post_ids',
+											'name'     => 'position[post_types_excluded][post][ids][]',
+											'value'    => $item['position']['post_types_excluded']['post']['ids'] ?? '',
+											'options'  => $posts,
+											'default'  => '',
 											'multiple' => true
 										),
 										false
@@ -170,15 +230,15 @@ do_action( 'clickwhale_admin_banner' );
 						<?php } ?>
 
 						<?php if ( $pages ) { ?>
-                            <div class="cw-posts-row">
+                            <div class="cw-posts-row cw-posts-row--included">
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
 										'control' => 'checkbox',
-										'id'      => 'position_page',
-										'name'    => 'position[post_types][page][active]',
-										'value'   => $item['position']['post_types']['page']['active'] ?? 0,
-										'label'   => __( 'Pages', $this->plugin_name ),
+										'id'      => 'position_include_page',
+										'name'    => 'position[post_types_included][page][active]',
+										'value'   => $item['position']['post_types_included']['page']['active'] ?? '0',
+										'label'   => __( 'Include Pages', $this->plugin_name ),
 									),
 									false
 								);
@@ -188,11 +248,41 @@ do_action( 'clickwhale_admin_banner' );
 									echo ClickwhaleHepler::render_control(
 										array(
 											'control'  => 'select',
-											'id'       => 'position_page_ids',
-											'name'     => 'position[post_types][page][ids][]',
-											'value'    => $item['position']['post_types']['page']['ids'] ?? '',
+											'id'       => 'position_include_page_ids',
+											'name'     => 'position[post_types_included][page][ids][]',
+											'value'    => $item['position']['post_types_included']['page']['ids'] ?? '',
 											'options'  => $pages,
 											'default'  => 'all',
+											'multiple' => true
+										),
+										false
+									);
+									?>
+                                </div>
+                            </div>
+                            <div class="cw-posts-row cw-posts-row--excluded">
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'control' => 'checkbox',
+										'id'      => 'position_exclude_page',
+										'name'    => 'position[post_types_excluded][page][active]',
+										'value'   => $item['position']['post_types_excluded']['page']['active'] ?? '0',
+										'label'   => __( 'Exclude Pages', $this->plugin_name ),
+									),
+									false
+								);
+								?>
+                                <div class="cw-posts-row--select">
+									<?php
+									echo ClickwhaleHepler::render_control(
+										array(
+											'control'  => 'select',
+											'id'       => 'position_exclude_page_ids',
+											'name'     => 'position[post_types_excluded][page][ids][]',
+											'value'    => $item['position']['post_types_excluded']['page']['ids'] ?? '',
+											'options'  => $pages,
+											'default'  => '',
 											'multiple' => true
 										),
 										false
@@ -210,7 +300,7 @@ do_action( 'clickwhale_admin_banner' );
 						'control'     => 'textarea',
 						'id'          => 'description',
 						'name'        => 'description',
-						'value'       => esc_attr( wp_unslash( $item['description'] ) ),
+						'value'       => esc_html( wp_unslash( $item['description'] ) ),
 						'placeholder' => __( 'Your comment here', $this->plugin_name ),
 						'description' => __( 'Optional comment to the tracking code.', $this->plugin_name ),
 					),

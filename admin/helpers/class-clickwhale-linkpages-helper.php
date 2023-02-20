@@ -33,6 +33,7 @@ class ClickwhaleLinkpagesHelper {
 
 	/**
 	 * Check if linkpage with slug exists
+	 *
 	 * @param string $slug
 	 *
 	 * @return string|null
@@ -57,10 +58,11 @@ class ClickwhaleLinkpagesHelper {
 	 */
 	public static function get_linkpage_id_by_slug( string $slug ) {
 		global $wpdb;
-
-		return $wpdb->get_var(
+		$result = $wpdb->get_var(
 			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}clickwhale_linkpages WHERE slug=%s", $slug )
 		);
+
+		return $result ?? 0;
 	}
 
 }
