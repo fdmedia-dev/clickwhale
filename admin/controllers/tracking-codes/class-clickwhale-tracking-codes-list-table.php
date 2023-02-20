@@ -149,12 +149,12 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />',
+			'is_active'   => __( 'Active', 'clickwhale' ),
 			'title'       => __( 'Tilte', 'clickwhale' ),
 			'description' => __( 'Description', 'clickwhale' ),
 			'position'    => __( 'Position', 'clickwhale' ),
 			'author'      => __( 'Author', 'clickwhale' ),
 			'created_at'  => __( 'Created', 'clickwhale' ),
-			'is_active'   => __( 'Active', 'clickwhale' ),
 		);
 	}
 
