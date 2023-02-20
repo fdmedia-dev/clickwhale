@@ -494,11 +494,9 @@ table.tracking-codes .column-is_active {
 	left: 19px;
 }
 
-.cw-posts-row{
-	margin-top: 15px;
-}
-.cw-posts-row--select{
+.cw-posts-row--select {
 	display: none;
+	margin-bottom: 15px;
 }
 
 @media (max-width: 768px) {

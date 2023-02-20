@@ -30,7 +30,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_title( $item ) {
+	public function column_title( $item ): string {
 		$title   = sprintf( '<a href="?page=clickwhale-edit-tracking-code&id=%d">%s</a>', $item['id'],
 			wp_unslash( $item['title'] ) );
 		$actions = array(
@@ -46,7 +46,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 		);
 	}
 
-	public function column_is_active( $item ) {
+	public function column_is_active( $item ): string {
 		$checkedVal = intval( $item['is_active'] );
 		$checked    = checked( $checkedVal, 1, false );
 		$output     = '';
@@ -67,8 +67,8 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_desctiption( $item ) {
-		return $item['description'];
+	public function column_desctiption( $item ): string {
+		return wp_unslash( $item['description'] );
 	}
 
 	/**
@@ -76,7 +76,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_position( $item ) {
+	public function column_position( $item ): string {
 		$position     = '';
 		$positionCode = maybe_unserialize( $item['position'] );
 
@@ -96,26 +96,13 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	}
 
 	/**
-	 * Total clicks per link
-	 *
 	 * @param $item
 	 *
 	 * @return string
 	 * @since 1.2.0
 	 *
 	 */
-	public function column_clicks_count( $item ) {
-		return $item['clicks_count'];
-	}
-
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 * @since 1.2.0
-	 *
-	 */
-	public function column_author( $item ) {
+	public function column_author( $item ): string {
 		$user_info = get_userdata( $item['author'] );
 
 		return '<a href="' . get_admin_url( get_current_blog_id(),
@@ -127,7 +114,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_created_at( $item ) {
+	public function column_created_at( $item ): string {
 		return $item['created_at'];
 	}
 
@@ -136,7 +123,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_cb( $item ) {
+	public function column_cb( $item ): string {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']
@@ -149,12 +136,12 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />',
+			'is_active'   => __( 'Active', 'clickwhale' ),
 			'title'       => __( 'Tilte', 'clickwhale' ),
 			'description' => __( 'Description', 'clickwhale' ),
 			'position'    => __( 'Position', 'clickwhale' ),
 			'author'      => __( 'Author', 'clickwhale' ),
 			'created_at'  => __( 'Created', 'clickwhale' ),
-			'is_active'   => __( 'Active', 'clickwhale' ),
 		);
 	}
 
