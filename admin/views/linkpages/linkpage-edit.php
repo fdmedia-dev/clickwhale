@@ -520,6 +520,20 @@ do_action( 'clickwhale_admin_banner' );
                                 <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
                             </td>
                         </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <a class="button"
+                                   id="opengraph-live-preview"
+                                   href="https://www.opengraph.xyz/url/<?php echo get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) ?>/"
+                                   target="_blank">
+									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
+                                </a>
+                                <p class="description"></p>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
