@@ -75,7 +75,7 @@ do_action( 'clickwhale_admin_banner' );
 		<?php } ?>
 
 		<?php if ( isset( $item['slug'] ) && $item['slug'] !== '' ) { ?>
-            <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>"
+            <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>/"
                target="_blank" rel="noopener"
                class="page-title-action"><?php _e( 'View Page', $this->plugin_name ) ?></a>
 		<?php } ?>
@@ -149,7 +149,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
                                 </p>
                             </td>
                         </tr>
