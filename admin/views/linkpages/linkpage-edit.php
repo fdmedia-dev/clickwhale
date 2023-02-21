@@ -543,7 +543,8 @@ do_action( 'clickwhale_admin_banner' );
                                 <a class="button"
                                    id="opengraph-live-preview"
                                    href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
-                                   target="_blank">
+                                   target="_blank"
+                                   rel="noopener">
 									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
                                 </a>
                                 <p class="description"></p>
