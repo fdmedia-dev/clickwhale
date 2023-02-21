@@ -11,10 +11,12 @@ class ClickwhaleHepler {
 	public static function render_control( array $args, bool $row = false ): string {
 
 		$item     = '';
-		$id       = 'id="' . $args['id'] . '"';
-		$name     = 'name="' . esc_attr( $args['name'] ) . '"';
+		$id       = isset( $args['id'] ) && $args['id'] ? 'id="' . esc_attr($args['id']) . '"' : '';
+		$class    = isset( $args['class'] ) && $args['class'] ? 'class="' . esc_attr( $args['class']) . '"' : '';
+		$name     = isset( $args['name'] ) && $args['name'] ? 'name="' . esc_attr( $args['name'] ) . '"' : '';
 		$value    = $args['value'];
 		$required = isset( $args['required'] ) && $args['required'] ? 'required' : '';
+
 		if ( isset( $args['default'] ) && $args['default'] ) {
 			$value = $value ?: $args['default'];
 		}
@@ -28,7 +30,7 @@ class ClickwhaleHepler {
 
 		switch ( $args['control'] ) {
 			case 'input':
-				$item .= '<input ' . $id . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text" ' . $required . '>';
+				$item .= '<input ' . $id . ' ' . $class . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text" ' . $required . '>';
 				break;
 
 			case 'checkbox':
@@ -79,7 +81,7 @@ class ClickwhaleHepler {
 
 			case 'select':
 				$multiple = isset( $args['multiple'] ) && $args['multiple'] ? ' multiple' : '';
-				$item     .= '<select ' . $id . ' ' . $name . $multiple . ' class="regular-text">';
+				$item     .= '<select ' . $id . ' ' . $class . ' ' . $name . $multiple . ' class="regular-text">';
 				foreach ( $args['options'] as $k => $v ) {
 					if ( $multiple && is_array( $value ) ) {
 						$selected = in_array( $k, $value ) ? ' selected' : '';
@@ -94,7 +96,7 @@ class ClickwhaleHepler {
 
 			case 'textarea':
 				$placeholder = $args['placeholder'] ?? '';
-				$item        .= '<textarea ' . $id . ' ' . $name . ' placeholder="' . esc_attr( $placeholder ) . '" class="regular-text" rows="5" ' . $required . '>' . esc_attr( $value ) . '</textarea>';
+				$item        .= '<textarea ' . $id . ' ' . $class . ' ' . $name . ' placeholder="' . esc_attr( $placeholder ) . '" class="regular-text" rows="5" ' . $required . '>' . esc_attr( $value ) . '</textarea>';
 				break;
 
 			default:
