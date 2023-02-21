@@ -381,7 +381,7 @@ do_action( 'clickwhale_admin_banner' );
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="socialSeoTitle"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                                <label for="socialSeoTitle"><?php _e( 'SEO Title', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input id="socialSeoTitle"
