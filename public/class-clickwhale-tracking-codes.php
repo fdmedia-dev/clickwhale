@@ -8,7 +8,10 @@ class ClickwhaleTrackingCodes {
 	}
 
 	private function parse_current_page_path(): string {
-		return ltrim( untrailingslashit( parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH ) ), '/' );
+		$path          = untrailingslashit( parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH ) );
+		$pathFragments = explode( '/', $path );
+
+		return end( $pathFragments );
 	}
 
 	private function get_current_page_id_by_url(): int {
@@ -32,6 +35,7 @@ class ClickwhaleTrackingCodes {
 	 * @param string $linkpage_id
 	 * @param string $post_id
 	 * @param string $post_type
+	 * @param string $category_id
 	 *
 	 * @return void
 	 */
@@ -40,7 +44,8 @@ class ClickwhaleTrackingCodes {
 		array $tracking_code,
 		string $linkpage_id = '',
 		string $post_id = '',
-		string $post_type = ''
+		string $post_type = '',
+		string $category_id = ''
 	) {
 		if ( $linkpage_id ) {
 			if ( isset( $position['post_types_included']['cw_linkpage'] )
@@ -53,6 +58,13 @@ class ClickwhaleTrackingCodes {
 			if ( isset( $position['post_types_included'][ $post_type ]['active'] )
 			     && ( in_array( $post_id, $position['post_types_included'][ $post_type ] ['ids'] )
 			          || in_array( 'all', $position['post_types_included'][ $post_type ] ['ids'] ) )
+			) {
+				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
+			}
+		} elseif ( $category_id ) {
+			if ( isset( $position['post_types_included']['category']['active'] )
+			     && ( in_array( $category_id, $position['post_types_included']['category'] ['ids'] )
+			          || in_array( 'all', $position['post_types_included']['category'] ['ids'] ) )
 			) {
 				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
 			}
@@ -69,6 +81,7 @@ class ClickwhaleTrackingCodes {
 	 * @param string $linkpage_id
 	 * @param string $post_id
 	 * @param string $post_type
+	 * @param string $category_id
 	 *
 	 * @return void
 	 */
@@ -77,7 +90,8 @@ class ClickwhaleTrackingCodes {
 		array $tracking_code,
 		string $linkpage_id = '',
 		string $post_id = '',
-		string $post_type = ''
+		string $post_type = '',
+		string $category_id = ''
 	) {
 		if ( $linkpage_id ) {
 			if ( ! isset( $position['post_types_excluded']['cw_linkpage'] )
@@ -90,6 +104,13 @@ class ClickwhaleTrackingCodes {
 			if ( ! isset( $position['post_types_excluded'][ $post_type ]['active'] )
 			     || ( ! in_array( $post_id, $position['post_types_excluded'][ $post_type ] ['ids'] )
 			          && ! in_array( 'all', $position['post_types_excluded'][ $post_type ] ['ids'] ) )
+			) {
+				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
+			}
+		} elseif ( $category_id ) {
+			if ( ! isset( $position['post_types_excluded']['category']['active'] )
+			     || ( ! in_array( $category_id, $position['post_types_excluded']['category'] ['ids'] )
+			          && ! in_array( 'all', $position['post_types_excluded']['category'] ['ids'] ) )
 			) {
 				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
 			}
@@ -115,13 +136,17 @@ class ClickwhaleTrackingCodes {
 		$current_page_id     = $this->get_current_page_id_by_url();
 		$current_post_type   = get_post( $current_page_id ) ? get_post( $current_page_id )->post_type : '';
 
+		$category            = get_term_by( 'slug', $current_page_path, 'category' );
+		$current_category_id = $category ? $category->term_id : '';
+
 		if ( $type === 'included' ) {
 			$this->do_included_conditional_logic(
 				$position,
 				$tracking_code,
 				$current_linkpage_id,
 				$current_page_id,
-				$current_post_type );
+				$current_post_type,
+				$current_category_id );
 		}
 
 		if ( $type === 'excluded' ) {
@@ -130,7 +155,8 @@ class ClickwhaleTrackingCodes {
 				$tracking_code,
 				$current_linkpage_id,
 				$current_page_id,
-				$current_post_type );
+				$current_post_type,
+				$current_category_id );
 		}
 	}
 

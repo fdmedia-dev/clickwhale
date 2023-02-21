@@ -93,6 +93,24 @@ class ClickwhaleTrackingCodeEdit {
 		return $result;
 	}
 
+	public function get_terms_by_tax( $taxonomy ) {
+		$result = [];
+		$args   = array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+		);
+		$terms  = get_terms( $args );
+		if ( $terms ) {
+			$result['all'] = __( 'All', 'clickwhale' );
+			foreach ( $terms as $term ) {
+				$result[ $term->term_id ] = $term->name;
+			}
+		}
+
+		return $result;
+
+	}
+
 	public function save_update_tracking_code() {
 		global $wpdb;
 
@@ -161,20 +179,8 @@ class ClickwhaleTrackingCodeEdit {
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
-                jQuery('#position_include_linkpage_ids, #position_exclude_linkpage_ids').select2({
-                    placeholder: '<?php _e( 'Select Linkpages', 'clickwhale' ) ?>',
-                    width: '100%',
-                    multiple: true,
-                    minimumResultsForSearch: 10
-                });
-                jQuery('#position_include_page_ids, #position_exclude_page_ids').select2({
-                    placeholder: '<?php _e( 'Select Pages', 'clickwhale' ) ?>',
-                    width: '100%',
-                    multiple: true,
-                    minimumResultsForSearch: 10
-                });
-                jQuery('#position_include_post_ids, #position_exclude_post_ids').select2({
-                    placeholder: '<?php _e( 'Select Posts', 'clickwhale' ) ?>',
+                jQuery('.with-select2').select2({
+                    placeholder: '<?php _e( 'Select', 'clickwhale' ) ?>',
                     width: '100%',
                     multiple: true,
                     minimumResultsForSearch: 10
