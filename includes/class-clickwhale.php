@@ -192,6 +192,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $Clickwhale_Ajax, 'clickwhale_reset' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug', $Clickwhale_Ajax, 'check_slug' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/random_slug', $Clickwhale_Ajax, 'random_slug' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $Clickwhale_Ajax, 'get_posts_by_post_type' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );

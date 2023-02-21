@@ -69,14 +69,20 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="cw-slug"
-                                       name="slug"
-                                       type="text"
-                                       value="<?php echo esc_attr( $slug ) ?>"
-                                       size="50"
-                                       class="regular-text"
-                                       placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
-                                       required>
+                                <div class="slug-input-edit--wrap">
+                                    <input id="cw-slug"
+                                           name="slug"
+                                           type="text"
+                                           value="<?php echo esc_attr( $slug ) ?>"
+                                           size="50"
+                                           class="regular-text"
+                                           placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
+                                           required>
+                                    <span><?php _e( 'or', $this->plugin_name ) ?></span>
+                                    <button type="button" class="button-primary" id="cw-link-random-slug">
+										<?php _e( 'Generate random slug', $this->plugin_name ) ?>
+                                    </button>
+                                </div>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
