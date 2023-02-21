@@ -64,7 +64,7 @@ do_action( 'clickwhale_admin_banner' );
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
 			'link_to_list' => 'clickwhale-linkpages',
 			'link_to_edit' => 'clickwhale-edit-linkpage',
-			'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ),
+			'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ) . '/',
 			'is_limit'     => ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit()
 		)
 	);
