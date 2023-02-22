@@ -58,6 +58,9 @@ $seoOGTitle       = $social['seo']['ogtitle'] ?? '';
 $seoOGDescription = $social['seo']['ogdescription'] ?? '';
 $seoOGImageId     = $social['seo']['ogimage'] ?? '';
 
+$seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
+$seoOGLPURL            = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
+
 // BANNER
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -417,7 +420,7 @@ do_action( 'clickwhale_admin_banner' );
                                 </label>
                             </th>
                             <td>
-	                            <?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
+								<?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                     <div class="links-info">
 										<?php printf(
 											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',
@@ -530,6 +533,21 @@ do_action( 'clickwhale_admin_banner' );
 									<?php } ?>
                                 </div>
                                 <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <a class="button"
+                                   id="opengraph-live-preview"
+                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
+                                   target="_blank"
+                                   rel="noopener">
+									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
+                                </a>
+                                <p class="description"></p>
                             </td>
                         </tr>
                         </tbody>

@@ -63,8 +63,8 @@ class Clickwhale_Linkpage_Edit {
 	}
 
 	/**
-     * @since 1.1.0
 	 * @return array
+	 * @since 1.1.0
 	 */
 	public static function get_post_types(): array {
 		$posts      = [];
@@ -272,12 +272,12 @@ class Clickwhale_Linkpage_Edit {
                 wrap.disableSelection();
 
                 jQuery('#add-links-type').select2({
-                    placeholder: '<?php _e('Select link Type', 'clickwhale') ?>',
+                    placeholder: '<?php _e( 'Select link Type', 'clickwhale' ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
                 jQuery('#add-links-select').select2({
-                    placeholder: '<?php _e('Select Item', 'clickwhale') ?>',
+                    placeholder: '<?php _e( 'Select Item', 'clickwhale' ) ?>',
                     width: '100%',
                     minimumResultsForSearch: 10
                 });
@@ -454,6 +454,12 @@ class Clickwhale_Linkpage_Edit {
 
                         button.next().val(''); // emptying the hidden field
                         button.hide().prev().html('Upload image');
+                    })
+                    .on('keyup change blur', 'input', function () {
+                        jQuery('#opengraph-live-preview')
+                            .addClass('disabled')
+                            .next()
+                            .text('<?php _e( 'Save page to view Open Graph preview', 'clickwhale' ) ?>');
                     });
 
                 /**
