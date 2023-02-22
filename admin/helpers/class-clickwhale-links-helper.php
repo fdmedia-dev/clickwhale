@@ -15,7 +15,7 @@ class ClickwhaleLinksHelper {
 	 * @throws Exception
 	 */
 	public static function get_random_slug( int $length = 6 ): string {
-		$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$characters = 'abcdefghijklmnopqrstuvwxyz';
 		$string     = '';
 
 		for ( $i = 0; $i < $length; $i ++ ) {
