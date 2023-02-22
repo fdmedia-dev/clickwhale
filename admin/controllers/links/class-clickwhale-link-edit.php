@@ -219,12 +219,15 @@ class Clickwhale_Link_Edit {
                 });
 
                 jQuery('#cw-link-random-slug').click(function () {
+                    var randomSlugButton = jQuery(this),
+                        slugValue = jQuery('#cw-slug').val();
                     jQuery.post(ajaxurl, {
                         'security': '<?php echo $nonce_random ?>',
                         'action': 'clickwhale/admin/random_slug',
                     }, function (response) {
                         if (response.success === true) {
-                            jQuery('#cw-slug').val(response.data);
+                            randomSlugButton.addClass('disabled')
+                            jQuery('#cw-slug').val(slugValue + response.data);
                         }
                     })
                 });
