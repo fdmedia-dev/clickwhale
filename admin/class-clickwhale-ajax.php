@@ -262,26 +262,6 @@ class Clickwhale_Ajax {
 
 	/**
 	 * @return void
-	 * @since 1.1.3
-	 */
-	public function random_slug() {
-		global $wpdb;
-		check_ajax_referer( 'random_slug', 'security' );
-
-		$slug = false;
-
-		do {
-			$slug = ClickwhaleLinksHelper::get_random_slug();
-		} while ( $wpdb->get_var(
-			$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s", $slug ) )
-		);
-
-		wp_send_json_success( $slug );
-		wp_die();
-	}
-
-	/**
-	 * @return void
 	 * @since 1.1.0
 	 */
 	public function get_posts_by_post_type() {

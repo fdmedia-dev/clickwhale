@@ -196,7 +196,7 @@ class Clickwhale_Link_Edit {
                         'action': 'clickwhale/admin/check_slug',
                         'type': 'link',
                         'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( isset( $_GET['id'] ) ? $_GET['id'] : 0 ) ); ?>
+                        'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {
@@ -217,21 +217,6 @@ class Clickwhale_Link_Edit {
                         }
                     })
                 });
-
-                jQuery('#cw-link-random-slug').click(function () {
-                    var randomSlugButton = jQuery(this),
-                        slugValue = jQuery('#cw-slug').val();
-                    jQuery.post(ajaxurl, {
-                        'security': '<?php echo $nonce_random ?>',
-                        'action': 'clickwhale/admin/random_slug',
-                    }, function (response) {
-                        if (response.success === true) {
-                            randomSlugButton.addClass('disabled')
-                            jQuery('#cw-slug').val(slugValue + response.data);
-                        }
-                    })
-                });
-
             });
         </script>
 		<?php

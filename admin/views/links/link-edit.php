@@ -8,7 +8,10 @@ $options_general = get_option( 'clickwhale_general_options' );
 if ( $item['slug'] ) {
 	$slug = $item['slug'];
 } else {
-	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== '' ? $options_general['slug'] . '/' : '';
+	$randomSlug = ClickwhaleLinksHelper::get_random_slug();
+	$slug       = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
+		? $options_general['slug'] . '/' . $randomSlug
+		: $randomSlug;
 }
 $message = get_transient( 'link-' . $item['id'] );
 
@@ -75,25 +78,19 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <div class="slug-input-edit--wrap">
-                                    <input id="cw-slug"
-                                           name="slug"
-                                           type="text"
-                                           value="<?php echo esc_attr( $slug ) ?>"
-                                           size="50"
-                                           class="regular-text"
-                                           placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
-                                           required>
-                                    <span><?php _e( 'or', $this->plugin_name ) ?></span>
-                                    <button type="button" class="button-primary" id="cw-link-random-slug">
-										<?php _e( 'Generate random slug', $this->plugin_name ) ?>
-                                    </button>
-                                </div>
+                                <input id="cw-slug"
+                                       name="slug"
+                                       type="text"
+                                       value="<?php echo esc_attr( $slug ) ?>"
+                                       size="50"
+                                       class="regular-text"
+                                       placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
+                                       required>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>
                                 </p>
                             </td>
                         </tr>
