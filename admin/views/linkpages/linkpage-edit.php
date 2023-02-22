@@ -51,6 +51,9 @@ $seoOGTitle       = $social['seo']['ogtitle'] ?? '';
 $seoOGDescription = $social['seo']['ogdescription'] ?? '';
 $seoOGImageId     = $social['seo']['ogimage'] ?? '';
 
+$seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
+$seoOGLPURL            = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
+
 // BANNER
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -527,8 +530,9 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <a class="button"
                                    id="opengraph-live-preview"
-                                   href="https://www.opengraph.xyz/url/<?php echo get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) ?>/"
-                                   target="_blank">
+                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
+                                   target="_blank"
+                                   rel="noopener">
 									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
                                 </a>
                                 <p class="description"></p>
