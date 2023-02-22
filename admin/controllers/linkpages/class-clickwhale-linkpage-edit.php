@@ -441,8 +441,10 @@ class Clickwhale_Linkpage_Edit {
                                 },
                                 multiple: false
                             }).on('select', function () { // it also has "open" and "close" events
-                                var attachment = custom_uploader.state().get('selection').first().toJSON();
-                                button.html('<img src="' + attachment.url + '">').next().show().next().val(attachment.id);
+                                var attachment = custom_uploader.state().get('selection').first().toJSON(),
+                                    mediaInput = button.parent().find('input');
+                                button.html('<img src="' + attachment.url + '">').next().show();
+                                mediaInput.val(attachment.id).trigger("change");
                             }).open();
 
                     })
@@ -456,11 +458,15 @@ class Clickwhale_Linkpage_Edit {
                         button.hide().prev().html('Upload image');
                     })
                     .on('keyup change blur', 'input', function () {
-                        jQuery('#opengraph-live-preview')
-                            .addClass('disabled')
-                            .next()
-                            .text('<?php _e( 'Save page to view Open Graph preview', 'clickwhale' ) ?>');
+                        disable_ogpreview_button();
                     });
+
+                jQuery('input[type="hidden"]').bind("change", function () {
+                    disable_ogpreview_button();
+                });
+                jQuery(".linkpage-logo-remove").click(function () {
+                    disable_ogpreview_button();
+                });
 
                 /**
                  * Check slug
@@ -573,6 +579,13 @@ class Clickwhale_Linkpage_Edit {
                             .remove();
                         jQuery(linksSelect).append('<option><?php _e( 'Nothing found', 'clickwhale' ) ?></option>')
                     }
+                }
+
+                function disable_ogpreview_button() {
+                    jQuery('#opengraph-live-preview')
+                        .addClass('disabled')
+                        .next()
+                        .text('<?php _e( 'Save page to view Open Graph preview', 'clickwhale' ) ?>');
                 }
             });
         </script>
