@@ -5,11 +5,21 @@ $link_edit->init();
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $options_general = get_option( 'clickwhale_general_options' );
+
+// Slug
 if ( $item['slug'] ) {
 	$slug = $item['slug'];
 } else {
-	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== '' ? $options_general['slug'] . '/' : '';
+	if ( ! isset( $options_general['random_slug'] ) || ! $options_general['random_slug'] ) {
+		$randomSlug = ClickwhaleLinksHelper::get_random_slug();
+	} else {
+		$randomSlug = '';
+	}
+	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
+		? $options_general['slug'] . '/' . $randomSlug
+		: $randomSlug;
 }
+
 $message = get_transient( 'link-' . $item['id'] );
 
 do_action( 'clickwhale_admin_banner' );
@@ -27,7 +37,8 @@ do_action( 'clickwhale_admin_banner' );
 		?>
 
         <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
+           href="<?php echo get_admin_url( get_current_blog_id(),
+			   'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
         <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"
            class="page-title-action"><?php _e( 'Add New', $this->plugin_name ) ?></a>
     </h1>
@@ -84,8 +95,9 @@ do_action( 'clickwhale_admin_banner' );
                                        required>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text">
-									<?php $url = __( 'URL Preview', $this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php $url = __( 'URL Preview',
+											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>/
                                 </p>
                             </td>
                         </tr>
@@ -106,7 +118,8 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="link_redirection"><?php _e( 'Redirection Type', $this->plugin_name ) ?></label>
+                                <label for="link_redirection"><?php _e( 'Redirection Type',
+										$this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <select name="redirection" id="redirection" class="regular-text">
@@ -146,7 +159,8 @@ do_action( 'clickwhale_admin_banner' );
 										}
 										?>
                                     />
-                                    <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex', $this->plugin_name ) ?></label>
+                                    <label for="nofollow"><?php _e( 'Check to mark link as nofollow & noindex',
+											$this->plugin_name ) ?></label>
                                 </fieldset>
                             </td>
                         </tr>
@@ -168,7 +182,8 @@ do_action( 'clickwhale_admin_banner' );
 										}
 										?>
                                     />
-                                    <label for="sponsored"><?php _e( 'Check to mark link as sponsored', $this->plugin_name ) ?></label>
+                                    <label for="sponsored"><?php _e( 'Check to mark link as sponsored',
+											$this->plugin_name ) ?></label>
                                 </fieldset>
                             </td>
                         </tr>
@@ -192,7 +207,8 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
 								<?php
 								if ( $item_categories ) {
-									$current_categories = isset( $item['categories'] ) ? explode( ',', $item['categories'] ) : [];
+									$current_categories = isset( $item['categories'] ) ? explode( ',',
+										$item['categories'] ) : [];
 									foreach ( $item_categories as $category ) {
 										?>
                                         <p>
@@ -212,7 +228,8 @@ do_action( 'clickwhale_admin_banner' );
 									}
 								} else {
 									?>
-                                    <label><?php _e( 'No categories have been created yet', $this->plugin_name ) ?></label>
+                                    <label><?php _e( 'No categories have been created yet',
+											$this->plugin_name ) ?></label>
 								<?php } ?>
                             </td>
                         </tr>

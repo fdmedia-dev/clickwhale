@@ -44,7 +44,8 @@ class Clickwhale_Link_Edit {
 		$defaults = apply_filters( 'clickwhale_link_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
+			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d",
+				intval( $request['id'] ) ), ARRAY_A );
 			if ( ! $item ) {
 				$item   = $defaults;
 				$notice = __( 'Item not found', 'clickwhale' );
@@ -124,7 +125,8 @@ class Clickwhale_Link_Edit {
 	 */
 	public static function check_slug( $slug, $id ) {
 		global $wpdb;
-		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d", $slug, $id ), 'ARRAY_A' ) ) {
+		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d",
+			$slug, $id ), 'ARRAY_A' ) ) {
 			return true;
 		} else {
 			return false;
@@ -173,7 +175,8 @@ class Clickwhale_Link_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce = wp_create_nonce( 'check_slug' );
+		$nonce        = wp_create_nonce( 'check_slug' );
+		$nonce_random = wp_create_nonce( 'random_slug' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
@@ -193,12 +196,13 @@ class Clickwhale_Link_Edit {
                         'action': 'clickwhale/admin/check_slug',
                         'type': 'link',
                         'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( isset( $_GET['id'] ) ? $_GET['id'] : 0 ) ); ?>
+                        'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {
                             slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+								'clickwhale' ) ?>');
                         }
                         // slug doesn't exists
                         if (response.data === false) {
@@ -213,7 +217,6 @@ class Clickwhale_Link_Edit {
                         }
                     })
                 });
-
             });
         </script>
 		<?php
