@@ -5,14 +5,21 @@ $link_edit->init();
 $item            = $link_edit->get_item( $_REQUEST );
 $item_categories = $link_edit->get_link_categories();
 $options_general = get_option( 'clickwhale_general_options' );
+
+// Slug
 if ( $item['slug'] ) {
 	$slug = $item['slug'];
 } else {
-	$randomSlug = ClickwhaleLinksHelper::get_random_slug();
-	$slug       = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
+	if ( ! isset( $options_general['random_slug'] ) || ! $options_general['random_slug'] ) {
+		$randomSlug = ClickwhaleLinksHelper::get_random_slug();
+	} else {
+		$randomSlug = '';
+	}
+	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
 		? $options_general['slug'] . '/' . $randomSlug
 		: $randomSlug;
 }
+
 $message = get_transient( 'link-' . $item['id'] );
 
 do_action( 'clickwhale_admin_banner' );
