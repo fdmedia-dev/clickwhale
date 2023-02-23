@@ -245,8 +245,6 @@ class Clickwhale_Admin {
 
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
-
-
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
 				?>
                 <script type='text/javascript'>
@@ -256,7 +254,7 @@ class Clickwhale_Admin {
                             var $temp = jQuery('<input>'),
                                 textToCopy = jQuery(this).parent().find('input').val();
 
-                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
                             jQuery('body').append($temp);
                             $temp.val(textToCopy).select();
                             document.execCommand("copy");
