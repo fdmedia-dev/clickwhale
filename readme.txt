@@ -1,5 +1,5 @@
 === ClickWhale - Link Shortener, Click Tracker & Link Pages ===
-Contributors: flowdee
+Contributors: flowdee, krapan88
 Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
