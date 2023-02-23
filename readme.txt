@@ -80,10 +80,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 == Changelog ==
 
 = Version 1.1.3 (23th February 2023) =
+* New: Random slug for new links
+* New: Link Page Open Graph live preview
 * Fix: Ending slash for links and link pages urls
-* Feature: Random slug for new links
-* Feature: Link Page Open Graph live preview
-* Minor improvements
+* Info: Minor improvements
 
 = Version 1.1.2 (15th February 2023) =
 * Minor improvements
