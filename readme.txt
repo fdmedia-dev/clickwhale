@@ -86,7 +86,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * Info: Minor improvements
 
 = Version 1.1.2 (15th February 2023) =
-* Minor improvements
+* Info: Minor improvements
 
 = Version 1.1.1 (14th February 2023) =
 * Fix: Error 500 when open any page/post without created Link Pages
@@ -98,8 +98,8 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * New: Adding custom links, posts, pages, custom post types to Link Page
 * New: Sort Link Pages by views and clicks
 * New: Sort Links by clicks
-* Fix: Error 500 when viewing a Link Page
 * Tweak: CSS/JS
+* Fix: Error 500 when viewing a Link Page
 * Info: PHP version changed from 5.6.0 to 7.0.0
 
 = Version 1.0.0 (11th December 2022) =
