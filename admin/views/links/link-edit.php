@@ -97,7 +97,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>/
                                 </p>
                             </td>
                         </tr>
