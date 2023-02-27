@@ -307,7 +307,22 @@ do_action( 'clickwhale_admin_banner' );
 						<?php } ?>
                     </td>
                 </tr>
+
 				<?php
+				echo ClickwhaleHepler::render_control(
+					array(
+						'row_label'   => __( 'Exclude User Roles', $this->plugin_name ),
+						'control'     => 'checkboxes',
+						'id'          => 'position_exclude_user_by_role',
+						'name'        => 'position[exclude_user_by_role][]',
+						'value'       => $item['position']['exclude_user_by_role'] ?? 0,
+						'options'     => Clickwhale_WP_User::get_all_roles(),
+						'description' => __( 'Check the user roles for which the script should not be executed.',
+							$this->plugin_name ),
+					),
+					true
+				);
+
 				echo ClickwhaleHepler::render_control(
 					array(
 						'row_label'   => __( 'Description', $this->plugin_name ),
