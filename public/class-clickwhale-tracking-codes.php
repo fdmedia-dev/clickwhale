@@ -161,10 +161,24 @@ class ClickwhaleTrackingCodes {
 	 * @return void
 	 */
 	public function do_tracking_action( string $position, string $code ) {
-		add_action( $position, function () use ( $code ) {
-			echo PHP_EOL . '<!-- START ClickWhale - Tracking Code -->' . PHP_EOL;
+		$credit_before = apply_filters(
+			'clickwhale_tracking_code_credit_before',
+			'<!-- START ClickWhale - Tracking Code -->'
+		);
+		$credit_after  = apply_filters(
+			'clickwhale_tracking_code_credit_after',
+			'<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->'
+		);
+		add_action( $position, function () use ( $code, $credit_before, $credit_after ) {
+			if ( $credit_before ) {
+				echo PHP_EOL . $credit_before . PHP_EOL;
+			}
+
 			echo wp_unslash( $code );
-			echo PHP_EOL . '<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->' . PHP_EOL;
+
+			if ( $credit_after ) {
+				echo PHP_EOL . $credit_after . PHP_EOL;
+			}
 		} );
 	}
 
