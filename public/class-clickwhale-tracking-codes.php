@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Do tracking code on the current page
+ * @since 1.2.0
+ */
 class ClickwhaleTrackingCodes {
 	public function init() {
 		if ( ! is_admin() ) {
@@ -7,17 +11,30 @@ class ClickwhaleTrackingCodes {
 		}
 	}
 
-	private function parse_current_page_path(): string {
-		$path          = untrailingslashit( parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH ) );
-		$pathFragments = explode( '/', $path );
+	/**
+	 * Parse URL and return path or URL
+	 *
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	private function parse_current_page_path( string $type = 'path' ): string {
+		$path = untrailingslashit( parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH ) );
 
-		return end( $pathFragments );
+		if ( $type === 'url' ) {
+			return get_bloginfo( 'url' ) . '/' . $path;
+		} else {
+			$pathFragments = explode( '/', $path );
+
+			return end( $pathFragments );
+		}
 	}
 
-	private function get_current_page_id_by_url(): int {
-		return url_to_postid( get_bloginfo( 'url' ) . '/' . $this->parse_current_page_path() . '/' );
-	}
-
+	/**
+	 * Get all active tracking codes from DB
+	 *
+	 * @return array|object|stdClass[]|null
+	 */
 	private function get_tracking_codes() {
 		global $wpdb;
 
@@ -28,47 +45,61 @@ class ClickwhaleTrackingCodes {
 	}
 
 	/**
+	 * Get current page type (LP/post_type/taxonomy) and id
+	 *
+	 * @return array
+	 */
+	private function get_current_page_data(): array {
+		$page = [];
+
+		$current_page_path = $this->parse_current_page_path();
+		$linkpage_id       = ClickwhaleLinkpagesHelper::get_linkpage_id_by_slug( $current_page_path );
+		$post_type_page_id = url_to_postid( $this->parse_current_page_path( 'url' ) );
+
+		if ( $linkpage_id ) {
+			$page['type'] = 'cw_linkpage';
+			$page['id']   = $linkpage_id;
+
+			return $page;
+		}
+
+		if ( $post_type_page_id ) {
+			$page['type'] = get_post( $post_type_page_id )->post_type;
+			$page['id']   = $post_type_page_id;
+
+			return $page;
+		}
+
+		foreach ( ClickwhaleTrackingCodeEdit::get_default_terms_tax() as $taxonomy ) {
+			$term_object = get_term_by( 'slug', $current_page_path, $taxonomy );
+			if ( $term_object ) {
+				$page['type'] = $term_object->taxonomy;
+				$page['id']   = $term_object->term_id;
+				break;
+			}
+		}
+
+		return $page;
+	}
+
+	/**
 	 * Do logic for included LP / Posts / Pages
 	 *
 	 * @param array $position
 	 * @param array $tracking_code
-	 * @param string $linkpage_id
-	 * @param string $post_id
-	 * @param string $post_type
-	 * @param string $category_id
+	 * @param array $page
 	 *
 	 * @return void
 	 */
-	public function do_included_conditional_logic(
-		array $position,
-		array $tracking_code,
-		string $linkpage_id = '',
-		string $post_id = '',
-		string $post_type = '',
-		string $category_id = ''
-	) {
-		if ( $linkpage_id ) {
-			if ( isset( $position['post_types_included']['cw_linkpage'] )
-			     && ( in_array( $linkpage_id, $position['post_types_included']['cw_linkpage'] ['ids'] )
-			          || in_array( 'all', $position['post_types_included']['cw_linkpage'] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} elseif ( $post_id ) {
-			if ( isset( $position['post_types_included'][ $post_type ]['active'] )
-			     && ( in_array( $post_id, $position['post_types_included'][ $post_type ] ['ids'] )
-			          || in_array( 'all', $position['post_types_included'][ $post_type ] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} elseif ( $category_id ) {
-			if ( isset( $position['post_types_included']['category']['active'] )
-			     && ( in_array( $category_id, $position['post_types_included']['category'] ['ids'] )
-			          || in_array( 'all', $position['post_types_included']['category'] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} else {
+	public function do_included_conditional_logic( array $position, array $tracking_code, array $page = [] ) {
+		if ( ! $page ) {
+			return;
+		}
+
+		if ( isset( $position['items_included'][ $page['type'] ]['active'] )
+		     && ( in_array( $page['id'], $position['items_included'][ $page['type'] ] ['ids'] )
+		          || in_array( 'all', $position['items_included'][ $page['type'] ] ['ids'] ) )
+		) {
 			$this->do_tracking_action( $position['code'], $tracking_code['code'] );
 		}
 	}
@@ -78,85 +109,22 @@ class ClickwhaleTrackingCodes {
 	 *
 	 * @param array $position
 	 * @param array $tracking_code
-	 * @param string $linkpage_id
-	 * @param string $post_id
-	 * @param string $post_type
-	 * @param string $category_id
+	 * @param array $page
 	 *
 	 * @return void
 	 */
-	public function do_excluded_conditional_logic(
-		array $position,
-		array $tracking_code,
-		string $linkpage_id = '',
-		string $post_id = '',
-		string $post_type = '',
-		string $category_id = ''
-	) {
-		if ( $linkpage_id ) {
-			if ( ! isset( $position['post_types_excluded']['cw_linkpage'] )
-			     || ( ! in_array( $linkpage_id, $position['post_types_excluded']['cw_linkpage'] ['ids'] )
-			          && ! in_array( 'all', $position['post_types_excluded']['cw_linkpage'] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} elseif ( $post_id ) {
-			if ( ! isset( $position['post_types_excluded'][ $post_type ]['active'] )
-			     || ( ! in_array( $post_id, $position['post_types_excluded'][ $post_type ] ['ids'] )
-			          && ! in_array( 'all', $position['post_types_excluded'][ $post_type ] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} elseif ( $category_id ) {
-			if ( ! isset( $position['post_types_excluded']['category']['active'] )
-			     || ( ! in_array( $category_id, $position['post_types_excluded']['category'] ['ids'] )
-			          && ! in_array( 'all', $position['post_types_excluded']['category'] ['ids'] ) )
-			) {
-				$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-			}
-		} else {
+	public function do_excluded_conditional_logic( array $position, array $tracking_code, array $page = [] ) {
+		if ( ! $page ) {
 			$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-		}
-	}
 
-	/**
-	 * @param string $type
-	 * @param array $position
-	 * @param array $tracking_code
-	 *
-	 * @return false|void
-	 */
-	public function do_conditional_logic( string $type, array $position, array $tracking_code ) {
-		if ( ! $position || ! $tracking_code ) {
-			return false;
+			return;
 		}
 
-		$current_page_path   = $this->parse_current_page_path();
-		$current_linkpage_id = ClickwhaleLinkpagesHelper::get_linkpage_id_by_slug( $current_page_path );
-		$current_page_id     = $this->get_current_page_id_by_url();
-		$current_post_type   = get_post( $current_page_id ) ? get_post( $current_page_id )->post_type : '';
-
-		$category            = get_term_by( 'slug', $current_page_path, 'category' );
-		$current_category_id = $category ? $category->term_id : '';
-
-		if ( $type === 'included' ) {
-			$this->do_included_conditional_logic(
-				$position,
-				$tracking_code,
-				$current_linkpage_id,
-				$current_page_id,
-				$current_post_type,
-				$current_category_id );
-		}
-
-		if ( $type === 'excluded' ) {
-			$this->do_excluded_conditional_logic(
-				$position,
-				$tracking_code,
-				$current_linkpage_id,
-				$current_page_id,
-				$current_post_type,
-				$current_category_id );
+		if ( ! isset( $position['items_excluded'][ $page['type'] ]['active'] )
+		     || ( ! in_array( $page['id'], $position['items_excluded'][ $page['type'] ] ['ids'] )
+		          && ! in_array( 'all', $position['items_excluded'][ $page['type'] ] ['ids'] ) )
+		) {
+			$this->do_tracking_action( $position['code'], $tracking_code['code'] );
 		}
 	}
 
@@ -169,17 +137,19 @@ class ClickwhaleTrackingCodes {
 			return false;
 		}
 
+		$page = $this->get_current_page_data();
+
 		foreach ( $tracking_codes as $tracking_code ) {
 			$position = maybe_unserialize( $tracking_code['position'] );
 
 			if ( $position['pages'] === 'all' ) {
-				if ( isset( $position['post_types_excluded'] ) ) {
-					$this->do_conditional_logic( 'excluded', $position, $tracking_code );
+				if ( isset( $position['items_excluded'] ) ) {
+					$this->do_excluded_conditional_logic( $position, $tracking_code, $page );
 				} else {
 					$this->do_tracking_action( $position['code'], $tracking_code['code'] );
 				}
 			} else {
-				$this->do_conditional_logic( 'included', $position, $tracking_code );
+				$this->do_included_conditional_logic( $position, $tracking_code, $page );
 			}
 		}
 	}

@@ -494,8 +494,24 @@ table.tracking-codes .column-is_active {
 	left: 19px;
 }
 
+.cw-posts-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 15px;
+}
+
+.cw-posts-row fieldset {
+	flex: 1;
+}
+
+.cw-posts-row fieldset label {
+	padding-top: 1px;
+}
+
 .cw-posts-row--select {
 	display: none;
+	flex: 3;
 	margin-bottom: 15px;
 }
 

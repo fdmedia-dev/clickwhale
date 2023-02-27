@@ -35,6 +35,14 @@ class ClickwhaleTrackingCodeEdit {
 		);
 	}
 
+	public static function get_default_post_types() {
+		return apply_filters( 'clickwhale_tracking_code_default_post_types', array( 'post', 'page' ) );
+	}
+
+	public static function get_default_terms_tax() {
+		return apply_filters( 'clickwhale_tracking_code_default_archives', array( 'category' ) );
+	}
+
 	public function get_item( $request ) {
 		global $wpdb;
 
@@ -55,8 +63,9 @@ class ClickwhaleTrackingCodeEdit {
 		return $item;
 	}
 
-	public function get_linkpages() {
+	public function get_linkpages(): array {
 		global $wpdb;
+
 		$result    = [];
 		$linkpages = $wpdb->get_results(
 			"SELECT id,title from {$wpdb->prefix}clickwhale_linkpages",
@@ -72,7 +81,7 @@ class ClickwhaleTrackingCodeEdit {
 		return $result;
 	}
 
-	public function get_posts_by_post_type( $post_type ) {
+	public function get_posts_by_post_type( $post_type ): array {
 		$result = [];
 		$args   = array(
 			'numberposts' => - 1,
@@ -93,7 +102,7 @@ class ClickwhaleTrackingCodeEdit {
 		return $result;
 	}
 
-	public function get_terms_by_tax( $taxonomy ) {
+	public function get_terms_by_tax( $taxonomy ): array {
 		$result = [];
 		$args   = array(
 			'taxonomy'   => $taxonomy,
@@ -119,27 +128,34 @@ class ClickwhaleTrackingCodeEdit {
 		$item['description']  = esc_html( $item['description'] );
 		$item['author']       = get_current_user_id();
 
-		// unset inactive include options
+		// handle CW Link Pages
 		if ( ! isset( $item['position']['post_types_included']['cw_linkpage']['active'] ) ) {
 			unset( $item['position']['post_types_included']['cw_linkpage'] );
 		}
-		if ( ! isset( $item['position']['post_types_included']['post']['active'] ) ) {
-			unset( $item['position']['post_types_included']['post'] );
-		}
-		if ( ! isset( $item['position']['post_types_included']['page']['active'] ) ) {
-			unset( $item['position']['post_types_included']['page'] );
+		if ( ! isset( $item['position']['items_excluded']['cw_linkpage']['active'] ) ) {
+			unset( $item['position']['items_excluded']['cw_linkpage'] );
 		}
 
-		// unset inactive exclude options
-		if ( ! isset( $item['position']['post_types_excluded']['cw_linkpage']['active'] ) ) {
-			unset( $item['position']['post_types_excluded']['cw_linkpage'] );
+		// Handle Post Types
+		foreach ( $this->get_default_post_types() as $post_type ) {
+			if ( ! isset( $item['position']['post_types_included'][ $post_type ]['active'] ) ) {
+				unset( $item['position']['post_types_included'][ $post_type ] );
+			}
+			if ( ! isset( $item['position']['items_excluded'][ $post_type ]['active'] ) ) {
+				unset( $item['position']['items_excluded'][ $post_type ] );
+			}
 		}
-		if ( ! isset( $item['position']['post_types_excluded']['post']['active'] ) ) {
-			unset( $item['position']['post_types_excluded']['post'] );
+
+		// Handle Taxonomies
+		foreach ( $this->get_default_terms_tax() as $taxonomy ) {
+			if ( ! isset( $item['position']['post_types_included'][ $taxonomy ]['active'] ) ) {
+				unset( $item['position']['post_types_included'][ $taxonomy ] );
+			}
+			if ( ! isset( $item['position']['items_excluded'][ $taxonomy ]['active'] ) ) {
+				unset( $item['position']['items_excluded'][ $taxonomy ] );
+			}
 		}
-		if ( ! isset( $item['position']['post_types_excluded']['page']['active'] ) ) {
-			unset( $item['position']['post_types_excluded']['page'] );
-		}
+
 		$item['position']  = maybe_serialize( $item['position'] );
 		$item['is_active'] = $item['is_active'] ?? 0;
 

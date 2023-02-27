@@ -58,6 +58,11 @@ class ClickwhaleLinkpagesHelper {
 	 */
 	public static function get_linkpage_id_by_slug( string $slug ) {
 		global $wpdb;
+
+		if ( ! $slug ) {
+			return 0;
+		}
+
 		$result = $wpdb->get_var(
 			$wpdb->prepare( "SELECT id FROM {$wpdb->prefix}clickwhale_linkpages WHERE slug=%s", $slug )
 		);
