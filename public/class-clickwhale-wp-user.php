@@ -39,7 +39,7 @@ class Clickwhale_WP_User {
 	 * @return      string
 	 * @since       1.0.0
 	 */
-	public function get_loggedin_user_id() {
+	public static function get_loggedin_user_id(): string {
 		return is_user_logged_in() ? get_current_user_id() : '';
 	}
 
@@ -49,8 +49,8 @@ class Clickwhale_WP_User {
 	 * @return      array
 	 * @since       1.0.0
 	 */
-	public function get_current_user_roles() {
-		$id = $this->get_loggedin_user_id();
+	public static function get_current_user_roles() {
+		$id = self::get_loggedin_user_id();
 
 		return $id ? get_userdata( $id )->roles : false;
 	}
@@ -61,7 +61,7 @@ class Clickwhale_WP_User {
 	 * @return      array
 	 * @since       1.0.0
 	 */
-	public function get_track_options() {
+	public function get_track_options(): array {
 		return get_option( 'clickwhale_tracking_options' );
 	}
 
@@ -71,7 +71,7 @@ class Clickwhale_WP_User {
 	 * @return      array
 	 * @since       1.0.0
 	 */
-	public function get_disallowed_user_roles() {
+	public function get_disallowed_user_roles(): array {
 		$tracking_options = $this->get_track_options();
 		$roles            = [];
 
@@ -88,11 +88,11 @@ class Clickwhale_WP_User {
 	 * @return      bool
 	 * @since       1.0.0
 	 */
-	public function is_user_untracked() {
+	public function is_user_untracked(): bool {
 		$current_user_roles = $this->get_current_user_roles();
 		$disallowed_roles   = $this->get_disallowed_user_roles();
 
-		if ( ( isset( $current_user_roles ) && is_array( $current_user_roles ) ) && ( isset( $disallowed_roles ) && is_array( $disallowed_roles ) ) ) {
+		if ( is_array( $current_user_roles ) && is_array( $disallowed_roles ) ) {
 			// if current user role in array of disalowed roles
 			return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
 		} else {

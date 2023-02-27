@@ -82,6 +82,16 @@ class ClickwhaleTrackingCodes {
 		return $page;
 	}
 
+	private function is_user_untracked( array $position ): bool {
+		$current_user_roles = Clickwhale_WP_User::get_current_user_roles();
+
+		if ( isset( $position['exclude_user_by_role'] ) && is_array( $current_user_roles ) ) {
+			return count( array_intersect( $current_user_roles, $position['exclude_user_by_role'] ) ) > 0;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Do logic for included LP / Posts / Pages
 	 *
@@ -137,10 +147,15 @@ class ClickwhaleTrackingCodes {
 			return false;
 		}
 
+
 		$page = $this->get_current_page_data();
 
 		foreach ( $tracking_codes as $tracking_code ) {
 			$position = maybe_unserialize( $tracking_code['position'] );
+
+			if ( $this->is_user_untracked( $position ) ) {
+				continue;
+			}
 
 			if ( $position['pages'] === 'all' ) {
 				if ( isset( $position['items_excluded'] ) ) {
@@ -161,10 +176,24 @@ class ClickwhaleTrackingCodes {
 	 * @return void
 	 */
 	public function do_tracking_action( string $position, string $code ) {
-		add_action( $position, function () use ( $code ) {
-			echo PHP_EOL . '<!-- START ClickWhale - Tracking Code -->' . PHP_EOL;
+		$credit_before = apply_filters(
+			'clickwhale_tracking_code_credit_before',
+			'<!-- START ClickWhale - Tracking Code -->'
+		);
+		$credit_after  = apply_filters(
+			'clickwhale_tracking_code_credit_after',
+			'<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->'
+		);
+		add_action( $position, function () use ( $code, $credit_before, $credit_after ) {
+			if ( $credit_before ) {
+				echo PHP_EOL . $credit_before . PHP_EOL;
+			}
+
 			echo wp_unslash( $code );
-			echo PHP_EOL . '<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->' . PHP_EOL;
+
+			if ( $credit_after ) {
+				echo PHP_EOL . $credit_after . PHP_EOL;
+			}
 		} );
 	}
 
