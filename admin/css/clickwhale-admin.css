@@ -547,4 +547,11 @@ table.tracking-codes .column-is_active {
 	.clickwhale-banner--links a.clickwhale-banner--button {
 		width: 100%;
 	}
+
+	.cw-posts-row {
+		flex-direction: column;
+	}
+	.cw-posts-row--select{
+		width: 100%;
+	}
 }
