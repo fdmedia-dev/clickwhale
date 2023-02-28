@@ -25,26 +25,27 @@ $seoTitle         = $social['seo']['title'] ?? $item['title'];
 $seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description' );
 $robots           = array(
 	'noindex'      => array(
-		'title'       => 'No Index',
+		'title'       => __( "No Index", $this->plugin_name ),
 		'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.",
 			$this->plugin_name )
 	),
 	'nofollow'     => array(
-		'title'       => 'No Follow',
+		'title'       => __( "No Follow", $this->plugin_name ),
 		'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages",
 			$this->plugin_name )
 	),
 	'noarchive'    => array(
-		'title'       => 'No Archive',
-		'description' => "Do not show a cached link in search results."
+		'title'       => __( "No Archive", $this->plugin_name ),
+		'description' => __( "Do not show a cached link in search results.", $this->plugin_name ),
 	),
 	'nosnippet'    => array(
-		'title'       => 'No Snippet',
-		'description' => "Do not show a text snippet or video preview in the search results for this page."
+		'title'       => __( "No Snippet", $this->plugin_name ),
+		'description' => __( "Do not show a text snippet or video preview in the search results for this page.",
+			$this->plugin_name ),
 	),
 	'noimageindex' => array(
-		'title'       => 'No Image Index',
-		'description' => "Do not index images on this page."
+		'title'       => __( "No Image Index", $this->plugin_name ),
+		'description' => __( "Do not index images on this page.", $this->plugin_name ),
 	)
 );
 $seoOGTitle       = $social['seo']['ogtitle'] ?? '';
