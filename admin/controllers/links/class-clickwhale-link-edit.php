@@ -44,7 +44,8 @@ class Clickwhale_Link_Edit {
 		$defaults = apply_filters( 'clickwhale_link_defaults', $this->get_defaults() );
 
 		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d", intval( $request['id'] ) ), ARRAY_A );
+			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d",
+				intval( $request['id'] ) ), ARRAY_A );
 			if ( ! $item ) {
 				$item   = $defaults;
 				$notice = __( 'Item not found', 'clickwhale' );
@@ -124,7 +125,8 @@ class Clickwhale_Link_Edit {
 	 */
 	public static function check_slug( $slug, $id ) {
 		global $wpdb;
-		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d", $slug, $id ), 'ARRAY_A' ) ) {
+		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d",
+			$slug, $id ), 'ARRAY_A' ) ) {
 			return true;
 		} else {
 			return false;
@@ -140,13 +142,20 @@ class Clickwhale_Link_Edit {
 		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
 		$item['author']     = get_current_user_id();
 
-		$result = $wpdb->update(
-			$links_table,
-			$item,
-			array( 'id' => $item['id'] )
-		);
+		// Check if linkpage exists and then update or insert
+		// in some cases default check (not false and < 0) goes wrong
+		$link = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_links WHERE id=%d",
+			$item['id'] ) );
 
-		if ( false === $result || $result < 1 ) {
+		if ( $link ) {
+			$wpdb->update(
+				$links_table,
+				$item,
+				array( 'id' => $item['id'] )
+			);
+			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
+			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
+		} else {
 			$wpdb->insert(
 				$links_table,
 				$item
@@ -154,9 +163,6 @@ class Clickwhale_Link_Edit {
 			$item['id'] = $wpdb->insert_id;
 			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );
 			set_transient( 'link-' . $item['id'], 'link_added', 45 );
-		} else {
-			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
-			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
 		}
 
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
@@ -198,7 +204,8 @@ class Clickwhale_Link_Edit {
                         // slug exists
                         if (response.data === true) {
                             slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+								'clickwhale' ) ?>');
                         }
                         // slug doesn't exists
                         if (response.data === false) {
