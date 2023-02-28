@@ -36,7 +36,7 @@ class ClickwhaleTrackingCodeEdit {
 	}
 
 	public static function get_default_post_types() {
-		return apply_filters( 'clickwhale_tracking_code_default_post_types', array( 'post', 'page' ) );
+		return apply_filters( 'clickwhale_tracking_code_default_post_types', self::get_post_types() );
 	}
 
 	public static function get_default_terms_tax() {
@@ -61,6 +61,21 @@ class ClickwhaleTrackingCodeEdit {
 		}
 
 		return $item;
+	}
+
+	public static function get_post_types(): array {
+		$posts      = [];
+		$args       = array(
+			'public' => true,
+		);
+		$post_types = get_post_types( $args, 'objects' );
+		unset( $post_types['attachment'] );
+
+		foreach ( $post_types as $post_type ) {
+			$posts[] = $post_type->name;
+		}
+
+		return $posts;
 	}
 
 	public function get_linkpages(): array {
