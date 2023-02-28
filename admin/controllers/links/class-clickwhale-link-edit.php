@@ -142,13 +142,20 @@ class Clickwhale_Link_Edit {
 		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
 		$item['author']     = get_current_user_id();
 
-		$result = $wpdb->update(
-			$links_table,
-			$item,
-			array( 'id' => $item['id'] )
-		);
+		// Check if linkpage exists and then update or insert
+		// in some cases default check (not false and < 0) goes wrong
+		$link = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_links WHERE id=%d",
+			$item['id'] ) );
 
-		if ( false === $result || $result < 1 ) {
+		if ( $link ) {
+			$wpdb->update(
+				$links_table,
+				$item,
+				array( 'id' => $item['id'] )
+			);
+			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
+			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
+		} else {
 			$wpdb->insert(
 				$links_table,
 				$item
@@ -156,9 +163,6 @@ class Clickwhale_Link_Edit {
 			$item['id'] = $wpdb->insert_id;
 			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );
 			set_transient( 'link-' . $item['id'], 'link_added', 45 );
-		} else {
-			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
-			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
 		}
 
 		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
