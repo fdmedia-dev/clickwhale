@@ -2,7 +2,7 @@
 
 class ClickwhaleHepler {
 	/**
-	 * Return HTML marckup for add_settings_field function
+	 * Return HTML markup for add_settings_field function
 	 *
 	 * @param array $args
 	 *

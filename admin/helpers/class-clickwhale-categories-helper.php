@@ -10,7 +10,7 @@ class ClickwhaleCategoriesHelper {
 	public static function get_categories_count() {
 		global $wpdb;
 
-		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}$categories_table" ) );
+		return intval( $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}categories_table" ) );
 	}
 
 	/**

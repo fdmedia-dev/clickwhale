@@ -3,6 +3,12 @@
  * included in this file.
  */
 
+body.toplevel_page_clickwhale #wpbody-content,
+body[class*="clickwhale_page_clickwhale"] #wpbody-content,
+body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+	padding-top: 80px;
+}
+
 .slug-input--wrap {
 	position: relative;
 }
@@ -76,13 +82,23 @@
 	margin: 4px 10px 0;
 }
 
+
 .clickwhale-banner {
+	position: absolute;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	top: 0;
+	left: 0;
+	right: 0;
 	background: #FDD231;
 	padding: 1.5em 2em;
 	margin-left: -20px;
+}
+
+.clickwhale-banner,
+.clickwhale-banner * {
+	box-sizing: border-box;
 }
 
 .clickwhale-banner--logo img {
@@ -516,6 +532,12 @@ table.tracking-codes .column-is_active {
 }
 
 @media (max-width: 768px) {
+	body.toplevel_page_clickwhale #wpbody-content,
+	body[class*="clickwhale_page_clickwhale"] #wpbody-content,
+	body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+		padding-top: 180px;
+	}
+
 	.clickwhale-banner {
 		flex-direction: column;
 		gap: 15px;
@@ -551,7 +573,16 @@ table.tracking-codes .column-is_active {
 	.cw-posts-row {
 		flex-direction: column;
 	}
-	.cw-posts-row--select{
+
+	.cw-posts-row--select {
 		width: 100%;
+	}
+}
+
+@media (max-width: 600px) {
+	.clickwhale-banner {
+		top: 46px;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 }
