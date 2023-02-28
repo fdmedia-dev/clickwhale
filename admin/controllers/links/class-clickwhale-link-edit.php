@@ -193,7 +193,7 @@ class Clickwhale_Link_Edit {
                         'action': 'clickwhale/admin/check_slug',
                         'type': 'link',
                         'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( isset( $_GET['id'] ) ? $_GET['id'] : 0 ) ); ?>
+                        'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
                     }, function (response) {
                         // slug exists
                         if (response.data === true) {

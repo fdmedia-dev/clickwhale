@@ -8,6 +8,9 @@ $post_types = $tracking_code::get_default_post_types();
 $taxonomies = $tracking_code::get_default_terms_tax();
 
 do_action( 'clickwhale_admin_banner' );
+
+// transient
+$message = get_transient( 'tracking-code-' . $item['id'] );
 ?>
 
 <div class="wrap">
@@ -21,7 +24,19 @@ do_action( 'clickwhale_admin_banner' );
 			'is_limit'     => ClickwhaleTrackingCodesHelper::get_count() >= ClickwhaleTrackingCodesHelper::get_limit(),
 		)
 	);
-	?>
+	if ( ! empty( $message ) ) { ?>
+		<?php if ( $message === 'tracking_code_added' ) { ?>
+            <div id="message" class="updated">
+                <p><?php _e( 'Tracking Code was successfully saved', $this->plugin_name ) ?></p>
+            </div>
+		<?php } ?>
+		<?php if ( $message === 'tracking_code_updated' ) { ?>
+            <div id="message" class="updated">
+                <p><?php _e( 'Tracking Code was successfully updated', $this->plugin_name ) ?></p>
+            </div>
+		<?php } ?>
+		<?php delete_transient( 'tracking-code-' . $item['id'] ); ?>
+	<?php } ?>
 
     <form id="form_edit_tracking_code" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_tracking_code">
