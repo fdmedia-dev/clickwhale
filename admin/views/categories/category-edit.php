@@ -34,16 +34,16 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
 			$result     = $wpdb->insert( $table_name, $item );
 			$item['id'] = $wpdb->insert_id;
 			if ( $result ) {
-				$message = __( 'Item was successfully saved', $this->plugin_name );
+				$message = __( 'Category was successfully saved', $this->plugin_name );
 			} else {
-				$notice = __( 'There was an error while saving item', $this->plugin_name );
+				$notice = __( 'There was an error while saving category', $this->plugin_name );
 			}
 		} else {
 			$result = $wpdb->update( $table_name, $item, array( 'id' => $item['id'] ) );
 			if ( $result ) {
-				$message = __( 'Item was successfully updated', $this->plugin_name );
+				$message = __( 'Category was successfully updated', $this->plugin_name );
 			} else {
-				$notice = __( 'There was an error while updating item', $this->plugin_name );
+				$notice = __( 'There was an error while updating category', $this->plugin_name );
 			}
 		}
 	} else {

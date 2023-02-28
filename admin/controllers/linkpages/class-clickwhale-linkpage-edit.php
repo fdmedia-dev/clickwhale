@@ -131,12 +131,14 @@ class Clickwhale_Linkpage_Edit {
 				$item,
 				array( 'id' => $item['id'] )
 			);
+			set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
 		} else {
 			$wpdb->insert(
 				$linkpages_table,
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;
+			set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
 		}
 
 		// redirect to new record

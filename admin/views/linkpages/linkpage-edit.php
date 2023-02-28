@@ -55,6 +55,9 @@ $seoOGImageId     = $social['seo']['ogimage'] ?? '';
 $seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
 $seoOGLPURL            = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
 
+// transient
+$message = get_transient( 'linkpage-' . $item['id'] );
+
 // BANNER
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -72,7 +75,17 @@ do_action( 'clickwhale_admin_banner' );
 			'is_limit'     => ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit()
 		)
 	);
-	?>
+	if ( ! empty( $message ) ) { ?>
+		<?php if ( $message === 'linkpage_added' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved', $this->plugin_name ) ?></p>
+            </div>
+		<?php } ?>
+		<?php if ( $message === 'linkpage_updated' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated', $this->plugin_name ) ?></p>
+            </div>
+		<?php } ?>
+		<?php delete_transient( 'linkpage-' . $item['id'] ); ?>
+	<?php } ?>
 
     <form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_linkpage">

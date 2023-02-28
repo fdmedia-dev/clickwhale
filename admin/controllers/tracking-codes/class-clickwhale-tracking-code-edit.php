@@ -171,6 +171,9 @@ class ClickwhaleTrackingCodeEdit {
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;
+			set_transient( 'tracking-code-' . $item['id'], 'tracking_code_added', 45 );
+		} else {
+			set_transient( 'tracking-code-' . $item['id'], 'tracking_code_updated', 45 );
 		}
 
 		$url = 'admin.php?page=clickwhale-edit-tracking-code&id=' . $item['id'];
