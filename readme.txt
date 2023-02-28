@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.0.0
 Tested up to: 6.1.1
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,13 +16,14 @@ Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress
 With ClickWhale, you can **easily manage, shorten and analyze links** on your WordPress site. All this, using your own domain!
 
 With our plugin, you can shorten links and define the URL of the shortened links yourself.
+But that's not all. ClickWhale combines some useful features in one plugin. Let's take a closer look:
 
 = ⭐️ The most flexible link manager =
 
 - **Easily create and manage links** - Create your links to track and organize them into categories.
 - **Apply SEO settings to links** - Flag your links with SEO attributes like “no follow” or “sponsored”.
 - **Place and share links** - Place your created links anywhere in your website content or share them on social media.
-- **Detailed statistics** - Analyze the views of your links with our click statistics.
+- **Detailed statistics** - Analyze the clicks of your links with our click statistics.
 
 All of these key features are available in this free version of [ClickWhale](https://clickwhale.pro/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version). That’s some crazy value!
 
@@ -31,13 +32,22 @@ All of these key features are available in this free version of [ClickWhale](htt
 Moreover, we are the best plugin to **create your own [link page](https://clickwhale.pro/linkpages/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages
 )** on your WordPress site.
 
-- **Easily add and manage links** - Add previously created links to your link pages. Change their order via drag & drop or customize link titles.
+- **Easily add and manage links** - Add previously created links to your link pages. Or add custom links, pages, posts and much more. Change their order via drag & drop or customize link titles.
 - **Manage contents** - Enter your link page title and description texts. Upload your brand or website logo.
 - **Customize appearance** - Set the background color for your link page, as well as the font colors of the texts. Don't forget to adjust the button colors as well!
 - **You choose the URL** - Determine the URL under which the link page is accessible on your website, and you are ready to go.
+- **Optimize your link page for SEO** - Enter SEO and Open Graph metadata and test how they look right after via a preview link!
 
 Here you can find a [live example](https://clickwhale.pro/links/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages%3A+Demo+Link
 ) of our own link page, created with ClickWhale, of course!
+
+= 🕵 Tracking Codes: Manage tracking codes and scripts directly in the ClickWhale interface =
+
+ClickWhale also offers you the possibility to embed any tracking codes or code snippets directly on your website without having to intervene in the code of your website.
+
+- **Place all the codes and snippets you need!** - For example: Google Analytics, Facebook Pixel, Google Conversion Tracking  - simply all the codes you need!
+- **Output the code snippet only where you want it to go** - Determine whether the code should apply to the entire website or all pages or posts, or only to specific content such as individual posts, categories and so on.
+- **Exclude User Roles** - The code snippet should not be executed for certain user roles of your website? No problem! Set that yourself!
 
 From now on, you don't need a third-party service, you save on monthly subscriptions and have full control. All this, on your own domain. Brilliant, isn't it?
 
@@ -76,11 +86,19 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 4. Link Pages
 5. Link Pages: Customizations
 6. Link Pages: Link Management
+7. Tracking Codes Overview Page
+8. Tracking Code Edit Screen
 
 == Changelog ==
 
+= Version 1.1.3 (23th February 2023) =
+* New: Random slug for new links
+* New: Link Page Open Graph live preview
+* Fix: Ending slash for links and link pages urls
+* Info: Minor improvements
+
 = Version 1.1.2 (15th February 2023) =
-* Minor improvements
+* Info: Minor improvements
 
 = Version 1.1.1 (14th February 2023) =
 * Fix: Error 500 when open any page/post without created Link Pages
@@ -92,8 +110,8 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * New: Adding custom links, posts, pages, custom post types to Link Page
 * New: Sort Link Pages by views and clicks
 * New: Sort Links by clicks
-* Fix: Error 500 when viewing a Link Page
 * Tweak: CSS/JS
+* Fix: Error 500 when viewing a Link Page
 * Info: PHP version changed from 5.6.0 to 7.0.0
 
 = Version 1.0.0 (11th December 2022) =
