@@ -179,7 +179,8 @@ class Clickwhale_Link_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce = wp_create_nonce( 'check_slug' );
+		$nonce        = wp_create_nonce( 'check_slug' );
+		$nonce_random = wp_create_nonce( 'random_slug' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
@@ -220,7 +221,6 @@ class Clickwhale_Link_Edit {
                         }
                     })
                 });
-
             });
         </script>
 		<?php

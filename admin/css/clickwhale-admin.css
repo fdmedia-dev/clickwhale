@@ -28,6 +28,19 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	color: #bbbbbb;
 }
 
+.slug-input-edit--wrap {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 15px;
+	max-width: 95%;
+}
+
+.slug-input-edit--wrap span {
+	font-size: 13px;
+	opacity: .7;
+}
+
 .clickwhale-notice span {
 	margin-right: 20px;
 }

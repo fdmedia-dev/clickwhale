@@ -152,7 +152,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
                                 </p>
                             </td>
                         </tr>
@@ -384,7 +384,7 @@ do_action( 'clickwhale_admin_banner' );
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="socialSeoTitle"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                                <label for="socialSeoTitle"><?php _e( 'SEO Title', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input id="socialSeoTitle"
@@ -533,6 +533,21 @@ do_action( 'clickwhale_admin_banner' );
 									<?php } ?>
                                 </div>
                                 <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <a class="button"
+                                   id="opengraph-live-preview"
+                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
+                                   target="_blank"
+                                   rel="noopener">
+									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
+                                </a>
+                                <p class="description"></p>
                             </td>
                         </tr>
                         </tbody>

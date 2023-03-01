@@ -42,7 +42,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-linkpage&id=%s">%s</a>', $item['id'],
 				__( 'Edit', 'clickwhale' ) ),
-			'view'   => '<a href="' . get_bloginfo( 'url' ) . '/' . $item['slug'] . '" target="_blank">View</a>',
+			'view'   => '<a href="' . get_bloginfo( 'url' ) . '/' . $item['slug'] . '/" target="_blank">View</a>',
 			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%s">%s</a>',
 				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', 'clickwhale' ) ),
 		);

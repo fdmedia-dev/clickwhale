@@ -229,7 +229,7 @@ class Clickwhale_Public_Linkpage {
 						$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ),
 						ARRAY_A
 					);
-					$url       = get_bloginfo( 'url' ) . '/' . $link_data['slug'];
+					$url       = trailingslashit(get_bloginfo( 'url' ) . '/' . $link_data['slug']);
 
 					if ( $link_data ) {
 						$link_title = $link['title'] ?: $link_data['title'];

@@ -244,6 +244,7 @@ class Clickwhale_Admin {
 	}
 
 	public function admin_scripts() {
+
 		if ( isset( $_GET['page'] ) ) {
 
 

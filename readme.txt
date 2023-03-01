@@ -1,11 +1,11 @@
 === ClickWhale - Link Shortener, Click Tracker & Link Pages ===
-Contributors: flowdee
+Contributors: flowdee, krapan88, liquiemm
 Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.0.0
 Tested up to: 6.1.1
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,8 +79,14 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
+= Version 1.1.3 (23th February 2023) =
+* New: Random slug for new links
+* New: Link Page Open Graph live preview
+* Fix: Ending slash for links and link pages urls
+* Info: Minor improvements
+
 = Version 1.1.2 (15th February 2023) =
-* Minor improvements
+* Info: Minor improvements
 
 = Version 1.1.1 (14th February 2023) =
 * Fix: Error 500 when open any page/post without created Link Pages
@@ -92,8 +98,8 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * New: Adding custom links, posts, pages, custom post types to Link Page
 * New: Sort Link Pages by views and clicks
 * New: Sort Links by clicks
-* Fix: Error 500 when viewing a Link Page
 * Tweak: CSS/JS
+* Fix: Error 500 when viewing a Link Page
 * Info: PHP version changed from 5.6.0 to 7.0.0
 
 = Version 1.0.0 (11th December 2022) =
