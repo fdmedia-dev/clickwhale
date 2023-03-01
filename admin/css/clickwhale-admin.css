@@ -3,6 +3,12 @@
  * included in this file.
  */
 
+body.toplevel_page_clickwhale #wpbody-content,
+body[class*="clickwhale_page_clickwhale"] #wpbody-content,
+body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+	padding-top: 80px;
+}
+
 .slug-input--wrap {
 	position: relative;
 }
@@ -89,13 +95,23 @@
 	margin: 4px 10px 0;
 }
 
+
 .clickwhale-banner {
+	position: absolute;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	top: 0;
+	left: 0;
+	right: 0;
 	background: #FDD231;
 	padding: 1.5em 2em;
 	margin-left: -20px;
+}
+
+.clickwhale-banner,
+.clickwhale-banner * {
+	box-sizing: border-box;
 }
 
 .clickwhale-banner--logo img {
@@ -311,6 +327,10 @@
 	margin: 0;
 }
 
+.select2-container--default .select2-selection--multiple {
+	padding-bottom: 0
+}
+
 .row--custom_link .linkpage-link {
 	display: flex;
 	gap: 4px;
@@ -430,7 +450,112 @@ td > .links-info {
 	text-align: left;
 }
 
+#form_edit_tracking_code .CodeMirror-sizer {
+	min-height: 300px !important;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::before,
+#form_edit_tracking_code .CodeMirror-sizer::after {
+	color: #bbb;
+	display: block;
+	font-size: 13px;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::before {
+	content: "<!-- begin code -->";
+	padding-bottom: 5px;
+}
+
+#form_edit_tracking_code .CodeMirror-sizer::after {
+	position: absolute;
+	content: "<!-- end code -->";
+	bottom: 0;
+	padding-top: 5px;
+}
+
+table.tracking-codes .column-is_active {
+	width: 50px;
+}
+
+.clickwhale-checkbox--toggle {
+	display: inline-block;
+	height: 20px;
+	position: relative;
+	width: 36px;
+}
+
+.clickwhale-checkbox--toggle input {
+	display: none;
+	height: 0;
+	opacity: 0;
+	width: 0;
+}
+
+.clickwhale-checkbox--toggle .clickwhale-checkbox--toggle-slider {
+	background-color: #ccc;
+	border-radius: 20px;
+	bottom: 0;
+	cursor: pointer;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	transition: all .3s ease-in;
+}
+
+.clickwhale-checkbox--toggle .clickwhale-checkbox--toggle-slider::before {
+	background-color: white;
+	border-radius: 50%;
+	bottom: 3px;
+	content: "";
+	height: 14px;
+	left: 3px;
+	position: absolute;
+	transition: all .3s ease-in;
+	width: 14px;
+}
+
+.clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider {
+	background: #007AFF;
+}
+
+.clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider::before {
+	left: 19px;
+}
+
+.clickwhale-checkbox--toggle input:disabled + .clickwhale-checkbox--toggle-slider {
+	opacity: .5;
+	cursor: not-allowed;
+}
+
+.cw-posts-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 15px;
+}
+
+.cw-posts-row fieldset {
+	flex: 1;
+}
+
+.cw-posts-row fieldset label {
+	padding-top: 1px;
+}
+
+.cw-posts-row--select {
+	display: none;
+	flex: 3;
+	margin-bottom: 15px;
+}
+
 @media (max-width: 768px) {
+	body.toplevel_page_clickwhale #wpbody-content,
+	body[class*="clickwhale_page_clickwhale"] #wpbody-content,
+	body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+		padding-top: 180px;
+	}
+
 	.clickwhale-banner {
 		flex-direction: column;
 		gap: 15px;
@@ -461,5 +586,21 @@ td > .links-info {
 
 	.clickwhale-banner--links a.clickwhale-banner--button {
 		width: 100%;
+	}
+
+	.cw-posts-row {
+		flex-direction: column;
+	}
+
+	.cw-posts-row--select {
+		width: 100%;
+	}
+}
+
+@media (max-width: 600px) {
+	.clickwhale-banner {
+		top: 46px;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 }

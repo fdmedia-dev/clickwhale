@@ -56,6 +56,9 @@ class Clickwhale_Public {
 
 		$pages = new Clickwhale_Linkpages();
 		$pages->init();
+
+		$trackingCodes = new ClickwhaleTrackingCodes();
+		$trackingCodes->init();
 	}
 
 	/**
@@ -78,6 +81,7 @@ class Clickwhale_Public {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-wp-user.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpages.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-tracking-codes.php';
 
 	}
 
@@ -100,7 +104,8 @@ class Clickwhale_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-public.css', array(),
+			$this->version, 'all' );
 
 	}
 
@@ -123,7 +128,8 @@ class Clickwhale_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
+			array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_public_js',
 			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
@@ -143,7 +149,8 @@ class Clickwhale_Public {
 		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 		if ( ! is_admin() && $path ) {
 			$path    = ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $path ), '/' );
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'", $path ) );
+			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'",
+				$path ) );
 		};
 
 		if ( ! empty( $results ) ) {

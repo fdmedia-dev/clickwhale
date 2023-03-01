@@ -145,6 +145,19 @@ class Clickwhale_Admin_Settings {
 				'slug'       => $this->plugin_name . '-edit-linkpage',
 				'handler'    => '_linkpage_form'
 			),
+			array(
+				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
+				'menu_title' => __( 'Tracking Codes', $this->plugin_name ),
+				'slug'       => $this->plugin_name . '-tracking-codes',
+				'handler'    => '_tracking_codes',
+				'parent'     => $this->plugin_name,
+			),
+			array(
+				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
+				'menu_title' => __( 'Add New Tracking Code', $this->plugin_name ),
+				'slug'       => $this->plugin_name . '-edit-tracking-code',
+				'handler'    => '_tracking_code_form'
+			),
 		);
 
 		add_menu_page(
@@ -223,6 +236,17 @@ class Clickwhale_Admin_Settings {
 
 	public function include_admin_menu_tools_partial() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
+	}
+
+	/**
+	 * @since 1.2.0
+	 */
+	public function clickwhale_tracking_codes_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-codes-list-table.php' );
+	}
+
+	public function clickwhale_tracking_code_form_page_handler() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-code-edit.php' );
 	}
 
 	/**
@@ -458,6 +482,6 @@ class Clickwhale_Admin_Settings {
 	 */
 
 	public function render_controls( $args ) {
-		echo ClickwhaleHepler::render_contol( $args );
+		echo ClickwhaleHepler::render_control( $args );
 	}
 }

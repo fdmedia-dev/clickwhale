@@ -26,30 +26,24 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">
 
-		<?php
-		if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
-			_e( 'Edit link', $this->plugin_name );
-		} else {
-			_e( 'Add Link', $this->plugin_name );
-		}
-		?>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => __( 'Link', $this->plugin_name ),
+			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
+			'link_to_list' => 'clickwhale',
+			'link_to_edit' => 'clickwhale-edit-link',
+		)
+	);
 
-        <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(),
-			   'admin.php?page=clickwhale' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
-        <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-link' ); ?>"
-           class="page-title-action"><?php _e( 'Add New', $this->plugin_name ) ?></a>
-    </h1>
-
-	<?php if ( ! empty( $message ) ) { ?>
+	if ( ! empty( $message ) ) { ?>
 		<?php if ( $message === 'link_added' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Item was successfully saved', $this->plugin_name ) ?></p>
+            <div id="message" class="updated"><p><?php _e( 'Link was successfully saved', $this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
 		<?php if ( $message === 'link_updated' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Item was successfully updated', $this->plugin_name ) ?></p>
+            <div id="message" class="updated"><p><?php _e( 'Link was successfully updated', $this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
 		<?php delete_transient( 'link-' . $item['id'] ); ?>
