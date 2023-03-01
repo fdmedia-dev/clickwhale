@@ -244,10 +244,7 @@ class Clickwhale_Admin {
 	}
 
 	public function admin_scripts() {
-
 		if ( isset( $_GET['page'] ) ) {
-
-
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
 				?>
                 <script type='text/javascript'>
