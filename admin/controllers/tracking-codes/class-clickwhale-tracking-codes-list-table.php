@@ -47,13 +47,13 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	}
 
 	public function column_is_active( $item ): string {
-		$checkedVal = intval( $item['is_active'] );
-		$checked    = checked( $checkedVal, 1, false );
-		$output     = '';
+		$checked  = checked( intval( $item['is_active'] ), 1, false );
+		$disabled = ! $checked && ClickwhaleTrackingCodesHelper::is_limit() ? ' disabled="disabled"' : '';
+		$output   = '';
 
 		$output .= '<label class="clickwhale-checkbox--toggle">';
 		$output .= sprintf(
-			'<input type="checkbox" name="is_active" value="1" data-id="%d" ' . $checked . ' />',
+			'<input type="checkbox" name="is_active" class="clickwhale_tc_active_toggle" value="1" data-id="%d" ' . $checked . $disabled . ' />',
 			$item['id']
 		);
 		$output .= '<span class="clickwhale-checkbox--toggle-slider"></span>';
