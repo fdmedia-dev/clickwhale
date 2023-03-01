@@ -4,7 +4,7 @@
  * @since 1.2.0
  */
 class ClickwhaleTrackingCodesListTable extends WP_List_Table {
-	function __construct() {
+	public function __construct() {
 		parent::__construct(
 			array(
 				'singular' => 'tracking-code',
@@ -148,7 +148,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 		return array(
 			'title' => array( 'title', true ),
 		);
@@ -157,13 +157,13 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions() {
 		return array(
 			'delete' => 'Delete'
 		);
 	}
 
-	function process_bulk_action() {
+	public function process_bulk_action() {
 		global $wpdb;
 
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
@@ -179,7 +179,7 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 		}
 	}
 
-	function prepare_items() {
+	public function prepare_items() {
 		global $wpdb;
 
 		$per_page              = 20;
