@@ -52,6 +52,9 @@ $seoOGTitle       = $social['seo']['ogtitle'] ?? '';
 $seoOGDescription = $social['seo']['ogdescription'] ?? '';
 $seoOGImageId     = $social['seo']['ogimage'] ?? '';
 
+$seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
+$seoOGLPURL            = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
+
 // transient
 $message = get_transient( 'linkpage-' . $item['id'] );
 
