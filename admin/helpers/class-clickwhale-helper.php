@@ -14,7 +14,7 @@ class ClickwhaleHepler {
 		$id       = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
 		$class    = isset( $args['class'] ) && $args['class'] ? ' class="' . esc_attr( $args['class'] ) . '"' : '';
 		$name     = isset( $args['name'] ) && $args['name'] ? ' name="' . esc_attr( $args['name'] ) . '"' : '';
-		$value    = esc_attr( $args['value'] );
+		$value    = $args['value'];
 		$required = isset( $args['required'] ) && $args['required'] ? ' required' : '';
 		$disabled = isset( $args['disabled'] ) && $args['disabled'] ? ' disabled="disabled"' : '';
 
