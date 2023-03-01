@@ -34,16 +34,16 @@ if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], basenam
 			$result     = $wpdb->insert( $table_name, $item );
 			$item['id'] = $wpdb->insert_id;
 			if ( $result ) {
-				$message = __( 'Item was successfully saved', $this->plugin_name );
+				$message = __( 'Category was successfully saved', $this->plugin_name );
 			} else {
-				$notice = __( 'There was an error while saving item', $this->plugin_name );
+				$notice = __( 'There was an error while saving category', $this->plugin_name );
 			}
 		} else {
 			$result = $wpdb->update( $table_name, $item, array( 'id' => $item['id'] ) );
 			if ( $result ) {
-				$message = __( 'Item was successfully updated', $this->plugin_name );
+				$message = __( 'Category was successfully updated', $this->plugin_name );
 			} else {
-				$notice = __( 'There was an error while updating item', $this->plugin_name );
+				$notice = __( 'There was an error while updating category', $this->plugin_name );
 			}
 		}
 	} else {
@@ -67,22 +67,18 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">
-	    <?php
-	    if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
-		    _e( 'Edit Category', $this->plugin_name );
-	    } else {
-		    _e( 'Add Category', $this->plugin_name );
-	    }
-	    ?>
 
-        <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-categories' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
-		<?php if ( $total_items < $limit ) { ?>
-            <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-category' ); ?>"
-               class="page-title-action"><?php _e( 'Add New', 'clickwhale' ) ?></a>
-		<?php } ?>
-    </h1>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => __( 'Category', $this->plugin_name ),
+			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
+			'link_to_list' => 'clickwhale-categories',
+			'link_to_edit' => 'clickwhale-edit-category',
+			'is_limit'     => ClickwhaleCategoriesHelper::get_categories_count() >= ClickwhaleCategoriesHelper::get_limit()
+		)
+	);
+	?>
 
 	<?php if ( ! empty( $notice ) ) { ?>
         <div id="notice" class="error"><p><?php echo esc_html( $notice ) ?></p></div>
@@ -110,7 +106,7 @@ do_action( 'clickwhale_admin_banner' );
                                        name="title"
                                        type="text"
                                        style="width: 95%"
-                                       value="<?php echo esc_attr( wp_unslash( $item['title']) ) ?>"
+                                       value="<?php echo esc_attr( wp_unslash( $item['title'] ) ) ?>"
                                        size="50"
                                        class="code"
                                        placeholder="<?php _e( 'Category Title', $this->plugin_name ) ?>"
@@ -144,7 +140,7 @@ do_action( 'clickwhale_admin_banner' );
                                               rows="5"
                                               class="code"
                                               placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo esc_html( wp_unslash( $item['description']) ) ?></textarea>
+                                    ><?php echo esc_html( wp_unslash( $item['description'] ) ) ?></textarea>
                             </td>
                         </tr>
                         </tbody>

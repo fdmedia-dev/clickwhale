@@ -37,10 +37,12 @@ class ClickwhaleLinkPageController implements ClickwhaleLinkPageControllerInterf
 
 	private function checkRequest() {
 		$this->pages->rewind();
-		$path = trim( parse_url($this->getPathInfo(), PHP_URL_PATH), '/' );
-		$current = trim( $this->pages->current()->getUrl(), '/' );
+		$path = trim( parse_url( $this->getPathInfo(), PHP_URL_PATH ), '/' );
 
 		while ( $this->pages->valid() ) {
+			// get current object
+			// @link https://www.php.net/manual/en/splobjectstorage.current.php
+			$current = trim( $this->pages->current()->getUrl(), '/' );
 			// check url
 			// 1. if virtual page url is matches to $path
 			// 2. if virtual page url has GET params and only contains part of the $path
@@ -68,7 +70,8 @@ class ClickwhaleLinkPageController implements ClickwhaleLinkPageControllerInterf
 		$wp_query->found_posts    = 1;
 		$wp_query->post_count     = 1;
 		$wp_query->max_num_pages  = 1;
-		$posts                    = (array) apply_filters( 'the_posts', array( $this->matched->asWpPost() ), $wp_query );
+		$posts                    = (array) apply_filters( 'the_posts', array( $this->matched->asWpPost() ),
+			$wp_query );
 		$post                     = $posts[0];
 		$wp_query->posts          = $posts;
 		$wp_query->post           = $post;

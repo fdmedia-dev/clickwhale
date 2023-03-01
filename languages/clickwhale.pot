@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: ClickWhale\n"
-"POT-Creation-Date: 2022-12-13 17:37+0200\n"
-"PO-Revision-Date: 2022-12-13 17:36+0200\n"
+"POT-Creation-Date: 2023-02-13 11:18+0200\n"
+"PO-Revision-Date: 2023-02-13 11:18+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,47 +21,47 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: admin/class-clickwhale-admin.php:198
+#: admin/class-clickwhale-admin.php:200
 #, php-format
 msgid ""
 "You like ClickWhale? Then please <a href=\"%1$s\" target=\"_blank\">leave a "
 "review here</a>"
 msgstr ""
 
-#: admin/class-clickwhale-admin.php:208
+#: admin/class-clickwhale-admin.php:212
 msgid "Need help?"
 msgstr ""
 
-#: admin/class-clickwhale-admin.php:220
+#: admin/class-clickwhale-admin.php:224
 msgid "Update to Pro"
 msgstr ""
 
-#: admin/class-clickwhale-admin.php:228
+#: admin/class-clickwhale-admin.php:232
 msgid "Available only in PRO version"
 msgstr ""
 
-#: admin/class-clickwhale-ajax.php:143
+#: admin/class-clickwhale-ajax.php:146
 msgid "Nothing to migrate"
 msgstr ""
 
-#: admin/class-clickwhale-ajax.php:180
+#: admin/class-clickwhale-ajax.php:183
 msgid "Successfully deleted! Page will reload..."
 msgstr ""
 
-#: admin/class-clickwhale-ajax.php:201
+#: admin/class-clickwhale-ajax.php:204
 msgid "All statistic has been reset"
 msgstr ""
 
-#: admin/class-clickwhale-ajax.php:209
+#: admin/class-clickwhale-ajax.php:212
 msgid "All plugin tables has been reset"
 msgstr ""
 
-#: admin/class-clickwhale-ajax.php:217
+#: admin/class-clickwhale-ajax.php:220
 msgid "All plugin settings has been restored"
 msgstr ""
 
 #: admin/class-clickwhale-settings.php:70
-#: admin/views/linkpages/linkpage-edit.php:213
+#: admin/views/linkpages/linkpage-edit.php:262
 msgid "General"
 msgstr ""
 
@@ -81,10 +81,9 @@ msgstr ""
 
 #: admin/class-clickwhale-settings.php:109
 #: admin/class-clickwhale-settings.php:110
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:113
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:127
 #: admin/migration/class-clickwhale-tools-migration.php:136
-#: admin/views/linkpages/linkpage-edit.php:152
-#: admin/views/linkpages/linkpage-edit.php:250
+#: admin/views/linkpages/linkpage-edit.php:302
 msgid "Links"
 msgstr ""
 
@@ -101,7 +100,7 @@ msgstr ""
 
 #: admin/class-clickwhale-settings.php:122
 #: admin/class-clickwhale-settings.php:123
-#: admin/controllers/links/class-clickwhale-links-list-table.php:224
+#: admin/controllers/links/class-clickwhale-links-list-table.php:239
 #: admin/migration/class-clickwhale-tools-migration.php:125
 msgid "Categories"
 msgstr ""
@@ -128,7 +127,7 @@ msgstr ""
 
 #: admin/class-clickwhale-settings.php:173
 #: admin/class-clickwhale-settings.php:174
-#: admin/views/linkpages/linkpage-edit.php:57
+#: admin/views/linkpages/linkpage-edit.php:93
 #: admin/views/settings/settings.php:8
 msgid "Settings"
 msgstr ""
@@ -254,22 +253,22 @@ msgid "Enter your Affiliate ID."
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:74
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:42
-#: admin/controllers/links/class-clickwhale-links-list-table.php:111
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:44
+#: admin/controllers/links/class-clickwhale-links-list-table.php:122
 msgid "Edit"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:75
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:44
-#: admin/controllers/links/class-clickwhale-links-list-table.php:113
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:47
+#: admin/controllers/links/class-clickwhale-links-list-table.php:126
 msgid "Delete"
 msgstr ""
 
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:126
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:111
-#: admin/controllers/links/class-clickwhale-links-list-table.php:221
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:125
+#: admin/controllers/links/class-clickwhale-links-list-table.php:236
 #: admin/views/categories/category-edit.php:106
-#: admin/views/linkpages/linkpage-edit.php:69
+#: admin/views/linkpages/linkpage-edit.php:108
 #: admin/views/links/link-edit.php:59
 msgid "Title"
 msgstr ""
@@ -277,8 +276,8 @@ msgstr ""
 #: admin/controllers/categories/class-clickwhale-categories-list-table.php:127
 #: admin/views/categories/category-edit.php:138
 #: admin/views/categories/category-edit.php:146
-#: admin/views/linkpages/linkpage-edit.php:84
-#: admin/views/linkpages/linkpage-edit.php:91
+#: admin/views/linkpages/linkpage-edit.php:123
+#: admin/views/linkpages/linkpage-edit.php:130
 #: admin/views/links/link-edit.php:177 admin/views/links/link-edit.php:184
 msgid "Description"
 msgstr ""
@@ -292,55 +291,96 @@ msgstr ""
 msgid "Title is required"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:52
-#: admin/controllers/links/class-clickwhale-link-edit.php:50
-#: admin/views/categories/category-edit.php:61
-msgid "Item not found"
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:165
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:535
+msgid "Custom Title"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:194
-#: admin/views/linkpages/linkpage-edit.php:189
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:170
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:534
 #: admin/views/links/link-edit.php:68
 msgid "Link Title"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:263
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:171
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:536
+msgid "Link URL"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:177
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:372
+msgid "Original"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:193
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:356
+msgid "Change Order"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:218
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:357
+msgid "Remove item"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:275
+msgid "Select link Type"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:280
+msgid "Select Item"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:478
 #: admin/controllers/links/class-clickwhale-link-edit.php:201
 msgid "This slug is already in use! Please enter another slug"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:274
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:490
 #: admin/controllers/links/class-clickwhale-link-edit.php:212
 msgid "Please enter slug"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:281
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:498
 msgid ""
 "Are you sure? This action will set colors to default. This process cannot be "
 "undone!"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:61
-#: admin/controllers/links/class-clickwhale-links-list-table.php:130
+#: admin/controllers/linkpages/class-clickwhale-linkpage-edit.php:568
+msgid "Nothing found"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:64
+#: admin/controllers/links/class-clickwhale-links-list-table.php:143
 msgid "Copy Link"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:112
-#: admin/controllers/links/class-clickwhale-links-list-table.php:222
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:126
+#: admin/controllers/links/class-clickwhale-links-list-table.php:237
 msgid "Link"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:114
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:128
 msgid "Views"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:115
-#: admin/controllers/links/class-clickwhale-links-list-table.php:226
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:129
+#: admin/controllers/links/class-clickwhale-links-list-table.php:240
+msgid "Clicks"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:130
+#: admin/controllers/links/class-clickwhale-links-list-table.php:241
 msgid "Author"
 msgstr ""
 
-#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:198
+#: admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php:265
 msgid "No Link Pages Found."
+msgstr ""
+
+#: admin/controllers/links/class-clickwhale-link-edit.php:50
+#: admin/views/categories/category-edit.php:61
+msgid "Item not found"
 msgstr ""
 
 #: admin/controllers/links/class-clickwhale-link-edit.php:79
@@ -364,29 +404,25 @@ msgstr ""
 msgid "Redirection code must be number"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:35
+#: admin/controllers/links/class-clickwhale-links-list-table.php:36
 msgid "All Categories"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:45
+#: admin/controllers/links/class-clickwhale-links-list-table.php:46
 msgid "Filter"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:112
+#: admin/controllers/links/class-clickwhale-links-list-table.php:124
 #: admin/views/tools/tools.php:16
 msgid "Reset"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:223
+#: admin/controllers/links/class-clickwhale-links-list-table.php:238
 #: admin/views/links/link-edit.php:94
 msgid "Target URL"
 msgstr ""
 
-#: admin/controllers/links/class-clickwhale-links-list-table.php:225
-msgid "Clicks"
-msgstr ""
-
-#: admin/controllers/links/class-clickwhale-links-list-table.php:374
+#: admin/controllers/links/class-clickwhale-links-list-table.php:417
 msgid "No Links Found."
 msgstr ""
 
@@ -563,7 +599,7 @@ msgid "Add Category"
 msgstr ""
 
 #: admin/views/categories/category-edit.php:80
-#: admin/views/linkpages/linkpage-edit.php:34
+#: admin/views/linkpages/linkpage-edit.php:70
 #: admin/views/links/link-edit.php:30
 msgid "Back to List"
 msgstr ""
@@ -573,7 +609,7 @@ msgid "Category Title"
 msgstr ""
 
 #: admin/views/categories/category-edit.php:123
-#: admin/views/linkpages/linkpage-edit.php:97
+#: admin/views/linkpages/linkpage-edit.php:137
 #: admin/views/links/link-edit.php:74
 msgid "Slug"
 msgstr ""
@@ -590,122 +626,209 @@ msgstr ""
 msgid "You have reached the page limit"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:27
+#: admin/views/linkpages/linkpage-edit.php:22
 msgid "Edit Link Page"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:29
+#: admin/views/linkpages/linkpage-edit.php:24
 msgid "Add Link Page"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:38
+#: admin/views/linkpages/linkpage-edit.php:36
+msgid ""
+"Do not show this page in search results. If you don't specify this rule, the "
+"page may be indexed and shown in search results."
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:41
+msgid ""
+"Do not follow the links on this page. If you don't specify this rule, search "
+"engine may use the links on the page to discover those linked pages"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:74
 #: admin/views/linkpages/linkpages-list-table.php:21
 msgid "Add new"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:44
+#: admin/views/linkpages/linkpage-edit.php:80
 msgid "View Page"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:59
+#: admin/views/linkpages/linkpage-edit.php:95
 msgid "Colors"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:61
+#: admin/views/linkpages/linkpage-edit.php:97
+msgid "SEO"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:99
 msgid "Social"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:78
+#: admin/views/linkpages/linkpage-edit.php:117
 msgid "Link Page Title"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:106
+#: admin/views/linkpages/linkpage-edit.php:146
 msgid "Linkpage Slug"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:110
+#: admin/views/linkpages/linkpage-edit.php:150
 #: admin/views/links/link-edit.php:87
 msgid "URL Preview"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:118
+#: admin/views/linkpages/linkpage-edit.php:158
 msgid "Page Logo"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:134
+#: admin/views/linkpages/linkpage-edit.php:174
+#: admin/views/linkpages/linkpage-edit.php:524
 msgid "Upload image"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:137
+#: admin/views/linkpages/linkpage-edit.php:177
+#: admin/views/linkpages/linkpage-edit.php:527
 msgid "Remove image"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:142
+#: admin/views/linkpages/linkpage-edit.php:182
 msgid "Max logo size 275px * 275px"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:165
+#: admin/views/linkpages/linkpage-edit.php:192
+#: admin/views/linkpages/linkpage-edit.php:233
 msgid "Add Link to Page"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:203
-msgid "No links have been added yet"
+#: admin/views/linkpages/linkpage-edit.php:199
+msgid "ClickWhale Link"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:221
+#: admin/views/linkpages/linkpage-edit.php:204
+msgid "Custom Link"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:270
 msgid "Site Background"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:228
+#: admin/views/linkpages/linkpage-edit.php:278
 msgid "Set page background color"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:235
+#: admin/views/linkpages/linkpage-edit.php:286
 msgid "Page Text Color"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:242
+#: admin/views/linkpages/linkpage-edit.php:294
 msgid "Set page text color"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:258
+#: admin/views/linkpages/linkpage-edit.php:310
 msgid "Background Color"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:265
+#: admin/views/linkpages/linkpage-edit.php:318
 msgid "Set link background color (normal state)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:272
+#: admin/views/linkpages/linkpage-edit.php:326
 msgid "Background Color (hover/active)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:279
+#: admin/views/linkpages/linkpage-edit.php:334
 msgid "Set link background color (hover/active)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:286
+#: admin/views/linkpages/linkpage-edit.php:342
 msgid "Text Color"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:293
+#: admin/views/linkpages/linkpage-edit.php:349
 msgid "Set link text color (normal state)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:301
+#: admin/views/linkpages/linkpage-edit.php:358
 msgid "Text Color (hover/active)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:308
+#: admin/views/linkpages/linkpage-edit.php:366
 msgid "Set link text color (hover/active)"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:325
+#: admin/views/linkpages/linkpage-edit.php:381
+msgid "SEO Options"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:384
+msgid "SEO Ttile"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:394
+msgid "Set page SEO title"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:399
+msgid "SEO Description"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:410
+msgid "Set page SEO description"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:416
+msgid "Robots Meta"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:423
+#, php-format
+msgid ""
+"Search engines are not allowed to index this site. See the option \"Search "
+"engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</"
+"a>"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:468
+msgid "Open Graph Options"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:474
+msgid "Open Graph Title (Optional)"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:485
+msgid ""
+"The title of your page for social network. By default this is Link Page "
+"title."
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:491
+msgid "Open Graph Description (Optional)"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:502
+msgid ""
+"The description of your page for social network. By default this is SEO "
+"description."
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:508
+msgid "Open Graph Image"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:532
+msgid "Recommended image size 1200px * 630px"
+msgstr ""
+
+#: admin/views/linkpages/linkpage-edit.php:547
 #: admin/views/links/link-edit.php:228
 msgid "Save"
 msgstr ""
 
-#: admin/views/linkpages/linkpage-edit.php:329
+#: admin/views/linkpages/linkpage-edit.php:551
 msgid "Reset Colors"
 msgstr ""
 

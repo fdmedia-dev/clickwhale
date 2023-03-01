@@ -17,13 +17,6 @@ $post_type_links = $linkpage_edit->get_post_types();
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 $social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
 
-// HEADING
-if ( isset( $item['id'] ) && $item['id'] !== 0 ) {
-	$pageHeading = __( 'Edit Link Page', $this->plugin_name );
-} else {
-	$pageHeading = __( 'Add Link Page', $this->plugin_name );
-}
-
 // LP IMAGE
 $logo_id = $item['logo'] ?? '';
 
@@ -32,54 +25,67 @@ $seoTitle         = $social['seo']['title'] ?? $item['title'];
 $seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description' );
 $robots           = array(
 	'noindex'      => array(
-		'title'       => 'No Index',
+		'title'       => __( "No Index", $this->plugin_name ),
 		'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.",
 			$this->plugin_name )
 	),
 	'nofollow'     => array(
-		'title'       => 'No Follow',
+		'title'       => __( "No Follow", $this->plugin_name ),
 		'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages",
 			$this->plugin_name )
 	),
 	'noarchive'    => array(
-		'title'       => 'No Archive',
-		'description' => "Do not show a cached link in search results."
+		'title'       => __( "No Archive", $this->plugin_name ),
+		'description' => __( "Do not show a cached link in search results.", $this->plugin_name ),
 	),
 	'nosnippet'    => array(
-		'title'       => 'No Snippet',
-		'description' => "Do not show a text snippet or video preview in the search results for this page."
+		'title'       => __( "No Snippet", $this->plugin_name ),
+		'description' => __( "Do not show a text snippet or video preview in the search results for this page.",
+			$this->plugin_name ),
 	),
 	'noimageindex' => array(
-		'title'       => 'No Image Index',
-		'description' => "Do not index images on this page."
+		'title'       => __( "No Image Index", $this->plugin_name ),
+		'description' => __( "Do not index images on this page.", $this->plugin_name ),
 	)
 );
 $seoOGTitle       = $social['seo']['ogtitle'] ?? '';
 $seoOGDescription = $social['seo']['ogdescription'] ?? '';
 $seoOGImageId     = $social['seo']['ogimage'] ?? '';
 
+$seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
+$seoOGLPURL            = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
+
+// transient
+$message = get_transient( 'linkpage-' . $item['id'] );
+
 // BANNER
 do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">
-		<?php echo $pageHeading ?>
-        <a class="page-title-action"
-           href="<?php echo get_admin_url( get_current_blog_id(),
-			   'admin.php?page=clickwhale-linkpages' ); ?>"><?php _e( 'Back to List', $this->plugin_name ) ?></a>
 
-		<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() < ClickwhaleLinkpagesHelper::get_limit() ) { ?>
-            <a href="<?php echo get_admin_url( get_current_blog_id(), 'admin.php?page=clickwhale-edit-linkpage' ); ?>"
-               class="page-title-action"><?php _e( 'Add new', $this->plugin_name ) ?></a>
+	<?php
+	echo ClickwhaleHepler::render_heading(
+		array(
+			'name'         => __( 'Link Page', $this->plugin_name ),
+			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
+			'link_to_list' => 'clickwhale-linkpages',
+			'link_to_edit' => 'clickwhale-edit-linkpage',
+			'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ) . '/',
+			'is_limit'     => ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit()
+		)
+	);
+	if ( ! empty( $message ) ) { ?>
+		<?php if ( $message === 'linkpage_added' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved', $this->plugin_name ) ?></p>
+            </div>
 		<?php } ?>
-
-		<?php if ( isset( $item['slug'] ) && $item['slug'] !== '' ) { ?>
-            <a href="<?php echo trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ?>"
-               target="_blank" rel="noopener"
-               class="page-title-action"><?php _e( 'View Page', $this->plugin_name ) ?></a>
+		<?php if ( $message === 'linkpage_updated' ) { ?>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated', $this->plugin_name ) ?></p>
+            </div>
 		<?php } ?>
-    </h1>
+		<?php delete_transient( 'linkpage-' . $item['id'] ); ?>
+	<?php } ?>
 
     <form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_linkpage">
@@ -149,7 +155,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>
+									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
                                 </p>
                             </td>
                         </tr>
@@ -380,7 +386,7 @@ do_action( 'clickwhale_admin_banner' );
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="socialSeoTitle"><?php _e( 'SEO Ttile', $this->plugin_name ); ?></label>
+                                <label for="socialSeoTitle"><?php _e( 'SEO Title', $this->plugin_name ); ?></label>
                             </th>
                             <td>
                                 <input id="socialSeoTitle"
@@ -389,7 +395,7 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>"
                                        size="40"
                                        class="regular-text"
-                                       placeholder="Some Title Placeholder Text">
+                                       placeholder="">
                                 <p class="description"><?php _e( 'Set page SEO title', $this->plugin_name ) ?></p>
                             </td>
                         </tr>
@@ -405,7 +411,7 @@ do_action( 'clickwhale_admin_banner' );
                                        value="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>"
                                        size="40"
                                        class="regular-text"
-                                       placeholder="Some Title Placeholder Text">
+                                       placeholder="">
                                 <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
                             </td>
                         </tr>
@@ -416,7 +422,7 @@ do_action( 'clickwhale_admin_banner' );
                                 </label>
                             </th>
                             <td>
-	                            <?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
+								<?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                     <div class="links-info">
 										<?php printf(
 											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',
@@ -529,6 +535,21 @@ do_action( 'clickwhale_admin_banner' );
 									<?php } ?>
                                 </div>
                                 <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <a class="button"
+                                   id="opengraph-live-preview"
+                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
+                                   target="_blank"
+                                   rel="noopener">
+									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
+                                </a>
+                                <p class="description"></p>
                             </td>
                         </tr>
                         </tbody>

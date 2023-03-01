@@ -193,7 +193,8 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * Total cliks per link
 	 *
 	 * @param $item - row (key, value array)
-	 *
+	 * @since 1.1.0
+     *
 	 * @return string
 	 */
 	public function column_clicks_count( $item ) {
