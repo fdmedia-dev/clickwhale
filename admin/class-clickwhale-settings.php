@@ -184,6 +184,14 @@ class Clickwhale_Admin_Settings {
 
 		add_submenu_page(
 			$this->plugin_name,
+			__( 'Statistics', $this->plugin_name ),
+			__( 'Statistics', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-statistics',
+			array( $this, 'render_statistics_page_content' )
+		);
+		add_submenu_page(
+			$this->plugin_name,
 			__( 'Settings', $this->plugin_name ),
 			__( 'Settings', $this->plugin_name ),
 			'manage_options',
@@ -247,6 +255,14 @@ class Clickwhale_Admin_Settings {
 
 	public function clickwhale_tracking_code_form_page_handler() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-code-edit.php' );
+	}
+
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function render_statistics_page_content() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/statistics/statistics.php' );
 	}
 
 	/**
