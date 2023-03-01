@@ -79,7 +79,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
-= Version 1.2.0 (01st March 2023) =
+= Version 1.2.0 (1st March 2023) =
 * New: Tracking Codes Manager
 * Info: Minor css/js improvements
 
