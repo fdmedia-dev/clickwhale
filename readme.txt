@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.0.0
 Tested up to: 6.1.1
-Stable tag: 1.1.3
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 6. Link Pages: Link Management
 
 == Changelog ==
+
+= Version 1.2.0 (01st March 2023) =
+* New: Tracking Codes Manager
+* Info: Minor css/js improvements
 
 = Version 1.1.3 (23th February 2023) =
 * New: Random slug for new links
