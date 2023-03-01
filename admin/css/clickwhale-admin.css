@@ -523,6 +523,11 @@ table.tracking-codes .column-is_active {
 	left: 19px;
 }
 
+.clickwhale-checkbox--toggle input:disabled + .clickwhale-checkbox--toggle-slider {
+	opacity: .5;
+	cursor: not-allowed;
+}
+
 .cw-posts-row {
 	display: flex;
 	align-items: flex-start;

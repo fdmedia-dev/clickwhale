@@ -21,7 +21,6 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
 			'link_to_list' => 'clickwhale-tracking-codes',
 			'link_to_edit' => 'clickwhale-edit-tracking-code',
-			'is_limit'     => ClickwhaleTrackingCodesHelper::get_count() >= ClickwhaleTrackingCodesHelper::get_limit(),
 		)
 	);
 	if ( ! empty( $message ) ) { ?>
@@ -353,12 +352,15 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 
 				echo ClickwhaleHepler::render_control(
 					array(
-						'row_label' => __( 'Active', $this->plugin_name ),
-						'control'   => 'checkbox',
-						'id'        => 'is_active',
-						'name'      => 'is_active',
-						'value'     => $item['is_active'],
-						'label'     => __( 'Enable Tracking Code', $this->plugin_name ),
+						'row_label'        => __( 'Active', $this->plugin_name ),
+						'control'          => 'checkbox',
+						'id'               => 'is_active',
+						'name'             => 'is_active',
+						'class'            => 'clickwhale_tc_active_toggle',
+						'value'            => $item['is_active'],
+						'label'            => __( 'Enable Tracking Code', $this->plugin_name ),
+						'disabled'         => intval( $item['is_active'] ) === 0 && ClickwhaleTrackingCodesHelper::is_limit(),
+						'disabled_message' => ClickwhaleTrackingCodesHelper::get_limitation_notice()
 					),
 					true
 				);

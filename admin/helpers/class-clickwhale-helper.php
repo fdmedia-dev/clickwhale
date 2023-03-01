@@ -11,11 +11,12 @@ class ClickwhaleHepler {
 	public static function render_control( array $args, bool $row = false ): string {
 
 		$item     = '';
-		$id       = isset( $args['id'] ) && $args['id'] ? 'id="' . esc_attr($args['id']) . '"' : '';
-		$class    = isset( $args['class'] ) && $args['class'] ? 'class="' . esc_attr( $args['class']) . '"' : '';
-		$name     = isset( $args['name'] ) && $args['name'] ? 'name="' . esc_attr( $args['name'] ) . '"' : '';
-		$value    = $args['value'];
-		$required = isset( $args['required'] ) && $args['required'] ? 'required' : '';
+		$id       = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
+		$class    = isset( $args['class'] ) && $args['class'] ? ' class="' . esc_attr( $args['class'] ) . '"' : '';
+		$name     = isset( $args['name'] ) && $args['name'] ? ' name="' . esc_attr( $args['name'] ) . '"' : '';
+		$value    = esc_attr( $args['value'] );
+		$required = isset( $args['required'] ) && $args['required'] ? ' required' : '';
+		$disabled = isset( $args['disabled'] ) && $args['disabled'] ? ' disabled="disabled"' : '';
 
 		if ( isset( $args['default'] ) && $args['default'] ) {
 			$value = $value ?: $args['default'];
@@ -30,7 +31,8 @@ class ClickwhaleHepler {
 
 		switch ( $args['control'] ) {
 			case 'input':
-				$item .= '<input ' . $id . ' ' . $class . ' ' . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" class="regular-text" ' . $required . '>';
+				$class = $class ? $class . ' regular-text' : $class;
+				$item  .= '<input ' . $id . $class . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" ' . $disabled . $required . '>';
 				break;
 
 			case 'checkbox':
@@ -39,8 +41,8 @@ class ClickwhaleHepler {
 					$item .= '<legend class="screen-reader-text"><span>' . $args['screenreader'] . '</span></legend>';
 				}
 				$item .= '<label>';
-				$item .= '<input type="checkbox" ' . $id . ' ' . $name . ' value="1" ' . checked( 1, $value,
-						false ) . ' />';
+				$item .= '<input type="checkbox" ' . $id . $class . $name . ' value="1" ' . checked( 1, $value,
+						false ) . $disabled . ' />';
 				$item .= $args['label'];
 				$item .= '</label>';
 				$item .= '</fieldset>';
@@ -55,9 +57,9 @@ class ClickwhaleHepler {
 					$item .= '<label>';
 					if ( is_array( $value ) ) {
 						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( in_array( $k,
-								$value ), 1, false ) . ' />';
+								$value ), 1, false ) . $disabled . ' />';
 					} else {
-						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" />';
+						$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . $disabled . ' />';
 					}
 					$item .= $v;
 					$item .= '</label><br>';
@@ -72,7 +74,7 @@ class ClickwhaleHepler {
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label>';
 					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $k, $value,
-							false ) . ' />';
+							false ) . $disabled . ' />';
 					$item .= '<span>' . $v . '</span>';
 					$item .= '</label><br>';
 				}
@@ -80,8 +82,9 @@ class ClickwhaleHepler {
 				break;
 
 			case 'select':
+				$class    = $class ? $class . ' regular-text' : $class;
 				$multiple = isset( $args['multiple'] ) && $args['multiple'] ? ' multiple' : '';
-				$item     .= '<select ' . $id . ' ' . $class . ' ' . $name . $multiple . ' class="regular-text">';
+				$item     .= '<select ' . $id . $class . $name . $multiple . $disabled . '>';
 				foreach ( $args['options'] as $k => $v ) {
 					if ( $multiple && is_array( $value ) ) {
 						$selected = in_array( $k, $value ) ? ' selected' : '';
@@ -95,12 +98,19 @@ class ClickwhaleHepler {
 				break;
 
 			case 'textarea':
+				$class       = $class ? $class . ' regular-text' : $class;
 				$placeholder = $args['placeholder'] ?? '';
-				$item        .= '<textarea ' . $id . ' ' . $class . ' ' . $name . ' placeholder="' . esc_attr( $placeholder ) . '" class="regular-text" rows="5" ' . $required . '>' . esc_attr( $value ) . '</textarea>';
+				$item        .= '<textarea ' . $id . $class . $name . ' placeholder="' . esc_attr( $placeholder ) . '" rows="5" ' . $required . $disabled . '>' . esc_attr( $value ) . '</textarea>';
 				break;
 
 			default:
 				$item .= 'Undefined control type';
+		}
+
+		if ( $disabled ) {
+			if ( isset( $args['disabled_message'] ) ) {
+				$item .= '<div class="links-info">' . $args['disabled_message'] . '</div>';
+			}
 		}
 
 		if ( isset( $args['description'] ) ) {

@@ -265,7 +265,7 @@ class Clickwhale_Admin {
 				<?php
 			}
 			if ( $_GET['page'] === 'clickwhale-tracking-codes' ) {
-				$nonce = wp_create_nonce( 'clickwhale_tracking_codes' );
+				$nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
 				?>
                 <script type='text/javascript'>
                     jQuery(document).ready(function () {
@@ -279,7 +279,13 @@ class Clickwhale_Admin {
                                 'status': active ? 1 : 0,
                                 'id': id
                             }, function (response) {
-
+                                if (response.data.action_disable_all) {
+                                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
+                                    jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
+                                } else {
+                                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', false);
+                                    jQuery('#clickwhale_tracking_codes_list_limit_notice').hide()
+                                }
                             })
                         });
                     });

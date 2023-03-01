@@ -43,7 +43,7 @@ do_action( 'clickwhale_admin_banner' );
             </div>
 		<?php } ?>
 		<?php if ( $message === 'link_updated' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'link was successfully updated', $this->plugin_name ) ?></p>
+            <div id="message" class="updated"><p><?php _e( 'Link was successfully updated', $this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
 		<?php delete_transient( 'link-' . $item['id'] ); ?>

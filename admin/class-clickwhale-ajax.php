@@ -351,17 +351,18 @@ class Clickwhale_Ajax {
 	public function tracking_code_toggle_active() {
 		global $wpdb;
 
-		check_ajax_referer( 'clickwhale_tracking_codes', 'security' );
+		check_ajax_referer( 'clickwhale_toggle_tracking_code', 'security' );
 
+		$result               = [];
 		$tracking_codes_table = $wpdb->prefix . 'clickwhale_tracking_codes';
-		$data                 = array( 'is_active' => $_POST['status'] );
+		$data                 = array( 'is_active' => sanitize_text_field( $_POST['status'] ) );
 		$where                = array( 'id' => intval( sanitize_text_field( $_POST['id'] ) ) );
 
 		$wpdb->update( $tracking_codes_table, $data, $where );
 
-		exit( var_dump( $wpdb->last_query ) );
+		$result['action_disable_all'] = ClickwhaleTrackingCodesHelper::is_limit();
 
-		wp_send_json_success();
+		wp_send_json_success( $result );
 
 		wp_die();
 	}
