@@ -158,7 +158,8 @@ class Clickwhale_Tools_Migration {
 
 		$result = '';
 		if ( $data['links'] || $data['categories'] ) {
-			$result .= sprintf( __( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ), $categories, $categories_text, $links, $links_text );
+			$result .= sprintf( __( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ), $categories, $categories_text,
+				$links, $links_text );
 			$result .= '<br>';
 		}
 
@@ -202,8 +203,11 @@ class Clickwhale_Tools_Migration {
                id="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>"
                name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_categories]' ) ?>"
                value="1"
-			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0, true ) ?>/>
-        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories', 'clickwhale' ) ?></label>
+			<?php checked( 1,
+				isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0,
+				true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories',
+				'clickwhale' ) ?></label>
 		<?php
 	}
 
@@ -214,8 +218,11 @@ class Clickwhale_Tools_Migration {
                id="<?php echo esc_attr( $item['slug'] . '_links' ) ?>"
                name="<?php echo esc_attr( $this->options . '[' . $item['slug'] . '_links]' ) ?>"
                value="1"
-			<?php checked( 1, isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0, true ) ?>/>
-        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">&nbsp;<?php _e( 'Migrate links', 'clickwhale' ) ?></label>
+			<?php checked( 1,
+				isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0,
+				true ) ?>/>
+        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">&nbsp;<?php _e( 'Migrate links',
+				'clickwhale' ) ?></label>
 		<?php
 	}
 
@@ -274,8 +281,8 @@ class Clickwhale_Tools_Migration {
                                 } else if ('object' === typeof result.data) {
 
                                     for (var type in result.data) {
-                                        var categories = result.data[type].categories;
-                                        var links = result.data[type].links;
+                                        var categories = result.data[type].categories,
+                                            links = result.data[type].links;
 
                                         if (categories !== null) {
                                             for (var category in categories) {
@@ -296,6 +303,10 @@ class Clickwhale_Tools_Migration {
                                 jQuery(migrationButton).prop('disabled', false);
                                 jQuery(migrationSpinner).removeClass("is-active");
 
+                                if ('object' === typeof result.data) {
+                                    jQuery(migrationResult).append('<br><a href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale' ) ) ?>" class="button-primary"><?php _e( 'Get Started with ClickWhale Now',
+										'clickwhale' ) ?></a>');
+                                }
                             }
                         });
                     })
