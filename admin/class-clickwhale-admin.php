@@ -254,7 +254,7 @@ class Clickwhale_Admin {
                             var $temp = jQuery('<input>'),
                                 textToCopy = jQuery(this).parent().find('input').val();
 
-                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy;
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
                             jQuery('body').append($temp);
                             $temp.val(textToCopy).select();
                             document.execCommand("copy");
