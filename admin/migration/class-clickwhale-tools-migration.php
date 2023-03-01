@@ -158,8 +158,12 @@ class Clickwhale_Tools_Migration {
 
 		$result = '';
 		if ( $data['links'] || $data['categories'] ) {
-			$result .= sprintf( __( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ), $categories, $categories_text,
-				$links, $links_text );
+			$result .= sprintf(
+				__( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
+				$categories,
+				$categories_text,
+				$links,
+				$links_text );
 			$result .= '<br>';
 		}
 
@@ -206,8 +210,9 @@ class Clickwhale_Tools_Migration {
 			<?php checked( 1,
 				isset( $options[ '' . $item['slug'] . '_categories' ] ) ? $options[ '' . $item['slug'] . '_categories' ] : 0,
 				true ) ?>/>
-        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">&nbsp;<?php _e( 'Migrate categories',
-				'clickwhale' ) ?></label>
+        <label for="<?php echo esc_attr( $item['slug'] . '_categories' ) ?>">
+            &nbsp;<?php _e( 'Migrate categories', 'clickwhale' ) ?>
+        </label>
 		<?php
 	}
 
@@ -221,8 +226,9 @@ class Clickwhale_Tools_Migration {
 			<?php checked( 1,
 				isset( $options[ '' . $item['slug'] . '_links' ] ) ? $options[ '' . $item['slug'] . '_links' ] : 0,
 				true ) ?>/>
-        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">&nbsp;<?php _e( 'Migrate links',
-				'clickwhale' ) ?></label>
+        <label for="<?php echo esc_attr( $item['slug'] . '_links' ) ?>">
+            &nbsp;<?php _e( 'Migrate links', 'clickwhale' ) ?>
+        </label>
 		<?php
 	}
 
@@ -231,6 +237,7 @@ class Clickwhale_Tools_Migration {
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-tools' ) {
 			$nonce       = wp_create_nonce( 'migration_to_clickwhale' );
 			$nonce_reset = wp_create_nonce( 'migration_reset' );
+			$linksURL    = esc_url( admin_url( 'admin.php?page=clickwhale' ) )
 			?>
             <script type='text/javascript'>
 
@@ -304,8 +311,10 @@ class Clickwhale_Tools_Migration {
                                 jQuery(migrationSpinner).removeClass("is-active");
 
                                 if ('object' === typeof result.data) {
-                                    jQuery(migrationResult).append('<br><a href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale' ) ) ?>" class="button-primary"><?php _e( 'Get Started with ClickWhale Now',
-										'clickwhale' ) ?></a>');
+                                    jQuery(migrationResult).append('<br>' +
+                                        '<a href="<?php echo $linksURL ?>" class="button-primary"> ' +
+                                        '<?php _e( 'Get Started with ClickWhale Now', 'clickwhale' ) ?>' +
+                                        '</a>');
                                 }
                             }
                         });
