@@ -8,6 +8,7 @@ class Clickwhale_Linkpages {
 	 */
 	public function __construct() {
 		$this->load_dependencies();
+		$this->init();
 	}
 
 	/**
@@ -34,16 +35,14 @@ class Clickwhale_Linkpages {
 	public function init() {
 		global $wpdb;
 
-		$table_linkpages = $wpdb->prefix . 'clickwhale_linkpages';
-		if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_linkpages'" ) != $table_linkpages ) {
+		$linkpages = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages", ARRAY_A );
+		if ( ! $linkpages ) {
 			return;
 		}
 
 		$controller = new ClickwhaleLinkPageController ( new ClickwhaleLinkPageTemplateLoader );
 		add_action( 'init', array( $controller, 'init' ) );
-
 		add_filter( 'do_parse_request', array( $controller, 'dispatch' ), PHP_INT_MAX, 2 );
-
 		add_action( 'loop_end', function ( $query ) {
 			if ( isset( $query->virtual_page ) && ! empty( $query->virtual_page ) ) {
 				$query->virtual_page = null;
@@ -64,14 +63,12 @@ class Clickwhale_Linkpages {
 			return $plink;
 		} );
 
-		$linkpages = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages", ARRAY_A );
-		if ( $linkpages ) {
-			foreach ( $linkpages as $linkpage ) {
-				$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
-				           ->setTitle( $linkpage['title'] )
-				           ->setLinkpage( $linkpage )
-				           ->setTemplate( 'linkpage.php' );
-			}
+		foreach ( $linkpages as $linkpage ) {
+			$controller->addPage( new ClickwhaleLinkPage( $linkpage['slug'] ) )
+			           ->setTitle( $linkpage['title'] )
+			           ->setLinkpage( $linkpage )
+			           ->setTemplate( 'linkpage.php' );
 		}
+
 	}
 }
