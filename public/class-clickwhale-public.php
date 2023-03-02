@@ -52,10 +52,11 @@ class Clickwhale_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->load_dependencies();
 
-		new Clickwhale_Linkpages();
-		new ClickwhaleTrackingCodes();
+		if ( ! is_admin() ) {
+			$this->load_dependencies();
+			$this->init_classes();
+		}
 	}
 
 	/**
@@ -70,7 +71,6 @@ class Clickwhale_Public {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-visitor-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-click-track.php';
@@ -79,7 +79,11 @@ class Clickwhale_Public {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpages.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-tracking-codes.php';
+	}
 
+	private function init_classes() {
+		new Clickwhale_Linkpages();
+		new ClickwhaleTrackingCodes();
 	}
 
 	/**
