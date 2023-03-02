@@ -313,7 +313,7 @@ class Clickwhale_Tools_Migration {
                                 if ('object' === typeof result.data) {
                                     jQuery(migrationResult).append('<br>' +
                                         '<a href="<?php echo $linksURL ?>" class="button-primary"> ' +
-                                        '<?php _e( 'Get Started with ClickWhale Now', 'clickwhale' ) ?>' +
+                                        '<?php _e( 'Get started with ClickWhale now', 'clickwhale' ) ?>' +
                                         '</a>');
                                 }
                             }

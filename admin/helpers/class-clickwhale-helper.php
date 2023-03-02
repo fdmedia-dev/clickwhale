@@ -158,7 +158,7 @@ class ClickwhaleHepler {
 		if ( isset( $data['link_to_list'] ) && $data['link_to_list'] ) {
 			$linkToListArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_list'] ) ),
-				'title' => __( 'Back to List', 'clickwhale' )
+				'title' => __( 'Back to list', 'clickwhale' )
 			);
 			$linkToList     = '<a class="page-title-action" href="' . $linkToListArgs['url'] . '">' . $linkToListArgs['title'] . '</a>';
 		}
@@ -167,7 +167,7 @@ class ClickwhaleHepler {
 		if ( ( isset( $data['link_to_edit'] ) && $data['link_to_edit'] ) && ! $limit ) {
 			$linkToEditArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_edit'] ) ),
-				'title' => __( 'Add New', 'clickwhale' )
+				'title' => __( 'Add new', 'clickwhale' )
 			);
 			$linkToEdit     = '<a class="page-title-action" href="' . $linkToEditArgs['url'] . '">' . $linkToEditArgs['title'] . '</a>';
 		}
@@ -175,7 +175,7 @@ class ClickwhaleHepler {
 		if ( isset( $data['link_to_view'] ) && $data['link_to_view'] ) {
 			$linkToViewArgs = array(
 				'url'   => $data['link_to_view'],
-				'title' => __( 'View Page', 'clickwhale' )
+				'title' => __( 'View page', 'clickwhale' )
 			);
 			$linkToView     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkToViewArgs['url'] . '">' . $linkToViewArgs['title'] . '</a>';
 		}
