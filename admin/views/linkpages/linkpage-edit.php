@@ -548,7 +548,7 @@ do_action( 'clickwhale_admin_banner' );
                                    href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
                                    target="_blank"
                                    rel="noopener">
-									<?php _e( 'View Live Preview', $this->plugin_name ) ?>
+									<?php _e( 'View live preview', $this->plugin_name ) ?>
                                 </a>
                                 <p class="description"></p>
                             </td>
@@ -569,7 +569,7 @@ do_action( 'clickwhale_admin_banner' );
                    class="button-primary"
                    name="submit">
 
-            <input type="button" value="<?php _e( 'Reset Colors', $this->plugin_name ) ?>"
+            <input type="button" value="<?php _e( 'Reset colors', $this->plugin_name ) ?>"
                    id="reset-colors"
                    class="button"
                    name="reset-colors"
