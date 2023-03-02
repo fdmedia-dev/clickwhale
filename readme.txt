@@ -69,7 +69,7 @@ Yes! ClickWhale can be used on multisite installations.
 
 = Is ClickWhale GDPR compatible? =
 
-ClickWhale is a fully GDPR compatible WordPress coupon plugin. We don’t track or store any data ourselves.
+ClickWhale is a fully GDPR compatible WordPress plugin. We don’t track or store any data ourselves.
 
 = Is ClickWhale translation ready? =
 
