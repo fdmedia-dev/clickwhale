@@ -54,11 +54,10 @@ class Clickwhale_Public {
 		$this->version     = $version;
 		$this->load_dependencies();
 
-		$pages = new Clickwhale_Linkpages();
-		$pages->init();
-
-		$trackingCodes = new ClickwhaleTrackingCodes();
-		$trackingCodes->init();
+		if ( ! is_admin() ) {
+			new Clickwhale_Linkpages();
+			new ClickwhaleTrackingCodes();
+		}
 	}
 
 	/**
