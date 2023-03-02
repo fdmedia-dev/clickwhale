@@ -6,7 +6,9 @@
  */
 class ClickwhaleTrackingCodes {
 	public function __construct() {
-		add_action( 'init', [ $this, 'prepare_tracking_codes' ], PHP_INT_MAX );
+		if ( ! is_admin() ) {
+			add_action( 'init', [ $this, 'prepare_tracking_codes' ], PHP_INT_MAX );
+		}
 	}
 
 	/**

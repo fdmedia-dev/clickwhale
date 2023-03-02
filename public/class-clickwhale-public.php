@@ -54,10 +54,6 @@ class Clickwhale_Public {
 		$this->version     = $version;
 		$this->load_dependencies();
 
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		new Clickwhale_Linkpages();
 		new ClickwhaleTrackingCodes();
 	}

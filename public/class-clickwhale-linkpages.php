@@ -7,8 +7,10 @@ class Clickwhale_Linkpages {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->load_dependencies();
-		$this->init();
+		if ( ! is_admin() ) {
+			$this->load_dependencies();
+			$this->init();
+		}
 	}
 
 	/**
