@@ -53,10 +53,9 @@ class Clickwhale_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
-		if ( ! is_admin() ) {
-			$this->load_dependencies();
-			$this->init_classes();
-		}
+		$this->load_dependencies();
+		$this->init_classes();
+
 	}
 
 	/**
@@ -82,8 +81,21 @@ class Clickwhale_Public {
 	}
 
 	private function init_classes() {
-		new Clickwhale_Linkpages();
-		new ClickwhaleTrackingCodes();
+		$linkpages = $trackingCodes = null;
+		if ( ! is_admin() ) {
+			$linkpages     = new Clickwhale_Linkpages();
+			$trackingCodes = new ClickwhaleTrackingCodes( $this->get_public_path() );
+		}
+	}
+
+	private function get_public_path() {
+		// if PHP Warning: Undefined array key "HTTP_HOST"
+		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			$_SERVER['HTTP_HOST'] = 'localhost';
+		}
+		$url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+		return untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 	}
 
 	/**
@@ -142,12 +154,8 @@ class Clickwhale_Public {
 	public function do_redirect_handler() {
 		global $wpdb;
 
-		// if PHP Warning: Undefined array key "HTTP_HOST"
-		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			$_SERVER['HTTP_HOST'] = 'localhost';
-		}
-		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
+		$path = $this->get_public_path();
+
 		if ( ! is_admin() && $path ) {
 			$path    = ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $path ), '/' );
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'",

@@ -5,8 +5,11 @@
  * @since 1.2.0
  */
 class ClickwhaleTrackingCodes {
-	public function __construct() {
-			add_action( 'init', [ $this, 'prepare_tracking_codes' ], PHP_INT_MAX );
+	public $path;
+
+	public function __construct( $path ) {
+		$this->path = $path;
+		add_action( 'init', [ $this, 'prepare_tracking_codes' ], PHP_INT_MAX );
 	}
 
 	/**
@@ -17,7 +20,7 @@ class ClickwhaleTrackingCodes {
 	 * @return string
 	 */
 	private function parse_current_page_path( string $type = 'path' ): string {
-		$path = untrailingslashit( parse_url( $_SERVER["REQUEST_URI"], PHP_URL_PATH ) );
+		$path = $this->path;
 
 		if ( $type === 'url' ) {
 			return get_bloginfo( 'url' ) . '/' . $path;
