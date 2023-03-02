@@ -55,8 +55,8 @@ class Clickwhale_Public {
 		$this->load_dependencies();
 
 		if ( ! is_admin() ) {
-			new Clickwhale_Linkpages();
-			new ClickwhaleTrackingCodes();
+			$linkpages     = new Clickwhale_Linkpages();
+			$trackingCodes = new ClickwhaleTrackingCodes();
 		}
 	}
 
