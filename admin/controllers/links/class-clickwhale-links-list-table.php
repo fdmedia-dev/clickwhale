@@ -121,7 +121,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'],
 				__( 'Edit', 'clickwhale' ) ),
 			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset', 'clickwhale' ) ),
+				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset Clicks', 'clickwhale' ) ),
 			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%s">%s</a>',
 				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', 'clickwhale' ) ),
 		);
@@ -263,7 +263,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 */
 	function get_bulk_actions() {
 		return array(
-			'reset'  => 'Reset',
+			'reset'  => 'Reset CLicks',
 			'delete' => 'Delete'
 		);
 	}
