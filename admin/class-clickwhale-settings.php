@@ -285,6 +285,9 @@ class Clickwhale_Admin_Settings {
 	}
 
 	public function add_default_options() {
+		if ( ! get_option( 'clickwhale_version' ) ) {
+			add_option( 'clickwhale_version', CLICKWHALE_VERSION );
+		}
 		if ( $this->default_options() ) {
 			foreach ( $this->default_options() as $k => $v ) {
 				$option_name = 'clickwhale_' . $k . '_options';

@@ -52,13 +52,10 @@ class Clickwhale_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
 		$this->load_dependencies();
+		$this->init_classes();
 
-		$pages = new Clickwhale_Linkpages();
-		$pages->init();
-
-		$trackingCodes = new ClickwhaleTrackingCodes();
-		$trackingCodes->init();
 	}
 
 	/**
@@ -73,7 +70,6 @@ class Clickwhale_Public {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-parser.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-visitor-track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/tracking/class-clickwhale-click-track.php';
@@ -82,7 +78,24 @@ class Clickwhale_Public {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpages.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-linkpage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-clickwhale-tracking-codes.php';
+	}
 
+	private function init_classes() {
+		$linkpages = $trackingCodes = null;
+		if ( ! is_admin() ) {
+			$linkpages     = new Clickwhale_Linkpages();
+			$trackingCodes = new ClickwhaleTrackingCodes( $this->get_public_path() );
+		}
+	}
+
+	private function get_public_path() {
+		// if PHP Warning: Undefined array key "HTTP_HOST"
+		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			$_SERVER['HTTP_HOST'] = 'localhost';
+		}
+		$url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+		return untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 	}
 
 	/**
@@ -141,12 +154,8 @@ class Clickwhale_Public {
 	public function do_redirect_handler() {
 		global $wpdb;
 
-		// if PHP Warning: Undefined array key "HTTP_HOST"
-		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			$_SERVER['HTTP_HOST'] = 'localhost';
-		}
-		$url  = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-		$path = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
+		$path = $this->get_public_path();
+
 		if ( ! is_admin() && $path ) {
 			$path    = ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $path ), '/' );
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'",

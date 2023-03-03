@@ -168,7 +168,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 											'name'     => 'position[items_excluded][cw_linkpage][ids][]',
 											'value'    => $item['position']['items_excluded']['cw_linkpage']['ids'] ?? '',
 											'options'  => $tracking_code->get_linkpages(),
-											'default'  => '',
+											'default' => 'all',
 											'multiple' => true
 										)
 									);

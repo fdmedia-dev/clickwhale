@@ -16,7 +16,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'CLICKWHALE_VERSION', '1.2.0' );
+define( 'CLICKWHALE_VERSION', '1.2.1' );
 
 /**
  * The code that runs during plugin activation.
@@ -55,8 +55,16 @@ function deactivate_clickwhale() {
 	Clickwhale_Deactivator::deactivate();
 }
 
+function clickwhale_update_db_check() {
+	if ( version_compare( CLICKWHALE_VERSION, get_option( 'clickwhale_version' ), '>' ) ) {
+		activate_clickwhale();
+	}
+}
+
 register_activation_hook( __FILE__, 'activate_clickwhale' );
 register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
+
+add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -79,4 +87,5 @@ function run_clickwhale() {
 	$plugin->run();
 
 }
+
 run_clickwhale();
