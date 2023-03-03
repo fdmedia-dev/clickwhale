@@ -223,6 +223,8 @@ class Clickwhale_Activator {
 		( new self )->add_clickwhale_track_table();
 		( new self )->add_clickwhale_tracking_codes_table();
 		( new self )->modify_columns();
+
+		update_option( 'clickwhale_version', CLICKWHALE_VERSION );
 	}
 
 }

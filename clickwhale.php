@@ -55,8 +55,16 @@ function deactivate_clickwhale() {
 	Clickwhale_Deactivator::deactivate();
 }
 
+function clickwhale_update_db_check() {
+	if ( version_compare( CLICKWHALE_VERSION, get_option( 'clickwhale_version' ), '>' ) ) {
+		activate_clickwhale();
+	}
+}
+
 register_activation_hook( __FILE__, 'activate_clickwhale' );
 register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
+
+add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -79,4 +87,5 @@ function run_clickwhale() {
 	$plugin->run();
 
 }
+
 run_clickwhale();
