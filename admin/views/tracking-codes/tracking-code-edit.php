@@ -45,7 +45,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
         <div id="post-body-content">
 
             <table style="width: 100%;" class="form-table">
-                <caption>Tracking code edit table</caption>
+                <caption style="display: none">Tracking code edit table</caption>
                 <tbody>
 
 				<?php
