@@ -242,14 +242,11 @@ do_action( 'clickwhale_admin_banner' );
                     <input type="submit" value="<?php _e( 'Save link', $this->plugin_name ) ?>" id="submit"
                            class="button-primary"
                            name="submit">
-
-					<?php if ( isset( $item['id'] ) && $item['id'] !== 0 ) { ?>
-                        <button id="copy-link-url"
-                                type="button"
-                                class="button">
-							<?php _e( 'Copy link', $this->plugin_name ) ?>
-                        </button>
-					<?php } ?>
+                    <button id="copy-link-url"
+                            type="button"
+                            class="button">
+						<?php _e( 'Copy link', $this->plugin_name ) ?>
+                    </button>
                 </div>
             </div>
         </div>
