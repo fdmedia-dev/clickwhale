@@ -264,6 +264,25 @@ class Clickwhale_Admin {
                 </script>
 				<?php
 			}
+			if ( $_GET['page'] === 'clickwhale-edit-link' || $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+				?>
+                <script type='text/javascript'>
+                    jQuery(document).ready(function () {
+                        jQuery('#copy-link-url, #cw-slug--text').click(function (e) {
+                            e.preventDefault();
+                            var $temp = jQuery('<input>'),
+                                textToCopy = jQuery('#cw-slug').val();
+
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                            jQuery('body').append($temp);
+                            $temp.val(textToCopy).select();
+                            document.execCommand("copy");
+                            $temp.remove();
+                        });
+                    });
+                </script>
+				<?php
+			}
 			if ( $_GET['page'] === 'clickwhale-tracking-codes' ) {
 				$nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
 				?>

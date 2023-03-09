@@ -88,10 +88,13 @@ do_action( 'clickwhale_admin_banner' );
                                        placeholder="<?php esc_attr( __( 'Link Slug', $this->plugin_name ) ) ?>"
                                        required>
                                 <p id="cw-slug--description"></p>
-                                <p id="cw-slug--text">
+                                <p id="cw-slug--text"
+                                   class="code"
+                                   title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>/
+                                    <em class="dashicons dashicons-clipboard"></em>
                                 </p>
                             </td>
                         </tr>
@@ -236,9 +239,17 @@ do_action( 'clickwhale_admin_banner' );
                            value="<?php echo esc_attr( $item['created_at'] ) ?>">
                     <input type="hidden" id="updated_at" name="updated_at" value="">
 
-                    <input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"
+                    <input type="submit" value="<?php _e( 'Save link', $this->plugin_name ) ?>" id="submit"
                            class="button-primary"
                            name="submit">
+
+					<?php if ( isset( $item['id'] ) && $item['id'] !== 0 ) { ?>
+                        <button id="copy-link-url"
+                                type="button"
+                                class="button">
+							<?php _e( 'Copy link', $this->plugin_name ) ?>
+                        </button>
+					<?php } ?>
                 </div>
             </div>
         </div>

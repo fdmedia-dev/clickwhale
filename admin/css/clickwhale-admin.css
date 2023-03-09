@@ -41,6 +41,28 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	opacity: .7;
 }
 
+#cw-slug--text {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	max-width: 95%;
+	cursor: pointer;
+	font-size: 12px;
+}
+
+#cw-slug--text .dashicons {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 13px;
+	opacity: 0;
+	margin-left: 10px;
+}
+
+#cw-slug--text:hover .dashicons {
+	opacity: .7;
+}
+
 .clickwhale-notice span {
 	margin-right: 20px;
 }
