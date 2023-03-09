@@ -88,7 +88,7 @@ class Clickwhale_Public {
 		}
 	}
 
-	private function get_public_path() {
+	private function get_public_path(): string {
 		// if PHP Warning: Undefined array key "HTTP_HOST"
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
 			$_SERVER['HTTP_HOST'] = 'localhost';
@@ -145,10 +145,6 @@ class Clickwhale_Public {
 			array( 'jquery' ), $this->version, false );
 		wp_localize_script( $this->plugin_name, 'clickwhale_public_js',
 			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-	}
-
-	public function clickwhale_url_params_callback( $url ) {
-		return $url;
 	}
 
 	public function do_redirect_handler() {
