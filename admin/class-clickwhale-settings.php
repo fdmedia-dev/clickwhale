@@ -272,12 +272,12 @@ class Clickwhale_Admin_Settings {
 		if ( ! get_option( 'clickwhale_version' ) ) {
 			add_option( 'clickwhale_version', CLICKWHALE_VERSION );
 		}
-		if ( $this->default_options() ) {
-			foreach ( $this->default_options() as $k => $v ) {
-				$option_name = 'clickwhale_' . $k . '_options';
-				if ( ! get_option( $option_name ) ) {
-					add_option( $option_name, $v['options'] );
-				}
+		$defaults = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
+
+		foreach ( $defaults as $k => $v ) {
+			$option_name = 'clickwhale_' . $k . '_options';
+			if ( ! get_option( $option_name ) ) {
+				add_option( $option_name, $v['options'] );
 			}
 		}
 	}
@@ -475,6 +475,8 @@ class Clickwhale_Admin_Settings {
 				'description' => __( 'Enter your Affiliate ID.', $this->plugin_name ),
 			)
 		);
+
+		apply_filters('clickwhale_settings_fields', '');
 	}
 
 	/**
