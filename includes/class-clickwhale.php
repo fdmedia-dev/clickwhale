@@ -254,7 +254,6 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/public/track_custom_link', $Clickwhale_Ajax, 'track_custom_link' );
 		$this->loader->add_action( 'wp_ajax_nopriv_clickwhale/public/track_custom_link', $Clickwhale_Ajax, 'track_custom_link' );
 
-		$this->loader->add_filter( 'clickwhale_url_params', $Clickwhale_Public, 'clickwhale_url_params_callback', 10, 2 );
 	}
 
 	/**
