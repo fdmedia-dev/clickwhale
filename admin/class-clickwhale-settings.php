@@ -31,7 +31,9 @@ class Clickwhale_Admin_Settings {
 	/**
 	 * @var Clickwhale_Admin_Settings
 	 */
-	private static $instance;
+	private static Clickwhale_Admin_Settings $instance;
+
+	public $menus;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -41,17 +43,16 @@ class Clickwhale_Admin_Settings {
 	 *
 	 * @since    1.0.0
 	 */
-	public function init( $plugin_name, $version ) {
+	public function init( string $plugin_name, string $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
 	 * @return Clickwhale_Admin_Settings
 	 */
-	public static function getInstance() {
+	public static function getInstance(): Clickwhale_Admin_Settings {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -64,10 +65,11 @@ class Clickwhale_Admin_Settings {
 	 *
 	 * @return array
 	 */
-	public function default_options() {
+	public function default_options(): array {
 		return array(
 			'general'   => array(
 				'name'    => __( 'General', $this->plugin_name ),
+				'text'    => __( 'Set up ClickWhale plugin global options.', $this->plugin_name ),
 				'options' => array(
 					'redirect_type' => 301,
 					'nofollow'      => 1,
@@ -78,6 +80,7 @@ class Clickwhale_Admin_Settings {
 			),
 			'tracking'  => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
+				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ),
 				'options' => array(
 					'tracking_duration'    => 30,
 					'disable_tracking'     => 0,
@@ -86,186 +89,12 @@ class Clickwhale_Admin_Settings {
 			),
 			'linkpages' => array(
 				'name'    => __( 'Link Pages', $this->plugin_name ),
+				'text'    => __( 'Global settings for the Link Pages.', $this->plugin_name ),
 				'options' => array(
 					'linkpage_links_target' => 0
 				)
 			),
-			'other'     => array(
-				'name'    => __( 'Other', $this->plugin_name ),
-				'options' => array(
-					'affiliate_id' => ''
-				)
-			)
 		);
-	}
-
-	/**
-	 * This function introduces the theme options into the 'Settings' menu and into a top-level
-	 * 'Clickwhale' menu.
-	 */
-	public function add_plugin_menu() {
-
-		$subpages = array(
-			array(
-				'page_title' => __( 'Links', $this->plugin_name ),
-				'menu_title' => __( 'Links', $this->plugin_name ),
-				'slug'       => $this->plugin_name,
-				'handler'    => '_links',
-				'parent'     => $this->plugin_name,
-			),
-			array(
-				'page_title' => __( 'Add New', $this->plugin_name ),
-				'menu_title' => __( 'Add New Link', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-link',
-				'handler'    => '_link_form'
-			),
-			array(
-				'page_title' => __( 'Categories', $this->plugin_name ),
-				'menu_title' => __( 'Categories', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-categories',
-				'handler'    => '_categories',
-				'parent'     => $this->plugin_name,
-			),
-			array(
-				'page_title' => __( 'Add New Category', $this->plugin_name ),
-				'menu_title' => __( 'Add New Category', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-category',
-				'handler'    => '_category_form'
-			),
-			array(
-				'page_title' => __( 'Link Pages', $this->plugin_name ),
-				'menu_title' => __( 'Link Pages', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-linkpages',
-				'handler'    => '_linkpages',
-				'parent'     => $this->plugin_name,
-			),
-			array(
-				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'menu_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-linkpage',
-				'handler'    => '_linkpage_form'
-			),
-			array(
-				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'menu_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-tracking-codes',
-				'handler'    => '_tracking_codes',
-				'parent'     => $this->plugin_name,
-			),
-			array(
-				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'menu_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-tracking-code',
-				'handler'    => '_tracking_code_form'
-			),
-		);
-
-		add_menu_page(
-			__( 'ClickWhale Links', $this->plugin_name ),
-			__( 'ClickWhale', $this->plugin_name ),
-			'edit_pages',
-			$this->plugin_name,
-			'',
-			plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
-			26
-		);
-
-		foreach ( $subpages as $subpage ) {
-			$parent = isset( $subpage['parent'] ) ? $subpage['parent'] : '';
-			add_submenu_page(
-				$parent,
-				$subpage['page_title'],
-				$subpage['menu_title'],
-				'edit_pages',
-				$subpage['slug'],
-				array( $this, $this->plugin_name . $subpage['handler'] . '_page_handler' )
-			);
-		}
-
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Settings', $this->plugin_name ),
-			__( 'Settings', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-settings',
-			array( $this, 'render_settings_page_content' )
-		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Tools', $this->plugin_name ),
-			__( 'Tools', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-tools',
-			array( $this, 'include_admin_menu_tools_partial' )
-		);
-
-	}
-
-	/**
-	 * Include Menu Partial
-	 *
-	 * @since    1.0.0
-	 */
-	public function clickwhale_links_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/links-list-table.php' );
-	}
-
-	public function clickwhale_link_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/link-edit.php' );
-	}
-
-	public function clickwhale_categories_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/categories-list-table.php' );
-	}
-
-	public function clickwhale_category_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/category-edit.php' );
-	}
-
-	public function clickwhale_linkpages_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpages-list-table.php' );
-	}
-
-	public function clickwhale_linkpage_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpage-edit.php' );
-	}
-
-	public function render_settings_page_content() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/settings/settings.php' );
-	}
-
-	public function include_admin_menu_tools_partial() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
-	}
-
-	/**
-	 * @since 1.2.0
-	 */
-	public function clickwhale_tracking_codes_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-codes-list-table.php' );
-	}
-
-	public function clickwhale_tracking_code_form_page_handler() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-code-edit.php' );
-	}
-
-	/**
-	 * This functions provides a simple description for the Options page.
-	 */
-	public function general_options_callback() {
-		echo '<p>' . __( 'Set up ClickWhale plugin global options.', $this->plugin_name ) . '</p>';
-	}
-
-	public function tracking_options_callback() {
-		echo '<p>' . __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ) . '</p>';
-	}
-
-	public function linkpages_options_callback() {
-		echo '<p>' . __( 'Global settings for the Link Pages.', $this->plugin_name ) . '</p>';
-	}
-
-	public function other_options_callback() {
-		echo '<p>' . __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ) . '</p>';
 	}
 
 	public function add_default_options() {
@@ -283,10 +112,119 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
+	 * This function introduces the theme options into the 'Settings' menu and into a top-level
+	 * 'Clickwhale' menu.
+	 */
+	public function add_plugin_menu() {
+
+		$this->menus = array(
+			'subpages' => array(
+				'links'              => __( 'Links', $this->plugin_name ),
+				'edit-link'          => __( 'Add New', $this->plugin_name ),
+				'categories'         => __( 'Categories', $this->plugin_name ),
+				'edit-category'      => __( 'Add New Category', $this->plugin_name ),
+				'linkpages'          => __( 'Link Pages', $this->plugin_name ),
+				'edit-linkpage'      => __( 'Add New Link Page', $this->plugin_name ),
+				'tracking-codes'     => __( 'Tracking Codes', $this->plugin_name ),
+				'edit-tracking-code' => __( 'Add New Tracking Code', $this->plugin_name )
+			),
+			'views'    => array(
+				'toplevel_page_clickwhale'                  => 'links/links-list-table',
+				'admin_page_clickwhale-edit-link'           => 'links/link-edit',
+				'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
+				'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
+				'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
+				'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
+				'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
+				'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
+			),
+			'toplevel' => array( 'links', 'categories', 'linkpages', 'tracking-codes' ),
+		);
+
+		$this->menus = apply_filters( 'clickwhale_menus', $this->menus );
+
+		add_menu_page(
+			__( 'ClickWhale Links', $this->plugin_name ),
+			__( 'ClickWhale', $this->plugin_name ),
+			'edit_pages',
+			$this->plugin_name,
+			'',
+			plugin_dir_url( __FILE__ ) . 'images/click-icon.svg',
+			26
+		);
+
+		foreach ( $this->menus['subpages'] as $k => $v ) {
+			$parent = in_array( $k, $this->menus['toplevel'] ) ? $this->plugin_name : '';
+
+			add_submenu_page(
+				$parent,
+				$v,
+				$v,
+				'edit_pages',
+				$k !== 'links' ? $this->plugin_name . '-' . $k : $this->plugin_name,
+				array( $this, 'get_view' )
+			);
+		}
+
+		add_submenu_page(
+			$this->plugin_name,
+			__( 'Settings', $this->plugin_name ),
+			__( 'Settings', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-settings',
+			array( $this, 'render_settings_page_view' )
+		);
+		add_submenu_page(
+			$this->plugin_name,
+			__( 'Tools', $this->plugin_name ),
+			__( 'Tools', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-tools',
+			array( $this, 'render_tools_page_view' )
+		);
+
+	}
+
+	/**
+	 * This function renders the interface elements for toggling the visibility of the header element.
+	 *
+	 * It accepts an array or arguments and expects the first element in the array to be the description
+	 * to be displayed next to the checkbox.
+	 */
+
+	public function render_controls( $args ) {
+		echo ClickwhaleHepler::render_control( $args );
+	}
+
+	/**
+	 * Include Menu Partial
+	 *
+	 * @since    1.0.0
+	 */
+
+	public function render_settings_page_view() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/settings/settings.php' );
+	}
+
+	public function render_tools_page_view() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
+	}
+
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function get_view() {
+		$current_views = $this->menus['views'][ current_filter() ];
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $current_views . '.php' );
+	}
+
+	/**
 	 * Initializes the plugin settings options page by registering the Sections,
 	 * Fields, and Settings.
 	 *
 	 * This function is registered with the 'admin_init' hook.
+	 * @since 1.0.0
 	 */
 	public function add_settings_fields() {
 
@@ -294,7 +232,6 @@ class Clickwhale_Admin_Settings {
 		$general_options   = get_option( 'clickwhale_general_options' );
 		$tracking_options  = get_option( 'clickwhale_tracking_options' );
 		$linkpages_options = get_option( 'clickwhale_linkpages_options' );
-		$other_options     = get_option( 'clickwhale_other_options' );
 		$duration          = apply_filters( 'clickwhale_tracking_duration', array(
 			30 => __( '30 days', $this->plugin_name ),
 		) );
@@ -305,8 +242,9 @@ class Clickwhale_Admin_Settings {
 				add_settings_section(
 					$k . '_settings_section',
 					$v['name'],
-					array( $this, $k . '_options_callback' ),
-					'clickwhale_' . $k . '_options'
+					array( $this, 'settings_section_callback' ),
+					'clickwhale_' . $k . '_options',
+					array( 'text' => $v['text'] )
 				);
 
 				register_setting(
@@ -459,34 +397,41 @@ class Clickwhale_Admin_Settings {
 				'label'   => __( 'Check to open links in a new tab/window.', $this->plugin_name ),
 			)
 		);
-		add_settings_field(
-			'affiliate_id',
-			__( 'Affiliate ID', $this->plugin_name ),
-			array( $this, 'render_controls' ),
-			'clickwhale_other_options',
-			'other_settings_section',
-			array(
-				'control'     => 'input',
-				'id'          => 'affiliate_id',
-				'name'        => 'clickwhale_other_options[affiliate_id]',
-				'type'        => 'text',
-				'value'       => isset( $other_options['affiliate_id'] ) ? $other_options['affiliate_id'] : $defaults['other']['options']['affiliate_id'],
-				'placeholder' => '123456',
-				'description' => __( 'Enter your Affiliate ID.', $this->plugin_name ),
-			)
-		);
 
-		apply_filters('clickwhale_settings_fields', '');
+		apply_filters( 'clickwhale_settings_fields', '' );
 	}
 
 	/**
-	 * This function renders the interface elements for toggling the visibility of the header element.
-	 *
-	 * It accepts an array or arguments and expects the first element in the array to be the description
-	 * to be displayed next to the checkbox.
+	 * This functions provides a simple description for the Options page.
+	 * @since 1.0.0
 	 */
+	public static function settings_section_callback( $args ) {
+		echo '<p>' . $args['text'] . '</p>';
+	}
 
-	public function render_controls( $args ) {
-		echo ClickwhaleHepler::render_control( $args );
+	/**
+	 * Render plugin settings tabs
+	 * Hook: Filter 'clickwhale_settings_tabs';
+	 * @return mixed|null
+	 *
+	 * @since 1.3.0
+	 */
+	public static function render_tabs() {
+		$tabs = array(
+			'general'   => array(
+				'name' => __( 'General Options', ( new self )->plugin_name ),
+				'url'  => 'general_options',
+			),
+			'tracking'  => array(
+				'name' => __( 'General Options', ( new self )->plugin_name ),
+				'url'  => 'tracking_options'
+			),
+			'linkpages' => array(
+				'name' => __( 'Link Pages', ( new self )->plugin_name ),
+				'url'  => 'linkpages_options'
+			),
+		);
+
+		return apply_filters( 'clickwhale_settings_tabs', $tabs );
 	}
 }
