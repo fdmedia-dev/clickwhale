@@ -174,7 +174,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		foreach ( $subpages as $subpage ) {
-			$parent = $subpage['parent'] ? $this->plugin_name : '';
+			$parent = isset( $subpage['parent'] ) && $subpage['parent'] ? $this->plugin_name : '';
 			//$page
 			add_submenu_page(
 				$parent,
@@ -183,7 +183,7 @@ class Clickwhale_Admin_Settings {
 				'edit_pages',
 				$subpage['slug'],
 				function () use ( $subpage ) {
-					include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $subpage['view'] . '.php' );
+					$this->get_view( $subpage['view'] );
 				}
 			);
 		}
@@ -233,10 +233,21 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
+	 * @param $view
+	 *
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function get_view( $view ) {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $view . '.php' );
+	}
+
+	/**
 	 * Initializes the plugin settings options page by registering the Sections,
 	 * Fields, and Settings.
 	 *
 	 * This function is registered with the 'admin_init' hook.
+	 * @since 1.0.0
 	 */
 	public function add_settings_fields() {
 
@@ -415,6 +426,7 @@ class Clickwhale_Admin_Settings {
 
 	/**
 	 * This functions provides a simple description for the Options page.
+	 * @since 1.0.0
 	 */
 	public static function settings_section_callback( $args ) {
 		echo '<p>' . $args['text'] . '</p>';
