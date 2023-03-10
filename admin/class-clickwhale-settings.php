@@ -131,39 +131,31 @@ class Clickwhale_Admin_Settings {
 		$subpages = array(
 			'links'              => array(
 				'page_title' => __( 'Links', $this->plugin_name ),
-				'slug'       => '',
-				'parent'     => true,
+				'toplevel'   => true,
 			),
 			'edit-link'          => array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
-				'slug'       => 'edit-link',
 			),
 			'categories'         => array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
-				'slug'       => 'categories',
 				'parent'     => true,
 			),
 			'edit-category'      => array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
-				'slug'       => 'edit-category',
 			),
 			'linkpages'          => array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
-				'slug'       => 'linkpages',
 				'parent'     => true,
 			),
 			'edit-linkpage'      => array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'slug'       => 'edit-linkpage',
 			),
 			'tracking-codes'     => array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'slug'       => 'tracking-codes',
 				'parent'     => true,
 			),
-			'tracking-code-edit' => array(
+			'edit-tracking-code' => array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'slug'       => 'edit-tracking-code',
 			),
 		);
 
@@ -180,15 +172,18 @@ class Clickwhale_Admin_Settings {
 			26
 		);
 
-		foreach ( $subpages as $subpage ) {
-			$parent    = isset( $subpage['parent'] ) && $subpage['parent'] ? $this->plugin_name : '';
-			$menu_slug = $subpage['slug'] ? $this->plugin_name . '-' . $subpage['slug'] : $this->plugin_name;
+		foreach ( $subpages as $k => $v ) {
+			if ( isset( $v['toplevel'] ) && $v['toplevel'] ) {
+				$parent = $this->plugin_name;
+			} else {
+				$parent = isset( $v['parent'] ) && $v['parent'] ? $this->plugin_name : '';
+			}
 			add_submenu_page(
 				$parent,
-				$subpage['page_title'],
-				$subpage['page_title'],
+				$v['page_title'],
+				$v['menu_title'] ?? $v['page_title'],
 				'edit_pages',
-				$menu_slug,
+				$k !== 'links' ? $this->plugin_name . '-' . $k : $this->plugin_name,
 				array( $this, 'get_view' )
 			);
 		}
