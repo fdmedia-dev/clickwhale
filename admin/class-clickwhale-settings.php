@@ -67,7 +67,7 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function default_options(): array {
 		return array(
-			'general'   => array(
+			'general'        => array(
 				'name'    => __( 'General', $this->plugin_name ),
 				'text'    => __( 'Set up ClickWhale plugin global options.', $this->plugin_name ),
 				'options' => array(
@@ -78,7 +78,7 @@ class Clickwhale_Admin_Settings {
 					'random_slug'   => 0,
 				)
 			),
-			'tracking'  => array(
+			'tracking'       => array(
 				'name'    => __( 'Tracking', $this->plugin_name ),
 				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ),
 				'options' => array(
@@ -87,13 +87,23 @@ class Clickwhale_Admin_Settings {
 					'exclude_user_by_role' => [ 'administrator' ]
 				)
 			),
-			'linkpages' => array(
+			'linkpages'      => array(
 				'name'    => __( 'Link Pages', $this->plugin_name ),
 				'text'    => __( 'Global settings for the Link Pages.', $this->plugin_name ),
 				'options' => array(
 					'linkpage_links_target' => 0
 				)
 			),
+			'tracking_codes' => array(
+				'name'    => __( 'Tracking Codes', $this->plugin_name ),
+				'text'    => __( 'Global settings for the Tracking Codes.', $this->plugin_name ),
+				'options' => array()
+			),
+			'other'          => array(
+				'name'    => __( 'Other', $this->plugin_name ),
+				'text'    => __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ),
+				'options' => array()
+			)
 		);
 	}
 
@@ -228,16 +238,24 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_settings_fields() {
 
-		$defaults          = $this->default_options();
-		$general_options   = get_option( 'clickwhale_general_options' );
-		$tracking_options  = get_option( 'clickwhale_tracking_options' );
-		$linkpages_options = get_option( 'clickwhale_linkpages_options' );
-		$duration          = apply_filters( 'clickwhale_tracking_duration', array(
+		$defaults               = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
+		$general_options        = get_option( 'clickwhale_general_options' );
+		$tracking_options       = get_option( 'clickwhale_tracking_options' );
+		$linkpages_options      = get_option( 'clickwhale_linkpages_options' );
+		$tracking_codes_options = get_option( 'clickwhale_tracking_codes_options' );
+		$other_options          = get_option( 'clickwhale_other_options' );
+		$duration               = apply_filters( 'clickwhale_tracking_duration', array(
 			30 => __( '30 days', $this->plugin_name ),
 		) );
 
 		if ( $defaults ) {
+			// add settings sections
+			// register settings
 			foreach ( $defaults as $k => $v ) {
+
+				if ( ! $v['options'] ) {
+					continue;
+				}
 
 				add_settings_section(
 					$k . '_settings_section',
@@ -377,7 +395,7 @@ class Clickwhale_Admin_Settings {
 				'control'     => 'checkboxes',
 				'id'          => 'exclude_user_by_role',
 				'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
-				'value'       => isset( $tracking_options['exclude_user_by_role'] ) ? $tracking_options['exclude_user_by_role'] : 0,
+				'value'       => $tracking_options['exclude_user_by_role'] ?? 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
 				'description' => __( 'Check the user roles that should be excluded from tracking.',
 					$this->plugin_name ),
@@ -417,21 +435,38 @@ class Clickwhale_Admin_Settings {
 	 * @since 1.3.0
 	 */
 	public static function render_tabs() {
-		$tabs = array(
-			'general'   => array(
+		$defaults = apply_filters( 'clickwhale_settings_defaults', ( new self )->default_options() );
+		$tabs     = array(
+			'general'        => array(
 				'name' => __( 'General Options', ( new self )->plugin_name ),
 				'url'  => 'general_options',
 			),
-			'tracking'  => array(
+			'tracking'       => array(
 				'name' => __( 'General Options', ( new self )->plugin_name ),
 				'url'  => 'tracking_options'
 			),
-			'linkpages' => array(
+			'linkpages'      => array(
 				'name' => __( 'Link Pages', ( new self )->plugin_name ),
 				'url'  => 'linkpages_options'
 			),
+			'tracking_codes' => array(
+				'name' => __( 'Tracking Codes', ( new self )->plugin_name ),
+				'url'  => 'tracking_codes_options'
+			),
+			'other'          => array(
+				'name' => __( 'Other Options', ( new self )->plugin_name ),
+				'url'  => 'other_options'
+			),
 		);
 
-		return apply_filters( 'clickwhale_settings_tabs', $tabs );
+		$tabs = apply_filters( 'clickwhale_settings_tabs', $tabs );
+
+		foreach ( $tabs as $k => $v ) {
+			if ( ! $defaults[ $k ]['options'] ) {
+				unset ( $tabs[ $k ] );
+			}
+		}
+
+		return $tabs;
 	}
 }
