@@ -117,58 +117,46 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_plugin_menu() {
 
-		$this->views = array(
-			'toplevel_page_clickwhale'                  => 'links/links-list-table',
-			'admin_page_clickwhale-edit-link'           => 'links/link-edit',
-			'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
-			'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
-			'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
-			'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
-			'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
-			'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
-		);
-
 		$subpages = array(
 			'links'              => array(
 				'page_title' => __( 'Links', $this->plugin_name ),
 				'toplevel'   => true,
-				'callback'   => 'links',
+				'callback'   => 'Links',
 			),
 			'edit-link'          => array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
-				'callback'   => 'edit_link',
+				'callback'   => 'EditLink',
 			),
 			'categories'         => array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
 				'parent'     => true,
-				'callback'   => 'categories',
+				'callback'   => 'Categories',
 			),
 			'edit-category'      => array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
-				'callback'   => 'edit_category',
+				'callback'   => 'EditCategory',
 			),
 			'linkpages'          => array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
 				'parent'     => true,
-				'callback'   => 'linkpages',
+				'callback'   => 'Linkpages',
 			),
 			'edit-linkpage'      => array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'callback'   => 'edit_linkpage',
+				'callback'   => 'EditLinkpage',
 			),
 			'tracking-codes'     => array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
 				'parent'     => true,
-				'callback'   => 'tracking_codes',
+				'callback'   => 'TrackingCodes',
 			),
 			'edit-tracking-code' => array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'callback'   => 'edit_tracking_code',
+				'callback'   => 'EditTrackingCode',
 			),
 		);
 
-		$this->views = apply_filters( 'clickwhale_current_filter', $this->views );
-		$subpages    = apply_filters( 'clickwhale_menu_subpages', $subpages );
+		$subpages = apply_filters( 'clickwhale_menu_subpages', $subpages );
 
 		add_menu_page(
 			__( 'ClickWhale Links', $this->plugin_name ),
@@ -192,7 +180,7 @@ class Clickwhale_Admin_Settings {
 				$v['menu_title'] ?? $v['page_title'],
 				'edit_pages',
 				$k !== 'links' ? $this->plugin_name . '-' . $k : $this->plugin_name,
-				array( $this, 'render_' . $v['callback'] . '_page_view' )
+				array( $this, 'render' . $v['callback'] . 'PageView' )
 			);
 		}
 
@@ -232,35 +220,35 @@ class Clickwhale_Admin_Settings {
 	 * @since    1.0.0
 	 */
 
-	public function render_links_page_view() {
+	public function renderLinksPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/links-list-table.php' );
 	}
 
-	public function render_edit_link_page_view() {
+	public function renderEditLinkPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/links/link-edit.php' );
 	}
 
-	public function render_linkpages_page_view() {
+	public function renderLinkpagesPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpages-list-table.php' );
 	}
 
-	public function render_edit_linkpage_page_view() {
+	public function renderEditLinkpagePageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/linkpages/linkpage-edit.php' );
 	}
 
-	public function render_tracking_codes_page_view() {
+	public function renderTrackingCodesPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-codes-list-table.php' );
 	}
 
-	public function render_edit_tracking_code_page_view() {
+	public function renderEditTrackingCodePageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tracking-codes/tracking-code-edit.php' );
 	}
 
-	public function render_categories_page_view() {
+	public function renderCategoriesPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/categories-list-table.php' );
 	}
 
-	public function render_edit_category_page_view() {
+	public function renderEditCategoryPageView() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/categories/category-edit.php' );
 	}
 
