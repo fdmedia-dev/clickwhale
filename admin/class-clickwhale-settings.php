@@ -133,39 +133,39 @@ class Clickwhale_Admin_Settings {
 		$subpages = array(
 			array(
 				'page_title' => __( 'Links', $this->plugin_name ),
-				'slug'       => $this->plugin_name,
+				'slug'       => '',
 				'parent'     => true,
 			),
 			array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-link',
+				'slug'       => 'edit-link',
 			),
 			array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-categories',
+				'slug'       => 'categories',
 				'parent'     => true,
 			),
 			array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-category',
+				'slug'       => 'edit-category',
 			),
 			array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-linkpages',
+				'slug'       => 'linkpages',
 				'parent'     => true,
 			),
 			array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-linkpage',
+				'slug'       => 'edit-linkpage',
 			),
 			array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-tracking-codes',
+				'slug'       => 'tracking-codes',
 				'parent'     => true,
 			),
 			array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'slug'       => $this->plugin_name . '-edit-tracking-code',
+				'slug'       => 'edit-tracking-code',
 			),
 		);
 
@@ -187,7 +187,7 @@ class Clickwhale_Admin_Settings {
 				$subpage['page_title'],
 				$subpage['page_title'],
 				'edit_pages',
-				$subpage['slug'],
+				$this->plugin_name . '-' . $subpage['slug'],
 				array( $this, 'get_view' )
 			);
 		}
