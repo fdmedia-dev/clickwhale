@@ -128,46 +128,47 @@ class Clickwhale_Admin_Settings {
 			'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
 		);
 
-		$this->views = apply_filters( 'clickwhale_current_filter', $this->views );
-
 		$subpages = array(
-			array(
+			'links'              => array(
 				'page_title' => __( 'Links', $this->plugin_name ),
 				'slug'       => '',
 				'parent'     => true,
 			),
-			array(
+			'edit-link'          => array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
 				'slug'       => 'edit-link',
 			),
-			array(
+			'categories'         => array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
 				'slug'       => 'categories',
 				'parent'     => true,
 			),
-			array(
+			'edit-category'      => array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
 				'slug'       => 'edit-category',
 			),
-			array(
+			'linkpages'          => array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
 				'slug'       => 'linkpages',
 				'parent'     => true,
 			),
-			array(
+			'edit-linkpage'      => array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
 				'slug'       => 'edit-linkpage',
 			),
-			array(
+			'tracking-codes'     => array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
 				'slug'       => 'tracking-codes',
 				'parent'     => true,
 			),
-			array(
+			'tracking-code-edit' => array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
 				'slug'       => 'edit-tracking-code',
 			),
 		);
+
+		$this->views = apply_filters( 'clickwhale_current_filter', $this->views );
+		$subpages    = apply_filters( 'clickwhale_menu_subpages', $subpages );
 
 		add_menu_page(
 			__( 'ClickWhale Links', $this->plugin_name ),
@@ -180,14 +181,14 @@ class Clickwhale_Admin_Settings {
 		);
 
 		foreach ( $subpages as $subpage ) {
-			$parent = isset( $subpage['parent'] ) && $subpage['parent'] ? $this->plugin_name : '';
-			//$page
+			$parent    = isset( $subpage['parent'] ) && $subpage['parent'] ? $this->plugin_name : '';
+			$menu_slug = $subpage['slug'] ? $this->plugin_name . '-' . $subpage['slug'] : $this->plugin_name;
 			add_submenu_page(
 				$parent,
 				$subpage['page_title'],
 				$subpage['page_title'],
 				'edit_pages',
-				$this->plugin_name . '-' . $subpage['slug'],
+				$menu_slug,
 				array( $this, 'get_view' )
 			);
 		}
