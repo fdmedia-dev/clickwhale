@@ -238,7 +238,9 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function get_view() {
 		$current_views = $this->views[ current_filter() ];
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $current_views . '.php' );
+		$path          = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $current_views . '.php';
+
+		include_once( $path );
 	}
 
 	/**
