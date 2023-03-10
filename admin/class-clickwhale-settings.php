@@ -33,6 +33,8 @@ class Clickwhale_Admin_Settings {
 	 */
 	private static $instance;
 
+	protected array $views = array();
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -45,7 +47,6 @@ class Clickwhale_Admin_Settings {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-
 	}
 
 	/**
@@ -116,50 +117,55 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_plugin_menu() {
 
+		$this->views = array(
+			'toplevel_page_clickwhale'                  => 'links/links-list-table',
+			'admin_page_clickwhale-edit-link'           => 'links/link-edit',
+			'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
+			'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
+			'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
+			'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
+			'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
+			'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
+		);
+
+		$this->views = apply_filters( 'clickwhale_current_filter', $this->views );
+
 		$subpages = array(
 			array(
 				'page_title' => __( 'Links', $this->plugin_name ),
 				'slug'       => $this->plugin_name,
 				'parent'     => true,
-				'view'       => 'links/links-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-link',
-				'view'       => 'links/link-edit',
 			),
 			array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-categories',
 				'parent'     => true,
-				'view'       => 'categories/categories-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-category',
-				'view'       => 'categories/category-edit',
 			),
 			array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-linkpages',
 				'parent'     => true,
-				'view'       => 'linkpages/linkpages-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-linkpage',
-				'view'       => 'linkpages/linkpage-edit',
 			),
 			array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-tracking-codes',
 				'parent'     => true,
-				'view'       => 'tracking-codes/tracking-codes-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-tracking-code',
-				'view'       => 'tracking-codes/tracking-code-edit',
 			),
 		);
 
@@ -182,9 +188,7 @@ class Clickwhale_Admin_Settings {
 				$subpage['page_title'],
 				'edit_pages',
 				$subpage['slug'],
-				function () use ( $subpage ) {
-					$this->get_view( $subpage['view'] );
-				}
+				array( $this, 'get_view' )
 			);
 		}
 
@@ -233,13 +237,12 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
-	 * @param $view
-	 *
 	 * @return void
 	 * @since 1.3.0
 	 */
-	public function get_view( $view ) {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $view . '.php' );
+	public function get_view() {
+		$current_views = $this->views[ current_filter() ];
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $current_views . '.php' );
 	}
 
 	/**
