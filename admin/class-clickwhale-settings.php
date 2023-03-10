@@ -119,53 +119,45 @@ class Clickwhale_Admin_Settings {
 		$subpages = array(
 			array(
 				'page_title' => __( 'Links', $this->plugin_name ),
-				'menu_title' => __( 'Links', $this->plugin_name ),
 				'slug'       => $this->plugin_name,
 				'parent'     => $this->plugin_name,
 				'view'       => 'links/links-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New', $this->plugin_name ),
-				'menu_title' => __( 'Add New Link', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-link',
 				'view'       => 'links/link-edit',
 			),
 			array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
-				'menu_title' => __( 'Categories', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-categories',
 				'parent'     => $this->plugin_name,
 				'view'       => 'categories/categories-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Category', $this->plugin_name ),
-				'menu_title' => __( 'Add New Category', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-category',
 				'view'       => 'categories/category-edit',
 			),
 			array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
-				'menu_title' => __( 'Link Pages', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-linkpages',
 				'parent'     => $this->plugin_name,
 				'view'       => 'linkpages/linkpages-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-				'menu_title' => __( 'Add New Link Page', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-linkpage',
 				'view'       => 'linkpages/linkpage-edit',
 			),
 			array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'menu_title' => __( 'Tracking Codes', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-tracking-codes',
 				'parent'     => $this->plugin_name,
 				'view'       => 'tracking-codes/tracking-codes-list-table',
 			),
 			array(
 				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-				'menu_title' => __( 'Add New Tracking Code', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-edit-tracking-code',
 				'view'       => 'tracking-codes/tracking-code-edit',
 			),
@@ -183,10 +175,11 @@ class Clickwhale_Admin_Settings {
 
 		foreach ( $subpages as $subpage ) {
 			$parent = $subpage['parent'] ?? '';
+			//$page
 			add_submenu_page(
 				$parent,
 				$subpage['page_title'],
-				$subpage['menu_title'],
+				$subpage['page_title'],
 				'edit_pages',
 				$subpage['slug'],
 				function () use ( $subpage ) {
