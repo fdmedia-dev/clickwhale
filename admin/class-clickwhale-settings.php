@@ -31,9 +31,9 @@ class Clickwhale_Admin_Settings {
 	/**
 	 * @var Clickwhale_Admin_Settings
 	 */
-	private static $instance;
+	private static Clickwhale_Admin_Settings $instance;
 
-	protected array $views = array();
+	public $menus;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -117,50 +117,31 @@ class Clickwhale_Admin_Settings {
 	 */
 	public function add_plugin_menu() {
 
-		$this->views = array(
-			'toplevel_page_clickwhale'                  => 'links/links-list-table',
-			'admin_page_clickwhale-edit-link'           => 'links/link-edit',
-			'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
-			'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
-			'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
-			'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
-			'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
-			'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
+		$this->menus = array(
+			'subpages' => array(
+				'links'              => __( 'Links', $this->plugin_name ),
+				'edit-link'          => __( 'Add New', $this->plugin_name ),
+				'categories'         => __( 'Categories', $this->plugin_name ),
+				'edit-category'      => __( 'Add New Category', $this->plugin_name ),
+				'linkpages'          => __( 'Link Pages', $this->plugin_name ),
+				'edit-linkpage'      => __( 'Add New Link Page', $this->plugin_name ),
+				'tracking-codes'     => __( 'Tracking Codes', $this->plugin_name ),
+				'edit-tracking-code' => __( 'Add New Tracking Code', $this->plugin_name )
+			),
+			'views'    => array(
+				'toplevel_page_clickwhale'                  => 'links/links-list-table',
+				'admin_page_clickwhale-edit-link'           => 'links/link-edit',
+				'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
+				'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
+				'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
+				'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
+				'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
+				'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
+			),
+			'toplevel' => array( 'links', 'categories', 'linkpages', 'tracking-codes' ),
 		);
 
-		$subpages = array(
-			'links'              => array(
-				'page_title' => __( 'Links', $this->plugin_name ),
-				'toplevel'   => true,
-			),
-			'edit-link'          => array(
-				'page_title' => __( 'Add New', $this->plugin_name ),
-			),
-			'categories'         => array(
-				'page_title' => __( 'Categories', $this->plugin_name ),
-				'parent'     => true,
-			),
-			'edit-category'      => array(
-				'page_title' => __( 'Add New Category', $this->plugin_name ),
-			),
-			'linkpages'          => array(
-				'page_title' => __( 'Link Pages', $this->plugin_name ),
-				'parent'     => true,
-			),
-			'edit-linkpage'      => array(
-				'page_title' => __( 'Add New Link Page', $this->plugin_name ),
-			),
-			'tracking-codes'     => array(
-				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
-				'parent'     => true,
-			),
-			'edit-tracking-code' => array(
-				'page_title' => __( 'Add New Tracking Code', $this->plugin_name ),
-			),
-		);
-
-		$this->views = apply_filters( 'clickwhale_current_filter', $this->views );
-		$subpages    = apply_filters( 'clickwhale_menu_subpages', $subpages );
+		$this->menus = apply_filters( 'clickwhale_menus', $this->menus );
 
 		add_menu_page(
 			__( 'ClickWhale Links', $this->plugin_name ),
@@ -172,16 +153,13 @@ class Clickwhale_Admin_Settings {
 			26
 		);
 
-		foreach ( $subpages as $k => $v ) {
-			if ( isset( $v['toplevel'] ) && $v['toplevel'] ) {
-				$parent = $this->plugin_name;
-			} else {
-				$parent = isset( $v['parent'] ) && $v['parent'] ? $this->plugin_name : '';
-			}
+		foreach ( $this->menus['subpages'] as $k => $v ) {
+			$parent = in_array( $k, $this->menus['toplevel'] ) ? $this->plugin_name : '';
+
 			add_submenu_page(
 				$parent,
-				$v['page_title'],
-				$v['menu_title'] ?? $v['page_title'],
+				$v,
+				$v,
 				'edit_pages',
 				$k !== 'links' ? $this->plugin_name . '-' . $k : $this->plugin_name,
 				array( $this, 'get_view' )
@@ -237,7 +215,7 @@ class Clickwhale_Admin_Settings {
 	 * @since 1.3.0
 	 */
 	public function get_view() {
-		$current_views = $this->views[ current_filter() ];
+		$current_views = $this->menus['views'][ current_filter() ];
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/' . $current_views . '.php' );
 	}
 
