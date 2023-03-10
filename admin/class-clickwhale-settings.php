@@ -120,7 +120,7 @@ class Clickwhale_Admin_Settings {
 			array(
 				'page_title' => __( 'Links', $this->plugin_name ),
 				'slug'       => $this->plugin_name,
-				'parent'     => $this->plugin_name,
+				'parent'     => true,
 				'view'       => 'links/links-list-table',
 			),
 			array(
@@ -131,7 +131,7 @@ class Clickwhale_Admin_Settings {
 			array(
 				'page_title' => __( 'Categories', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-categories',
-				'parent'     => $this->plugin_name,
+				'parent'     => true,
 				'view'       => 'categories/categories-list-table',
 			),
 			array(
@@ -142,7 +142,7 @@ class Clickwhale_Admin_Settings {
 			array(
 				'page_title' => __( 'Link Pages', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-linkpages',
-				'parent'     => $this->plugin_name,
+				'parent'     => true,
 				'view'       => 'linkpages/linkpages-list-table',
 			),
 			array(
@@ -153,7 +153,7 @@ class Clickwhale_Admin_Settings {
 			array(
 				'page_title' => __( 'Tracking Codes', $this->plugin_name ),
 				'slug'       => $this->plugin_name . '-tracking-codes',
-				'parent'     => $this->plugin_name,
+				'parent'     => true,
 				'view'       => 'tracking-codes/tracking-codes-list-table',
 			),
 			array(
@@ -174,7 +174,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		foreach ( $subpages as $subpage ) {
-			$parent = $subpage['parent'] ?? '';
+			$parent = $subpage['parent'] ? $this->plugin_name : '';
 			//$page
 			add_submenu_page(
 				$parent,
