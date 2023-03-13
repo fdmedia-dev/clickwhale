@@ -67,9 +67,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_views_count( $item ) {
 		return $item['views_count'];
@@ -77,9 +78,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_clicks_count( $item ) {
 		return $item['clicks_count'];
@@ -109,7 +111,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_cb( $item ) {
+	public function column_cb( $item ): string {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']
@@ -119,8 +121,9 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	public function get_columns() {
-		return array(
+	public function get_columns(): array {
+		$tracking_options = get_option( 'clickwhale_tracking_options' );
+		$columns          = array(
 			'cb'           => '<input type="checkbox" />',
 			'title'        => __( 'Title', 'clickwhale' ),
 			'slug'         => __( 'Link', 'clickwhale' ),
@@ -129,12 +132,18 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 			'clicks_count' => __( 'Clicks', 'clickwhale' ),
 			'author'       => __( 'Author', 'clickwhale' ),
 		);
+
+		if ( isset( $tracking_options['disable_tracking'] ) ) {
+			unset( $columns['views_count'], $columns['clicks_count'] );
+		}
+
+		return $columns;
 	}
 
 	/**
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	function get_sortable_columns(): array {
 		return array(
 			'title'        => array( 'title', true ),
 			'views_count'  => array( 'views_count', true ),
@@ -145,7 +154,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	function get_bulk_actions(): array {
 		return array(
 			'delete' => 'Delete'
 		);

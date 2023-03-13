@@ -193,9 +193,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * Total cliks per link
 	 *
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_clicks_count( $item ) {
 		return $item['clicks_count'];
@@ -231,7 +232,9 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	function get_columns() {
-		return array(
+		$tracking_options = get_option( 'clickwhale_tracking_options' );
+
+		$columns = array(
 			'cb'           => '<input type="checkbox" />',             //Render a checkbox instead of text
 			'title'        => __( 'Title', 'clickwhale' ),
 			'slug'         => __( 'Link', 'clickwhale' ),
@@ -240,6 +243,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'clicks_count' => __( 'Clicks', 'clickwhale' ),
 			'author'       => __( 'Author', 'clickwhale' )
 		);
+
+		if ( isset( $tracking_options['disable_tracking'] ) ) {
+			unset( $columns['clicks_count'] );
+		}
+
+		return $columns;
 	}
 
 	/**
