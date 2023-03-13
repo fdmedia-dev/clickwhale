@@ -231,7 +231,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_columns() {
+	public function get_columns() {
 		$tracking_options = get_option( 'clickwhale_tracking_options' );
 
 		$columns = array(
@@ -258,7 +258,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 		return array(
 			'title'        => array( 'title', true ),
 			'clicks_count' => array( 'clicks_count', true ),
@@ -270,7 +270,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions() {
 		return array(
 			'reset'  => 'Reset CLicks',
 			'delete' => 'Delete'
@@ -284,7 +284,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * in this example we are processing delete action
 	 * message about successful deletion will be shown on page in next part
 	 */
-	function process_bulk_action() {
+	public function process_bulk_action() {
 		global $wpdb;
 
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
@@ -333,7 +333,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * It will get rows from database and prepare them to be showed in table
 	 */
-	function prepare_items() {
+	public function prepare_items() {
 		global $wpdb;
 
 		$per_page     = 20; // constant, how much records will be shown per page

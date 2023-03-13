@@ -143,7 +143,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_sortable_columns(): array {
+	public function get_sortable_columns(): array {
 		return array(
 			'title'        => array( 'title', true ),
 			'views_count'  => array( 'views_count', true ),
@@ -154,13 +154,13 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_bulk_actions(): array {
+	public function get_bulk_actions(): array {
 		return array(
 			'delete' => 'Delete'
 		);
 	}
 
-	function process_bulk_action() {
+	public function process_bulk_action() {
 		global $wpdb;
 
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
@@ -176,7 +176,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		}
 	}
 
-	function prepare_items() {
+	public function prepare_items() {
 		global $wpdb;
 
 		$per_page              = 20;
