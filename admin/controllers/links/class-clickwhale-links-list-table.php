@@ -287,44 +287,49 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
-		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
+		if ( ! isset( $_REQUEST['id'] ) ) {
+			return;
+		}
+
+		switch ( $this->current_action() ) {
+			case 'delete':
+				if ( is_array( $_REQUEST['id'] ) ) {
+					foreach ( $_REQUEST['id'] as $id ) {
+						$wpdb->query(
+							$wpdb->prepare(
+								"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
+								intval( $id )
+							)
+						);
+					}
+				} else {
 					$wpdb->query(
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
-							intval( $id )
+							intval( $_REQUEST['id'] )
 						)
 					);
 				}
-			} else {
-				$wpdb->query(
-					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
-						intval( $_REQUEST['id'] )
-					)
-				);
-			}
-		}
-
-		if ( 'reset' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
+				break;
+			case 'reset':
+				if ( is_array( $_REQUEST['id'] ) ) {
+					foreach ( $_REQUEST['id'] as $id ) {
+						$wpdb->query(
+							$wpdb->prepare(
+								"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
+								intval( $id )
+							)
+						);
+					}
+				} else {
 					$wpdb->query(
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
-							intval( $id )
+							intval( $_REQUEST['id'] )
 						)
 					);
 				}
-			} else {
-				$wpdb->query(
-					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
-						intval( $_REQUEST['id'] )
-					)
-				);
-			}
+				break;
 		}
 	}
 
