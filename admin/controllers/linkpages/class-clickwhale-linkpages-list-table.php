@@ -67,9 +67,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_views_count( $item ) {
 		return $item['views_count'];
@@ -77,9 +78,10 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_clicks_count( $item ) {
 		return $item['clicks_count'];
@@ -109,7 +111,7 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_cb( $item ) {
+	public function column_cb( $item ): string {
 		return sprintf(
 			'<input type="checkbox" name="id[]" value="%s" />',
 			$item['id']
@@ -119,8 +121,9 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	public function get_columns() {
-		return array(
+	public function get_columns(): array {
+		$tracking_options = get_option( 'clickwhale_tracking_options' );
+		$columns          = array(
 			'cb'           => '<input type="checkbox" />',
 			'title'        => __( 'Title', 'clickwhale' ),
 			'slug'         => __( 'Link', 'clickwhale' ),
@@ -129,12 +132,18 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 			'clicks_count' => __( 'Clicks', 'clickwhale' ),
 			'author'       => __( 'Author', 'clickwhale' ),
 		);
+
+		if ( isset( $tracking_options['disable_tracking'] ) ) {
+			unset( $columns['views_count'], $columns['clicks_count'] );
+		}
+
+		return $columns;
 	}
 
 	/**
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns(): array {
 		return array(
 			'title'        => array( 'title', true ),
 			'views_count'  => array( 'views_count', true ),
@@ -145,55 +154,53 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	/**
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions(): array {
 		return array(
 			'delete' => 'Delete'
 		);
 	}
 
-	function process_bulk_action() {
+	/**
+	 * @return void
+	 */
+	public function process_bulk_action() {
 		global $wpdb;
 
-		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
-					$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-						intval( $id ) ) );
-				}
-			} else {
+		if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
+			return;
+		}
+
+		if ( is_array( $_REQUEST['id'] ) ) {
+			foreach ( $_REQUEST['id'] as $id ) {
 				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-					intval( $_REQUEST['id'] ) ) );
+					intval( $id ) ) );
 			}
+		} else {
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
+				intval( $_REQUEST['id'] ) ) );
 		}
 	}
 
-	function prepare_items() {
+	public function prepare_items() {
 		global $wpdb;
 
-		$per_page              = 20;
-		$orderby               = 'id';
-		$order                 = 'desc';
-		$columns               = $this->get_columns();
-		$hidden                = [];
-		$sortable              = $this->get_sortable_columns();
-		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+		$per_page    = 20; // constant, how much records will be shown per page
+		$columns     = $this->get_columns();
+		$hidden      = array();
+		$sortable    = $this->get_sortable_columns();
+		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+
+		// here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		//  process bulk action if any
 		$this->process_bulk_action();
 
-		if ( isset( $_REQUEST['orderby'] ) ) {
-			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
-		}
-		if ( isset( $_REQUEST['order'] ) ) {
-			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
-
-		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-
-		// [REQUIRED] define $items array
-		// notice that last argument is ARRAY_A, so we will retrieve array
+		// prepare query params, as usual current page, order by and order direction
+		$sort    = ClickwhaleHepler::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
+		$order   = $sort['order'];
+		$orderby = $sort['orderby'];
+		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		$this->items = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count

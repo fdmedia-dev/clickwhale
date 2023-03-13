@@ -193,9 +193,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * Total cliks per link
 	 *
 	 * @param $item - row (key, value array)
-	 * @since 1.1.0
-     *
+	 *
 	 * @return string
+	 * @since 1.1.0
+	 *
 	 */
 	public function column_clicks_count( $item ) {
 		return $item['clicks_count'];
@@ -230,8 +231,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_columns() {
-		return array(
+	public function get_columns() {
+		$tracking_options = get_option( 'clickwhale_tracking_options' );
+
+		$columns = array(
 			'cb'           => '<input type="checkbox" />',             //Render a checkbox instead of text
 			'title'        => __( 'Title', 'clickwhale' ),
 			'slug'         => __( 'Link', 'clickwhale' ),
@@ -240,6 +243,12 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			'clicks_count' => __( 'Clicks', 'clickwhale' ),
 			'author'       => __( 'Author', 'clickwhale' )
 		);
+
+		if ( isset( $tracking_options['disable_tracking'] ) ) {
+			unset( $columns['clicks_count'] );
+		}
+
+		return $columns;
 	}
 
 	/**
@@ -249,7 +258,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 		return array(
 			'title'        => array( 'title', true ),
 			'clicks_count' => array( 'clicks_count', true ),
@@ -261,7 +270,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_bulk_actions() {
+	public function get_bulk_actions() {
 		return array(
 			'reset'  => 'Reset CLicks',
 			'delete' => 'Delete'
@@ -275,47 +284,54 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 * in this example we are processing delete action
 	 * message about successful deletion will be shown on page in next part
 	 */
-	function process_bulk_action() {
+	public function process_bulk_action() {
 		global $wpdb;
 
-		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
+		if ( ! isset( $_REQUEST['id'] ) ) {
+			return;
+		}
+
+		switch ( $this->current_action() ) {
+			case 'delete':
+				if ( is_array( $_REQUEST['id'] ) ) {
+					foreach ( $_REQUEST['id'] as $id ) {
+						$wpdb->query(
+							$wpdb->prepare(
+								"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
+								intval( $id )
+							)
+						);
+					}
+				} else {
 					$wpdb->query(
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
-							intval( $id )
+							intval( $_REQUEST['id'] )
 						)
 					);
 				}
-			} else {
-				$wpdb->query(
-					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_links WHERE id IN(%d)",
-						intval( $_REQUEST['id'] )
-					)
-				);
-			}
-		}
-
-		if ( 'reset' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
+				break;
+			case 'reset':
+				if ( is_array( $_REQUEST['id'] ) ) {
+					foreach ( $_REQUEST['id'] as $id ) {
+						$wpdb->query(
+							$wpdb->prepare(
+								"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
+								intval( $id )
+							)
+						);
+					}
+				} else {
 					$wpdb->query(
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
-							intval( $id )
+							intval( $_REQUEST['id'] )
 						)
 					);
 				}
-			} else {
-				$wpdb->query(
-					$wpdb->prepare(
-						"DELETE FROM {$wpdb->prefix}clickwhale_track WHERE link_id IN(%d)",
-						intval( $_REQUEST['id'] )
-					)
-				);
-			}
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -324,12 +340,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 	 *
 	 * It will get rows from database and prepare them to be showed in table
 	 */
-	function prepare_items() {
+	public function prepare_items() {
 		global $wpdb;
 
 		$per_page     = 20; // constant, how much records will be shown per page
-		$orderby      = 'id';
-		$order        = 'desc';
 		$current_page = $this->get_pagenum();
 		$columns      = $this->get_columns();
 		$hidden       = array();
@@ -342,15 +356,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		$this->process_bulk_action();
 
 		// prepare query params, as usual current page, order by and order direction
-		if ( isset( $_REQUEST['orderby'] ) ) {
-			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
-		}
-		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		if ( isset( $_REQUEST['order'] ) ) {
-			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
+		$sort    = ClickwhaleHepler::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
+		$order   = $sort['order'];
+		$orderby = $sort['orderby'];
+		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
@@ -358,18 +367,11 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			$total_items      = count( $this->users_data );
 			$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 			usort( $this->users_data, array( &$this, 'usort_reorder' ) );
+			$this->items = $this->users_data;
 		} else {
 			$this->users_data = $this->get_users_data( $order, $orderby );
 			$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_links" );
-		}
-
-		// [REQUIRED] define $items array
-		// notice that last argument is ARRAY_A, so we will retrieve array
-		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->items = $this->users_data;
-		} else {
-
-			$this->items = $wpdb->get_results( $wpdb->prepare(
+			$this->items      = $wpdb->get_results( $wpdb->prepare(
 				"SELECT *, COALESCE(track.clicks,0) AS clicks_count 
                     FROM {$wpdb->prefix}clickwhale_links links
                     LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$wpdb->prefix}clickwhale_track WHERE event_type='click' GROUP BY link_id ) track ON links.id = track.link_id
