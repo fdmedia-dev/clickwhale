@@ -160,19 +160,24 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function process_bulk_action() {
 		global $wpdb;
 
-		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
-					$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-						intval( $id ) ) );
-				}
-			} else {
+		if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
+			return;
+		}
+
+		if ( is_array( $_REQUEST['id'] ) ) {
+			foreach ( $_REQUEST['id'] as $id ) {
 				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-					intval( $_REQUEST['id'] ) ) );
+					intval( $id ) ) );
 			}
+		} else {
+			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
+				intval( $_REQUEST['id'] ) ) );
 		}
 	}
 
