@@ -183,4 +183,23 @@ class ClickwhaleHepler {
 		return '<h1 class="wp-heading-inline">' . $wpHeading . ' ' . $linkToList . $linkToEdit . $linkToView . '</h1>';
 
 	}
+
+	public static function get_sort_params( $columns, $order, $orderby ) {
+		$result = array(
+			'order'   => 'desc',
+			'orderby' => 'id',
+		);
+
+		if ( $order ) {
+			$orderArg        = htmlspecialchars( $order, ENT_QUOTES );
+			$result['order'] = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
+		}
+
+		if ( $orderby ) {
+			$orderByArg        = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
+			$result['orderby'] = in_array( $orderByArg, array_keys( $columns ) ) ? $orderByArg : $orderby;
+		}
+
+		return $result;
+	}
 }

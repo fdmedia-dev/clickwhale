@@ -179,30 +179,23 @@ class ClickwhaleLinkpagesListTable extends WP_List_Table {
 	public function prepare_items() {
 		global $wpdb;
 
-		$per_page              = 20;
-		$orderby               = 'id';
-		$order                 = 'desc';
-		$columns               = $this->get_columns();
-		$hidden                = [];
-		$sortable              = $this->get_sortable_columns();
-		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+		$per_page    = 20; // constant, how much records will be shown per page
+		$columns     = $this->get_columns();
+		$hidden      = array();
+		$sortable    = $this->get_sortable_columns();
+		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+
+		// here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		//  process bulk action if any
 		$this->process_bulk_action();
 
-		if ( isset( $_REQUEST['orderby'] ) ) {
-			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
-		}
-		if ( isset( $_REQUEST['order'] ) ) {
-			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
-
-		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-
-		// [REQUIRED] define $items array
-		// notice that last argument is ARRAY_A, so we will retrieve array
+		// prepare query params, as usual current page, order by and order direction
+		$sort    = ClickwhaleHepler::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
+		$order   = $sort['order'];
+		$orderby = $sort['orderby'];
+		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		$this->items = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count

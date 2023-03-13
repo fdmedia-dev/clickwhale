@@ -344,8 +344,6 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		global $wpdb;
 
 		$per_page     = 20; // constant, how much records will be shown per page
-		$orderby      = 'id';
-		$order        = 'desc';
 		$current_page = $this->get_pagenum();
 		$columns      = $this->get_columns();
 		$hidden       = array();
@@ -358,17 +356,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		$this->process_bulk_action();
 
 		// prepare query params, as usual current page, order by and order direction
-		if ( isset( $_REQUEST['orderby'] ) ) {
-			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
-		}
-
-		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-
-        if ( isset( $_REQUEST['order'] ) ) {
-			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
+		$sort    = ClickwhaleHepler::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
+		$order   = $sort['order'];
+		$orderby = $sort['orderby'];
+		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		// will be used in pagination settings
 		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
