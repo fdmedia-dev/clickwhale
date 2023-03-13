@@ -77,11 +77,13 @@ do_action( 'clickwhale_admin_banner' );
 	);
 	if ( ! empty( $message ) ) { ?>
 		<?php if ( $message === 'linkpage_added' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved', $this->plugin_name ) ?></p>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved',
+						$this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
 		<?php if ( $message === 'linkpage_updated' ) { ?>
-            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated', $this->plugin_name ) ?></p>
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated',
+						$this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
 		<?php delete_transient( 'linkpage-' . $item['id'] ); ?>
@@ -152,10 +154,13 @@ do_action( 'clickwhale_admin_banner' );
                                        placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
                                        required>
                                 <p id="cw-slug--description"></p>
-                                <p id="cw-slug--text">
+                                <p id="cw-slug--text"
+                                   class="code"
+                                   title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
+                                    <em class="dashicons dashicons-clipboard"></em>
                                 </p>
                             </td>
                         </tr>
