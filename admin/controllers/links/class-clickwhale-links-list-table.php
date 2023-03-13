@@ -362,8 +362,10 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
 			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
 		}
+
 		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
-		if ( isset( $_REQUEST['order'] ) ) {
+
+        if ( isset( $_REQUEST['order'] ) ) {
 			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
 			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
 		}
@@ -374,18 +376,11 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 			$total_items      = count( $this->users_data );
 			$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 			usort( $this->users_data, array( &$this, 'usort_reorder' ) );
+			$this->items = $this->users_data;
 		} else {
 			$this->users_data = $this->get_users_data( $order, $orderby );
 			$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_links" );
-		}
-
-		// [REQUIRED] define $items array
-		// notice that last argument is ARRAY_A, so we will retrieve array
-		if ( isset( $_GET['page'] ) && isset( $_GET['s'] ) ) {
-			$this->items = $this->users_data;
-		} else {
-
-			$this->items = $wpdb->get_results( $wpdb->prepare(
+			$this->items      = $wpdb->get_results( $wpdb->prepare(
 				"SELECT *, COALESCE(track.clicks,0) AS clicks_count 
                     FROM {$wpdb->prefix}clickwhale_links links
                     LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$wpdb->prefix}clickwhale_track WHERE event_type='click' GROUP BY link_id ) track ON links.id = track.link_id
