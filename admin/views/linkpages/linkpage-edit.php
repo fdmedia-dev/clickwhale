@@ -13,6 +13,9 @@ $defaults        = $linkpage_edit->get_defaults();
 $item            = $linkpage_edit->get_item( $_REQUEST );
 $post_type_links = $linkpage_edit->get_post_types();
 
+// LINKS
+$select = $linkpage_edit->get_select_values();
+
 // STYLES
 $styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
 $social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
@@ -99,6 +102,8 @@ do_action( 'clickwhale_admin_banner' );
                 <ul>
                     <li><a href="#lp-tab-settings"
                            class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
+                    <li><a href="#lp-tab-links"
+                           class=""><?php _e( 'Links', 'clickwhale' ); ?></a></li>
                     <li><a href="#lp-tab-colors"
                            class=""><?php _e( 'Colors', 'clickwhale' ); ?></a></li>
                     <li><a href="#lp-tab-seo"
@@ -178,8 +183,7 @@ do_action( 'clickwhale_admin_banner' );
                                             <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
                                         </a>
                                         <a href="#" class="linkpage-logo-remove">Remove image</a>
-                                        <input type="hidden" name="logo"
-                                               value="<?php echo esc_attr( $logo_id ); ?>">
+                                        <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
 									<?php } else { ?>
                                         <a href="#" class="linkpage-logo-upload">
 											<?php _e( 'Upload image' ) ?>
@@ -193,55 +197,37 @@ do_action( 'clickwhale_admin_banner' );
                                 <p><?php _e( 'Max logo size 275px * 275px', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="2">
-                                <hr>
-                            </td>
-                        </tr>
+
+						<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="lp-tab-links">
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Links</caption>
+                        <tbody>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="links"><?php _e( 'Add Link to Page', $this->plugin_name ) ?></label>
+                                <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
                             </th>
                             <td>
                                 <div class="add-links-wrap">
                                     <div class="add-links-type-wrap">
                                         <select id="add-links-type" class="add-links-type regular-text">
                                             <option></option>
-                                            <option value="cw_link"><?php _e( 'ClickWhale Link',
-													$this->plugin_name ) ?></option>
-											<?php foreach ( $post_type_links as $name => $singular_name ) { ?>
-                                                <option value="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $singular_name ); ?></option>
+											<?php foreach ( $select as $g => $group ) { ?>
+                                                <optgroup label="<?php echo $group['label'] ?>">
+													<?php foreach ( $group['options'] as $value => $name ) { ?>
+                                                        <option value="<?php echo $value ?>"><?php echo $name ?></option>
+													<?php } ?>
+                                                </optgroup>
 											<?php } ?>
-                                            <option value="cw_custom"><?php _e( 'Custom Link',
-													$this->plugin_name ) ?></option>
                                         </select>
                                     </div>
-                                    <div class="add-links-inputs-wrap">
-                                        <div id="links-post-type" class="">
-                                            <select name="add-links-select" id="add-links-select" class="regular-text"
-                                                    disabled>
-                                                <option></option>
-                                            </select>
-                                        </div>
-                                        <div id="links-cw-custom" class="hidden">
-                                            <div class="custom-links-action-wrap">
-                                                <input type="text"
-                                                       name="custom-link-title"
-                                                       placeholder="Link Title"
-                                                       value=""
-                                                       class="regular-text">
-                                                <input type="url"
-                                                       name="custom-link-url"
-                                                       placeholder="Link Url"
-                                                       value=""
-                                                       class="regular-text">
-                                            </div>
-
-                                        </div>
-                                    </div>
                                     <div class="add-links-button-wrap">
-                                        <button type="button" class="button" id="add-links-button" disabled>
-											<?php _e( 'Add Link to Page', $this->plugin_name ) ?>
+                                        <button type="button" class="button" id="add-links-button">
+											<?php _e( 'Add Link', $this->plugin_name ) ?>
                                         </button>
                                     </div>
                                 </div>
@@ -250,10 +236,17 @@ do_action( 'clickwhale_admin_banner' );
 									<?php
 									$links = maybe_unserialize( $item['links'] );
 									if ( $links ) {
+										$template = new LinkpageContentTemplates();
 										foreach ( $links as $link ) {
-											echo $linkpage_edit->render_link( $link );
+											$template->get_template(
+												$link['type'],
+												true,
+												false,
+												array( 'data' => $link, 'linkpage_id' => $item['id'] )
+											);
 										}
 									}
+
 									?>
 
                                 </div>
@@ -263,7 +256,6 @@ do_action( 'clickwhale_admin_banner' );
 								<?php } ?>
                             </td>
                         </tr>
-						<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
                         </tbody>
                     </table>
                 </div>

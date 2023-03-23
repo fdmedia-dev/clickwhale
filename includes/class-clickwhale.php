@@ -195,6 +195,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $Clickwhale_Ajax, 'get_posts_by_post_type' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $Clickwhale_Ajax, 'add_link_to_linkpage' );
 
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
