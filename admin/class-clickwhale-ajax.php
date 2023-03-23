@@ -375,7 +375,7 @@ class Clickwhale_Ajax {
 		check_ajax_referer( 'clickwhale_add_link_to_linkpage', 'security' );
 		// activate item
 		$template           = new LinkpageContentTemplates();
-		$result['template'] = $template->get_template( $_POST['type'], false );
+		$result['template'] = $template->get_template( $_POST['type'], false, false );
 
 		wp_send_json_success( $result );
 
