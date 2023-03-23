@@ -112,6 +112,7 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpage-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/LinkpageContentTemplates.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-codes-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-code-edit.php';
 

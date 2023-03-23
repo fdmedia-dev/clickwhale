@@ -82,7 +82,8 @@ class Clickwhale_Public_Linkpage {
 		$in = ob_get_clean();
 
 		// replace <title>
-		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->get_og_defaults()['title'] . '</title>', $in );
+		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->get_og_defaults()['title'] . '</title>',
+			$in );
 
 		$dom = new DOMDocument;
 		$dom->loadHTML( $in, LIBXML_HTML_NODEFDTD );
@@ -167,7 +168,7 @@ class Clickwhale_Public_Linkpage {
 				isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
 					? $this->social['seo']['description']
 					: get_bloginfo( 'description' ),
-			'image'        =>
+			'image'       =>
 				isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo']
 					? esc_url( wp_get_attachment_image_src( $this->post->linkpage['logo'], 'full' )[0] )
 					: esc_url( plugin_dir_url( __FILE__ ) . 'images/click-whale.svg' )
@@ -201,43 +202,25 @@ class Clickwhale_Public_Linkpage {
 		return '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( $this->get_title() ) . '">';
 	}
 
-	public function get_links() {
-		global $wpdb;
+	public function get_links(): string {
+		$html     = '';
+		$links    = maybe_unserialize( $this->post->linkpage['links'] );
+		$template = new LinkpageContentTemplates();
+		$target   = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
 
-		$html  = '';
-		$links = maybe_unserialize( $this->post->linkpage['links'] );
 		if ( $links ) {
 			foreach ( $links as $link ) {
 
-				$type        = $link['type'] ?? 'cw_link';
-				$target      = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
-				$target_html = 'target="' . esc_attr( $target ) . '"';
-
-				if ( $type == 'custom_link' ) {
-
-					$html .= '<a class="cw-custom-link cw-track" href="' . esc_url( $link['url'] ) . '" ' . $target_html . ' data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link['title'] ) ) . '</a>';
-
-				} elseif ( array_key_exists( $link['type'], Clickwhale_Linkpage_Edit::get_post_types() )
-				           && get_post_status( $link['post_id'] ) === 'publish' ) {
-
-					$link_title = $link['title'] ?: get_the_title( $link['post_id'] );
-					$html       .= '<a class="cw-post-type-link cw-track" href="' . esc_url( get_permalink( $link['post_id'] ) ) . '" ' . $target_html . ' data-id="' . $link['id'] . '">' . esc_html( wp_unslash( $link_title ) ) . '</a>';
-
-				} else {
-
-					$link_data = $wpdb->get_row(
-						$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $link['id'] ),
-						ARRAY_A
-					);
-					$url       = trailingslashit(get_bloginfo( 'url' ) . '/' . $link_data['slug']);
-
-					if ( $link_data ) {
-						$link_title = $link['title'] ?: $link_data['title'];
-						$html       .= '<a class="cw-link" href="' . esc_url( $url ) . '" ' . $target_html . '>' . esc_html( wp_unslash( $link_title ) ) . '</a>';
-					}
-
+				if ( ! isset( $link['is_active'] ) ) {
+					continue;
 				}
 
+				$html .= $template->get_template(
+					$link['type'],
+					false,
+					true,
+					array( 'data' => $link, 'target' => $target )
+				);
 			}
 		}
 
