@@ -392,6 +392,9 @@ class LinkpageContentTemplates {
 				}
 				?>
                 <div class="linkpage-row--title"><?php echo wp_unslash( $title ) ?></div>
+	            <?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
+                    <div class="linkpage-row--end"></div>
+	            <?php } ?>
             </a>
         </div>
 		<?php

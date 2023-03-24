@@ -151,8 +151,9 @@ body > .linkpage-public--wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 36px;
+	max-width: 36px;
 	height: 36px;
+	flex: 1;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
@@ -174,9 +175,13 @@ body > .linkpage-public--wrap {
 }
 
 .linkpage-row--title {
-	width: 100%;
+	flex: auto;
 	text-align: center;
-	padding-right: calc(36px + 2em);
+}
+
+.linkpage-row--end {
+	max-width: 36px;
+	flex: 1;;
 }
 
 .linkpage-public--social {
