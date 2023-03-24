@@ -244,6 +244,68 @@ class Clickwhale_Admin {
 		<?php
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function admin_bar_render( $wp_admin_bar ) {
+		$wp_admin_bar->add_node( array(
+				'id'    => $this->plugin_name,
+				'title' => '<span class="ab-icon"><img src="' . plugin_dir_url( __FILE__ ) . 'images/click-icon.svg"/></span> ClickWhale',
+				'href'  => admin_url( 'admin.php?page=clickwhale' ),
+				'meta'  => array(
+					'class' => $this->plugin_name,
+					'title' => 'ClickWhale'
+				)
+			)
+		);
+
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-link',
+				'title'  => __( 'New Link', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-link' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-link',
+					'title' => __( 'Add New Link', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-category',
+				'title'  => __( 'New Category', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-category' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-category',
+					'title' => __( 'Add New Category', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-linkpage',
+				'title'  => __( 'New Link Page', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-linkpage' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-linkpage',
+					'title' => __( 'Add New Link Page', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-tracking code',
+				'title'  => __( 'New Tracking Code', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-tracking-code' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-tracking-code',
+					'title' => __( 'Add New Tracking Code', $this->plugin_name )
+				)
+			)
+		);
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {

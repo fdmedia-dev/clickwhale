@@ -19,6 +19,17 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	fill: none;
 }
 
+#wp-admin-bar-clickwhale > a {
+	display: flex;
+	align-items: center;
+}
+
+#wp-admin-bar-clickwhale > a img {
+	width: 16px;
+	height: 16px;
+	opacity: .6;
+}
+
 .slug-input--wrap {
 	position: relative;
 }
