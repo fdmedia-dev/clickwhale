@@ -126,7 +126,7 @@ body > .linkpage-public--wrap {
 	display: flex;
 	width: 100%;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	gap: 10px;
 	background-color: var(--link-bg-color);
 	border-radius: 10px;
@@ -171,6 +171,12 @@ body > .linkpage-public--wrap {
 	width: 24px;
 	height: 24px;
 	color: #000000;
+}
+
+.linkpage-row--title {
+	width: 100%;
+	text-align: center;
+	padding-right: calc(36px + 2em);
 }
 
 .linkpage-public--social {
