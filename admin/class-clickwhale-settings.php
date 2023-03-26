@@ -442,7 +442,7 @@ class Clickwhale_Admin_Settings {
 				'url'  => 'general_options',
 			),
 			'tracking'       => array(
-				'name' => __( 'General Options', ( new self )->plugin_name ),
+				'name' => __( 'Tracking Options', ( new self )->plugin_name ),
 				'url'  => 'tracking_options'
 			),
 			'linkpages'      => array(
