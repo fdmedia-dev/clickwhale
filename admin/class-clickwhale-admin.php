@@ -173,6 +173,9 @@ class Clickwhale_Admin {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( "jquery-ui-tabs" );
 		wp_enqueue_media();
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+			wp_enqueue_editor();
+		}
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
 		wp_enqueue_script( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
