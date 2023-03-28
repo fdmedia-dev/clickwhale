@@ -12,8 +12,10 @@ $linkpage_edit->init();
 $defaults        = $linkpage_edit->get_defaults();
 $item            = $linkpage_edit->get_item( $_REQUEST );
 $post_type_links = $linkpage_edit->get_post_types();
+$tabs            = $linkpage_edit->render_tabs();
 
 // LINKS
+$links  = maybe_unserialize( $item['links'] );
 $select = $linkpage_edit->get_select_values();
 
 // STYLES
@@ -99,65 +101,67 @@ do_action( 'clickwhale_admin_banner' );
 
         <div id="post-body-content">
             <div id="clickwhale-tabs" class="clickwhale-tabs">
-                <ul>
-                    <li><a href="#lp-tab-settings"
-                           class=""><?php _e( 'Settings', 'clickwhale' ); ?></a></li>
-                    <li><a href="#lp-tab-links"
-                           class=""><?php _e( 'Links', 'clickwhale' ); ?></a></li>
-                    <li><a href="#lp-tab-colors"
-                           class=""><?php _e( 'Colors', 'clickwhale' ); ?></a></li>
-                    <li><a href="#lp-tab-seo"
-                           class=""><?php _e( 'SEO', 'clickwhale' ); ?></a></li>
-                    <!--li><a href="#lp-tab-social"
-                                   class=""><?php _e( 'Social', 'clickwhale' ); ?></a></li-->
-                </ul>
+				<?php if ( $tabs ) { ?>
+                    <ul>
+						<?php foreach ( $tabs as $tab ) { ?>
+                            <li>
+                                <a href="#lp-tab-<?php echo $tab['url'] ?>"><?php echo $tab['name'] ?></a>
+                            </li>
+						<?php } ?>
+                    </ul>
+				<?php } ?>
 
                 <div id="lp-tab-settings">
                     <table style="width: 100%;" class="form-table">
                         <caption hidden>Linkpage Main Settings</caption>
                         <tbody>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                <input id="title"
-                                       name="title"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $item['title'] ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="<?php _e( 'Link Page Title', $this->plugin_name ) ?>"
-                                       required>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="description"><?php _e( 'Description', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                    <textarea id="description"
-                                              name="description"
-                                              rows="5"
-                                              class="regular-text"
-                                              placeholder="<?php _e( 'Description', $this->plugin_name ) ?>"
-                                    ><?php echo wp_kses( wp_unslash( $item['description'] ),
-		                                    wp_kses_allowed_html( 'post' ) ) ?></textarea>
-                            </td>
-                        </tr>
+
+						<?php
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'Title', $this->plugin_name ),
+								'control'     => 'input',
+								'id'          => 'title',
+								'name'        => 'title',
+								'type'        => 'text',
+								'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+								'placeholder' => __( 'Link Page Title', $this->plugin_name ),
+								'required'    => true,
+							),
+							true
+						);
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'Description', $this->plugin_name ),
+								'control'     => 'textarea',
+								'id'          => 'description',
+								'name'        => 'description',
+								'value'       => esc_html( wp_unslash( $item['description'] ) ),
+								'placeholder' => __( 'Description', $this->plugin_name ),
+							),
+							true
+						);
+						?>
+
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="cw-slug"
-                                       name="slug"
-                                       type="text"
-                                       value="<?php echo esc_attr( $item['slug'] ) ?>"
-                                       size="50"
-                                       class="regular-text"
-                                       placeholder="<?php esc_attr( __( 'Linkpage Slug', $this->plugin_name ) ) ?>"
-                                       required>
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'row_label'   => __( 'Title', $this->plugin_name ),
+										'control'     => 'input',
+										'id'          => 'cw-slug',
+										'name'        => 'slug',
+										'type'        => 'text',
+										'value'       => esc_attr( $item['slug'] ),
+										'placeholder' => __( 'Link Page Slug', $this->plugin_name ),
+										'required'    => true,
+									)
+								);
+								?>
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text"
                                    class="code"
@@ -198,69 +202,70 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
 
-						<?php do_action( 'clickwhale_linkpage_edit_fields', $item ) ?>
+						<?php do_action( 'clickwhale_linkpage_after_settings_fields', $item ) ?>
                         </tbody>
                     </table>
                 </div>
 
-                <div id="lp-tab-links">
-                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden>Link Page Links</caption>
-                        <tbody>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="links"><?php _e( 'Links', $this->plugin_name ) ?></label>
-                            </th>
-                            <td>
-                                <div class="add-links-wrap">
-                                    <div class="add-links-type-wrap">
-                                        <select id="add-links-type" class="add-links-type regular-text">
-                                            <option></option>
-											<?php foreach ( $select as $g => $group ) { ?>
-                                                <optgroup label="<?php echo $group['label'] ?>">
-													<?php foreach ( $group['options'] as $value => $name ) { ?>
-                                                        <option value="<?php echo $value ?>"><?php echo $name ?></option>
-													<?php } ?>
-                                                </optgroup>
-											<?php } ?>
-                                        </select>
-                                    </div>
-                                    <div class="add-links-button-wrap">
-                                        <button type="button" class="button" id="add-links-button">
-											<?php _e( 'Add Link', $this->plugin_name ) ?>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="links-list-wrap">
-
+                <div id="lp-tab-contents">
+                    <div class="contents-wrap">
+                        <div class="contents-aside">
+                            <div class="contents-aside--inner">
+                                <div class="add-content-wrap">
 									<?php
-									$links = maybe_unserialize( $item['links'] );
-									if ( $links ) {
-										$template = new LinkpageContentTemplates();
-										foreach ( $links as $link ) {
-											$template->get_template(
-												$link['type'],
-												true,
-												false,
-												array( 'data' => $link, 'linkpage_id' => $item['id'] )
-											);
-										}
-									}
-
-									?>
-
+									$disabled = $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ? 'disabled' : '';
+									foreach ( $select as $g => $group ) {
+										?>
+                                        <div class="cw-content--group">
+                                            <h3><?php echo $group['label'] ?> (<?php echo count($group['options']) ?>)</h3>
+                                            <div class="cw-content--items">
+												<?php foreach ( $group['options'] as $value => $options ) { ?>
+                                                    <div id="cw-content--<?php echo $value ?>"
+                                                         class="cw-content--item <?php echo $disabled ?>"
+                                                         data-content="<?php echo $value ?>">
+														<?php if ( isset( $options['icon'] ) && $options['icon'] ) { ?>
+                                                            <svg class="feather">
+                                                                <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $options['icon'] ?>"></use>
+                                                            </svg>
+														<?php } ?>
+														<?php echo $options['name'] ?>
+                                                    </div>
+												<?php } ?>
+                                            </div>
+                                        </div>
+									<?php } ?>
                                 </div>
-								<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-                                    <div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
-											ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>
-								<?php } ?>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </div>
+                        </div>
+                        <div class="contents-main">
+                            <div class="links-list-wrap connectedSortable">
+								<?php
+								if ( $links ) {
+									$template = new LinkpageContentTemplates();
+									foreach ( $links as $link ) {
+										$template->get_template(
+											$link['type'],
+											true,
+											false,
+											array( 'data' => $link, 'linkpage_id' => $item['id'] )
+										);
+									}
+								}
+								?>
+                            </div>
+							<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
+                                <div class="links-info">
+									<?php printf(
+										'Currently, a maximum of %d links can be added',
+										ClickwhaleLinkpagesHelper::get_links_limit()
+									); ?>
+                                </div>
+							<?php } ?>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="lp-tab-colors">
+                <div id="lp-tab-styles">
 
                     <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
@@ -297,6 +302,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p class="description"><?php _e( 'Set page text color', $this->plugin_name ) ?></p>
                             </td>
                         </tr>
+
                         </tbody>
                     </table>
 
@@ -373,7 +379,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
 
-					<?php do_action( 'clickwhale_linkpage_style_fields', $item ); ?>
+					<?php do_action( 'clickwhale_linkpage_after_styles_tables', $item ) ?>
                 </div>
                 <div id="lp-tab-seo">
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
@@ -381,37 +387,35 @@ do_action( 'clickwhale_admin_banner' );
                         <tbody>
 
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="socialSeoTitle"><?php _e( 'SEO Title', $this->plugin_name ); ?></label>
-                            </th>
-                            <td>
-                                <input id="socialSeoTitle"
-                                       name="social[seo][title]"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="">
-                                <p class="description"><?php _e( 'Set page SEO title', $this->plugin_name ) ?></p>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="socialSeoDescription"><?php _e( 'SEO Description',
-										$this->plugin_name ); ?></label>
-                            </th>
-                            <td>
-                                <input id="socialSeoDescription"
-                                       name="social[seo][description]"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="">
-                                <p class="description"><?php _e( 'Set page SEO description', $this->plugin_name ) ?></p>
-                            </td>
-                        </tr>
+						<?php
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'SEO Title', $this->plugin_name ),
+								'control'     => 'input',
+								'id'          => 'socialSeoTitle',
+								'name'        => 'social[seo][title]',
+								'type'        => 'text',
+								'value'       => esc_attr( wp_unslash( $seoTitle ) ),
+								'placeholder' => '',
+								'description' => __( 'Set page SEO title', $this->plugin_name ),
+							),
+							true
+						);
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'SEO Description', $this->plugin_name ),
+								'control'     => 'input',
+								'id'          => 'socialSeoDescription',
+								'name'        => 'social[seo][description]',
+								'type'        => 'text',
+								'value'       => esc_attr( wp_unslash( $seoDescription ) ),
+								'placeholder' => '',
+								'description' => __( 'Set page SEO description', $this->plugin_name ),
+							),
+							true
+						);
+						?>
+
                         <tr class="form-field">
                             <th scope="row">
                                 <label>
@@ -462,6 +466,8 @@ do_action( 'clickwhale_admin_banner' );
 								?>
                             </td>
                         </tr>
+
+						<?php do_action( 'clickwhale_linkpage_after_seo_fields', $item ) ?>
                         </tbody>
                     </table>
 
@@ -471,40 +477,37 @@ do_action( 'clickwhale_admin_banner' );
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <caption hidden>Link Page Open Graph Options</caption>
                         <tbody>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="socialOGTitle"><?php _e( 'Open Graph Title (Optional)',
-										$this->plugin_name ); ?></label>
-                            </th>
-                            <td>
-                                <input id="socialOGTitle"
-                                       name="social[seo][ogtitle]"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $seoOGTitle ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="<?php echo esc_attr( wp_unslash( $seoTitle ) ) ?>">
-                                <p class="description"><?php _e( 'The title of your page for social network. By default this is Link Page title.',
-										$this->plugin_name ) ?></p>
-                            </td>
-                        </tr>
-                        <tr class="form-field">
-                            <th scope="row">
-                                <label for="socialOGDescription"><?php _e( 'Open Graph Description (Optional)',
-										$this->plugin_name ); ?></label>
-                            </th>
-                            <td>
-                                <input id="socialOGDescription"
-                                       name="social[seo][ogdescription]"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $seoOGDescription ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="<?php echo esc_attr( wp_unslash( $seoDescription ) ) ?>">
-                                <p class="description"><?php _e( 'The description of your page for social network. By default this is SEO description.',
-										$this->plugin_name ) ?></p>
-                            </td>
-                        </tr>
+						<?php
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'Open Graph Title (Optional)', $this->plugin_name ),
+								'control'     => 'input',
+								'id'          => 'socialOGTitle',
+								'name'        => 'social[seo][ogtitle]',
+								'type'        => 'text',
+								'value'       => esc_attr( wp_unslash( $seoOGTitle ) ),
+								'placeholder' => esc_attr( wp_unslash( $seoTitle ) ),
+								'description' => __( 'The title of your page for social network. By default this is Link Page title.',
+									$this->plugin_name ),
+							),
+							true
+						);
+						echo ClickwhaleHepler::render_control(
+							array(
+								'row_label'   => __( 'Open Graph Description (Optional)', $this->plugin_name ),
+								'control'     => 'input',
+								'id'          => 'socialOGDescription',
+								'name'        => 'social[seo][ogdescription]',
+								'type'        => 'text',
+								'value'       => esc_attr( wp_unslash( $seoOGDescription ) ),
+								'placeholder' => esc_attr( wp_unslash( $seoDescription ) ),
+								'description' => __( 'The description of your page for social network. By default this is SEO description.',
+									$this->plugin_name ),
+							),
+							true
+						);
+						?>
+
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="ogimage"><?php _e( 'Open Graph Image', $this->plugin_name ) ?></label>
@@ -549,13 +552,22 @@ do_action( 'clickwhale_admin_banner' );
                                 <p class="description"></p>
                             </td>
                         </tr>
+
+						<?php do_action( 'clickwhale_linkpage_after_og_fields', $item ) ?>
                         </tbody>
                     </table>
+
+					<?php do_action( 'clickwhale_linkpage_after_seo_tables', $item ) ?>
+
                 </div>
+
                 <!--div id="lp-tab-social">
-                    <?php do_action( 'clickwhale_admin_pro_message' ); ?>
-                    <?php do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
+                    <?php //do_action( 'clickwhale_admin_pro_message' ); ?>
+                    <?php //do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
                 </div -->
+
+				<?php do_action( 'clickwhale_linkpage_after_tabs_content', $item ); ?>
+
             </div>
 
             <input type="hidden" id="created_at" name="created_at"

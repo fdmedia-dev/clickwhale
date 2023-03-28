@@ -184,6 +184,46 @@ body > .linkpage-public--wrap {
 	flex: 1;;
 }
 
+/*---------- CW HEADING BLOCK ----------*/
+
+.linkpage-public-row--cw_heading {
+	display: block;
+	width: 100%;
+	text-align: center;
+	color: var(--text-color);
+}
+
+.linkpage-public-row--cw_heading h2 {
+	font-size: 1.7rem;
+	line-height: 1.3em;
+	font-weight: 500;
+	margin: 0;
+}
+
+.linkpage-public-row--cw_heading p {
+	font-size: 1.3rem;
+	line-height: 1.3em;
+	margin: 0;
+}
+
+.linkpage-public-row--cw_heading h2 + p {
+
+}
+
+* + .linkpage-public-row--cw_heading {
+	margin-top: 40px;
+}
+
+/*---------- CW SEPARATOR BLOCK ----------*/
+
+.linkpage-public-row--cw_separator {
+	margin: 10px 0;
+	background-color: var(--text-color);
+	border: none;
+	opacity: .1;
+}
+
+
 .linkpage-public--social {
 	position: relative;
 	display: flex;

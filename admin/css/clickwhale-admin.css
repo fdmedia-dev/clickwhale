@@ -221,14 +221,102 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	height: auto;
 }
 
+.contents-wrap {
+	display: grid;
+	grid-template-columns: 300px auto;
+	gap: 20px;
+	padding: 20px 0;
+}
+
+.contents-aside {
+	position: relative
+}
+
+.cw-content--group {
+	margin-bottom: 25px;
+}
+
+.cw-content--group h3 {
+	margin: 0;
+	padding: 10px 0;
+	font-size: 14px;
+	line-height: 1em;
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+.contents-aside--inner {
+	position: sticky;
+	top: 0;
+	bottom: 0;
+}
+
+.cw-content--items {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+	gap: 5px;
+	padding: 10px 0;
+}
+
+.cw-content--item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	aspect-ratio: 1 / 1;
+	border: 1px solid #dcdcde;
+	border-radius: 5px;
+	background: #ffffff;
+	padding: 10px;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 1em;
+}
+
+.cw-content--item svg {
+	display: block;
+	width: 16px;
+	height: 16px;
+	opacity: .5;
+	margin-bottom: 10px;
+}
+
+.cw-content--item:hover {
+	box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+	color: #007AFF;
+}
+
+.cw-content--item.ui-draggable-dragging {
+	width: 50px;
+	max-width: 50px;
+	box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+	border: 2px solid #007AFF;
+	color: #007AFF;
+}
+
+.cw-content--item.disabled {
+	pointer-events: none;
+	opacity: .7;
+}
+
+
 .links-list-wrap {
 	position: relative;
 	display: flex;
 	gap: 5px;
 	flex-direction: column;
-	margin-top: 10px;
-	max-width: 95%;
+	width: calc(100% - 20px);
+	min-height: 50%;
+	border: 2px dashed #dcdcde;
+	border-radius: 5px;
+	padding: 5px;
 }
+
+.links-list-wrap.ui-droppable-active {
+	border-color: #007AFF;
+	border-style: solid;
+}
+
 
 .add-links-wrap {
 	display: flex;
@@ -484,9 +572,38 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 }
 
 .linkpage-row--bottom--control-wrap label {
-	flex: 0 0 100px;
+	flex: 0 0 125px;
 	margin-top: 7px;
 }
+
+.linkpage-row--bottom--control-wrap > div {
+	width: 100%;
+}
+
+.linkpage-row--bottom--control-wrap input[type="text"],
+.linkpage-row--bottom--control-wrap input[type="number"],
+.linkpage-row--bottom--control-wrap select {
+	width: 100%;
+	max-width: 25rem;
+}
+
+.linkpage-row--bottom--control-wrap input[type="checkbox"],
+.linkpage-row--bottom--control-wrap input[type="radio"] {
+	margin-top: 7px;
+}
+
+.linkpage-row--bottom--control-wrap input[type="checkbox"] + label,
+.linkpage-row--bottom--control-wrap input[type="radio"] + label {
+	display: inline-block;
+	margin-top: 7px;
+}
+
+.linkpage-row--bottom iframe,
+.linkpage-row--bottom textarea {
+	width: 100%;
+	min-height: 300px;
+}
+
 
 .linkpage-row--image-select {
 	width: 100%;
