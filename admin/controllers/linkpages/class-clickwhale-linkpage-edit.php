@@ -249,7 +249,7 @@ class Clickwhale_Linkpage_Edit {
 
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
-                            if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-colors') {
+                            if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-styles') {
                                 jQuery('#reset-colors').show();
                             } else {
                                 jQuery('#reset-colors').hide();

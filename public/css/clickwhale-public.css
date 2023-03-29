@@ -136,7 +136,7 @@ body > .linkpage-public--wrap {
 	text-decoration: none;
 	font-weight: 500;
 	letter-spacing: normal;
-	padding: 1.2rem 2rem;
+	padding: 1rem 2rem;
 	transition: all .3s ease-in-out;
 	text-align: center;
 }
@@ -175,7 +175,11 @@ body > .linkpage-public--wrap {
 }
 
 .linkpage-row--title {
-	flex: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 4;
+	min-height: 36px;
 	text-align: center;
 }
 

@@ -583,7 +583,6 @@ do_action( 'clickwhale_admin_banner' );
                    class="button"
                    name="reset-colors"
                    style="display: none">
-
         </div>
     </form>
 
