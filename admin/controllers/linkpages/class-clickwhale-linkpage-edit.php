@@ -269,6 +269,9 @@ class Clickwhale_Linkpage_Edit {
 		<?php } ?>
 
         <script type='text/javascript'>
+            //const {createPicker} = window.picmo;
+            const {createPopup} = window.picmoPopup;
+
             jQuery(document).ready(function () {
 
                 /* vars */
@@ -378,6 +381,29 @@ class Clickwhale_Linkpage_Edit {
                         jQuery(this).closest('.linkpage-row').find('.linkpage-row--bottom').toggleClass('active');
                     })
 
+                    .on('click', '.emoji-picker', function (e) {
+                        e.preventDefault();
+
+                        var trigger = e.target,
+                            emojiInput = trigger.parentElement.querySelector('input'),
+                            emojiLabel = trigger.parentElement.querySelector('label'),
+                            picker = createPopup({}, {
+                                referenceElement: trigger,
+                                triggerElement: trigger,
+                                position: 'right-end'
+                            });
+
+                        picker.toggle();
+                        picker.addEventListener('emoji:select', (selection) => {
+                            emojiInput.value = selection.emoji;
+                            emojiLabel.innerHTML = selection.emoji;
+                            emojiInput.checked = true;
+
+                            change_row_image(e.target, selection.emoji);
+                            change_row_image_type(e.target, 'emoji');
+                        });
+                    })
+
                     // Remove added link row
                     .on('click', '.linkpage-row--actions--button-remove', function () {
                         jQuery(this).closest('.linkpage-row').remove();
@@ -443,24 +469,26 @@ class Clickwhale_Linkpage_Edit {
 
                     // toggle .linkpage-row-image content with selected image/icon/emoji
                     .on('change', '.image-item [type="radio"]', function () {
-                        var imageItemValue = jQuery(this).next().html(),
-                            rowImage = jQuery(this).closest('.linkpage-row').find('.linkpage-row--image');
-                        change_row_image(rowImage, imageItemValue);
-                        jQuery(this).closest('.linkpage-row').find('[name$="[image][type]"]').val(jQuery(this).data('type'));
+                        var imageItemValue = jQuery(this).next().html();
+
+                        change_row_image(jQuery(this), imageItemValue);
+                        change_row_image_type(jQuery(this), jQuery(this).data('type'));
+                    })
+                    .on('click', '.reset-image', function () {
+                        jQuery(this).closest('.linkpage-row').find('.linkpage-row--image').removeClass('with-image').html('');
+                        jQuery(this).closest('.linkpage-row').find('[name$="[image_id]"]').prop('checked', false);
+                        jQuery(this).closest('.linkpage-row').find('[name$="[image][type]"]').val('');
                     });
 
                 /* Change linkpage-row-image (tab image) */
                 jQuery('.linkpage-row--image-input').bind("change", function () {
-                    var uploadedImage = jQuery(this).parent().find('.linkpage-row--image-upload').html(),
-                        rowImage = jQuery(this).closest('.linkpage-row').find('.linkpage-row--image');
+                    var uploadedImage = jQuery(this).parent().find('.linkpage-row--image-upload').html()
 
-                    change_row_image(rowImage, uploadedImage);
+                    change_row_image(jQuery(this), uploadedImage);
                 });
                 /* Remove linkpage-row-image (tab image) when "Remove Image" was clicked */
                 jQuery(".linkpage-row--image-remove").click(function () {
-                    var rowImage = jQuery(this).closest('.linkpage-row').find('.linkpage-row--image');
-
-                    change_row_image(rowImage, '', false);
+                    change_row_image(jQuery(this), '', false);
                 });
 
                 jQuery('input[name="hidden"]').bind("change", function () {
@@ -596,10 +624,14 @@ class Clickwhale_Linkpage_Edit {
 
                 function change_row_image(element, image, active = true) {
                     if (active) {
-                        jQuery(element).addClass('with-image').html(image);
+                        jQuery(element).closest('.linkpage-row').find('.linkpage-row--image').addClass('with-image').html(image);
                     } else {
-                        jQuery(element).removeClass('with-image').html(image);
+                        jQuery(element).closest('.linkpage-row').find('.linkpage-row--image').removeClass('with-image').html(image);
                     }
+                }
+
+                function change_row_image_type(element, type) {
+                    jQuery(element).closest('.linkpage-row').find('[name$="[image][type]"]').val(type);
                 }
             });
         </script>

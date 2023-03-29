@@ -582,6 +582,10 @@ class LinkpageContentTemplates {
 				$src    = $images[ $data['image']['type'] ][ $data['image']['image_id'] ];
 				$image  = '<svg class="feather linkpage-row--image-placeholder">' . $src . '</svg>';
 				break;
+			case 'emoji':
+				$class = 'with-image';
+				$image = $data['image']['image_id'];
+				break;
 			case 'image' :
 				$src   = wp_get_attachment_image_src( $data['image']['image_id'] );
 				$image = '<img src="' . $src[0] . '"/>';
@@ -645,62 +649,61 @@ class LinkpageContentTemplates {
 	}
 
 	public function get_template_row_images( array $data ) {
+		$image_type = $data['image']['type'] ?? '';
+		$image_id   = $data['image']['image_id'] ?? '';
+
 		?>
         <div class="linkpage-row--bottom--control-wrap linkpage-row--image-select--wrap">
             <input type="hidden"
                    name="links[<?php echo $data['id'] ?>][image][type]"
                    value="<?php echo $data['image']['type'] ?? '' ?>">
-            <label><?php _e( 'Image' ) ?></label>
+            <label><?php _e( 'Icon', 'clickwhale' ) ?></label>
+
             <div class="linkpage-row--image-select">
 
-                <div class="linkpage-row--image-select--tab" data-tab="image">
-                    <div class="tab-inner">
-                        <div class="linkpage-row--image-wrap">
-							<?php
-							if ( isset( $data['image']['type'] )
-							     && $data['image']['type'] === 'image'
-							     && isset( $data['image']['image_id'] ) ) {
-								?>
-
-                                <div class="image-item">
-                                    <input type="radio"
-                                           data-type="image"
-                                           id="image-<?php echo $data['id'] ?>-0"
-                                           name="links[<?php echo $data['id'] ?>][image][image_id]"
-                                           value="<?php echo $data['image']['image_id'] ?>"
-                                           checked>
-                                    <label for="image-<?php echo $data['id'] ?>-0">
-										<?php echo '<img src="' . wp_get_attachment_image_src( $data['image']['image_id'] )[0] . '"/>' ?>
-                                    </label>
-                                </div>
-                                <a href="#" class="linkpage-row--image-upload">
-									<?php _e( 'Upload image', 'clickwhale' ) ?>
-                                </a>
-                                <a href="#" class="linkpage-row--image-remove">
-									<?php _e( 'Remove image', 'clickwhale' ) ?>
-                                </a>
-
-							<?php } else { ?>
-
-                                <div class="image-item">
-                                    <input type="radio"
-                                           data-type="image"
-                                           id="image-<?php echo $data['id'] ?>-0"
-                                           name="links[<?php echo $data['id'] ?>][image][image_id]">
-                                    <label for="image-<?php echo $data['id'] ?>-0"></label>
-                                </div>
-
-                                <a href="#" class="linkpage-row--image-upload">
-									<?php _e( 'Upload image', 'clickwhale' ) ?>
-                                </a>
-                                <a href="#" class="linkpage-row--image-remove" style="display: none">
-									<?php _e( 'Remove image', 'clickwhale' ) ?>
-                                </a>
-
-							<?php } ?>
+                <div class="linkpage-row--image-select--tab">
+                    <div class="linkpage-row--image-select--tab-inner tab-multiple">
+                        <div class="linkpage-row--image-select--reset">
+                            <button type="button" class="reset-image">Reset</button>
+                        </div>
+                        <div class="linkpage-row--image-select--item item-image">
+                            <div class="image-item">
+                                <input type="radio"
+                                       data-type="image"
+                                       id="image-<?php echo $data['id'] ?>-0"
+                                       name="links[<?php echo $data['id'] ?>][image][image_id]"
+                                       value="<?php echo $image_type == 'image' ? $image_id : '' ?>"
+                                       checked>
+                                <label for="image-<?php echo $data['id'] ?>-0">
+									<?php if ( $image_id && $image_type == 'image' ) {
+										echo '<img src="' . wp_get_attachment_image_src( $image_id )[0] . '"/>';
+									} ?>
+                                </label>
+                            </div>
+                            <a href="#" class="linkpage-row--image-upload">
+								<?php _e( 'Upload image', 'clickwhale' ) ?>
+                            </a>
+                        </div>
+                        <div class="linkpage-row--image-select--item item--emoji">
+                            <div class="image-item">
+                                <input type="radio"
+                                       data-type="emoji"
+                                       id="image-<?php echo $data['id'] ?>-emoji"
+                                       name="links[<?php echo $data['id'] ?>][image][image_id]"
+                                       value="<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>"
+									<?php if ( $image_id && $image_type == 'emoji' ) { ?>
+                                        checked
+									<?php } ?>
+                                >
+                                <label for="image-<?php echo $data['id'] ?>-emoji">
+									<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>
+                                </label>
+                            </div>
+                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', 'clickwhale' ) ?></a>
                         </div>
                     </div>
                 </div>
+
 
 				<?php
 				$images = self::get_images();

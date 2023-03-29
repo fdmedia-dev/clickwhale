@@ -168,23 +168,50 @@ class Clickwhale_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( 'jquery-ui-droppable' );
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_enqueue_script( "jquery-ui-tabs" );
-		wp_enqueue_media();
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+			wp_enqueue_script( 'jquery-ui-droppable' );
+			wp_enqueue_script( 'jquery-ui-draggable' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( "jquery-ui-tabs" );
+			wp_enqueue_media();
 			wp_enqueue_editor();
+			wp_enqueue_script( 'wp-color-picker' );
+
+			wp_enqueue_script(
+				$this->plugin_name . '_picmo',
+				'https://cdn.jsdelivr.net/npm/picmo@latest/dist/umd/index.js',
+				array( 'jquery' ),
+				'5.8.1',
+			);
+			wp_enqueue_script(
+				$this->plugin_name . '_picmo_popup_picker',
+				'https://cdn.jsdelivr.net/npm/@picmo/popup-picker@latest/dist/umd/index.js',
+				array( $this->plugin_name . '_picmo' ),
+				'5.8.1'
+			);
 		}
-		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
-		wp_enqueue_script( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
-			array( 'jquery' ), '4.1.0-rc.0', false );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ),
-			$this->version, false );
-		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
-			'siteurl' => home_url(),
-		) );
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-tracking-code' ) {
+			wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+		}
+
+		wp_enqueue_script(
+			$this->plugin_name . '_select2',
+			plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
+			array( 'jquery' ),
+			'4.1.0-rc.0'
+		);
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js',
+			array( 'jquery' ),
+			$this->version
+		);
+		wp_localize_script(
+			$this->plugin_name,
+			'clickwhale_admin', array(
+				'siteurl' => home_url(),
+			)
+		);
 	}
 
 	public function clickwhale_categories_limit_callback( $limit ) {
