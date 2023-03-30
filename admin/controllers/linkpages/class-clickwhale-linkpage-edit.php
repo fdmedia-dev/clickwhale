@@ -413,8 +413,41 @@ class Clickwhale_Linkpage_Edit {
                         }
                     })
 
-                    // Logo upload
+                    // LP Logo
                     .on('click', '.linkpage-logo-upload, .linkpage-row--image-upload', function (e) {
+                        e.preventDefault();
+
+                        var button = jQuery(this),
+                            custom_uploader = wp.media({
+                                title: 'Insert image',
+                                library: {
+                                    type: 'image',
+                                },
+                                button: {
+                                    text: '<?php _e( 'Set Link Page Logo', 'clickwhale' ) ?>',
+                                },
+                                multiple: false
+                            }).on('select', function () {
+                                var attachment = custom_uploader.state().get('selection').first().toJSON(),
+                                    mediaInput = button.parent().find('input');
+
+                                url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
+                                button.removeClass('button').html('<img src="' + url + '">').next().show();
+                                mediaInput.val(attachment.id).trigger("change");
+                            }).open();
+
+                    })
+                    .on('click', '.linkpage-logo-remove', function (e) {
+                        e.preventDefault();
+
+                        var button = jQuery(this);
+
+                        button.next().val(''); // emptying the hidden field
+                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', 'clickwhale' ) ?>');
+                    })
+
+                    // Row Image
+                    .on('click', '.linkpage-row--image-upload', function (e) {
                         e.preventDefault();
 
                         var button = jQuery(this),
@@ -439,14 +472,6 @@ class Clickwhale_Linkpage_Edit {
                                 mediaRemove.show();
                             }).open();
 
-                    })
-                    .on('click', '.linkpage-logo-remove', function (e) {
-                        e.preventDefault();
-
-                        var button = jQuery(this);
-
-                        button.next().val(''); // emptying the hidden field
-                        button.hide().prev().html('Upload image');
                     })
                     .on('click', '.linkpage-row--image-remove', function (e) {
                         e.preventDefault();

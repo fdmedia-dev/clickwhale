@@ -6,12 +6,16 @@ class Clickwhale_Public_Linkpage {
 	private $other_options;
 	private $data;
 	private $social;
+	private $links;
+	private $styles;
 
 	public function __construct( $post ) {
 		$this->post              = $post;
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
 		$this->other_options     = get_option( 'clickwhale_other_options' );
 		$this->data              = maybe_unserialize( $this->post->linkpage );
+		$this->links             = maybe_unserialize( $this->post->linkpage['links'] );
+		$this->styles            = maybe_unserialize( $this->post->linkpage['styles'] );
 		$this->social            = isset( $this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
 
 		add_action( 'wp_before_admin_bar_render', [ $this, 'admin_bar_render' ], 25 );
@@ -195,23 +199,30 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_logo() {
+		$classes = [];
+		if ( isset( $this->styles['logo_style'] ) ) {
+			$classes[] = $this->styles['logo_style'];
+		}
+		if ( isset( $this->styles['logo_shadow'] ) ) {
+			$classes[] = 'with-shadow';
+		}
 		if ( isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo'] ) {
-			$img = wp_get_attachment_image_url( $this->post->linkpage['logo'], 'medium' );
+			$img = wp_get_attachment_image_url( $this->post->linkpage['logo'], 'thumbnail' );
 		} else {
 			$img = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
 		}
+		$class = implode( ' ', $classes );
 
-		return '<img src="' . esc_url( $img ) . '" alt="' . esc_attr( $this->get_title() ) . '">';
+		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" alt="' . esc_attr( $this->get_title() ) . '">';
 	}
 
 	public function get_links(): string {
 		$html     = '';
-		$links    = maybe_unserialize( $this->post->linkpage['links'] );
 		$template = new LinkpageContentTemplates();
 		$target   = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
 
-		if ( $links ) {
-			foreach ( $links as $link ) {
+		if ( $this->links ) {
+			foreach ( $this->links as $link ) {
 
 				if ( ! isset( $link['is_active'] ) ) {
 					continue;
@@ -232,9 +243,8 @@ class Clickwhale_Public_Linkpage {
 	public function get_styles() {
 		$style = '';
 
-		$styles = maybe_unserialize( $this->post->linkpage['styles'] );
-		if ( $styles ) {
-			$style .= ':root{ --page-bg-color: ' . $styles['bg_color'] . '; --text-color: ' . $styles['text_color'] . '; --link-bg-color: ' . $styles['link_bg_color'] . '; --link-color: ' . $styles['link_color'] . '; --link-bg-hover: ' . $styles['link_bg_color_hover'] . '; --link-hover: ' . $styles['link_color_hover'] . ';  }';
+		if ( $this->styles ) {
+			$style .= ':root{ --page-bg-color: ' . $this->styles['bg_color'] . '; --text-color: ' . $this->styles['text_color'] . '; --link-bg-color: ' . $this->styles['link_bg_color'] . '; --link-color: ' . $this->styles['link_color'] . '; --link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --link-hover: ' . $this->styles['link_color_hover'] . ';  }';
 		}
 
 		return ' <style>' . $style . ' </style > ';

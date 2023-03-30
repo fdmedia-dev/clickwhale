@@ -73,7 +73,7 @@ class ClickwhaleHepler {
 				}
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label>';
-					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $k, $value,
+					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $value,$k,
 							false ) . $disabled . ' />';
 					$item .= '<span>' . $v . '</span>';
 					$item .= '</label><br>';
