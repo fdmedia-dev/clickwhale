@@ -259,15 +259,15 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_socails() {
-		if ( ! isset( $this->post->linkpage['social']['profiles'] ) ) {
+		if ( ! isset( $this->post->linkpage['social'] ) ) {
 			return false;
 		}
 
 		$social_html = '';
 		$social_svg  = $this->socials_svg();
-		$socials     = maybe_unserialize( $this->post->linkpage['social']['profiles'] );
-		if ( $socials ) {
-			foreach ( $socials as $k => $v ) {
+		$socials     = maybe_unserialize( $this->post->linkpage['social'] );
+		if ( isset( $socials['profiles'] ) ) {
+			foreach ( $socials['profiles'] as $k => $v ) {
 				if ( $v ) {
 					$social_html .= ' <li><a href = "' . $v . '" target = "_blank" > ' . $social_svg[ $k ] . '</a ></li > ';
 				}
