@@ -15,12 +15,15 @@ $post_type_links = $linkpage_edit->get_post_types();
 $tabs            = $linkpage_edit->render_tabs();
 
 // LINKS
-$links  = maybe_unserialize( $item['links'] );
-$select = $linkpage_edit->get_select_values();
+$item['links'] = maybe_unserialize( $item['links'] );
+$links         = $item['links'];
+$select        = $linkpage_edit->get_select_values();
 
 // STYLES
-$styles = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
-$social = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
+$item['styles'] = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
+$item['social'] = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
+$styles         = $item['styles'];
+$social         = $item['social'];
 
 // LP IMAGE
 $logo_id = $item['logo'] ?? '';
@@ -186,14 +189,14 @@ do_action( 'clickwhale_admin_banner' );
                                         <a href="#" class="linkpage-logo-upload">
                                             <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
                                         </a>
-                                        <a href="#" class="linkpage-logo-remove">Remove image</a>
+                                        <a href="#" class="button linkpage-logo-remove">Remove image</a>
                                         <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
 									<?php } else { ?>
-                                        <a href="#" class="linkpage-logo-upload">
-											<?php _e( 'Upload image' ) ?>
+                                        <a href="#" class="button linkpage-logo-upload">
+											<?php _e( 'Upload image', 'clickwhale' ) ?>
                                         </a>
-                                        <a href="#" class="linkpage-logo-remove" style="display:none">
-											<?php _e( 'Remove image' ) ?>
+                                        <a href="#" class="button linkpage-logo-remove" style="display: none;">
+											<?php _e( 'Remove image', 'clickwhale' ) ?>
                                         </a>
                                         <input type="hidden" name="logo" value="">
 									<?php } ?>
@@ -217,7 +220,8 @@ do_action( 'clickwhale_admin_banner' );
 									foreach ( $select as $g => $group ) {
 										?>
                                         <div class="cw-content--group">
-                                            <h3><?php echo $group['label'] ?> (<?php echo count($group['options']) ?>)</h3>
+                                            <h3><?php echo $group['label'] ?> (<?php echo count( $group['options'] ) ?>
+                                                )</h3>
                                             <div class="cw-content--items">
 												<?php foreach ( $group['options'] as $value => $options ) { ?>
                                                     <div id="cw-content--<?php echo $value ?>"
@@ -256,7 +260,7 @@ do_action( 'clickwhale_admin_banner' );
 							<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
                                 <div class="links-info">
 									<?php printf(
-										'Currently, a maximum of %d links can be added',
+										__( 'Currently, a maximum of %d links can be added', $this->plugin_name ),
 										ClickwhaleLinkpagesHelper::get_links_limit()
 									); ?>
                                 </div>
@@ -468,7 +472,6 @@ do_action( 'clickwhale_admin_banner' );
                             </td>
                         </tr>
 
-						<?php do_action( 'clickwhale_linkpage_after_seo_fields', $item ) ?>
                         </tbody>
                     </table>
 
