@@ -149,7 +149,7 @@ body > .linkpage-public--wrap {
 	text-decoration: none;
 	font-weight: 500;
 	letter-spacing: normal;
-	padding: 1rem 2rem;
+	padding: .75rem 1.5rem;
 	transition: all .3s ease-in-out;
 	text-align: center;
 }
@@ -164,15 +164,15 @@ body > .linkpage-public--wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	max-width: 36px;
-	height: 36px;
+	max-width: 48px;
+	height: 48px;
 	flex: 1;
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
 	border-radius: 50%;
 	overflow: hidden;
-	font-size: 24px;
+	font-size: 36px;
 }
 
 .linkpage-row--image img {
@@ -184,7 +184,6 @@ body > .linkpage-public--wrap {
 .linkpage-row--image svg {
 	width: 24px;
 	height: 24px;
-	color: #000000;
 }
 
 .linkpage-row--title {
@@ -192,7 +191,7 @@ body > .linkpage-public--wrap {
 	align-items: center;
 	justify-content: center;
 	flex: 4;
-	min-height: 36px;
+	min-height: 48px;
 	text-align: center;
 }
 
