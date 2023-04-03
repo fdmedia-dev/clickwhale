@@ -411,7 +411,7 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 5px;
+	gap: 15px;
 }
 
 .linkpage-row--drag {
@@ -511,6 +511,19 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	color: #007AFF;
 }
 
+.linkpage-row--badge span {
+	font-size: 10px;
+	line-height: 1em;
+	font-weight: 600;
+	letter-spacing: .03em;
+	padding: 3px 10px;
+	border-radius: 10px;
+	background: #f7f7f7;
+	color: #aaaaaa;
+	white-space: nowrap;
+	text-transform: uppercase;
+}
+
 .linkpage-row--statistics span {
 	display: flex;
 	align-items: center;
@@ -536,6 +549,10 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	display: flex;
 	align-items: center;
 	gap: 5px;
+}
+
+.linkpage-row--actions.no-edit {
+	padding-left: 37px;
 }
 
 .linkpage-row--actions button {

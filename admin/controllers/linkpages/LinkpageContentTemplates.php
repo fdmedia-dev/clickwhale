@@ -107,6 +107,7 @@ class LinkpageContentTemplates {
                     </div>
                 </div>
 				<?php $this->get_template_row_end(
+					$data['type'],
 					true,
 					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
 				); ?>
@@ -194,6 +195,7 @@ class LinkpageContentTemplates {
                     </div><!-- ./linkpage-link -->
                 </div>
 				<?php $this->get_template_row_end(
+					$data['type'],
 					true,
 					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
 				); ?>
@@ -293,6 +295,7 @@ class LinkpageContentTemplates {
                     </div><!-- ./linkpage-link -->
                 </div>
 				<?php $this->get_template_row_end(
+					$data['type'],
 					true,
 					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
 				); ?>
@@ -379,7 +382,7 @@ class LinkpageContentTemplates {
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
-				<?php $this->get_template_row_end( true ); ?>
+				<?php $this->get_template_row_end( $data['type'], ); ?>
             </div><!-- ./linkpage-row--top -->
             <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
 
@@ -433,7 +436,7 @@ class LinkpageContentTemplates {
                         <strong><?php _e( 'Separator', 'clickwhale-pro' ); ?></strong>
                     </div>
                 </div>
-				<?php $this->get_template_row_end( false ); ?>
+				<?php $this->get_template_row_end( $data['type'], false ); ?>
             </div><!-- ./linkpage-row--top -->
             <div class="linkpage-row--bottom">
 				<?php echo $this->get_template_hidden_field( $data ); ?>
@@ -616,10 +619,25 @@ class LinkpageContentTemplates {
 		<?php
 	}
 
-	public function get_template_row_end( $edit = true, $stats = '' ) {
+	public static function get_template_row_badge( string $type ): string {
+		$badge  = '';
+		$select = Clickwhale_Linkpage_Edit::get_select_values();
+		foreach ( $select as $optgroup ) {
+			if ( isset( $optgroup['options'][ $type ]['name'] ) ) {
+				$badge = $optgroup['label'];
+				break;
+			}
+		}
+
+		return '<div class="linkpage-row--badge"><span>' . $badge . '</span></div>';
+	}
+
+	public function get_template_row_end( string $type, bool $edit = true, string $stats = '' ) {
+		$row_edit_class  = $edit ? '' : 'no-edit';
+		$row_stats_class = $edit ? '' : 'no-stats';
 		?>
 
-        <div class="linkpage-row--end">
+        <div class="linkpage-row--end <?php echo $row_stats_class ?>">
 			<?php if ( $stats ) { ?>
                 <div class="linkpage-row--statistics">
                     <span class="linkpage-row--clicks">
@@ -630,7 +648,8 @@ class LinkpageContentTemplates {
                     </span>
                 </div><!-- ./linkpage-row--statistics -->
 			<?php } ?>
-            <div class="linkpage-row--actions">
+			<?php echo $this->get_template_row_badge( $type ); ?>
+            <div class="linkpage-row--actions <?php echo $row_edit_class ?>">
 				<?php if ( $edit ) { ?>
                     <button type="button" class="linkpage-row--actions--button-edit">
                         <svg class="feather">
