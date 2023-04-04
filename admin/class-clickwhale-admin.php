@@ -370,7 +370,15 @@ class Clickwhale_Admin {
                             jQuery('body').append($temp);
                             $temp.val(textToCopy).select();
                             document.execCommand("copy");
+                            jQuery(this).find('em').hide();
+                            jQuery(this).append('<span class="copied"><?php _e( 'Copied!', $this->plugin_name ) ?></span>');
+
                             $temp.remove();
+
+                            setTimeout(function () {
+                                jQuery('#cw-slug--text').find('em').show();
+                                jQuery('#cw-slug--text').find('.copied').remove();
+                            }, 2000);
                         });
                     });
                 </script>
