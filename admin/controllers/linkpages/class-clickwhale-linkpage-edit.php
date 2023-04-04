@@ -269,16 +269,13 @@ class Clickwhale_Linkpage_Edit {
 		<?php } ?>
 
         <script type='text/javascript'>
-            //const {createPicker} = window.picmo;
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function () {
 
                 /* vars */
-                var wrap = jQuery('.links-list-wrap'),
-                    limit = parseInt('<?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>'),
-                    linksType = jQuery('#add-links-type'),
-                    linksButton = jQuery('#add-links-button');
+                var limit = parseInt('<?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>'),
+                    linksType = jQuery('#add-links-type');
 
                 /* Select2 init */
                 linksType.select2({
@@ -359,6 +356,12 @@ class Clickwhale_Linkpage_Edit {
                 /* ----- */
 
                 jQuery(document)
+                    .on('click', function () {
+                        closeIconPicker();
+                    })
+                    .on('click', '#icon-picker--wrap, .icon-picker', function (e) {
+                        e.stopPropagation();
+                    })
                     .on('change', '.row-cw_link .select-link', function () {
                         var parent = jQuery(this).closest('.linkpage-row'),
                             title = jQuery(this).find('option:selected').data('title'),
@@ -402,6 +405,71 @@ class Clickwhale_Linkpage_Edit {
                             change_row_image(e.target, selection.emoji);
                             change_row_image_type(e.target, 'emoji');
                         });
+                    })
+
+                    .on('click', '.icon-picker1', function (e) {
+                        e.preventDefault();
+                        alert(jQuery(this).attr('id'));
+
+                        var iconsContainer = jQuery('#icon-picker--wrap'),
+                            wrapPosition = jQuery('.wrap').offset();
+
+                        iconsContainer.css({
+                            'top': jQuery(this).offset().top - jQuery('#wpadminbar').height(),
+                            'left': jQuery(this).offset().left - wrapPosition.left + jQuery(this).width() + 10
+                        });
+                        iconsContainer.attr('data-id', jQuery(this).attr('id'))
+                        iconsContainer.show();
+
+                    })
+                    .on('click', '.icon-picker', function (e) {
+                        e.preventDefault();
+
+                        var icons = [],
+                            iconsContainer = jQuery('#icon-picker--wrap'),
+                            iconsPicker = jQuery(this),
+                            wrapPosition = jQuery('.wrap').offset(),
+                            iconsPickerPosition = iconsPicker.offset();
+
+                        iconsContainer
+                            .css({
+                                'top': iconsPickerPosition.top - jQuery('#wpadminbar').height(),
+                                'left': iconsPickerPosition.left - wrapPosition.left + iconsPicker.width() + 10
+                            })
+                            .data('id', iconsPicker.attr('id'))
+                            .show();
+
+                        iconsContainer.find('button').each(function (index, element) {
+                            icons.push(jQuery(element).data('icon'));
+                        });
+
+                        iconsContainer.find('input').on('keyup', function () {
+                            var results = icons.filter(el => el.toLowerCase().includes(this.value.toLowerCase()));
+
+                            iconsContainer.find('button').hide();
+                            results.forEach(result => {
+                                iconsContainer.find('[data-icon="' + result + '"]').show();
+                            })
+                        });
+
+                        console.log(jQuery(this).attr('id'), iconsContainer.data('id'))
+                    })
+                    .on('click', '#icon-picker--wrap button', function (e) {
+                        e.preventDefault();
+
+                        var iconButton = jQuery(this),
+                            icon = iconButton.html(),
+                            trigger = jQuery('#' + jQuery('#icon-picker--wrap').data('id') + '');
+
+                        console.log(trigger);
+
+                        trigger.parent().find('input').val(iconButton.data('icon')).prop('checked', true);
+                        trigger.prev().addClass('with-image').find('label').html(icon);
+
+                        change_row_image(trigger, icon);
+                        change_row_image_type(trigger, 'icon');
+
+                        closeIconPicker();
                     })
 
                     // Remove added link row
@@ -511,6 +579,7 @@ class Clickwhale_Linkpage_Edit {
 
                     change_row_image(jQuery(this), uploadedImage);
                 });
+
                 /* Remove linkpage-row-image (tab image) when "Remove Image" was clicked */
                 jQuery(".linkpage-row--image-remove").click(function () {
                     change_row_image(jQuery(this), '', false);
@@ -519,6 +588,7 @@ class Clickwhale_Linkpage_Edit {
                 jQuery('input[name="hidden"]').bind("change", function () {
                     disable_ogpreview_button();
                 });
+
                 jQuery(".linkpage-logo-remove").click(function () {
                     disable_ogpreview_button();
                 });
@@ -572,40 +642,8 @@ class Clickwhale_Linkpage_Edit {
                     }
                 });
 
-                function init_select($element) {
-                    jQuery($element).select2({
-                        placeholder: '<?php _e( 'Select Item', 'clickwhale' ) ?>',
-                        width: '100%',
-                        minimumResultsForSearch: 10
-                    });
-                }
-
                 function count_links() {
                     return jQuery('.linkpage-row').length;
-                }
-
-                function get_new_link_data(type, title = '', url = '', id = '') {
-                    var postId = '';
-
-                    switch (type) {
-                        case 'cw_link':
-                            break;
-                        case 'cw_custom':
-                            id = link_uniqid()
-                            break;
-                        default:
-                            postId = id;
-                            id = link_uniqid()
-                            break;
-                    }
-
-                    return {
-                        type: type,
-                        title: title.trim(),
-                        url: url,
-                        id: id,
-                        post_id: postId
-                    }
                 }
 
                 function replace_block(target, template) {
@@ -617,27 +655,6 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#add-pagelink-link').prop('disabled', true);
                     jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
 						ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.links-list-wrap');
-                }
-
-                function link_uniqid(prefix = "", random = false) {
-                    const sec = Date.now() * 1000 + Math.random() * 1000;
-                    const id = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
-                    return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}` : ""}`;
-                };
-
-                function enable_links_select($element, $enable = true) {
-                    if ($enable) {
-                        jQuery($element)
-                            .prop('disabled', false)
-                            .find('option')
-                            .remove();
-                    } else {
-                        jQuery($element)
-                            .prop('disabled', true)
-                            .find('option')
-                            .remove();
-                        jQuery($element).append('<option><?php _e( 'Nothing found', 'clickwhale' ) ?></option>')
-                    }
                 }
 
                 function disable_ogpreview_button() {
@@ -657,6 +674,11 @@ class Clickwhale_Linkpage_Edit {
 
                 function change_row_image_type(element, type) {
                     jQuery(element).closest('.linkpage-row').find('[name$="[image][type]"]').val(type);
+                }
+
+                function closeIconPicker() {
+                    jQuery('#icon-picker--wrap').hide().find('button').show();
+                    jQuery('[name="icon-picker--search"]').val('');
                 }
             });
         </script>

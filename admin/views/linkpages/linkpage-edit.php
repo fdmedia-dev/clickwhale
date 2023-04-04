@@ -585,6 +585,33 @@ do_action( 'clickwhale_admin_banner' );
                    class="button"
                    name="reset-colors"
                    style="display: none">
+
+            <!-- icons picker -->
+
+			<?php $images = LinkpageContentTemplates::get_images(); ?>
+            <div id="icon-picker--wrap" class="icon-picker--wrap">
+                <div>
+                    <div class="icon-picker--search-wrap">
+                        <input type="search" name="icon-picker--search">
+                        <span>
+                            <svg class="feather">
+                                <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#search"></use>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="icon-picker--icons-wrap">
+						<?php foreach ( $images as $image ) { ?>
+                            <button type="button" data-icon="<?php echo $image ?>">
+                                <svg class="feather">
+                                    <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $image ?>"></use>
+                                </svg>
+                            </button>
+						<?php } ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- icons picker -->
         </div>
     </form>
 

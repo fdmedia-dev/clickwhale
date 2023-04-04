@@ -643,13 +643,8 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	max-height: 250px;
 }
 
-.linkpage-row--image-select--tab {
-	padding: 20px 0;
-	border-bottom: 1px solid #f7f7f7;
-}
-
-.linkpage-row--image-select--tab:last-child {
-	border-bottom: none;
+.linkpage-row--image-select p {
+	margin: .5em 0 1em;
 }
 
 .linkpage-row--image-select--tab-inner.tab-multiple {
@@ -660,6 +655,7 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 }
 
 .linkpage-row--image-select--item {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -703,6 +699,89 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	border: 2px solid #007AFF;
 }
 
+.icon-picker--wrap {
+	position: absolute;
+	display: none;
+	width: 320px;
+	padding: 0;
+	background: #f9fafb;
+	border: 1px solid #cccccc;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
+.icon-picker--wrap > div {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.icon-picker--search-wrap {
+	position: relative;
+	background-color: #e2e8f0;
+	padding: 8px;
+	display: grid;
+	gap: 8px;
+	border-bottom: 1px solid #cccccc;
+}
+
+.icon-picker--search-wrap input {
+	background: #ffffff;
+	border-radius: 3px;
+	border: none;
+	box-sizing: border-box;
+	color: #000000;
+	font-size: .9em;
+	outline: none;
+	padding: 0.5em 2.5em 0.5em 0.5em;
+	width: 100%;
+}
+
+.icon-picker--search-wrap span {
+	position: absolute;
+	top: 16px;
+	right: 14px;
+	pointer-events: none;
+}
+
+.icon-picker--search-wrap span svg {
+	width: 20px;
+	height: 20px;
+}
+
+.icon-picker--icons-wrap {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+	gap: 5px;
+	padding: 0 8px 8px;
+	max-height: 290px;
+	overflow-y: auto;
+}
+
+.icon-picker--icons-wrap > button {
+	border: none;
+	background: none;
+	border-radius: 5px;
+	box-shadow: none;
+	padding: 4px;
+	cursor: pointer;
+}
+
+.icon-picker--icons-wrap > button span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.icon-picker--icons-wrap > button svg {
+	display: flex;
+}
+
+.icon-picker--icons-wrap > button:hover {
+	background-color: #007AFF;
+	color: #ffffff;
+}
+
 .image-select--grid .tab-inner {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
@@ -715,6 +794,10 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
+}
+
+.linkpage-row--image-select--item .image-item.with-image label {
+	background-image: none;
 }
 
 .linkpage-row--image-select--item .image-item label {
