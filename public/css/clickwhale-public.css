@@ -170,8 +170,6 @@ body > .linkpage-public--wrap {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: 16px 16px;
-	border-radius: 50%;
-	overflow: hidden;
 	font-size: 36px;
 }
 
@@ -179,11 +177,12 @@ body > .linkpage-public--wrap {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .linkpage-row--image svg {
-	width: 24px;
-	height: 24px;
+	width: 48px;
+	height: 48px;
 }
 
 .linkpage-row--title {
