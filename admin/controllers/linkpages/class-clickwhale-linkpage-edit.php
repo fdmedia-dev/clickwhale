@@ -407,21 +407,7 @@ class Clickwhale_Linkpage_Edit {
                         });
                     })
 
-                    .on('click', '.icon-picker1', function (e) {
-                        e.preventDefault();
-                        alert(jQuery(this).attr('id'));
-
-                        var iconsContainer = jQuery('#icon-picker--wrap'),
-                            wrapPosition = jQuery('.wrap').offset();
-
-                        iconsContainer.css({
-                            'top': jQuery(this).offset().top - jQuery('#wpadminbar').height(),
-                            'left': jQuery(this).offset().left - wrapPosition.left + jQuery(this).width() + 10
-                        });
-                        iconsContainer.attr('data-id', jQuery(this).attr('id'))
-                        iconsContainer.show();
-
-                    })
+                    // Icon select
                     .on('click', '.icon-picker', function (e) {
                         e.preventDefault();
 
@@ -482,7 +468,7 @@ class Clickwhale_Linkpage_Edit {
                     })
 
                     // LP Logo
-                    .on('click', '.linkpage-logo-upload, .linkpage-row--image-upload', function (e) {
+                    .on('click', '.linkpage-logo-upload', function (e) {
                         e.preventDefault();
 
                         var button = jQuery(this),
