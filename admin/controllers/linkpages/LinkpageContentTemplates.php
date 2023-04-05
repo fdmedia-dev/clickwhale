@@ -152,7 +152,7 @@ class LinkpageContentTemplates {
 					$data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' ),
 				);
 
-				echo $this->get_template_row_images( $data );
+				$this->get_template_row_images( $data );
 				?>
             </div><!-- ./linkpage-row--bottom -->
         </div>
@@ -224,7 +224,7 @@ class LinkpageContentTemplates {
 					true
 				);
 
-				echo $this->get_template_row_images( $data );
+                $this->get_template_row_images( $data );
 				?>
 
             </div><!-- ./linkpage-row--bottom -->
@@ -342,7 +342,7 @@ class LinkpageContentTemplates {
 					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' ),
 				);
 
-				echo $this->get_template_row_images( $data );
+                $this->get_template_row_images( $data );
 				?>
 
             </div><!-- ./linkpage-row--bottom -->
