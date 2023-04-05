@@ -17,6 +17,8 @@
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
  * Version:           1.2.1
+ * Requires at least: 3.8
+ * Requires PHP       7.4.0
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+

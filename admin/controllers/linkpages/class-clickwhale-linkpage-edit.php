@@ -145,7 +145,7 @@ class Clickwhale_Linkpage_Edit {
 					'name' => __( 'ClickWhale Link', 'clickwhale' ),
 					'icon' => 'link'
 				),
-				'cw_custom' => array(
+				'cw_custom_link' => array(
 					'name' => __( 'Custom Link', 'clickwhale' ),
 					'icon' => 'link-2'
 				)

@@ -225,6 +225,9 @@ class Clickwhale_Activator {
 
 				foreach ( $links as $k => $v ) {
 					$links[ $k ]['is_active'] = '1';
+					if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
+						$links[ $k ]['type'] = 'cw_custom_link';
+					}
 				}
 
 				$links = maybe_serialize( $links );
