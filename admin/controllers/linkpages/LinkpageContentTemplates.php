@@ -287,7 +287,8 @@ class LinkpageContentTemplates {
                             <span>
                                 <?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': ' ?>
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
-                                   target="_blank">
+                                   target="_blank"
+                                   rel="noopener">
                                     <?php echo get_the_title( $data['post_id'] ) ?>
                                 </a>
                             </span>
