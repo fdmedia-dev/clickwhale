@@ -152,7 +152,7 @@ class LinkpageContentTemplates {
 					$data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' ),
 				);
 
-				echo $this->get_template_row_images( $data );
+				$this->get_template_row_images( $data );
 				?>
             </div><!-- ./linkpage-row--bottom -->
         </div>
@@ -224,7 +224,7 @@ class LinkpageContentTemplates {
 					true
 				);
 
-				echo $this->get_template_row_images( $data );
+                $this->get_template_row_images( $data );
 				?>
 
             </div><!-- ./linkpage-row--bottom -->
@@ -287,7 +287,8 @@ class LinkpageContentTemplates {
                             <span>
                                 <?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': ' ?>
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
-                                   target="_blank">
+                                   target="_blank"
+                                   rel="noopener">
                                     <?php echo get_the_title( $data['post_id'] ) ?>
                                 </a>
                             </span>
@@ -342,7 +343,7 @@ class LinkpageContentTemplates {
 					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' ),
 				);
 
-				echo $this->get_template_row_images( $data );
+                $this->get_template_row_images( $data );
 				?>
 
             </div><!-- ./linkpage-row--bottom -->
