@@ -189,6 +189,12 @@ class Clickwhale_Admin {
 				array( $this->plugin_name . '_picmo' ),
 				'5.8.1'
 			);
+			wp_enqueue_script(
+				$this->plugin_name . '_ionicons',
+				'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+				array( 'jquery' ),
+				'7.1.0'
+			);
 		}
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-tracking-code' ) {
 			wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
@@ -371,7 +377,8 @@ class Clickwhale_Admin {
                             $temp.val(textToCopy).select();
                             document.execCommand("copy");
                             jQuery(this).find('em').hide();
-                            jQuery(this).append('<span class="copied"><?php _e( 'Copied!', $this->plugin_name ) ?></span>');
+                            jQuery(this).append('<span class="copied"><?php _e( 'Copied!',
+								$this->plugin_name ) ?></span>');
 
                             $temp.remove();
 

@@ -61,6 +61,10 @@ body > .linkpage-public--wrap {
 	fill: none;
 }
 
+ion-icon {
+	font-size: 48px;
+}
+
 .linkpage-public--inner {
 	display: flex;
 	flex-direction: column;

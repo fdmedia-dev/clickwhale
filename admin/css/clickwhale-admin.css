@@ -19,6 +19,10 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	fill: none;
 }
 
+ion-icon {
+	font-size: 24px;
+}
+
 #wp-admin-bar-clickwhale > a {
 	display: flex;
 	align-items: center;
@@ -688,18 +692,15 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 	border-radius: 4px;
 	box-sizing: border-box;
 	background: transparent;
-	font-size: 32px;
+	font-size: 40px;
 	line-height: 1em;
 	width: 48px;
 	height: 48px;
 	margin-top: 0;
 	overflow: hidden;
 }
-
-.image-item svg {
-	width: 24px;
-	height: 24px;
-	color: #000000;
+.image-item ion-icon{
+	font-size: 48px;
 }
 
 .image-item input:checked + label {
@@ -758,7 +759,7 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 
 .icon-picker--icons-wrap {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
 	gap: 5px;
 	padding: 0 8px 8px;
 	max-height: 290px;
@@ -782,6 +783,8 @@ body[class*="admin_page_clickwhale-edit"] #wpbody-content {
 
 .icon-picker--icons-wrap > button svg {
 	display: flex;
+	width: 32px;
+	height: 32px;
 }
 
 .icon-picker--icons-wrap > button:hover {
