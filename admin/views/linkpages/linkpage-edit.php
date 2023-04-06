@@ -385,6 +385,7 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php do_action( 'clickwhale_linkpage_after_styles_tables', $item ) ?>
                 </div>
+
                 <div id="lp-tab-seo">
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <caption hidden>Link Page SEO Options</caption>
@@ -564,11 +565,6 @@ do_action( 'clickwhale_admin_banner' );
 
                 </div>
 
-                <!--div id="lp-tab-social">
-                    <?php //do_action( 'clickwhale_admin_pro_message' ); ?>
-                    <?php //do_action( 'clickwhale_linkpage_social_fields', $item ); ?>
-                </div -->
-
 				<?php do_action( 'clickwhale_linkpage_after_tabs_content', $item ); ?>
 
             </div>
@@ -585,9 +581,9 @@ do_action( 'clickwhale_admin_banner' );
                    class="button"
                    name="reset-colors"
                    style="display: none">
-            <!-- icons picker -->
 
 			<?php
+			// icons picker
 			$images = LinkpageContentTemplates::get_images();
 			if ( $images ) {
 				?>

@@ -141,7 +141,7 @@ class Clickwhale_Linkpage_Edit {
 		$cw = array(
 			'label'   => __( 'ClickWhale Content', 'clickwhale' ),
 			'options' => array(
-				'cw_link'   => array(
+				'cw_link'        => array(
 					'name' => __( 'ClickWhale Link', 'clickwhale' ),
 					'icon' => 'link'
 				),
@@ -241,12 +241,10 @@ class Clickwhale_Linkpage_Edit {
 		$nonce          = wp_create_nonce( 'check_slug' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' && isset( $_GET['id'] ) ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
-                    var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
-
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
                             if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-styles') {
@@ -257,6 +255,8 @@ class Clickwhale_Linkpage_Edit {
                         }
                     });
 
+					<?php if(isset( $_GET['id'] )) { ?>
+                    var page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
                     if (localStorage.getItem('tab-' + page_id)) {
                         jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
                     }
@@ -264,6 +264,7 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#clickwhale-tabs li').click(function () {
                         localStorage.setItem('tab-' + page_id, jQuery(this).index());
                     });
+					<?php } ?>
                 })
             </script>
 		<?php } ?>
