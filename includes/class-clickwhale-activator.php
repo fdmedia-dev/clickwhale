@@ -207,6 +207,40 @@ class Clickwhale_Activator {
 		}
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	private static function migrate_130_data(): void {
+		global $wpdb;
+
+		if ( version_compare( CLICKWHALE_VERSION, '1.2.1', '>' ) ) {
+			$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
+			if ( ! $results ) {
+				return;
+			}
+
+			foreach ( $results as $result ) {
+				$links = maybe_unserialize( $result->links );
+
+				foreach ( $links as $k => $v ) {
+					$links[ $k ]['is_active'] = '1';
+					if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
+						$links[ $k ]['type'] = 'cw_custom_link';
+					}
+				}
+
+				$links = maybe_serialize( $links );
+
+				$wpdb->update(
+					$wpdb->prefix . 'clickwhale_linkpages',
+					array( 'links' => $links ),
+					array( 'id' => $result->id )
+				);
+			}
+		}
+	}
+
 	private static function drop_tables() {
 		global $wpdb;
 		if ( version_compare( CLICKWHALE_VERSION, '1.2.0', '>' ) ) {
@@ -231,6 +265,9 @@ class Clickwhale_Activator {
 		self::add_clickwhale_tracking_codes_table();
 		self::modify_columns();
 		self::drop_tables();
+
+		// migration
+		self::migrate_130_data();
 
 		update_option( 'clickwhale_version', CLICKWHALE_VERSION );
 	}

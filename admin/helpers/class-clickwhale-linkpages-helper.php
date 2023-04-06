@@ -70,4 +70,47 @@ class ClickwhaleLinkpagesHelper {
 		return $result ?? 0;
 	}
 
+	/**
+	 * @return array
+	 * @since 1.3.0
+	 */
+	public static function get_post_types(): array {
+		$posts      = [];
+		$args       = array(
+			'public' => true,
+		);
+		$post_types = get_post_types( $args, 'objects' );
+		unset( $post_types['attachment'] );
+
+		foreach ( $post_types as $post_type ) {
+			$posts[ $post_type->name ] = $post_type->labels->singular_name;
+		}
+
+		return $posts;
+	}
+
+	/**
+	 * @since 1.3.0
+	 */
+	public static function get_linkpage_link_clicks( string $linkpage_id, string $link_id, bool $is_link = true ) {
+		global $wpdb;
+
+
+		if ( $is_link ) {
+			$result = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE linkpage_id = %s AND link_id=%s AND event_type = 'click'",
+					$linkpage_id, $link_id )
+			);
+		} else {
+			$result = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_track WHERE linkpage_id = %s AND custom_link_id=%s AND event_type = 'click'",
+					$linkpage_id, $link_id )
+			);
+		}
+
+		return $result ?? 0;
+	}
+
 }

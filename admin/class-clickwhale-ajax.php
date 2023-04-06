@@ -367,4 +367,19 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function add_link_to_linkpage() {
+		check_ajax_referer( 'clickwhale_add_link_to_linkpage', 'security' );
+		// activate item
+		$template           = new LinkpageContentTemplates();
+		$result['template'] = $template->get_template( $_POST['type'], false, false );
+
+		wp_send_json_success( $result );
+
+		wp_die();
+	}
+
 }

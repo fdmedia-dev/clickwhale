@@ -141,10 +141,25 @@ class Clickwhale_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
-			array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'clickwhale_public_js',
-			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_enqueue_script(
+			$this->plugin_name . '_ionicons',
+			'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+			array( 'jquery' ),
+			'7.1.0'
+		);
+
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
+			array( 'jquery' ),
+			$this->version,
+		);
+
+		wp_localize_script(
+			$this->plugin_name,
+			'clickwhale_public_js',
+			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
+		);
 	}
 
 	public function do_redirect_handler() {
