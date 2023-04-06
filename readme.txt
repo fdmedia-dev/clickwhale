@@ -92,12 +92,12 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 == Changelog ==
 
 = Version 1.3.0 (6th April 2023) =
-* New: New Link Page Contents UI
-* New: Added new link Page blocks: heading and separator
+* New: New: Link Page builder
+* New: Added new Link Page blocks: heading and separator
 * New: Link Page contents images
 * New: ClickWhale plugin menu in the admin bar
-* Tweak: Behavior of Link or Link Page url copy action
-* Fix: Link to the edit Link page in the admin bar
+* Tweak: Behavior of link or Link Page url copy action
+* Fix: Link to the edit Link Page in the admin bar
 * Info: UI/UX improvements
 * Info: CSS/JS improvements
 
