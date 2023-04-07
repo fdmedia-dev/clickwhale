@@ -486,9 +486,9 @@ class LinkpageContentTemplates {
 		?>
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
 		     data-type="<?php echo $args['type'] ?>">
-			<h2><?php echo $args['data']['title'] ?></h2>
+			<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
 			<?php if ( isset( $args['data']['description'] ) && $args['data']['description'] ) { ?>
-				<p><?php echo $args['data']['description'] ?></p>
+				<p><?php echo wp_unslash( $args['data']['description'] ) ?></p>
 			<?php } ?>
 		</div>
 		<?php
