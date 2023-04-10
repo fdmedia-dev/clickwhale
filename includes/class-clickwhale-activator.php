@@ -22,7 +22,7 @@
  */
 class Clickwhale_Activator {
 
-	private function add_clickwhale_categories_table() {
+	private static function add_clickwhale_categories_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_categories';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -42,7 +42,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_links_table() {
+	private static function add_clickwhale_links_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_links';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -70,7 +70,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_linkpages_table() {
+	private static function add_clickwhale_linkpages_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_linkpages';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -96,7 +96,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_meta_table() {
+	private static function add_clickwhale_meta_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_meta';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -116,7 +116,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_visitors_table() {
+	private static function add_clickwhale_visitors_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_visitors';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -139,7 +139,7 @@ class Clickwhale_Activator {
 		}
 	}
 
-	private function add_clickwhale_track_table() {
+	private static function add_clickwhale_track_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_track';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -166,7 +166,7 @@ class Clickwhale_Activator {
 	 * @return void
 	 * @since 1.2.0
 	 */
-	private function add_clickwhale_tracking_codes_table() {
+	private static function add_clickwhale_tracking_codes_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . 'clickwhale_tracking_codes';
 		$charset_collate = $wpdb->get_charset_collate();
@@ -195,7 +195,7 @@ class Clickwhale_Activator {
 	/**
 	 * @since    1.1.1
 	 */
-	private function modify_columns() {
+	private static function modify_columns() {
 		global $wpdb;
 
 		if ( version_compare( CLICKWHALE_VERSION, '1.0.0', '>' ) ) {
@@ -207,6 +207,47 @@ class Clickwhale_Activator {
 		}
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	private static function migrate_130_data(): void {
+		global $wpdb;
+
+		if ( version_compare( CLICKWHALE_VERSION, '1.2.1', '>' ) ) {
+			$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
+			if ( ! $results ) {
+				return;
+			}
+
+			foreach ( $results as $result ) {
+				$links = maybe_unserialize( $result->links );
+
+				foreach ( $links as $k => $v ) {
+					$links[ $k ]['is_active'] = '1';
+					if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
+						$links[ $k ]['type'] = 'cw_custom_link';
+					}
+				}
+
+				$links = maybe_serialize( $links );
+
+				$wpdb->update(
+					$wpdb->prefix . 'clickwhale_linkpages',
+					array( 'links' => $links ),
+					array( 'id' => $result->id )
+				);
+			}
+		}
+	}
+
+	private static function drop_tables() {
+		global $wpdb;
+		if ( version_compare( CLICKWHALE_VERSION, '1.2.0', '>' ) ) {
+			$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links_meta" );
+		}
+	}
+
 
 	/**
 	 * Actions on plugin activation
@@ -214,15 +255,19 @@ class Clickwhale_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		// create a new object inside the static method to access non-static methods inside that class
-		( new self )->add_clickwhale_categories_table();
-		( new self )->add_clickwhale_links_table();
-		( new self )->add_clickwhale_linkpages_table();
-		( new self )->add_clickwhale_meta_table();
-		( new self )->add_clickwhale_visitors_table();
-		( new self )->add_clickwhale_track_table();
-		( new self )->add_clickwhale_tracking_codes_table();
-		( new self )->modify_columns();
+
+		self::add_clickwhale_categories_table();
+		self::add_clickwhale_links_table();
+		self::add_clickwhale_linkpages_table();
+		self::add_clickwhale_meta_table();
+		self::add_clickwhale_visitors_table();
+		self::add_clickwhale_track_table();
+		self::add_clickwhale_tracking_codes_table();
+		self::modify_columns();
+		self::drop_tables();
+
+		// migration
+		self::migrate_130_data();
 
 		update_option( 'clickwhale_version', CLICKWHALE_VERSION );
 	}

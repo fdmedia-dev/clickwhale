@@ -88,7 +88,7 @@ class Clickwhale_Public {
 		}
 	}
 
-	private function get_public_path() {
+	private function get_public_path(): string {
 		// if PHP Warning: Undefined array key "HTTP_HOST"
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
 			$_SERVER['HTTP_HOST'] = 'localhost';
@@ -141,14 +141,25 @@ class Clickwhale_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
-			array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'clickwhale_public_js',
-			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
-	}
+		wp_enqueue_script(
+			$this->plugin_name . '_ionicons',
+			'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+			array( 'jquery' ),
+			'7.1.0'
+		);
 
-	public function clickwhale_url_params_callback( $url ) {
-		return $url;
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
+			array( 'jquery' ),
+			$this->version,
+		);
+
+		wp_localize_script(
+			$this->plugin_name,
+			'clickwhale_public_js',
+			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
+		);
 	}
 
 	public function do_redirect_handler() {

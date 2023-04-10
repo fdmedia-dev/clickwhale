@@ -113,6 +113,7 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpages-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/class-clickwhale-linkpage-edit.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/linkpages/LinkpageContentTemplates.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-codes-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tracking-codes/class-clickwhale-tracking-code-edit.php';
 
@@ -168,20 +169,56 @@ class Clickwhale_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( 'jquery-ui-droppable' );
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_enqueue_script( "jquery-ui-tabs" );
-		wp_enqueue_media();
-		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
-		wp_enqueue_script( $this->plugin_name . '_select2', plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
-			array( 'jquery' ), '4.1.0-rc.0', false );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js', array( 'jquery' ),
-			$this->version, false );
-		wp_localize_script( $this->plugin_name, 'clickwhale_admin', array(
-			'siteurl' => home_url(),
-		) );
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+			wp_enqueue_script( 'jquery-ui-droppable' );
+			wp_enqueue_script( 'jquery-ui-draggable' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( "jquery-ui-tabs" );
+			wp_enqueue_media();
+			wp_enqueue_editor();
+			wp_enqueue_script( 'wp-color-picker' );
+
+			wp_enqueue_script(
+				$this->plugin_name . '_picmo',
+				'https://cdn.jsdelivr.net/npm/picmo@latest/dist/umd/index.js',
+				array( 'jquery' ),
+				'5.8.1',
+			);
+			wp_enqueue_script(
+				$this->plugin_name . '_picmo_popup_picker',
+				'https://cdn.jsdelivr.net/npm/@picmo/popup-picker@latest/dist/umd/index.js',
+				array( $this->plugin_name . '_picmo' ),
+				'5.8.1'
+			);
+			wp_enqueue_script(
+				$this->plugin_name . '_ionicons',
+				'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+				array( 'jquery' ),
+				'7.1.0'
+			);
+		}
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-tracking-code' ) {
+			wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+		}
+
+		wp_enqueue_script(
+			$this->plugin_name . '_select2',
+			plugin_dir_url( __FILE__ ) . 'js/select2.min.js',
+			array( 'jquery' ),
+			'4.1.0-rc.0'
+		);
+		wp_enqueue_script(
+			$this->plugin_name,
+			plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js',
+			array( 'jquery' ),
+			$this->version
+		);
+		wp_localize_script(
+			$this->plugin_name,
+			'clickwhale_admin', array(
+				'siteurl' => home_url(),
+			)
+		);
 	}
 
 	public function clickwhale_categories_limit_callback( $limit ) {
@@ -244,6 +281,68 @@ class Clickwhale_Admin {
 		<?php
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function admin_bar_render( $wp_admin_bar ) {
+		$wp_admin_bar->add_node( array(
+				'id'    => $this->plugin_name,
+				'title' => '<span class="ab-icon"><img src="' . plugin_dir_url( __FILE__ ) . 'images/click-icon.svg"/></span> ClickWhale',
+				'href'  => admin_url( 'admin.php?page=clickwhale' ),
+				'meta'  => array(
+					'class' => $this->plugin_name,
+					'title' => 'ClickWhale'
+				)
+			)
+		);
+
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-link',
+				'title'  => __( 'New Link', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-link' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-link',
+					'title' => __( 'Add New Link', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-category',
+				'title'  => __( 'New Category', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-category' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-category',
+					'title' => __( 'Add New Category', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-linkpage',
+				'title'  => __( 'New Link Page', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-linkpage' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-linkpage',
+					'title' => __( 'Add New Link Page', $this->plugin_name )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => $this->plugin_name . '-new-tracking code',
+				'title'  => __( 'New Tracking Code', $this->plugin_name ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-tracking-code' ),
+				'parent' => $this->plugin_name,
+				'meta'   => array(
+					'class' => $this->plugin_name . 'new-tracking-code',
+					'title' => __( 'Add New Tracking Code', $this->plugin_name )
+				)
+			)
+		);
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
@@ -260,6 +359,34 @@ class Clickwhale_Admin {
                             $temp.val(textToCopy).select();
                             document.execCommand("copy");
                             $temp.remove();
+                        });
+                    });
+                </script>
+				<?php
+			}
+			if ( $_GET['page'] === 'clickwhale-edit-link' || $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+				?>
+                <script type='text/javascript'>
+                    jQuery(document).ready(function () {
+                        jQuery('#copy-link-url, #cw-slug--text').click(function (e) {
+                            e.preventDefault();
+                            var $temp = jQuery('<input>'),
+                                textToCopy = jQuery('#cw-slug').val();
+
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                            jQuery('body').append($temp);
+                            $temp.val(textToCopy).select();
+                            document.execCommand("copy");
+                            jQuery(this).find('em').hide();
+                            jQuery(this).append('<span class="copied"><?php _e( 'Copied!',
+								$this->plugin_name ) ?></span>');
+
+                            $temp.remove();
+
+                            setTimeout(function () {
+                                jQuery('#cw-slug--text').find('em').show();
+                                jQuery('#cw-slug--text').find('.copied').remove();
+                            }, 2000);
                         });
                     });
                 </script>
