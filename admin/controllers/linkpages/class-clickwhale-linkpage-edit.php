@@ -439,7 +439,6 @@ class Clickwhale_Linkpage_Edit {
                             })
                         });
 
-                        console.log(jQuery(this).attr('id'), iconsContainer.data('id'))
                     })
                     .on('click', '#icon-picker--wrap button', function (e) {
                         e.preventDefault();
@@ -447,8 +446,6 @@ class Clickwhale_Linkpage_Edit {
                         var iconButton = jQuery(this),
                             icon = iconButton.html(),
                             trigger = jQuery('#' + jQuery('#icon-picker--wrap').data('id') + '');
-
-                        console.log(trigger);
 
                         trigger.parent().find('input').val(iconButton.data('icon')).prop('checked', true);
                         trigger.prev().addClass('with-image').find('label').html(icon);
