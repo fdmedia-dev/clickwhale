@@ -42,6 +42,7 @@ const CLICKWHALE_VERSION = '1.3.0';
  * @since 1.3.0
  */
 define( 'ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'admin/images' );
+define( 'ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
 
 /**
  * The code that runs during plugin activation.
