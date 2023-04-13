@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
 Tested up to: 6.2.0
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,9 @@ ClickWhale also offers you the possibility to embed any tracking codes or code s
 
 From now on, you don't need a third-party service, you save on monthly subscriptions and have full control. All this, on your own domain. Brilliant, isn't it?
 
+== Credits
+- Thanks to [ionicons](https://ionic.io/ionicons) for designing and providing your great icons.
+
 == Installation ==
 
 This plugin is easy to install and configure.
@@ -91,8 +94,14 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
+= Version 1.3.1 (12th April 2023) =
+* Tweak: Removed CDN scripts
+* Fix: Link Page tabs init
+* Fix: Quotes problem in the Link Page blocks
+* Info: Minor improvements
+
 = Version 1.3.0 (6th April 2023) =
-* New: New: Link Page builder
+* New: Link Page builder
 * New: Added new Link Page blocks: heading and separator
 * New: Link Page contents images
 * New: ClickWhale plugin menu in the admin bar

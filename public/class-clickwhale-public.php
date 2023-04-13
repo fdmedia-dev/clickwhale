@@ -143,7 +143,7 @@ class Clickwhale_Public {
 
 		wp_enqueue_script(
 			$this->plugin_name . '_ionicons',
-			'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+			ADMIN_JS_DIR . '/ionicons/ionicons.js',
 			array( 'jquery' ),
 			'7.1.0'
 		);
