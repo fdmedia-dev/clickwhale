@@ -63,6 +63,7 @@ body > .linkpage-public--wrap {
 
 ion-icon {
 	font-size: 48px;
+	transition: all .3s ease-in-out;
 }
 
 .linkpage-public--inner {
@@ -158,9 +159,17 @@ ion-icon {
 	text-align: center;
 }
 
+.linkpage-public-row > a ion-icon {
+	color: var(--link-color);
+}
+
 .linkpage-public-row > a:hover {
 	background-color: var(--link-bg-hover);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
+	color: var(--link-hover);
+}
+
+.linkpage-public-row > a:hover ion-icon {
 	color: var(--link-hover);
 }
 
@@ -209,7 +218,6 @@ ion-icon {
 	display: block;
 	width: 100%;
 	text-align: center;
-	color: var(--text-color);
 }
 
 .linkpage-public-row--cw_heading h2 {
@@ -217,12 +225,15 @@ ion-icon {
 	line-height: 1.3em;
 	font-weight: 500;
 	margin: 0;
+	color: var(--text-color);
 }
 
 .linkpage-public-row--cw_heading p {
 	font-size: 1.3rem;
 	line-height: 1.3em;
 	margin: 0;
+	color: var(--text-color);
+	opacity: .7;
 }
 
 .linkpage-public-row--cw_heading h2 + p {
@@ -294,17 +305,6 @@ ion-icon {
 	opacity: .7;
 }
 
-@media (min-width: 1300px) and (max-width: 1600px) {
-	.linkpage-public--inner {
-		max-width: 800px;
-	}
-
-	.linkpage-public--links > a {
-		padding: 1.2em 3em;
-		font-size: 1em;
-	}
-}
-
 @media (min-width: 1600px) {
 	.linkpage-public--inner {
 		max-width: 900px;
@@ -334,5 +334,58 @@ ion-icon {
 	.linkpage-public--links > a {
 		padding: 1.2em 3em;
 		font-size: 1.2em;
+	}
+}
+
+@media (min-width: 1300px) and (max-width: 1600px) {
+	.linkpage-public--inner {
+		max-width: 800px;
+	}
+
+	.linkpage-public--links > a {
+		padding: 1.2em 3em;
+		font-size: 1em;
+	}
+}
+
+@media (max-width: 921px) {
+	.linkpage-public--logo {
+		width: 75px;
+		height: 75px;
+	}
+
+	.linkpage-public--title {
+		font-size: 2rem;
+	}
+
+	.linkpage-public--description {
+		font-size: 1.25rem;
+		margin-bottom: 2rem;
+	}
+
+	.linkpage-public--links {
+		gap: .5rem;
+	}
+
+	.linkpage-public-row > a {
+		padding: .75rem .75rem;
+	}
+
+	.linkpage-row--image {
+		height: 32px;
+		max-width: 32px;
+		font-size: 32px;
+	}
+
+	.linkpage-row--title {
+		min-height: 32px;
+	}
+
+	.linkpage-row--end {
+		max-width: 32px;
+	}
+
+	* + .linkpage-public-row--cw_heading {
+		margin: 1.5rem 0 1rem;
 	}
 }
