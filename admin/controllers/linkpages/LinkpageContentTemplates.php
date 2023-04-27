@@ -3,7 +3,14 @@
 class LinkpageContentTemplates {
 
 	public function get_defaults() {
-		$default_types = array( 'cw_link', 'cw_custom_link', 'post_type', 'cw_heading', 'cw_separator' );
+		$default_types = array(
+			'cw_link',
+			'cw_custom_link',
+			'post_type',
+			'cw_heading',
+			'cw_separator',
+			'cw_custom_content'
+		);
 		$defaults      = [];
 
 		foreach ( $default_types as $type ) {
@@ -450,6 +457,66 @@ class LinkpageContentTemplates {
 		return $result;
 	}
 
+	public function template_admin_cw_custom_content( $args ) {
+		$defaults = $this->get_template_data_defaults();
+		$active   = false;
+
+		if ( isset( $args['data'] ) && $args['data'] ) {
+			$defaults['data'] = $args['data'];
+		} else {
+			$active                       = true;
+			$defaults['data']['type']     = $args['type'];
+			$defaults['data']['subtitle'] = '';
+			$defaults['data']['content']  = '';
+			unset( $defaults['image'] );
+		}
+
+		$data = $defaults['data'];
+
+		ob_start();
+		?>
+		<div class="linkpage-row row--<?php echo $data['type'] ?> no-image" id="row-<?php echo $data['id'] ?>">
+			<div class="linkpage-row--top">
+				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+				<div class="linkpage-row--content">
+					<div class="linkpage-row--link">
+						<strong><?php _e( 'Custom Content', 'clickwhale-pro' ) ?></strong>
+					</div><!-- ./linkpage-link -->
+				</div>
+				<?php $this->get_template_row_end( $data['type'] ); ?>
+			</div><!-- ./linkpage-row--top -->
+			<div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
+
+				<?php
+				echo $this->get_template_hidden_field( $data );
+
+				echo $this->get_template_input_field(
+					__( 'Title', 'clickwhale' ),
+					'links[' . $data['id'] . '][title]',
+					$data['title'],
+					__( 'e.g. My link', 'clickwhale' )
+				);
+				echo $this->get_template_input_field(
+					__( 'Subtitle', 'clickwhale' ),
+					'links[' . $data['id'] . '][subtitle]',
+					$data['subtitle'],
+					__( 'e.g. My link', 'clickwhale' )
+				);
+				?>
+				<hr>
+				<textarea id="cw_custom_content_<?php echo $data['id'] ?>"
+				          name="links[<?php echo $data['id'] ?>][content]">
+                    <?php echo wp_unslash( $data['content'] ) ?>
+                </textarea>
+			</div><!-- ./linkpage-row--bottom -->
+		</div>
+		<?php
+		$result = ob_get_contents();
+		ob_end_clean();
+
+		return $result;
+	}
+
 	/* PUBLIC TEMPLATES */
 
 	public function template_public_cw_link( $args ): string {
@@ -503,6 +570,28 @@ class LinkpageContentTemplates {
 		?>
 		<hr class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
 		    data-type="<?php echo $args['type'] ?>"/>
+		<?php
+		$result = ob_get_contents();
+		ob_end_clean();
+
+		return $result;
+	}
+
+	public function template_public_cw_custom_content( $args ): string {
+		ob_start();
+		?>
+		<div class="linkpage-public-row linkpage-public-row--cw_heading">
+			<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
+			<?php if ( isset( $args['data']['subtitle'] ) && $args['data']['subtitle'] ) { ?>
+				<p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
+			<?php } ?>
+		</div>
+		<div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
+		     data-type="<?php echo $args['type'] ?>">
+			<div class="linkpage-public-row--content">
+				<?php echo wp_unslash( $args['data']['content'] ); ?>
+			</div>
+		</div>
 		<?php
 		$result = ob_get_contents();
 		ob_end_clean();

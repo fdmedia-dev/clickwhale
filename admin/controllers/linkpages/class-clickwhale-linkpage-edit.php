@@ -141,13 +141,17 @@ class Clickwhale_Linkpage_Edit {
 		$cw = array(
 			'label'   => __( 'ClickWhale Content', 'clickwhale' ),
 			'options' => array(
-				'cw_link'        => array(
+				'cw_link'           => array(
 					'name' => __( 'ClickWhale Link', 'clickwhale' ),
 					'icon' => 'link'
 				),
-				'cw_custom_link' => array(
+				'cw_custom_link'    => array(
 					'name' => __( 'Custom Link', 'clickwhale' ),
 					'icon' => 'link-2'
+				),
+				'cw_custom_content' => array(
+					'name' => __( 'Custom Content', 'clickwhale' ),
+					'icon' => 'edit'
 				)
 			),
 		);
@@ -243,7 +247,7 @@ class Clickwhale_Linkpage_Edit {
 
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 			?>
-            <script type='text/javascript'>
+			<script type='text/javascript'>
                 jQuery(document).ready(function () {
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
@@ -266,10 +270,10 @@ class Clickwhale_Linkpage_Edit {
                     });
 					<?php } ?>
                 })
-            </script>
+			</script>
 		<?php } ?>
 
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function () {
@@ -292,6 +296,15 @@ class Clickwhale_Linkpage_Edit {
                 if (jQuery('.linkpage-row').length >= limit) {
                     jQuery('#add-pagelink-link').prop('disabled', true);
                 }
+
+                jQuery('.row--cw_custom_content').each(function () {
+                    var editorTextareaID = jQuery(this).find('textarea').attr('id');
+                    wp.editor.initialize(editorTextareaID, {
+                        mediaButtons: true,
+                        tinymce: true,
+                        quicktags: true
+                    });
+                });
 
                 jQuery('.linkpage-row ').each(function () {
                     var row = this,
@@ -362,6 +375,19 @@ class Clickwhale_Linkpage_Edit {
                     })
                     .on('click', '#icon-picker--wrap, .icon-picker', function (e) {
                         e.stopPropagation();
+                    })
+                    .on('clickwhale.content.template.replace', '.links-list-wrap', function (e, template) {
+                        var templateRowID = jQuery(template).attr('id'),
+                            templateID = templateRowID.replace('row-', '');
+
+                        if (jQuery(template).hasClass('row--cw_custom_content')) {
+
+                            wp.editor.initialize('cw_custom_content_' + templateID, {
+                                mediaButtons: true,
+                                tinymce: true,
+                                quicktags: true
+                            });
+                        }
                     })
                     .on('change', '.row-cw_link .select-link', function () {
                         var parent = jQuery(this).closest('.linkpage-row'),
@@ -665,7 +691,7 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('[name="icon-picker--search"]').val('');
                 }
             });
-        </script>
+		</script>
 		<?php
 	}
 }
