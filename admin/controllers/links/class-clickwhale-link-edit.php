@@ -182,16 +182,15 @@ class Clickwhale_Link_Edit {
 		$nonce        = wp_create_nonce( 'check_slug' );
 		$nonce_random = wp_create_nonce( 'random_slug' );
 		?>
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             jQuery(document).ready(function () {
 
+                var linkSubmit = jQuery('#form_edit_link').find('[type="submit"]'),
+                    slug = jQuery('#cw-slug');
                 /**
                  * Check slug
                  */
-                jQuery('#form_edit_link').on('blur', '#cw-slug', function (e) {
-
-                    var slug = jQuery(this),
-                        linkSubmit = jQuery('#form_edit_link').find('[type="submit"]');
+                jQuery('#form_edit_link').on('keyup blur', slug, function (e) {
 
                     linkSubmit.prop('disabled', true);
 
@@ -217,12 +216,14 @@ class Clickwhale_Link_Edit {
                         // slug empty or error
                         if (response.data === 'error') {
                             slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
+                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug',
+								'clickwhale' ) ?>');
                         }
                     })
                 });
+
             });
-        </script>
+		</script>
 		<?php
 	}
 }

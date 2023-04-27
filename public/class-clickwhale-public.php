@@ -40,6 +40,8 @@ class Clickwhale_Public {
 	 */
 	private $version;
 
+	private $path;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -52,6 +54,7 @@ class Clickwhale_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->path        = $this->get_public_path( 'trimmed' );
 
 		$this->load_dependencies();
 		$this->init_classes();
@@ -88,14 +91,21 @@ class Clickwhale_Public {
 		}
 	}
 
-	private function get_public_path(): string {
+	private function get_public_path( string $trimmed = '' ): string {
 		// if PHP Warning: Undefined array key "HTTP_HOST"
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
 			$_SERVER['HTTP_HOST'] = 'localhost';
 		}
-		$url = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+		$url    = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+		$result = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
 
-		return untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
+		if ( $trimmed ) {
+			return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
+		} else {
+			return $result;
+		}
+
+
 	}
 
 	/**
@@ -105,20 +115,14 @@ class Clickwhale_Public {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Clickwhale_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Clickwhale_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/clickwhale-public.css', array(),
-			$this->version, 'all' );
+		if ( ! is_admin() && $this->path && ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
+			wp_enqueue_style(
+				$this->plugin_name,
+				PUBLIC_CSS_DIR . '/clickwhale-public.css',
+				array(),
+				$this->version, 'all'
+			);
+		}
 
 	}
 
@@ -129,48 +133,35 @@ class Clickwhale_Public {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Clickwhale_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Clickwhale_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+		if ( ! is_admin() && $this->path && ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
+			wp_enqueue_script(
+				$this->plugin_name . '_ionicons',
+				PUBLIC_JS_DIR . '/ionicons/ionicons.js',
+				array( 'jquery' ),
+				'7.1.0'
+			);
 
-		wp_enqueue_script(
-			$this->plugin_name . '_ionicons',
-			ADMIN_JS_DIR . '/ionicons/ionicons.js',
-			array( 'jquery' ),
-			'7.1.0'
-		);
+			wp_enqueue_script(
+				$this->plugin_name,
+				PUBLIC_JS_DIR . '/clickwhale-public.js',
+				array( 'jquery' ),
+				$this->version,
+			);
 
-		wp_enqueue_script(
-			$this->plugin_name,
-			plugin_dir_url( __FILE__ ) . 'js/clickwhale-public.js',
-			array( 'jquery' ),
-			$this->version,
-		);
-
-		wp_localize_script(
-			$this->plugin_name,
-			'clickwhale_public_js',
-			array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
-		);
+			wp_localize_script(
+				$this->plugin_name,
+				'clickwhale_public_js',
+				array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
+			);
+		}
 	}
 
 	public function do_redirect_handler() {
 		global $wpdb;
 
-		$path = $this->get_public_path();
-
-		if ( ! is_admin() && $path ) {
-			$path    = ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $path ), '/' );
+		if ( ! is_admin() && $this->path ) {
 			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'",
-				$path ) );
+				$this->path ) );
 		};
 
 		if ( ! empty( $results ) ) {
