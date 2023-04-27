@@ -3,20 +3,20 @@
  * included in this file.
  */
 :root {
-	--page-bg-color: #FDD231;
-	--text-color: #1A1C1D;
-	--link-bg-color: #fee06f;
-	--link-bg-hover: #ffffff;
-	--link-color: #1a1c1d;
-	--link-hover: #397eff;
+	--clickwhale-page-bg-color: #FDD231;
+	--clickwhale-text-color: #1A1C1D;
+	--clickwhale-link-bg-color: #fee06f;
+	--clickwhale-link-bg-hover: #ffffff;
+	--clickwhale-link-color: #1a1c1d;
+	--clickwhale-link-hover: #397eff;
 }
 
-html, body {
-	height: 100%;
+body.clickwhale-linkpage {
+	min-height: 100vh;
 }
 
-html > body {
-	height: 100%;
+body.clickwhale-linkpage.admin-bar {
+	min-height: calc(100vh - 32px);
 }
 
 #wp-admin-bar-clickwhale > a {
@@ -30,28 +30,29 @@ html > body {
 	opacity: .6;
 }
 
-body > .linkpage-public--wrap {
-	min-height: 100%;
-}
-
 .linkpage-public--wrap {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	padding: 20px;
-	min-height: 100%;
+	min-height: 100vh;
 	margin-top: 0;
 	border: none;
 	box-sizing: border-box;
-	background-color: var(--page-bg-color);
-	color: var(--text-color);
+	background-color: var(--clickwhale-page-bg-color);
+	font-family: inherit;
+	color: var(--clickwhale-text-color);
+}
+
+body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
+	min-height: calc(100vh - 32px);
 }
 
 .linkpage-public--wrap * {
 	box-sizing: border-box;
 }
 
-.feather {
+.linkpage-public--wrap .feather {
 	width: 24px;
 	height: 24px;
 	stroke: currentColor;
@@ -61,7 +62,7 @@ body > .linkpage-public--wrap {
 	fill: none;
 }
 
-ion-icon {
+.linkpage-public--wrap ion-icon {
 	font-size: 48px;
 	transition: all .3s ease-in-out;
 }
@@ -109,7 +110,7 @@ ion-icon {
 	text-align: center;
 	font-size: 3.5rem;
 	line-height: 1.2em;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 	font-weight: 700;
 	margin-bottom: 1.2rem;
 	max-width: 800px;
@@ -120,7 +121,7 @@ ion-icon {
 	text-align: center;
 	font-size: 1.5rem;
 	line-height: 1.2em;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 	opacity: .7;
 	margin-bottom: 3rem;
 	max-width: 800px;
@@ -146,13 +147,13 @@ ion-icon {
 	align-items: center;
 	justify-content: space-between;
 	gap: 10px;
-	background-color: var(--link-bg-color);
+	background-color: var(--clickwhale-link-bg-color);
 	border-radius: 10px;
-	color: var(--link-color);
+	color: var(--clickwhale-link-color);
 	font-size: 1rem;
 	line-height: 1.2em;
 	text-decoration: none;
-	font-weight: 500;
+	font-weight: 400;
 	letter-spacing: normal;
 	padding: .75rem 1.5rem;
 	transition: all .3s ease-in-out;
@@ -160,17 +161,17 @@ ion-icon {
 }
 
 .linkpage-public-row > a ion-icon {
-	color: var(--link-color);
+	color: var(--clickwhale-link-color);
 }
 
 .linkpage-public-row > a:hover {
-	background-color: var(--link-bg-hover);
+	background-color: var(--clickwhale-link-bg-hover);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
-	color: var(--link-hover);
+	color: var(--clickwhale-link-hover);
 }
 
 .linkpage-public-row > a:hover ion-icon {
-	color: var(--link-hover);
+	color: var(--clickwhale-link-hover);
 }
 
 .linkpage-row--image {
@@ -223,16 +224,16 @@ ion-icon {
 .linkpage-public-row--cw_heading h2 {
 	font-size: 1.7rem;
 	line-height: 1.3em;
-	font-weight: 500;
+	font-weight: 700;
 	margin: 0;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 }
 
 .linkpage-public-row--cw_heading p {
-	font-size: 1.3rem;
+	font-size: 1.25rem;
 	line-height: 1.3em;
 	margin: 0;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 	opacity: .7;
 }
 
@@ -241,14 +242,14 @@ ion-icon {
 }
 
 * + .linkpage-public-row--cw_heading {
-	margin-top: 40px;
+	margin: 2.5rem 0 1rem;
 }
 
 /*---------- CW SEPARATOR BLOCK ----------*/
 
 .linkpage-public-row--cw_separator {
 	margin: 10px 0;
-	background-color: var(--text-color);
+	background-color: var(--clickwhale-text-color);
 	border: none;
 	opacity: .1;
 }
@@ -268,7 +269,7 @@ ion-icon {
 .linkpage-public--social > li > a {
 	display: block;
 	text-decoration: none;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 }
 
 .linkpage-public--social > li > a svg {
@@ -289,7 +290,7 @@ ion-icon {
 	margin-top: 80px;
 	font-size: 1rem;
 	text-decoration: none;
-	color: var(--text-color);
+	color: var(--clickwhale-text-color);
 	white-space: nowrap;
 }
 
@@ -385,7 +386,15 @@ ion-icon {
 		max-width: 32px;
 	}
 
+	.linkpage-public-row--cw_heading h2 {
+		font-size: 1.25rem
+	}
+
+	.linkpage-public-row--cw_heading p {
+		font-size: 1rem;
+	}
+
 	* + .linkpage-public-row--cw_heading {
-		margin: 1.5rem 0 1rem;
+		margin: 2rem 0 1rem;
 	}
 }

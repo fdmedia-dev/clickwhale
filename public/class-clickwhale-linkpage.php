@@ -32,6 +32,7 @@ class Clickwhale_Public_Linkpage {
 
 		// Remove Yoast SEO Data
 		add_filter( 'wpseo_json_ld_output', '__return_false' );
+		add_filter( 'body_class', [ $this, 'linkpage_classes' ] );
 	}
 
 	/**
@@ -304,10 +305,24 @@ class Clickwhale_Public_Linkpage {
 		);
 	}
 
+	/**
+	 * Add body classes
+	 *
+	 * @param $classes
+	 *
+	 * @return mixed
+	 * @since 1.3.2
+	 */
+	public static function linkpage_classes( $classes ) {
+		$classes[] = 'clickwhale-linkpage';
+
+		return $classes;
+	}
+
 	public function admin_scripts() {
 		$nonce = wp_create_nonce( 'track_custom_link' );
 		?>
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
@@ -321,7 +336,7 @@ class Clickwhale_Public_Linkpage {
 
                 });
             });
-        </script>
+		</script>
 		<?php
 	}
 }

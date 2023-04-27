@@ -42,7 +42,11 @@ const CLICKWHALE_VERSION = '1.3.1';
  * @since 1.3.0
  */
 define( 'ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'admin/images' );
+define( 'ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'admin/css' );
 define( 'ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
+define( 'PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'public/images' );
+define( 'PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' );
+define( 'PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
 
 /**
  * The code that runs during plugin activation.
@@ -96,3 +100,4 @@ function run_clickwhale() {
 }
 
 run_clickwhale();
+
