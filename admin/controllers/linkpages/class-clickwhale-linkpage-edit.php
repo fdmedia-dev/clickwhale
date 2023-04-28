@@ -197,7 +197,7 @@ class Clickwhale_Linkpage_Edit {
 	public static function get_nav_menus() {
 		$menus      = wp_get_nav_menus();
 		$result     = array();
-		$result[''] = __( 'Select Menu', 'clickwhale' );
+		$result[''] = __( 'No Menu', 'clickwhale' );
 		foreach ( $menus as $menu ) {
 			$result[ $menu->term_id ] = $menu->name;
 		}
