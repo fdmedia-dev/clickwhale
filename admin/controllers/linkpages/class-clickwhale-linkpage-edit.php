@@ -284,13 +284,13 @@ class Clickwhale_Linkpage_Edit {
                     tinymceOptions = {
                         wpautop: true,
                         plugins: 'charmap colorpicker hr lists paste tabfocus textcolor fullscreen wordpress wpautoresize wpeditimage wpemoji wpgallery wplink wptextpattern',
-                        toolbar1: 'bold, italic, strikethrough, bullist, numlist, blockquote, hr, alignleft, aligncenter, alignright, link, unlink, wp_more, spellchecker, fullscreen, wp_adv',
-                        toolbar2: 'formatselect, underline, alignjustify, forecolor, pastetext, removeformat, charmap, outdent, indent, undo, redo, wp_help',
+                        toolbar1: 'formatselect, bold, italic, underline, strikethrough, bullist, numlist, alignleft, aligncenter, alignright, link, unlink, pastetext, removeformat, charmap, undo, redo',
+                        toolbar2: '',
                         toolbar3: '',
                         toolbar4: '',
                         textarea_rows: 20
                     },
-                    quicktagsOptions = {buttons: 'strong,em,link,block,del,ins,img,ul,ol,li,code,more,close'};
+                    quicktagsOptions = {buttons: 'strong,em,link,block,del,ins,img,ul,ol,li,code,close'};
 
                 /* Select2 init */
                 linksType.select2({
