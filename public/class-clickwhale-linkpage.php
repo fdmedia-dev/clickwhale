@@ -304,10 +304,38 @@ class Clickwhale_Public_Linkpage {
 		);
 	}
 
+	public function get_legals_menu() {
+		global $wpdb;
+
+		$table_links_meta = $wpdb->prefix . 'clickwhale_meta';
+		$linkpage_id      = $this->data['id'];
+
+		$legals_menu_id = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table_links_meta WHERE linkpage_id=%s AND meta_key='legals_menu_id'",
+				$linkpage_id ),
+			ARRAY_A
+		);
+
+		if ( ! $legals_menu_id || ! $legals_menu_id['meta_value'] ) {
+			return false;
+		}
+
+		return wp_nav_menu( array(
+			'menu'            => $legals_menu_id['meta_value'],
+			'menu_class'      => 'linkpage-menu',
+			'container'       => 'div',
+			'container_class' => 'linkpage-menu--wrap',
+			'fallback_cb'     => false,
+			'depth'           => 0
+		) );
+
+	}
+
 	public function admin_scripts() {
 		$nonce = wp_create_nonce( 'track_custom_link' );
 		?>
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
@@ -321,7 +349,7 @@ class Clickwhale_Public_Linkpage {
 
                 });
             });
-        </script>
+		</script>
 		<?php
 	}
 }

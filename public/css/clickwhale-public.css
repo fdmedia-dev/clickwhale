@@ -294,6 +294,35 @@ ion-icon {
 	opacity: .7;
 }
 
+.linkpage-menu--wrap {
+	width: 100%;
+	max-width: 800px;
+	margin: 3rem auto 0;
+}
+
+.linkpage-menu--wrap ul {
+	display: flex;
+	margin: 0;
+	list-style: none;
+	gap: 1rem;
+	align-items: center;
+	justify-content: center;
+	flex-flow: row wrap;
+}
+
+.linkpage-menu--wrap ul a {
+	display: block;
+	color: var(--text-color);
+	text-decoration: underline;
+	font-size: .72rem;
+	line-height: 1em;
+}
+
+.linkpage-menu--wrap ul a:hover {
+	text-decoration: none;
+	opacity: .7;
+}
+
 @media (min-width: 1300px) and (max-width: 1600px) {
 	.linkpage-public--inner {
 		max-width: 800px;
