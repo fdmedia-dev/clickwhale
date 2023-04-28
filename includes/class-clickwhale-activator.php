@@ -106,6 +106,7 @@ class Clickwhale_Activator {
 			meta_key varchar(255) default NULL,
 			meta_value longtext default NULL,
 			link_id int(11) NOT NULL,
+			linkpage_id int(11) NOT NULL,
 			
 			PRIMARY KEY  (id)
 		) $charset_collate;";
@@ -203,6 +204,13 @@ class Clickwhale_Activator {
 				$wpdb->prefix . "clickwhale_track",
 				"custom_link_id",
 				"ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id"
+			);
+		}
+		if ( version_compare( CLICKWHALE_VERSION, '1.3.1', '>=' ) ) {
+			maybe_add_column(
+				$wpdb->prefix . "clickwhale_meta",
+				"custom_link_id",
+				"ALTER TABLE {$wpdb->prefix}clickwhale_meta ADD linkpage_id int(11) NOT NULL AFTER link_id"
 			);
 		}
 	}
