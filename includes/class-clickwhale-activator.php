@@ -208,7 +208,7 @@ class Clickwhale_Activator {
 		}
 		if ( version_compare( CLICKWHALE_VERSION, '1.3.1', '>=' ) ) {
 			maybe_add_column(
-				$wpdb->prefix . "clickwhale_track",
+				$wpdb->prefix . "clickwhale_meta",
 				"custom_link_id",
 				"ALTER TABLE {$wpdb->prefix}clickwhale_meta ADD linkpage_id int(11) NOT NULL AFTER link_id"
 			);
