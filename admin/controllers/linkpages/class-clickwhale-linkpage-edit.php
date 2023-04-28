@@ -47,13 +47,13 @@ class Clickwhale_Linkpage_Edit {
 
 	public function render_tabs() {
 		$tabs = array(
-			'contents' => array(
-				'name' => __( 'Contents', 'clickwhale' ),
-				'url'  => 'contents'
-			),
 			'settings' => array(
 				'name' => __( 'Settings', 'clickwhale' ),
 				'url'  => 'settings',
+			),
+			'contents' => array(
+				'name' => __( 'Contents', 'clickwhale' ),
+				'url'  => 'contents'
 			),
 			'styles'   => array(
 				'name' => __( 'Styles', 'clickwhale' ),
@@ -648,7 +648,7 @@ class Clickwhale_Linkpage_Edit {
                 /**
                  * Check slug
                  */
-                jQuery('#form_edit_linkpage').on('blur', '#cw-slug', function (e) {
+                jQuery('#form_edit_linkpage').on('blur, keyup', '#cw-slug', function (e) {
 
                     var slug = jQuery(this),
                         linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]');
@@ -732,6 +732,25 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#icon-picker--wrap').hide().find('button').show();
                     jQuery('[name="icon-picker--search"]').val('');
                 }
+
+                jQuery('#form_edit_linkpage #submit').on('click', function (e) {
+                    if (!jQuery('#title').val() || !jQuery('#cw-slug').val()) {
+                        e.preventDefault();
+
+                        jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
+
+                        if (!jQuery('#title').val()) {
+                            jQuery('#title').addClass('error');
+                            jQuery('#cw-title--description').text('<?php _e( 'Please enter title', 'clickwhale' ) ?>')
+                        }
+                        if (!jQuery('#cw-slug').val()) {
+                            jQuery('#cw-slug').addClass('error');
+                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
+                        }
+                    } else {
+                        return true;
+                    }
+                });
             });
 		</script>
 		<?php
