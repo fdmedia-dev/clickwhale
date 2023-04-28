@@ -22,14 +22,14 @@ class Clickwhale_Linkpage_Edit {
 	 */
 	public function get_defaults(): array {
 		return array(
-			'id'          => 0,
-			'created_at'  => '',
-			'title'       => '',
-			'slug'        => '',
-			'description' => '',
-			'links'       => '',
-			'logo'        => '',
-			'styles'      => array(
+			'id'                   => 0,
+			'created_at'           => '',
+			'title'                => '',
+			'slug'                 => '',
+			'description'          => '',
+			'links'                => '',
+			'logo'                 => '',
+			'styles'               => array(
 				'bg_color'            => '#fdd231',
 				'text_color'          => '#1a1c1d',
 				'link_bg_color'       => '#fee06f',
@@ -37,10 +37,11 @@ class Clickwhale_Linkpage_Edit {
 				'link_bg_color_hover' => '#ffffff',
 				'link_color_hover'    => '#397eff',
 			),
-			'social'      => array(
+			'social'               => array(
 				'networks' => array(),
 				'seo'      => array()
-			)
+			),
+			'meta__legals_menu_id' => 0
 		);
 	}
 
@@ -189,6 +190,60 @@ class Clickwhale_Linkpage_Edit {
 		return apply_filters( 'clickwhale_linkpage_select', $values );
 	}
 
+	/**
+	 * @return array
+	 * @since 1.3.2
+	 */
+	public static function get_nav_menus() {
+		$menus      = wp_get_nav_menus();
+		$result     = array();
+		$result[''] = __( 'Select Menu', 'clickwhale' );
+		foreach ( $menus as $menu ) {
+			$result[ $menu->term_id ] = $menu->name;
+		}
+
+		return $result;
+	}
+
+	public function get_link_meta( $id, $key ) {
+		global $wpdb;
+		$table_links_meta = $wpdb->prefix . 'clickwhale_meta';
+
+		return $wpdb->get_row( "SELECT * FROM $table_links_meta WHERE linkpage_id='$id' AND meta_key='$key'", ARRAY_A );
+	}
+
+	private function save_linkpage_meta( $id, $key, $value, $action ) {
+		global $wpdb;
+		$links_meta_table = $wpdb->prefix . 'clickwhale_meta';
+
+		switch ( $action ) {
+			case 'insert':
+				$result = $wpdb->insert(
+					$links_meta_table,
+					array(
+						'meta_key'    => $key,
+						'meta_value'  => $value,
+						'linkpage_id' => $id
+					)
+				);
+				break;
+			case 'update':
+				$result = $wpdb->update(
+					$links_meta_table,
+					array(
+						'meta_value' => $value
+					),
+					array(
+						'linkpage_id' => $id,
+						'meta_key'    => $key,
+					)
+				);
+				break;
+		}
+
+		return $result;
+	}
+
 	public function save_update_linkpage() {
 		global $wpdb;
 		$linkpages_table = $wpdb->prefix . 'clickwhale_linkpages';
@@ -199,6 +254,10 @@ class Clickwhale_Linkpage_Edit {
 		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
 		$item['social']  = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
 		$item['author']  = get_current_user_id();
+
+		// data fot meta table
+		$legals_menu_id = $item['meta__legals_menu_id'];
+		unset( $item['meta_legals'] );
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
@@ -214,6 +273,7 @@ class Clickwhale_Linkpage_Edit {
 				array( 'id' => $item['id'] )
 			);
 			set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
+
 		} else {
 			$wpdb->insert(
 				$linkpages_table,
@@ -221,7 +281,15 @@ class Clickwhale_Linkpage_Edit {
 			);
 			$item['id'] = $wpdb->insert_id;
 			set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
+
 		}
+		if ( $this->get_link_meta( $item['id'], 'legals_menu_id' ) ) {
+			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'update' );
+		} else {
+			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'insert' );
+		}
+		//exit( var_dump( $wpdb->last_query ) );
+
 
 		// redirect to new record
 		$url = 'admin.php?page=clickwhale-edit-linkpage&id=' . $item['id'];
@@ -243,7 +311,7 @@ class Clickwhale_Linkpage_Edit {
 
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 			?>
-            <script type='text/javascript'>
+			<script type='text/javascript'>
                 jQuery(document).ready(function () {
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
@@ -266,10 +334,10 @@ class Clickwhale_Linkpage_Edit {
                     });
 					<?php } ?>
                 })
-            </script>
+			</script>
 		<?php } ?>
 
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function () {
@@ -665,7 +733,7 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('[name="icon-picker--search"]').val('');
                 }
             });
-        </script>
+		</script>
 		<?php
 	}
 }
