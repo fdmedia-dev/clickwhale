@@ -245,7 +245,7 @@ class Clickwhale_Public_Linkpage {
 		$style = '';
 
 		if ( $this->styles ) {
-			$style .= ':root{ --page-bg-color: ' . $this->styles['bg_color'] . '; --text-color: ' . $this->styles['text_color'] . '; --link-bg-color: ' . $this->styles['link_bg_color'] . '; --link-color: ' . $this->styles['link_color'] . '; --link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --link-hover: ' . $this->styles['link_color_hover'] . ';  }';
+			$style .= ':root{ --clickwhale-page-bg-color: ' . $this->styles['bg_color'] . '; --clickwhale-text-color: ' . $this->styles['text_color'] . '; --clickwhale-link-bg-color: ' . $this->styles['link_bg_color'] . '; --clickwhale-link-color: ' . $this->styles['link_color'] . '; --clickwhale-link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --clickwhale-link-hover: ' . $this->styles['link_color_hover'] . ';  }';
 		}
 
 		return ' <style>' . $style . ' </style > ';

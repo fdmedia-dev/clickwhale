@@ -199,13 +199,24 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	height: 48px;
 }
 
-.linkpage-row--title {
+.linkpage-row--title--wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 	flex: 4;
 	min-height: 48px;
 	text-align: center;
+}
+
+.linkpage-row--title {
+}
+
+.linkpage-row--subtitle {
+	font-size: .875rem;
+	line-height: 1em;
+	opacity: .7;
+	margin: .25rem 0 0 0;
 }
 
 .linkpage-row--end {
@@ -253,6 +264,114 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	border: none;
 	opacity: .1;
 }
+
+/*---------- CW CUSTOM CONTENT BLOCK ----------*/
+
+.linkpage-public-row--content {
+	color: var(--clickwhale-text-color);
+	font-size: 1rem;
+	line-height: 1.3em;
+	letter-spacing: normal;
+}
+
+.linkpage-public-row--content h1,
+.linkpage-public-row--content h2,
+.linkpage-public-row--content h3,
+.linkpage-public-row--content h4,
+.linkpage-public-row--content h5,
+.linkpage-public-row--content h6 {
+	line-height: 1.3em;
+	font-weight: 700;
+	margin: 1.5rem 0 0 0;
+	color: var(--clickwhale-text-color);
+}
+
+.linkpage-public-row--content h1,
+.linkpage-public-row--content h2 {
+	font-size: 1.7rem;
+}
+
+.linkpage-public-row--content h3 {
+	font-size: 1.5rem;
+}
+
+.linkpage-public-row--content h4 {
+	font-size: 1.5rem;
+}
+
+.linkpage-public-row--content h5 {
+	font-size: 1.3rem;
+}
+
+.linkpage-public-row--content h6 {
+	font-size: 1.2rem;
+}
+
+.linkpage-public-row--content p,
+.linkpage-public-row--content ul,
+.linkpage-public-row--content ol {
+	margin: .5rem 0;
+}
+
+.linkpage-public-row--content ul,
+.linkpage-public-row--content ol {
+	padding: 0;
+	list-style: none;
+}
+
+.linkpage-public-row--content ol {
+	counter-reset: cw-cc-list-counter
+}
+
+.linkpage-public-row--content ul li,
+.linkpage-public-row--content ol li {
+	position: relative;
+	padding-left: 30px;
+}
+
+.linkpage-public-row--content ol li {
+	counter-increment: cw-cc-list-counter;
+}
+
+.linkpage-public-row--content ul li::before {
+	position: absolute;
+	display: block;
+	content: '';
+	top: 10px;
+	left: 0;
+	width: 12px;
+	height: 1px;
+	background-color: var(--clickwhale-text-color);
+	opacity: .5;
+}
+
+.linkpage-public-row--content ol li::before {
+	position: absolute;
+	display: block;
+	content: counter(cw-cc-list-counter) ". ";
+	top: 0;
+	left: 0;
+	opacity: .5;
+}
+
+
+.linkpage-public-row--content a {
+	display: inline;
+	color: var(--clickwhale-text-color);
+	text-decoration: underline;
+}
+
+.linkpage-public-row--content a:hover {
+	color: var(--clickwhale-text-color);
+	text-decoration: none;
+	opacity: .7;
+}
+
+.linkpage-public-row--content > *:first-child {
+	margin-top: 0;
+}
+
+/* ---------- */
 
 
 .linkpage-public--social {
@@ -309,7 +428,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 .linkpage-menu--wrap {
 	width: 100%;
 	max-width: 800px;
-	margin: 3rem auto 0;
+	margin: 1.5rem auto 0;
 }
 
 .linkpage-menu--wrap ul {
@@ -407,7 +526,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 		font-size: 32px;
 	}
 
-	.linkpage-row--title {
+	.linkpage-row--title--wrap {
 		min-height: 32px;
 	}
 
@@ -416,7 +535,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	}
 
 	.linkpage-public-row--cw_heading h2 {
-		font-size: 1.25rem
+		font-size: 1.375rem;
 	}
 
 	.linkpage-public-row--cw_heading p {
@@ -425,5 +544,20 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 	* + .linkpage-public-row--cw_heading {
 		margin: 2rem 0 1rem;
+	}
+
+	.linkpage-public-row--content h1,
+	.linkpage-public-row--content h2 {
+		font-size: 1.375rem;
+	}
+
+	.linkpage-public-row--content h3,
+	.linkpage-public-row--content h4 {
+		font-size: 1.25rem;
+	}
+
+	.linkpage-public-row--content h5,
+	.linkpage-public-row--content h6 {
+		font-size: 1.125rem;
 	}
 }
