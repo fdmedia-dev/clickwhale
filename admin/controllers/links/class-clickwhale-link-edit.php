@@ -186,41 +186,63 @@ class Clickwhale_Link_Edit {
             jQuery(document).ready(function () {
 
                 var linkSubmit = jQuery('#form_edit_link').find('[type="submit"]'),
+                    title = jQuery('#title'),
                     slug = jQuery('#cw-slug');
+
                 /**
-                 * Check slug
+                 * Submit action
+                 * 1. Check title (not null)
+                 * 2. Check slug (not null)
+                 * 3. Check slug (exists as post/page slug)
                  */
-                jQuery('#form_edit_link').on('keyup blur', slug, function (e) {
+                jQuery('#submit').click(function (e) {
 
-                    linkSubmit.prop('disabled', true);
+                    if (!title.val() || !slug.val() || check_slug() !== false) {
 
-                    jQuery.post(ajaxurl, {
-                        'security': '<?php echo $nonce ?>',
-                        'action': 'clickwhale/admin/check_slug',
-                        'type': 'link',
-                        'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
-                    }, function (response) {
-                        // slug exists
-                        if (response.data === true) {
+                        e.preventDefault();
+
+                        if (!title.val()) {
+                            title.addClass('error')
+                                .next().text('<?php _e( 'Please enter title', 'clickwhale' ) ?>');
+                        } else {
+                            title.removeClass('error').next().text('');
+                        }
+
+                        if (!slug.val() || check_slug() !== 'error') {
+                            slug.addClass('error')
+                                .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
+                        } else {
+                            slug.removeClass('error').next().text('');
+                        }
+
+                        if (check_slug() === true) {
                             slug.addClass('error');
                             jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-								'clickwhale' ) ?>');
+								'clickwhale' ) ?>')
                         }
-                        // slug doesn't exists
-                        if (response.data === false) {
-                            slug.removeClass('error');
-                            jQuery('#cw-slug--description').text('');
-                            linkSubmit.prop('disabled', false);
-                        }
-                        // slug empty or error
-                        if (response.data === 'error') {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug',
-								'clickwhale' ) ?>');
-                        }
-                    })
+                    }
                 });
+
+                function check_slug() {
+                    let result = null;
+                    jQuery.ajax({
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        url: ajaxurl,
+                        data: {
+                            'security': '<?php echo $nonce ?>',
+                            'action': 'clickwhale/admin/check_slug',
+                            'type': 'link',
+                            'slug': slug.val(),
+                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                        }, success: function (response) {
+                            result = response.data;
+                        }
+                    });
+
+                    return result;
+                }
 
             });
 		</script>

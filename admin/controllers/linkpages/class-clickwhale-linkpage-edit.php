@@ -261,7 +261,7 @@ class Clickwhale_Linkpage_Edit {
 
 		// data fot meta table
 		$legals_menu_id = $item['meta__legals_menu_id'];
-		unset( $item['meta_legals'] );
+		unset( $item['meta__legals_menu_id'] );
 
 		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
 
@@ -276,7 +276,7 @@ class Clickwhale_Linkpage_Edit {
 				$item,
 				array( 'id' => $item['id'] )
 			);
-			set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
+			//set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
 
 		} else {
 			$wpdb->insert(
@@ -284,9 +284,12 @@ class Clickwhale_Linkpage_Edit {
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;
-			set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
+			//set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
 
 		}
+
+		//exit( var_dump( $wpdb->last_query ) );
+
 		if ( $this->get_link_meta( $item['id'], 'legals_menu_id' ) ) {
 			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'update' );
 		} else {
@@ -347,7 +350,11 @@ class Clickwhale_Linkpage_Edit {
             jQuery(document).ready(function () {
 
                 /* vars */
-                const limit = parseInt('<?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>'),
+                const
+                    linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]'),
+                    title = jQuery('#title'),
+                    slug = jQuery('#cw-slug'),
+                    limit = parseInt('<?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>'),
                     linksType = jQuery('#add-links-type'),
                     tinymceOptions = {
                         wpautop: true,
@@ -375,6 +382,7 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#add-pagelink-link').prop('disabled', true);
                 }
 
+                /* Init wp.editor */
                 jQuery('.row--cw_custom_content').each(function () {
                     const editorTextareaID = jQuery(this).find('textarea').attr('id');
                     wp.editor.initialize(editorTextareaID, {
@@ -384,16 +392,7 @@ class Clickwhale_Linkpage_Edit {
                     });
                 });
 
-                jQuery('.linkpage-row ').each(function () {
-                    const row = this,
-                        imageSelect = jQuery(this).find('.linkpage-row--image-select select');
-                    if (imageSelect.val() !== 'undefined') {
-                        jQuery('[data-tab="' + imageSelect.val() + '"]').show();
-                    }
-                });
-
                 // Draggable, Droppable, Sortable
-
                 var contentWrap = jQuery('.links-list-wrap'),
                     contentItems = jQuery('.cw-content--items');
 
@@ -448,12 +447,17 @@ class Clickwhale_Linkpage_Edit {
                 /* ----- */
 
                 jQuery(document)
+                    // close theicons select on document click
                     .on('click', function () {
                         closeIconPicker();
                     })
+
+                    // prevent close the icons select on document click when target is the icons select container
                     .on('click', '#icon-picker--wrap, .icon-picker', function (e) {
                         e.stopPropagation();
                     })
+
+                    // init tintmce (wp.editor) on custom content block drag
                     .on('clickwhale.content.template.replace', '.links-list-wrap', function (e, template) {
                         const templateRowID = jQuery(template).attr('id'),
                             templateID = templateRowID.replace('row-', '');
@@ -467,6 +471,8 @@ class Clickwhale_Linkpage_Edit {
                             });
                         }
                     })
+
+                    // change hidden fields value on CW link select
                     .on('change', '.row-cw_link .select-link', function () {
                         const parent = jQuery(this).closest('.linkpage-row'),
                             title = jQuery(this).find('option:selected').data('title'),
@@ -489,6 +495,7 @@ class Clickwhale_Linkpage_Edit {
                         jQuery(this).closest('.linkpage-row').find('.linkpage-row--bottom').toggleClass('active');
                     })
 
+                    // init emoji picker and its actions
                     .on('click', '.emoji-picker', function (e) {
                         e.preventDefault();
 
@@ -600,6 +607,8 @@ class Clickwhale_Linkpage_Edit {
 
                         button.next().val(''); // emptying the hidden field
                         button.hide().prev().addClass('button').html('<?php _e( 'Upload image', 'clickwhale' ) ?>');
+
+                        disable_ogpreview_button();
                     })
 
                     // Row Image
@@ -636,11 +645,9 @@ class Clickwhale_Linkpage_Edit {
                         jQuery(this).parent().find('input').val('').prop("checked", false);
                         jQuery(this).parent().find('label').html('');
                         jQuery(this).hide();
-                    })
 
-                    // disable OpenGraph Preview button on input change
-                    .on('keyup change blur', 'input', function () {
-                        disable_ogpreview_button();
+                        /* Remove linkpage-row-image (tab image) when "Remove Image" was clicked */
+                        change_row_image(jQuery(this), '', false);
                     })
 
                     // toggle image type tabs
@@ -662,63 +669,63 @@ class Clickwhale_Linkpage_Edit {
                         jQuery(this).closest('.linkpage-row').find('[name$="[image][type]"]').val('');
                     });
 
-                /* Change linkpage-row-image (tab image) */
-                jQuery('.linkpage-row--image-input').bind("change", function () {
-                    const uploadedImage = jQuery(this).parent().find('.linkpage-row--image-upload').html()
-
-                    change_row_image(jQuery(this), uploadedImage);
-                });
-
-                /* Remove linkpage-row-image (tab image) when "Remove Image" was clicked */
-                jQuery(".linkpage-row--image-remove").click(function () {
-                    change_row_image(jQuery(this), '', false);
-                });
-
-                jQuery('input[name="hidden"]').bind("change", function () {
+                /**
+                 * Disable OpenGraph Preview button
+                 *
+                 * 1. Only top level input/textarea
+                 * 2. On hidden input change
+                 */
+                jQuery('td > input, td > textarea').on('keyup change blur', function () {
+                    disable_ogpreview_button();
+                })
+                jQuery('input[type="hidden"]').bind("change", function () {
                     disable_ogpreview_button();
                 });
 
-                jQuery(".linkpage-logo-remove").click(function () {
-                    disable_ogpreview_button();
+                jQuery('#check-slug').click(function () {
+                    alert(check_slug());
+                });
+
+
+                /**
+                 * Submit action
+                 * 1. Check title (not null)
+                 * 2. Check slug (not null)
+                 * 3. Check slug (exists as post/page slug)
+                 */
+                jQuery('#submit').click(function (e) {
+
+                    if (!title.val() || !slug.val() || check_slug() !== false) {
+
+                        e.preventDefault();
+                        jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
+
+                        if (!title.val()) {
+                            title.addClass('error')
+                                .next().text('<?php _e( 'Please enter title', 'clickwhale' ) ?>');
+                        } else {
+                            title.removeClass('error').next().text('');
+                        }
+
+                        if (!slug.val() || check_slug() !== 'error') {
+                            slug.addClass('error')
+                                .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
+                        } else {
+                            slug.removeClass('error').next().text('');
+                        }
+
+                        if (check_slug() === true) {
+                            slug.addClass('error');
+                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+								'clickwhale' ) ?>')
+                        }
+                    }
                 });
 
                 /**
-                 * Check slug
+                 *  Reset selected colors
                  */
-                jQuery('#form_edit_linkpage').on('blur, keyup', '#cw-slug', function (e) {
-
-                    const slug = jQuery(this),
-                        linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]');
-
-                    linkpageSubmit.prop('disabled', true);
-
-                    jQuery.post(ajaxurl, {
-                        'security': '<?php echo $nonce ?>',
-                        'action': 'clickwhale/admin/check_slug',
-                        'type': 'linkpage',
-                        'slug': slug.val()
-                    }, function (response) {
-                        // slug exists
-                        if (response.data === true) {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-								'clickwhale' ) ?>');
-                        }
-                        // slug doesn't exists
-                        if (response.data === false) {
-                            slug.removeClass('error');
-                            jQuery('#cw-slug--description').text('');
-                            linkpageSubmit.prop('disabled', false);
-                        }
-                        // slug empty or error
-                        if (response.data === 'error') {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
-                        }
-                    })
-                });
-
-                jQuery('#reset-colors').click(function (e) {
+                jQuery('#reset-colors').on('click', function (e) {
                     e.preventDefault();
                     let defaults;
                     if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!',
@@ -730,6 +737,34 @@ class Clickwhale_Linkpage_Edit {
                         });
                     }
                 });
+
+
+                /**
+                 *
+                 * JS FUNCTIONS
+                 *
+                 */
+
+                function check_slug() {
+                    let result = null;
+                    jQuery.ajax({
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        url: ajaxurl,
+                        data: {
+                            'security': '<?php echo $nonce ?>',
+                            'action': 'clickwhale/admin/check_slug',
+                            'type': 'linkpage',
+                            'slug': slug.val(),
+                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                        }, success: function (response) {
+                            result = response.data;
+                        }
+                    });
+
+                    return result;
+                }
 
                 function count_links() {
                     return jQuery('.linkpage-row').length;
@@ -769,26 +804,8 @@ class Clickwhale_Linkpage_Edit {
                     jQuery('#icon-picker--wrap').hide().find('button').show();
                     jQuery('[name="icon-picker--search"]').val('');
                 }
-
-                jQuery('#form_edit_linkpage #submit').on('click', function (e) {
-                    if (!jQuery('#title').val() || !jQuery('#cw-slug').val()) {
-                        e.preventDefault();
-
-                        jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
-
-                        if (!jQuery('#title').val()) {
-                            jQuery('#title').addClass('error');
-                            jQuery('#cw-title--description').text('<?php _e( 'Please enter title', 'clickwhale' ) ?>')
-                        }
-                        if (!jQuery('#cw-slug').val()) {
-                            jQuery('#cw-slug').addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
-                        }
-                    } else {
-                        return true;
-                    }
-                });
-            });
+            })
+            ;
 		</script>
 		<?php
 	}

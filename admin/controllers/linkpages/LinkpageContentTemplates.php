@@ -85,10 +85,11 @@ class LinkpageContentTemplates {
 		} else {
 			global $wpdb;
 
-			$active                   = true;
-			$defaults['data']['id']   = 0;
-			$defaults['data']['type'] = $args['type'];
-			$links                    = $wpdb->get_results(
+			$active                       = true;
+			$defaults['data']['id']       = 0;
+			$defaults['data']['type']     = $args['type'];
+			$defaults['data']['subtitle'] = '';
+			$links                        = $wpdb->get_results(
 				"SELECT id,title,url from {$wpdb->prefix}clickwhale_links",
 				ARRAY_A
 			);
@@ -159,6 +160,13 @@ class LinkpageContentTemplates {
 					$data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' ),
 				);
 
+				echo $this->get_template_input_field(
+					__( 'Subtitle', 'clickwhale' ),
+					'links[' . $data['id'] . '][subtitle]',
+					$data['subtitle'] ?? '',
+					__( 'e.g. Read more about something', 'clickwhale' ),
+				);
+
 				$this->get_template_row_images( $data );
 				?>
 			</div><!-- ./linkpage-row--bottom -->
@@ -178,9 +186,10 @@ class LinkpageContentTemplates {
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$defaults['data'] = $args['data'];
 		} else {
-			$active                   = true;
-			$defaults['data']['type'] = $args['type'];
-			$defaults['data']['url']  = '';
+			$active                       = true;
+			$defaults['data']['type']     = $args['type'];
+			$defaults['data']['url']      = '';
+			$defaults['data']['subtitle'] = '';
 		}
 
 		$data = $defaults['data'];
@@ -224,6 +233,13 @@ class LinkpageContentTemplates {
 				);
 
 				echo $this->get_template_input_field(
+					__( 'Subtitle', 'clickwhale' ),
+					'links[' . $data['id'] . '][subtitle]',
+					$data['subtitle'] ?? '',
+					__( 'e.g. Read more about something', 'clickwhale' ),
+				);
+
+				echo $this->get_template_input_field(
 					__( 'URL', 'clickwhale' ),
 					'links[' . $data['id'] . '][url]',
 					$data['url'],
@@ -252,8 +268,9 @@ class LinkpageContentTemplates {
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$defaults['data'] = $args['data'];
 		} else {
-			$active                   = true;
-			$defaults['data']['type'] = $args['type'];
+			$active                       = true;
+			$defaults['data']['type']     = $args['type'];
+			$defaults['data']['subtitle'] = '';
 
 			$args  = array(
 				'numberposts' => - 1,
@@ -348,6 +365,13 @@ class LinkpageContentTemplates {
 					'links[' . $data['id'] . '][title]',
 					$data['title'],
 					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' ),
+				);
+
+				echo $this->get_template_input_field(
+					__( 'Subtitle', 'clickwhale' ),
+					'links[' . $data['id'] . '][subtitle]',
+					$data['subtitle'] ?? '',
+					__( 'e.g. Read more about something', 'clickwhale' ),
 				);
 
 				$this->get_template_row_images( $data );
@@ -505,9 +529,7 @@ class LinkpageContentTemplates {
 				?>
 				<hr>
 				<textarea id="cw_custom_content_<?php echo $data['id'] ?>"
-				          name="links[<?php echo $data['id'] ?>][content]">
-                    <?php echo wp_unslash( $data['content'] ) ?>
-                </textarea>
+				          name="links[<?php echo $data['id'] ?>][content]"><?php echo wp_unslash( $data['content'] ) ?></textarea>
 			</div><!-- ./linkpage-row--bottom -->
 		</div>
 		<?php
@@ -524,8 +546,9 @@ class LinkpageContentTemplates {
 
 		return $this->get_public_link_template(
 			array(
-				'title' => $args['data']['title'] ?: $link['title'],
-				'url'   => trailingslashit( get_bloginfo( 'url' ) . '/' . $link['slug'] ),
+				'title'    => $args['data']['title'] ?: $link['title'],
+				'subtitle' => $args['data']['subtitle'] ?: '',
+				'url'      => trailingslashit( get_bloginfo( 'url' ) . '/' . $link['slug'] ),
 			),
 			$args );
 	}
@@ -533,8 +556,9 @@ class LinkpageContentTemplates {
 	public function template_public_cw_custom_link( $args ): string {
 		return $this->get_public_link_template(
 			array(
-				'title' => $args['data']['title'],
-				'url'   => trailingslashit( $args['data']['url'] ),
+				'title'    => $args['data']['title'],
+				'subtitle' => $args['data']['subtitle'] ?: '',
+				'url'      => trailingslashit( $args['data']['url'] ),
 			),
 			$args );
 	}
@@ -542,8 +566,9 @@ class LinkpageContentTemplates {
 	public function template_public_post_type( $args ): string {
 		return $this->get_public_link_template(
 			array(
-				'title' => $args['data']['title'] ?: get_the_title( $args['data']['post_id'] ),
-				'url'   => trailingslashit( get_permalink( $args['data']['post_id'] ) ),
+				'title'    => $args['data']['title'] ?: get_the_title( $args['data']['post_id'] ),
+				'subtitle' => $args['data']['subtitle'] ?: '',
+				'url'      => trailingslashit( get_permalink( $args['data']['post_id'] ) ),
 			),
 			$args );
 	}
@@ -602,10 +627,11 @@ class LinkpageContentTemplates {
 	// OTHER METHODS
 
 	public function get_public_link_template( array $data, array $args ) {
-		$target = 'target="' . esc_attr( $args['target'] ) . '"';
-		$title  = $data['title'];
-		$type   = $args['data']['type'];
-		$url    = $data['url'];
+		$target   = 'target="' . esc_attr( $args['target'] ) . '"';
+		$title    = $data['title'];
+		$subtitle = $data['subtitle'];
+		$type     = $args['data']['type'];
+		$url      = $data['url'];
 		ob_start();
 		?>
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $type ?>" data-type="<?php echo $type ?>">
@@ -615,7 +641,12 @@ class LinkpageContentTemplates {
 					echo $this->get_template_row_image( $args['data'] );
 				}
 				?>
-				<div class="linkpage-row--title"><?php echo wp_unslash( $title ) ?></div>
+				<div class="linkpage-row--title--wrap">
+					<div class="linkpage-row--title"><?php echo wp_unslash( $title ) ?></div>
+					<?php if ( $subtitle ) { ?>
+						<p class="linkpage-row--subtitle"><?php echo wp_unslash( $subtitle ) ?></p>
+					<?php } ?>
+				</div>
 				<?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
 					<div class="linkpage-row--end"></div>
 				<?php } ?>
@@ -644,7 +675,7 @@ class LinkpageContentTemplates {
 	public function get_template_input_field(
 		string $label,
 		string $name,
-		string $value,
+		string $value = '',
 		string $placeholder = '',
 		bool $required = false,
 		string $type = 'text'
@@ -653,7 +684,7 @@ class LinkpageContentTemplates {
 		$type        = 'type="' . esc_attr( $type ) . '"';
 		$name        = 'name="' . esc_attr( $name ) . '"';
 		$value       = 'value="' . esc_attr( wp_unslash( $value ) ) . '"';
-		$placeholder = 'name="' . esc_attr( $placeholder ) . '"';
+		$placeholder = 'placeholder="' . esc_attr( $placeholder ) . '"';
 		$required    = $required ? 'required' : '';
 		$input       = "<div><input $type $name $value $placeholder $required /></div>";
 
@@ -785,7 +816,10 @@ class LinkpageContentTemplates {
 								       id="image-<?php echo $data['id'] ?>-0"
 								       name="links[<?php echo $data['id'] ?>][image][image_id]"
 								       value="<?php echo $image_type == 'image' ? $image_id : '' ?>"
-								       checked>
+									<?php if ( $image_id && $image_type == 'image' ) { ?>
+										checked
+									<?php } ?>
+								>
 								<label for="image-<?php echo $data['id'] ?>-0">
 									<?php if ( $image_id && $image_type == 'image' ) {
 										echo '<img src="' . wp_get_attachment_image_src( $image_id )[0] . '"/>';
@@ -794,6 +828,9 @@ class LinkpageContentTemplates {
 							</div>
 							<a href="#" class="linkpage-row--image-upload">
 								<?php _e( 'Upload image', 'clickwhale' ) ?>
+							</a>
+							<a href="#" class="linkpage-row--image-remove" style="display: none;">
+								<?php _e( 'Remove image', 'clickwhale' ) ?>
 							</a>
 						</div>
 

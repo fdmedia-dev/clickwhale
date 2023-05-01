@@ -119,20 +119,29 @@ do_action( 'clickwhale_admin_banner' );
 						<caption hidden>Linkpage Main Settings</caption>
 						<tbody>
 
+						<tr class="form-field">
+							<th scope="row">
+								<label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
+							</th>
+							<td>
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'control'     => 'input',
+										'id'          => 'title',
+										'name'        => 'title',
+										'type'        => 'text',
+										'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+										'placeholder' => __( 'Link Page Title', $this->plugin_name ),
+										'required'    => true,
+									)
+								);
+								?>
+								<p id="cw-title--description"></p>
+							</td>
+						</tr>
+
 						<?php
-						echo ClickwhaleHepler::render_control(
-							array(
-								'row_label'   => __( 'Title', $this->plugin_name ),
-								'control'     => 'input',
-								'id'          => 'title',
-								'name'        => 'title',
-								'type'        => 'text',
-								'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-								'placeholder' => __( 'Link Page Title', $this->plugin_name ),
-								'required'    => true,
-							),
-							true
-						);
 						echo ClickwhaleHepler::render_control(
 							array(
 								'row_label'   => __( 'Description', $this->plugin_name ),
@@ -154,7 +163,6 @@ do_action( 'clickwhale_admin_banner' );
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
-										'row_label'   => __( 'Title', $this->plugin_name ),
 										'control'     => 'input',
 										'id'          => 'cw-slug',
 										'name'        => 'slug',
@@ -173,6 +181,7 @@ do_action( 'clickwhale_admin_banner' );
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
 									<em class="dashicons dashicons-clipboard"></em>
+
 								</p>
 							</td>
 						</tr>
@@ -218,7 +227,7 @@ do_action( 'clickwhale_admin_banner' );
 										'control'   => 'select',
 										'id'        => 'cw-legals',
 										'name'      => 'meta__legals_menu_id',
-										'value'     => $legals['meta_value'] ?: 0,
+										'value'     => $legals['meta_value'] ?? 0,
 										'options'   => $linkpage_edit->get_nav_menus()
 									)
 								);
