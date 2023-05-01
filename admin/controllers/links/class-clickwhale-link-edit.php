@@ -208,7 +208,7 @@ class Clickwhale_Link_Edit {
                             title.removeClass('error').next().text('');
                         }
 
-                        if (!slug.val() || check_slug() !== 'error') {
+                        if (!slug.val()) {
                             slug.addClass('error')
                                 .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
                         } else {
