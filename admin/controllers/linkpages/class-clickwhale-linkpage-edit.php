@@ -408,7 +408,8 @@ class Clickwhale_Linkpage_Edit {
                         accept: ".cw-content--item",
                         drop: function (event, ui) {
 
-                            const el = jQuery(ui.draggable),
+                            const
+                                el = jQuery(ui.draggable),
                                 type = el.data('content');
 
                             jQuery.post(ajaxurl, {
@@ -429,19 +430,20 @@ class Clickwhale_Linkpage_Edit {
                                             minimumResultsForSearch: 10
                                         });
 
+                                    } else {
+                                        links_limit_warning();
+                                        jQuery('.cw-content--item').addClass('disabled').draggable('disable');
                                     }
                                 }
                             });
                         },
                         over: function () {
-                            if ((count_links() + 1) === limit) {
-                                links_limit_warning();
-                                jQuery('.cw-content--item').addClass('disabled').draggable('disable');
-                            }
+                            // on drag over
                         }
                     })
                     .sortable({
                         placeholder: "ui-state-highlight",
+                        handle: '.linkpage-row--drag',
                     }).disableSelection();
 
                 /* ----- */

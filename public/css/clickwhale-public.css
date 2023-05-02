@@ -210,6 +210,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 }
 
 .linkpage-row--title {
+	font-weight: 700;
 }
 
 .linkpage-row--subtitle {
@@ -268,10 +269,13 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 /*---------- CW CUSTOM CONTENT BLOCK ----------*/
 
 .linkpage-public-row--content {
-	color: var(--clickwhale-text-color);
+	background-color: var(--clickwhale-link-bg-color);
+	color: var(--clickwhale-link-color);
 	font-size: 1rem;
 	line-height: 1.3em;
 	letter-spacing: normal;
+	padding: 1.5rem 2.5rem;
+	border-radius: 10px;
 }
 
 .linkpage-public-row--content h1,
@@ -310,7 +314,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 .linkpage-public-row--content p,
 .linkpage-public-row--content ul,
 .linkpage-public-row--content ol {
-	margin: .5rem 0;
+	margin: .5rem 0 0;
 }
 
 .linkpage-public-row--content ul,
@@ -354,6 +358,30 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .5;
 }
 
+.linkpage-public-row--content img {
+	display: block;
+	max-width: 100%;
+}
+
+.linkpage-public-row--content img.alignleft {
+	margin: 0 1.5rem 1.5rem 0;
+}
+
+.linkpage-public-row--content img.alignright {
+	margin: 0 0 1.5rem 1.5rem;
+}
+
+.linkpage-public-row--content img.alignnone {
+	margin: 0 auto 1.5rem;
+}
+
+.linkpage-public-row--content * + img,
+.linkpage-public-row--content * + img.alignleft,
+.linkpage-public-row--content * + img.alignright,
+.linkpage-public-row--content * + img.alignnone {
+	margin-top: .5rem;
+}
+
 
 .linkpage-public-row--content a {
 	display: inline;
@@ -369,6 +397,10 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 .linkpage-public-row--content > *:first-child {
 	margin-top: 0;
+}
+
+.linkpage-public-row--content > *:last-child {
+	margin-bottom: 0;
 }
 
 /* ---------- */
@@ -544,6 +576,10 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 	* + .linkpage-public-row--cw_heading {
 		margin: 2rem 0 1rem;
+	}
+
+	.linkpage-public-row--content {
+		padding: 1rem .75rem;
 	}
 
 	.linkpage-public-row--content h1,

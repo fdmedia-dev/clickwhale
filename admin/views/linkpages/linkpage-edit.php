@@ -254,8 +254,8 @@ do_action( 'clickwhale_admin_banner' );
 									foreach ( $select as $g => $group ) {
 										?>
 										<div class="cw-content--group">
-											<h3><?php echo $group['label'] ?> (<?php echo count( $group['options'] ) ?>
-												)</h3>
+											<h3><?php echo $group['label'] ?>
+												(<?php echo count( $group['options'] ) ?>)</h3>
 											<div class="cw-content--items">
 												<?php foreach ( $group['options'] as $value => $options ) { ?>
 													<div id="cw-content--<?php echo $value ?>"
