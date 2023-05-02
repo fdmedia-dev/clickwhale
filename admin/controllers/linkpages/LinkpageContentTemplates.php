@@ -604,13 +604,15 @@ class LinkpageContentTemplates {
 
 	public function template_public_cw_custom_content( $args ): string {
 		ob_start();
-		?>
-		<div class="linkpage-public-row linkpage-public-row--cw_heading">
-			<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
-			<?php if ( isset( $args['data']['subtitle'] ) && $args['data']['subtitle'] ) { ?>
-				<p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
-			<?php } ?>
-		</div>
+		if ( $args['data']['title'] || $args['data']['subtitle'] ) {
+			?>
+			<div class="linkpage-public-row linkpage-public-row--cw_heading">
+				<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
+				<?php if ( isset( $args['data']['subtitle'] ) && $args['data']['subtitle'] ) { ?>
+					<p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
+				<?php } ?>
+			</div>
+		<?php } ?>
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
 		     data-type="<?php echo $args['type'] ?>">
 			<div class="linkpage-public-row--content">
