@@ -37,13 +37,13 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 
 	</div>
 
-	<?php echo $linkpage->get_copyright() ?>
-
 	<?php
 	if ( $linkpage->get_legals_menu() ) {
 		echo $linkpage->get_legals_menu();
 	}
 	?>
+
+	<?php echo $linkpage->get_copyright() ?>
 </div>
 <?php wp_footer(); ?>
 </body>
