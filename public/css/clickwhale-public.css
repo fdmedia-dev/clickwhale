@@ -269,6 +269,9 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 /*---------- CW CUSTOM CONTENT BLOCK ----------*/
 
 .linkpage-public-row--content {
+	position: relative;
+	display: inline-block;
+	width: 100%;
 	background-color: var(--clickwhale-link-bg-color);
 	color: var(--clickwhale-link-color);
 	font-size: 1rem;
@@ -400,7 +403,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 }
 
 .linkpage-public-row--content > *:last-child {
-	margin-bottom: 0;
+	margin-bottom: 0!important;
 }
 
 /* ---------- */
