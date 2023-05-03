@@ -234,7 +234,8 @@ do_action( 'clickwhale_admin_banner' );
 								?>
 								<p class="description">
 									<a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ) ?>"
-									   target="_blank"><?php _e( 'Create a Legals Menu', $this->plugin_name ) ?></a>
+									   target="_blank"
+									   rel="noopener"><?php _e( 'Create a Legals Menu', $this->plugin_name ) ?></a>
 								</p>
 							</td>
 						</tr>
