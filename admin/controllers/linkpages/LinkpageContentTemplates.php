@@ -547,7 +547,7 @@ class LinkpageContentTemplates {
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'] ?: $link['title'],
-				'subtitle' => $args['data']['subtitle'] ?: '',
+				'subtitle' => $args['data']['subtitle'] ?? '',
 				'url'      => trailingslashit( get_bloginfo( 'url' ) . '/' . $link['slug'] ),
 			),
 			$args );
@@ -557,7 +557,7 @@ class LinkpageContentTemplates {
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'],
-				'subtitle' => $args['data']['subtitle'] ?: '',
+				'subtitle' => $args['data']['subtitle'] ?? '',
 				'url'      => trailingslashit( $args['data']['url'] ),
 			),
 			$args );
@@ -567,7 +567,7 @@ class LinkpageContentTemplates {
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'] ?: get_the_title( $args['data']['post_id'] ),
-				'subtitle' => $args['data']['subtitle'] ?: '',
+				'subtitle' => $args['data']['subtitle'] ?? '',
 				'url'      => trailingslashit( get_permalink( $args['data']['post_id'] ) ),
 			),
 			$args );

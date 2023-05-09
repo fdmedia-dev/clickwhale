@@ -200,6 +200,8 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_logo() {
+		$img     = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
+		$srcset  = '';
 		$classes = [];
 		if ( isset( $this->styles['logo_style'] ) ) {
 			$classes[] = $this->styles['logo_style'];
@@ -208,13 +210,12 @@ class Clickwhale_Public_Linkpage {
 			$classes[] = 'with-shadow';
 		}
 		if ( isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo'] ) {
-			$img = wp_get_attachment_image_url( $this->post->linkpage['logo'], 'thumbnail' );
-		} else {
-			$img = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
+			$srcset = wp_get_attachment_image_srcset( $this->post->linkpage['logo'] );
+			$img    = wp_get_attachment_image_url( $this->post->linkpage['logo'] );
 		}
 		$class = implode( ' ', $classes );
 
-		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" alt="' . esc_attr( $this->get_title() ) . '">';
+		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '">';
 	}
 
 	public function get_links(): string {
