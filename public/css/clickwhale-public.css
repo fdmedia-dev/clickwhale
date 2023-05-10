@@ -364,6 +364,10 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	max-width: 100%;
 }
 
+.linkpage-public-row--content img.alignnone {
+	margin: 0 0 1.5rem;
+}
+
 .linkpage-public-row--content img.alignleft {
 	margin: 0 1.5rem 1.5rem 0;
 }
@@ -372,17 +376,17 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	margin: 0 0 1.5rem 1.5rem;
 }
 
-.linkpage-public-row--content img.alignnone {
+.linkpage-public-row--content img.aligncenter {
 	margin: 0 auto 1.5rem;
 }
 
 .linkpage-public-row--content * + img,
+.linkpage-public-row--content * + img.alignnone,
 .linkpage-public-row--content * + img.alignleft,
 .linkpage-public-row--content * + img.alignright,
-.linkpage-public-row--content * + img.alignnone {
+.linkpage-public-row--content * + img.aligncenter {
 	margin-top: .5rem;
 }
-
 
 .linkpage-public-row--content a {
 	display: inline;
@@ -394,6 +398,21 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	color: var(--clickwhale-text-color);
 	text-decoration: none;
 	opacity: .7;
+}
+
+.linkpage-public-row--content iframe {
+	aspect-ratio: 16 / 9;
+	height: 100%;
+	width: 100%;
+}
+
+.linkpage-public-row--content iframe.iframe-vertical {
+	aspect-ratio: 9 / 16;
+}
+
+.linkpage-public-row--content blockquote.tiktok-embed {
+	padding: 0;
+	border-radius: 8px;
 }
 
 .linkpage-public-row--content > *:first-child {
