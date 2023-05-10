@@ -616,7 +616,7 @@ class LinkpageContentTemplates {
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
 		     data-type="<?php echo $args['type'] ?>">
 			<div class="linkpage-public-row--content">
-				<?php echo wp_unslash( $args['data']['content'] ); ?>
+				<?php echo wpautop( wp_unslash( $args['data']['content'] ) ); ?>
 			</div>
 		</div>
 		<?php
