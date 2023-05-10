@@ -230,6 +230,9 @@ class Clickwhale_Activator {
 
 			foreach ( $results as $result ) {
 				$links = maybe_unserialize( $result->links );
+				if ( ! $links ) {
+					return;
+				}
 
 				foreach ( $links as $k => $v ) {
 					$links[ $k ]['is_active'] = '1';
