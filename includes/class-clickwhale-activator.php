@@ -222,33 +222,35 @@ class Clickwhale_Activator {
 	private static function migrate_130_data(): void {
 		global $wpdb;
 
-		if ( version_compare( CLICKWHALE_VERSION, '1.2.1', '>' ) ) {
-			$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
-			if ( ! $results ) {
+		if ( ! version_compare( CLICKWHALE_VERSION, '1.2.1', '>' ) ) {
+			return;
+		}
+
+		$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
+		if ( ! $results ) {
+			return;
+		}
+
+		foreach ( $results as $result ) {
+			$links = maybe_unserialize( $result->links );
+			if ( ! $links ) {
 				return;
 			}
 
-			foreach ( $results as $result ) {
-				$links = maybe_unserialize( $result->links );
-				if ( ! $links ) {
-					return;
+			foreach ( $links as $k => $v ) {
+				$links[ $k ]['is_active'] = '1';
+				if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
+					$links[ $k ]['type'] = 'cw_custom_link';
 				}
-
-				foreach ( $links as $k => $v ) {
-					$links[ $k ]['is_active'] = '1';
-					if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
-						$links[ $k ]['type'] = 'cw_custom_link';
-					}
-				}
-
-				$links = maybe_serialize( $links );
-
-				$wpdb->update(
-					$wpdb->prefix . 'clickwhale_linkpages',
-					array( 'links' => $links ),
-					array( 'id' => $result->id )
-				);
 			}
+
+			$links = maybe_serialize( $links );
+
+			$wpdb->update(
+				$wpdb->prefix . 'clickwhale_linkpages',
+				array( 'links' => $links ),
+				array( 'id' => $result->id )
+			);
 		}
 	}
 
