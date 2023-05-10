@@ -61,19 +61,26 @@ do_action( 'clickwhale_admin_banner' );
                         <tbody>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="link_title"><?php _e( 'Title', $this->plugin_name ) ?></label>
+                                <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <input id="title"
-                                       name="title"
-                                       type="text"
-                                       value="<?php echo esc_attr( wp_unslash( $item['title'] ) ) ?>"
-                                       size="40"
-                                       class="regular-text"
-                                       placeholder="<?php _e( 'Link Title', $this->plugin_name ) ?>"
-                                       required>
+                                <?php
+                                echo ClickwhaleHepler::render_control(
+                                    array(
+                                        'control'     => 'input',
+                                        'id'          => 'title',
+                                        'name'        => 'title',
+                                        'type'        => 'text',
+                                        'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                        'placeholder' => __( 'Link Title', $this->plugin_name ),
+                                        'required'    => true,
+                                    )
+                                );
+                                ?>
+                                <p id="cw-title--description"></p>
                             </td>
                         </tr>
+
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="link_slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>

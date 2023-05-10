@@ -189,19 +189,19 @@ class Clickwhale_Admin {
 
 			wp_enqueue_script(
 				$this->plugin_name . '_picmo',
-				plugin_dir_url( __FILE__ ) . 'js/picmo/picmo.umd.min.js',
+				ADMIN_JS_DIR . '/picmo/picmo.umd.min.js',
 				array( 'jquery' ),
 				'5.8.1',
 			);
 			wp_enqueue_script(
 				$this->plugin_name . '_picmo_popup_picker',
-				plugin_dir_url( __FILE__ ) . 'js/picmo/popup-picker.umd.min.js',
+				ADMIN_JS_DIR . '/picmo/popup-picker.umd.min.js',
 				array( $this->plugin_name . '_picmo' ),
 				'5.8.1'
 			);
 			wp_enqueue_script(
 				$this->plugin_name . '_ionicons',
-				plugin_dir_url( __FILE__ ) . 'js/ionicons/ionicons.js',
+				PUBLIC_JS_DIR . '/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0'
 			);
@@ -212,13 +212,13 @@ class Clickwhale_Admin {
 
 		wp_enqueue_script(
 			$this->plugin_name . '_select2',
-			plugin_dir_url( __FILE__ ) . 'js/select2/select2.min.js',
+			ADMIN_JS_DIR . '/select2/select2.min.js',
 			array( 'jquery' ),
 			'4.1.0-rc.0'
 		);
 		wp_enqueue_script(
 			$this->plugin_name,
-			plugin_dir_url( __FILE__ ) . 'js/clickwhale-admin.js',
+			ADMIN_JS_DIR . '/clickwhale-admin.js',
 			array( 'jquery' ),
 			$this->version
 		);
@@ -432,3 +432,4 @@ class Clickwhale_Admin {
 		}
 	}
 }
+
