@@ -108,9 +108,12 @@ class Clickwhale_Admin_Settings {
 	}
 
 	public function add_default_options() {
+		/* @Since 1.2.1 */
 		if ( ! get_option( 'clickwhale_version' ) ) {
 			add_option( 'clickwhale_version', CLICKWHALE_VERSION );
 		}
+
+		/* @Since 1.0.0 */
 		$defaults = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
 
 		foreach ( $defaults as $k => $v ) {
