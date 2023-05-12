@@ -100,4 +100,3 @@ function run_clickwhale() {
 }
 
 run_clickwhale();
-
