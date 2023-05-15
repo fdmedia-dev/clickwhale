@@ -29,4 +29,13 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
+    $(function () {
+        $('.linkpage-public-row--content iframe').each(function () {
+            const iframe = $(this);
+            if (iframe.attr('height') > iframe.attr('width')) {
+                iframe.addClass('iframe-vertical');
+            }
+        });
+    });
+
 })(jQuery);

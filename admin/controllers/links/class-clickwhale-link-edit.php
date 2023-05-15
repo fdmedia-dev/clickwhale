@@ -182,47 +182,70 @@ class Clickwhale_Link_Edit {
 		$nonce        = wp_create_nonce( 'check_slug' );
 		$nonce_random = wp_create_nonce( 'random_slug' );
 		?>
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             jQuery(document).ready(function () {
 
+                var linkSubmit = jQuery('#form_edit_link').find('[type="submit"]'),
+                    title = jQuery('#title'),
+                    slug = jQuery('#cw-slug');
+
                 /**
-                 * Check slug
+                 * Submit action
+                 * 1. Check title (not null)
+                 * 2. Check slug (not null)
+                 * 3. Check slug (exists as post/page slug)
                  */
-                jQuery('#form_edit_link').on('blur', '#cw-slug', function (e) {
+                jQuery('#submit').click(function (e) {
 
-                    var slug = jQuery(this),
-                        linkSubmit = jQuery('#form_edit_link').find('[type="submit"]');
+                    if (!title.val() || !slug.val() || check_slug() !== false) {
 
-                    linkSubmit.prop('disabled', true);
+                        e.preventDefault();
 
-                    jQuery.post(ajaxurl, {
-                        'security': '<?php echo $nonce ?>',
-                        'action': 'clickwhale/admin/check_slug',
-                        'type': 'link',
-                        'slug': slug.val(),
-                        'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
-                    }, function (response) {
-                        // slug exists
-                        if (response.data === true) {
+                        if (!title.val()) {
+                            title.addClass('error')
+                                .next().text('<?php _e( 'Please enter title', 'clickwhale' ) ?>');
+                        } else {
+                            title.removeClass('error').next().text('');
+                        }
+
+                        if (!slug.val()) {
+                            slug.addClass('error')
+                                .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
+                        } else {
+                            slug.removeClass('error').next().text('');
+                        }
+
+                        if (check_slug() === true) {
                             slug.addClass('error');
                             jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-								'clickwhale' ) ?>');
+								'clickwhale' ) ?>')
                         }
-                        // slug doesn't exists
-                        if (response.data === false) {
-                            slug.removeClass('error');
-                            jQuery('#cw-slug--description').text('');
-                            linkSubmit.prop('disabled', false);
-                        }
-                        // slug empty or error
-                        if (response.data === 'error') {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>');
-                        }
-                    })
+                    }
                 });
+
+                function check_slug() {
+                    let result = null;
+                    jQuery.ajax({
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        url: ajaxurl,
+                        data: {
+                            'security': '<?php echo $nonce ?>',
+                            'action': 'clickwhale/admin/check_slug',
+                            'type': 'link',
+                            'slug': slug.val(),
+                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                        }, success: function (response) {
+                            result = response.data;
+                        }
+                    });
+
+                    return result;
+                }
+
             });
-        </script>
+		</script>
 		<?php
 	}
 }

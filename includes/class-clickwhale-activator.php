@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Fired during plugin activation
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/includes
- */
-
-/**
  * Fired during plugin activation.
  *
  * This class defines all code necessary to run during the plugin's activation.
@@ -106,6 +96,7 @@ class Clickwhale_Activator {
 			meta_key varchar(255) default NULL,
 			meta_value longtext default NULL,
 			link_id int(11) NOT NULL,
+			linkpage_id int(11) NOT NULL,
 			
 			PRIMARY KEY  (id)
 		) $charset_collate;";
@@ -198,11 +189,21 @@ class Clickwhale_Activator {
 	private static function modify_columns() {
 		global $wpdb;
 
+		/* @since 1.1.1 */
 		if ( version_compare( CLICKWHALE_VERSION, '1.0.0', '>' ) ) {
 			maybe_add_column(
 				$wpdb->prefix . "clickwhale_track",
 				"custom_link_id",
 				"ALTER TABLE {$wpdb->prefix}clickwhale_track ADD custom_link_id tinytext DEFAULT '' NOT NULL AFTER link_id"
+			);
+		}
+
+		/* @since 1.3.2 */
+		if ( version_compare( CLICKWHALE_VERSION, '1.3.1', '>=' ) ) {
+			maybe_add_column(
+				$wpdb->prefix . "clickwhale_meta",
+				"custom_link_id",
+				"ALTER TABLE {$wpdb->prefix}clickwhale_meta ADD linkpage_id int(11) NOT NULL AFTER link_id"
 			);
 		}
 	}
@@ -214,30 +215,32 @@ class Clickwhale_Activator {
 	private static function migrate_130_data(): void {
 		global $wpdb;
 
-		if ( version_compare( CLICKWHALE_VERSION, '1.2.1', '>' ) ) {
-			$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
-			if ( ! $results ) {
+		$results = $wpdb->get_results( "SELECT id, links FROM {$wpdb->prefix}clickwhale_linkpages" );
+		if ( ! $results ) {
+			return;
+		}
+
+		foreach ( $results as $result ) {
+			$links = maybe_unserialize( $result->links );
+
+			if ( ! $links ) {
 				return;
 			}
 
-			foreach ( $results as $result ) {
-				$links = maybe_unserialize( $result->links );
-
-				foreach ( $links as $k => $v ) {
-					$links[ $k ]['is_active'] = '1';
-					if ( isset( $links[ $k ]['type'] ) && $links[ $k ]['type'] === 'custom_link' ) {
-						$links[ $k ]['type'] = 'cw_custom_link';
-					}
+			foreach ( $links as $k => $v ) {
+				$links[ $k ]['is_active'] = '1';
+				if ( $links[ $k ]['type'] === 'custom_link' ) {
+					$links[ $k ]['type'] = 'cw_custom_link';
 				}
-
-				$links = maybe_serialize( $links );
-
-				$wpdb->update(
-					$wpdb->prefix . 'clickwhale_linkpages',
-					array( 'links' => $links ),
-					array( 'id' => $result->id )
-				);
 			}
+
+			$links = maybe_serialize( $links );
+
+			$wpdb->update(
+				$wpdb->prefix . 'clickwhale_linkpages',
+				array( 'links' => $links ),
+				array( 'id' => $result->id )
+			);
 		}
 	}
 
@@ -256,6 +259,8 @@ class Clickwhale_Activator {
 	 */
 	public static function activate() {
 
+		$db_cw_version = get_option( 'clickwhale_version' );
+
 		self::add_clickwhale_categories_table();
 		self::add_clickwhale_links_table();
 		self::add_clickwhale_linkpages_table();
@@ -266,8 +271,10 @@ class Clickwhale_Activator {
 		self::modify_columns();
 		self::drop_tables();
 
-		// migration
-		self::migrate_130_data();
+		// Data migration
+		if ( ! $db_cw_version || version_compare( $db_cw_version, '1.3.0', '<' ) ) {
+			self::migrate_130_data();
+		}
 
 		update_option( 'clickwhale_version', CLICKWHALE_VERSION );
 	}

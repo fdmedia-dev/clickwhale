@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
 Tested up to: 6.2.0
-Stable tag: 1.3.1
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,22 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 1.3.3 (12th May 2023) =
+* Fix: Fixed a bug when inactive blocks on the Link Page become active again when the plugin is updated
+* Info: POT update
+
+= Version 1.3.2 (10th May 2023) =
+* New: Subtitle for link on Link Page
+* New: Added new Link Page block - custom content with WYSIWYG editor
+* New: Added menu selection option for Link Page
+* Tweak: Changed plugin styles and scripts load conditions and order
+* Tweak: Changed the method of slug validation for Links and Link Pages
+* Fix: Link Page logo size on retina displays
+* Fix: Required fields validation on a hidden tab on Link Page
+* Fix: Fixed an issue where it took more than one click on the save button to save a Link or Link Page
+* Info: Optimized Link Page mobile view
+* Info: Minor improvements
 
 = Version 1.3.1 (12th April 2023) =
 * Tweak: Removed CDN scripts

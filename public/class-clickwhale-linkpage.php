@@ -32,6 +32,7 @@ class Clickwhale_Public_Linkpage {
 
 		// Remove Yoast SEO Data
 		add_filter( 'wpseo_json_ld_output', '__return_false' );
+		add_filter( 'body_class', [ $this, 'linkpage_classes' ] );
 	}
 
 	/**
@@ -199,6 +200,8 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	public function get_logo() {
+		$img     = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
+		$srcset  = '';
 		$classes = [];
 		if ( isset( $this->styles['logo_style'] ) ) {
 			$classes[] = $this->styles['logo_style'];
@@ -207,13 +210,12 @@ class Clickwhale_Public_Linkpage {
 			$classes[] = 'with-shadow';
 		}
 		if ( isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo'] ) {
-			$img = wp_get_attachment_image_url( $this->post->linkpage['logo'], 'thumbnail' );
-		} else {
-			$img = plugin_dir_url( __FILE__ ) . 'images/click-whale.svg';
+			$srcset = wp_get_attachment_image_srcset( $this->post->linkpage['logo'] );
+			$img    = wp_get_attachment_image_url( $this->post->linkpage['logo'] );
 		}
 		$class = implode( ' ', $classes );
 
-		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" alt="' . esc_attr( $this->get_title() ) . '">';
+		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '">';
 	}
 
 	public function get_links(): string {
@@ -244,7 +246,7 @@ class Clickwhale_Public_Linkpage {
 		$style = '';
 
 		if ( $this->styles ) {
-			$style .= ':root{ --page-bg-color: ' . $this->styles['bg_color'] . '; --text-color: ' . $this->styles['text_color'] . '; --link-bg-color: ' . $this->styles['link_bg_color'] . '; --link-color: ' . $this->styles['link_color'] . '; --link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --link-hover: ' . $this->styles['link_color_hover'] . ';  }';
+			$style .= ':root{ --clickwhale-page-bg-color: ' . $this->styles['bg_color'] . '; --clickwhale-text-color: ' . $this->styles['text_color'] . '; --clickwhale-link-bg-color: ' . $this->styles['link_bg_color'] . '; --clickwhale-link-color: ' . $this->styles['link_color'] . '; --clickwhale-link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --clickwhale-link-hover: ' . $this->styles['link_color_hover'] . ';  }';
 		}
 
 		return ' <style>' . $style . ' </style > ';
@@ -304,10 +306,51 @@ class Clickwhale_Public_Linkpage {
 		);
 	}
 
+	/**
+	 * Add body classes
+	 *
+	 * @param $classes
+	 *
+	 * @return mixed
+	 * @since 1.3.2
+	 */
+	public static function linkpage_classes( $classes ) {
+		$classes[] = 'clickwhale-linkpage';
+
+		return $classes;
+	}
+
+	public function get_legals_menu() {
+		global $wpdb;
+
+		$table_links_meta = $wpdb->prefix . 'clickwhale_meta';
+		$linkpage_id      = $this->data['id'];
+
+		$legals_menu_id = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table_links_meta WHERE linkpage_id=%s AND meta_key='legals_menu_id'",
+				$linkpage_id ),
+			ARRAY_A
+		);
+
+		if ( ! $legals_menu_id || ! $legals_menu_id['meta_value'] ) {
+			return false;
+		}
+
+		return wp_nav_menu( array(
+			'menu'            => $legals_menu_id['meta_value'],
+			'menu_class'      => 'linkpage-menu',
+			'container'       => 'div',
+			'container_class' => 'linkpage-menu--wrap',
+			'fallback_cb'     => false,
+			'depth'           => 0
+		) );
+	}
+
 	public function admin_scripts() {
 		$nonce = wp_create_nonce( 'track_custom_link' );
 		?>
-        <script type='text/javascript'>
+		<script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
@@ -321,7 +364,7 @@ class Clickwhale_Public_Linkpage {
 
                 });
             });
-        </script>
+		</script>
 		<?php
 	}
 }
