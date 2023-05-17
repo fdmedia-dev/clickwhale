@@ -76,11 +76,13 @@ class LinkpageContentTemplates {
 		$link     = '';
 		$active   = false;
 		$row_id   = $defaults['data']['id'];
+		$error    = '';
 
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$row_id           = $args['data']['id'];
 			$defaults['data'] = $args['data'];
 			$link             = Clickwhale_Linkpage_Edit::get_link( $defaults['data']['id'] );
+			$error            = is_null( $link ) ? 'with-error' : $error;
 
 		} else {
 			global $wpdb;
@@ -97,9 +99,13 @@ class LinkpageContentTemplates {
 
 		$data = $defaults['data'];
 
+		if ( is_null( $link ) ) {
+			return false;
+		}
+
 		ob_start();
 		?>
-		<div class="linkpage-row row--<?php echo $data['type'] ?>" id="row-<?php echo $row_id ?>">
+		<div class="linkpage-row row--<?php echo $data['type'] ?> <?php echo $error ?>" id="row-<?php echo $row_id ?>">
 			<div class="linkpage-row--top">
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
 				<div class="linkpage-row--content">
