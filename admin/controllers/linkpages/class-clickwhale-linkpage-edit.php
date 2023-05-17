@@ -276,7 +276,7 @@ class Clickwhale_Linkpage_Edit {
 				$item,
 				array( 'id' => $item['id'] )
 			);
-			//set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
+			set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
 
 		} else {
 			$wpdb->insert(
@@ -284,18 +284,15 @@ class Clickwhale_Linkpage_Edit {
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;
-			//set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
+			set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
 
 		}
-
-		//exit( var_dump( $wpdb->last_query ) );
 
 		if ( $this->get_link_meta( $item['id'], 'legals_menu_id' ) ) {
 			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'update' );
 		} else {
 			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'insert' );
 		}
-		//exit( var_dump( $wpdb->last_query ) );
 
 
 		// redirect to new record

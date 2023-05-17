@@ -178,7 +178,14 @@ class Clickwhale_Admin_Settings {
 				array( $this, 'get_view' )
 			);
 		}
-
+		add_submenu_page(
+			$this->plugin_name,
+			__( 'Statistics', $this->plugin_name ),
+			__( 'Statistics', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-statistics',
+			array( $this, 'render_statistics_page_view' )
+		);
 		add_submenu_page(
 			$this->plugin_name,
 			__( 'Settings', $this->plugin_name ),
@@ -199,10 +206,7 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
-	 * This function renders the interface elements for toggling the visibility of the header element.
-	 *
-	 * It accepts an array or arguments and expects the first element in the array to be the description
-	 * to be displayed next to the checkbox.
+	 * This function renders the interface elements.
 	 */
 
 	public function render_controls( $args ) {
@@ -221,6 +225,13 @@ class Clickwhale_Admin_Settings {
 
 	public function render_tools_page_view() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
+	}
+
+	/**
+	 * @since 1.4.0
+	 */
+	public function render_statistics_page_view() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/statistics/statistics.php' );
 	}
 
 	/**

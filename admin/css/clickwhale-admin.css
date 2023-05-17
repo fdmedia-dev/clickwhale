@@ -943,7 +943,7 @@ td > .links-info {
 	max-width: 95%;
 }
 
-.clickwhale-tabs ul {
+.clickwhale-tabs > ul {
 	display: flex;
 	align-items: flex-end;
 	justify-content: flex-start;
@@ -954,7 +954,7 @@ td > .links-info {
 	line-height: inherit;
 }
 
-.clickwhale-tabs ul > li {
+.clickwhale-tabs > ul > li {
 	position: relative;
 	margin: 0 0 0 .5em;
 	padding: 0;
@@ -962,7 +962,7 @@ td > .links-info {
 	bottom: -1px;
 }
 
-.clickwhale-tabs ul > li > a {
+.clickwhale-tabs > ul > li > a {
 	display: block;
 	border: 1px solid #c3c4c7;
 	padding: 5px 10px;
@@ -976,17 +976,21 @@ td > .links-info {
 	outline: none !important;
 }
 
-.clickwhale-tabs ul > li > a:hover,
-.clickwhale-tabs ul > li > a:focus {
+.clickwhale-tabs > ul > li > a:hover,
+.clickwhale-tabs > ul > li > a:focus {
 	background: #ffffff;
 	outline: none !important;
 	box-shadow: none;
 }
 
-.clickwhale-tabs ul > li.ui-tabs-active > a {
+.clickwhale-tabs > ul > li.ui-tabs-active > a {
 	border-bottom: 1px solid #f0f0f1;
 	background: #f0f0f1;
 	color: #000;
+}
+
+.clickwhale-tab {
+	padding: 1rem 0 0 0;
 }
 
 .clickwhale-linkpage--message {
@@ -1117,6 +1121,9 @@ table.tracking-codes .column-is_active {
 	margin-bottom: 15px;
 }
 
+.clickwhale-statistics-content {
+	padding: 1rem 0 0 0;
+}
 
 /* VENDORS */
 

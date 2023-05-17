@@ -101,6 +101,7 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-statistics.php';
 
 		// Controllers
 		if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -178,11 +179,12 @@ class Clickwhale_Admin {
 		 * class.
 		 */
 
+		wp_enqueue_script( "jquery-ui-tabs" );
+
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 			wp_enqueue_script( 'jquery-ui-droppable' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( "jquery-ui-tabs" );
 			wp_enqueue_media();
 			wp_enqueue_editor();
 			wp_enqueue_script( 'wp-color-picker' );
