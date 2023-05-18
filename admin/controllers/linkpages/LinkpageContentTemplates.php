@@ -667,7 +667,7 @@ class LinkpageContentTemplates {
 		ob_start();
 		?>
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $type ?>" data-type="<?php echo $type ?>">
-			<a href="<?php echo esc_url( $url ) ?>" class="cw-track" <?php echo $target ?>>
+			<a class="linkpage-public-row-link" href="<?php echo esc_url( $url ) ?>" class="cw-track" <?php echo $target ?>>
 				<?php
 				if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
 					echo $this->get_template_row_image( $args['data'] );

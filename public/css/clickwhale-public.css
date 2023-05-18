@@ -146,7 +146,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	width: 100%;
 }
 
-.linkpage-public-row > a {
+.linkpage-public-row > a.linkpage-public-row-link {
 	display: flex;
 	width: 100%;
 	align-items: center;
@@ -165,21 +165,21 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	text-align: center;
 }
 
-.linkpage-public-row > a ion-icon {
+.linkpage-public-row > a.linkpage-public-row-link ion-icon {
 	color: var(--clickwhale-link-color);
 }
 
-.linkpage-public-row > a:hover {
+.linkpage-public-row > a.linkpage-public-row-link:hover {
 	background-color: var(--clickwhale-link-bg-hover);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
 	color: var(--clickwhale-link-hover);
 }
 
-.linkpage-public-row > a:hover ion-icon {
+.linkpage-public-row > a.linkpage-public-row-link:hover ion-icon {
 	color: var(--clickwhale-link-hover);
 }
 
-.linkpage-row--image {
+.linkpage-public-row .linkpage-row--image {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -192,14 +192,14 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	font-size: 36px;
 }
 
-.linkpage-row--image img {
+.linkpage-public-row .linkpage-row--image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	border-radius: 50%;
 }
 
-.linkpage-row--image svg {
+.linkpage-public-row .linkpage-row--image svg {
 	width: 48px;
 	height: 48px;
 }
@@ -232,14 +232,14 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 /*---------- CW HEADING BLOCK ----------*/
 
-.linkpage-public-row--cw_heading {
+.linkpage-public-row.linkpage-public-row--cw_heading {
 	display: block;
 	width: 100%;
 	text-align: center;
 	margin: 1.5rem 0 0 0;
 }
 
-.linkpage-public-row--cw_heading h2 {
+.linkpage-public-row.linkpage-public-row--cw_heading h2 {
 	font-size: 1.7rem;
 	line-height: 1.3em;
 	font-weight: 700;
@@ -247,7 +247,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	color: var(--clickwhale-text-color);
 }
 
-.linkpage-public-row--cw_heading p {
+.linkpage-public-row.linkpage-public-row--cw_heading p {
 	font-size: 1.25rem;
 	line-height: 1.3em;
 	margin: 0;
@@ -257,7 +257,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 /*---------- CW SEPARATOR BLOCK ----------*/
 
-.linkpage-public-row--cw_separator {
+.linkpage-public-row.linkpage-public-row--cw_separator {
 	margin: .5rem 0;
 	border: none;
 	border-top: 1px solid var(--clickwhale-text-color);
@@ -266,7 +266,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 /*---------- CW CUSTOM CONTENT BLOCK ----------*/
 
-.linkpage-public-row--content {
+.linkpage-public-row .linkpage-public-row--content {
 	position: relative;
 	display: inline-block;
 	width: 100%;
@@ -279,66 +279,66 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	border-radius: 10px;
 }
 
-.linkpage-public-row--content h1,
-.linkpage-public-row--content h2,
-.linkpage-public-row--content h3,
-.linkpage-public-row--content h4,
-.linkpage-public-row--content h5,
-.linkpage-public-row--content h6 {
+.linkpage-public-row .linkpage-public-row--content h1,
+.linkpage-public-row .linkpage-public-row--content h2,
+.linkpage-public-row .linkpage-public-row--content h3,
+.linkpage-public-row .linkpage-public-row--content h4,
+.linkpage-public-row .linkpage-public-row--content h5,
+.linkpage-public-row .linkpage-public-row--content h6 {
 	line-height: 1.3em;
 	font-weight: 700;
 	margin: 1.5rem 0 0 0;
 	color: var(--clickwhale-text-color);
 }
 
-.linkpage-public-row--content h1,
-.linkpage-public-row--content h2 {
+.linkpage-public-row .linkpage-public-row--content h1,
+.linkpage-public-row .linkpage-public-row--content h2 {
 	font-size: 1.7rem;
 }
 
-.linkpage-public-row--content h3 {
+.linkpage-public-row .linkpage-public-row--content h3 {
 	font-size: 1.5rem;
 }
 
-.linkpage-public-row--content h4 {
+.linkpage-public-row .linkpage-public-row--content h4 {
 	font-size: 1.5rem;
 }
 
-.linkpage-public-row--content h5 {
+.linkpage-public-row .linkpage-public-row--content h5 {
 	font-size: 1.3rem;
 }
 
-.linkpage-public-row--content h6 {
+.linkpage-public-row .linkpage-public-row--content h6 {
 	font-size: 1.2rem;
 }
 
-.linkpage-public-row--content p,
-.linkpage-public-row--content ul,
-.linkpage-public-row--content ol {
+.linkpage-public-row .linkpage-public-row--content p,
+.linkpage-public-row .linkpage-public-row--content ul,
+.linkpage-public-row .linkpage-public-row--content ol {
 	margin: .5rem 0 0;
 }
 
-.linkpage-public-row--content ul,
-.linkpage-public-row--content ol {
+.linkpage-public-row .linkpage-public-row--content ul,
+.linkpage-public-row .linkpage-public-row--content ol {
 	padding: 0;
 	list-style: none;
 }
 
-.linkpage-public-row--content ol {
+.linkpage-public-row .linkpage-public-row--content ol {
 	counter-reset: cw-cc-list-counter
 }
 
-.linkpage-public-row--content ul li,
-.linkpage-public-row--content ol li {
+.linkpage-public-row .linkpage-public-row--content ul li,
+.linkpage-public-row .linkpage-public-row--content ol li {
 	position: relative;
 	padding-left: 30px;
 }
 
-.linkpage-public-row--content ol li {
+.linkpage-public-row .linkpage-public-row--content ol li {
 	counter-increment: cw-cc-list-counter;
 }
 
-.linkpage-public-row--content ul li::before {
+.linkpage-public-row .linkpage-public-row--content ul li::before {
 	position: absolute;
 	display: block;
 	content: '';
@@ -350,7 +350,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .5;
 }
 
-.linkpage-public-row--content ol li::before {
+.linkpage-public-row .linkpage-public-row--content ol li::before {
 	position: absolute;
 	display: block;
 	content: counter(cw-cc-list-counter) ". ";
@@ -359,67 +359,67 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .5;
 }
 
-.linkpage-public-row--content img {
+.linkpage-public-row .linkpage-public-row--content img {
 	display: block;
 	max-width: 100%;
 }
 
-.linkpage-public-row--content img.alignnone {
+.linkpage-public-row .linkpage-public-row--content img.alignnone {
 	margin: 0 0 1.5rem;
 }
 
-.linkpage-public-row--content img.alignleft {
+.linkpage-public-row .linkpage-public-row--content img.alignleft {
 	margin: 0 1.5rem 1.5rem 0;
 }
 
-.linkpage-public-row--content img.alignright {
+.linkpage-public-row .linkpage-public-row--content img.alignright {
 	margin: 0 0 1.5rem 1.5rem;
 }
 
-.linkpage-public-row--content img.aligncenter {
+.linkpage-public-row .linkpage-public-row--content img.aligncenter {
 	margin: 0 auto 1.5rem;
 }
 
-.linkpage-public-row--content * + img,
-.linkpage-public-row--content * + img.alignnone,
-.linkpage-public-row--content * + img.alignleft,
-.linkpage-public-row--content * + img.alignright,
-.linkpage-public-row--content * + img.aligncenter {
+.linkpage-public-row .linkpage-public-row--content * + img,
+.linkpage-public-row .linkpage-public-row--content * + img.alignnone,
+.linkpage-public-row .linkpage-public-row--content * + img.alignleft,
+.linkpage-public-row .linkpage-public-row--content * + img.alignright,
+.linkpage-public-row .linkpage-public-row--content * + img.aligncenter {
 	margin-top: .5rem;
 }
 
-.linkpage-public-row--content a {
+.linkpage-public-row .linkpage-public-row--content a {
 	display: inline;
 	color: var(--clickwhale-text-color);
 	text-decoration: underline;
 }
 
-.linkpage-public-row--content a:hover {
+.linkpage-public-row .linkpage-public-row--content a:hover {
 	color: var(--clickwhale-text-color);
 	text-decoration: none;
 	opacity: .7;
 }
 
-.linkpage-public-row--content iframe {
+.linkpage-public-row .linkpage-public-row--content iframe {
 	aspect-ratio: 16 / 9;
 	height: 100%;
 	width: 100%;
 }
 
-.linkpage-public-row--content iframe.iframe-vertical {
+.linkpage-public-row .linkpage-public-row--content iframe.iframe-vertical {
 	aspect-ratio: 9 / 16;
 }
 
-.linkpage-public-row--content blockquote.tiktok-embed {
+.linkpage-public-row .linkpage-public-row--content blockquote.tiktok-embed {
 	padding: 0;
 	border-radius: 8px;
 }
 
-.linkpage-public-row--content > *:first-child {
+.linkpage-public-row .linkpage-public-row--content > *:first-child {
 	margin-top: 0;
 }
 
-.linkpage-public-row--content > *:last-child {
+.linkpage-public-row .linkpage-public-row--content > *:last-child {
 	margin-bottom: 0 !important;
 }
 
@@ -451,6 +451,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 .linkpage-public--social > li > a:hover {
 	opacity: .7;
+	color: var(--clickwhale-text-color);
 }
 
 .linkpage-public--bottom {
@@ -466,6 +467,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 .linkpage-menu--wrap ul {
 	display: flex;
 	margin: 0;
+	padding: 0;
 	list-style: none;
 	gap: 1rem;
 	align-items: center;
@@ -483,10 +485,11 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 .linkpage-menu--wrap ul a:hover {
 	text-decoration: none;
+	color: var(--clickwhale-text-color);
 	opacity: .7;
 }
 
-.linkpage-public--copyright {
+.linkpage-public--bottom a.linkpage-public--copyright {
 	display: flex;
 	align-items: inherit;
 	justify-content: center;
@@ -498,16 +501,17 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	white-space: nowrap;
 }
 
-.linkpage-public--copyright img,
-.linkpage-public--copyright svg {
+.linkpage-public--bottom a.linkpage-public--copyright img,
+.linkpage-public--bottom a.linkpage-public--copyright svg {
 	display: block;
 	width: 120px;
 	height: auto;
 	margin-top: -15px;
 }
 
-.linkpage-public--copyright:hover {
+.linkpage-public--bottom a.linkpage-public--copyright:hover {
 	opacity: .7;
+	color: var(--clickwhale-text-color);
 }
 
 @media (min-width: 1600px) {
@@ -553,7 +557,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 		margin: 2rem 0 0 0;
 	}
 
-	.linkpage-public-row > a {
+	.linkpage-public-row a.linkpage-public-row-link {
 		padding: .75rem .75rem;
 	}
 
@@ -571,30 +575,30 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 		max-width: 32px;
 	}
 
-	.linkpage-public-row--cw_heading h2 {
+	.linkpage-public-row.linkpage-public-row--cw_heading h2 {
 		font-size: 1.25rem;
 	}
 
-	.linkpage-public-row--cw_heading p {
+	.linkpage-public-row.linkpage-public-row--cw_heading p {
 		font-size: 1rem;
 	}
 
-	.linkpage-public-row--content {
+	.linkpage-public-row .linkpage-public-row--content {
 		padding: 1rem .75rem;
 	}
 
-	.linkpage-public-row--content h1,
-	.linkpage-public-row--content h2 {
+	.linkpage-public-row .linkpage-public-row--content h1,
+	.linkpage-public-row .linkpage-public-row--content h2 {
 		font-size: 1.375rem;
 	}
 
-	.linkpage-public-row--content h3,
-	.linkpage-public-row--content h4 {
+	.linkpage-public-row .linkpage-public-row--content h3,
+	.linkpage-public-row .linkpage-public-row--content h4 {
 		font-size: 1.25rem;
 	}
 
-	.linkpage-public-row--content h5,
-	.linkpage-public-row--content h6 {
+	.linkpage-public-row .linkpage-public-row--content h5,
+	.linkpage-public-row .linkpage-public-row--content h6 {
 		font-size: 1.125rem;
 	}
 
