@@ -4,8 +4,8 @@ Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
-Tested up to: 6.2.0
-Stable tag: 1.3.3
+Tested up to: 6.2.1
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,14 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 1.3.4 (18th May 2023) =
+* Fix: Fixed an issue where added links on the Link Page might not be saved
+* Fix: Fixed an issue that caused an error on the Link Page when using a link that has been removed
+* Fix: Fixed an issue that caused an error on the Link Page when using a post (page or custom post type) that has been removed
+* Fix: Fixed an issue that caused an error on the Link Page when saving Custom Content Block without a title/subtitle
+* Fix: Fixed an issue where the Link Page styles were overlapping with styles from themes or plugins
+* Info: WP 6.2.1 support
 
 = Version 1.3.3 (12th May 2023) =
 * Fix: Fixed a bug when inactive blocks on the Link Page become active again when the plugin is updated
