@@ -536,13 +536,13 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title']  ?? '',
+					$data['title'] ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				echo $this->get_template_input_field(
 					__( 'Subtitle', 'clickwhale' ),
 					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle']  ?? '',
+					$data['subtitle'] ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				?>
@@ -632,11 +632,13 @@ class LinkpageContentTemplates {
 
 	public function template_public_cw_custom_content( $args ): string {
 		ob_start();
-		if ( $args['data']['title'] || $args['data']['subtitle'] ) {
+		if ( ! empty( $args['data']['title'] ) || ! empty( $args['data']['subtitle'] ) ) {
 			?>
 			<div class="linkpage-public-row linkpage-public-row--cw_heading">
-				<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
-				<?php if ( isset( $args['data']['subtitle'] ) && $args['data']['subtitle'] ) { ?>
+				<?php if ( ! empty( $args['data']['title'] ) ) { ?>
+					<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
+				<?php } ?>
+				<?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
 					<p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
 				<?php } ?>
 			</div>
