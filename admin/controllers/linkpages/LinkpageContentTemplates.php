@@ -165,7 +165,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					$data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' ),
 				);
 
@@ -236,7 +236,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					__( 'e.g. My link', 'clickwhale' ),
 					true
 				);
@@ -251,7 +251,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'URL', 'clickwhale' ),
 					'links[' . $data['id'] . '][url]',
-					$data['url'],
+					$data['url'] ?? '',
 					__( 'e.g. https://mysite.com', 'clickwhale' ),
 					true
 				);
@@ -382,7 +382,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' ),
 				);
 
@@ -445,7 +445,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Heading', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					__( 'e.g. My Links Heading', 'clickwhale' )
 				);
 
@@ -536,13 +536,13 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title']  ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				echo $this->get_template_input_field(
 					__( 'Subtitle', 'clickwhale' ),
 					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'],
+					$data['subtitle']  ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				?>
