@@ -84,6 +84,9 @@ class LinkpageContentTemplates {
 			$link             = Clickwhale_Linkpage_Edit::get_link( $defaults['data']['id'] );
 			$error            = is_null( $link ) ? 'with-error' : $error;
 
+			if ( ! $link ) {
+				return false;
+			}
 		} else {
 			global $wpdb;
 
@@ -267,12 +270,19 @@ class LinkpageContentTemplates {
 
 	public function template_admin_post_type( $args ) {
 
-		$defaults = $this->get_template_data_defaults();
-		$pt_posts = [];
-		$active   = false;
+		$defaults    = $this->get_template_data_defaults();
+		$pt_posts    = [];
+		$active      = false;
+		$post_status = '';
 
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$defaults['data'] = $args['data'];
+			$post             = get_post( $args['data']['post_id'] );
+
+			if ( ! $post ) {
+				return false;
+			}
+			$post_status = $post->post_status;
 		} else {
 			$active                       = true;
 			$defaults['data']['type']     = $args['type'];
@@ -313,7 +323,10 @@ class LinkpageContentTemplates {
 						<?php if ( ! isset( $data['post_id'] ) ) { ?>
 							<strong><?php echo $post_type_singular ?></strong>
 						<?php } else { ?>
-							<strong><?php echo $data['title'] ? wp_unslash( $data['title'] ) : get_the_title( $data['post_id'] ) ?></strong>
+							<strong>
+								<?php echo $data['title'] ? wp_unslash( $data['title'] ) : get_the_title( $data['post_id'] ) ?>
+								<?php echo $post_status != 'publish' ? '(' . $post_status . ')' : '' ?>
+							</strong>
 							<span>
                                 <?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': ' ?>
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
@@ -549,6 +562,9 @@ class LinkpageContentTemplates {
 
 	public function template_public_cw_link( $args ): string {
 		$link = Clickwhale_Linkpage_Edit::get_link( $args['data']['id'] );
+		if ( ! $link ) {
+			return false;
+		}
 
 		return $this->get_public_link_template(
 			array(
@@ -570,6 +586,12 @@ class LinkpageContentTemplates {
 	}
 
 	public function template_public_post_type( $args ): string {
+		$post = get_post( $args['data']['post_id'] );
+
+		if ( ! $post || $post->post_status != 'publish' ) {
+			return false;
+		}
+
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'] ?: get_the_title( $args['data']['post_id'] ),

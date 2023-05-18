@@ -472,7 +472,7 @@ class Clickwhale_Linkpage_Edit {
                     })
 
                     // change hidden fields value on CW link select
-                    .on('change', '.row-cw_link .select-link', function () {
+                    .on('change', '.row--cw_link .select-link', function () {
                         const parent = jQuery(this).closest('.linkpage-row'),
                             title = jQuery(this).find('option:selected').data('title'),
                             url = jQuery(this).find('option:selected').data('url'),
