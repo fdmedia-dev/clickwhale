@@ -742,8 +742,10 @@ class LinkpageContentTemplates {
 				$image = $data['image']['image_id'];
 				break;
 			case 'image' :
-				$src   = wp_get_attachment_image_src( $data['image']['image_id'] );
-				$image = '<img src="' . $src[0] . '"/>';
+				$image_alt = get_post_meta( $data['image']['image_id'], '_wp_attachment_image_alt', true );
+				$alt       = $image_alt ?: get_the_title( $data['image']['image_id'] );
+				$src       = wp_get_attachment_image_src( $data['image']['image_id'] );
+				$image     = '<img alt="' . $alt . '" src="' . $src[0] . '"/>';
 				break;
 			default:
 		}
