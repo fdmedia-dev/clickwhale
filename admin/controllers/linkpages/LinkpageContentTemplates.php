@@ -84,6 +84,9 @@ class LinkpageContentTemplates {
 			$link             = Clickwhale_Linkpage_Edit::get_link( $defaults['data']['id'] );
 			$error            = is_null( $link ) ? 'with-error' : $error;
 
+			if ( ! $link ) {
+				return false;
+			}
 		} else {
 			global $wpdb;
 
@@ -162,7 +165,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					$data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' ),
 				);
 
@@ -233,7 +236,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					__( 'e.g. My link', 'clickwhale' ),
 					true
 				);
@@ -248,7 +251,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'URL', 'clickwhale' ),
 					'links[' . $data['id'] . '][url]',
-					$data['url'],
+					$data['url'] ?? '',
 					__( 'e.g. https://mysite.com', 'clickwhale' ),
 					true
 				);
@@ -267,12 +270,19 @@ class LinkpageContentTemplates {
 
 	public function template_admin_post_type( $args ) {
 
-		$defaults = $this->get_template_data_defaults();
-		$pt_posts = [];
-		$active   = false;
+		$defaults    = $this->get_template_data_defaults();
+		$pt_posts    = [];
+		$active      = false;
+		$post_status = '';
 
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$defaults['data'] = $args['data'];
+			$post             = get_post( $args['data']['post_id'] );
+
+			if ( ! $post ) {
+				return false;
+			}
+			$post_status = $post->post_status;
 		} else {
 			$active                       = true;
 			$defaults['data']['type']     = $args['type'];
@@ -313,7 +323,10 @@ class LinkpageContentTemplates {
 						<?php if ( ! isset( $data['post_id'] ) ) { ?>
 							<strong><?php echo $post_type_singular ?></strong>
 						<?php } else { ?>
-							<strong><?php echo $data['title'] ? wp_unslash( $data['title'] ) : get_the_title( $data['post_id'] ) ?></strong>
+							<strong>
+								<?php echo $data['title'] ? wp_unslash( $data['title'] ) : get_the_title( $data['post_id'] ) ?>
+								<?php echo $post_status != 'publish' ? '(' . $post_status . ')' : '' ?>
+							</strong>
 							<span>
                                 <?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': ' ?>
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
@@ -369,7 +382,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' ),
 				);
 
@@ -432,7 +445,7 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Heading', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					__( 'e.g. My Links Heading', 'clickwhale' )
 				);
 
@@ -523,13 +536,13 @@ class LinkpageContentTemplates {
 				echo $this->get_template_input_field(
 					__( 'Title', 'clickwhale' ),
 					'links[' . $data['id'] . '][title]',
-					$data['title'],
+					$data['title'] ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				echo $this->get_template_input_field(
 					__( 'Subtitle', 'clickwhale' ),
 					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'],
+					$data['subtitle'] ?? '',
 					__( 'e.g. My link', 'clickwhale' )
 				);
 				?>
@@ -549,6 +562,9 @@ class LinkpageContentTemplates {
 
 	public function template_public_cw_link( $args ): string {
 		$link = Clickwhale_Linkpage_Edit::get_link( $args['data']['id'] );
+		if ( ! $link ) {
+			return false;
+		}
 
 		return $this->get_public_link_template(
 			array(
@@ -570,6 +586,12 @@ class LinkpageContentTemplates {
 	}
 
 	public function template_public_post_type( $args ): string {
+		$post = get_post( $args['data']['post_id'] );
+
+		if ( ! $post || $post->post_status != 'publish' ) {
+			return false;
+		}
+
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'] ?: get_the_title( $args['data']['post_id'] ),
@@ -610,11 +632,13 @@ class LinkpageContentTemplates {
 
 	public function template_public_cw_custom_content( $args ): string {
 		ob_start();
-		if ( $args['data']['title'] || $args['data']['subtitle'] ) {
+		if ( ! empty( $args['data']['title'] ) || ! empty( $args['data']['subtitle'] ) ) {
 			?>
 			<div class="linkpage-public-row linkpage-public-row--cw_heading">
-				<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
-				<?php if ( isset( $args['data']['subtitle'] ) && $args['data']['subtitle'] ) { ?>
+				<?php if ( ! empty( $args['data']['title'] ) ) { ?>
+					<h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
+				<?php } ?>
+				<?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
 					<p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
 				<?php } ?>
 			</div>
@@ -643,7 +667,7 @@ class LinkpageContentTemplates {
 		ob_start();
 		?>
 		<div class="linkpage-public-row linkpage-public-row--<?php echo $type ?>" data-type="<?php echo $type ?>">
-			<a href="<?php echo esc_url( $url ) ?>" class="cw-track" <?php echo $target ?>>
+			<a class="linkpage-public-row-link" href="<?php echo esc_url( $url ) ?>" class="cw-track" <?php echo $target ?>>
 				<?php
 				if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
 					echo $this->get_template_row_image( $args['data'] );
@@ -718,8 +742,10 @@ class LinkpageContentTemplates {
 				$image = $data['image']['image_id'];
 				break;
 			case 'image' :
-				$src   = wp_get_attachment_image_src( $data['image']['image_id'] );
-				$image = '<img src="' . $src[0] . '"/>';
+				$image_alt = get_post_meta( $data['image']['image_id'], '_wp_attachment_image_alt', true );
+				$alt       = $image_alt ?: get_the_title( $data['image']['image_id'] );
+				$src       = wp_get_attachment_image_src( $data['image']['image_id'] );
+				$image     = '<img alt="' . $alt . '" src="' . $src[0] . '"/>';
 				break;
 			default:
 		}
