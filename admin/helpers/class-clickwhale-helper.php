@@ -8,7 +8,7 @@ class ClickwhaleHepler {
 	 *
 	 * @return string
 	 */
-	public static function render_control( array $args, bool $row = false ): string {
+	public static function render_control( array $args, bool $row = false, $row_classes = '' ): string {
 
 		$item     = '';
 		$id       = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
@@ -24,7 +24,7 @@ class ClickwhaleHepler {
 
 		if ( $row ) {
 			$rowLabel = $args['row_label'] ?? '';
-			$item     .= '<tr class="form-field">';
+			$item     .= '<tr class="form-field ' . $row_classes . '">';
 			$item     .= '<th scope="row"><label for="' . $args['id'] . '">' . $rowLabel . '</label></th>';
 			$item     .= '<td>';
 		}
@@ -73,7 +73,7 @@ class ClickwhaleHepler {
 				}
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label>';
-					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $value,$k,
+					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $value, $k,
 							false ) . $disabled . ' />';
 					$item .= '<span>' . $v . '</span>';
 					$item .= '</label><br>';
