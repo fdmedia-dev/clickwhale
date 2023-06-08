@@ -3,7 +3,14 @@
 class ClickwhaleTrackingCodeEdit {
 	private static $instance;
 
+	/**
+	 * @var
+	 * @since 1.3.6
+	 */
+	public static $conversion;
+
 	public function init() {
+		self::$conversion = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
 
@@ -96,7 +103,7 @@ class ClickwhaleTrackingCodeEdit {
 		return $result;
 	}
 
-	public function get_posts_by_post_type( $post_type ): array {
+	public static function get_posts_by_post_type( $post_type ): array {
 		$result = [];
 		$args   = array(
 			'numberposts' => - 1,
@@ -143,9 +150,23 @@ class ClickwhaleTrackingCodeEdit {
 		$item['description']  = esc_html( $item['description'] );
 		$item['author']       = get_current_user_id();
 
+		if ( isset( $item['position']['conversion'] ) && $item['position']['conversion'] !== 'standard' ) {
+			unset( $item['position']['items_included'] );
+			unset( $item['position']['items_excluded'] );
+			unset( $item['position']['code'] );
+			unset( $item['position']['pages'] );
+			foreach ( $item['position']['conversion_items'] as $k => $v ) {
+				if ( $k !== $item['position']['conversion'] ) {
+					unset( $item['position']['conversion_items'][ $k ] );
+				}
+			}
+		} else {
+			unset( $item['position']['conversion_items'] );
+		}
+
 		// handle CW Link Pages
-		if ( ! isset( $item['position']['post_types_included']['cw_linkpage']['active'] ) ) {
-			unset( $item['position']['post_types_included']['cw_linkpage'] );
+		if ( ! isset( $item['position']['items_included']['cw_linkpage']['active'] ) ) {
+			unset( $item['position']['items_included']['cw_linkpage'] );
 		}
 		if ( ! isset( $item['position']['items_excluded']['cw_linkpage']['active'] ) ) {
 			unset( $item['position']['items_excluded']['cw_linkpage'] );
@@ -153,8 +174,8 @@ class ClickwhaleTrackingCodeEdit {
 
 		// Handle Post Types
 		foreach ( $this->get_default_post_types() as $post_type ) {
-			if ( ! isset( $item['position']['post_types_included'][ $post_type ]['active'] ) ) {
-				unset( $item['position']['post_types_included'][ $post_type ] );
+			if ( ! isset( $item['position']['items_included'][ $post_type ]['active'] ) ) {
+				unset( $item['position']['items_included'][ $post_type ] );
 			}
 			if ( ! isset( $item['position']['items_excluded'][ $post_type ]['active'] ) ) {
 				unset( $item['position']['items_excluded'][ $post_type ] );
@@ -163,8 +184,8 @@ class ClickwhaleTrackingCodeEdit {
 
 		// Handle Taxonomies
 		foreach ( $this->get_default_terms_tax() as $taxonomy ) {
-			if ( ! isset( $item['position']['post_types_included'][ $taxonomy ]['active'] ) ) {
-				unset( $item['position']['post_types_included'][ $taxonomy ] );
+			if ( ! isset( $item['position']['items_included'][ $taxonomy ]['active'] ) ) {
+				unset( $item['position']['items_included'][ $taxonomy ] );
 			}
 			if ( ! isset( $item['position']['items_excluded'][ $taxonomy ]['active'] ) ) {
 				unset( $item['position']['items_excluded'][ $taxonomy ] );
@@ -173,6 +194,8 @@ class ClickwhaleTrackingCodeEdit {
 
 		$item['position']  = maybe_serialize( $item['position'] );
 		$item['is_active'] = $item['is_active'] ?? 0;
+
+		$item = apply_filters( 'clickwhale_tracking_code_data_before_save', $item );
 
 		$result = $wpdb->update(
 			$tracking_codes_table,

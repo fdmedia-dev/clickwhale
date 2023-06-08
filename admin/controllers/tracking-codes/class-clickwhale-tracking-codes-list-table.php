@@ -80,6 +80,9 @@ class ClickwhaleTrackingCodesListTable extends WP_List_Table {
 		$position     = '';
 		$positionCode = maybe_unserialize( $item['position'] );
 
+		if ( ! isset( $positionCode['code'] ) ) {
+			return $position;
+		}
 		switch ( $positionCode['code'] ) {
 			case 'wp_head':
 				$position = 'before <code>&lt;/head&gt;</code>';
