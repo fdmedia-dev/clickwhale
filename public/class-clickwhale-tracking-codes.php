@@ -172,6 +172,15 @@ class ClickwhaleTrackingCodes {
 
 			}
 
+			if ( isset( $position['pages'] ) && $position['pages'] === 'all' ) {
+				if ( isset( $position['items_excluded'] ) ) {
+					$this->do_excluded_conditional_logic( $position, $tracking_code, $page );
+				} else {
+					$this->do_tracking_action( $position['code'], $tracking_code['code'] );
+				}
+			} else {
+				$this->do_included_conditional_logic( $position, $tracking_code, $page );
+			}
 		}
 	}
 
