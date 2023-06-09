@@ -249,6 +249,8 @@ class Clickwhale_Public_Linkpage {
 			$style .= ':root{ --clickwhale-page-bg-color: ' . $this->styles['bg_color'] . '; --clickwhale-text-color: ' . $this->styles['text_color'] . '; --clickwhale-link-bg-color: ' . $this->styles['link_bg_color'] . '; --clickwhale-link-color: ' . $this->styles['link_color'] . '; --clickwhale-link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --clickwhale-link-hover: ' . $this->styles['link_color_hover'] . ';  }';
 		}
 
+		$style = apply_filters( 'clickwhale_linkpage_styles', $style, $this->styles );
+
 		return ' <style>' . $style . ' </style > ';
 	}
 
@@ -350,7 +352,7 @@ class Clickwhale_Public_Linkpage {
 	public function admin_scripts() {
 		$nonce = wp_create_nonce( 'track_custom_link' );
 		?>
-		<script type='text/javascript'>
+        <script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
@@ -364,7 +366,7 @@ class Clickwhale_Public_Linkpage {
 
                 });
             });
-		</script>
+        </script>
 		<?php
 	}
 }
