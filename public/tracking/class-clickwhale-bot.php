@@ -7,13 +7,12 @@ class Clickwhale_Bot {
 		$this->detectBot( $ua );
 	}
 
-	public function detectBot( $ua ) {
+	public function detectBot( $ua ): Clickwhale_Bot {
 
-		if ( preg_match( '/\+https?:\/\//iu', $ua ) ) {
+		if ( preg_match( '/\+https?:\/\//iu', $ua )
+		     || ( preg_match( '/(?:Bot|Robot|Spider|Crawler)([\/\);]|$)/iu', $ua )
+		          && ! preg_match( '/CUBOT/iu', $ua ) ) ) {
 			/* Detect bots based on url in the UA string */
-			$this->is_bot = true;
-		} else if ( preg_match( '/(?:Bot|Robot|Spider|Crawler)([\/\);]|$)/iu', $ua )
-		            && ! preg_match( '/CUBOT/iu', $ua ) ) {
 			/* Detect bots based on common markers */
 			$this->is_bot = true;
 		} else {
