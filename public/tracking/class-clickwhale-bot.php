@@ -20,13 +20,16 @@ class Clickwhale_Bot {
 			/* Detect based on a predefined list or markers */
 			$url     = plugin_dir_url( __FILE__ ) . 'library/crawler-user-agents.json';
 			$request = wp_remote_get( $url );
-			$body    = wp_remote_retrieve_body( $request );
-			$bots    = json_decode( $body, true );
 
-			foreach ( $bots as $bot ) {
-				if ( preg_match( '/' . $bot['pattern'] . '/', $ua ) ) {
-					$this->is_bot = true;
-					break;
+			if ( 200 === wp_remote_retrieve_response_code( $request ) ) {
+				$body = wp_remote_retrieve_body( $request );
+				$bots = json_decode( $body, true );
+
+				foreach ( $bots as $bot ) {
+					if ( preg_match( '/' . $bot['pattern'] . '/', $ua ) ) {
+						$this->is_bot = true;
+						break;
+					}
 				}
 			}
 		}
