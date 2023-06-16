@@ -190,21 +190,21 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <div class="logo-field">
+                                <div class="logo-field image-field">
 									<?php
 									if ( $logo_id ) {
 										$image = wp_get_attachment_image_src( $logo_id );
 										?>
-                                        <a href="#" class="linkpage-logo-upload">
+                                        <a href="#" class="linkpage-image-upload">
                                             <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
                                         </a>
-                                        <a href="#" class="button linkpage-logo-remove">Remove image</a>
+                                        <a href="#" class="button linkpage-image-remove">Remove image</a>
                                         <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
 									<?php } else { ?>
-                                        <a href="#" class="button linkpage-logo-upload">
+                                        <a href="#" class="button linkpage-image-upload">
 											<?php _e( 'Upload image', 'clickwhale' ) ?>
                                         </a>
-                                        <a href="#" class="button linkpage-logo-remove" style="display: none;">
+                                        <a href="#" class="button linkpage-image-remove" style="display: none;">
 											<?php _e( 'Remove image', 'clickwhale' ) ?>
                                         </a>
                                         <input type="hidden" name="logo" value="">
@@ -408,7 +408,6 @@ do_action( 'clickwhale_admin_banner' );
 										$this->plugin_name ) ?></p>
                             </td>
                         </tr>
-                        </tbody>
 
 						<?php // LINK TEXT COLOR:HOVER ?>
                         <tr class="form-field">
@@ -562,22 +561,22 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="ogimage"><?php _e( 'Open Graph Image', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <div class="logo-field">
+                                <div class="og-image-field image-field">
 									<?php
 									if ( $seoOGImageId ) {
 										$ogImage = wp_get_attachment_image_src( $seoOGImageId );
 										?>
-                                        <a href="#" class="linkpage-logo-upload">
+                                        <a href="#" class="linkpage-image-upload">
                                             <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage[0] ) ?>"/>
                                         </a>
-                                        <a href="#" class="linkpage-logo-remove">Remove image</a>
+                                        <a href="#" class="linkpage-image-remove">Remove image</a>
                                         <input type="hidden" name="social[seo][ogimage]"
                                                value="<?php echo esc_attr( $seoOGImageId ); ?>">
 									<?php } else { ?>
-                                        <a href="#" class="linkpage-logo-upload">
+                                        <a href="#" class="linkpage-image-upload">
 											<?php _e( 'Upload image' ) ?>
                                         </a>
-                                        <a href="#" class="linkpage-logo-remove" style="display:none">
+                                        <a href="#" class="linkpage-image-remove" style="display:none">
 											<?php _e( 'Remove image' ) ?>
                                         </a>
                                         <input type="hidden" name="social[seo][ogimage]" value="">
@@ -613,6 +612,8 @@ do_action( 'clickwhale_admin_banner' );
 				<?php do_action( 'clickwhale_linkpage_after_tabs_content', $item ); ?>
 
             </div>
+
+            <hr>
 
             <input type="hidden" id="created_at" name="created_at"
                    value="<?php echo esc_attr( $item['created_at'] ) ?>">
