@@ -98,5 +98,4 @@ function run_clickwhale() {
 	$plugin->run();
 
 }
-
-run_clickwhale();
+add_action( 'plugins_loaded', 'run_clickwhale', 10 );
