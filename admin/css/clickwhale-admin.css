@@ -1365,6 +1365,17 @@ table.tracking-codes .column-is_active {
 	color: #007AFF;
 }
 
+.clickwhale-pro-promo--subscribe form + p {
+	margin-top: 30px;
+	padding: 10px 20px;
+	background: #70C184;
+	display: inline-block;
+	width: 100%;
+	max-width: 800px;
+	border-radius: 25px;
+	font-size: 17px;
+}
+
 /* PRO PAGE PROMO */
 
 /* VENDORS */
@@ -1421,9 +1432,10 @@ table.tracking-codes .column-is_active {
 		overflow-x: hidden;
 	}
 
-	.clickwhale-pro-promo--hero{
+	.clickwhale-pro-promo--hero {
 		padding: 60px 0 60px;
 	}
+
 	.clickwhale-pro-promo--hero h1 {
 		font-size: 36px;
 	}
@@ -1442,7 +1454,7 @@ table.tracking-codes .column-is_active {
 		bottom: -100px;
 	}
 
-	.clickwhale-pro-promo--content{
+	.clickwhale-pro-promo--content {
 		padding-top: 50px;
 	}
 
@@ -1463,10 +1475,11 @@ table.tracking-codes .column-is_active {
 		font-size: 20px;
 	}
 
-	.clickwhale-pro-promo--subscribe{
+	.clickwhale-pro-promo--subscribe {
 		margin: 0;
 		padding: 60px 0
 	}
+
 	.clickwhale-pro-promo--subscribe h2 {
 		font-size: 36px;
 	}

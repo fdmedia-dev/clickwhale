@@ -355,13 +355,23 @@ class Clickwhale_Admin {
 	}
 
 	public function clickwhale_pro_subscription_action() {
-		$email   = sanitize_email( $_POST['email'] );
-		$to      = 'https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb';
-		$subject = 'ClickWhale Pro Subscription';
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		$user     = wp_get_current_user();
+		$url      = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
+		$response = wp_remote_post( $url, array(
+				'method' => 'POST',
+				'body'   => array(
+					'email'      => sanitize_email( $_POST['email'] ),
+					'first_name' => $user ? $user->first_name : '',
+				)
+			)
+		);
 
-		wp_mail( $to, $subject, $email, $headers );
-		wp_redirect( esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) ) );
+		if ( is_wp_error( $response ) ) {
+			$error_message = $response->get_error_message();
+			echo "Something went wrong: $error_message";
+		} else {
+			wp_redirect( admin_url( 'admin.php?page=clickwhale-pro&success=1#clickwhaleSubscribe' ) );
+		}
 	}
 
 	public function admin_scripts() {
@@ -444,4 +454,3 @@ class Clickwhale_Admin {
 		}
 	}
 }
-
