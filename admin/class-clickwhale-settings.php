@@ -211,8 +211,8 @@ class Clickwhale_Admin_Settings {
 	public function show_pro_menu_item() {
 		add_submenu_page(
 			$this->plugin_name,
-			__( 'Upgrade to Pro', $this->plugin_name ),
-			__( 'Upgrade to Pro', $this->plugin_name ),
+			__( 'Upgrade to PRO', $this->plugin_name ),
+			__( 'Upgrade to PRO', $this->plugin_name ),
 			'manage_options',
 			$this->plugin_name . '-pro',
 			array( $this, 'render_pro_page_view' )
