@@ -1142,6 +1142,13 @@ table.tracking-codes .column-is_active {
 }
 
 /* PRO PAGE PROMO */
+
+#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"],
+#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"].current {
+	color: #FDD231;
+	font-weight: 700;
+}
+
 .clickwhale-pro-promo {
 	margin: -5px 0 0 -20px;
 }
@@ -1228,7 +1235,6 @@ table.tracking-codes .column-is_active {
 	display: block;
 	width: 200px;
 	height: auto;
-	transform: scaleX(-1);
 	right: -20px;
 	bottom: -135px;
 }

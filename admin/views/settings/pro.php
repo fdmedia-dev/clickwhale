@@ -5,11 +5,11 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap clickwhale-pro-promo">
     <div class="clickwhale-pro-promo--hero">
         <div class="clickwhale-pro-promo--container">
-            <h1>Swim passed the competition with ClickWhale <em>Pro</em></h1>
+            <h1>Swim passed the competition with ClickWhale <em>PRO</em></h1>
             <p>Take your branded links and link page analytics, customization, and integration to PROfessional
                 levels!</p>
             <a href="" rel="noopener">Go PRO!</a>
-            <img src="<?php echo ADMIN_IMAGES_DIR ?>/click-whale.svg" alt="ClickWhale">
+            <img src="<?php echo ADMIN_IMAGES_DIR ?>/whale.svg" alt="ClickWhale">
         </div>
     </div>
     <div class="clickwhale-pro-promo--content">
