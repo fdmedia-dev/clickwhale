@@ -242,53 +242,53 @@ class Clickwhale_Admin {
 		$link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
 		?>
 
-		<div class="clickwhale-banner">
-			<div class="clickwhale-banner--logo">
-				<a href="<?php echo $link_logo ?>"
-				   target="_blank"
-				   rel="noopener">
-					<img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
-					     alt="<?php echo $this->plugin_name ?>">
-				</a>
-			</div>
-			<div class="clickwhale-banner--links">
+        <div class="clickwhale-banner">
+            <div class="clickwhale-banner--logo">
+                <a href="<?php echo $link_logo ?>"
+                   target="_blank"
+                   rel="noopener">
+                    <img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) . 'images/wordmark.svg' ) ?>"
+                         alt="<?php echo $this->plugin_name ?>">
+                </a>
+            </div>
+            <div class="clickwhale-banner--links">
 				<?php if ( $link_review ) { ?>
-					<div class="clickwhale-banner--link-review">
+                    <div class="clickwhale-banner--link-review">
 						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>',
 							$this->plugin_name ), esc_url( $link_review ) ); ?>
-						<span class="clickwhale-banner--link-review--raiting">
+                        <span class="clickwhale-banner--link-review--raiting">
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
                         </span>
-					</div>
+                    </div>
 				<?php } ?>
 				<?php if ( $link_helpdesk ) { ?>
-					<a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
-					   target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
+                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
+                       target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
 				<?php } ?>
 				<?php //do_action( 'clickwhale_admin_banner_button_pro' ) ?>
-			</div>
-		</div>
+            </div>
+        </div>
 		<?php
 	}
 
 	public function clickwhale_admin_banner_button_pro_callback() {
 		$link_pro = 'https://clickwhale.pro';
 		?>
-		<a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
+        <a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
 			<?php _e( 'Update to Pro', $this->plugin_name ) ?>
-		</a>
+        </a>
 		<?php
 	}
 
 	public function clickwhale_admin_pro_message_callback() {
 		?>
-		<div class="clickwhale-linkpage--message">
+        <div class="clickwhale-linkpage--message">
 			<?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
-		</div>
+        </div>
 		<?php
 	}
 
@@ -354,11 +354,21 @@ class Clickwhale_Admin {
 		);
 	}
 
+	public function clickwhale_pro_subscription_action() {
+		$email   = sanitize_email( $_POST['email'] );
+		$to      = 'https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb';
+		$subject = 'ClickWhale Pro Subscription';
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		wp_mail( $to, $subject, $email, $headers );
+		wp_redirect( esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) ) );
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
 				?>
-				<script type='text/javascript'>
+                <script type='text/javascript'>
                     jQuery(document).ready(function () {
                         jQuery('.slug-input--btn').click(function (e) {
                             e.preventDefault();
@@ -372,12 +382,12 @@ class Clickwhale_Admin {
                             $temp.remove();
                         });
                     });
-				</script>
+                </script>
 				<?php
 			}
 			if ( $_GET['page'] === 'clickwhale-edit-link' || $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 				?>
-				<script type='text/javascript'>
+                <script type='text/javascript'>
                     jQuery(document).ready(function () {
                         jQuery('#copy-link-url, #cw-slug--text').click(function (e) {
                             e.preventDefault();
@@ -400,13 +410,13 @@ class Clickwhale_Admin {
                             }, 2000);
                         });
                     });
-				</script>
+                </script>
 				<?php
 			}
 			if ( $_GET['page'] === 'clickwhale-tracking-codes' ) {
 				$nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
 				?>
-				<script type='text/javascript'>
+                <script type='text/javascript'>
                     jQuery(document).ready(function () {
                         jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').change(function () {
                             var active = this.checked,
@@ -428,7 +438,7 @@ class Clickwhale_Admin {
                             })
                         });
                     });
-				</script>
+                </script>
 				<?php
 			}
 		}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37.442" height="28.801" viewBox="0 0 37.442 28.801">
+  <g id="road-with-broken-line" transform="translate(0 -52.552)">
+    <g id="Gruppe_2296" data-name="Gruppe 2296" transform="translate(0 52.552)">
+      <path id="Pfad_1275" data-name="Pfad 1275" d="M94.034,52.552q.048,1.195.1,2.389H92.58q.048-1.195.1-2.389H88.9l-7.584,28.8h10.2q.048-1.195.1-2.389H95.1q.048,1.195.1,2.389h10.2l-7.584-28.8Zm-1.6,5.967h1.838q.133,3.322.267,6.644H92.169Q92.3,61.842,92.436,58.519Zm-.678,16.866q.133-3.322.267-6.644h2.659q.134,3.322.267,6.644Z" transform="translate(-74.634 -52.552)" fill="#323232"/>
+      <path id="Pfad_1276" data-name="Pfad 1276" d="M297.592,52.552h-1.284q4.8,14.4,9.609,28.8h3.472Z" transform="translate(-271.947 -52.552)" fill="#323232"/>
+      <path id="Pfad_1277" data-name="Pfad 1277" d="M11.8,52.552,0,81.353H3.472l9.609-28.8Z" transform="translate(0 -52.552)" fill="#323232"/>
+    </g>
+  </g>
+</svg>

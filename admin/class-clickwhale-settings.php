@@ -43,10 +43,11 @@ class Clickwhale_Admin_Settings {
 	 *
 	 * @since    1.0.0
 	 */
-	public function init( string $plugin_name, string $version ) {
+	public function __construct( string $plugin_name, string $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
 	}
 
 	/**
@@ -178,14 +179,12 @@ class Clickwhale_Admin_Settings {
 				array( $this, 'get_view' )
 			);
 		}
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Statistics', $this->plugin_name ),
-			__( 'Statistics', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-statistics',
-			array( $this, 'render_statistics_page_view' )
-		);
+
+		/**
+		 * @since 1.4.0
+		 */
+		do_action( 'clickwhale_menu_before_settings' );
+
 		add_submenu_page(
 			$this->plugin_name,
 			__( 'Settings', $this->plugin_name ),
@@ -203,6 +202,21 @@ class Clickwhale_Admin_Settings {
 			array( $this, 'render_tools_page_view' )
 		);
 
+		/**
+		 * @since 1.4.0
+		 */
+		do_action( 'clickwhale_menu_after_tools' );
+	}
+
+	public function show_pro_menu_item() {
+		add_submenu_page(
+			$this->plugin_name,
+			__( 'Upgrade to Pro', $this->plugin_name ),
+			__( 'Upgrade to Pro', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-pro',
+			array( $this, 'render_pro_page_view' )
+		);
 	}
 
 	/**
@@ -226,12 +240,8 @@ class Clickwhale_Admin_Settings {
 	public function render_tools_page_view() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
 	}
-
-	/**
-	 * @since 1.4.0
-	 */
-	public function render_statistics_page_view() {
-		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/statistics/statistics.php' );
+	public function render_pro_page_view() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/settings/pro.php' );
 	}
 
 	/**

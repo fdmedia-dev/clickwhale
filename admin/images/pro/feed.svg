@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="46.241" height="46.241" viewBox="0 0 46.241 46.241">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Pfad_910" data-name="Pfad 910" d="M0,0H46.241V46.241H0Z" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="rss-feed" clip-path="url(#clip-path)">
+    <path id="Pfad_908" data-name="Pfad 908" d="M8.2,24.041A4.2,4.2,0,1,0,4,19.84a4.2,4.2,0,0,0,4.2,4.2Z" transform="translate(3.707 14.494)" fill="#323232"/>
+    <path id="Pfad_909" data-name="Pfad 909" d="M4,4.44V9.893A24.529,24.529,0,0,1,28.527,34.42H33.98A29.989,29.989,0,0,0,4,4.44ZM4,15.345V20.8A13.633,13.633,0,0,1,17.622,34.42h5.453A19.069,19.069,0,0,0,4,15.345Z" transform="translate(3.707 4.115)" fill="#323232"/>
+  </g>
+</svg>
