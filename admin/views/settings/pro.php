@@ -70,16 +70,18 @@ do_action( 'clickwhale_admin_banner' );
             </div>
         </div>
     </div>
-    <div class="clickwhale-pro-promo--subscribe">
+    <div class="clickwhale-pro-promo--subscribe" id="clickwhaleSubscribe">
         <div class="clickwhale-pro-promo--container">
             <h2>Sign up for the next step!</h2>
             <p>You will receive further information by email</p>
-            <form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
+            <form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
                 <input type="hidden" name="action" value="clickwhale_pro_subscription_action">
                 <input type="email" name="email" placeholder="Your email address">
                 <button type="submit">Sign Up</button>
             </form>
+			<?php if ( ! empty( $_GET['success'] ) ) { ?>
+                <p>Thanks for subscribing!</p>
+			<?php } ?>
         </div>
     </div>
 </div>
-
