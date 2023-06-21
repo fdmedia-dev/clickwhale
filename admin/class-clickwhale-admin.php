@@ -263,7 +263,7 @@ class Clickwhale_Admin {
                     <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
                        target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
 				<?php } ?>
-				<?php //do_action( 'clickwhale_admin_banner_button_pro' ) ?>
+				<?php //do_action( 'clickwhale_admin_banner_pro_button' ) ?>
             </div>
         </div>
 		<?php
