@@ -201,11 +201,6 @@ class Clickwhale_Admin_Settings {
 			$this->plugin_name . '-tools',
 			array( $this, 'render_tools_page_view' )
 		);
-
-		/**
-		 * @since 1.4.0
-		 */
-		do_action( 'clickwhale_menu_after_tools' );
 	}
 
 	/**
