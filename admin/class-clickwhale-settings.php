@@ -181,7 +181,7 @@ class Clickwhale_Admin_Settings {
 		}
 
 		/**
-		 * @since 1.4.0
+		 * @since 1.3.6
 		 */
 		do_action( 'clickwhale_menu_before_settings' );
 
