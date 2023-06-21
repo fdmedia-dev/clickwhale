@@ -196,6 +196,11 @@ class Clickwhale_Admin_Settings {
 			array( $this, 'render_tools_page_view' )
 		);
 
+		/**
+		 * @since 1.3.6
+		 */
+		do_action( 'clickwhale_menu_after_tools' );
+
 	}
 
 	public function show_pro_menu_item() {

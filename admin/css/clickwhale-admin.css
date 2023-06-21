@@ -1323,7 +1323,7 @@ table.tracking-codes .column-is_active {
 .clickwhale-pro-promo--subscribe form input:focus {
 	box-shadow: none;
 	outline: none;
-	border-color: #007AFF;
+	border-color: #ffffff;
 }
 
 .clickwhale-pro-promo--subscribe form button {
@@ -1343,8 +1343,7 @@ table.tracking-codes .column-is_active {
 }
 
 .clickwhale-pro-promo--subscribe form button:hover {
-	background-color: #FDD231;
-	color: #007AFF;
+	opacity: .7;
 }
 
 .clickwhale-pro-promo--subscribe form + p {
