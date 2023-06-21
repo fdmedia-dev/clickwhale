@@ -356,7 +356,7 @@ class Clickwhale_Admin {
 	 * @return void
 	 * @since 1.3.6
 	 */
-	public function clickwhale_pro_subscription_action() {
+	public function pro_subscription_action() {
 		$user     = wp_get_current_user();
 		$url      = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
 		$response = wp_remote_post( $url, array(
