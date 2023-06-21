@@ -1125,6 +1125,248 @@ table.tracking-codes .column-is_active {
 	padding: 1rem 0 0 0;
 }
 
+/* PRO PAGE PROMO */
+
+#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"],
+#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"].current {
+	color: #FDD231;
+	font-weight: 700;
+}
+
+.clickwhale-pro-promo {
+	margin: -5px 0 0 -20px;
+}
+
+.clickwhale-pro-promo * {
+	box-sizing: border-box;
+}
+
+.clickwhale-pro-promo--container {
+	position: relative;
+	width: 100%;
+	max-width: 1280px;
+	padding: 0 2rem;
+	margin: 0 auto;
+}
+
+.clickwhale-pro-promo--hero {
+	padding: 80px 0 100px;
+	background: #FDD231;
+	color: #1A1C1D;
+	text-align: center;
+}
+
+.clickwhale-pro-promo--hero h1 {
+	position: relative;
+	font-weight: 800;
+	font-size: 64px;
+	line-height: 1.2em;
+	margin: 0 0 25px;
+	z-index: 1;
+	text-wrap: balance;
+}
+
+.clickwhale-pro-promo--hero h1 em {
+	position: relative;
+	color: #ffffff;
+	font-style: normal;
+}
+
+.clickwhale-pro-promo--hero h1 em::before {
+	position: absolute;
+	display: block;
+	content: '';
+	width: auto;
+	height: 100%;
+	background-color: #007AFF;
+	top: 0;
+	right: -10px;
+	left: -8px;
+	z-index: -1;
+	transform: skewY(-2deg) skewX(-4deg)
+}
+
+.clickwhale-pro-promo--hero p {
+	font-weight: 600;
+	font-size: 21px;
+	line-height: 1.3em;
+	color: #886d0b;
+	margin: 0 auto 60px;
+	max-width: 700px;
+	text-wrap: balance;
+}
+
+.clickwhale-pro-promo--hero a {
+	display: inline-block;
+	padding: 33px 94px;
+	color: #ffffff;
+	background-color: #007AFF;
+	border-radius: 25px;
+	text-decoration: none;
+	text-align: center;
+	font-size: 21px;
+	line-height: 1em;
+	font-weight: 700;
+}
+
+.clickwhale-pro-promo--hero a:hover {
+	background-color: #ffffff;
+	color: #007AFF;
+}
+
+.clickwhale-pro-promo--hero img {
+	position: absolute;
+	display: block;
+	width: 200px;
+	height: auto;
+	right: -20px;
+	bottom: -135px;
+}
+
+.clickwhale-pro-promo--content {
+	padding: 80px 0;
+}
+
+.clickwhale-pro-promo--content h2 {
+	font-weight: 700;
+	font-size: 30px;
+	line-height: 1em;
+	color: #b4b4b4;
+	margin: 0 0 70px;
+	padding: 0 60px;
+}
+
+.clickwhale-pro-promo--why-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 50px 80px;
+	padding: 0 60px;
+}
+
+.clickwhale-pro-promo--why-item {
+	position: relative;
+}
+
+.clickwhale-pro-promo--why-item img {
+	position: absolute;
+	display: block;
+	left: 0;
+	width: 36px;
+	height: 36px;
+	object-fit: contain;
+}
+
+.clickwhale-pro-promo--why-item h3 {
+	font-weight: 700;
+	font-size: 26px;
+	line-height: 1.2em;
+	margin: 0 0 15px;
+	padding-left: 60px;
+}
+
+.clickwhale-pro-promo--why-item h3 span {
+	display: block;
+	font-size: 65%;
+	opacity: .5;
+}
+
+.clickwhale-pro-promo--why-item p {
+	font-weight: 600;
+	font-size: 17px;
+	line-height: 1.5em;
+	color: #5b7184;
+	margin: 0;
+	padding-left: 60px;
+}
+
+.clickwhale-pro-promo--subscribe {
+	background: #1A1C1D;
+	margin: 0 0 -65px -20px;
+	padding: 120px 0 100px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.clickwhale-pro-promo--subscribe h2 {
+	margin: 0 0 15px;
+	font-weight: 700;
+	font-size: 58px;
+	line-height: 1.2;
+	color: inherit;
+}
+
+.clickwhale-pro-promo--subscribe p {
+	margin: 0;
+	font-size: 24px;
+	line-height: 1.2;
+	color: inherit;
+	opacity: 1;
+}
+
+.clickwhale-pro-promo--subscribe form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 800px;
+	margin: 40px auto 0;
+}
+
+.clickwhale-pro-promo--subscribe form input {
+	border-radius: 25px 0 0 25px;
+	margin: 0;
+	padding: 27px 35px;
+	font-size: 21px;
+	line-height: 1em;
+	font-weight: 600;
+	color: #1A1C1D;
+	border: 3px solid #fff;
+	border-right: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background-clip: unset;
+	flex: 4;
+}
+
+.clickwhale-pro-promo--subscribe form input:focus {
+	box-shadow: none;
+	outline: none;
+	border-color: #ffffff;
+}
+
+.clickwhale-pro-promo--subscribe form button {
+	transition: opacity .3s ease-in-out;
+	width: 100%;
+	color: #ffffff;
+	background-color: #007AFF;
+	border: none;
+	padding: 32px 90px 31px;
+	border-radius: 0 25px 25px 0;
+	font-size: 21px;
+	line-height: 1em;
+	font-weight: 600;
+	white-space: nowrap;
+	opacity: 1;
+	flex: 1;
+}
+
+.clickwhale-pro-promo--subscribe form button:hover {
+	opacity: .7;
+}
+
+.clickwhale-pro-promo--subscribe form + p {
+	margin-top: 30px;
+	padding: 10px 20px;
+	background: #70C184;
+	display: inline-block;
+	width: 100%;
+	max-width: 800px;
+	border-radius: 25px;
+	font-size: 17px;
+}
+
+/* PRO PAGE PROMO */
+
 /* VENDORS */
 
 .linkpage-row--image-select--tab .picmo__picker.picmo__picker {
@@ -1188,6 +1430,88 @@ table.tracking-codes .column-is_active {
 
 	.cw-posts-row--select {
 		width: 100%;
+	}
+
+	.clickwhale-pro-promo {
+		margin: -20px 0 -100px -10px;
+		overflow-x: hidden;
+	}
+
+	.clickwhale-pro-promo--hero {
+		padding: 60px 0 60px;
+	}
+
+	.clickwhale-pro-promo--hero h1 {
+		font-size: 36px;
+	}
+
+	.clickwhale-pro-promo--hero p {
+		font-size: 16px;
+		margin-bottom: 30px;
+	}
+
+	.clickwhale-pro-promo--hero a {
+		display: block;
+	}
+
+	.clickwhale-pro-promo--hero img {
+		width: 100px;
+		bottom: -100px;
+	}
+
+	.clickwhale-pro-promo--content {
+		padding-top: 50px;
+	}
+
+	.clickwhale-pro-promo--content h2 {
+		font-size: 24px;
+		margin: 0 0 40px 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	.clickwhale-pro-promo--why-grid {
+		padding: 0;
+		grid-template-columns: 100%;
+		gap: 30px;
+	}
+
+	.clickwhale-pro-promo--why-item h3 {
+		font-size: 20px;
+	}
+
+	.clickwhale-pro-promo--subscribe {
+		margin: 0;
+		padding: 60px 0
+	}
+
+	.clickwhale-pro-promo--subscribe h2 {
+		font-size: 36px;
+	}
+
+	.clickwhale-pro-promo--subscribe p {
+		font-size: 17px;
+	}
+
+	.clickwhale-pro-promo--subscribe form {
+		flex-direction: column;
+	}
+
+	.clickwhale-pro-promo--subscribe form input {
+		border-radius: 25px;
+		padding: 17px 25px;
+		font-size: 17px;
+		text-align: center;
+		border: 2px solid #ffffff;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.clickwhale-pro-promo--subscribe form button {
+		border-radius: 25px;
+		padding: 17px 25px;
+		font-size: 17px;
+		text-align: center;
 	}
 }
 

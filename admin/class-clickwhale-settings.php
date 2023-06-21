@@ -201,6 +201,23 @@ class Clickwhale_Admin_Settings {
 			$this->plugin_name . '-tools',
 			array( $this, 'render_tools_page_view' )
 		);
+
+		/**
+		 * @since 1.3.6
+		 */
+		do_action( 'clickwhale_menu_after_tools' );
+
+	}
+
+	public function show_pro_menu_item() {
+		add_submenu_page(
+			$this->plugin_name,
+			__( 'Upgrade to PRO', $this->plugin_name ),
+			__( 'Upgrade to PRO', $this->plugin_name ),
+			'manage_options',
+			$this->plugin_name . '-pro',
+			array( $this, 'render_pro_page_view' )
+		);
 	}
 
 	/**
@@ -223,6 +240,10 @@ class Clickwhale_Admin_Settings {
 
 	public function render_tools_page_view() {
 		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/tools/tools.php' );
+	}
+
+	public function render_pro_page_view() {
+		include_once( plugin_dir_path( dirname( __FILE__ ) ) . 'admin/views/settings/pro.php' );
 	}
 
 	/**
