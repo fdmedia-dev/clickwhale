@@ -177,7 +177,7 @@ class Clickwhale {
 		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'clickwhale_admin_pro_message_callback' ); // button to pro version
 		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
-		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin, 'clickwhale_pro_subscription_action');
+		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin, 'pro_subscription_action');
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
 		$this->loader->add_action( 'admin_post_save_update_tracking_code', $Clickwhale_Tracking_Code_Edit, 'save_update_tracking_code' );
