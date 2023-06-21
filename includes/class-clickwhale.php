@@ -168,24 +168,19 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'add_plugin_menu' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
-
+		$this->loader->add_action( 'clickwhale_menu_after_tools', $Clickwhale_Admin_Settings, 'show_pro_menu_item');
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
 		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
 			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
 		}
-
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
 		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback' ); // banner in admin part
 		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'clickwhale_admin_pro_message_callback' ); // button to pro version
 		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
-
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
-
 		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
-
 		$this->loader->add_action( 'admin_post_save_update_tracking_code', $Clickwhale_Tracking_Code_Edit, 'save_update_tracking_code' );
-
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax, 'migration_notice_hide' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax, 'migration_deactive' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $Clickwhale_Ajax, 'migration_to_clickwhale' );
@@ -197,7 +192,6 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $Clickwhale_Ajax, 'add_link_to_linkpage' );
-
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
