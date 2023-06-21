@@ -175,9 +175,9 @@ class Clickwhale {
 		}
 
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
-		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'clickwhale_admin_banner_callback' ); // banner in admin part
-		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'clickwhale_admin_banner_button_pro_callback' ); // button to pro version
-		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'clickwhale_admin_pro_message_callback' ); // button to pro version
+		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'admin_banner' ); // banner in admin part
+		$this->loader->add_action( 'clickwhale_admin_banner_button_pro', $Clickwhale_Admin, 'admin_banner_pro_button' ); // button to pro version
+		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'admin_pro_message' ); // button to pro version
 		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
 
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
@@ -202,9 +202,6 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
-
-		// FILTERS
-		$this->loader->add_filter( 'clickwhale_categories_limit', $Clickwhale_Admin, 'clickwhale_categories_limit_callback' );
 
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale-edit-link' ) {
