@@ -354,6 +354,30 @@ class Clickwhale_Admin {
 		);
 	}
 
+	/**
+	 * @return void
+	 * @since 1.3.6
+	 */
+	public function clickwhale_pro_subscription_action() {
+		$user     = wp_get_current_user();
+		$url      = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
+		$response = wp_remote_post( $url, array(
+				'method' => 'POST',
+				'body'   => array(
+					'email'      => sanitize_email( $_POST['email'] ),
+					'first_name' => $user ? $user->first_name : '',
+				)
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			$error_message = $response->get_error_message();
+			echo "Something went wrong: $error_message";
+		} else {
+			wp_redirect( admin_url( 'admin.php?page=clickwhale-pro&success=1#clickwhaleSubscribe' ) );
+		}
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
