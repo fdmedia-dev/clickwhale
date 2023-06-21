@@ -101,7 +101,6 @@ class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-tools.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-migration.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-clickwhale-statistics.php';
 
 		// Controllers
 		if ( ! class_exists( 'WP_List_Table' ) ) {
