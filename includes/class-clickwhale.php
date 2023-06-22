@@ -72,7 +72,7 @@ class Clickwhale {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'clickwhale';
+		$this->plugin_name = CLICKWHALE_NAME;
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -154,7 +154,7 @@ class Clickwhale {
 		global $Clickwhale_Admin_Settings;
 
 		$Clickwhale_Admin              = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Admin_Settings     = new Clickwhale_Admin_Settings($this->get_plugin_name(), $this->get_version());
+		$Clickwhale_Admin_Settings     = new Clickwhale_Admin_Settings();
 		$Clickwhale_Admin_Tools        = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax               = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit          = Clickwhale_Link_Edit::getInstance();
