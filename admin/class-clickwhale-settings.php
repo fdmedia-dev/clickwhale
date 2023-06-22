@@ -38,15 +38,12 @@ class Clickwhale_Admin_Settings {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( string $plugin_name, string $version ) {
+	public function __construct() {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name = CLICKWHALE_NAME;
+		$this->version     = CLICKWHALE_VERSION;
 
 	}
 
