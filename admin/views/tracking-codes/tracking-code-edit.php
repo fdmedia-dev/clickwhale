@@ -76,9 +76,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 					true
 				);
 
-				if ( $tracking_code::$conversion ) {
-					do_action( 'clickwhale_tracking_code_conversion_fields', $item );
-				}
+				$tracking_code->conversion_fields($item);
 
 				echo ClickwhaleHepler::render_control(
 					array(
