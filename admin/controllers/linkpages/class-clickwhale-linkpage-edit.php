@@ -589,7 +589,7 @@ class Clickwhale_Linkpage_Edit {
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php _e( 'Set Link Page Logo', 'clickwhale' ) ?>',
+                                    text: '<?php _e( 'Select Image', 'clickwhale' ) ?>',
                                 },
                                 multiple: false
                             }).on('select', function () {
