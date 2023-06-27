@@ -50,6 +50,45 @@ class ClickwhaleTrackingCodeEdit {
 		return apply_filters( 'clickwhale_tracking_code_default_archives', array( 'category' ) );
 	}
 
+	public static function conversion_fields( $item ) {
+		$is_woo       = class_exists( 'WooCommerce' );
+		$is_edd       = function_exists( 'EDD' );
+		$mode_options = array(
+			'standard' => __( 'Standard code tracking', 'clickwhale-pro' ),
+		);
+
+		if ( $is_woo ) {
+			$woo_logo                = ADMIN_IMAGES_DIR . '/woocommerce-logo-short-purple.svg';
+			$mode_options['product'] = sprintf(
+				__( 'Track %s WooCommerce conversion <em class="clickwhale-pro-label">PRO</em>', 'clickwhale' ),
+				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">'
+			);
+		}
+		if ( $is_edd ) {
+			$edd_logo                 = ADMIN_IMAGES_DIR . '/logo-edd-short-dark.svg';
+			$mode_options['download'] = sprintf(
+				__( 'Track %s Easy Digital Downloads conversion <em class="clickwhale-pro-label">PRO</em>',
+					'clickwhale' ),
+				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">'
+			);
+		}
+
+		echo ClickwhaleHepler::render_control(
+			array(
+				'row_label' => __( 'Where do you want to add this code?', 'clickwhale-pro' ),
+				'control'   => 'radio',
+				'id'        => 'position_conversion',
+				'name'      => 'position[conversion]',
+				'value'     => $item['position']['conversion'] ?? '',
+				'options'   => $mode_options,
+				'default'   => 'standard'
+			),
+			true
+		);
+
+		do_action( 'clickwhale_tracking_code_conversion_fields', $item );
+	}
+
 	public function get_item( $request ) {
 		global $wpdb;
 
@@ -277,6 +316,10 @@ class ClickwhaleTrackingCodeEdit {
                         selectWrap.hide();
                     }
                 });
+
+                // Will be enabled with PRO
+                jQuery('[name="position[conversion]"]').prop('disabled', true);
+                jQuery('[name="position[conversion]"][value="standard"]').prop('disabled', false);
 
                 jQuery(document)
                     .on('change', '[name="position[pages]"]', function () {

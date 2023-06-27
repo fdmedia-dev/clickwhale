@@ -1367,6 +1367,34 @@ table.tracking-codes .column-is_active {
 
 /* PRO PAGE PROMO */
 
+.form-field input:disabled + span {
+	opacity: .7;
+}
+
+.checkbox-inline-image {
+	display: inline-block;
+	width: auto;
+	max-width: 100%;
+	height: 24px;
+	vertical-align: middle;
+}
+
+.clickwhale-pro-label {
+	position: relative;
+	display: inline-block;
+	top: -1px;
+	background: #007AFF;
+	color: #ffffff;
+	padding: 2px 4px;
+	border-radius: 4px;
+	vertical-align: middle;
+	margin-left: .24rem;
+	font-size: 10px;
+	line-height: 1em;
+	font-weight: 700;
+	font-style: normal;
+}
+
 /* VENDORS */
 
 .linkpage-row--image-select--tab .picmo__picker.picmo__picker {
