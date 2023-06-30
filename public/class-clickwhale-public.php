@@ -92,12 +92,10 @@ class Clickwhale_Public {
 	}
 
 	private function get_public_path( string $trimmed = '' ): string {
-		// if PHP Warning: Undefined array key "HTTP_HOST"
-		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-			$_SERVER['HTTP_HOST'] = 'localhost';
-		}
-		$url    = "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-		$result = untrailingslashit( parse_url( $url, PHP_URL_PATH ) );
+		$actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+		$actual_link = str_replace(get_bloginfo('url'), '', $actual_link);
+		$result = untrailingslashit( parse_url( $actual_link, PHP_URL_PATH ) );
 
 		if ( $trimmed ) {
 			return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
