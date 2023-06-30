@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
 Tested up to: 6.2.1
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 1.3.6 (30th June 2023) =
+* Fix: Fixed Warning Invalid argument supplied for foreach() in class-clickwhale-bot.php
+* Fix: Fixed a problem where links and linkpages didn't work correct because the site was installed to a subdirectory
 
 = Version 1.3.5 (5th June 2023) =
 * Fix: Fixed WordPress database error Duplicate column name linkpage_id
