@@ -76,6 +76,8 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 					true
 				);
 
+				$tracking_code->conversion_fields($item);
+
 				echo ClickwhaleHepler::render_control(
 					array(
 						'row_label' => __( 'Code Position', $this->plugin_name ),
@@ -89,10 +91,12 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 							'wp_footer'    => 'Before &lt;/body&gt;',
 						)
 					),
-					true
+					true,
+					'for_mode for_standard_mode'
 				);
 				?>
-                <tr class="form-field">
+
+                <tr class="form-field for_mode for_standard_mode">
                     <th scope="row">
                         <label for="position"><?php _e( 'In which page do you want to insert this code?',
 								$this->plugin_name ) ?></label>
@@ -106,8 +110,8 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 								'name'    => 'position[pages]',
 								'value'   => $item['position']['pages'] ?? '',
 								'options' => array(
-									'all'    => 'Whole website',
-									'custom' => 'Specific page'
+									'all'    => __( 'Whole website', $this->plugin_name ),
+									'custom' => __( 'Specific page', $this->plugin_name )
 								),
 								'default' => 'all'
 							)
@@ -168,7 +172,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 											'name'     => 'position[items_excluded][cw_linkpage][ids][]',
 											'value'    => $item['position']['items_excluded']['cw_linkpage']['ids'] ?? '',
 											'options'  => $tracking_code->get_linkpages(),
-											'default' => 'all',
+											'default'  => 'all',
 											'multiple' => true
 										)
 									);
@@ -206,7 +210,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 												'class'    => 'with-select2',
 												'name'     => 'position[items_included][' . $post_type . '][ids][]',
 												'value'    => $item['position']['items_included'][ $post_type ]['ids'] ?? '',
-												'options'  => $tracking_code->get_posts_by_post_type( $post_type ),
+												'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
 												'default'  => 'all',
 												'multiple' => true
 											)
@@ -238,7 +242,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 												'class'    => 'with-select2',
 												'name'     => 'position[items_excluded][' . $post_type . '][ids][]',
 												'value'    => $item['position']['items_excluded'][ $post_type ]['ids'] ?? '',
-												'options'  => $tracking_code->get_posts_by_post_type( $post_type ),
+												'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
 												'default'  => 'all',
 												'multiple' => true
 											)
