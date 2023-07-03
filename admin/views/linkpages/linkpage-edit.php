@@ -85,45 +85,45 @@ do_action( 'clickwhale_admin_banner' );
 	);
 	if ( ! empty( $message ) ) { ?>
 		<?php if ( $message === 'linkpage_added' ) { ?>
-			<div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved',
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully saved',
 						$this->plugin_name ) ?></p>
-			</div>
+            </div>
 		<?php } ?>
 		<?php if ( $message === 'linkpage_updated' ) { ?>
-			<div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated',
+            <div id="message" class="updated"><p><?php _e( 'Link Page was successfully updated',
 						$this->plugin_name ) ?></p>
-			</div>
+            </div>
 		<?php } ?>
 		<?php delete_transient( 'linkpage-' . $item['id'] ); ?>
 	<?php } ?>
 
-	<form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
-		<input type="hidden" name="action" value="save_update_linkpage">
-		<input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
-		<input type="hidden" name="id" value="<?php echo esc_attr( $item['id'] ) ?>"/>
+    <form id="form_edit_linkpage" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
+        <input type="hidden" name="action" value="save_update_linkpage">
+        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
+        <input type="hidden" name="id" value="<?php echo esc_attr( $item['id'] ) ?>"/>
 
-		<div id="post-body-content">
-			<div id="clickwhale-tabs" class="clickwhale-tabs">
+        <div id="post-body-content">
+            <div id="clickwhale-tabs" class="clickwhale-tabs">
 				<?php if ( $tabs ) { ?>
-					<ul>
+                    <ul>
 						<?php foreach ( $tabs as $tab ) { ?>
-							<li>
-								<a href="#lp-tab-<?php echo $tab['url'] ?>"><?php echo $tab['name'] ?></a>
-							</li>
+                            <li>
+                                <a href="#lp-tab-<?php echo $tab['url'] ?>"><?php echo $tab['name'] ?></a>
+                            </li>
 						<?php } ?>
-					</ul>
+                    </ul>
 				<?php } ?>
 
-				<div id="lp-tab-settings">
-					<table style="width: 100%;" class="form-table">
-						<caption hidden>Linkpage Main Settings</caption>
-						<tbody>
+                <div id="lp-tab-settings">
+                    <table style="width: 100%;" class="form-table">
+                        <caption hidden>Linkpage Main Settings</caption>
+                        <tbody>
 
-						<tr class="form-field">
-							<th scope="row">
-								<label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
-							</th>
-							<td>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
@@ -137,9 +137,9 @@ do_action( 'clickwhale_admin_banner' );
 									)
 								);
 								?>
-								<p id="cw-title--description"></p>
-							</td>
-						</tr>
+                                <p id="cw-title--description"></p>
+                            </td>
+                        </tr>
 
 						<?php
 						echo ClickwhaleHepler::render_control(
@@ -155,11 +155,11 @@ do_action( 'clickwhale_admin_banner' );
 						);
 						?>
 
-						<tr class="form-field">
-							<th scope="row">
-								<label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
-							</th>
-							<td>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="slug"><?php _e( 'Slug', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
 								<?php
 								echo ClickwhaleHepler::render_control(
 									array(
@@ -173,52 +173,52 @@ do_action( 'clickwhale_admin_banner' );
 									)
 								);
 								?>
-								<p id="cw-slug--description"></p>
-								<p id="cw-slug--text"
-								   class="code"
-								   title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
+                                <p id="cw-slug--description"></p>
+                                <p id="cw-slug--text"
+                                   class="code"
+                                   title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
 									<?php $url = __( 'URL Preview',
 											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
-									<em class="dashicons dashicons-clipboard"></em>
+                                    <em class="dashicons dashicons-clipboard"></em>
 
-								</p>
-							</td>
-						</tr>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
-							</th>
-							<td>
-								<div class="logo-field">
+                                </p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="logo"><?php _e( 'Page Logo', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <div class="logo-field image-field">
 									<?php
 									if ( $logo_id ) {
 										$image = wp_get_attachment_image_src( $logo_id );
 										?>
-										<a href="#" class="linkpage-logo-upload">
-											<img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
-										</a>
-										<a href="#" class="button linkpage-logo-remove">Remove image</a>
-										<input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
+                                        <a href="#" class="linkpage-image-upload">
+                                            <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
+                                        </a>
+                                        <a href="#" class="button linkpage-image-remove">Remove image</a>
+                                        <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
 									<?php } else { ?>
-										<a href="#" class="button linkpage-logo-upload">
+                                        <a href="#" class="button linkpage-image-upload">
 											<?php _e( 'Upload image', 'clickwhale' ) ?>
-										</a>
-										<a href="#" class="button linkpage-logo-remove" style="display: none;">
+                                        </a>
+                                        <a href="#" class="button linkpage-image-remove" style="display: none;">
 											<?php _e( 'Remove image', 'clickwhale' ) ?>
-										</a>
-										<input type="hidden" name="logo" value="">
+                                        </a>
+                                        <input type="hidden" name="logo" value="">
 									<?php } ?>
-								</div>
-								<p><?php _e( 'Max logo size 275px * 275px', 'clickwhale' ); ?></p>
-							</td>
-						</tr>
+                                </div>
+                                <p><?php _e( 'Max logo size 275px * 275px', 'clickwhale' ); ?></p>
+                            </td>
+                        </tr>
 
-						<tr class="form-field">
-							<th scope="row">
-								<label for="meta__legals_menu_id"><?php _e( 'Legals', $this->plugin_name ) ?></label>
-							</th>
-							<td>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="meta__legals_menu_id"><?php _e( 'Legals', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
 								<?php
 								$legals = $linkpage_edit->get_link_meta( $item['id'], 'legals_menu_id' );
 								echo ClickwhaleHepler::render_control(
@@ -232,53 +232,53 @@ do_action( 'clickwhale_admin_banner' );
 									)
 								);
 								?>
-								<p class="description">
-									<a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ) ?>"
-									   target="_blank"
-									   rel="noopener"><?php _e( 'Create a Legals Menu', $this->plugin_name ) ?></a>
-								</p>
-							</td>
-						</tr>
+                                <p class="description">
+                                    <a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ) ?>"
+                                       target="_blank"
+                                       rel="noopener"><?php _e( 'Create a Legals Menu', $this->plugin_name ) ?></a>
+                                </p>
+                            </td>
+                        </tr>
 
 						<?php do_action( 'clickwhale_linkpage_after_settings_fields', $item ) ?>
-						</tbody>
-					</table>
-				</div>
+                        </tbody>
+                    </table>
+                </div>
 
-				<div id="lp-tab-contents">
-					<div class="contents-wrap">
-						<div class="contents-aside">
-							<div class="contents-aside--inner">
-								<div class="add-content-wrap">
+                <div id="lp-tab-contents">
+                    <div class="contents-wrap">
+                        <div class="contents-aside">
+                            <div class="contents-aside--inner">
+                                <div class="add-content-wrap">
 									<?php
 									$disabled = $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ? 'disabled' : '';
 									foreach ( $select as $g => $group ) {
 										?>
-										<div class="cw-content--group">
-											<h3><?php echo $group['label'] ?>
-												(<?php echo count( $group['options'] ) ?>)</h3>
-											<div class="cw-content--items">
+                                        <div class="cw-content--group">
+                                            <h3><?php echo $group['label'] ?>
+                                                (<?php echo count( $group['options'] ) ?>)</h3>
+                                            <div class="cw-content--items">
 												<?php foreach ( $group['options'] as $value => $options ) { ?>
-													<div id="cw-content--<?php echo $value ?>"
-													     class="cw-content--item <?php echo $disabled ?>"
-													     data-content="<?php echo $value ?>">
+                                                    <div id="cw-content--<?php echo $value ?>"
+                                                         class="cw-content--item <?php echo $disabled ?>"
+                                                         data-content="<?php echo $value ?>">
 														<?php if ( isset( $options['icon'] ) && $options['icon'] ) { ?>
-															<svg class="feather">
-																<use
-																	href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $options['icon'] ?>"></use>
-															</svg>
+                                                            <svg class="feather">
+                                                                <use
+                                                                        href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $options['icon'] ?>"></use>
+                                                            </svg>
 														<?php } ?>
 														<?php echo $options['name'] ?>
-													</div>
+                                                    </div>
 												<?php } ?>
-											</div>
-										</div>
+                                            </div>
+                                        </div>
 									<?php } ?>
-								</div>
-							</div>
-						</div>
-						<div class="contents-main">
-							<div class="links-list-wrap connectedSortable">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contents-main">
+                            <div class="links-list-wrap connectedSortable">
 								<?php
 								if ( $links ) {
 									$template = new LinkpageContentTemplates();
@@ -292,142 +292,150 @@ do_action( 'clickwhale_admin_banner' );
 									}
 								}
 								?>
-							</div>
+                            </div>
 							<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
-								<div class="links-info">
+                                <div class="links-info">
 									<?php printf(
 										__( 'Currently, a maximum of %d links can be added', $this->plugin_name ),
 										ClickwhaleLinkpagesHelper::get_links_limit()
 									); ?>
-								</div>
+                                </div>
 							<?php } ?>
-						</div>
-					</div>
-				</div>
+                        </div>
+                    </div>
+                </div>
 
-				<div id="lp-tab-styles">
+                <div id="lp-tab-styles">
 
-					<h2><?php _e( 'General', $this->plugin_name ); ?></h2>
-					<table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-						<caption hidden>Link Page Customization Options</caption>
-						<tbody>
-
-						<?php // PAGE BACKGROUND ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[bg_color]"><?php _e( 'Site Background',
-										$this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[bg_color]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
-								<p class="description"><?php _e( 'Set page background color',
-										$this->plugin_name ) ?></p>
-							</td>
-						</tr>
+                    <h2><?php _e( 'General', $this->plugin_name ); ?></h2>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Customization Options</caption>
+                        <tbody>
 
 						<?php // PAGE TEXT COLOR ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[text_color]"><?php _e( 'Page Text Color',
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color',
 										$this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[text_color]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['text_color'] ) ?>"/>
-								<p class="description"><?php _e( 'Set page text color', $this->plugin_name ) ?></p>
-							</td>
-						</tr>
+                            </th>
+                            <td>
+                                <input name="styles[text_color]"
+                                       class="cw-color-control"
+                                       type="text"
+                                       value="<?php echo esc_attr( $styles['text_color'] ) ?>"/>
+                                <p class="description"><?php _e( 'Set page text color', $this->plugin_name ) ?></p>
+                            </td>
+                        </tr>
 
-						</tbody>
-					</table>
+						<?php
+						// PAGE BACKGROUND
+						$background = apply_filters( 'clickwhale_linkpage_advanced_background', false );
+						if ( ! $background ) {
+							?>
+                            <tr class="form-field">
+                                <th scope="row">
+                                    <label for="styles[bg_color]"><?php _e( 'Site Background',
+											$this->plugin_name ); ?></label>
+                                </th>
+                                <td>
+                                    <input name="styles[bg_color]"
+                                           class="cw-color-control"
+                                           type="text"
+                                           value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
+                                    <p class="description"><?php _e( 'Set page background color',
+											$this->plugin_name ) ?></p>
+                                </td>
+                            </tr>
 
-					<hr>
+							<?php
+						}
+						do_action( 'clickwhale_linkpage_after_general_styles', $item );
+						?>
 
-					<h2><?php _e( 'Links', $this->plugin_name ); ?></h2>
-					<table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-						<caption hidden>Link Page Links Customization Options</caption>
-						<tbody>
+                        </tbody>
+                    </table>
+
+                    <hr>
+
+                    <h2><?php _e( 'Links', $this->plugin_name ); ?></h2>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Links Customization Options</caption>
+                        <tbody>
 
 						<?php // LINK BACKGROUND ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[link_bg_color]"><?php _e( 'Background Color',
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',
 										$this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[link_bg_color]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
-								<p class="description"><?php _e( 'Set link background color (normal state)',
+                            </th>
+                            <td>
+                                <input name="styles[link_bg_color]"
+                                       class="cw-color-control"
+                                       type="text"
+                                       value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
+                                <p class="description"><?php _e( 'Set link background color (normal state)',
 										$this->plugin_name ) ?></p>
-							</td>
-						</tr>
+                            </td>
+                        </tr>
 
 						<?php // LINK BACKGROUND:HOVER ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)',
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)',
 										$this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[link_bg_color_hover]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['link_bg_color_hover'] ) ?>"/>
-								<p class="description"><?php _e( 'Set link background color (hover/active)',
+                            </th>
+                            <td>
+                                <input name="styles[link_bg_color_hover]"
+                                       class="cw-color-control"
+                                       type="text"
+                                       value="<?php echo esc_attr( $styles['link_bg_color_hover'] ) ?>"/>
+                                <p class="description"><?php _e( 'Set link background color (hover/active)',
 										$this->plugin_name ) ?></p>
-							</td>
-						</tr>
+                            </td>
+                        </tr>
 
 						<?php // LINK TEXT COLOR ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[link_color]"><?php _e( 'Text Color', $this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[link_color]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['link_color'] ) ?>"/>
-								<p class="description"><?php _e( 'Set link text color (normal state)',
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="styles[link_color]"><?php _e( 'Text Color', $this->plugin_name ); ?></label>
+                            </th>
+                            <td>
+                                <input name="styles[link_color]"
+                                       class="cw-color-control"
+                                       type="text"
+                                       value="<?php echo esc_attr( $styles['link_color'] ) ?>"/>
+                                <p class="description"><?php _e( 'Set link text color (normal state)',
 										$this->plugin_name ) ?></p>
-							</td>
-						</tr>
-						</tbody>
+                            </td>
+                        </tr>
 
 						<?php // LINK TEXT COLOR:HOVER ?>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)',
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)',
 										$this->plugin_name ); ?></label>
-							</th>
-							<td>
-								<input name="styles[link_color_hover]"
-								       class="cw-color-control"
-								       type="text"
-								       value="<?php echo esc_attr( $styles['link_color_hover'] ) ?>"/>
-								<p class="description"><?php _e( 'Set link text color (hover/active)',
+                            </th>
+                            <td>
+                                <input name="styles[link_color_hover]"
+                                       class="cw-color-control"
+                                       type="text"
+                                       value="<?php echo esc_attr( $styles['link_color_hover'] ) ?>"/>
+                                <p class="description"><?php _e( 'Set link text color (hover/active)',
 										$this->plugin_name ) ?></p>
-							</td>
-						</tr>
-						</tbody>
-					</table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
 					<?php do_action( 'clickwhale_linkpage_after_styles_tables', $item ) ?>
-				</div>
+                </div>
 
-				<div id="lp-tab-seo">
-					<table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-						<caption hidden>Link Page SEO Options</caption>
-						<tbody>
+                <div id="lp-tab-seo">
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page SEO Options</caption>
+                        <tbody>
 
-						<h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
+                        <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
 						<?php
 						echo ClickwhaleHepler::render_control(
 							array(
@@ -457,21 +465,21 @@ do_action( 'clickwhale_admin_banner' );
 						);
 						?>
 
-						<tr class="form-field">
-							<th scope="row">
-								<label>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label>
 									<?php _e( 'Robots Meta', $this->plugin_name ) ?>
-								</label>
-							</th>
-							<td>
+                                </label>
+                            </th>
+                            <td>
 								<?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
-									<div class="links-info">
+                                    <div class="links-info">
 										<?php printf(
 											__( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',
 												$this->plugin_name ),
 											esc_url( admin_url( 'options-reading.php' ) )
 										); ?>
-									</div>
+                                    </div>
 								<?php } ?>
 
 								<?php
@@ -482,41 +490,41 @@ do_action( 'clickwhale_admin_banner' );
 											: [];
 									foreach ( $robots as $robotKey => $robotVal ) {
 										?>
-										<p>
-											<input type="checkbox"
-											       id="robots-<?php echo esc_attr( $robotKey ) ?>"
-											       name="social[seo][robots][]"
-											       value="<?php echo esc_attr( $robotKey ) ?>"
+                                        <p>
+                                            <input type="checkbox"
+                                                   id="robots-<?php echo esc_attr( $robotKey ) ?>"
+                                                   name="social[seo][robots][]"
+                                                   value="<?php echo esc_attr( $robotKey ) ?>"
 												<?php
 												if ( $current_robots ) {
 													checked( 1, in_array( $robotKey, $current_robots ) );
 												}
 												if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
-													disabled
+                                                    disabled
 												<?php } ?>
-											/>
-											<label for="robots-<?php echo esc_attr( $robotKey ) ?>">
+                                            />
+                                            <label for="robots-<?php echo esc_attr( $robotKey ) ?>">
 												<?php echo esc_attr( wp_unslash( $robotVal['title'] ) ) ?>
-												<small>(<?php echo esc_attr( wp_unslash( $robotVal['description'] ) ) ?>
-													)</small>
-											</label>
-										</p>
+                                                <small>(<?php echo esc_attr( wp_unslash( $robotVal['description'] ) ) ?>
+                                                    )</small>
+                                            </label>
+                                        </p>
 										<?php
 									}
 								}
 								?>
-							</td>
-						</tr>
+                            </td>
+                        </tr>
 
-						</tbody>
-					</table>
+                        </tbody>
+                    </table>
 
-					<hr>
+                    <hr>
 
-					<h2><?php _e( 'Open Graph Options', $this->plugin_name ); ?></h2>
-					<table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-						<caption hidden>Link Page Open Graph Options</caption>
-						<tbody>
+                    <h2><?php _e( 'Open Graph Options', $this->plugin_name ); ?></h2>
+                    <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
+                        <caption hidden>Link Page Open Graph Options</caption>
+                        <tbody>
 						<?php
 						echo ClickwhaleHepler::render_control(
 							array(
@@ -548,103 +556,105 @@ do_action( 'clickwhale_admin_banner' );
 						);
 						?>
 
-						<tr class="form-field">
-							<th scope="row">
-								<label for="ogimage"><?php _e( 'Open Graph Image', $this->plugin_name ) ?></label>
-							</th>
-							<td>
-								<div class="logo-field">
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Image', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <div class="og-image-field image-field">
 									<?php
 									if ( $seoOGImageId ) {
 										$ogImage = wp_get_attachment_image_src( $seoOGImageId );
 										?>
-										<a href="#" class="linkpage-logo-upload">
-											<img alt="linkpage-logo" src="<?php echo esc_url( $ogImage[0] ) ?>"/>
-										</a>
-										<a href="#" class="linkpage-logo-remove">Remove image</a>
-										<input type="hidden" name="social[seo][ogimage]"
-										       value="<?php echo esc_attr( $seoOGImageId ); ?>">
+                                        <a href="#" class="linkpage-image-upload">
+                                            <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage[0] ) ?>"/>
+                                        </a>
+                                        <a href="#" class="linkpage-image-remove">Remove image</a>
+                                        <input type="hidden" name="social[seo][ogimage]"
+                                               value="<?php echo esc_attr( $seoOGImageId ); ?>">
 									<?php } else { ?>
-										<a href="#" class="linkpage-logo-upload">
+                                        <a href="#" class="linkpage-image-upload">
 											<?php _e( 'Upload image' ) ?>
-										</a>
-										<a href="#" class="linkpage-logo-remove" style="display:none">
+                                        </a>
+                                        <a href="#" class="linkpage-image-remove" style="display:none">
 											<?php _e( 'Remove image' ) ?>
-										</a>
-										<input type="hidden" name="social[seo][ogimage]" value="">
+                                        </a>
+                                        <input type="hidden" name="social[seo][ogimage]" value="">
 									<?php } ?>
-								</div>
-								<p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
-							</td>
-						</tr>
-						<tr class="form-field">
-							<th scope="row">
-								<label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
-							</th>
-							<td>
-								<a class="button"
-								   id="opengraph-live-preview"
-								   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
-								   target="_blank"
-								   rel="noopener">
+                                </div>
+                                <p><?php _e( 'Recommended image size 1200px * 630px', $this->plugin_name ); ?></p>
+                            </td>
+                        </tr>
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', $this->plugin_name ) ?></label>
+                            </th>
+                            <td>
+                                <a class="button"
+                                   id="opengraph-live-preview"
+                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL ?>"
+                                   target="_blank"
+                                   rel="noopener">
 									<?php _e( 'View live preview', $this->plugin_name ) ?>
-								</a>
-								<p class="description"></p>
-							</td>
-						</tr>
+                                </a>
+                                <p class="description"></p>
+                            </td>
+                        </tr>
 
 						<?php do_action( 'clickwhale_linkpage_after_og_fields', $item ) ?>
-						</tbody>
-					</table>
+                        </tbody>
+                    </table>
 
 					<?php do_action( 'clickwhale_linkpage_after_seo_tables', $item ) ?>
 
-				</div>
+                </div>
 
 				<?php do_action( 'clickwhale_linkpage_after_tabs_content', $item ); ?>
 
-			</div>
+            </div>
 
-			<input type="hidden" id="created_at" name="created_at"
-			       value="<?php echo esc_attr( $item['created_at'] ) ?>">
+            <hr>
 
-			<input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"
-			       class="button-primary"
-			       name="submit">
+            <input type="hidden" id="created_at" name="created_at"
+                   value="<?php echo esc_attr( $item['created_at'] ) ?>">
 
-			<input type="button" value="<?php _e( 'Reset colors', $this->plugin_name ) ?>"
-			       id="reset-colors"
-			       class="button"
-			       name="reset-colors"
-			       style="display: none">
+            <input type="submit" value="<?php _e( 'Save', $this->plugin_name ) ?>" id="submit"
+                   class="button-primary"
+                   name="submit">
+
+            <input type="button" value="<?php _e( 'Reset colors', $this->plugin_name ) ?>"
+                   id="reset-colors"
+                   class="button"
+                   name="reset-colors"
+                   style="display: none">
 
 			<?php
 			// icons picker
 			$images = LinkpageContentTemplates::get_images();
 			if ( $images ) {
 				?>
-				<div id="icon-picker--wrap" class="icon-picker--wrap">
-					<div>
-						<div class="icon-picker--search-wrap">
-							<input type="search" name="icon-picker--search">
-							<span>
+                <div id="icon-picker--wrap" class="icon-picker--wrap">
+                    <div>
+                        <div class="icon-picker--search-wrap">
+                            <input type="search" name="icon-picker--search">
+                            <span>
                             <svg class="feather">
                                 <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#search"></use>
                             </svg>
                         </span>
-						</div>
-						<div class="icon-picker--icons-wrap">
+                        </div>
+                        <div class="icon-picker--icons-wrap">
 							<?php foreach ( $images as $image ) { ?>
-								<button type="button" data-icon="<?php echo $image ?>">
-									<ion-icon name="<?php echo $image ?>"></ion-icon>
-								</button>
+                                <button type="button" data-icon="<?php echo $image ?>">
+                                    <ion-icon name="<?php echo $image ?>"></ion-icon>
+                                </button>
 							<?php } ?>
-						</div>
-					</div>
-				</div>
+                        </div>
+                    </div>
+                </div>
 			<?php } ?>
-			<!-- icons picker -->
-		</div>
-	</form>
+            <!-- icons picker -->
+        </div>
+    </form>
 
 </div>

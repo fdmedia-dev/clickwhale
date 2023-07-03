@@ -576,7 +576,7 @@ class Clickwhale_Linkpage_Edit {
                     })
 
                     // LP Logo
-                    .on('click', '.linkpage-logo-upload', function (e) {
+                    .on('click', '.linkpage-image-upload', function (e) {
                         e.preventDefault();
 
                         const button = jQuery(this),
@@ -586,7 +586,7 @@ class Clickwhale_Linkpage_Edit {
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php _e( 'Set Link Page Logo', 'clickwhale' ) ?>',
+                                    text: '<?php _e( 'Select Image', 'clickwhale' ) ?>',
                                 },
                                 multiple: false
                             }).on('select', function () {
@@ -599,7 +599,7 @@ class Clickwhale_Linkpage_Edit {
                             }).open();
 
                     })
-                    .on('click', '.linkpage-logo-remove', function (e) {
+                    .on('click', '.linkpage-image-remove', function (e) {
                         e.preventDefault();
 
                         const button = jQuery(this);
