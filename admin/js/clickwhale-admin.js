@@ -51,6 +51,21 @@
             }
         }
 
+        // Init jQuery UI tabs
+        jQuery('.clickwhale-tabs').tabs({
+            activate: function (event, ui) {
+                // on tab switch re-init select2
+                jQuery('.clickwhale-select').select2({
+                    minimumResultsForSearch: 10
+                });
+            }
+        });
+
+        // Init Select2 select
+        jQuery('.clickwhale-select').select2({
+            minimumResultsForSearch: 10
+        });
+
         $(document)
             .on('click', '#button-reset-db', function () {
                 var arr = [];

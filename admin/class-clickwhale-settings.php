@@ -38,15 +38,13 @@ class Clickwhale_Admin_Settings {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 *
 	 * @since    1.0.0
 	 */
-	public function init( string $plugin_name, string $version ) {
+	public function __construct() {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name = CLICKWHALE_NAME;
+		$this->version     = CLICKWHALE_VERSION;
+
 	}
 
 	/**
@@ -179,6 +177,11 @@ class Clickwhale_Admin_Settings {
 			);
 		}
 
+		/**
+		 * @since 1.3.6
+		 */
+		do_action( 'clickwhale_menu_before_settings' );
+
 		add_submenu_page(
 			$this->plugin_name,
 			__( 'Settings', $this->plugin_name ),
@@ -195,14 +198,10 @@ class Clickwhale_Admin_Settings {
 			$this->plugin_name . '-tools',
 			array( $this, 'render_tools_page_view' )
 		);
-
 	}
 
 	/**
-	 * This function renders the interface elements for toggling the visibility of the header element.
-	 *
-	 * It accepts an array or arguments and expects the first element in the array to be the description
-	 * to be displayed next to the checkbox.
+	 * This function renders the interface elements.
 	 */
 
 	public function render_controls( $args ) {

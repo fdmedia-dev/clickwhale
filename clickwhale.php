@@ -37,7 +37,10 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
+
 const CLICKWHALE_VERSION = '1.3.6';
+const CLICKWHALE_NAME = 'clickwhale';
+
 /**
  * @since 1.3.0
  */
@@ -98,5 +101,4 @@ function run_clickwhale() {
 	$plugin->run();
 
 }
-
-run_clickwhale();
+add_action( 'plugins_loaded', 'run_clickwhale', 10 );
