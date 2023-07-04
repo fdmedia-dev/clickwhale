@@ -173,10 +173,10 @@ class Clickwhale {
 			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
 		}
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
-		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'adminBanner' );
-		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $Clickwhale_Admin, 'adminBannerProButton' );
-		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'adminProMessage' );
-		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'adminBarRender', 999 );
+		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'admin_banner' );
+		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $Clickwhale_Admin, 'admin_banner_pro_button' );
+		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'admin_pro_message' );
+		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
 		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin, 'pro_subscription_action');
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );

@@ -202,4 +202,12 @@ class ClickwhaleHepler {
 
 		return $result;
 	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function admin_pro_label() {
+		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
+	}
 }

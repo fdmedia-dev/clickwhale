@@ -5,7 +5,7 @@ class ClickwhaleTrackingCodeEdit {
 
 	/**
 	 * @var
-	 * @since 1.3.6
+	 * @since 1.3.7
 	 */
 	public static $conversion;
 
@@ -60,16 +60,18 @@ class ClickwhaleTrackingCodeEdit {
 		if ( $is_woo ) {
 			$woo_logo                = ADMIN_IMAGES_DIR . '/woocommerce-logo-short-purple.svg';
 			$mode_options['product'] = sprintf(
-				__( 'Track %s WooCommerce conversion <em class="clickwhale-pro-label">PRO</em>', 'clickwhale' ),
-				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">'
+				__( 'Track %s WooCommerce conversion %s', 'clickwhale' ),
+				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">',
+				ClickwhaleHepler::admin_pro_label()
 			);
 		}
 		if ( $is_edd ) {
 			$edd_logo                 = ADMIN_IMAGES_DIR . '/logo-edd-short-dark.svg';
 			$mode_options['download'] = sprintf(
-				__( 'Track %s Easy Digital Downloads conversion <em class="clickwhale-pro-label">PRO</em>',
+				__( 'Track %s Easy Digital Downloads conversion %s',
 					'clickwhale' ),
-				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">'
+				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">',
+				ClickwhaleHepler::admin_pro_label()
 			);
 		}
 
