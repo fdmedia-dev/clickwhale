@@ -222,7 +222,7 @@ class Clickwhale_Admin_Settings {
 	 */
 
 	public function render_controls( $args ) {
-		echo ClickwhaleHepler::render_control( $args );
+		echo ClickwhaleHelper::render_control( $args );
 	}
 
 	/**

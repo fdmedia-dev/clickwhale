@@ -315,7 +315,7 @@ class Clickwhale_Linkpage_Edit {
 
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
 			?>
-			<script type='text/javascript'>
+            <script type='text/javascript'>
                 jQuery(document).ready(function () {
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
@@ -338,10 +338,10 @@ class Clickwhale_Linkpage_Edit {
                     });
 					<?php } ?>
                 })
-			</script>
+            </script>
 		<?php } ?>
 
-		<script type='text/javascript'>
+        <script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function () {
@@ -776,8 +776,7 @@ class Clickwhale_Linkpage_Edit {
 
                 function links_limit_warning() {
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="links-info"><?php printf( 'Currently, a maximum of %d links can be added',
-						ClickwhaleLinkpagesHelper::get_links_limit() ); ?></div>').insertAfter('.links-list-wrap');
+                    jQuery('<div class="links-info"><?php echo ClickwhaleLinkpagesHelper::get_links_limitation_notice() .  ClickwhaleHelper::get_pro_message();  ?></div>').insertAfter('.links-list-wrap');
                 }
 
                 function disable_ogpreview_button() {
@@ -805,7 +804,7 @@ class Clickwhale_Linkpage_Edit {
                 }
             })
             ;
-		</script>
+        </script>
 		<?php
 	}
 }

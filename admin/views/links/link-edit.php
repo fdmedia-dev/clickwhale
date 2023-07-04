@@ -28,7 +28,7 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap">
 
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => __( 'Link', $this->plugin_name ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
@@ -65,7 +65,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo ClickwhaleHepler::render_control(
+                                echo ClickwhaleHelper::render_control(
                                     array(
                                         'control'     => 'input',
                                         'id'          => 'title',

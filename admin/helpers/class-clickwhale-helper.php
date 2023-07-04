@@ -1,6 +1,6 @@
 <?php
 
-class ClickwhaleHepler {
+class ClickwhaleHelper {
 	/**
 	 * Return HTML markup for add_settings_field function
 	 *
@@ -209,5 +209,17 @@ class ClickwhaleHepler {
 	 */
 	public static function admin_pro_label() {
 		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
+	}
+
+	public static function get_pro_message() {
+		return apply_filters(
+			'clickwhale_get_pro_message',
+			sprintf(
+				__(
+					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>',
+					CLICKWHALE_NAME ),
+				'https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5'
+			)
+		);
 	}
 }

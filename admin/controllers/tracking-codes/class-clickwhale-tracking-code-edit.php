@@ -2,6 +2,7 @@
 
 class ClickwhaleTrackingCodeEdit {
 	private static $instance;
+	private static $plugin_name;
 
 	/**
 	 * @var
@@ -10,7 +11,8 @@ class ClickwhaleTrackingCodeEdit {
 	public static $conversion;
 
 	public function init() {
-		self::$conversion = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
+		self::$plugin_name = CLICKWHALE_NAME;
+		self::$conversion  = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
 
@@ -54,30 +56,33 @@ class ClickwhaleTrackingCodeEdit {
 		$is_woo       = class_exists( 'WooCommerce' );
 		$is_edd       = function_exists( 'EDD' );
 		$mode_options = array(
-			'standard' => __( 'Standard code tracking', 'clickwhale-pro' ),
+			'standard' => __( 'Standard code tracking', self::$plugin_name ),
 		);
 
 		if ( $is_woo ) {
 			$woo_logo                = ADMIN_IMAGES_DIR . '/woocommerce-logo-short-purple.svg';
 			$mode_options['product'] = sprintf(
-				__( 'Track %s WooCommerce conversion %s', 'clickwhale' ),
+				__(
+					'Track %s WooCommerce conversion %s',
+					self::$plugin_name ),
 				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">',
-				ClickwhaleHepler::admin_pro_label()
+				ClickwhaleHelper::admin_pro_label()
 			);
 		}
 		if ( $is_edd ) {
 			$edd_logo                 = ADMIN_IMAGES_DIR . '/logo-edd-short-dark.svg';
 			$mode_options['download'] = sprintf(
-				__( 'Track %s Easy Digital Downloads conversion %s',
-					'clickwhale' ),
+				__(
+					'Track %s Easy Digital Downloads conversion %s',
+					self::$plugin_name ),
 				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">',
-				ClickwhaleHepler::admin_pro_label()
+				ClickwhaleHelper::admin_pro_label()
 			);
 		}
 
-		echo ClickwhaleHepler::render_control(
+		echo ClickwhaleHelper::render_control(
 			array(
-				'row_label' => __( 'Where do you want to add this code?', 'clickwhale-pro' ),
+				'row_label' => __( 'Where do you want to add this code?', self::$plugin_name ),
 				'control'   => 'radio',
 				'id'        => 'position_conversion',
 				'name'      => 'position[conversion]',
@@ -135,7 +140,7 @@ class ClickwhaleTrackingCodeEdit {
 			ARRAY_A
 		);
 		if ( $linkpages ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $linkpages as $linkpage ) {
 				$result[ $linkpage['id'] ] = $linkpage['title'];
 			}
@@ -156,7 +161,7 @@ class ClickwhaleTrackingCodeEdit {
 		$posts  = get_posts( $args );
 
 		if ( $posts ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $posts as $post ) {
 				$result[ $post->ID ] = $post->post_title;
 			}
@@ -173,7 +178,7 @@ class ClickwhaleTrackingCodeEdit {
 		);
 		$terms  = get_terms( $args );
 		if ( $terms ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $terms as $term ) {
 				$result[ $term->term_id ] = $term->name;
 			}
@@ -273,12 +278,12 @@ class ClickwhaleTrackingCodeEdit {
         <script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('#position_code').select2({
-                    placeholder: '<?php _e( 'Select Code position', 'clickwhale' ) ?>',
+                    placeholder: '<?php _e( 'Select Code position', self::$plugin_name ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
                 jQuery('.with-select2').select2({
-                    placeholder: '<?php _e( 'Select', 'clickwhale' ) ?>',
+                    placeholder: '<?php _e( 'Select', self::$plugin_name ) ?>',
                     width: '100%',
                     multiple: true,
                     minimumResultsForSearch: 10

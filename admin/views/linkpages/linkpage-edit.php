@@ -73,7 +73,7 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap">
 
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => __( 'Link Page', $this->plugin_name ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
@@ -125,7 +125,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
 								<?php
-								echo ClickwhaleHepler::render_control(
+								echo ClickwhaleHelper::render_control(
 									array(
 										'control'     => 'input',
 										'id'          => 'title',
@@ -142,7 +142,7 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
 
 						<?php
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'row_label'   => __( 'Description', $this->plugin_name ),
 								'control'     => 'textarea',
@@ -161,7 +161,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
 								<?php
-								echo ClickwhaleHepler::render_control(
+								echo ClickwhaleHelper::render_control(
 									array(
 										'control'     => 'input',
 										'id'          => 'cw-slug',
@@ -221,7 +221,7 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
 								<?php
 								$legals = $linkpage_edit->get_link_meta( $item['id'], 'legals_menu_id' );
-								echo ClickwhaleHepler::render_control(
+								echo ClickwhaleHelper::render_control(
 									array(
 										'row_label' => __( 'Legals', $this->plugin_name ),
 										'control'   => 'select',
@@ -295,10 +295,8 @@ do_action( 'clickwhale_admin_banner' );
                             </div>
 							<?php if ( $links && count( $links ) >= ClickwhaleLinkpagesHelper::get_links_limit() ) { ?>
                                 <div class="links-info">
-									<?php printf(
-										__( 'Currently, a maximum of %d links can be added', $this->plugin_name ),
-										ClickwhaleLinkpagesHelper::get_links_limit()
-									); ?>
+									<?php echo ClickwhaleLinkpagesHelper::get_links_limitation_notice() ?>
+									<?php echo ClickwhaleHelper::get_pro_message(); ?>
                                 </div>
 							<?php } ?>
                         </div>
@@ -437,7 +435,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <h2><?php _e( 'SEO Options', $this->plugin_name ); ?></h2>
 						<?php
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'row_label'   => __( 'SEO Title', $this->plugin_name ),
 								'control'     => 'input',
@@ -450,7 +448,7 @@ do_action( 'clickwhale_admin_banner' );
 							),
 							true
 						);
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'row_label'   => __( 'SEO Description', $this->plugin_name ),
 								'control'     => 'input',
@@ -526,7 +524,7 @@ do_action( 'clickwhale_admin_banner' );
                         <caption hidden>Link Page Open Graph Options</caption>
                         <tbody>
 						<?php
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'row_label'   => __( 'Open Graph Title (Optional)', $this->plugin_name ),
 								'control'     => 'input',
@@ -540,7 +538,7 @@ do_action( 'clickwhale_admin_banner' );
 							),
 							true
 						);
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'row_label'   => __( 'Open Graph Description (Optional)', $this->plugin_name ),
 								'control'     => 'input',
