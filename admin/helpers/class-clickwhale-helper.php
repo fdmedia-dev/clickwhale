@@ -222,4 +222,21 @@ class ClickwhaleHelper {
 			)
 		);
 	}
+
+	private static function public_path( bool $trimmed = false ): string {
+		$actual_link = ( empty( $_SERVER['HTTPS'] ) ? 'http' : 'https' ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+		$actual_link = str_replace( get_bloginfo( 'url' ), '', $actual_link );
+		$result      = untrailingslashit( parse_url( $actual_link, PHP_URL_PATH ) );
+
+		if ( $trimmed ) {
+			return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
+		} else {
+			return $result;
+		}
+	}
+
+	public static function get_public_path( bool $is_trimmed = false ): string {
+		return self::public_path( $is_trimmed );
+	}
 }
