@@ -207,9 +207,27 @@ class ClickwhaleHelper {
 	 * @return string
 	 * @since 1.3.7
 	 */
+
+	private static function pro_link(): string {
+		return 'https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5';
+	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function get_pro_link(): string {
+		return self::pro_link();
+	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
 	public static function admin_pro_label() {
 		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
 	}
+
 
 	public static function get_pro_message() {
 		return apply_filters(
@@ -218,7 +236,7 @@ class ClickwhaleHelper {
 				__(
 					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>',
 					CLICKWHALE_NAME ),
-				'https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5'
+				self::get_pro_link()
 			)
 		);
 	}

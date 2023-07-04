@@ -261,11 +261,15 @@ class Clickwhale_Admin {
                     </div>
 				<?php } ?>
 				<?php if ( $link_helpdesk ) { ?>
-                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
-                       target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
+                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>"
+                       class="clickwhale-banner--button outlined dark"
+                       target="_blank"
+                       rel="noopener">
+						<?php _e( 'Need help?', $this->plugin_name ) ?>
+                    </a>
 				<?php } ?>
 
-				<?php //do_action( 'clickwhale_admin_banner_pro_button' ) ?>
+				<?php do_action( 'clickwhale_admin_banner_pro_button' ) ?>
 
             </div>
         </div>
@@ -273,10 +277,11 @@ class Clickwhale_Admin {
 	}
 
 	public function admin_banner_pro_button() {
-		$link_pro = 'https://clickwhale.pro';
 		?>
-        <a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
-			<?php _e( 'Update to Pro', $this->plugin_name ) ?>
+        <a href="<?php echo esc_attr( ClickwhaleHelper::get_pro_link() ) ?>"
+           class="clickwhale-banner--button"
+           target="_blank">
+			<?php _e( 'Upgrade to PRO', $this->plugin_name ) ?>
         </a>
 		<?php
 	}

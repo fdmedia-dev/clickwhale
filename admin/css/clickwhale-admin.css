@@ -196,21 +196,51 @@ ion-icon {
 }
 
 .clickwhale-banner--links a.clickwhale-banner--button {
-	padding: 12px 20px;
+	padding: 10px 20px;
 	color: #ffffff;
 	background-color: #007AFF;
+	border: 2px solid #007AFF;
 	border-radius: 4px;
 	text-decoration: none;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 .clickwhale-banner--links a:hover {
 	color: #007AFF;
 }
 
-.clickwhale-banner--links a.clickwhale-banner--button:hover {
-	background-color: #ffffff;
+.clickwhale-banner--links a.clickwhale-banner--button.outlined {
 	color: #007AFF;
+	background: transparent;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button.dark {
+	color: #1a1c1d;
+	border-color: #1a1c1d;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button:hover,
+.clickwhale-banner--links a.clickwhale-banner--button:focus {
+	color: #ffffff;
+	background: #1a1c1d;
+	border-color: #1a1c1d;
+	outline: none;
+	box-shadow: none;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button.outlined:hover,
+.clickwhale-banner--links a.clickwhale-banner--button.outlined:focus {
+	color: #ffffff;
+	background: #007AFF;
+	border-color: #007AFF;
+}
+
+.clickwhale-banner--links a.clickwhale-banner--button.dark:hover,
+.clickwhale-banner--links a.clickwhale-banner--button.dark:focus {
+	color: #ffffff;
+	background: #1a1c1d;
+	border-color: #1a1c1d;
 }
 
 .clickwhale-banner--link-review--raiting {
