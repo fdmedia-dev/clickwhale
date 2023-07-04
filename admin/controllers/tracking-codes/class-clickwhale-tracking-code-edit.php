@@ -53,46 +53,98 @@ class ClickwhaleTrackingCodeEdit {
 	}
 
 	public static function conversion_fields( $item ) {
-		$is_woo       = class_exists( 'WooCommerce' );
-		$is_edd       = function_exists( 'EDD' );
-		$mode_options = array(
-			'standard' => __( 'Standard code tracking', self::$plugin_name ),
-		);
+		$is_woo = class_exists( 'WooCommerce' );
+		$is_edd = function_exists( 'EDD' );
+		?>
 
-		if ( $is_woo ) {
-			$woo_logo                = ADMIN_IMAGES_DIR . '/woocommerce-logo-short-purple.svg';
-			$mode_options['product'] = sprintf(
-				__(
-					'Track %s WooCommerce conversion %s',
-					self::$plugin_name ),
-				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">',
-				ClickwhaleHelper::admin_pro_label()
-			);
-		}
-		if ( $is_edd ) {
-			$edd_logo                 = ADMIN_IMAGES_DIR . '/logo-edd-short-dark.svg';
-			$mode_options['download'] = sprintf(
-				__(
-					'Track %s Easy Digital Downloads conversion %s',
-					self::$plugin_name ),
-				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">',
-				ClickwhaleHelper::admin_pro_label()
-			);
-		}
+        <tr class="form-field">
+            <th scope="row">
+                <label for="position">
+					<?php _e( 'Where do you want to add this code?', self::$plugin_name ) ?>
+                </label>
+            </th>
+            <td>
+                <fieldset>
+					<?php
+					$is_pro_label   = ClickwhaleHelper::admin_pro_label();
+					$radio_class    = $is_pro_label ? 'disabled' : '';
+					$is_disabled    = $is_pro_label ? 'disabled="disabled"' : '';
+					$conversion_val = $item['position']['conversion'] ?? '';
+					?>
+                    <div class="radio-cards">
+                        <div class="radio-card radio-conversion">
+                            <input id="conversionStandard"
+                                   type="radio"
+                                   name="position[conversion]"
+                                   value="standard"
+								<?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
+                            >
+                            <label for="conversionStandard">
+                                <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-wordpress-dark.svg'; ?>"
+                                     alt="WordPress">
+                                <span><?php _e( 'Standard code tracking', self::$plugin_name ) ?></span>
+                            </label>
+                        </div>
 
-		echo ClickwhaleHelper::render_control(
-			array(
-				'row_label' => __( 'Where do you want to add this code?', self::$plugin_name ),
-				'control'   => 'radio',
-				'id'        => 'position_conversion',
-				'name'      => 'position[conversion]',
-				'value'     => $item['position']['conversion'] ?? '',
-				'options'   => $mode_options,
-				'default'   => 'standard'
-			),
-			true
-		);
+						<?php if ( $is_woo ) { ?>
+                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+								<?php if ( $is_pro_label ) { ?>
+                                    <div class="radio-card--lock">
+                                        <svg class="feather">
+                                            <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+								<?php } ?>
+                                <input id="conversionProduct"
+                                       type="radio"
+                                       name="position[conversion]"
+                                       value="product"
+									<?php
+									echo $is_disabled;
+									checked( $conversion_val, 'product' );
+									?>
+                                >
+                                <label for="conversionProduct">
+                                    <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-woocommerce-short-purple.svg'; ?>"
+                                         alt="WooCommerce">
+                                    <span><?php _e( 'WooCommerce conversion', self::$plugin_name ) ?></span>
+                                </label>
+                            </div>
+						<?php } ?>
 
+						<?php if ( $is_edd ) { ?>
+                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+								<?php if ( $is_pro_label ) { ?>
+                                    <div class="radio-card--lock">
+                                        <svg class="feather">
+                                            <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+								<?php } ?>
+                                <input id="conversionDownload"
+                                       type="radio"
+                                       name="position[conversion]"
+                                       value="download"
+									<?php
+									echo $is_disabled;
+									checked( $conversion_val, 'download' );
+									?>
+                                >
+                                <label for="conversionDownload">
+                                    <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-edd-short-dark.svg'; ?>"
+                                         alt="Easy Digital Downloads">
+                                    <span><?php _e( 'EDD conversion', self::$plugin_name ) ?></span>
+                                </label>
+                            </div>
+						<?php } ?>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+		<?php
 		do_action( 'clickwhale_tracking_code_conversion_fields', $item );
 	}
 

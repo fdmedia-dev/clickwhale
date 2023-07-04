@@ -1167,6 +1167,111 @@ table.tracking-codes .column-is_active {
 	vertical-align: middle;
 }
 
+.radio-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 10px;
+}
+
+.form-table td fieldset .radio-card {
+	position: relative;
+}
+
+.form-table td fieldset .radio-card input {
+	display: none;
+}
+
+.form-table td fieldset .radio-card label {
+	position: relative;
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 4px;
+	text-align: center;
+	font-size: 12px;
+	line-height: 1.2em;
+	margin: 0 !important;
+	padding: 25px 10px 10px;
+}
+
+.radio-card label img {
+	max-width: 100%;
+	height: 32px;
+}
+
+.radio-card label::before,
+.radio-card label::after {
+	position: absolute;
+	display: block;
+	content: '';
+	border-radius: 50%;
+}
+
+.radio-card label::before {
+	top: 5px;
+	left: 5px;
+	width: 12px;
+	height: 12px;
+	background: #f7f7f7;
+	border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.radio-card label::after {
+	top: 9px;
+	left: 9px;
+	width: 6px;
+	height: 6px;
+	background: #ffffff;
+	opacity: 0;
+}
+
+.form-table td fieldset .radio-card input:checked + label {
+	border-color: #007AFF;
+}
+
+.radio-card input:checked + label::before {
+	background: #007AFF;
+}
+
+.radio-card input:checked + label::after {
+	opacity: 1;
+}
+
+.radio-card.disabled label {
+	opacity: .3;
+}
+
+.radio-card.disabled label::before,
+.radio-card.disabled label::after {
+	display: none;
+}
+
+.radio-card--lock,
+.radio-card--pro {
+	position: absolute;
+	z-index: 1;
+	top: 5px;
+}
+
+.radio-card--lock {
+	left: 5px;
+	color: #999999;
+}
+
+.radio-card--pro {
+	right: 5px;
+}
+
+.radio-card--lock svg {
+	width: 16px;
+	height: 16px;
+}
+
+
 .clickwhale-pro-label {
 	position: relative;
 	display: inline-block;
