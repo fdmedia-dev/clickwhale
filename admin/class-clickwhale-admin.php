@@ -231,11 +231,7 @@ class Clickwhale_Admin {
 		);
 	}
 
-	public function clickwhale_categories_limit_callback( $limit ) {
-		return $limit;
-	}
-
-	public function clickwhale_admin_banner_callback() {
+	public function adminBanner() {
 		$link_logo     = 'https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
 		$link_helpdesk = 'https://clickwhale.pro/contact/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=help-link';
 		$link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
@@ -268,13 +264,15 @@ class Clickwhale_Admin {
                     <a href="<?php echo esc_attr( $link_helpdesk ) ?>" class="clickwhale-banner--button"
                        target="_blank" rel="noopener"><?php _e( 'Need help?', $this->plugin_name ) ?></a>
 				<?php } ?>
-				<?php //do_action( 'clickwhale_admin_banner_button_pro' ) ?>
+
+				<?php //do_action( 'clickwhale_admin_banner_pro_button' ) ?>
+
             </div>
         </div>
 		<?php
 	}
 
-	public function clickwhale_admin_banner_button_pro_callback() {
+	public function adminBannerProButton() {
 		$link_pro = 'https://clickwhale.pro';
 		?>
         <a href="<?php echo esc_attr( $link_pro ) ?>" class="clickwhale-banner--button" target="_blank">
@@ -283,7 +281,7 @@ class Clickwhale_Admin {
 		<?php
 	}
 
-	public function clickwhale_admin_pro_message_callback() {
+	public function adminProMessage() {
 		?>
         <div class="clickwhale-linkpage--message">
 			<?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
@@ -295,7 +293,7 @@ class Clickwhale_Admin {
 	 * @return void
 	 * @since 1.3.0
 	 */
-	public function admin_bar_render( $wp_admin_bar ) {
+	public function adminBarRender( $wp_admin_bar ) {
 		$wp_admin_bar->add_node( array(
 				'id'    => $this->plugin_name,
 				'title' => '<span class="ab-icon"><img src="' . plugin_dir_url( __FILE__ ) . 'images/click-icon.svg"/></span> ClickWhale',
