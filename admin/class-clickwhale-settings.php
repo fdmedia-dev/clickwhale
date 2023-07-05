@@ -178,7 +178,7 @@ class Clickwhale_Admin_Settings {
 		}
 
 		/**
-		 * @since 1.3.6
+		 * @since 1.3.7
 		 */
 		do_action( 'clickwhale_menu_before_settings' );
 
@@ -200,7 +200,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		/**
-		 * @since 1.3.6
+		 * @since 1.3.7
 		 */
 		do_action( 'clickwhale_menu_after_tools' );
 
@@ -222,7 +222,7 @@ class Clickwhale_Admin_Settings {
 	 */
 
 	public function render_controls( $args ) {
-		echo ClickwhaleHepler::render_control( $args );
+		echo ClickwhaleHelper::render_control( $args );
 	}
 
 	/**

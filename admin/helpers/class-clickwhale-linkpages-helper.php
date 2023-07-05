@@ -32,6 +32,30 @@ class ClickwhaleLinkpagesHelper {
 	}
 
 	/**
+	 * Return link pages limitation notice string
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function get_limitation_notice(): string {
+		return sprintf(
+			__( 'Currently, a maximum of %d link page can be added.', CLICKWHALE_NAME ),
+			self::get_limit(),
+		);
+	}
+
+	/**
+	 * Return link page links limitation notice string
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function get_links_limitation_notice(): string {
+		return sprintf(
+			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_NAME ),
+			self::get_links_limit(),
+		);
+	}
+
+	/**
 	 * Check if linkpage with slug exists
 	 *
 	 * @param string $slug

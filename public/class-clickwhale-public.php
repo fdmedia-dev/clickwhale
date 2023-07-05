@@ -54,7 +54,7 @@ class Clickwhale_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->path        = $this->get_public_path( 'trimmed' );
+		$this->path        = ClickwhaleHelper::get_public_path( true );
 
 		$this->load_dependencies();
 		$this->init_classes();
@@ -87,23 +87,8 @@ class Clickwhale_Public {
 		$linkpages = $trackingCodes = null;
 		if ( ! is_admin() ) {
 			$linkpages     = new Clickwhale_Linkpages();
-			$trackingCodes = new ClickwhaleTrackingCodes( $this->get_public_path() );
+			$trackingCodes = new ClickwhaleTrackingCodes( $this->path );
 		}
-	}
-
-	private function get_public_path( string $trimmed = '' ): string {
-		$actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
-		$actual_link = str_replace(get_bloginfo('url'), '', $actual_link);
-		$result = untrailingslashit( parse_url( $actual_link, PHP_URL_PATH ) );
-
-		if ( $trimmed ) {
-			return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
-		} else {
-			return $result;
-		}
-
-
 	}
 
 	/**
@@ -118,7 +103,7 @@ class Clickwhale_Public {
 				$this->plugin_name,
 				PUBLIC_CSS_DIR . '/clickwhale-public.css',
 				array(),
-				$this->version, 'all'
+				$this->version
 			);
 		}
 
@@ -136,7 +121,8 @@ class Clickwhale_Public {
 				$this->plugin_name . '_ionicons',
 				PUBLIC_JS_DIR . '/ionicons/ionicons.js',
 				array( 'jquery' ),
-				'7.1.0'
+				'7.1.0',
+				true
 			);
 
 			wp_enqueue_script(
@@ -144,6 +130,7 @@ class Clickwhale_Public {
 				PUBLIC_JS_DIR . '/clickwhale-public.js',
 				array( 'jquery' ),
 				$this->version,
+				true
 			);
 
 			wp_localize_script(

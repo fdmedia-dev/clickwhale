@@ -147,29 +147,15 @@ class ClickwhaleTrackingCodes {
 		if ( ! $tracking_codes ) {
 			return false;
 		}
+
+
 		$page = $this->get_current_page_data();
 
 		foreach ( $tracking_codes as $tracking_code ) {
 			$position = maybe_unserialize( $tracking_code['position'] );
 
-			if ( isset( $position['conversion'] ) && $position['conversion'] !== 'standard' ) {
-				do_action( 'clickwhale_conversion_action', $tracking_code );
-			} else {
-
-				if ( $this->is_user_untracked( $position ) ) {
-					continue;
-				}
-
-				if ( $position['pages'] === 'all' ) {
-					if ( isset( $position['items_excluded'] ) ) {
-						$this->do_excluded_conditional_logic( $position, $tracking_code, $page );
-					} else {
-						$this->do_tracking_action( $position['code'], $tracking_code['code'] );
-					}
-				} else {
-					$this->do_included_conditional_logic( $position, $tracking_code, $page );
-				}
-
+			if ( $this->is_user_untracked( $position ) ) {
+				continue;
 			}
 
 			if ( isset( $position['pages'] ) && $position['pages'] === 'all' ) {

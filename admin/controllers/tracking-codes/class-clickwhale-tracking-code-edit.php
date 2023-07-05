@@ -2,15 +2,17 @@
 
 class ClickwhaleTrackingCodeEdit {
 	private static $instance;
+	private static $plugin_name;
 
 	/**
 	 * @var
-	 * @since 1.3.6
+	 * @since 1.3.7
 	 */
 	public static $conversion;
 
 	public function init() {
-		self::$conversion = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
+		self::$plugin_name = CLICKWHALE_NAME;
+		self::$conversion  = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
 
@@ -51,41 +53,98 @@ class ClickwhaleTrackingCodeEdit {
 	}
 
 	public static function conversion_fields( $item ) {
-		$is_woo       = class_exists( 'WooCommerce' );
-		$is_edd       = function_exists( 'EDD' );
-		$mode_options = array(
-			'standard' => __( 'Standard code tracking', 'clickwhale-pro' ),
-		);
+		$is_woo = class_exists( 'WooCommerce' );
+		$is_edd = function_exists( 'EDD' );
+		?>
 
-		if ( $is_woo ) {
-			$woo_logo                = ADMIN_IMAGES_DIR . '/woocommerce-logo-short-purple.svg';
-			$mode_options['product'] = sprintf(
-				__( 'Track %s WooCommerce conversion <em class="clickwhale-pro-label">PRO</em>', 'clickwhale' ),
-				'<img class="checkbox-inline-image" src="' . $woo_logo . '" alt="WooCommerce">'
-			);
-		}
-		if ( $is_edd ) {
-			$edd_logo                 = ADMIN_IMAGES_DIR . '/logo-edd-short-dark.svg';
-			$mode_options['download'] = sprintf(
-				__( 'Track %s Easy Digital Downloads conversion <em class="clickwhale-pro-label">PRO</em>',
-					'clickwhale' ),
-				'<img class="checkbox-inline-image" src="' . $edd_logo . '" alt="Easy Digital Downloads">'
-			);
-		}
+        <tr class="form-field">
+            <th scope="row">
+                <label for="position">
+					<?php _e( 'Where do you want to add this code?', self::$plugin_name ) ?>
+                </label>
+            </th>
+            <td>
+                <fieldset>
+					<?php
+					$is_pro_label   = ClickwhaleHelper::admin_pro_label();
+					$radio_class    = $is_pro_label ? 'disabled' : '';
+					$is_disabled    = $is_pro_label ? 'disabled="disabled"' : '';
+					$conversion_val = $item['position']['conversion'] ?? '';
+					?>
+                    <div class="radio-cards">
+                        <div class="radio-card radio-conversion">
+                            <input id="conversionStandard"
+                                   type="radio"
+                                   name="position[conversion]"
+                                   value="standard"
+								<?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
+                            >
+                            <label for="conversionStandard">
+                                <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-wordpress-dark.svg'; ?>"
+                                     alt="WordPress">
+                                <span><?php _e( 'Standard code tracking', self::$plugin_name ) ?></span>
+                            </label>
+                        </div>
 
-		echo ClickwhaleHepler::render_control(
-			array(
-				'row_label' => __( 'Where do you want to add this code?', 'clickwhale-pro' ),
-				'control'   => 'radio',
-				'id'        => 'position_conversion',
-				'name'      => 'position[conversion]',
-				'value'     => $item['position']['conversion'] ?? '',
-				'options'   => $mode_options,
-				'default'   => 'standard'
-			),
-			true
-		);
+						<?php if ( $is_woo ) { ?>
+                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+								<?php if ( $is_pro_label ) { ?>
+                                    <div class="radio-card--lock">
+                                        <svg class="feather">
+                                            <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+								<?php } ?>
+                                <input id="conversionProduct"
+                                       type="radio"
+                                       name="position[conversion]"
+                                       value="product"
+									<?php
+									echo $is_disabled;
+									checked( $conversion_val, 'product' );
+									?>
+                                >
+                                <label for="conversionProduct">
+                                    <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-woocommerce-short-purple.svg'; ?>"
+                                         alt="WooCommerce">
+                                    <span><?php _e( 'WooCommerce conversion', self::$plugin_name ) ?></span>
+                                </label>
+                            </div>
+						<?php } ?>
 
+						<?php if ( $is_edd ) { ?>
+                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+								<?php if ( $is_pro_label ) { ?>
+                                    <div class="radio-card--lock">
+                                        <svg class="feather">
+                                            <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+								<?php } ?>
+                                <input id="conversionDownload"
+                                       type="radio"
+                                       name="position[conversion]"
+                                       value="download"
+									<?php
+									echo $is_disabled;
+									checked( $conversion_val, 'download' );
+									?>
+                                >
+                                <label for="conversionDownload">
+                                    <img src="<?php echo ADMIN_IMAGES_DIR . '/vendors/logo-edd-short-dark.svg'; ?>"
+                                         alt="Easy Digital Downloads">
+                                    <span><?php _e( 'EDD conversion', self::$plugin_name ) ?></span>
+                                </label>
+                            </div>
+						<?php } ?>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+		<?php
 		do_action( 'clickwhale_tracking_code_conversion_fields', $item );
 	}
 
@@ -133,7 +192,7 @@ class ClickwhaleTrackingCodeEdit {
 			ARRAY_A
 		);
 		if ( $linkpages ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $linkpages as $linkpage ) {
 				$result[ $linkpage['id'] ] = $linkpage['title'];
 			}
@@ -154,7 +213,7 @@ class ClickwhaleTrackingCodeEdit {
 		$posts  = get_posts( $args );
 
 		if ( $posts ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $posts as $post ) {
 				$result[ $post->ID ] = $post->post_title;
 			}
@@ -171,7 +230,7 @@ class ClickwhaleTrackingCodeEdit {
 		);
 		$terms  = get_terms( $args );
 		if ( $terms ) {
-			$result['all'] = __( 'All', 'clickwhale' );
+			$result['all'] = __( 'All', self::$plugin_name );
 			foreach ( $terms as $term ) {
 				$result[ $term->term_id ] = $term->name;
 			}
@@ -271,12 +330,12 @@ class ClickwhaleTrackingCodeEdit {
         <script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('#position_code').select2({
-                    placeholder: '<?php _e( 'Select Code position', 'clickwhale' ) ?>',
+                    placeholder: '<?php _e( 'Select Code position', self::$plugin_name ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
                 jQuery('.with-select2').select2({
-                    placeholder: '<?php _e( 'Select', 'clickwhale' ) ?>',
+                    placeholder: '<?php _e( 'Select', self::$plugin_name ) ?>',
                     width: '100%',
                     multiple: true,
                     minimumResultsForSearch: 10
