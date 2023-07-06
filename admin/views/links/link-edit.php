@@ -64,19 +64,19 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-								<?php
-								echo ClickwhaleHelper::render_control(
-									array(
-										'control'     => 'input',
-										'id'          => 'title',
-										'name'        => 'title',
-										'type'        => 'text',
-										'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-										'placeholder' => __( 'Link Title', $this->plugin_name ),
-										'required'    => true,
-									)
-								);
-								?>
+                                <?php
+                                echo ClickwhaleHelper::render_control(
+                                    array(
+                                        'control'     => 'input',
+                                        'id'          => 'title',
+                                        'name'        => 'title',
+                                        'type'        => 'text',
+                                        'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                        'placeholder' => __( 'Link Title', $this->plugin_name ),
+                                        'required'    => true,
+                                    )
+                                );
+                                ?>
                                 <p id="cw-title--description"></p>
                             </td>
                         </tr>
