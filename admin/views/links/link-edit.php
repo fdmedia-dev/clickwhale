@@ -10,12 +10,12 @@ $options_general = get_option( 'clickwhale_general_options' );
 if ( $item['slug'] ) {
 	$slug = $item['slug'];
 } else {
-	if ( ! isset( $options_general['random_slug'] ) || ! $options_general['random_slug'] ) {
+	if ( empty( $options_general['random_slug'] ) ) {
 		$randomSlug = ClickwhaleLinksHelper::get_random_slug();
 	} else {
 		$randomSlug = '';
 	}
-	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
+	$slug = ! empty( $options_general['slug'] )
 		? $options_general['slug'] . '/' . $randomSlug
 		: $randomSlug;
 }
@@ -64,19 +64,19 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="title"><?php _e( 'Title', $this->plugin_name ) ?></label>
                             </th>
                             <td>
-                                <?php
-                                echo ClickwhaleHelper::render_control(
-                                    array(
-                                        'control'     => 'input',
-                                        'id'          => 'title',
-                                        'name'        => 'title',
-                                        'type'        => 'text',
-                                        'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                        'placeholder' => __( 'Link Title', $this->plugin_name ),
-                                        'required'    => true,
-                                    )
-                                );
-                                ?>
+								<?php
+								echo ClickwhaleHepler::render_control(
+									array(
+										'control'     => 'input',
+										'id'          => 'title',
+										'name'        => 'title',
+										'type'        => 'text',
+										'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+										'placeholder' => __( 'Link Title', $this->plugin_name ),
+										'required'    => true,
+									)
+								);
+								?>
                                 <p id="cw-title--description"></p>
                             </td>
                         </tr>
@@ -98,10 +98,13 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text"
                                    class="code"
                                    title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
-									<?php $url = __( 'URL Preview',
-											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>/
-                                    <em class="dashicons dashicons-clipboard"></em>
+									<?php
+									$url_prefix = __( 'URL Preview', $this->plugin_name ) . ': ';
+									$url        = trailingslashit( $url_prefix . get_bloginfo( 'url' ) ); ?>
+									<?php echo trailingslashit( esc_html( $url ) . '<span>' . esc_html( $slug ) . '</span>' ); ?>
+                                    <svg class="feather">
+                                        <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#copy"></use>
+                                    </svg>
                                 </p>
                             </td>
                         </tr>
