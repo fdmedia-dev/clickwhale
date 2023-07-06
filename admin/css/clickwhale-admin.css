@@ -213,6 +213,7 @@ ion-icon {
 	text-decoration: none;
 	text-align: center;
 	box-sizing: border-box;
+	white-space: nowrap;
 }
 
 .clickwhale-banner--links a:hover {
@@ -1556,6 +1557,11 @@ table.tracking-codes .column-is_active {
 }
 
 /* VENDORS */
+@media (max-width: 1150px) {
+	.clickwhale-banner {
+		gap: 1rem;
+	}
+}
 
 @media (max-width: 768px) {
 	body.toplevel_page_clickwhale #wpbody-content,
@@ -1576,12 +1582,17 @@ table.tracking-codes .column-is_active {
 	}
 
 	.clickwhale-banner--links {
-		flex-direction: column;
 		margin: 0 -10px;
+		flex-flow: row wrap;
 	}
 
 	.clickwhale-banner--link-review {
 		text-align: center;
+	}
+
+	.clickwhale-banner--link-review {
+		flex: 0 1 100%;
+		width: 100%;
 	}
 
 	.clickwhale-banner--link-review--raiting {
@@ -1593,7 +1604,8 @@ table.tracking-codes .column-is_active {
 	}
 
 	.clickwhale-banner--links a.clickwhale-banner--button {
-		width: 100%;
+		flex: 1;
+		max-width: 50%;
 	}
 
 	.cw-posts-row {
