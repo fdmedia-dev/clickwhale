@@ -75,18 +75,27 @@ ion-icon {
 	font-size: 12px;
 }
 
+#cw-slug--text .feather {
+	width: 12px;
+	height: 12px;
+	opacity: .7;
+	margin-left: 7px;
+}
+
+
 #cw-slug--text .dashicons {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	font-size: 12px;
-	opacity: 0;
+	opacity: .7;
 	margin-left: 7px;
 	height: auto;
 }
 
-#cw-slug--text:hover .dashicons {
-	opacity: .7;
+#cw-slug--text:hover .dashicons,
+#cw-slug--text:hover .feather {
+	opacity: 1;
 }
 
 #cw-slug--text .copied {
