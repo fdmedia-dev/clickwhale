@@ -1369,7 +1369,7 @@ table.tracking-codes .column-is_active {
 	text-wrap: balance;
 }
 
-.clickwhale-pro-promo--hero a {
+.button-get-pro {
 	display: inline-block;
 	padding: 25px 85px;
 	color: #ffffff;
@@ -1382,7 +1382,7 @@ table.tracking-codes .column-is_active {
 	font-weight: 700;
 }
 
-.clickwhale-pro-promo--hero a:hover {
+.button-get-pro:hover {
 	background-color: #ffffff;
 	color: #007AFF;
 }
@@ -1414,6 +1414,16 @@ table.tracking-codes .column-is_active {
 	grid-template-columns: repeat(2, 1fr);
 	gap: 50px 80px;
 	padding: 0 60px;
+}
+
+.clickwhale-pro-promo--why-action{
+	display: block;
+	margin: 60px 0 0;
+	width: 100%;
+	text-align: center;
+}
+.clickwhale-pro-promo--why .button-get-pro{
+	margin: 0 auto;
 }
 
 .clickwhale-pro-promo--why-item {
@@ -1621,6 +1631,10 @@ table.tracking-codes .column-is_active {
 		overflow-x: hidden;
 	}
 
+	.clickwhale-pro-promo--container{
+		padding: 0 1rem;
+	}
+
 	.clickwhale-pro-promo--hero {
 		padding: 60px 0 60px;
 	}
@@ -1634,8 +1648,11 @@ table.tracking-codes .column-is_active {
 		margin-bottom: 30px;
 	}
 
-	.clickwhale-pro-promo--hero a {
+	.button-get-pro {
 		display: block;
+		padding: 15px 25px;
+		font-size: 17px;
+		line-height: 24px;
 	}
 
 	.clickwhale-pro-promo--hero img {
@@ -1704,5 +1721,10 @@ table.tracking-codes .column-is_active {
 		top: 46px;
 		padding-left: 20px;
 		padding-right: 20px;
+	}
+	}
+@media (max-width: 380px) {
+	.button-get-pro{
+		font-size: 15px;
 	}
 }
