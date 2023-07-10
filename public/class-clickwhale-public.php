@@ -101,7 +101,7 @@ class Clickwhale_Public {
 		if ( ! is_admin() && $this->path && ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
 			wp_enqueue_style(
 				$this->plugin_name,
-				PUBLIC_CSS_DIR . '/clickwhale-public.css',
+				CLICKWHALE_PUBLIC_CSS_DIR . '/clickwhale-public.css',
 				array(),
 				$this->version
 			);
@@ -119,7 +119,7 @@ class Clickwhale_Public {
 		if ( ! is_admin() && $this->path && ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
 			wp_enqueue_script(
 				$this->plugin_name . '_ionicons',
-				PUBLIC_JS_DIR . '/ionicons/ionicons.js',
+				CLICKWHALE_PUBLIC_JS_DIR . '/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0',
 				true
@@ -127,7 +127,7 @@ class Clickwhale_Public {
 
 			wp_enqueue_script(
 				$this->plugin_name,
-				PUBLIC_JS_DIR . '/clickwhale-public.js',
+				CLICKWHALE_PUBLIC_JS_DIR . '/clickwhale-public.js',
 				array( 'jquery' ),
 				$this->version,
 				true

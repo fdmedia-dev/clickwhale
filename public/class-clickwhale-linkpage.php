@@ -18,7 +18,7 @@ class Clickwhale_Public_Linkpage {
 		$this->links             = maybe_unserialize( $this->post->linkpage['links'] );
 		$this->styles            = maybe_unserialize( $this->post->linkpage['styles'] );
 		$this->social            = isset( $this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
-		$this->logo              = trailingslashit( PUBLIC_IMAGES_DIR ) . 'whale.svg';
+		$this->logo              = trailingslashit( CLICKWHALE_PUBLIC_IMAGES_DIR ) . 'whale.svg';
 
 		add_action( 'wp_before_admin_bar_render', [ $this, 'admin_bar_render' ], 25 );
 		add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
