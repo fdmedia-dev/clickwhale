@@ -87,7 +87,7 @@ do_action( 'clickwhale_admin_banner' );
             </p>
             <form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
                 <input type="hidden" name="action" value="clickwhale_pro_subscription_action">
-                <input type="email" name="email" placeholder="Your email address">
+                <input type="email" name="email" placeholder="Your email address" required>
                 <button type="submit">Claim my discount</button>
             </form>
 			<?php if ( ! empty( $_GET['success'] ) ) { ?>
