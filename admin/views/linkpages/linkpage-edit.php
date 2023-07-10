@@ -265,7 +265,7 @@ do_action( 'clickwhale_admin_banner' );
 														<?php if ( isset( $options['icon'] ) && $options['icon'] ) { ?>
                                                             <svg class="feather">
                                                                 <use
-                                                                        href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $options['icon'] ?>"></use>
+                                                                        href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#<?php echo $options['icon'] ?>"></use>
                                                             </svg>
 														<?php } ?>
 														<?php echo $options['name'] ?>
@@ -637,7 +637,7 @@ do_action( 'clickwhale_admin_banner' );
                             <input type="search" name="icon-picker--search">
                             <span>
                             <svg class="feather">
-                                <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#search"></use>
+                                <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#search"></use>
                             </svg>
                         </span>
                         </div>

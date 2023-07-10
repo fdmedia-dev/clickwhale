@@ -11,7 +11,7 @@ do_action( 'clickwhale_admin_banner' );
                class="button-get-pro"
                target="_blank"
                rel="noopener">Upgrade to ClickWhale (PRO) Now!</a>
-            <img src="<?php echo ADMIN_IMAGES_DIR ?>/whale.svg" alt="ClickWhale">
+            <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/whale.svg" alt="ClickWhale">
         </div>
     </div>
     <div class="clickwhale-pro-promo--content">
@@ -20,50 +20,50 @@ do_action( 'clickwhale_admin_banner' );
             <div class="clickwhale-pro-promo--why">
                 <div class="clickwhale-pro-promo--why-grid">
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/chart-bars.svg" alt="Detailed Statistics">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/chart-bars.svg" alt="Detailed Statistics">
                         <h3>Detailed Statistics <span>Link Manager, Link Pages</span></h3>
                         <p>Detailed statistics which allow you to filter and analyze link clicks and link page
                             views.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/filter-3.svg" alt="Conversion Tracking">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/filter-3.svg" alt="Conversion Tracking">
                         <h3>Conversion Tracking <span>Tracking Codes</span></h3>
                         <p>Easily place conversion tracking codes to track the performance of your WooCommerce or Easy
                             Digital Downloads store.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/social-media-profiles.svg" alt="Social Profiles">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/social-media-profiles.svg" alt="Social Profiles">
                         <h3>Social Profiles <span>Link Pages</span></h3>
                         <p>Add your social profiles to your existing link page in order to gain more followers on your
                             favorite social networks.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/utm-tracking.svg" alt="UTM Campaign Tracking">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/utm-tracking.svg" alt="UTM Campaign Tracking">
                         <h3>UTM Campaign Tracking <span>Link Manager</span></h3>
                         <p>Gain the ability to track UTM campaigns with better parameters for exceptional
                             campaign efficacy when you upgrade to ClickWhale PRO.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/feed.svg" alt="Blog Posts Feed">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/feed.svg" alt="Blog Posts Feed">
                         <h3>Blog Posts Feed <span>Link Pages</span></h3>
                         <p>Automatically show the latest blog posts directly on your link
                             pages for further reach.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/customize-options.svg"
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/customize-options.svg"
                              alt="More Customization Options">
                         <h3>More Customization Options <span>Link Pages</span></h3>
                         <p>Additional features from the plugin to customize link pages include options to add
                             branded backgrounds, images, and more.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/no-limits.svg" alt="No Limitations">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/no-limits.svg" alt="No Limitations">
                         <h3>No Limitations <span>Link Manager, Link Pages, Tracking Codes</span></h3>
                         <p>Limitations be gone! Curate and publish as many tracking codes, link pages and branded links
                             as needed when upgrading to ClickWhale PRO.</p>
                     </div>
                     <div class="clickwhale-pro-promo--why-item">
-                        <img src="<?php echo ADMIN_IMAGES_DIR ?>/pro/remove-credits.svg" alt="Remove Plugin Credits">
+                        <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/pro/remove-credits.svg" alt="Remove Plugin Credits">
                         <h3>Remove Plugin Credits <span>Link Pages, Tracking Codes</span></h3>
                         <p>Keep the branding personal with the ability to remove ClickWhale credits like the logo from
                             footers and more.</p>
