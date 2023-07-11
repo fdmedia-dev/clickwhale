@@ -8,7 +8,7 @@ class ClickwhaleLinksHelper {
 	 * @return mixed|void
 	 */
 	public static function get_limit() {
-		return apply_filters( 'clickwhale_links_limit', 1 );
+		return apply_filters( 'clickwhale_links_limit', 9999 );
 	}
 
 	/**

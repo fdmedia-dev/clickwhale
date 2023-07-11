@@ -10,12 +10,12 @@ $options_general = get_option( 'clickwhale_general_options' );
 if ( $item['slug'] ) {
 	$slug = $item['slug'];
 } else {
-	if ( ! isset( $options_general['random_slug'] ) || ! $options_general['random_slug'] ) {
+	if ( empty( $options_general['random_slug'] ) ) {
 		$randomSlug = ClickwhaleLinksHelper::get_random_slug();
 	} else {
 		$randomSlug = '';
 	}
-	$slug = isset( $options_general['slug'] ) && $options_general['slug'] !== ''
+	$slug = ! empty( $options_general['slug'] )
 		? $options_general['slug'] . '/' . $randomSlug
 		: $randomSlug;
 }
@@ -28,7 +28,7 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap">
 
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => __( 'Link', $this->plugin_name ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
@@ -46,7 +46,7 @@ do_action( 'clickwhale_admin_banner' );
             <div id="message" class="updated"><p><?php _e( 'Link was successfully updated', $this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
-		<?php delete_transient( 'link-' . $item['id'] ); ?>
+		<?php delete_transient( 'link-' . $item['id'] ); ?>r
 	<?php } ?>
 
     <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
@@ -65,7 +65,7 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo ClickwhaleHepler::render_control(
+                                echo ClickwhaleHelper::render_control(
                                     array(
                                         'control'     => 'input',
                                         'id'          => 'title',
@@ -98,10 +98,13 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--text"
                                    class="code"
                                    title="<?php _e( 'Copy url', $this->plugin_name ) ?>">
-									<?php $url = __( 'URL Preview',
-											$this->plugin_name ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
-									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $slug ) ?></span>/
-                                    <em class="dashicons dashicons-clipboard"></em>
+									<?php
+									$url_prefix = __( 'URL Preview', $this->plugin_name ) . ': ';
+									$url        = trailingslashit( $url_prefix . get_bloginfo( 'url' ) ); ?>
+									<?php echo trailingslashit( esc_html( $url ) . '<span>' . esc_html( $slug ) . '</span>' ); ?>
+                                    <svg class="feather">
+                                        <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#copy"></use>
+                                    </svg>
                                 </p>
                             </td>
                         </tr>

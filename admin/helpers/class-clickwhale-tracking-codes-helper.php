@@ -49,7 +49,9 @@ class ClickwhaleTrackingCodesHelper {
 	 * @return string
 	 */
 	public static function get_limitation_notice(): string {
-		return sprintf( __( 'Currently, a maximum of %d %s can be active at the same time.', 'clickwhale' ), self::get_limit(),
-			self::get_limit() === 1 ? __( 'tracking code', 'clickwhale' ) : __( 'tracking codes', 'clickwhale' ));
+		return sprintf(
+			__( 'Currently, a maximum of %d %s can be active at the same time.', CLICKWHALE_NAME ),
+			self::get_limit(),
+			self::get_limit() === 1 ? __( 'tracking code', CLICKWHALE_NAME ) : __( 'tracking codes', CLICKWHALE_NAME ));
 	}
 }

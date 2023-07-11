@@ -21,7 +21,7 @@ class Clickwhale_Link_Edit {
 	 * Could be hooked by filter "clickwhale_link_defaults"
 	 * @return array
 	 */
-	public function get_defaults() {
+	public function get_defaults(): array {
 		return array(
 			'id'          => 0,
 			'created_at'  => '',
@@ -91,10 +91,6 @@ class Clickwhale_Link_Edit {
 		if ( ! empty( $item['redirection'] ) && ! preg_match( '/[0-9]+/', $item['redirection'] ) ) {
 			$messages[] = __( 'Redirection code must be number' );
 		}
-		if ( empty( $item['slug'] ) ) {
-			$messages[] = __( 'Slug is required', 'clickwhale' );
-		}
-		//if (!empty($item['email']) && !is_email($item['email'])) $messages[] = __('E-Mail is in wrong format', 'clickwhale');
 
 		if ( empty( $messages ) ) {
 			return true;
@@ -179,15 +175,30 @@ class Clickwhale_Link_Edit {
 	}
 
 	public function admin_scripts() {
-		$nonce        = wp_create_nonce( 'check_slug' );
-		$nonce_random = wp_create_nonce( 'random_slug' );
+		$nonce              = wp_create_nonce( 'check_slug' );
+		$nonce_random       = wp_create_nonce( 'random_slug' );
+		$options_general    = get_option( 'clickwhale_general_options' );
+		$slugOptionsGeneral = ! empty( $options_general['slug'] ) ? trailingslashit( $options_general['slug'] ) : '';
 		?>
-		<script type='text/javascript'>
+        <script type='text/javascript'>
             jQuery(document).ready(function () {
 
-                var linkSubmit = jQuery('#form_edit_link').find('[type="submit"]'),
+                const
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug');
+
+				<?php
+				/**
+				 * if checked "Disable random slug" option
+				 * use title as slug
+				 */
+				if ( ! empty( $options_general['random_slug'] ) ) {
+				?>
+                const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
+                title.on('input', function () {
+                    slug.val(slugOptionsGeneral + this.value).trigger("blur");
+                });
+				<?php } ?>
 
                 /**
                  * Submit action
@@ -245,7 +256,7 @@ class Clickwhale_Link_Edit {
                 }
 
             });
-		</script>
+        </script>
 		<?php
 	}
 }

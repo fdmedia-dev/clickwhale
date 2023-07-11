@@ -15,7 +15,7 @@ do_action( 'clickwhale_admin_banner' );
 
 <div class="wrap">
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
@@ -30,9 +30,12 @@ do_action( 'clickwhale_admin_banner' );
 	<?php } ?>
 
 	<?php if ( ClickwhaleLinkpagesHelper::get_linkpages_count() >= ClickwhaleLinkpagesHelper::get_limit() ) { ?>
-        <div class="notice notice-info"><p><?php printf( 'Currently, a maximum of %d %s can be created.',
-					ClickwhaleLinkpagesHelper::get_limit(),
-					ClickwhaleLinkpagesHelper::get_limit() === 1 ? 'link page' : 'link pages' ); ?></p></div>
+        <div class="notice notice-info">
+            <p>
+                <?php echo ClickwhaleLinkpagesHelper::get_limitation_notice(); ?>
+                <?php echo ClickwhaleHelper::get_pro_message(); ?>
+            </p>
+        </div>
         <hr class="wp-header-end">
 	<?php } ?>
 

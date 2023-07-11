@@ -76,11 +76,13 @@ class LinkpageContentTemplates {
 		$link     = '';
 		$active   = false;
 		$row_id   = $defaults['data']['id'];
+		$error    = '';
 
 		if ( isset( $args['data'] ) && $args['data'] ) {
 			$row_id           = $args['data']['id'];
 			$defaults['data'] = $args['data'];
 			$link             = Clickwhale_Linkpage_Edit::get_link( $defaults['data']['id'] );
+			$error            = is_null( $link ) ? 'with-error' : $error;
 
 			if ( ! $link ) {
 				return false;
@@ -100,9 +102,13 @@ class LinkpageContentTemplates {
 
 		$data = $defaults['data'];
 
+		if ( is_null( $link ) ) {
+			return false;
+		}
+
 		ob_start();
 		?>
-		<div class="linkpage-row row--<?php echo $data['type'] ?>" id="row-<?php echo $row_id ?>">
+		<div class="linkpage-row row--<?php echo $data['type'] ?> <?php echo $error ?>" id="row-<?php echo $row_id ?>">
 			<div class="linkpage-row--top">
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
 				<div class="linkpage-row--content">
@@ -752,7 +758,7 @@ class LinkpageContentTemplates {
 		<div class="linkpage-row--start">
 			<div class="linkpage-row--drag" title="<?php _e( 'Change Order', 'clickwhale' ); ?>">
 				<svg class="feather">
-					<use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#drag-2"></use>
+					<use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#drag-2"></use>
 				</svg>
 			</div>
 			<label class="clickwhale-checkbox--toggle">
@@ -790,7 +796,7 @@ class LinkpageContentTemplates {
 				<div class="linkpage-row--statistics">
                     <span class="linkpage-row--clicks">
                         <svg class="feather">
-                            <use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#bar-chart-2"></use>
+                            <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#bar-chart-2"></use>
                         </svg>
                         Clicks: <?php echo $stats ?: 0 ?>
                     </span>
@@ -801,13 +807,13 @@ class LinkpageContentTemplates {
 				<?php if ( $edit ) { ?>
 					<button type="button" class="linkpage-row--actions--button-edit">
 						<svg class="feather">
-							<use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#chevron-down"></use>
+							<use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#chevron-down"></use>
 						</svg>
 					</button>
 				<?php } ?>
 				<button type="button" class="linkpage-row--actions--button-remove">
 					<svg class="feather">
-						<use href="<?php echo ADMIN_IMAGES_DIR ?>/feather-sprite.svg#trash-2"></use>
+						<use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#trash-2"></use>
 					</svg>
 				</button>
 			</div><!-- ./linkpage-row--actions -->

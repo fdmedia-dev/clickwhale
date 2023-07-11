@@ -19,7 +19,7 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap">
 
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
@@ -31,6 +31,16 @@ do_action( 'clickwhale_admin_banner' );
 
 	<?php if ( ! empty( $message ) ) { ?>
         <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
+	<?php } ?>
+
+	<?php if ( ClickwhaleCategoriesHelper::get_categories_count() >= ClickwhaleCategoriesHelper::get_limit() ) { ?>
+        <div class="notice notice-info">
+            <p>
+				<?php echo ClickwhaleCategoriesHelper::get_limitation_notice(); ?>
+				<?php echo ClickwhaleHelper::get_pro_message(); ?>
+            </p>
+        </div>
+        <hr class="wp-header-end">
 	<?php } ?>
 
     <form method="GET">

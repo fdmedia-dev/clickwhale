@@ -1,6 +1,6 @@
 <?php
 
-class ClickwhaleHepler {
+class ClickwhaleHelper {
 	/**
 	 * Return HTML markup for add_settings_field function
 	 *
@@ -8,7 +8,7 @@ class ClickwhaleHepler {
 	 *
 	 * @return string
 	 */
-	public static function render_control( array $args, bool $row = false ): string {
+	public static function render_control( array $args, bool $row = false, $row_classes = '' ): string {
 
 		$item     = '';
 		$id       = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
@@ -24,7 +24,7 @@ class ClickwhaleHepler {
 
 		if ( $row ) {
 			$rowLabel = $args['row_label'] ?? '';
-			$item     .= '<tr class="form-field">';
+			$item     .= '<tr class="form-field ' . $row_classes . '">';
 			$item     .= '<th scope="row"><label for="' . $args['id'] . '">' . $rowLabel . '</label></th>';
 			$item     .= '<td>';
 		}
@@ -73,7 +73,7 @@ class ClickwhaleHepler {
 				}
 				foreach ( $args['options'] as $k => $v ) {
 					$item .= '<label>';
-					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $value,$k,
+					$item .= '<input type="radio" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( $value, $k,
 							false ) . $disabled . ' />';
 					$item .= '<span>' . $v . '</span>';
 					$item .= '</label><br>';
@@ -201,5 +201,60 @@ class ClickwhaleHepler {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
+
+	private static function pro_link(): string {
+		return 'https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5';
+	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function get_pro_link(): string {
+		return self::pro_link();
+	}
+
+	/**
+	 * @return string
+	 * @since 1.3.7
+	 */
+	public static function admin_pro_label() {
+		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
+	}
+
+
+	public static function get_pro_message() {
+		return apply_filters(
+			'clickwhale_get_pro_message',
+			sprintf(
+				__(
+					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>',
+					CLICKWHALE_NAME ),
+				self::get_pro_link()
+			)
+		);
+	}
+
+	private static function public_path( bool $trimmed = false ): string {
+		$actual_link = ( empty( $_SERVER['HTTPS'] ) ? 'http' : 'https' ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+		$actual_link = str_replace( get_bloginfo( 'url' ), '', $actual_link );
+		$result      = untrailingslashit( parse_url( $actual_link, PHP_URL_PATH ) );
+
+		if ( $trimmed ) {
+			return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
+		} else {
+			return $result;
+		}
+	}
+
+	public static function get_public_path( bool $is_trimmed = false ): string {
+		return self::public_path( $is_trimmed );
 	}
 }

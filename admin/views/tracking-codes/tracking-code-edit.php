@@ -15,7 +15,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 
 <div class="wrap">
 	<?php
-	echo ClickwhaleHepler::render_heading(
+	echo ClickwhaleHelper::render_heading(
 		array(
 			'name'         => __( 'Tracking Code', $this->plugin_name ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
@@ -37,6 +37,8 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 		<?php delete_transient( 'tracking-code-' . $item['id'] ); ?>
 	<?php } ?>
 
+
+
     <form id="form_edit_tracking_code" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
         <input type="hidden" name="action" value="save_update_tracking_code">
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>"/>
@@ -49,7 +51,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
                 <tbody>
 
 				<?php
-				echo ClickwhaleHepler::render_control(
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label'   => __( 'Title', $this->plugin_name ),
 						'control'     => 'input',
@@ -64,7 +66,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 				);
 
 				// @link https://www.ibenic.com/wordpress-code-editor/
-				echo ClickwhaleHepler::render_control(
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label'   => __( 'Code', $this->plugin_name ),
 						'control'     => 'textarea',
@@ -76,7 +78,9 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 					true
 				);
 
-				echo ClickwhaleHepler::render_control(
+				$tracking_code->conversion_fields($item);
+
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label' => __( 'Code Position', $this->plugin_name ),
 						'control'   => 'select',
@@ -89,25 +93,27 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 							'wp_footer'    => 'Before &lt;/body&gt;',
 						)
 					),
-					true
+					true,
+					'for_mode for_standard_mode'
 				);
 				?>
-                <tr class="form-field">
+
+                <tr class="form-field for_mode for_standard_mode">
                     <th scope="row">
                         <label for="position"><?php _e( 'In which page do you want to insert this code?',
 								$this->plugin_name ) ?></label>
                     </th>
                     <td>
 						<?php
-						echo ClickwhaleHepler::render_control(
+						echo ClickwhaleHelper::render_control(
 							array(
 								'control' => 'radio',
 								'id'      => 'position_pages',
 								'name'    => 'position[pages]',
 								'value'   => $item['position']['pages'] ?? '',
 								'options' => array(
-									'all'    => 'Whole website',
-									'custom' => 'Specific page'
+									'all'    => __( 'Whole website', $this->plugin_name ),
+									'custom' => __( 'Specific page', $this->plugin_name )
 								),
 								'default' => 'all'
 							)
@@ -119,7 +125,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 						<?php if ( $linkpages ) { ?>
                             <div class="cw-posts-row cw-posts-row--included">
 								<?php
-								echo ClickwhaleHepler::render_control(
+								echo ClickwhaleHelper::render_control(
 									array(
 										'control' => 'checkbox',
 										'id'      => 'position_include_cw_linkpage',
@@ -131,7 +137,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 								?>
                                 <div class="cw-posts-row--select">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control'  => 'select',
 											'id'       => 'position_include_linkpage_ids',
@@ -148,7 +154,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
                             </div>
                             <div class="cw-posts-row cw-posts-row--excluded">
 								<?php
-								echo ClickwhaleHepler::render_control(
+								echo ClickwhaleHelper::render_control(
 									array(
 										'control' => 'checkbox',
 										'id'      => 'position_exclude_cw_linkpage',
@@ -160,7 +166,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 								?>
                                 <div class="cw-posts-row--select">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control'  => 'select',
 											'id'       => 'position_exclude_linkpage_ids',
@@ -168,7 +174,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 											'name'     => 'position[items_excluded][cw_linkpage][ids][]',
 											'value'    => $item['position']['items_excluded']['cw_linkpage']['ids'] ?? '',
 											'options'  => $tracking_code->get_linkpages(),
-											'default' => 'all',
+											'default'  => 'all',
 											'multiple' => true
 										)
 									);
@@ -184,7 +190,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 								?>
                                 <div class="cw-posts-row cw-posts-row--included">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control' => 'checkbox',
 											'id'      => 'position_include_' . $post_type,
@@ -199,14 +205,14 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 									?>
                                     <div class="cw-posts-row--select">
 										<?php
-										echo ClickwhaleHepler::render_control(
+										echo ClickwhaleHelper::render_control(
 											array(
 												'control'  => 'select',
 												'id'       => 'position_include_' . $post_type . '_ids',
 												'class'    => 'with-select2',
 												'name'     => 'position[items_included][' . $post_type . '][ids][]',
 												'value'    => $item['position']['items_included'][ $post_type ]['ids'] ?? '',
-												'options'  => $tracking_code->get_posts_by_post_type( $post_type ),
+												'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
 												'default'  => 'all',
 												'multiple' => true
 											)
@@ -216,7 +222,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
                                 </div>
                                 <div class="cw-posts-row cw-posts-row--excluded">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control' => 'checkbox',
 											'id'      => 'position_exclude_' . $post_type,
@@ -231,14 +237,14 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 									?>
                                     <div class="cw-posts-row--select">
 										<?php
-										echo ClickwhaleHepler::render_control(
+										echo ClickwhaleHelper::render_control(
 											array(
 												'control'  => 'select',
 												'id'       => 'position_exclude_' . $post_type . '_ids',
 												'class'    => 'with-select2',
 												'name'     => 'position[items_excluded][' . $post_type . '][ids][]',
 												'value'    => $item['position']['items_excluded'][ $post_type ]['ids'] ?? '',
-												'options'  => $tracking_code->get_posts_by_post_type( $post_type ),
+												'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
 												'default'  => 'all',
 												'multiple' => true
 											)
@@ -256,7 +262,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 								?>
                                 <div class="cw-posts-row cw-posts-row--included">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control' => 'checkbox',
 											'id'      => 'position_include_' . $taxonomy,
@@ -271,7 +277,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 									?>
                                     <div class="cw-posts-row--select">
 										<?php
-										echo ClickwhaleHepler::render_control(
+										echo ClickwhaleHelper::render_control(
 											array(
 												'control'  => 'select',
 												'id'       => 'position_include_' . $taxonomy . '_ids',
@@ -288,7 +294,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
                                 </div>
                                 <div class="cw-posts-row cw-posts-row--excluded">
 									<?php
-									echo ClickwhaleHepler::render_control(
+									echo ClickwhaleHelper::render_control(
 										array(
 											'control' => 'checkbox',
 											'id'      => 'position_exclude_' . $taxonomy,
@@ -303,7 +309,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 									?>
                                     <div class="cw-posts-row--select">
 										<?php
-										echo ClickwhaleHepler::render_control(
+										echo ClickwhaleHelper::render_control(
 											array(
 												'control'  => 'select',
 												'id'       => 'position_exclude_' . $taxonomy . '_ids',
@@ -324,7 +330,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
                 </tr>
 
 				<?php
-				echo ClickwhaleHepler::render_control(
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label'   => __( 'Exclude User Roles', $this->plugin_name ),
 						'control'     => 'checkboxes',
@@ -338,7 +344,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 					true
 				);
 
-				echo ClickwhaleHepler::render_control(
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label'   => __( 'Description', $this->plugin_name ),
 						'control'     => 'textarea',
@@ -351,7 +357,7 @@ $message = get_transient( 'tracking-code-' . $item['id'] );
 					true
 				);
 
-				echo ClickwhaleHepler::render_control(
+				echo ClickwhaleHelper::render_control(
 					array(
 						'row_label'        => __( 'Active', $this->plugin_name ),
 						'control'          => 'checkbox',
