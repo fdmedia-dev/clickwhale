@@ -205,7 +205,7 @@ class ClickwhaleHelper {
 
 	/**
 	 * @return string
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 
 	private static function pro_link(): string {
@@ -214,7 +214,7 @@ class ClickwhaleHelper {
 
 	/**
 	 * @return string
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 	public static function get_pro_link(): string {
 		return self::pro_link();
@@ -222,7 +222,7 @@ class ClickwhaleHelper {
 
 	/**
 	 * @return string
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 	public static function admin_pro_label() {
 		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );

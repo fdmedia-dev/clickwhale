@@ -358,7 +358,7 @@ class Clickwhale_Admin {
 
 	/**
 	 * @return void
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 	public function pro_subscription_action() {
 		$user     = wp_get_current_user();

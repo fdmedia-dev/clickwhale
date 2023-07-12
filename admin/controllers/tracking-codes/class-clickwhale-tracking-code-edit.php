@@ -6,7 +6,7 @@ class ClickwhaleTrackingCodeEdit {
 
 	/**
 	 * @var
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 	public static $conversion;
 
