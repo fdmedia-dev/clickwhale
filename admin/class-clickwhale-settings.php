@@ -178,7 +178,7 @@ class Clickwhale_Admin_Settings {
 		}
 
 		/**
-		 * @since 1.3.7
+		 * @since 1.4.0
 		 */
 		do_action( 'clickwhale_menu_before_settings' );
 
@@ -200,7 +200,7 @@ class Clickwhale_Admin_Settings {
 		);
 
 		/**
-		 * @since 1.3.7
+		 * @since 1.4.0
 		 */
 		do_action( 'clickwhale_menu_after_tools' );
 

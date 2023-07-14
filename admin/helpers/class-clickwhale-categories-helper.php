@@ -25,7 +25,7 @@ class ClickwhaleCategoriesHelper {
 	/**
 	 * Return limitation notice string
 	 * @return string
-	 * @since 1.3.7
+	 * @since 1.4.0
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
