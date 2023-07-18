@@ -39,7 +39,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 
 const CLICKWHALE_VERSION = '1.4.0';
-const CLICKWHALE_NAME = 'clickwhale';
+const CLICKWHALE_NAME    = 'clickwhale';
 
 /**
  * @since 1.3.0
@@ -50,6 +50,12 @@ define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
 define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'public/images' );
 define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' );
 define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
+
+/**
+ * @since 1.4.1
+ */
+define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
+define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
 
 /**
  * The code that runs during plugin activation.
@@ -101,4 +107,5 @@ function run_clickwhale() {
 	$plugin->run();
 
 }
+
 add_action( 'plugins_loaded', 'run_clickwhale', 10 );
