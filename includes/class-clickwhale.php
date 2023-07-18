@@ -227,6 +227,9 @@ class Clickwhale {
 				}
 			}
 		}
+
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $Clickwhale_Admin_Settings, 'settings_action_link' );
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $Clickwhale_Admin_Settings, 'upgrade_action_link' );
 	}
 
 	/**

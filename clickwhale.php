@@ -51,6 +51,12 @@ define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' )
 define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
 
 /**
+ * @since 1.4.1
+ */
+define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
+define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-clickwhale-activator.php
  */
