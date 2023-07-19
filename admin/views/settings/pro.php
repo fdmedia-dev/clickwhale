@@ -5,7 +5,7 @@ do_action( 'clickwhale_admin_banner' );
 <div class="wrap clickwhale-pro-promo">
     <div class="clickwhale-pro-promo--hero">
         <div class="clickwhale-pro-promo--container">
-            <h1>Swim past your competition with ClickWhale <em>PRO</em></h1>
+            <h2>Swim past your competition with ClickWhale <em>PRO</em></h2>
             <p>Take your website to the next level with great additions to our plugin!</p>
             <a href="https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5"
                class="button-get-pro"
