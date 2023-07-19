@@ -1329,7 +1329,7 @@ table.tracking-codes .column-is_active {
 	text-align: center;
 }
 
-.clickwhale-pro-promo--hero h1 {
+.clickwhale-pro-promo--hero h2 {
 	position: relative;
 	font-weight: 800;
 	font-size: 64px;
@@ -1339,13 +1339,13 @@ table.tracking-codes .column-is_active {
 	text-wrap: balance;
 }
 
-.clickwhale-pro-promo--hero h1 em {
+.clickwhale-pro-promo--hero h2 em {
 	position: relative;
 	color: #ffffff;
 	font-style: normal;
 }
 
-.clickwhale-pro-promo--hero h1 em::before {
+.clickwhale-pro-promo--hero h2 em::before {
 	position: absolute;
 	display: block;
 	content: '';
@@ -1639,7 +1639,7 @@ table.tracking-codes .column-is_active {
 		padding: 60px 0 60px;
 	}
 
-	.clickwhale-pro-promo--hero h1 {
+	.clickwhale-pro-promo--hero h2 {
 		font-size: 36px;
 	}
 
