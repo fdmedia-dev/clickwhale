@@ -236,7 +236,7 @@ class Clickwhale_Public_Linkpage {
 					$link['type'],
 					false,
 					true,
-					array( 'data' => $link, 'target' => $target )
+					array( 'data' => $link, 'target' => $target, 'post' => $this->data )
 				);
 			}
 		}

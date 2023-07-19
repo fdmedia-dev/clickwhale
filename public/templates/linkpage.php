@@ -31,10 +31,6 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 
 		<div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
 
-		<?php if ( $linkpage->get_socails() ) { ?>
-			<ul class="linkpage-public--social"><?php echo $linkpage->get_socails() ?></ul>
-		<?php } ?>
-
 	</div>
 	<div class="linkpage-public--bottom">
 		<?php
