@@ -492,4 +492,26 @@ class Clickwhale_Admin_Settings {
 
 		return $tabs;
 	}
+	
+	/**
+	 * Plugin links
+	 * @since 1.4.1
+	 */
+	public function settings_action_link( $links ) {
+		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-settings' ) );
+		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', $this->plugin_name ) . '</a>';
+		array_unshift( $links, $settings_link );
+
+		return $links;
+	}
+
+	public function upgrade_action_link( $links ) {
+		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) );
+		$text          = __( 'Upgrade to PRO', $this->plugin_name );
+		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
+		$links[]       = $settings_link;
+
+		return $links;
+	}
+	
 }
