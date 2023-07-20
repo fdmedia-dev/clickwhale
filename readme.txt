@@ -94,6 +94,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
+= Version 1.4.1 (20th July 2023) =
+* Tweak: Added plugin link to the settings page
+* Info: PHP, CSS, JS code improvements
+
 = Version 1.4.0 (12th July 2023) =
 * Tweak: Link handling optimization
 * Info: Clickwhale Pro Support
