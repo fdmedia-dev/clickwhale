@@ -38,8 +38,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 
-const CLICKWHALE_VERSION = '1.4.0';
-const CLICKWHALE_NAME    = 'clickwhale';
+define( 'CLICKWHALE_VERSION', '1.4.0' );
+define( 'CLICKWHALE_NAME', 'clickwhale' );
 
 /**
  * @since 1.3.0

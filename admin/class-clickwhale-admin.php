@@ -380,6 +380,17 @@ class Clickwhale_Admin {
 		}
 	}
 
+	/**
+	 * @return void
+	 * @since 1.4.1
+	 */
+	public function hide_notice_on_upgrade_to_pro_page() {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-pro' ) {
+			remove_all_actions( 'user_admin_notices' );
+			remove_all_actions( 'admin_notices' );
+		}
+	}
+
 	public function admin_scripts() {
 		if ( isset( $_GET['page'] ) ) {
 			if ( $_GET['page'] === 'clickwhale' || $_GET['page'] === 'clickwhale-linkpages' ) {
