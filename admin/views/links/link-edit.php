@@ -46,7 +46,7 @@ do_action( 'clickwhale_admin_banner' );
             <div id="message" class="updated"><p><?php _e( 'Link was successfully updated', $this->plugin_name ) ?></p>
             </div>
 		<?php } ?>
-		<?php delete_transient( 'link-' . $item['id'] ); ?>r
+		<?php delete_transient( 'link-' . $item['id'] ); ?>
 	<?php } ?>
 
     <form id="form_edit_link" method="POST" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
