@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
 Tested up to: 6.2.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,10 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 1.4.2 (4th August 2023) =
+* Fix: Removed char unwanted html char while link saving
+* Info: Updated Link Page Credits URL
 
 = Version 1.4.1 (20th July 2023) =
 * Tweak: Added plugin link to the settings page
