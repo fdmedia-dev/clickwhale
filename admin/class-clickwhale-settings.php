@@ -10,6 +10,13 @@
  * @subpackage Clickwhale/admin
  */
 class Clickwhale_Admin_Settings {
+
+	/**
+	 * @since    1.5.0
+	 * @var Clickwhale_Admin_Settings
+	 */
+	private static $instance;
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -17,7 +24,7 @@ class Clickwhale_Admin_Settings {
 	 * @access   private
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -26,21 +33,32 @@ class Clickwhale_Admin_Settings {
 	 * @access   private
 	 * @var      string $version The current version of this plugin.
 	 */
-	private $version;
+	private string $version;
 
 	/**
-	 * @var Clickwhale_Admin_Settings
+	 * Plugin menu array
+	 *
+	 * @var array
 	 */
-	private static Clickwhale_Admin_Settings $instance;
+	private array $menus = array();
 
-	public $menus;
+	/**
+	 * @return Clickwhale_Admin_Settings
+	 */
+	public static function get_instance(): Clickwhale_Admin_Settings {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	private function __construct() {
 
 		$this->plugin_name = CLICKWHALE_NAME;
 		$this->version     = CLICKWHALE_VERSION;
@@ -48,14 +66,30 @@ class Clickwhale_Admin_Settings {
 	}
 
 	/**
-	 * @return Clickwhale_Admin_Settings
+	 * Throw error on object clone.
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
 	 */
-	public static function getInstance(): Clickwhale_Admin_Settings {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
+	public function __clone() {
+		// Cloning instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+	}
 
-		return self::$instance;
+	/**
+	 * Disable un-serializing of the class.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
 	}
 
 	/**
@@ -492,7 +526,7 @@ class Clickwhale_Admin_Settings {
 
 		return $tabs;
 	}
-	
+
 	/**
 	 * Plugin links
 	 * @since 1.4.1
@@ -513,5 +547,5 @@ class Clickwhale_Admin_Settings {
 
 		return $links;
 	}
-	
+
 }

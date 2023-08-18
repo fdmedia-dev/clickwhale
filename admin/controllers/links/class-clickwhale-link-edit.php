@@ -62,7 +62,7 @@ class Clickwhale_Link_Edit {
 		if ( isset( $options[ $name ] ) && $options[ $name ] !== '' ) {
 			$option = $options[ $name ];
 		} else {
-			$settings = Clickwhale_Admin_Settings::getInstance();
+			$settings = Clickwhale_Admin_Settings::get_instance();
 			$defaults = $settings->default_options();
 			$option   = $defaults[ $group ]['options'][ $name ];
 		}

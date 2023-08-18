@@ -225,7 +225,7 @@ class Clickwhale_Ajax {
 				delete_option( 'clickwhale_other_options' );
 
 				// init settings class and set defaults
-				$settings = Clickwhale_Admin_Settings::getInstance();
+				$settings = Clickwhale_Admin_Settings::get_instance();
 				$settings->add_default_options();
 
 				$result['status'] = true;

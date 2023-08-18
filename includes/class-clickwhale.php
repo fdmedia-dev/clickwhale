@@ -27,7 +27,15 @@
  * @subpackage Clickwhale/includes
  * @author     fdmedia <https://fdmedia.io>
  */
-class Clickwhale {
+final class Clickwhale {
+
+	/**
+	 * The unique instance of the plugin.
+	 *
+	 * @var Clickwhale
+	 * @since 1.5.0
+	 */
+	private static $instance;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -46,7 +54,7 @@ class Clickwhale {
 	 * @access   protected
 	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
-	protected $plugin_name;
+	protected string $plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -55,7 +63,21 @@ class Clickwhale {
 	 * @access   protected
 	 * @var      string $version The current version of the plugin.
 	 */
-	protected $version;
+	protected string $version;
+
+	/**
+	 * Gets an instance of our plugin.
+	 *
+	 * @return Clickwhale
+	 * @since 1.5.0
+	 */
+	public static function get_instance(): Clickwhale {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -66,7 +88,7 @@ class Clickwhale {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	private function __construct() {
 		if ( defined( 'CLICKWHALE_VERSION' ) ) {
 			$this->version = CLICKWHALE_VERSION;
 		} else {
@@ -78,6 +100,33 @@ class Clickwhale {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+	}
+
+	/**
+	 * Throw error on object clone.
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
+	 */
+	public function __clone() {
+		// Cloning instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+	}
+
+	/**
+	 * Disable un-serializing of the class.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
 	}
 
 	/**
@@ -151,10 +200,10 @@ class Clickwhale {
 	 */
 	private function define_admin_hooks() {
 		global $Clickwhale_Admin; // for add_/remove_action - https://www.forumming.com/question/354/remove-action-from-a-plugin-class-forced-to-use-global-instance
-		global $Clickwhale_Admin_Settings;
+		//global $Clickwhale_Admin_Settings;
 
-		$Clickwhale_Admin              = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
-		$Clickwhale_Admin_Settings     = new Clickwhale_Admin_Settings();
+		$Clickwhale_Admin              = Clickwhale_Admin::get_instance();
+		$Clickwhale_Admin_Settings     = Clickwhale_Admin_Settings::get_instance();
 		$Clickwhale_Admin_Tools        = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Ajax               = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit          = Clickwhale_Link_Edit::getInstance();
@@ -167,8 +216,8 @@ class Clickwhale {
 		$this->loader->add_action( 'admin_menu', $Clickwhale_Admin_Settings, 'add_plugin_menu' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Admin_Settings, 'add_settings_fields' );
-		$this->loader->add_action( 'clickwhale_menu_after_tools', $Clickwhale_Admin_Settings, 'show_pro_menu_item');
-		$this->loader->add_action( 'admin_head', $Clickwhale_Admin, 'hide_notice_on_upgrade_to_pro_page', 99);
+		$this->loader->add_action( 'clickwhale_menu_after_tools', $Clickwhale_Admin_Settings, 'show_pro_menu_item' );
+		$this->loader->add_action( 'admin_head', $Clickwhale_Admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
 		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
 			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
@@ -178,7 +227,7 @@ class Clickwhale {
 		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $Clickwhale_Admin, 'admin_banner_pro_button' );
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'admin_pro_message' );
 		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
-		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin, 'pro_subscription_action');
+		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin, 'pro_subscription_action' );
 		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
 		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit, 'save_update_linkpage' );
 		$this->loader->add_action( 'admin_post_save_update_tracking_code', $Clickwhale_Tracking_Code_Edit, 'save_update_tracking_code' );
@@ -269,7 +318,7 @@ class Clickwhale {
 	 * @return    string    The name of the plugin.
 	 * @since     1.0.0
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name(): string {
 		return $this->plugin_name;
 	}
 
@@ -279,7 +328,7 @@ class Clickwhale {
 	 * @return    Clickwhale_Loader    Orchestrates the hooks of the plugin.
 	 * @since     1.0.0
 	 */
-	public function get_loader() {
+	public function get_loader(): Clickwhale_Loader {
 		return $this->loader;
 	}
 
@@ -289,8 +338,25 @@ class Clickwhale {
 	 * @return    string    The version number of the plugin.
 	 * @since     1.0.0
 	 */
-	public function get_version() {
+	public function get_version(): string {
 		return $this->version;
 	}
 
+	/**
+	 * Returns the instance of Clickwhale.
+	 *
+	 * The main function responsible for returning the one true Clickwhale
+	 * instance to functions everywhere.
+	 *
+	 * Use this function like you would a global variable, except without needing
+	 * to declare the global.
+	 *
+	 * Example: <?php $clickwhale = Clickwhale(); ?>
+	 *
+	 * @return Clickwhale The one true Easy_Digital_Downloads instance.
+	 * @since 1.5
+	 */
+	function Clickwhale(): Clickwhale {
+		return Clickwhale::get_instance();
+	}
 }

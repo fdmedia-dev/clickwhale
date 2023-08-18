@@ -103,7 +103,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
  */
 function run_clickwhale() {
 
-	$plugin = new Clickwhale();
+	$plugin = Clickwhale::get_instance();
 	$plugin->run();
 
 }

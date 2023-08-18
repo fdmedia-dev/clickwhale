@@ -21,6 +21,11 @@
  * @author     fdmedia <https://fdmedia.io>
  */
 class Clickwhale_Admin {
+	/**
+	 * @since    1.5.0
+	 * @var Clickwhale_Admin
+	 */
+	private static $instance;
 
 	/**
 	 * The ID of this plugin.
@@ -29,7 +34,7 @@ class Clickwhale_Admin {
 	 * @access   private
 	 * @var      string $plugin_name The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -38,39 +43,59 @@ class Clickwhale_Admin {
 	 * @access   private
 	 * @var      string $version The current version of this plugin.
 	 */
-	private $version;
+	private string $version;
 
 	/**
-	 * @var Clickwhale_Admin
+	 * @return Clickwhale_Admin
+     * @since    1.5.0
 	 */
-	private static $instance;
+	public static function get_instance(): Clickwhale_Admin {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	private function __construct() {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name = CLICKWHALE_NAME;
+		$this->version     = CLICKWHALE_VERSION;
 
 		$this->load_dependencies();
 		$this->migration();
 	}
 
 	/**
-	 * @return Clickwhale_Admin
+	 * Throw error on object clone.
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
 	 */
-	public static function getInstance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
+	public function __clone() {
+		// Cloning instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+	}
 
-		return self::$instance;
+	/**
+	 * Disable un-serializing of the class.
+	 *
+	 * @return void
+	 * @since 1.5
+	 * @access protected
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
 	}
 
 	/**
