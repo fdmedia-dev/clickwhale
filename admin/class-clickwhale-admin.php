@@ -107,6 +107,7 @@ class Clickwhale_Admin {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-links-list-table.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-links-bulk-edit.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/links/class-clickwhale-link-edit.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-categories-list-table.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/categories/class-clickwhale-category-edit.php';
