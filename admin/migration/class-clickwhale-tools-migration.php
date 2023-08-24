@@ -11,7 +11,6 @@ class Clickwhale_Tools_Migration {
 
 		// Actions
 		add_action( 'admin_init', [ $this, 'add_tools_migration_options' ] );
-		//add_action('admin_init', [$this, 'register_tools_migration_setting']);
 		add_action( 'admin_init', [ $this, 'add_tools_migration_settings' ] );
 		add_action( 'admin_init', [ $this, 'add_notice_migrate_options' ] );
 		add_action( 'admin_init', [ $this, 'add_notice_deactive_options' ] );
@@ -91,18 +90,6 @@ class Clickwhale_Tools_Migration {
 
 			add_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
 		}
-	}
-
-	/**
-	 * Register tools migration settings
-	 */
-	public function register_tools_migration_setting() {
-
-		register_setting(
-			'clickwhale_tools_migration_options',
-			'clickwhale_tools_migration_options'
-		);
-
 	}
 
 	/**
