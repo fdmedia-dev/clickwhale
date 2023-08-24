@@ -143,7 +143,7 @@ class ClickwhaleHelper {
 			return false;
 		}
 
-		$wpHeading = $linkToList = $linkToEdit = $linkToView = '';
+		$wpHeading = $linkToList = $linkToEdit = $linkToView = $linkCustom = '';
 
 		if ( isset( $data['is_edit'] ) ) {
 			if ( $data['is_edit'] ) {
@@ -151,11 +151,11 @@ class ClickwhaleHelper {
 			} else {
 				$wpHeading = sprintf( __( 'Add %s', 'clickwhale' ), $data['name'] );
 			}
-		} elseif ( isset( $data['is_list'] ) && $data['is_list'] ) {
+		} elseif ( ! empty( $data['is_list'] ) ) {
 			$wpHeading = $data['name'];
 		}
 
-		if ( isset( $data['link_to_list'] ) && $data['link_to_list'] ) {
+		if ( ! empty( $data['link_to_list'] ) ) {
 			$linkToListArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_list'] ) ),
 				'title' => __( 'Back to list', 'clickwhale' )
@@ -163,8 +163,8 @@ class ClickwhaleHelper {
 			$linkToList     = '<a class="page-title-action" href="' . $linkToListArgs['url'] . '">' . $linkToListArgs['title'] . '</a>';
 		}
 
-		$limit = isset( $data['is_limit'] ) && $data['is_limit'];
-		if ( ( isset( $data['link_to_edit'] ) && $data['link_to_edit'] ) && ! $limit ) {
+		$limit = ! empty( $data['is_limit'] );
+		if ( ( ! empty( $data['link_to_edit'] ) ) && ! $limit ) {
 			$linkToEditArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_edit'] ) ),
 				'title' => __( 'Add new', 'clickwhale' )
@@ -172,7 +172,7 @@ class ClickwhaleHelper {
 			$linkToEdit     = '<a class="page-title-action" href="' . $linkToEditArgs['url'] . '">' . $linkToEditArgs['title'] . '</a>';
 		}
 
-		if ( isset( $data['link_to_view'] ) && $data['link_to_view'] ) {
+		if ( ! empty( $data['link_to_view'] ) ) {
 			$linkToViewArgs = array(
 				'url'   => $data['link_to_view'],
 				'title' => __( 'View page', 'clickwhale' )
@@ -180,7 +180,15 @@ class ClickwhaleHelper {
 			$linkToView     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkToViewArgs['url'] . '">' . $linkToViewArgs['title'] . '</a>';
 		}
 
-		return '<h1 class="wp-heading-inline">' . $wpHeading . ' ' . $linkToList . $linkToEdit . $linkToView . '</h1>';
+		if ( ! empty( $data['link_custom'] ) ) {
+			$linkCustomArgs = array(
+				'url'   => $data['link_custom']['url'],
+				'title' => $data['link_custom']['title']
+			);
+			$linkCustom     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkCustomArgs['url'] . '">' . $linkCustomArgs['title'] . '</a>';
+		}
+
+		return '<h1 class="wp-heading-inline">' . $wpHeading . ' ' . $linkToList . $linkToEdit . $linkToView . $linkCustom . '</h1>';
 
 	}
 
@@ -256,5 +264,9 @@ class ClickwhaleHelper {
 
 	public static function get_public_path( bool $is_trimmed = false ): string {
 		return self::public_path( $is_trimmed );
+	}
+
+	public static function get_import_default_columns() {
+		return array( 'title', 'slug', 'url', 'redirection', 'nofollow', 'sponsored' );
 	}
 }

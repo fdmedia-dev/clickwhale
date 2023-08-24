@@ -20,6 +20,10 @@ do_action( 'clickwhale_admin_banner' );
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
 			'link_to_edit' => 'clickwhale-edit-link',
+			'link_custom'  => array(
+				'url'   => esc_url( admin_url( 'admin.php?page=clickwhale-tools&tab=import' ) ),
+				'title' => __( 'Import', CLICKWHALE_NAME )
+			)
 		)
 	);
 	?>

@@ -155,7 +155,7 @@ class Clickwhale {
 
 		$Clickwhale_Admin              = new Clickwhale_Admin( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Admin_Settings     = new Clickwhale_Admin_Settings();
-		$Clickwhale_Admin_Tools        = new Clickwhale_Admin_Tools( $this->get_plugin_name(), $this->get_version() );
+		$Clickwhale_Admin_Tools        = new Clickwhale_Admin_Tools();
 		$Clickwhale_Ajax               = new Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
 		$Clickwhale_Link_Edit          = Clickwhale_Link_Edit::getInstance();
 		$Clickwhale_Category_Edit      = Clickwhale_Category_Edit::getInstance();
@@ -193,6 +193,9 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $Clickwhale_Ajax, 'add_link_to_linkpage' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/upload_csv', $Clickwhale_Ajax, 'upload_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/map_csv', $Clickwhale_Ajax, 'map_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $Clickwhale_Ajax, 'import_csv' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
