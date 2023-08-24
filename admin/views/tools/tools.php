@@ -154,6 +154,8 @@ do_action( 'clickwhale_admin_banner' );
             <div id="import_result">
                 <a class="button button-primary"
                    style="display: none;"
+                   rel="noopener"
+                   target="_blank"
                    href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale' ) ) ?>">
 					<?php _e( 'Go to links', CLICKWHALE_NAME ) ?>
                 </a>
