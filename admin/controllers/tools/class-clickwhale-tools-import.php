@@ -155,7 +155,9 @@ class Clickwhale_Tools_Import {
                     });
                 });
 
-                jQuery(document).on('click', '#import_table td button', function () {
+                jQuery(document).on('click', '#import_table td button', function (e) {
+                    e.preventDefault();
+
                     const remove = jQuery(this);
                     remove.closest('tr').css('background-color', 'red');
                     setTimeout(function () {
@@ -164,11 +166,14 @@ class Clickwhale_Tools_Import {
 
                 });
 
-                jQuery(document).on('click', '#import_button', function () {
+                jQuery(document).on('click', '#import_button', function (e) {
+                    e.preventDefault();
+
                     const
                         importData = [],
                         importTable = jQuery('#import_table table'),
                         importButton = jQuery(this),
+                        importResult = jQuery('#import_result'),
                         slugs = [];
 
                     let error = false;
@@ -239,7 +244,6 @@ class Clickwhale_Tools_Import {
                                         input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                                         break;
                                     }
-
                             }
                             if (key) {
                                 row[key] = val;
@@ -247,8 +251,6 @@ class Clickwhale_Tools_Import {
                         });
 
                         importData.push(row);
-
-                        console.log(importData);
                     });
 
                     if (!error) {
@@ -257,16 +259,21 @@ class Clickwhale_Tools_Import {
                             'security': '<?php echo $nonce_import_csv ?>',
                             'data': importData,
                         }, function (response) {
-                            if (response && response.data) {
+                            console.log(response.data);
+                            if (response.data) {
                                 const data = response.data;
 
-                                importButton.prop('disabled', true);
+                                progressWrap.find('.import-progress--bar').css('width', '100%');
+                                progressWrap.find('#point-04').addClass('active');
+                                jQuery('#import_table').hide();
+
+                                importResult.show();
 
                                 for (let item in data) {
-                                    jQuery('#import_result').prepend('<p>' + data[item] + '</p>');
+                                    importResult.prepend('<p>' + data[item] + '</p>');
                                 }
 
-                                jQuery('#import_result').find('a').show();
+                                importResult.find('a').show();
                             }
                         })
                     }
@@ -288,10 +295,6 @@ class Clickwhale_Tools_Import {
                             'id': 0
                         }, success: function (response) {
 
-                            progressWrap.find('.import-progress--bar').css('width', '100%');
-                            progressWrap.find('#point-04').addClass('active');
-                            jQuery('#import_table').hide();
-                            jQuery('#import_result').prepend(response.data).show();
                         }
                     });
 
