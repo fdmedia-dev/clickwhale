@@ -26,6 +26,7 @@ class Clickwhale_Admin_Tools {
 		$this->tools_migration();
 		$this->tools_reset_db();
 		$this->tools_import();
+		$this->tools_export();
 
 	}
 
@@ -33,6 +34,7 @@ class Clickwhale_Admin_Tools {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/class-clickwhale-tools-migration.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/reset/class-clickwhale-tools-reset-db.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tools/class-clickwhale-tools-import.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controllers/tools/class-clickwhale-tools-export.php';
 	}
 
 	public function tools_migration() {
@@ -46,6 +48,10 @@ class Clickwhale_Admin_Tools {
 
 	public function tools_import() {
 		new Clickwhale_Tools_Import();
+	}
+
+	public function tools_export() {
+		new Clickwhale_Tools_Export();
 	}
 
 }

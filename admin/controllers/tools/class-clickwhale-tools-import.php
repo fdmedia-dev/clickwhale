@@ -3,6 +3,7 @@
 class Clickwhale_Tools_Import {
 
 	public function __construct() {
+		global $wpdb;
 		add_action( 'admin_init', array( $this, 'import_settings' ) );
 		add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
 	}
@@ -172,11 +173,13 @@ class Clickwhale_Tools_Import {
                     const
                         importData = [],
                         importTable = jQuery('#import_table table'),
-                        importButton = jQuery(this),
+                        importButton = jQuery("#import_button"),
                         importResult = jQuery('#import_result'),
                         slugs = [];
 
                     let error = false;
+
+                    importButton.prop('disabled', true);
 
                     jQuery(importTable).find('tbody tr').each(function () {
                         const row = {};
@@ -226,7 +229,17 @@ class Clickwhale_Tools_Import {
                                         break;
                                     }
 
-                                    if (key === 'slug' && val) {
+                                    if (key === 'slug') {
+
+                                        if (check_slug(val)) {
+                                            error = true;
+                                            message = '<?php echo __( 'Slug already exists',
+												CLICKWHALE_NAME ) ?>';
+                                            input.css('border-color', 'red');
+                                            input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
+                                            break;
+                                        }
+
                                         if (slugs.includes(val)) {
                                             error = true;
                                             message = '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>';
@@ -235,23 +248,20 @@ class Clickwhale_Tools_Import {
                                         } else {
                                             slugs.push(val);
                                         }
-                                    }
 
-                                    if (key === 'slug' && check_slug(val)) {
-                                        error = true;
-                                        message = '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>';
-                                        input.css('border-color', 'red');
-                                        input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
-                                        break;
                                     }
                             }
                             if (key) {
                                 row[key] = val;
                             }
+
                         });
 
                         importData.push(row);
+
                     });
+
+                    importButton.prop('disabled', false);
 
                     if (!error) {
                         jQuery.post(ajaxurl, {
@@ -277,11 +287,11 @@ class Clickwhale_Tools_Import {
                             }
                         })
                     }
-
                 });
 
                 function check_slug(slug) {
-                    let result = null;
+                    let result = false;
+
                     jQuery.ajax({
                         async: false,
                         type: 'post',
@@ -293,13 +303,14 @@ class Clickwhale_Tools_Import {
                             'type': 'link',
                             'slug': slug,
                             'id': 0
-                        }, success: function (response) {
-
                         }
+                    }).done(function (response) {
+                        result = response.data;
                     });
 
                     return result;
                 }
+
             });
         </script>
 		<?php

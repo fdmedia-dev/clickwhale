@@ -245,18 +245,20 @@ class Clickwhale_Ajax {
 	public function check_slug() {
 		check_ajax_referer( 'check_slug', 'security' );
 
-		if ( ( isset( $_POST['slug'] ) && $_POST['slug'] !== '' ) ) {
-			if ( $_POST['type'] === 'linkpage' ) {
-				$result = Clickwhale_Linkpage_Edit::check_slug( sanitize_title( $_POST['slug'] ) );
-			} else {
-				$result = Clickwhale_Link_Edit::check_slug( sanitize_title( $_POST['slug'] ), $_POST['id'] );
-			}
+		if ( empty( $_POST['slug'] ) ) {
+			wp_send_json_error();
+			wp_die();
+		}
+
+		$result = null;
+
+		if ( $_POST['type'] === 'linkpage' ) {
+			$result = Clickwhale_Linkpage_Edit::check_slug( $_POST['slug'] );
 		} else {
-			$result = 'error';
+			$result = Clickwhale_Link_Edit::check_slug( $_POST['slug'], $_POST['id'] );
 		}
 
 		wp_send_json_success( $result );
-
 		wp_die();
 	}
 
@@ -637,6 +639,63 @@ class Clickwhale_Ajax {
 
 		wp_send_json_success( $result );
 
+		wp_die();
+	}
+
+	public function export_csv() {
+		check_ajax_referer( 'export_csv', 'security' );
+
+		global $wpdb;
+
+		// disable caching
+		$now  = date( "D, d M Y H:i:s" );
+		$date = date( "Y-m-d" );
+
+		header( "Expires: Tue, 03 Jul 2001 06:00:00 GMT" );
+		header( "Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate" );
+		header( "Last-Modified: {$now} GMT" );
+
+		// force download
+		header( "Content-Type: application/force-download" );
+		header( "Content-Type: application/octet-stream" );
+		header( "Content-Type: application/download" );
+
+		// disposition / encoding on response body
+		header( "Content-Disposition: attachment;filename=clickwhale-links-export-{$date}.csv" );
+		header( "Content-Transfer-Encoding: binary" );
+
+		$headers    = $_POST['columns'];
+		$categories = '';
+		$merged     = [];
+
+		if ( isset( $_POST['categories'] ) ) {
+			$categories = " WHERE categories LIKE '%" . implode( "%' OR categories LIKE '%",
+					$_POST['categories'] ) . "%'";
+		}
+
+		$query = "SELECT " . implode( ',', $headers ) . " FROM {$wpdb->prefix}clickwhale_links" . $categories;
+		$rows  = $wpdb->get_results( $query, ARRAY_A );
+
+		$merged[] = $headers;
+		$merged   = array_merge( $merged, $rows );
+
+		if ( count( $merged ) == 0 ) {
+			wp_send_json_error( __( 'Nothing to export', CLICKWHALE_NAME ) );
+			wp_die();
+		}
+
+		//ob_start();
+		$df = fopen( "php://output", 'w' );
+
+		foreach ( $merged as $row ) {
+			fputcsv( $df, $row );
+		}
+
+		fclose( $df );
+		$result['file']     = ob_get_clean();
+		$result['filename'] = "clickwhale-links-export-{$date}.csv";
+
+		wp_send_json_success( $result );
 		wp_die();
 	}
 

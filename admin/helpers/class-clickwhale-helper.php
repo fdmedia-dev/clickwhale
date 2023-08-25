@@ -266,7 +266,7 @@ class ClickwhaleHelper {
 		return self::public_path( $is_trimmed );
 	}
 
-	public static function get_import_default_columns() {
+	public static function get_import_default_columns(): array {
 		return array( 'title', 'slug', 'url', 'redirection', 'nofollow', 'sponsored' );
 	}
 }

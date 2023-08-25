@@ -1688,6 +1688,15 @@ table.tracking-codes .column-is_active {
 
 /* IMPORT */
 
+/* EXPORT */
+
+#select_columns,
+#select_categories{
+	min-width: 400px;
+}
+
+/* EXPORT */
+
 /* VENDORS */
 
 .linkpage-row--image-select--tab .picmo__picker.picmo__picker {
