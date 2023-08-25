@@ -22,6 +22,10 @@ do_action( 'clickwhale_admin_banner' );
            class="nav-tab <?php echo $active_tab == 'import' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Import', CLICKWHALE_NAME ); ?>
         </a>
+        <a href="?page=clickwhale-tools&tab=export"
+           class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>">
+			<?php _e( 'Export', CLICKWHALE_NAME ); ?>
+        </a>
     </h2>
 
 	<?php
@@ -160,6 +164,22 @@ do_action( 'clickwhale_admin_banner' );
 					<?php _e( 'Go to links', CLICKWHALE_NAME ) ?>
                 </a>
             </div>
+
+        </div>
+		<?php
+	}
+	if ( $active_tab == 'export' ) {
+		?>
+        <div id="clickwhale_tools_export">
+
+            <form method="post" id="export_form" enctype="multipart/form-data">
+				<?php
+				settings_fields( 'clickwhale_tools_export_settings' );
+				do_settings_sections( 'clickwhale_tools_export_settings' );
+
+				submit_button( __( 'Generate CSV', CLICKWHALE_NAME ) );
+				?>
+            </form>
 
         </div>
 	<?php } ?>
