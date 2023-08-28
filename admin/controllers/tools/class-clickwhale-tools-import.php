@@ -19,7 +19,7 @@ class Clickwhale_Tools_Import {
 				'text' => __(
 					sprintf(
 						'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>',
-						CLICKWHALE_ADMIN_IMAGES_DIR . '/clickwhale-example-csv.csv'
+						CLICKWHALE_ADMIN_IMAGES_DIR . '/clickwhale-example-import.csv'
 					),
 					CLICKWHALE_NAME
 				),
