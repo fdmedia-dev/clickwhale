@@ -16,7 +16,13 @@ class Clickwhale_Tools_Import {
 			array( $this, 'settings_section_callback' ),
 			'clickwhale_tools_import_settings',
 			array(
-				'text' => __( 'This tool allows you to import links to your site from a CSV file.', CLICKWHALE_NAME ),
+				'text' => __(
+					sprintf(
+						'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>',
+						CLICKWHALE_ADMIN_IMAGES_DIR . '/clickwhale-example-csv.csv'
+					),
+					CLICKWHALE_NAME
+				),
 			)
 		);
 
@@ -57,8 +63,7 @@ class Clickwhale_Tools_Import {
             jQuery(document).ready(function () {
                 const
                     progressWrap = jQuery('#import_progress'),
-                    uploadForm = jQuery('#upload_form'),
-                    uploadButton = uploadForm.find('[type="submit"]');
+                    uploadForm = jQuery('#upload_form');
 
                 let
                     file,
@@ -75,8 +80,6 @@ class Clickwhale_Tools_Import {
                         formData.set('security', '<?php echo $nonce_upload_csv ?>');
                         formData.set('file', file);
 
-                        jQuery(uploadButton).prop('disabled', true);
-
                         jQuery.ajax({
                             url: ajaxurl,
                             method: "POST",
@@ -85,14 +88,19 @@ class Clickwhale_Tools_Import {
                             contentType: false,
                             processData: false,
                             success: function (response) {
+                                if (response.success) {
+                                    progressWrap.find('.import-progress--bar').css('width', '50%');
+                                    progressWrap.find('#point-02').addClass('active');
+                                    jQuery(uploadForm).hide();
 
-                                progressWrap.find('.import-progress--bar').css('width', '50%');
-                                progressWrap.find('#point-02').addClass('active');
-                                jQuery(uploadForm).hide();
-
-                                delimiter = response.data.delimiter;
-                                jQuery('#mapping_table').prepend(response.data.table).show();
-
+                                    delimiter = response.data.delimiter;
+                                    jQuery('#mapping_table').prepend(response.data.table).show();
+                                } else {
+                                    handleError(response);
+                                }
+                            },
+                            error: function (error) {
+                                console.log(error);
                             }
                         });
                     } else {
@@ -146,12 +154,14 @@ class Clickwhale_Tools_Import {
                         contentType: false,
                         processData: false,
                         success: function (response) {
-
-                            progressWrap.find('.import-progress--bar').css('width', '75%');
-                            progressWrap.find('#point-03').addClass('active');
-                            jQuery('#mapping_table').hide();
-                            jQuery('#import_table').prepend(response.data).show();
-
+                            if (response) {
+                                progressWrap.find('.import-progress--bar').css('width', '75%');
+                                progressWrap.find('#point-03').addClass('active');
+                                jQuery('#mapping_table').hide();
+                                jQuery('#import_table').prepend(response.data).show();
+                            } else {
+                                handleError(response);
+                            }
                         }
                     });
                 });
@@ -178,8 +188,6 @@ class Clickwhale_Tools_Import {
                         slugs = [];
 
                     let error = false;
-
-                    importButton.prop('disabled', true);
 
                     jQuery(importTable).find('tbody tr').each(function () {
                         const row = {};
@@ -230,14 +238,13 @@ class Clickwhale_Tools_Import {
                                     }
 
                                     if (key === 'slug') {
+                                        const checkSlug = check_slug(val);
 
-                                        if (check_slug(val)) {
-                                            error = true;
-                                            message = '<?php echo __( 'Slug already exists',
-												CLICKWHALE_NAME ) ?>';
+                                        if (checkSlug.success && checkSlug.data) {
+                                            error = checkSlug.data;
+                                            message = '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>';
                                             input.css('border-color', 'red');
                                             input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
-                                            break;
                                         }
 
                                         if (slugs.includes(val)) {
@@ -254,14 +261,11 @@ class Clickwhale_Tools_Import {
                             if (key) {
                                 row[key] = val;
                             }
-
                         });
 
                         importData.push(row);
 
                     });
-
-                    importButton.prop('disabled', false);
 
                     if (!error) {
                         jQuery.post(ajaxurl, {
@@ -269,7 +273,6 @@ class Clickwhale_Tools_Import {
                             'security': '<?php echo $nonce_import_csv ?>',
                             'data': importData,
                         }, function (response) {
-                            console.log(response.data);
                             if (response.data) {
                                 const data = response.data;
 
@@ -289,8 +292,13 @@ class Clickwhale_Tools_Import {
                     }
                 });
 
+                function handleError(response) {
+                    console.log(response)
+                    alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
+                }
+
                 function check_slug(slug) {
-                    let result = false;
+                    let result;
 
                     jQuery.ajax({
                         async: false,
@@ -303,9 +311,13 @@ class Clickwhale_Tools_Import {
                             'type': 'link',
                             'slug': slug,
                             'id': 0
+                        },
+                        success: function (response) {
+                            result = response;
+                        },
+                        error: function (error) {
+                            result = error;
                         }
-                    }).done(function (response) {
-                        result = response.data;
                     });
 
                     return result;
