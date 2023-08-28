@@ -1,0 +1,3 @@
+title,slug,url,redirection,nofollow,sponsored
+"Link Name",link-slug,http://example.com/?param=1,301,1,1
+"Another Link Name",link/another-link-slug,http://clickwhale.pro,302,0,0

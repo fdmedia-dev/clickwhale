@@ -26,7 +26,7 @@ class Clickwhale_Tools_Export {
 
 		add_settings_field(
 			'export_columns',
-			__( 'Columns for export', CLICKWHALE_NAME ),
+			__( 'Filter columns', CLICKWHALE_NAME ),
 			array( $this, 'export_columns_callback' ),
 			'clickwhale_tools_export_settings',
 			'clickwhale_tools_export_section'
@@ -34,7 +34,7 @@ class Clickwhale_Tools_Export {
 
 		add_settings_field(
 			'export_categories',
-			__( 'Category for export', CLICKWHALE_NAME ),
+			__( 'Filter categories', CLICKWHALE_NAME ),
 			array( $this, 'export_categories_callback' ),
 			'clickwhale_tools_export_settings',
 			'clickwhale_tools_export_section'
@@ -48,6 +48,7 @@ class Clickwhale_Tools_Export {
 
 	public function export_columns_callback() {
 		$select = '<select id="select_columns" class="clickwhale-select" multiple>';
+		$select .= '<option selected value="0">' . __( 'Export all columns', CLICKWHALE_NAME ) . '</option>';
 		foreach ( $this->columns as $option ) {
 			$select .= '<option value="' . $option . '">' . $option . '</option>';
 		}
@@ -65,6 +66,7 @@ class Clickwhale_Tools_Export {
 			_e( 'No categories', CLICKWHALE_NAME );
 		} else {
 			$select = '<select id="select_categories" class="clickwhale-select" multiple>';
+			$select .= '<option selected value="0">' . __( 'Export all categories', CLICKWHALE_NAME ) . '</option>';
 			foreach ( $categories as $category ) {
 				$select .= '<option value="' . $category['id'] . '">' . $category['title'] . '</option>';
 			}
@@ -90,31 +92,62 @@ class Clickwhale_Tools_Export {
             jQuery(document).ready(function () {
                 const
                     selectColumns = jQuery('#select_columns'),
-                    selectCategories = jQuery('#select_categories');
+                    selectCategories = jQuery('#select_categories'),
+                    allCategories = [];
+
+                selectCategories.find('option').each(function () {
+                    if (jQuery(this).attr('value') !== '0') {
+                        allCategories.push(jQuery(this).attr('value'));
+                    }
+                });
 
                 selectColumns.select2({
-                    placeholder: "Export all columns"
+                    placeholder: "Select columns you want to export"
                 });
 
                 selectCategories.select2({
-                    placeholder: "Export all categories"
+                    placeholder: "Select categories you want to export"
+                });
+
+                jQuery('#clickwhale_tools_export select').on('select2:select', function (e) {
+                    const
+                        select = jQuery(this),
+                        data = e.params.data,
+                        selected = select.val();
+
+                    if (data.id !== '0') {
+                        selected.splice(selected.indexOf('0'), 1);
+                        selected.push(data.id);
+
+                        select.val(selected);
+                        select.trigger('change');
+                    } else {
+                        select.val('0');
+                        select.trigger('change');
+                    }
                 });
 
                 jQuery('#export_form').on('submit', function (e) {
                     e.preventDefault();
 
+                    const
+                        selectedColumns = selectColumns.val(),
+                        selectedCategories = selectCategories.val();
+
                     let
                         columns,
                         categories;
 
-                    if (selectColumns.val().length > 0) {
-                        columns = selectColumns.val();
+                    if (selectedColumns.indexOf('0') === -1) {
+                        columns = selectedColumns;
                     } else {
                         columns = <?php echo json_encode( $this->columns ); ?>;
                     }
 
-                    if (selectCategories.val().length > 0) {
-                        categories = selectCategories.val();
+                    if (selectedCategories.indexOf('0') === -1) {
+                        categories = selectedCategories;
+                    } else {
+                        categories = allCategories;
                     }
 
                     jQuery.post(ajaxurl, {
@@ -123,7 +156,6 @@ class Clickwhale_Tools_Export {
                         'columns': columns,
                         'categories': categories
                     }, function (response) {
-
                         if (response.success && response.data) {
                             const
                                 file = response.data.file,
@@ -143,10 +175,9 @@ class Clickwhale_Tools_Export {
                             download_link.click();
                             document.body.removeChild(download_link);
                         }
-                    })
-                        .fail(function () {
-                            alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
-                        });
+                    }).fail(function () {
+                        alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
+                    });
                 })
             });
         </script>

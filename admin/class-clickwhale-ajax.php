@@ -393,9 +393,14 @@ class Clickwhale_Ajax {
 
 		$file = $_FILES['file'];
 
-		// Check file type
-		if ( $file['type'] !== 'text/csv' ) {
-			wp_send_json_error( 'Wrong file type!' );
+		// Check file &type
+		if ( ! $file || $file['type'] !== 'text/csv' ) {
+			$error = new WP_Error(
+				'001',
+				__( 'Please, select .csv file', CLICKWHALE_NAME ),
+				$file['type']
+			);
+			wp_send_json_error( $error );
 			wp_die();
 		}
 
@@ -481,13 +486,13 @@ class Clickwhale_Ajax {
 	public function map_csv() {
 		check_ajax_referer( 'map_csv', 'security' );
 
-		if ( ! $_FILES['file'] ) {
-			wp_send_json_error( 'Missing file!' );
-			wp_die();
-		}
-
-		if ( $_FILES['file']['type'] !== 'text/csv' ) {
-			wp_send_json_error( 'Wrong file type!' );
+		if ( ! $_FILES['file'] || $_FILES['file']['type'] !== 'text/csv' ) {
+			$error = new WP_Error(
+				'001',
+				__( 'Please, select .csv file', CLICKWHALE_NAME ),
+				$_FILES['file']['type']
+			);
+			wp_send_json_error( $error );
 			wp_die();
 		}
 
@@ -508,7 +513,11 @@ class Clickwhale_Ajax {
 		$file_data = fopen( $_FILES['file']['tmp_name'], 'r' );
 
 		if ( $file_data === false ) {
-			wp_send_json_error( 'Error opening file!' );
+			$error = new WP_Error(
+				'002',
+				__( 'Error opening file!', CLICKWHALE_NAME )
+			);
+			wp_send_json_error( $error );
 			wp_die();
 		}
 
@@ -601,7 +610,17 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 
-		$data            = $_POST['data'];
+		$data = $_POST['data'];
+
+		if ( ! $data ) {
+			$error = new WP_Error(
+				'004',
+				__( 'Nothing to import!', CLICKWHALE_NAME )
+			);
+			wp_send_json_error( $error );
+			wp_die();
+		}
+
 		$links_table     = $wpdb->prefix . 'clickwhale_links';
 		$result          = [];
 		$default_columns = array( 'title', 'slug', 'url', 'redirection', 'nofollow', 'sponsored' );
@@ -680,7 +699,11 @@ class Clickwhale_Ajax {
 		$merged   = array_merge( $merged, $rows );
 
 		if ( count( $merged ) == 0 ) {
-			wp_send_json_error( __( 'Nothing to export', CLICKWHALE_NAME ) );
+			$error = new WP_Error(
+				'003',
+				__( 'Nothing to export', CLICKWHALE_NAME )
+			);
+			wp_send_json_error( $error );
 			wp_die();
 		}
 
