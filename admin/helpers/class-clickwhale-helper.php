@@ -196,7 +196,7 @@ class ClickwhaleHelper {
 		}
 
 		if ( $orderby ) {
-			$orderByArg        = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
+			$orderByArg        = htmlspecialchars( $orderby, ENT_QUOTES );
 			$result['orderby'] = in_array( $orderByArg, array_keys( $columns ) ) ? $orderByArg : $orderby;
 		}
 
