@@ -621,9 +621,8 @@ class Clickwhale_Ajax {
 			wp_die();
 		}
 
-		$links_table     = $wpdb->prefix . 'clickwhale_links';
-		$result          = [];
-		$default_columns = array( 'title', 'slug', 'url', 'redirection', 'nofollow', 'sponsored' );
+		$links_table = $wpdb->prefix . 'clickwhale_links';
+		$result      = [];
 
 		foreach ( $data as $k => $v ) {
 			$v['title']       = sanitize_text_field( $v['title'] );
@@ -664,6 +663,15 @@ class Clickwhale_Ajax {
 	public function export_csv() {
 		check_ajax_referer( 'export_csv', 'security' );
 
+		if ( empty( $_POST['categories'] ) || empty ( $_POST['columns'] ) ) {
+			$error = new WP_Error(
+				'003',
+				__( 'Bad request', CLICKWHALE_NAME )
+			);
+			wp_send_json_error( $error );
+			wp_die();
+		}
+
 		global $wpdb;
 
 		// disable caching
@@ -683,11 +691,11 @@ class Clickwhale_Ajax {
 		header( "Content-Disposition: attachment;filename=clickwhale-links-export-{$date}.csv" );
 		header( "Content-Transfer-Encoding: binary" );
 
-		$headers    = $_POST['columns'];
+		$headers    = $_POST['columns'] === 'all' ? ClickwhaleHelper::get_import_default_columns() : $_POST['columns'];
 		$categories = '';
 		$merged     = [];
 
-		if ( isset( $_POST['categories'] ) ) {
+		if ( $_POST['categories'] !== 'all' ) {
 			$categories = " WHERE categories LIKE '%" . implode( "%' OR categories LIKE '%",
 					$_POST['categories'] ) . "%'";
 		}
@@ -700,7 +708,7 @@ class Clickwhale_Ajax {
 
 		if ( count( $merged ) == 0 ) {
 			$error = new WP_Error(
-				'003',
+				'004',
 				__( 'Nothing to export', CLICKWHALE_NAME )
 			);
 			wp_send_json_error( $error );
