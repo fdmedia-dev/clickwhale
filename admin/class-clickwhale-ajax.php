@@ -626,7 +626,7 @@ class Clickwhale_Ajax {
 
 		foreach ( $data as $k => $v ) {
 			$v['title']       = sanitize_text_field( $v['title'] );
-			$v['slug']        = sanitize_title( $v['slug'] );
+			$v['slug']        = esc_html( $v['slug'] );
 			$v['url']         = esc_url( $v['url'] );
 			$v['description'] = '';
 			$v['author']      = get_current_user_id();
