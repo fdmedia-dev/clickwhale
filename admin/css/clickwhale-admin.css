@@ -1629,10 +1629,6 @@ table.tracking-codes .column-is_active {
 	display: none
 }
 
-#import_result a {
-	display: inline-block;
-}
-
 #mapping_table table {
 	max-width: 1000px;
 }
@@ -1686,12 +1682,16 @@ table.tracking-codes .column-is_active {
 	background: #ffffff;
 }
 
+#import_result a {
+	display: inline-block;
+}
+
 /* IMPORT */
 
 /* EXPORT */
 
 #select_columns,
-#select_categories{
+#select_categories {
 	min-width: 400px;
 }
 
