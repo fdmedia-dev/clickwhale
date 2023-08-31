@@ -197,6 +197,7 @@ class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/map_csv', $Clickwhale_Ajax, 'map_csv' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $Clickwhale_Ajax, 'import_csv' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $Clickwhale_Ajax, 'export_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug_var', $Clickwhale_Ajax, 'check_slug_var' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );

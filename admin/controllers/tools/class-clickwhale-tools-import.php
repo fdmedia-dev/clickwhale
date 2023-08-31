@@ -223,11 +223,9 @@ class Clickwhale_Tools_Import {
 
                                     const checkSlug = new Promise(function (resolve, reject) {
                                         jQuery.post(ajaxurl, {
-                                            'action': 'clickwhale/admin/check_slug',
+                                            'action': 'clickwhale/admin/check_slug_var',
                                             'security': '<?php echo $nonce_check_slug ?>',
-                                            'type': 'link',
-                                            'slug': val,
-                                            'id': 0
+                                            'slug': val
                                         }).done(function (data) {
                                             resolve(data);
 

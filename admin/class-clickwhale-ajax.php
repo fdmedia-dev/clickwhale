@@ -730,4 +730,27 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
+	public function check_slug_var() {
+		check_ajax_referer( 'check_slug', 'security' );
+
+		global $wpdb;
+
+		if ( empty( $_POST['slug'] ) ) {
+			$error = new WP_Error(
+				'005',
+				__( 'Empty slug', CLICKWHALE_NAME )
+			);
+			wp_send_json_error( $error );
+			wp_die();
+		}
+
+		$slug   = esc_html( $_POST['slug'] );
+		$result = $wpdb->get_var( "SELECT count(*) FROM {$wpdb->prefix}clickwhale_links WHERE slug='$slug'" );
+
+		$result = (bool) $result;
+
+		wp_send_json_success( $result );
+		wp_die();
+	}
+
 }
