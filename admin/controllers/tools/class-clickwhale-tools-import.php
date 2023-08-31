@@ -185,142 +185,131 @@ class Clickwhale_Tools_Import {
                         importButton = jQuery("#import_button"),
                         importSpinner = jQuery('#import_table .spinner'),
                         importResult = jQuery('#import_result'),
-                        importData = [],
-                        slugs = [],
-                        promises = [];
+                        importData = [], // rows for import
+                        slugs = [];      // array for slugs placed in the import file
 
                     let error = false;
 
                     importButton.prop('disabled', true);
                     importSpinner.addClass('is-active');
 
-                    jQuery(importTable).find('tbody tr').each(function (tr) {
-                        const row = {};
+                    // get all current slugs
+                    jQuery.post(ajaxurl, {
+                        'action': 'clickwhale/admin/check_slug_for_import',
+                        'security': '<?php echo $nonce_check_slug ?>'
+                    }).done(function (data) {
 
-                        jQuery(this).find('td.for_import').each(function (td) {
-                            const key = jQuery(importTable).find('thead th').eq(td).text();
-                            let
-                                val = '';
+                        if (data.data) {
 
-                            switch (key) {
-                                case 'slug':
-                                    const slugInput = jQuery(this).find('input');
-                                    val = slugInput.val();
+                            // after we get all slugs we can proceed import
+                            jQuery(importTable).find('tbody tr').each(function () {
+                                const row = {};
 
-                                    slugInput.attr('style', '');
-                                    slugInput.parent().find('p').remove();
+                                jQuery(this).find('td.for_import').each(function (td) {
+                                    const key = jQuery(importTable).find('thead th').eq(td).text();
+                                    let val = '';
 
-                                    if (!val) {
-                                        error = true;
+                                    // proceed cell by type
+                                    switch (key) {
+                                        case 'slug':
+                                            const slugInput = jQuery(this).find('input');
+                                            let incorrectSlug;
 
-                                        showErrorMessage(
-                                            slugInput,
-                                            '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
-                                        );
+                                            val = slugInput.val();
+                                            incorrectSlug = data.data.find(s => s.slug === val);
 
-                                        break;
-                                    }
+                                            slugInput.attr('style', '');
+                                            slugInput.parent().find('p').remove();
 
-                                    const checkSlug = new Promise(function (resolve, reject) {
-                                        jQuery.post(ajaxurl, {
-                                            'action': 'clickwhale/admin/check_slug_var',
-                                            'security': '<?php echo $nonce_check_slug ?>',
-                                            'slug': val
-                                        }).done(function (data) {
-                                            resolve(data);
+                                            if (!val) {
+                                                error = true;
 
-                                            if (data.success && data.data) {
+                                                showErrorMessage(
+                                                    slugInput,
+                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                );
+
+                                                break;
+                                            }
+
+                                            // if checked slug currently exists
+                                            if (typeof incorrectSlug !== 'undefined') {
                                                 error = true;
                                                 showErrorMessage(
                                                     slugInput,
                                                     '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>'
                                                 );
                                             }
-                                        }).fail(function (data) {
-                                            error = true;
-                                            console.log('fail', data);
-                                            reject(data);
-                                        })
-                                    });
 
-                                    promises.push(checkSlug);
+                                            // if the slug has already been used in the imported file
+                                            if (slugs.includes(val)) {
+                                                error = true;
 
-                                    if (slugs.includes(val)) {
-                                        error = true;
+                                                showErrorMessage(
+                                                    slugInput,
+                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
+                                                );
+                                                break;
+                                            } else {
+                                                // if not, then add it
+                                                slugs.push(val);
+                                            }
 
-                                        showErrorMessage(
-                                            slugInput,
-                                            '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
-                                        );
-                                        break;
-                                    } else {
-                                        slugs.push(val);
+                                            break;
+
+                                        case 'redirection':
+                                            const select = jQuery(this).find('select');
+
+                                            val = select ? select.val() : 301;
+
+                                            break;
+
+                                        case 'nofollow':
+                                        case 'sponsored':
+                                            const checkbox = jQuery(this).find('input[type="checkbox"]');
+
+                                            val = checkbox ? checkbox.is(":checked") : 0;
+
+                                            break;
+
+                                        default:
+                                            const input = jQuery(this).find('input');
+
+                                            if (input.length === 0) {
+                                                break;
+                                            }
+
+                                            val = input.val();
+
+                                            input.attr('style', '');
+                                            input.parent().find('p').remove();
+
+                                            if (!val) {
+                                                error = true;
+
+                                                showErrorMessage(
+                                                    input,
+                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                );
+
+                                                break;
+                                            }
                                     }
-
-                                    break;
-
-                                case 'redirection':
-                                    const select = jQuery(this).find('select');
-
-                                    val = select ? select.val() : 301;
-
-                                    break;
-
-                                case 'nofollow':
-                                case 'sponsored':
-                                    const checkbox = jQuery(this).find('input[type="checkbox"]');
-
-                                    val = checkbox ? checkbox.is(":checked") : 0;
-
-                                    break;
-
-                                default:
-                                    const input = jQuery(this).find('input');
-
-                                    if (input.length === 0) {
-                                        break;
+                                    if (key) {
+                                        row[key] = val;
                                     }
+                                });
 
-                                    val = input.val();
+                                importData.push(row);
 
-                                    input.attr('style', '');
-                                    input.parent().find('p').remove();
-
-                                    if (!val) {
-                                        error = true;
-
-                                        showErrorMessage(
-                                            input,
-                                            '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
-                                        );
-
-                                        break;
-                                    }
-                            }
-                            if (key) {
-                                row[key] = val;
-                            }
-                        });
-
-                        importData.push(row);
-
-                    });
-
-                    // Wait all async code
-                    Promise
-                        .all(promises)
-                        .then(responseList => {
-                            let incorrectSlug = responseList.find(s => s.data === true);
+                            });
 
                             setTimeout(function () {
                                 importButton.prop('disabled', false);
                                 importSpinner.removeClass('is-active');
                             }, 500);
 
-                            if (responseList.length === jQuery('#import_table table tbody tr').length
-                                && !error
-                                && incorrectSlug === undefined) {
-
+                            if (!error) {
                                 jQuery.post(ajaxurl, {
                                     'action': 'clickwhale/admin/import_csv',
                                     'security': '<?php echo $nonce_import_csv ?>',
@@ -342,9 +331,17 @@ class Clickwhale_Tools_Import {
                                         importResult.find('a').show();
                                     }
                                 });
-
                             }
-                        });
+
+                        } else {
+                            error = true;
+                            alert('<?php echo __( 'No items', CLICKWHALE_NAME ) ?>');
+                        }
+                    }).fail(function (data) {
+                        error = true;
+                        console.log('fail', data);
+                    });
+
                 });
 
                 function handleError(response) {
