@@ -153,6 +153,7 @@ do_action( 'clickwhale_admin_banner' );
                     <button id="import_button" class="button button-primary" type="button">
 						<?php _e( 'Run Importer', CLICKWHALE_NAME ); ?>
                     </button>
+                    <span class="spinner" style="float: none;"></span>
                 </p>
             </div>
             <div id="import_result">

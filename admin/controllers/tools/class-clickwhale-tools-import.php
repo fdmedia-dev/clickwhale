@@ -181,45 +181,104 @@ class Clickwhale_Tools_Import {
                     e.preventDefault();
 
                     const
-                        importData = [],
                         importTable = jQuery('#import_table table'),
                         importButton = jQuery("#import_button"),
+                        importSpinner = jQuery('#import_table .spinner'),
                         importResult = jQuery('#import_result'),
-                        slugs = [];
+                        importData = [],
+                        slugs = [],
+                        promises = [];
 
                     let error = false;
 
-                    jQuery(importTable).find('tbody tr').each(function () {
+                    importButton.prop('disabled', true);
+                    importSpinner.addClass('is-active');
+
+                    jQuery(importTable).find('tbody tr').each(function (tr) {
                         const row = {};
 
-                        jQuery(this).find('td.for_import').each(function (index) {
-                            const key = jQuery(importTable).find('thead th').eq(index).text();
+                        jQuery(this).find('td.for_import').each(function (td) {
+                            const key = jQuery(importTable).find('thead th').eq(td).text();
                             let
-                                val = '',
-                                message = '';
+                                val = '';
 
                             switch (key) {
-                                case 'redirection':
-                                    const select = jQuery(this).find('select');
-                                    if (select.length === 0) {
+                                case 'slug':
+                                    const slugInput = jQuery(this).find('input');
+                                    val = slugInput.val();
+
+                                    slugInput.attr('style', '');
+                                    slugInput.parent().find('p').remove();
+
+                                    if (!val) {
+                                        error = true;
+
+                                        showErrorMessage(
+                                            slugInput,
+                                            '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                        );
+
                                         break;
                                     }
 
-                                    val = select.val();
+                                    const checkSlug = new Promise(function (resolve, reject) {
+                                        jQuery.post(ajaxurl, {
+                                            'action': 'clickwhale/admin/check_slug',
+                                            'security': '<?php echo $nonce_check_slug ?>',
+                                            'type': 'link',
+                                            'slug': val,
+                                            'id': 0
+                                        }).done(function (data) {
+                                            resolve(data);
+
+                                            if (data.success && data.data) {
+                                                error = true;
+                                                showErrorMessage(
+                                                    slugInput,
+                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>'
+                                                );
+                                            }
+                                        }).fail(function (data) {
+                                            error = true;
+                                            console.log('fail', data);
+                                            reject(data);
+                                        })
+                                    });
+
+                                    promises.push(checkSlug);
+
+                                    if (slugs.includes(val)) {
+                                        error = true;
+
+                                        showErrorMessage(
+                                            slugInput,
+                                            '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
+                                        );
+                                        break;
+                                    } else {
+                                        slugs.push(val);
+                                    }
+
+                                    break;
+
+                                case 'redirection':
+                                    const select = jQuery(this).find('select');
+
+                                    val = select ? select.val() : 301;
+
                                     break;
 
                                 case 'nofollow':
                                 case 'sponsored':
                                     const checkbox = jQuery(this).find('input[type="checkbox"]');
-                                    if (checkbox.length === 0) {
-                                        break;
-                                    }
 
-                                    val = checkbox.is(":checked") ? 1 : 0;
+                                    val = checkbox ? checkbox.is(":checked") : 0;
+
                                     break;
 
                                 default:
                                     const input = jQuery(this).find('input');
+
                                     if (input.length === 0) {
                                         break;
                                     }
@@ -231,31 +290,13 @@ class Clickwhale_Tools_Import {
 
                                     if (!val) {
                                         error = true;
-                                        message = '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>';
-                                        input.css('border-color', 'red');
-                                        input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
+
+                                        showErrorMessage(
+                                            input,
+                                            '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                        );
+
                                         break;
-                                    }
-
-                                    if (key === 'slug') {
-                                        const checkSlug = check_slug(val);
-
-                                        if (checkSlug.success && checkSlug.data) {
-                                            error = checkSlug.data;
-                                            message = '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>';
-                                            input.css('border-color', 'red');
-                                            input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
-                                        }
-
-                                        if (slugs.includes(val)) {
-                                            error = true;
-                                            message = '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>';
-                                            input.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
-                                            break;
-                                        } else {
-                                            slugs.push(val);
-                                        }
-
                                     }
                             }
                             if (key) {
@@ -267,60 +308,54 @@ class Clickwhale_Tools_Import {
 
                     });
 
-                    if (!error) {
-                        jQuery.post(ajaxurl, {
-                            'action': 'clickwhale/admin/import_csv',
-                            'security': '<?php echo $nonce_import_csv ?>',
-                            'data': importData,
-                        }, function (response) {
-                            if (response.data) {
-                                const data = response.data;
+                    // Wait all async code
+                    Promise
+                        .all(promises)
+                        .then(responseList => {
+                            let incorrectSlug = responseList.find(s => s.data === true);
 
-                                progressWrap.find('.import-progress--bar').css('width', '100%');
-                                progressWrap.find('#point-04').addClass('active');
-                                jQuery('#import_table').hide();
+                            setTimeout(function () {
+                                importButton.prop('disabled', false);
+                                importSpinner.removeClass('is-active');
+                            }, 500);
 
-                                importResult.show();
+                            if (responseList.length === jQuery('#import_table table tbody tr').length
+                                && !error
+                                && incorrectSlug === undefined) {
 
-                                for (let item in data) {
-                                    importResult.prepend('<p>' + data[item] + '</p>');
-                                }
+                                jQuery.post(ajaxurl, {
+                                    'action': 'clickwhale/admin/import_csv',
+                                    'security': '<?php echo $nonce_import_csv ?>',
+                                    'data': importData,
+                                }, function (response) {
+                                    if (response.data) {
+                                        const data = response.data;
 
-                                importResult.find('a').show();
+                                        progressWrap.find('.import-progress--bar').css('width', '100%');
+                                        progressWrap.find('#point-04').addClass('active');
+                                        jQuery('#import_table').hide();
+
+                                        importResult.show();
+
+                                        for (let item in data) {
+                                            importResult.prepend('<p>' + data[item] + '</p>');
+                                        }
+
+                                        importResult.find('a').show();
+                                    }
+                                });
+
                             }
-                        })
-                    }
+                        });
                 });
 
                 function handleError(response) {
-                    console.log(response)
                     alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
                 }
 
-                function check_slug(slug) {
-                    let result;
-
-                    jQuery.ajax({
-                        async: false,
-                        type: 'post',
-                        dataType: 'json',
-                        url: ajaxurl,
-                        data: {
-                            'security': '<?php echo $nonce_check_slug ?>',
-                            'action': 'clickwhale/admin/check_slug',
-                            'type': 'link',
-                            'slug': slug,
-                            'id': 0
-                        },
-                        success: function (response) {
-                            result = response;
-                        },
-                        error: function (error) {
-                            result = error;
-                        }
-                    });
-
-                    return result;
+                function showErrorMessage(field, message) {
+                    field.css('border-color', 'red');
+                    field.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                 }
 
             });
