@@ -1568,9 +1568,32 @@ table.tracking-codes .column-is_active {
 	width: 25%;
 	height: 2px;
 	background-color: #007AFF;
+	background-size: 10px 10px;
 	z-index: 2;
 	border-radius: 2px;
 	transition: .5s ease-in-out;
+	animation: stripes-move 1s linear infinite;
+	-webkit-animation: stripes-move 1s linear infinite;
+	background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .3) 50%, rgba(255, 255, 255, .3) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .3) 50%, rgba(255, 255, 255, .3) 75%, transparent 75%, transparent);
+}
+
+@-webkit-keyframes stripes-move {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 10px 10px;
+	}
+}
+
+@keyframes stripes-move {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 10px 10px;
+	}
 }
 
 .import-progress--placeholder {
