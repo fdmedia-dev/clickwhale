@@ -616,8 +616,7 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
-	public
-	function import_csv() {
+	public function import_csv() {
 		check_ajax_referer( 'import_csv', 'security' );
 
 		global $wpdb;
@@ -672,8 +671,7 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
-	public
-	function export_csv() {
+	public function export_csv() {
 		check_ajax_referer( 'export_csv', 'security' );
 
 		if ( empty( $_POST['categories'] ) || empty ( $_POST['columns'] ) ) {

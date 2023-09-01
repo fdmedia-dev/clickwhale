@@ -3,7 +3,6 @@
 class Clickwhale_Tools_Import {
 
 	public function __construct() {
-		global $wpdb;
 		add_action( 'admin_init', array( $this, 'import_settings' ) );
 		add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
 	}
@@ -68,6 +67,16 @@ class Clickwhale_Tools_Import {
                 let
                     file,
                     delimiter;
+
+                jQuery('#import_file').on('change', function () {
+                    const uploadedFile = jQuery(this)[0].files[0];
+
+                    if (uploadedFile.type !== 'text/csv') {
+                        jQuery(this).val('');
+                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
+                    }
+
+                });
 
                 uploadForm.on('submit', function (e) {
                     e.preventDefault();
