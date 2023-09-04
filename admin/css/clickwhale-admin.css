@@ -1416,13 +1416,14 @@ table.tracking-codes .column-is_active {
 	padding: 0 60px;
 }
 
-.clickwhale-pro-promo--why-action{
+.clickwhale-pro-promo--why-action {
 	display: block;
 	margin: 60px 0 0;
 	width: 100%;
 	text-align: center;
 }
-.clickwhale-pro-promo--why .button-get-pro{
+
+.clickwhale-pro-promo--why .button-get-pro {
 	margin: 0 auto;
 }
 
@@ -1550,6 +1551,175 @@ table.tracking-codes .column-is_active {
 
 /* PRO PAGE PROMO */
 
+/* IMPORT */
+
+.import-progress {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0;
+	padding: 2rem 0;
+}
+
+.import-progress--bar {
+	position: absolute;
+	display: block;
+	bottom: 1rem;
+	width: 25%;
+	height: 2px;
+	background-color: #007AFF;
+	background-size: 10px 10px;
+	z-index: 2;
+	border-radius: 2px;
+	transition: .5s ease-in-out;
+	animation: stripes-move 1s linear infinite;
+	-webkit-animation: stripes-move 1s linear infinite;
+	background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .3) 50%, rgba(255, 255, 255, .3) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(-45deg, rgba(255, 255, 255, .3) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .3) 50%, rgba(255, 255, 255, .3) 75%, transparent 75%, transparent);
+}
+
+@-webkit-keyframes stripes-move {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 10px 10px;
+	}
+}
+
+@keyframes stripes-move {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 10px 10px;
+	}
+}
+
+.import-progress--placeholder {
+	position: absolute;
+	display: block;
+	bottom: 1rem;
+	width: 100%;
+	height: 2px;
+	background-color: #dddddd;
+	z-index: 1;
+	border-radius: 2px;
+}
+
+.import-progress--point {
+	position: relative;
+	font-size: 12px;
+	line-height: 1em;
+	color: #999999;
+}
+
+.import-progress--point::before,
+#point-04::after {
+	position: absolute;
+	display: block;
+	content: '';
+	width: 6px;
+	height: 6px;
+	bottom: calc(-1rem - 4px);
+	border-radius: 50%;
+	z-index: 3;
+	background-color: #dddddd;
+	border: 2px solid #f1f1f1;
+}
+
+.import-progress--point::before {
+	left: 0;
+}
+
+#point-04::after {
+	right: 0;
+}
+
+.import-progress--point.active {
+	color: #007AFF;
+}
+
+.import-progress--point.active::before,
+#point-04.active::after {
+	background-color: #007AFF;
+	border-color: #007AFF;
+}
+
+#mapping_table,
+#import_table,
+#import_result {
+	display: none
+}
+
+#mapping_table table {
+	max-width: 1000px;
+}
+
+#mapping_table table td {
+	vertical-align: middle;
+}
+
+#mapping_table table td small {
+	opacity: .7;
+}
+
+#mapping_table table select {
+	width: 100%;
+	max-width: 100%;
+}
+
+#import_table table td.nofollow,
+#import_table table td.sponsored {
+	padding-top: 13px;
+}
+
+#import_table table select,
+#import_table table [type="text"],
+#import_table table [type="url"] {
+	width: 100%;
+}
+
+#import_table table td button {
+	border: none;
+	padding: 8px 8px;
+	border-radius: 4px;
+	background: transparent;
+	color: #000000;
+}
+
+#import_table table td button svg {
+	display: block;
+	width: 16px;
+	height: 16px;
+	opacity: .5;
+}
+
+#import_table table td button:hover {
+	background: #f7f7f7;
+	color: red;
+	cursor: pointer;
+}
+
+#import_table table tr:nth-child(odd) td button:hover {
+	background: #ffffff;
+}
+
+#import_result a {
+	display: inline-block;
+}
+
+/* IMPORT */
+
+/* EXPORT */
+
+#select_columns,
+#select_categories {
+	min-width: 400px;
+}
+
+/* EXPORT */
+
 /* VENDORS */
 
 .linkpage-row--image-select--tab .picmo__picker.picmo__picker {
@@ -1631,7 +1801,7 @@ table.tracking-codes .column-is_active {
 		overflow-x: hidden;
 	}
 
-	.clickwhale-pro-promo--container{
+	.clickwhale-pro-promo--container {
 		padding: 0 1rem;
 	}
 
@@ -1722,9 +1892,10 @@ table.tracking-codes .column-is_active {
 		padding-left: 20px;
 		padding-right: 20px;
 	}
-	}
+}
+
 @media (max-width: 380px) {
-	.button-get-pro{
+	.button-get-pro {
 		font-size: 15px;
 	}
 }

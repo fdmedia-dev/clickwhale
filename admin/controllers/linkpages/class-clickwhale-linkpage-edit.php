@@ -123,6 +123,9 @@ class Clickwhale_Linkpage_Edit {
 	 */
 	public static function check_slug( string $slug ): bool {
 		global $wpdb;
+
+		$slug = esc_html( $slug );
+
 		if ( $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name='$slug'", 'ARRAY_A' ) ) {
 			return true;
 		} else {
