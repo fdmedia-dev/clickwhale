@@ -242,6 +242,11 @@ final class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax, 'tracking_code_toggle_active' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $Clickwhale_Ajax, 'add_link_to_linkpage' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/upload_csv', $Clickwhale_Ajax, 'upload_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/map_csv', $Clickwhale_Ajax, 'map_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug_for_import', $Clickwhale_Ajax, 'check_slug_for_import' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $Clickwhale_Ajax, 'import_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $Clickwhale_Ajax, 'export_csv' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );

@@ -119,10 +119,16 @@ class Clickwhale_Link_Edit {
 	 *
 	 * @return bool
 	 */
-	public static function check_slug( $slug, $id ) {
+	public static function check_slug( string $slug, $id ): bool {
 		global $wpdb;
-		if ( $wpdb->get_row( $wpdb->prepare( "SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s AND id!=%d",
-			$slug, $id ), 'ARRAY_A' ) ) {
+
+		$slug = esc_html( $slug );
+		$id   = intval( $id );
+
+		if ( $wpdb->get_row(
+			"SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug='$slug' AND id!=$id",
+			'ARRAY_A'
+		) ) {
 			return true;
 		} else {
 			return false;
