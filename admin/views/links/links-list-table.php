@@ -2,6 +2,8 @@
 
 global $wpdb;
 
+use clickwhale\includes\admin\links\Clickwhale_links_List_Table;
+
 $table = new Clickwhale_links_List_Table();
 $table->prepare_items();
 

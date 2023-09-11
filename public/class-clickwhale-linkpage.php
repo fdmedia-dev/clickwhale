@@ -1,5 +1,7 @@
 <?php
 
+use clickwhale\includes\admin\linkpages\LinkpageContentTemplates;
+
 class Clickwhale_Public_Linkpage {
 	private $post;
 	private $linkpages_options;

@@ -7,7 +7,7 @@ class Clickwhale_Linkpage_Edit {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
 
-	public static function getInstance(): Clickwhale_Linkpage_Edit {
+	public static function getInstance(): \clickwhale\includes\admin\linkpages\Clickwhale_Linkpage_Edit {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}

@@ -1,5 +1,7 @@
 <?php
 
+use clickwhale\includes\admin\links\Clickwhale_Links_Bulk_Edit;
+
 /**
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table

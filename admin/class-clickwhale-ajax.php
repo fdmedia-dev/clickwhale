@@ -1,5 +1,9 @@
 <?php
 
+use clickwhale\includes\admin\linkpages\Clickwhale_Linkpage_Edit;
+use clickwhale\includes\admin\linkpages\LinkpageContentTemplates;
+use clickwhale\includes\admin\links\Clickwhale_Link_Edit;
+
 /**
  * The settings of the plugin.
  *

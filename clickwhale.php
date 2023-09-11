@@ -27,10 +27,16 @@
  * Domain Path:       /languages
  */
 
+
 // If this file is called directly, abort.
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+use clickwhale\includes\Clickwhale;
+use clickwhale\includes\Clickwhale_Activator;
+use clickwhale\includes\Clickwhale_Deactivator;
 
 /**
  * Currently plugin version.
@@ -44,12 +50,12 @@ define( 'CLICKWHALE_NAME', 'clickwhale' );
 /**
  * @since 1.3.0
  */
-define( 'CLICKWHALE_ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'admin/images' );
-define( 'CLICKWHALE_ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'admin/css' );
-define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
-define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'public/images' );
-define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' );
-define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
+define( 'CLICKWHALE_ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/images' );
+define( 'CLICKWHALE_ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/css' );
+define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/js' );
+define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'assets/images' );
+define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'assets/css' );
+define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'assets/js' );
 
 /**
  * @since 1.4.1
@@ -58,11 +64,19 @@ define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
 define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
 
 /**
+ * @since 1.5.0
+ */
+define( 'CLICKWHALE_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'includes/admin' );
+define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' );
+define( 'CLICKWHALE_VIEWS_DIR', plugin_dir_path( __FILE__ ) . 'views' );
+
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-clickwhale-activator.php
  */
 function activate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Activator.php';
 	Clickwhale_Activator::activate();
 }
 
@@ -71,7 +85,7 @@ function activate_clickwhale() {
  * This action is documented in includes/class-clickwhale-deactivator.php
  */
 function deactivate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Deactivator.php';
 	Clickwhale_Deactivator::deactivate();
 }
 
@@ -90,7 +104,7 @@ add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
+require plugin_dir_path( __FILE__ ) . 'includes/Clickwhale.php';
 
 /**
  * Begins execution of the plugin.
@@ -103,8 +117,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
  */
 function run_clickwhale() {
 
-	$plugin = Clickwhale::get_instance();
-	$plugin->run();
+	Clickwhale::get_instance()->run();
 
 }
 

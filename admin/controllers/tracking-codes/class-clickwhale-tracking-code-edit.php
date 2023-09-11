@@ -16,7 +16,7 @@ class ClickwhaleTrackingCodeEdit {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 	}
 
-	public static function getInstance(): ClickwhaleTrackingCodeEdit {
+	public static function getInstance(): codes\ClickwhaleTrackingCodeEdit {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}

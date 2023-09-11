@@ -1,5 +1,7 @@
 <?php
 
+use clickwhale\includes\admin\linkpages\Clickwhale_Linkpage_Edit;
+
 class LinkpageContentTemplates {
 
 	public function get_defaults() {

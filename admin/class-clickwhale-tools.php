@@ -10,6 +10,9 @@
  * @subpackage Clickwhale/admin
  */
 
+use clickwhale\includes\admin\export\Clickwhale_Tools_Export;
+use clickwhale\includes\admin\import\Clickwhale_Tools_Import;
+
 /**
  * Class WordPress_Plugin_Template_Settings
  *
