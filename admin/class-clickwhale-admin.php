@@ -417,26 +417,46 @@ class Clickwhale_Admin {
 				?>
                 <script type='text/javascript'>
                     jQuery(document).ready(function () {
-                        jQuery('#copy-link-url, #cw-slug--text').click(function (e) {
+                        jQuery('#copy-link-url').click(function (e) {
                             e.preventDefault();
-                            var $temp = jQuery('<input>'),
-                                textToCopy = jQuery('#cw-slug').val();
-
-                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
-                            jQuery('body').append($temp);
-                            $temp.val(textToCopy).select();
-                            document.execCommand("copy");
-                            jQuery(this).find('em').hide();
-                            jQuery(this).append('<span class="copied"><?php _e( 'Copied!',
-								$this->plugin_name ) ?></span>');
-
-                            $temp.remove();
-
+                            // remove appended message
+                            jQuery('.copied').remove();
+                            // copy slug
+                            copySlug();
+                            // append message
+                            jQuery('<span class="copied"><?php _e( 'Copied!', $this->plugin_name ) ?></span>')
+                                .insertAfter(jQuery(this));
+                            // hide appended message
                             setTimeout(function () {
-                                jQuery('#cw-slug--text').find('em').show();
-                                jQuery('#cw-slug--text').find('.copied').remove();
+                                jQuery('.copied').remove();
                             }, 2000);
                         });
+
+                        jQuery('#cw-slug--text').click(function (e) {
+                            e.preventDefault();
+                            // remove appended message
+                            jQuery('.copied').remove();
+                            // copy slug
+                            copySlug();
+                            // append message
+                            jQuery(this)
+                                .append('<span class="copied"><?php _e( 'Copied!', $this->plugin_name ) ?></span>');
+                            // hide appended message
+                            setTimeout(function () {
+                                jQuery('.copied').remove();
+                            }, 2000);
+                        });
+
+                        function copySlug() {
+                            const temp = jQuery('<input>');
+                            let textToCopy = jQuery('#cw-slug').val();
+
+                            textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                            jQuery('body').append(temp);
+                            temp.val(textToCopy).select();
+                            document.execCommand("copy");
+                            temp.remove();
+                        }
                     });
                 </script>
 				<?php
