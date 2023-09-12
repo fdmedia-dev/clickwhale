@@ -307,7 +307,7 @@ class Clickwhale_Admin_Settings {
 				'control'     => 'select',
 				'id'          => 'redirect_type',
 				'name'        => 'clickwhale_general_options[redirect_type]',
-				'value'       => isset( $general_options['redirect_type'] ) && $general_options['redirect_type'] !== '' && is_int( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
+				'value'       => ! empty( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
 				'options'     => array(
 					301 => __( '301 redirect: Moved permanently', $this->plugin_name ),
 					302 => __( '302 redirect: Found / Moved temporarily', $this->plugin_name ),
@@ -492,7 +492,7 @@ class Clickwhale_Admin_Settings {
 
 		return $tabs;
 	}
-	
+
 	/**
 	 * Plugin links
 	 * @since 1.4.1
@@ -513,5 +513,5 @@ class Clickwhale_Admin_Settings {
 
 		return $links;
 	}
-	
+
 }
