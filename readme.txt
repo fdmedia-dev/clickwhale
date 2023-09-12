@@ -94,9 +94,9 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
-= Version 1.5.0 (11th September 2023) =
-* New: Import ClickWhale links to CSV file
-* New: Export ClickWhale links from CSV file
+= Version 1.5.0 (12th September 2023) =
+* New: Import ClickWhale links from CSV file
+* New: Export ClickWhale links to CSV file
 * New: Links bulk editing
 * Fix: Fixed copy button's text after click
 * Info: Wordpress 6.3 support
