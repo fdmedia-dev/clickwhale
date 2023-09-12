@@ -24,7 +24,7 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		global $wpdb;
 
 		$categories       = ClickwhaleLinksHelper::get_link_categories();
-		$categories_count = count( $categories );
+		$categories_count = $categories ? count( $categories ) : 0;
 
 		if ( $categories_count > 0 && $which == "top" ) {
 			?>
