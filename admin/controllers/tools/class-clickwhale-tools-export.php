@@ -125,19 +125,15 @@ class Clickwhale_Tools_Export {
                         selectedCategories = selectCategories.val();
 
                     let
-                        columns,
-                        categories;
+                        columns = 'all',
+                        categories = 'all';
 
-                    if (selectedColumns.indexOf('0') === -1) {
+                    if (selectedColumns.length > 0 && selectedColumns.indexOf('0') === -1) {
                         columns = selectedColumns;
-                    } else {
-                        columns = 'all';
                     }
 
-                    if (selectedCategories.indexOf('0') === -1) {
+                    if (selectCategories.length > 0 && selectedCategories.indexOf('0') === -1) {
                         categories = selectedCategories;
-                    } else {
-                        categories = 'all';
                     }
 
                     jQuery.post(ajaxurl, {
@@ -171,7 +167,8 @@ class Clickwhale_Tools_Export {
                         alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
                     });
                 })
-            });
+            })
+            ;
         </script>
 		<?php
 	}
