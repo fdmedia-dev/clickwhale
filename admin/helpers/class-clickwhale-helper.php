@@ -250,6 +250,10 @@ class ClickwhaleHelper {
 	}
 
 	private static function public_path( bool $trimmed = false ): string {
+		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
+			$_SERVER['HTTP_HOST'] = 'localhost';
+		}
+
 		$actual_link = ( empty( $_SERVER['HTTPS'] ) ? 'http' : 'https' ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 		$actual_link = str_replace( get_bloginfo( 'url' ), '', $actual_link );
