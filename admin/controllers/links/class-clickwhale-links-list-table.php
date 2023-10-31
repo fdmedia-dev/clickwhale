@@ -447,7 +447,6 @@ class Clickwhale_links_List_Table extends WP_List_Table {
 		);
 		$total_items      = count( $this->users_data );
 		$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
-		usort( $this->users_data, array( &$this, 'usort_reorder' ) );
 		$this->items = $this->users_data;
 
 		// [REQUIRED] configure pagination
