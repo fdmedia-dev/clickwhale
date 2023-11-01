@@ -5,7 +5,7 @@ Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
 Tested up to: 6.3.1
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,8 +94,14 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 
 == Changelog ==
 
+= Version 1.5.2 (1st November 2023) =
+* Fix: Fixed PHP Warning: Undefined array key "HTTP_HOST".
+* Fix: Fixed links order problem after import.
+* Fix: Fixed links order in the linkpage CW Links block.
+* Tweak: Updated bots list.
+
 = Version 1.5.1 (12th September 2023) =
-* Fixed: Fixed a bug when a link has a previously deleted category.
+* Fix: Fixed a bug when a link has a previously deleted category.
 * Fix: Fixed problem with export when there are no categories.
 * Fix: Fixed default link redirect display.
 
