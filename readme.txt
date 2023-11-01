@@ -4,8 +4,8 @@ Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
-Tested up to: 6.3.1
-Stable tag: 1.5.2
+Tested up to: 6.3.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,8 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 1.5.3 (1st November 2023) =
+* Fix: Fixed problem with fatal_error after click on CW link
 
 = Version 1.5.2 (1st November 2023) =
 * Tweak: Updated bots list
