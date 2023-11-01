@@ -2,6 +2,11 @@
 
 class Clickwhale_Bot {
 
+	/**
+	 * @var false
+	 */
+	private bool $is_bot;
+
 	public function __construct( $ua ) {
 		$this->is_bot = false;
 		$this->detectBot( $ua );
