@@ -1,12 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://fdmedia.io
  * @since             1.0.0
@@ -16,7 +10,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
- * Version:           1.5.1
+ * Version:           1.6.0
  * Requires at least: 3.8
  * Requires PHP       7.4.0
  * Author:            ClickWhale
@@ -27,10 +21,16 @@
  * Domain Path:       /languages
  */
 
+
 // If this file is called directly, abort.
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+use clickwhale\includes\Clickwhale;
+use clickwhale\includes\Clickwhale_Activator;
+use clickwhale\includes\Clickwhale_Deactivator;
 
 /**
  * Currently plugin version.
@@ -38,18 +38,18 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 
-define( 'CLICKWHALE_VERSION', '1.5.1' );
+define( 'CLICKWHALE_VERSION', '1.6.0' );
 define( 'CLICKWHALE_NAME', 'clickwhale' );
 
 /**
  * @since 1.3.0
  */
-define( 'CLICKWHALE_ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'admin/images' );
-define( 'CLICKWHALE_ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'admin/css' );
-define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
-define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'public/images' );
-define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' );
-define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
+define( 'CLICKWHALE_ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/images' );
+define( 'CLICKWHALE_ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/css' );
+define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin/js' );
+define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'assets/images' );
+define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'assets/css' );
+define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'assets/js' );
 
 /**
  * @since 1.4.1
@@ -58,20 +58,27 @@ define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
 define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
 
 /**
+ * @since 1.5.0
+ */
+define( 'CLICKWHALE_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'includes/admin' );
+define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' );
+// @TODO deprecated
+define( 'CLICKWHALE_TEMPLATES_DIR', plugin_dir_path( __FILE__ ) . 'templates' );
+
+
+/**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-clickwhale-activator.php
  */
 function activate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Activator.php';
 	Clickwhale_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-clickwhale-deactivator.php
  */
 function deactivate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Deactivator.php';
 	Clickwhale_Deactivator::deactivate();
 }
 
@@ -90,7 +97,7 @@ add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
+require plugin_dir_path( __FILE__ ) . 'includes/Clickwhale.php';
 
 /**
  * Begins execution of the plugin.
@@ -103,9 +110,8 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
  */
 function run_clickwhale() {
 
-	$plugin = new Clickwhale();
-	$plugin->run();
+	Clickwhale::get_instance()->run();
 
 }
 
-add_action( 'plugins_loaded', 'run_clickwhale', 10 );
+add_action( 'plugins_loaded', 'run_clickwhale' );
