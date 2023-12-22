@@ -138,7 +138,9 @@ final class Clickwhale_Admin {
 		$access_roles       = Helper::get_clickwhale_option( 'general', 'access_level' );
 		$current_user_roles = Clickwhale::get_instance()->user::get_current_user_roles();
 
-		if ( ! array_intersect( $access_roles, $current_user_roles ) ) {
+		if ( is_array( $access_roles )
+		     && is_array( $current_user_roles )
+		     && ! array_intersect( $access_roles, $current_user_roles ) ) {
 			return false;
 		}
 
