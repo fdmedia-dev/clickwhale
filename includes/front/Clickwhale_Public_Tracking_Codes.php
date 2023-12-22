@@ -3,15 +3,15 @@
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\admin\Clickwhale_WP_User;
-use clickwhale\includes\admin\helpers\Clickwhale_Linkpages_Helper;
-use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
+use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\Tracking_Codes_Helper;
 
 /**
  * Do tracking code on the current page
  * @since 1.2.0
  */
 class Clickwhale_Public_Tracking_Codes {
-	public $path;
+	public string $path;
 
 	public function __construct( $path ) {
 		$this->path = $path;
@@ -38,20 +38,6 @@ class Clickwhale_Public_Tracking_Codes {
 	}
 
 	/**
-	 * Get all active tracking codes from DB
-	 *
-	 * @return array|object|stdClass[]|null
-	 */
-	private function get_tracking_codes() {
-		global $wpdb;
-
-		return $wpdb->get_results(
-			"SELECT * FROM {$wpdb->prefix}clickwhale_tracking_codes WHERE is_active = '1' OR is_active = 1",
-			ARRAY_A
-		);
-	}
-
-	/**
 	 * Get current page type (LP/post_type/taxonomy) and id
 	 *
 	 * @return array
@@ -60,12 +46,12 @@ class Clickwhale_Public_Tracking_Codes {
 		$page = [];
 
 		$current_page_path = $this->parse_current_page_path();
-		$linkpage_id       = Clickwhale_Linkpages_Helper::get_linkpage_id_by_slug( $current_page_path );
+		$linkpage       = Linkpages_Helper::get_by_slug( intval( $current_page_path ) );
 		$post_type_page_id = url_to_postid( $this->parse_current_page_path( 'url' ) );
 
-		if ( $linkpage_id ) {
+		if ( $linkpage ) {
 			$page['type'] = 'cw_linkpage';
-			$page['id']   = $linkpage_id;
+			$page['id']   = $linkpage['id'];
 
 			return $page;
 		}
@@ -77,7 +63,7 @@ class Clickwhale_Public_Tracking_Codes {
 			return $page;
 		}
 
-		foreach ( Clickwhale_Tracking_Code_Edit::get_default_terms_tax() as $taxonomy ) {
+		foreach ( Tracking_Codes_Helper::get_default_terms_tax() as $taxonomy ) {
 			$term_object = get_term_by( 'slug', $current_page_path, $taxonomy );
 			if ( $term_object ) {
 				$page['type'] = $term_object->taxonomy;
@@ -149,11 +135,11 @@ class Clickwhale_Public_Tracking_Codes {
 	 * @return false|void
 	 */
 	public function prepare_tracking_codes() {
-		$tracking_codes = $this->get_tracking_codes();
+		$tracking_codes = Tracking_Codes_Helper::get_active();
+
 		if ( ! $tracking_codes ) {
 			return false;
 		}
-
 
 		$page = $this->get_current_page_data();
 

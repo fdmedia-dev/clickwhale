@@ -2,7 +2,8 @@
 
 namespace clickwhale\includes\admin\tracking_codes;
 
-use ClickwhaleTrackingCodesHelper;
+use clickwhale\includes\helpers\Helper;
+use clickwhale\includes\helpers\Tracking_Codes_Helper;
 use HTML;
 use WP_List_Table;
 
@@ -54,7 +55,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 
 	public function column_is_active( $item ): string {
 		$checked  = checked( intval( $item['is_active'] ), 1, false );
-		$disabled = ! $checked && ClickwhaleTrackingCodesHelper::is_limit() ? ' disabled="disabled"' : '';
+		$disabled = ! $checked && Tracking_Codes_Helper::is_active_limit() ? ' disabled="disabled"' : '';
 		$output   = '';
 
 		$output .= '<label class="clickwhale-checkbox--toggle">';
@@ -73,7 +74,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	public function column_desctiption( $item ): string {
+	public function column_description( $item ): string {
 		return wp_unslash( $item['description'] );
 	}
 
@@ -175,14 +176,16 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
+		$table = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
 			if ( is_array( $_REQUEST['id'] ) ) {
 				foreach ( $_REQUEST['id'] as $id ) {
-					$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_tracking_codes WHERE id IN(%d)",
+					$wpdb->query( $wpdb->prepare( "DELETE FROM $table WHERE id IN(%d)",
 						intval( $id ) ) );
 				}
 			} else {
-				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_tracking_codes WHERE id IN(%d)",
+				$wpdb->query( $wpdb->prepare( "DELETE FROM $table WHERE id IN(%d)",
 					intval( $_REQUEST['id'] ) ) );
 			}
 		}
@@ -191,13 +194,14 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		global $wpdb;
 
+		$table                 = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
 		$per_page              = 20;
 		$orderby               = 'id';
 		$order                 = 'desc';
 		$columns               = $this->get_columns();
 		$hidden                = [];
 		$sortable              = $this->get_sortable_columns();
-		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_tracking_codes" );
+		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM $table" );
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		$this->process_bulk_action();
@@ -217,7 +221,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 		// notice that last argument is ARRAY_A, so we will retrieve array
 
 		$this->items = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM {$wpdb->prefix}clickwhale_tracking_codes ORDER BY $orderby $order LIMIT %d OFFSET %d",
+			"SELECT * FROM $table ORDER BY $orderby $order LIMIT %d OFFSET %d",
 			$per_page, $paged ),
 			ARRAY_A
 		);
@@ -226,7 +230,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 			$author = sanitize_text_field( intval( $_GET['author'] ) );
 
 			$this->items = $wpdb->get_results( $wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}clickwhale_tracking_codes ORDER BY $orderby $order LIMIT %d OFFSET %d",
+				"SELECT * FROM $table ORDER BY $orderby $order LIMIT %d OFFSET %d",
 				$author, $per_page, $paged ),
 				ARRAY_A
 			);

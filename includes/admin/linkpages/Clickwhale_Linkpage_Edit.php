@@ -2,22 +2,14 @@
 
 namespace clickwhale\includes\admin\linkpages;
 
-use ClickwhaleHelper;
-use ClickwhaleLinkpagesHelper;
+use clickwhale\includes\admin\Clickwhale_Instance_Edit;
+use clickwhale\includes\helpers\{Helper};
+use clickwhale\includes\helpers\Linkpages_Helper;
 
-class Clickwhale_Linkpage_Edit {
-	private static $instance;
+class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
-	public function init() {
-		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-	}
-
-	public static function getInstance(): Clickwhale_Linkpage_Edit {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
+	public function __construct() {
+		parent::__construct( 'linkpages', 'linkpage' );
 	}
 
 	/**
@@ -53,89 +45,24 @@ class Clickwhale_Linkpage_Edit {
 	public function render_tabs() {
 		$tabs = array(
 			'settings' => array(
-				'name' => __( 'Settings', 'clickwhale' ),
+				'name' => __( 'Settings', CLICKWHALE_NAME ),
 				'url'  => 'settings',
 			),
 			'contents' => array(
-				'name' => __( 'Contents', 'clickwhale' ),
+				'name' => __( 'Contents', CLICKWHALE_NAME ),
 				'url'  => 'contents'
 			),
 			'styles'   => array(
-				'name' => __( 'Styles', 'clickwhale' ),
+				'name' => __( 'Styles', CLICKWHALE_NAME ),
 				'url'  => 'styles'
 			),
 			'seo'      => array(
-				'name' => __( 'SEO', 'clickwhale' ),
+				'name' => __( 'SEO', CLICKWHALE_NAME ),
 				'url'  => 'seo'
 			),
 		);
 
 		return apply_filters( 'clickwhale_linkpage_tabs', $tabs );
-	}
-
-	public function get_item( $request ) {
-		global $wpdb;
-
-		$defaults = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
-
-		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_linkpages WHERE id = %d",
-				intval( $request['id'] ) ), ARRAY_A );
-			if ( ! $item ) {
-				$item = $defaults;
-			}
-		} else {
-			$item = $defaults;
-		}
-
-		return $item;
-	}
-
-	/**
-	 * @return array
-	 * @since 1.1.0
-	 */
-	public static function get_post_types(): array {
-		$posts      = [];
-		$args       = array(
-			'public' => true,
-		);
-		$post_types = get_post_types( $args, 'objects' );
-		unset( $post_types['attachment'] );
-
-		foreach ( $post_types as $post_type ) {
-			$posts[ $post_type->name ] = $post_type->labels->singular_name;
-		}
-
-		return $posts;
-	}
-
-	public static function get_link( $id ) {
-		global $wpdb;
-
-		return $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id=%d", $id ),
-			ARRAY_A
-		);
-	}
-
-	/**
-	 * Check if Link page slug already exists
-	 *
-	 * @param string $slug
-	 *
-	 * @return bool
-	 */
-	public static function check_slug( string $slug ): bool {
-		global $wpdb;
-
-		$slug = esc_html( $slug );
-
-		if ( $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name='$slug'", 'ARRAY_A' ) ) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	/**
@@ -148,18 +75,18 @@ class Clickwhale_Linkpage_Edit {
 		// ClickWhale Content
 
 		$cw = array(
-			'label'   => __( 'ClickWhale Content', 'clickwhale' ),
+			'label'   => __( 'ClickWhale Content', CLICKWHALE_NAME ),
 			'options' => array(
 				'cw_link'           => array(
-					'name' => __( 'ClickWhale Link', 'clickwhale' ),
+					'name' => __( 'ClickWhale Link', CLICKWHALE_NAME ),
 					'icon' => 'link'
 				),
 				'cw_custom_link'    => array(
-					'name' => __( 'Custom Link', 'clickwhale' ),
+					'name' => __( 'Custom Link', CLICKWHALE_NAME ),
 					'icon' => 'link-2'
 				),
 				'cw_custom_content' => array(
-					'name' => __( 'Custom Content', 'clickwhale' ),
+					'name' => __( 'Custom Content', CLICKWHALE_NAME ),
 					'icon' => 'edit'
 				)
 			),
@@ -167,9 +94,9 @@ class Clickwhale_Linkpage_Edit {
 
 		// Post Types
 
-		$post_types       = ClickwhaleLinkpagesHelper::get_post_types();
+		$post_types       = Helper::get_post_types();
 		$post_types_group = array(
-			'label'   => __( 'Post Types', 'clickwhale' ),
+			'label'   => __( 'Post Types', CLICKWHALE_NAME ),
 			'options' => array()
 		);
 
@@ -181,14 +108,14 @@ class Clickwhale_Linkpage_Edit {
 		// Formatting
 
 		$formatting = array(
-			'label'   => __( 'Formatting', 'clickwhale' ),
+			'label'   => __( 'Formatting', CLICKWHALE_NAME ),
 			'options' => array(
 				'cw_heading'   => array(
-					'name' => __( 'Heading', 'clickwhale' ),
+					'name' => __( 'Heading', CLICKWHALE_NAME ),
 					'icon' => 'type'
 				),
 				'cw_separator' => array(
-					'name' => __( 'Separator', 'clickwhale' ),
+					'name' => __( 'Separator', CLICKWHALE_NAME ),
 					'icon' => 'minus'
 				)
 			),
@@ -209,7 +136,7 @@ class Clickwhale_Linkpage_Edit {
 	public static function get_nav_menus() {
 		$menus      = wp_get_nav_menus();
 		$result     = array();
-		$result[''] = __( 'No Menu', 'clickwhale' );
+		$result[''] = __( 'No Menu', CLICKWHALE_NAME );
 		foreach ( $menus as $menu ) {
 			$result[ $menu->term_id ] = $menu->name;
 		}
@@ -256,16 +183,20 @@ class Clickwhale_Linkpage_Edit {
 		return $result;
 	}
 
-	public function save_update_linkpage() {
+	public function save_update() {
 		global $wpdb;
-		$linkpages_table = $wpdb->prefix . 'clickwhale_linkpages';
-		$defaults        = apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() );
-		$item            = array_intersect_key( $_POST, $defaults );
-		$item['slug']    = sanitize_title( $item['slug'] );
-		$item['links']   = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
-		$item['styles']  = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
-		$item['social']  = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
-		$item['author']  = get_current_user_id();
+
+		$table = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
+		$item  = array_intersect_key(
+			$_POST,
+			apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() )
+		);
+
+		$item['slug']   = sanitize_title( $item['slug'] );
+		$item['links']  = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+		$item['styles'] = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
+		$item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
+		$item['author'] = get_current_user_id();
 
 		// data fot meta table
 		$legals_menu_id = $item['meta__legals_menu_id'];
@@ -275,24 +206,23 @@ class Clickwhale_Linkpage_Edit {
 
 		// Check if linkpage exists and then update or insert
 		// in some cases default check (not false and < 0) goes wrong
-		$linkpage = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_linkpages WHERE id=%d",
-			$item['id'] ) );
+		$linkpage = Linkpages_Helper::get_by_id( intval( $item['id'] ) );
 
 		if ( $linkpage ) {
 			$wpdb->update(
-				$linkpages_table,
+				$table,
 				$item,
 				array( 'id' => $item['id'] )
 			);
-			set_transient( 'linkpage-' . $item['id'], 'linkpage_updated', 45 );
+			$this->set_transient( $item['id'], 'updated' );
 
 		} else {
 			$wpdb->insert(
-				$linkpages_table,
+				$table,
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;
-			set_transient( 'linkpage-' . $item['id'], 'linkpage_added', 45 );
+			$this->set_transient( $item['id'], 'added' );
 
 		}
 
@@ -304,21 +234,13 @@ class Clickwhale_Linkpage_Edit {
 
 
 		// redirect to new record
-		$url = 'admin.php?page=clickwhale-edit-linkpage&id=' . $item['id'];
+		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
 
-	public function set_edit_linkpage_page_title( $admin_title, $title ): string {
-		return 'Edit Link Page' . $admin_title;
-	}
-
-	public function set_add_linkpage_page_title( $admin_title, $title ): string {
-		return 'Add Link Page' . $admin_title;
-	}
-
-	public function admin_scripts() {
-		$nonce          = wp_create_nonce( 'check_slug' );
+	public function admin_scripts(): void {
+		$nonce          = wp_create_nonce( 'slug_exists' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
@@ -356,10 +278,9 @@ class Clickwhale_Linkpage_Edit {
 
                 /* vars */
                 const
-                    linkpageSubmit = jQuery('#form_edit_linkpage').find('[type="submit"]'),
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
-                    limit = parseInt('<?php echo ClickwhaleLinkpagesHelper::get_links_limit() ?>'),
+                    limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit() ?>'),
                     linksType = jQuery('#add-links-type'),
                     tinymceOptions = {
                         wpautop: true,
@@ -374,7 +295,7 @@ class Clickwhale_Linkpage_Edit {
 
                 /* Select2 init */
                 linksType.select2({
-                    placeholder: '<?php _e( 'Select Content Type', 'clickwhale' ) ?>',
+                    placeholder: '<?php _e( 'Select Content Type', CLICKWHALE_NAME ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
@@ -410,11 +331,16 @@ class Clickwhale_Linkpage_Edit {
 
                 contentWrap
                     .droppable({
+                        accept: ".cw-content--item"
+                    })
+                    .sortable({
                         accept: ".cw-content--item",
-                        drop: function (event, ui) {
+                        placeholder: "ui-state-highlight",
+                        handle: '.linkpage-row--drag',
+                        receive: function (event, ui) {
 
                             const
-                                el = jQuery(ui.draggable),
+                                el = jQuery(ui.helper),
                                 type = el.data('content');
 
                             jQuery.post(ajaxurl, {
@@ -426,35 +352,29 @@ class Clickwhale_Linkpage_Edit {
                                 if (response.success && response.data.template) {
                                     const template = response.data.template;
 
-                                    if (count_links() < limit) {
-                                        replace_block(el, template);
+                                    replace_block(el, template);
 
-                                        jQuery('.select-link').select2({
-                                            placeholder: '<?php _e( 'Select Item', 'clickwhale' ) ?>',
-                                            width: '100%',
-                                            minimumResultsForSearch: 10
-                                        });
+                                    jQuery('.select-link').select2({
+                                        placeholder: '<?php _e( 'Select Item', CLICKWHALE_NAME ) ?>',
+                                        width: '100%',
+                                        minimumResultsForSearch: 10
+                                    });
 
-                                    } else {
+                                    console.log(count_links(), limit);
+
+                                    if (count_links() >= limit) {
                                         links_limit_warning();
                                         jQuery('.cw-content--item').addClass('disabled').draggable('disable');
                                     }
                                 }
                             });
                         },
-                        over: function () {
-                            // on drag over
-                        }
-                    })
-                    .sortable({
-                        placeholder: "ui-state-highlight",
-                        handle: '.linkpage-row--drag',
                     }).disableSelection();
 
                 /* ----- */
 
                 jQuery(document)
-                    // close theicons select on document click
+                    // close icons select on document click
                     .on('click', function () {
                         closeIconPicker();
                     })
@@ -464,7 +384,7 @@ class Clickwhale_Linkpage_Edit {
                         e.stopPropagation();
                     })
 
-                    // init tintmce (wp.editor) on custom content block drag
+                    // init tinymce (wp.editor) on custom content block drag
                     .on('clickwhale.content.template.replace', '.links-list-wrap', function (e, template) {
                         const templateRowID = jQuery(template).attr('id'),
                             templateID = templateRowID.replace('row-', '');
@@ -594,7 +514,7 @@ class Clickwhale_Linkpage_Edit {
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php _e( 'Select Image', 'clickwhale' ) ?>',
+                                    text: '<?php _e( 'Select Image', CLICKWHALE_NAME ) ?>',
                                 },
                                 multiple: false
                             }).on('select', function () {
@@ -613,7 +533,7 @@ class Clickwhale_Linkpage_Edit {
                         const button = jQuery(this);
 
                         button.next().val(''); // emptying the hidden field
-                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', 'clickwhale' ) ?>');
+                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>');
 
                         disable_ogpreview_button();
                     })
@@ -689,10 +609,6 @@ class Clickwhale_Linkpage_Edit {
                     disable_ogpreview_button();
                 });
 
-                jQuery('#check-slug').click(function () {
-                    alert(check_slug());
-                });
-
 
                 /**
                  * Submit action
@@ -700,32 +616,36 @@ class Clickwhale_Linkpage_Edit {
                  * 2. Check slug (not null)
                  * 3. Check slug (exists as post/page slug)
                  */
+
                 jQuery('#submit').click(function (e) {
+                    const slugExists = slug_exists();
 
-                    if (!title.val() || !slug.val() || check_slug() !== false) {
+                    jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
+                    if (!title.val()) {
                         e.preventDefault();
-                        jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
-                        if (!title.val()) {
-                            title.addClass('error')
-                                .next().text('<?php _e( 'Please enter title', 'clickwhale' ) ?>');
-                        } else {
-                            title.removeClass('error').next().text('');
-                        }
+                        title.addClass('error')
+                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                    } else {
+                        title.removeClass('error').next().text('');
+                    }
 
-                        if (!slug.val()) {
-                            slug.addClass('error')
-                                .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
-                        } else {
-                            slug.removeClass('error').next().text('');
-                        }
+                    if (!slug.val()) {
+                        e.preventDefault();
 
-                        if (check_slug() === true) {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-								'clickwhale' ) ?>')
-                        }
+                        slug.addClass('error')
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>')
+                    } else {
+                        slug.removeClass('error').next().text('');
+                    }
+
+                    if (slugExists === true) {
+                        e.preventDefault();
+
+                        slug.addClass('error');
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+							CLICKWHALE_NAME ) ?>')
                     }
                 });
 
@@ -736,7 +656,7 @@ class Clickwhale_Linkpage_Edit {
                     e.preventDefault();
                     let defaults;
                     if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!',
-						'clickwhale' ) ?>')) {
+						CLICKWHALE_NAME ) ?>')) {
                         defaults = <?php echo json_encode( $this->get_defaults() ) ?>;
 
                         jQuery.each(defaults.styles, function (key, val) {
@@ -745,14 +665,13 @@ class Clickwhale_Linkpage_Edit {
                     }
                 });
 
-
                 /**
                  *
                  * JS FUNCTIONS
                  *
                  */
 
-                function check_slug() {
+                function slug_exists() {
                     let result = null;
                     jQuery.ajax({
                         async: false,
@@ -761,7 +680,7 @@ class Clickwhale_Linkpage_Edit {
                         url: ajaxurl,
                         data: {
                             'security': '<?php echo $nonce ?>',
-                            'action': 'clickwhale/admin/check_slug',
+                            'action': 'clickwhale/admin/slug_exists',
                             'type': 'linkpage',
                             'slug': slug.val(),
                             'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
@@ -784,14 +703,14 @@ class Clickwhale_Linkpage_Edit {
 
                 function links_limit_warning() {
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="links-info"><?php echo ClickwhaleLinkpagesHelper::get_links_limitation_notice() . ClickwhaleHelper::get_pro_message();  ?></div>').insertAfter('.links-list-wrap');
+                    jQuery('<div class="links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message();  ?></div>').insertAfter('.links-list-wrap');
                 }
 
                 function disable_ogpreview_button() {
                     jQuery('#opengraph-live-preview')
                         .addClass('disabled')
                         .next()
-                        .text('<?php _e( 'Save page to view Open Graph preview', 'clickwhale' ) ?>');
+                        .text('<?php _e( 'Save page to view Open Graph preview', CLICKWHALE_NAME ) ?>');
                 }
 
                 function change_row_image(element, image, active = true) {

@@ -1,12 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://fdmedia.io
  * @since             1.0.0
@@ -16,7 +10,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
- * Version:           1.4.2
+ * Version:           1.6.0
  * Requires at least: 3.8
  * Requires PHP       7.4.0
  * Author:            ClickWhale
@@ -44,7 +38,7 @@ use clickwhale\includes\Clickwhale_Deactivator;
  * Rename this for your plugin and update it as you release new versions.
  */
 
-define( 'CLICKWHALE_VERSION', '1.4.2' );
+define( 'CLICKWHALE_VERSION', '1.6.0' );
 define( 'CLICKWHALE_NAME', 'clickwhale' );
 
 /**
@@ -68,12 +62,12 @@ define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
  */
 define( 'CLICKWHALE_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'includes/admin' );
 define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' );
-define( 'CLICKWHALE_VIEWS_DIR', plugin_dir_path( __FILE__ ) . 'views' );
+// @TODO deprecated
+define( 'CLICKWHALE_TEMPLATES_DIR', plugin_dir_path( __FILE__ ) . 'templates' );
 
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-clickwhale-activator.php
  */
 function activate_clickwhale() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Activator.php';
@@ -82,7 +76,6 @@ function activate_clickwhale() {
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-clickwhale-deactivator.php
  */
 function deactivate_clickwhale() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Deactivator.php';
@@ -121,4 +114,4 @@ function run_clickwhale() {
 
 }
 
-add_action( 'plugins_loaded', 'run_clickwhale', 10 );
+add_action( 'plugins_loaded', 'run_clickwhale' );

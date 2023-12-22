@@ -2,6 +2,8 @@
 
 namespace clickwhale\includes\admin;
 
+use WP_User;
+
 /**
  * WP User information and is user able to be tracked
  *
@@ -17,16 +19,16 @@ namespace clickwhale\includes\admin;
  *
  */
 class Clickwhale_WP_User {
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 */
+	protected ?WP_User $user;
+
 	public function __construct() {
+		$this->user = wp_get_current_user();
 	}
 
-	public static function get_all_roles() {
+	public static function get_all_roles(): array {
 		global $wp_roles;
+
+		$roles = [];
 
 		foreach ( $wp_roles->roles as $k => $v ) {
 			$roles[ $k ] = $v['name'];
@@ -109,10 +111,10 @@ class Clickwhale_WP_User {
 	 * @return      bool
 	 * @since       1.0.0
 	 */
-	public function is_track_disabled() {
+	public function is_track_disabled(): bool {
 		$tracking_options = $this->get_track_options();
 
-		return isset( $tracking_options['disable_tracking'] ) ? $tracking_options['disable_tracking'] : false;
+		return $tracking_options['disable_tracking'] ?? false;
 	}
 
 	/**
@@ -121,7 +123,7 @@ class Clickwhale_WP_User {
 	 * @return      bool
 	 * @since       1.0.0
 	 */
-	public function disallow_track() {
+	public function disallow_track(): bool {
 		return $this->is_track_disabled() || $this->is_user_untracked();
 	}
 

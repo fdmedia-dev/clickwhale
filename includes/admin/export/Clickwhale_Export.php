@@ -2,7 +2,8 @@
 
 namespace clickwhale\includes\admin\export;
 
-use ClickwhaleHelper;
+use clickwhale\includes\helpers\{Helper};
+use clickwhale\includes\helpers\Categories_Helper;
 
 class Clickwhale_Export {
 
@@ -50,7 +51,7 @@ class Clickwhale_Export {
 	public function export_columns_callback() {
 		$select = '<select id="select_columns" class="clickwhale-select" multiple>';
 		$select .= '<option selected value="0">' . __( 'Export all columns', CLICKWHALE_NAME ) . '</option>';
-		foreach ( ClickwhaleHelper::get_import_default_columns() as $option ) {
+		foreach ( Helper::get_import_default_columns() as $option ) {
 			$select .= '<option value="' . $option . '">' . $option . '</option>';
 		}
 		$select .= '</select>';
@@ -59,13 +60,9 @@ class Clickwhale_Export {
 	}
 
 	public function export_categories_callback() {
-		global $wpdb;
+		$categories = Categories_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
 
-		$categories = $wpdb->get_results( "SELECT id, title FROM {$wpdb->prefix}clickwhale_categories", ARRAY_A );
-
-		if ( ! $categories ) {
-			_e( 'No categories', CLICKWHALE_NAME );
-		} else {
+		if ( $categories ) {
 			$select = '<select id="select_categories" class="clickwhale-select" multiple>';
 			$select .= '<option selected value="0">' . __( 'Export all categories', CLICKWHALE_NAME ) . '</option>';
 			foreach ( $categories as $category ) {
@@ -74,6 +71,8 @@ class Clickwhale_Export {
 			$select .= '</select>';
 
 			echo $select;
+		} else {
+			_e( 'No categories', CLICKWHALE_NAME );
 		}
 	}
 

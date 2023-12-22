@@ -2,7 +2,8 @@
 
 namespace clickwhale\includes\admin\links;
 
-use ClickwhaleLinksHelper;
+use clickwhale\includes\helpers\{Links_Helper};
+use clickwhale\includes\helpers\Categories_Helper;
 
 class Clickwhale_Links_Bulk_Edit {
 	private array $posts;
@@ -53,7 +54,8 @@ class Clickwhale_Links_Bulk_Edit {
 	}
 
 	private function get_categories(): string {
-		$categories = ClickwhaleLinksHelper::get_link_categories();
+		$categories = Categories_Helper::get_all();
+
 		if ( ! $categories ) {
 			return false;
 		}
@@ -146,8 +148,6 @@ class Clickwhale_Links_Bulk_Edit {
 
 	public function render_quick_edit() {
 		ob_start();
-
-		$categories = ClickwhaleLinksHelper::get_link_categories();
 		?>
         <tr class="hidden"></tr>
         <tr id="bulk-edit"
@@ -165,8 +165,8 @@ class Clickwhale_Links_Bulk_Edit {
 
                                     <ul id="bulk-titles-list" role="list">
 										<?php
-										foreach ( $this->posts as $Link_id ) {
-											$link = ClickwhaleLinksHelper::get_link_by_id( $Link_id );
+										foreach ( $this->posts as $link_id ) {
+											$link = Links_Helper::get_by_id( intval( $link_id ) );
 											?>
                                             <li class="ntdelitem">
                                                 <button type="button"

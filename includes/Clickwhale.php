@@ -2,11 +2,14 @@
 
 namespace clickwhale\includes;
 
+use clickwhale\includes\front\Clickwhale_Public_Ajax;
+use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\admin\{
 	Clickwhale_Admin,
 	Clickwhale_Ajax,
 	Clickwhale_Settings,
-	Clickwhale_Tools
+	Clickwhale_Tools,
+	Clickwhale_WP_User
 };
 use clickwhale\includes\admin\reset\Clickwhale_Reset;
 use clickwhale\includes\admin\categories\Clickwhale_Category_Edit;
@@ -64,22 +67,70 @@ final class Clickwhale {
 	protected Clickwhale_Loader $loader;
 
 	/**
-	 * The unique identifier of this plugin.
-	 *
+	 * @var Clickwhale_i18n
+	 * @access   private
 	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
-	protected string $plugin_name;
+	private Clickwhale_i18n $locale;
 
 	/**
-	 * The current version of the plugin.
-	 *
+	 * @var Clickwhale_Admin|null
 	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string $version The current version of the plugin.
 	 */
-	protected string $version;
+	public ?Clickwhale_Admin $admin;
+
+	/**
+	 * @var Clickwhale_Settings|null
+	 * @since    1.0.0
+	 */
+	public ?Clickwhale_Settings $settings;
+
+	/**
+	 * @var Clickwhale_Link_Edit
+	 * @since    1.6.0
+	 */
+	public Clickwhale_Link_Edit $link;
+
+	/**
+	 * @var Clickwhale_Category_Edit
+	 * @since    1.6.0
+	 */
+	public Clickwhale_Category_Edit $category;
+
+	/**
+	 * @var Clickwhale_Linkpage_Edit
+	 * @since    1.6.0
+	 */
+	public Clickwhale_Linkpage_Edit $linkpage;
+
+	/**
+	 * @var Clickwhale_Ajax|null
+	 * @since    1.0.0
+	 */
+	public ?Clickwhale_Ajax $ajax;
+
+	/**
+	 * @var Clickwhale_Tracking_Code_Edit
+	 * @since    1.6.0
+	 */
+	public Clickwhale_Tracking_Code_Edit $tracking_code;
+	/**
+	 * @var Clickwhale_Tools
+	 * @since    1.0.0
+	 */
+	public Clickwhale_Tools $tools;
+
+	/**
+	 * @var Clickwhale_Public_Ajax|null
+	 * @since    1.6.0
+	 */
+	public ?Clickwhale_Public_Ajax $public_ajax;
+
+	/**
+	 * @var Clickwhale_Public
+	 */
+	public Clickwhale_Public $public;
+	public Clickwhale_WP_User $user;
 
 	/**
 	 * Gets an instance of our plugin.
@@ -90,6 +141,33 @@ final class Clickwhale {
 	public static function get_instance(): ?Clickwhale {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
+
+			self::$instance->load_dependencies();
+
+			self::$instance->loader = new Clickwhale_Loader();
+			self::$instance->locale = new Clickwhale_i18n();
+			self::$instance->user   = new Clickwhale_WP_User();
+
+			self::$instance->set_locale();
+
+			if ( is_admin() ) {
+				self::$instance->admin         = Clickwhale_Admin::get_instance();
+				self::$instance->settings      = Clickwhale_Settings::get_instance();
+				self::$instance->tools         = new Clickwhale_Tools();
+				self::$instance->ajax          = Clickwhale_Ajax::get_instance();
+				self::$instance->link          = new Clickwhale_Link_Edit();
+				self::$instance->category      = new Clickwhale_Category_Edit();
+				self::$instance->linkpage      = new Clickwhale_Linkpage_Edit();
+				self::$instance->tracking_code = new Clickwhale_Tracking_Code_Edit();
+
+				self::$instance->define_admin_hooks();
+			} else {
+				self::$instance->public      = Clickwhale_Public::get_instance();
+				self::$instance->public_ajax = Clickwhale_Public_Ajax::get_instance();
+
+				self::$instance->define_public_hooks();
+			}
+
 		}
 
 		return self::$instance;
@@ -105,13 +183,6 @@ final class Clickwhale {
 	 * @since    1.0.0
 	 */
 	private function __construct() {
-		$this->version     = CLICKWHALE_VERSION;
-		$this->plugin_name = CLICKWHALE_NAME;
-
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
 	}
 
 	/**
@@ -126,7 +197,7 @@ final class Clickwhale {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
 	}
 
 	/**
@@ -138,7 +209,7 @@ final class Clickwhale {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
 	}
 
 	/**
@@ -172,9 +243,24 @@ final class Clickwhale {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Clickwhale_i18n.php';
 
 		/**
-		 * The class responsible for getting plugin data from DB
+		 * Helpers
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/admin/Clickwhale_Methods.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Helper_Abstract.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Links_Helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Categories_Helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Linkpages_Helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Tracking_Codes_Helper.php';
+
+		/**
+		 * Templates
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/content_templates/Clickwhale_Linkpage_Content_Templates.php';
+
+		/**
+		 * The class responsible for defining user functionality
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/admin/Clickwhale_WP_User.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -186,9 +272,6 @@ final class Clickwhale {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/front/Clickwhale_Public.php';
-
-		$this->loader = new Clickwhale_Loader();
-
 	}
 
 	/**
@@ -201,10 +284,7 @@ final class Clickwhale {
 	 * @access   private
 	 */
 	private function set_locale() {
-
-		$plugin_i18n = new Clickwhale_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action( 'plugins_loaded', $this->locale, 'load_plugin_textdomain' );
 
 	}
 
@@ -216,110 +296,61 @@ final class Clickwhale {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-		$Clickwhale_Admin    = Clickwhale_Admin::get_instance();
-		$Clickwhale_Settings = Clickwhale_Settings::get_instance();
-		$Clickwhale_Tools    = new Clickwhale_Tools();
-		$Clickwhale_Ajax     = Clickwhale_Ajax::get_instance();
-
-		$Clickwhale_Link_Edit          = Clickwhale_Link_Edit::getInstance();
-		$Clickwhale_Category_Edit      = Clickwhale_Category_Edit::getInstance();
-		$Clickwhale_Linkpage_Edit      = Clickwhale_Linkpage_Edit::getInstance();
-		$Clickwhale_Tracking_Code_Edit = Clickwhale_Tracking_Code_Edit::getInstance();
-		$Clickwhale_Tools_Reset        = Clickwhale_Reset::getInstance();
+		$Clickwhale_Tools_Reset = Clickwhale_Reset::getInstance();
 
 		// ACTIONS
-		$this->loader->add_action( 'admin_menu', $Clickwhale_Settings, 'add_plugin_menu' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Settings, 'add_default_options' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Settings, 'add_settings_fields' );
-		$this->loader->add_action( 'clickwhale_menu_after_tools', $Clickwhale_Settings, 'show_pro_menu_item' );
-		$this->loader->add_action( 'admin_head', $Clickwhale_Admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
-		$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_menu', $this->admin, 'add_plugin_menu' );
+		$this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
+		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
+		$this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
+		$this->loader->add_action( 'admin_head', $this->admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
 		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
-			$this->loader->add_action( 'admin_enqueue_scripts', $Clickwhale_Admin, 'enqueue_scripts' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
 		}
-		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Admin, 'admin_scripts' );
-		$this->loader->add_action( 'clickwhale_admin_banner', $Clickwhale_Admin, 'admin_banner' );
-		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $Clickwhale_Admin, 'admin_banner_pro_button' );
-		$this->loader->add_action( 'clickwhale_admin_pro_message', $Clickwhale_Admin, 'admin_pro_message' );
-		$this->loader->add_action( 'admin_bar_menu', $Clickwhale_Admin, 'admin_bar_render', 999 );
-		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $Clickwhale_Admin,
+		$this->loader->add_action( 'admin_print_footer_scripts', $this->admin, 'admin_scripts' );
+		$this->loader->add_action( 'clickwhale_admin_banner', $this->admin, 'admin_banner' );
+		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $this->admin, 'admin_banner_pro_button' );
+		$this->loader->add_action( 'clickwhale_admin_pro_message', $this->admin, 'admin_pro_message' );
+		// Clickwhale menu in the admin bar in the admin
+		if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
+			$this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );
+		}
+		$this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $this->admin,
 			'pro_subscription_action' );
-		$this->loader->add_action( 'admin_post_save_update_link', $Clickwhale_Link_Edit, 'save_update_link' );
-		$this->loader->add_action( 'admin_post_save_update_linkpage', $Clickwhale_Linkpage_Edit,
-			'save_update_linkpage' );
-		$this->loader->add_action( 'admin_post_save_update_tracking_code', $Clickwhale_Tracking_Code_Edit,
-			'save_update_tracking_code' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $this->ajax,
 			'migration_notice_hide' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $Clickwhale_Ajax,
-			'migration_deactive' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $this->ajax, 'migration_deactive' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_to_clickwhale', $this->ajax,
 			'migration_to_clickwhale' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $this->ajax,
 			'save_migration_option' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $Clickwhale_Ajax, 'migration_reset' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $Clickwhale_Ajax, 'clickwhale_reset' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug', $Clickwhale_Ajax, 'check_slug' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $this->ajax, 'migration_reset' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $this->ajax, 'clickwhale_reset' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/slug_exists', $this->ajax, 'slug_exists' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $this->ajax,
 			'get_posts_by_post_type' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $Clickwhale_Ajax, 'get_cw_links' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $this->ajax, 'get_cw_links' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $this->ajax,
 			'tracking_code_toggle_active' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $Clickwhale_Ajax,
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/add_link_to_linkpage', $this->ajax,
 			'add_link_to_linkpage' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/upload_csv', $Clickwhale_Ajax, 'upload_csv' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/map_csv', $Clickwhale_Ajax, 'map_csv' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/check_slug_for_import', $Clickwhale_Ajax,
-			'check_slug_for_import' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $Clickwhale_Ajax, 'import_csv' );
-		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $Clickwhale_Ajax, 'export_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/upload_csv', $this->ajax, 'upload_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/map_csv', $this->ajax, 'map_csv' );
+		$this->loader->add_action(
+			'wp_ajax_clickwhale/admin/check_slug_for_import',
+			$this->ajax,
+			'check_slug_for_import'
+		);
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $this->ajax, 'import_csv' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $this->ajax, 'export_csv' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
 
-		if ( isset( $_GET['page'] ) ) {
-			if ( $_GET['page'] === 'clickwhale-edit-link' ) {
-				if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_edit_link_page_title', 10,
-						2 );
-				} else {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Link_Edit, 'set_add_link_page_title', 10, 2 );
-				}
-			}
-			if ( $_GET['page'] === 'clickwhale-edit-category' ) {
-				if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_edit_category_page_title',
-						10, 2 );
-				} else {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Category_Edit, 'set_add_category_page_title',
-						10, 2 );
-				}
-			}
-			if ( $_GET['page'] === 'clickwhale-edit-linkpage' ) {
-				if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_edit_linkpage_page_title',
-						10, 2 );
-				} else {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Linkpage_Edit, 'set_add_linkpage_page_title',
-						10, 2 );
-				}
-			}
-			if ( $_GET['page'] === 'clickwhale-edit-tracking-code' ) {
-				if ( isset( $_GET['id'] ) && $_GET['id'] !== '0' ) {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Tracking_Code_Edit,
-						'set_edit_tracking_code_page_title', 10, 2 );
-				} else {
-					$this->loader->add_filter( 'admin_title', $Clickwhale_Tracking_Code_Edit,
-						'set_add_tracking_code_page_title', 10, 2 );
-				}
-			}
-		}
-
-		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $Clickwhale_Settings,
-			'settings_action_link' );
-		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $Clickwhale_Settings,
-			'upgrade_action_link' );
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->settings, 'settings_action_link' );
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->settings, 'upgrade_action_link' );
 	}
 
 	/**
@@ -330,20 +361,46 @@ final class Clickwhale {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		/**
-		 * TODO: Uncomment when will edit public
-		 */
-		$Clickwhale_Public = new Clickwhale_Public( $this->get_plugin_name(), $this->get_version() );
-		//$Clickwhale_Ajax   = Clickwhale_Ajax( $this->get_plugin_name(), $this->get_version() );
+		// Clickwhale menu in the admin bar
+		if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
+			$this->loader->add_action(
+				'admin_bar_menu',
+				$this,
+				'admin_bar_render',
+				999
+			);
+		}
+		$this->loader->add_action(
+			'wp_enqueue_scripts',
+			$this->public,
+			'enqueue_styles'
+		);
+		$this->loader->add_action(
+			'wp_enqueue_scripts',
+			$this->public,
+			'enqueue_scripts'
+		);
+		$this->loader->add_action(
+			'init',
+			$this->public,
+			'do_redirect_handler'
+		);
+		$this->loader->add_action(
+			'wp_ajax_clickwhale/public/track_custom_link',
+			$this->public_ajax,
+			'track_custom_link'
+		);
+		$this->loader->add_action(
+			'wp_ajax_nopriv_clickwhale/public/track_custom_link',
+			$this->public_ajax,
+			'track_custom_link'
+		);
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $Clickwhale_Public, 'enqueue_scripts' );
-		$this->loader->add_action( 'init', $Clickwhale_Public, 'do_redirect_handler' );
-		//$this->loader->add_action( 'wp_ajax_clickwhale/public/track_custom_link', $Clickwhale_Ajax,
-		//	'track_custom_link' );
-		//$this->loader->add_action( 'wp_ajax_nopriv_clickwhale/public/track_custom_link', $Clickwhale_Ajax,
-		//	'track_custom_link' );
-
+		$this->loader->add_filter(
+			'the_content',
+			$this->public,
+			'add_target_to_clickwhale_link'
+		);
 	}
 
 	/**
@@ -352,7 +409,7 @@ final class Clickwhale {
 	 * @since    1.0.0
 	 */
 	public function run() {
-		$this->loader->run();
+		self::$instance->loader->run();
 	}
 
 	/**
@@ -363,7 +420,7 @@ final class Clickwhale {
 	 * @since     1.0.0
 	 */
 	public function get_plugin_name(): string {
-		return $this->plugin_name;
+		return CLICKWHALE_NAME;
 	}
 
 	/**
@@ -373,7 +430,7 @@ final class Clickwhale {
 	 * @since     1.0.0
 	 */
 	public function get_loader(): Clickwhale_Loader {
-		return $this->loader;
+		return self::$instance->loader;
 	}
 
 	/**
@@ -383,24 +440,118 @@ final class Clickwhale {
 	 * @since     1.0.0
 	 */
 	public function get_version(): string {
-		return $this->version;
+		return CLICKWHALE_VERSION;
 	}
 
 	/**
-	 * Returns the instance of Clickwhale.
+	 * Provides default values Options.
 	 *
-	 * The main function responsible for returning the one true Clickwhale
-	 * instance to functions everywhere.
-	 *
-	 * Use this function like you would a global variable, except without needing
-	 * to declare the global.
-	 *
-	 * Example: <?php $clickwhale = Clickwhale(); ?>
-	 *
-	 * @return Clickwhale The one true Easy_Digital_Downloads instance.
-	 * @since 1.5
+	 * @return array
 	 */
-	function Clickwhale(): Clickwhale {
-		return Clickwhale::get_instance();
+	public function default_options(): array {
+		return array(
+			'general'        => array(
+				'name'    => __( 'General', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_NAME ),
+				'options' => array(
+					'access_level'        => [ 'administrator' ],
+					'redirect_type'       => 301,
+					'nofollow'            => 1,
+					'sponsored'           => 0,
+					'slug'                => '',
+					'random_slug'         => 0,
+					'hide_admin_bar_menu' => 0
+				)
+			),
+			'tracking'       => array(
+				'name'    => __( 'Tracking', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_NAME ),
+				'options' => array(
+					'tracking_duration'    => 30,
+					'disable_tracking'     => 0,
+					'exclude_user_by_role' => [ 'administrator' ]
+				)
+			),
+			'linkpages'      => array(
+				'name'    => __( 'Link Pages', CLICKWHALE_NAME ),
+				'text'    => __( 'Global settings for the Link Pages.', CLICKWHALE_NAME ),
+				'options' => array(
+					'linkpage_links_target' => 0
+				)
+			),
+			'tracking_codes' => array(
+				'name'    => __( 'Tracking Codes', CLICKWHALE_NAME ),
+				'text'    => __( 'Global settings for the Tracking Codes.', CLICKWHALE_NAME ),
+				'options' => array()
+			),
+			'other'          => array(
+				'name'    => __( 'Other', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_NAME ),
+				'options' => array()
+			)
+		);
 	}
+
+	/**
+	 * @return void
+	 * @since 1.3.0
+	 */
+	public function admin_bar_render( $wp_admin_bar ) {
+		$wp_admin_bar->add_node( array(
+				'id'    => CLICKWHALE_NAME,
+				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_IMAGES_DIR . '/click-icon.svg"/></span> ClickWhale',
+				'href'  => admin_url( 'admin.php?page=clickwhale' ),
+				'meta'  => array(
+					'class' => CLICKWHALE_NAME,
+					'title' => 'ClickWhale'
+				)
+			)
+		);
+
+		$wp_admin_bar->add_node( array(
+				'id'     => CLICKWHALE_NAME . '-new-link',
+				'title'  => __( 'New Link', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-link&id=0' ),
+				'parent' => CLICKWHALE_NAME,
+				'meta'   => array(
+					'class' => CLICKWHALE_NAME . 'new-link',
+					'title' => __( 'Add New Link', CLICKWHALE_NAME )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => CLICKWHALE_NAME . '-new-category',
+				'title'  => __( 'New Category', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-category&id=0' ),
+				'parent' => CLICKWHALE_NAME,
+				'meta'   => array(
+					'class' => CLICKWHALE_NAME . 'new-category',
+					'title' => __( 'Add New Category', CLICKWHALE_NAME )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => CLICKWHALE_NAME . '-new-linkpage',
+				'title'  => __( 'New Link Page', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-linkpage&id=0' ),
+				'parent' => CLICKWHALE_NAME,
+				'meta'   => array(
+					'class' => CLICKWHALE_NAME . 'new-linkpage',
+					'title' => __( 'Add New Link Page', CLICKWHALE_NAME )
+				)
+			)
+		);
+		$wp_admin_bar->add_node( array(
+				'id'     => CLICKWHALE_NAME . '-new-tracking code',
+				'title'  => __( 'New Tracking Code', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=clickwhale-edit-tracking-code&id=0' ),
+				'parent' => CLICKWHALE_NAME,
+				'meta'   => array(
+					'class' => CLICKWHALE_NAME . 'new-tracking-code',
+					'title' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
+				)
+			)
+		);
+	}
+
 }

@@ -18,7 +18,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant;
+	public string $migrant;
 
 	/**
 	 * Plugin full name for messages.
@@ -27,7 +27,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant_full;
+	public string $migrant_full;
 
 	/**
 	 * Plugin directory/name for deactivation.
@@ -36,7 +36,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant_file;
+	public string $migrant_file;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -47,7 +47,7 @@ class Clickwhale_Migration_Notice {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $migrant, $migrant_full, $migrant_file ) {
+	public function __construct( string $migrant, string $migrant_full, string $migrant_file ) {
 
 		$this->migrant      = $migrant;
 		$this->migrant_full = $migrant_full;
@@ -90,10 +90,10 @@ class Clickwhale_Migration_Notice {
         <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo $this->migrant ?>-migrate">
             <p>
                 <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.',
-						'clickwhale' ), $this->migrant_full ); ?></span>
+						CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale-tools' ) ); ?>"
-                   class="button button-primary"><?php _e( 'Start Migration', 'clickwhale' ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Not now', 'clickwhale' ); ?></a>
+                   class="button button-primary"><?php _e( 'Start Migration', CLICKWHALE_NAME ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Not now', CLICKWHALE_NAME ); ?></a>
             </p>
         </div>
 		<?php
@@ -109,11 +109,11 @@ class Clickwhale_Migration_Notice {
         <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_html( $this->migrant ) ?>-deactive">
             <p>
                 <span> <?php printf( __( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.',
-						'clickwhale' ), $this->migrant_full ); ?></span>
+						CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
                 <a href="#"
-                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', 'clickwhale' ),
+                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', CLICKWHALE_NAME ),
 						$this->migrant_full ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', 'clickwhale' ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', CLICKWHALE_NAME ); ?></a>
             </p>
         </div>
 		<?php

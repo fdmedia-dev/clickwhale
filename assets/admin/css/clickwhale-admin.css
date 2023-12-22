@@ -34,6 +34,10 @@ ion-icon {
 	opacity: .6;
 }
 
+.form-table label.disabled {
+	pointer-events: none !important;
+}
+
 .slug-input--wrap {
 	position: relative;
 }
@@ -1043,14 +1047,12 @@ td > .links-info {
 	color: #41464b;
 }
 
-#form_edit_link .error,
-#form_edit_linkpage .error {
+.clickwhale_form_edit .error {
 	border-color: #dc3232;
 	background: #ffebee;
 }
 
-#form_edit_link .error + p,
-#form_edit_linkpage .error + p {
+.clickwhale_form_edit .error + p {
 	color: #dc3232;
 	font-size: 14px;
 }

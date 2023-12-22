@@ -2,7 +2,8 @@
 
 namespace clickwhale\includes\admin;
 
-use clickwhale\includes\admin\helpers\Clickwhale_Helper;
+use clickwhale\includes\Clickwhale;
+use clickwhale\includes\helpers\Helper;
 
 /**
  * The settings of the plugin.
@@ -13,29 +14,13 @@ use clickwhale\includes\admin\helpers\Clickwhale_Helper;
  * @package    Clickwhale
  * @subpackage Clickwhale/admin
  */
-class Clickwhale_Settings {
+final class Clickwhale_Settings {
 
 	/**
 	 * @since    1.5.0
 	 * @var Clickwhale_Settings|null
 	 */
 	private static ?Clickwhale_Settings $instance = null;
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
-	private string $plugin_name;
-
-	/**
-	 * Plugin menu array
-	 *
-	 * @var array
-	 */
-	private array $menus = array();
 
 	/**
 	 * @return Clickwhale_Settings|null
@@ -54,9 +39,6 @@ class Clickwhale_Settings {
 	 * @since    1.0.0
 	 */
 	private function __construct() {
-
-		$this->plugin_name = CLICKWHALE_NAME;
-
 	}
 
 	/**
@@ -71,7 +53,7 @@ class Clickwhale_Settings {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
 	}
 
 	/**
@@ -83,7 +65,7 @@ class Clickwhale_Settings {
 	 */
 	public function __wakeup() {
 		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', $this->plugin_name ), '1.5' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
 	}
 
 	/**
@@ -91,46 +73,8 @@ class Clickwhale_Settings {
 	 *
 	 * @return array
 	 */
-	public function default_options(): array {
-		return array(
-			'general'        => array(
-				'name'    => __( 'General', $this->plugin_name ),
-				'text'    => __( 'Set up ClickWhale plugin global options.', $this->plugin_name ),
-				'options' => array(
-					'redirect_type' => 301,
-					'nofollow'      => 1,
-					'sponsored'     => 0,
-					'slug'          => '',
-					'random_slug'   => 0,
-				)
-			),
-			'tracking'       => array(
-				'name'    => __( 'Tracking', $this->plugin_name ),
-				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', $this->plugin_name ),
-				'options' => array(
-					'tracking_duration'    => 30,
-					'disable_tracking'     => 0,
-					'exclude_user_by_role' => [ 'administrator' ]
-				)
-			),
-			'linkpages'      => array(
-				'name'    => __( 'Link Pages', $this->plugin_name ),
-				'text'    => __( 'Global settings for the Link Pages.', $this->plugin_name ),
-				'options' => array(
-					'linkpage_links_target' => 0
-				)
-			),
-			'tracking_codes' => array(
-				'name'    => __( 'Tracking Codes', $this->plugin_name ),
-				'text'    => __( 'Global settings for the Tracking Codes.', $this->plugin_name ),
-				'options' => array()
-			),
-			'other'          => array(
-				'name'    => __( 'Other', $this->plugin_name ),
-				'text'    => __( 'Set up other ClickWhale plugin useful options.', $this->plugin_name ),
-				'options' => array()
-			)
-		);
+	public static function default_options(): array {
+		return Clickwhale::get_instance()->default_options();
 	}
 
 	public function add_default_options() {
@@ -151,136 +95,6 @@ class Clickwhale_Settings {
 	}
 
 	/**
-	 * This function introduces the theme options into the 'Settings' menu and into a top-level
-	 * 'Clickwhale' menu.
-	 */
-	public function add_plugin_menu() {
-
-		$this->menus = array(
-			'subpages' => array(
-				'links'              => __( 'Links', $this->plugin_name ),
-				'edit-link'          => __( 'Add New', $this->plugin_name ),
-				'categories'         => __( 'Categories', $this->plugin_name ),
-				'edit-category'      => __( 'Add New Category', $this->plugin_name ),
-				'linkpages'          => __( 'Link Pages', $this->plugin_name ),
-				'edit-linkpage'      => __( 'Add New Link Page', $this->plugin_name ),
-				'tracking-codes'     => __( 'Tracking Codes', $this->plugin_name ),
-				'edit-tracking-code' => __( 'Add New Tracking Code', $this->plugin_name )
-			),
-			'views'    => array(
-				'toplevel_page_clickwhale'                  => 'links/links-list-table',
-				'admin_page_clickwhale-edit-link'           => 'links/link-edit',
-				'clickwhale_page_clickwhale-categories'     => 'categories/categories-list-table',
-				'admin_page_clickwhale-edit-category'       => 'categories/category-edit',
-				'clickwhale_page_clickwhale-linkpages'      => 'linkpages/linkpages-list-table',
-				'admin_page_clickwhale-edit-linkpage'       => 'linkpages/linkpage-edit',
-				'clickwhale_page_clickwhale-tracking-codes' => 'tracking-codes/tracking-codes-list-table',
-				'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/tracking-code-edit',
-			),
-			'toplevel' => array( 'links', 'categories', 'linkpages', 'tracking-codes' ),
-		);
-
-		$this->menus = apply_filters( 'clickwhale_menus', $this->menus );
-
-		add_menu_page(
-			__( 'ClickWhale Links', $this->plugin_name ),
-			__( 'ClickWhale', $this->plugin_name ),
-			'edit_pages',
-			$this->plugin_name,
-			'',
-			CLICKWHALE_ADMIN_IMAGES_DIR . '/click-icon.svg',
-			26
-		);
-
-		foreach ( $this->menus['subpages'] as $k => $v ) {
-			$parent = in_array( $k, $this->menus['toplevel'] ) ? $this->plugin_name : '';
-
-			add_submenu_page(
-				$parent,
-				$v,
-				$v,
-				'edit_pages',
-				$k !== 'links' ? $this->plugin_name . '-' . $k : $this->plugin_name,
-				array( $this, 'get_view' )
-			);
-		}
-
-		/**
-		 * @since 1.4.0
-		 */
-		do_action( 'clickwhale_menu_before_settings' );
-
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Settings', $this->plugin_name ),
-			__( 'Settings', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-settings',
-			array( $this, 'render_settings_page_view' )
-		);
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Tools', $this->plugin_name ),
-			__( 'Tools', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-tools',
-			array( $this, 'render_tools_page_view' )
-		);
-
-		/**
-		 * @since 1.4.0
-		 */
-		do_action( 'clickwhale_menu_after_tools' );
-
-	}
-
-	public function show_pro_menu_item() {
-		add_submenu_page(
-			$this->plugin_name,
-			__( 'Upgrade to PRO', $this->plugin_name ),
-			__( 'Upgrade to PRO', $this->plugin_name ),
-			'manage_options',
-			$this->plugin_name . '-pro',
-			array( $this, 'render_pro_page_view' )
-		);
-	}
-
-	/**
-	 * This function renders the interface elements.
-	 */
-
-	public static function render_controls( $args ) {
-		echo Clickwhale_Helper::render_control( $args );
-	}
-
-	/**
-	 * Include Menu Partial
-	 *
-	 * @since    1.0.0
-	 */
-// clickwhale/views/admin/settings/settings.php
-	public function render_settings_page_view() {
-		include_once( CLICKWHALE_VIEWS_DIR . '/admin/settings/settings.php' );
-	}
-
-	public function render_tools_page_view() {
-		include_once( CLICKWHALE_VIEWS_DIR . '/admin/tools/tools.php' );
-	}
-
-	public function render_pro_page_view() {
-		include_once( CLICKWHALE_VIEWS_DIR . '/admin/settings/pro.php' );
-	}
-
-	/**
-	 * @return void
-	 * @since 1.3.0
-	 */
-	public function get_view() {
-		$current_views = $this->menus['views'][ current_filter() ];
-		include_once( CLICKWHALE_VIEWS_DIR . '/admin/' . $current_views . '.php' );
-	}
-
-	/**
 	 * Initializes the plugin settings options page by registering the Sections,
 	 * Fields, and Settings.
 	 *
@@ -288,7 +102,6 @@ class Clickwhale_Settings {
 	 * @since 1.0.0
 	 */
 	public function add_settings_fields() {
-
 		$defaults               = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
 		$general_options        = get_option( 'clickwhale_general_options' );
 		$tracking_options       = get_option( 'clickwhale_tracking_options' );
@@ -296,7 +109,7 @@ class Clickwhale_Settings {
 		$tracking_codes_options = get_option( 'clickwhale_tracking_codes_options' );
 		$other_options          = get_option( 'clickwhale_other_options' );
 		$duration               = apply_filters( 'clickwhale_tracking_duration', array(
-			30 => __( '30 days', $this->plugin_name ),
+			30 => __( '30 days', CLICKWHALE_NAME ),
 		) );
 
 		if ( $defaults ) {
@@ -326,8 +139,25 @@ class Clickwhale_Settings {
 
 		// Add fields
 		add_settings_field(
+			'access_level',
+			__( 'Access Level', CLICKWHALE_NAME ),
+			array( $this, 'render_controls' ),
+			'clickwhale_general_options',
+			'general_settings_section',
+			array(
+				'control'        => 'checkboxes',
+				'id'             => 'access_level',
+				'name'           => 'clickwhale_general_options[access_level][]',
+				'value'          => $general_options['access_level'] ?? [ 'administrator' ],
+				'options'        => Clickwhale_WP_User::get_all_roles(),
+				'always_checked' => [ 'administrator' ],
+				'description'    => __( 'Decide which users can view plugin admin pages and edit settings.',
+					CLICKWHALE_NAME ),
+			)
+		);
+		add_settings_field(
 			'redirection',
-			__( 'Redirection Type', $this->plugin_name ),
+			__( 'Redirection Type', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -335,21 +165,21 @@ class Clickwhale_Settings {
 				'control'     => 'select',
 				'id'          => 'redirect_type',
 				'name'        => 'clickwhale_general_options[redirect_type]',
-				'value'       => isset( $general_options['redirect_type'] ) && $general_options['redirect_type'] !== '' && is_int( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
+				'value'       => ! empty( $general_options['redirect_type'] ) && is_int( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
 				'options'     => array(
-					301 => __( '301 redirect: Moved permanently', $this->plugin_name ),
-					302 => __( '302 redirect: Found / Moved temporarily', $this->plugin_name ),
-					303 => __( '303 redirect: See Other', $this->plugin_name ),
-					307 => __( '307 redirect: Temporarily Redirect', $this->plugin_name ),
-					308 => __( '308 redirect: Permanent Redirect', $this->plugin_name )
+					301 => __( '301 redirect: Moved permanently', CLICKWHALE_NAME ),
+					302 => __( '302 redirect: Found / Moved temporarily', CLICKWHALE_NAME ),
+					303 => __( '303 redirect: See Other', CLICKWHALE_NAME ),
+					307 => __( '307 redirect: Temporarily Redirect', CLICKWHALE_NAME ),
+					308 => __( '308 redirect: Permanent Redirect', CLICKWHALE_NAME )
 				),
 				'description' => __( 'Set default redirection type which will be used for new links.',
-					$this->plugin_name ),
+					CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'nofollow',
-			__( 'Nofollow Links', $this->plugin_name ),
+			__( 'Nofollow Links', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -358,12 +188,12 @@ class Clickwhale_Settings {
 				'id'      => 'nofollow',
 				'name'    => 'clickwhale_general_options[nofollow]',
 				'value'   => isset( $general_options['nofollow'] ) ? 1 : 0,
-				'label'   => __( 'Check to mark links as nofollow & noindex by default', $this->plugin_name ),
+				'label'   => __( 'Check to mark links as nofollow & noindex by default', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'sponsored',
-			__( 'Sponsored Links', $this->plugin_name ),
+			__( 'Sponsored Links', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -372,13 +202,13 @@ class Clickwhale_Settings {
 				'id'          => 'sponsored',
 				'name'        => 'clickwhale_general_options[sponsored]',
 				'value'       => isset( $general_options['sponsored'] ) ? 1 : 0,
-				'label'       => __( 'Check to mark links as sponsored by default.', $this->plugin_name ),
-				'description' => __( 'Recommended for affiliate links.', $this->plugin_name ),
+				'label'       => __( 'Check to mark links as sponsored by default.', CLICKWHALE_NAME ),
+				'description' => __( 'Recommended for affiliate links.', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'slug',
-			__( 'Link Prefix', $this->plugin_name ),
+			__( 'Link Prefix', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -390,12 +220,12 @@ class Clickwhale_Settings {
 				'value'       => $general_options['slug'],
 				'placeholder' => '',
 				'description' => __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.',
-					$this->plugin_name ),
+					CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'random_slug',
-			__( 'Random Slug', $this->plugin_name ),
+			__( 'Random Slug', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -405,12 +235,27 @@ class Clickwhale_Settings {
 				'name'    => 'clickwhale_general_options[random_slug]',
 				'value'   => isset( $general_options['random_slug'] ) ? 1 : 0,
 				'label'   => __( 'Check to <u>not</u> suggest a random link slug when creating a new link',
-					$this->plugin_name ),
+					CLICKWHALE_NAME ),
+			)
+		);
+		add_settings_field(
+			'hide_admin_bar_menu',
+			__( 'Hide Admin Bar Menu', CLICKWHALE_NAME ),
+			array( $this, 'render_controls' ),
+			'clickwhale_general_options',
+			'general_settings_section',
+			array(
+				'control' => 'checkbox',
+				'id'      => 'hide_admin_bar_menu',
+				'name'    => 'clickwhale_general_options[hide_admin_bar_menu]',
+				'value'   => isset( $general_options['hide_admin_bar_menu'] ) ? 1 : 0,
+				'label'   => __( 'Check to hide Clickwhale quick menu from the admin bar',
+					CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'tracking_duration',
-			__( 'Tracking Duration', $this->plugin_name ),
+			__( 'Tracking Duration', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
@@ -424,7 +269,7 @@ class Clickwhale_Settings {
 		);
 		add_settings_field(
 			'disable_tracking',
-			__( 'Disable Tracking', $this->plugin_name ),
+			__( 'Disable Tracking', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
@@ -433,12 +278,12 @@ class Clickwhale_Settings {
 				'id'      => 'disable_tracking',
 				'name'    => 'clickwhale_tracking_options[disable_tracking]',
 				'value'   => isset( $tracking_options['disable_tracking'] ) ? 1 : 0,
-				'label'   => __( 'Check to disable tracking of views and clicks', $this->plugin_name ),
+				'label'   => __( 'Check to disable tracking of views and clicks', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'exclude_user_by_role',
-			__( 'Exclude User Roles', $this->plugin_name ),
+			__( 'Exclude User Roles', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_tracking_options',
 			'tracking_settings_section',
@@ -449,12 +294,12 @@ class Clickwhale_Settings {
 				'value'       => $tracking_options['exclude_user_by_role'] ?? 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
 				'description' => __( 'Check the user roles that should be excluded from tracking.',
-					$this->plugin_name ),
+					CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
 			'linkpage_links_target',
-			__( 'Links: Target', $this->plugin_name ),
+			__( 'Links: Target', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_linkpages_options',
 			'linkpages_settings_section',
@@ -463,7 +308,7 @@ class Clickwhale_Settings {
 				'id'      => 'linkpage_links_target',
 				'name'    => 'clickwhale_linkpages_options[linkpage_links_target]',
 				'value'   => isset( $linkpages_options['linkpage_links_target'] ) ? 1 : 0,
-				'label'   => __( 'Check to open links in a new tab/window.', $this->plugin_name ),
+				'label'   => __( 'Check to open links in a new tab/window.', CLICKWHALE_NAME ),
 			)
 		);
 
@@ -486,26 +331,26 @@ class Clickwhale_Settings {
 	 * @since 1.3.0
 	 */
 	public static function render_tabs() {
-		$defaults = apply_filters( 'clickwhale_settings_defaults', ( new self )->default_options() );
+		$defaults = apply_filters( 'clickwhale_settings_defaults', self::default_options() );
 		$tabs     = array(
 			'general'        => array(
-				'name' => __( 'General Options', ( new self )->plugin_name ),
+				'name' => __( 'General Options', CLICKWHALE_NAME ),
 				'url'  => 'general_options',
 			),
 			'tracking'       => array(
-				'name' => __( 'Tracking Options', ( new self )->plugin_name ),
+				'name' => __( 'Tracking Options', CLICKWHALE_NAME ),
 				'url'  => 'tracking_options'
 			),
 			'linkpages'      => array(
-				'name' => __( 'Link Pages', ( new self )->plugin_name ),
+				'name' => __( 'Link Pages', CLICKWHALE_NAME ),
 				'url'  => 'linkpages_options'
 			),
 			'tracking_codes' => array(
-				'name' => __( 'Tracking Codes', ( new self )->plugin_name ),
+				'name' => __( 'Tracking Codes', CLICKWHALE_NAME ),
 				'url'  => 'tracking_codes_options'
 			),
 			'other'          => array(
-				'name' => __( 'Other Options', ( new self )->plugin_name ),
+				'name' => __( 'Other Options', CLICKWHALE_NAME ),
 				'url'  => 'other_options'
 			),
 		);
@@ -527,7 +372,7 @@ class Clickwhale_Settings {
 	 */
 	public function settings_action_link( $links ) {
 		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-settings' ) );
-		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', $this->plugin_name ) . '</a>';
+		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_NAME ) . '</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -535,11 +380,19 @@ class Clickwhale_Settings {
 
 	public function upgrade_action_link( $links ) {
 		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) );
-		$text          = __( 'Upgrade to PRO', $this->plugin_name );
+		$text          = __( 'Upgrade to PRO', CLICKWHALE_NAME );
 		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
 		$links[]       = $settings_link;
 
 		return $links;
+	}
+
+	/**
+	 * This function renders the interface elements.
+	 */
+
+	public static function render_controls( $args ) {
+		echo Helper::render_control( $args );
 	}
 
 }

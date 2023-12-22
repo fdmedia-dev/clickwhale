@@ -2,8 +2,8 @@
 
 namespace clickwhale\includes\admin\linkpages;
 
-use ClickwhaleHelper;
-use ClickwhaleLinkpagesHelper;
+use clickwhale\includes\helpers\{Helper};
+use clickwhale\includes\helpers\Linkpages_Helper;
 use HTML;
 use WP_List_Table;
 
@@ -110,7 +110,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 		$links = maybe_unserialize( $item['links'] );
 		$count = $links ? count( $links ) : 0;
 
-		return $count . ' / ' . ClickwhaleLinkpagesHelper::get_links_limit();
+		return $count . ' / ' . Linkpages_Helper::get_linkpage_links_limit();
 	}
 
 	/**
@@ -173,29 +173,55 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
+		$linkpages_table = Helper::get_clickwhale_bd_table_name( 'linkpages' );
+		$meta_table      = Helper::get_clickwhale_bd_table_name( 'meta' );
+
 		if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
 			return;
 		}
 
 		if ( is_array( $_REQUEST['id'] ) ) {
 			foreach ( $_REQUEST['id'] as $id ) {
-				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-					intval( $id ) ) );
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM $linkpages_table WHERE id = %d",
+						intval( $id )
+					)
+				);
+
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE FROM $meta_table WHERE linkpage_id = %d",
+						intval( $id )
+					)
+				);
 			}
 		} else {
-			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->prefix}clickwhale_linkpages WHERE id IN(%d)",
-				intval( $_REQUEST['id'] ) ) );
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM $linkpages_table WHERE id = %d",
+					intval( $_REQUEST['id'] )
+				)
+			);
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM $meta_table WHERE linkpage_id = %d",
+					intval( $_REQUEST['id'] )
+				)
+			);
 		}
 	}
 
 	public function prepare_items() {
 		global $wpdb;
 
-		$per_page    = 20; // constant, how much records will be shown per page
-		$columns     = $this->get_columns();
-		$hidden      = array();
-		$sortable    = $this->get_sortable_columns();
-		$total_items = $wpdb->get_var( "SELECT COUNT(id) FROM {$wpdb->prefix}clickwhale_linkpages" );
+		$table_linkpages = Helper::get_clickwhale_bd_table_name( 'linkpages' );
+		$table_track     = Helper::get_clickwhale_bd_table_name( 'track' );
+		$per_page        = 20; // constant, how much records will be shown per page
+		$columns         = $this->get_columns();
+		$hidden          = array();
+		$sortable        = $this->get_sortable_columns();
+		$total_items     = $wpdb->get_var( "SELECT COUNT(id) FROM $table_linkpages" );
 
 		// here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
@@ -204,23 +230,23 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 		$this->process_bulk_action();
 
 		// prepare query params, as usual current page, order by and order direction
-		$sort    = ClickwhaleHelper::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
+		$sort    = Helper::get_sort_params( $sortable, $_REQUEST['order'] ?? '', $_REQUEST['orderby'] ?? '' );
 		$order   = $sort['order'];
 		$orderby = $sort['orderby'];
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
 		$this->items = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count
-                    FROM {$wpdb->prefix}clickwhale_linkpages linkpages
+                    FROM $table_linkpages linkpages
                     LEFT JOIN (
                         SELECT linkpage_id, COUNT(*) views 
-                        FROM {$wpdb->prefix}clickwhale_track 
+                        FROM $table_track 
                         WHERE event_type='view' 
                         GROUP BY linkpage_id
                         ) v_track ON linkpages.id = v_track.linkpage_id
                     LEFT JOIN (
                         SELECT linkpage_id, COUNT(*) clicks 
-                        FROM {$wpdb->prefix}clickwhale_track 
+                        FROM $table_track 
                         WHERE event_type='click' AND linkpage_id > 0
                         GROUP BY linkpage_id
                         ) c_track ON linkpages.id = c_track.linkpage_id
@@ -234,16 +260,16 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 			$this->items = $wpdb->get_results( $wpdb->prepare(
 				"SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count
-                    FROM {$wpdb->prefix}clickwhale_linkpages linkpages
+                    FROM $table_linkpages linkpages
                     LEFT JOIN (
                         SELECT linkpage_id, COUNT(*) views 
-                        FROM {$wpdb->prefix}clickwhale_track 
+                        FROM $table_track 
                         WHERE event_type='view' 
                         GROUP BY linkpage_id
                         ) v_track ON linkpages.id = v_track.linkpage_id
                     LEFT JOIN (
                         SELECT linkpage_id, COUNT(*) clicks 
-                        FROM {$wpdb->prefix}clickwhale_track 
+                        FROM $table_track 
                         WHERE event_type='click' AND linkpage_id > 0
                         GROUP BY linkpage_id
                         ) c_track ON linkpages.id = c_track.linkpage_id

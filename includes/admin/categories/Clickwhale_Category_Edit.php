@@ -2,45 +2,118 @@
 
 namespace clickwhale\includes\admin\categories;
 
-class Clickwhale_Category_Edit {
-	private static $instance;
+use clickwhale\includes\admin\Clickwhale_Instance_Edit;
+use clickwhale\includes\helpers\{Helper};
+use clickwhale\includes\helpers\Categories_Helper;
 
-	public static function getInstance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
+class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
+
+	public function __construct() {
+		parent::__construct( 'categories', 'category' );
+	}
+
+	public function get_defaults(): array {
+		return array(
+			'id'          => 0,
+			'title'       => '',
+			'slug'        => '',
+			'description' => ''
+		);
+	}
+
+	public function save_update() {
+		global $wpdb;
+
+		$table        = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$item         = array_intersect_key( $_POST, $this->get_defaults() );
+		$item['slug'] = $item['slug'] ? sanitize_title( $item['slug'] ) : sanitize_title( $item['title'] );
+
+		// Check if item exists and then update or insert
+		// in some cases default check (not false and < 0) goes wrong
+		$category = Categories_Helper::get_by_id( intval( $item['id'] ) );
+
+		if ( $category ) {
+			$wpdb->update(
+				$table,
+				$item,
+				array( 'id' => $item['id'] )
+			);
+			$this->set_transient( $item['id'], 'updated' );
+		} else {
+			$wpdb->insert(
+				$table,
+				$item
+			);
+			$item['id'] = $wpdb->insert_id;
+			$this->set_transient( $item['id'], 'added' );
 		}
 
-		return self::$instance;
+		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
+		wp_redirect( admin_url( $url ) );
+		die;
 	}
 
-	public function clickwhale_validate_category( $item ) {
-		$messages = array();
+	public function admin_scripts(): void {
+		$nonce = wp_create_nonce( 'slug_exists' );
+		?>
+        <script type='text/javascript'>
+            jQuery(document).ready(function () {
 
-		if ( empty( $item['title'] ) ) {
-			$messages[] = __( 'Title is required', 'clickwhale' );
-		}
+                const
+                    title = jQuery('#title'),
+                    slug = jQuery('#slug');
 
-		if ( empty( $messages ) ) {
-			return true;
-		}
+                /**
+                 * Submit action
+                 * 1. Check title (not null)
+                 * 2. Check slug (not null)
+                 * 3. Check slug (exists as post/page slug)
+                 */
+                jQuery('#submit').click(function (e) {
+                    const slugExists = slug_exists();
 
-		return implode( '<br />', $messages );
+                    if (!title.val()) {
+                        e.preventDefault();
+
+                        title.addClass('error').next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                    } else {
+                        title.removeClass('error').next().text('');
+                    }
+
+                    if (slugExists === true) {
+                        e.preventDefault();
+
+                        slug.addClass('error');
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+							CLICKWHALE_NAME ) ?>')
+                    }
+
+                });
+
+                function slug_exists() {
+                    let result = null;
+
+                    jQuery.ajax({
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        url: ajaxurl,
+                        data: {
+                            'security': '<?php echo $nonce ?>',
+                            'action': 'clickwhale/admin/slug_exists',
+                            'type': 'category',
+                            'slug': slug.val() ? slug.val() : title.val(),
+                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                        }, success: function (response) {
+                            result = response.data;
+                        }
+                    });
+
+                    return result;
+                }
+
+            });
+        </script>
+		<?php
 	}
-
-	public function clear_category_slug( $item ) {
-		$slug = $item['slug'] ? sanitize_title( $item['slug'] ) : sanitize_title( $item['title'] );
-
-		$item['slug'] = $slug;
-
-		return $item;
-	}
-
-	public function set_edit_category_page_title( $admin_title, $title ) {
-		return 'Edit Category' . $admin_title;
-	}
-
-	public function set_add_category_page_title( $admin_title, $title ) {
-		return 'Add Category' . $admin_title;
-	}
-
 }

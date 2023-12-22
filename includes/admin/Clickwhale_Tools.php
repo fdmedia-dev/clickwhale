@@ -2,10 +2,10 @@
 
 namespace clickwhale\includes\admin;
 
-use clickwhale\includes\admin\export\Clickwhale_Export;
-use clickwhale\includes\admin\import\Clickwhale_Import;
+use clickwhale\includes\admin\migration\Clickwhale_Migration;
 use clickwhale\includes\admin\reset\Clickwhale_Reset;
-use clickwhale\includes\admin\migration\{Clickwhale_Migration, Clickwhale_Tools_Migration};
+use clickwhale\includes\admin\import\Clickwhale_Import;
+use clickwhale\includes\admin\export\Clickwhale_Export;
 
 /**
  * The settings of the plugin.
@@ -23,6 +23,26 @@ use clickwhale\includes\admin\migration\{Clickwhale_Migration, Clickwhale_Tools_
  */
 class Clickwhale_Tools {
 	/**
+	 * @var Clickwhale_Migration
+	 */
+	public Clickwhale_Migration $migration;
+
+	/**
+	 * @var Clickwhale_Reset
+	 */
+	public Clickwhale_Reset $reset;
+
+	/**
+	 * @var Clickwhale_Import
+	 */
+	public Clickwhale_Import $import;
+
+	/**
+	 * @var Clickwhale_Export
+	 */
+	public Clickwhale_Export $export;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -31,41 +51,19 @@ class Clickwhale_Tools {
 
 		$this->load_dependencies();
 
-		$this->migration();
-		$this->tools_migration();
-		$this->tools_reset_db();
-		$this->tools_import();
-		$this->tools_export();
-
+		$this->migration = new Clickwhale_Migration();
+		$this->reset     = new Clickwhale_Reset();
+		$this->import    = new Clickwhale_Import();
+		$this->export    = new Clickwhale_Export();
 	}
 
 	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Tools_Migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration_Abstract.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration_Notice.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/reset/Clickwhale_Reset.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/import/Clickwhale_Import.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/export/Clickwhale_Export.php';
-	}
-
-	public function migration() {
-		$mirgation = new Clickwhale_Migration();
-		$mirgation->init();
-	}
-
-	public function tools_migration() {
-		new Clickwhale_Tools_Migration();
-	}
-
-	public function tools_reset_db() {
-		$reset = new Clickwhale_Reset();
-		$reset->init( CLICKWHALE_NAME );
-	}
-
-	public function tools_import() {
-		new Clickwhale_Import();
-	}
-
-	public function tools_export() {
-		new Clickwhale_Export();
 	}
 
 }

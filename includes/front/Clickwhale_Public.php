@@ -2,7 +2,8 @@
 
 namespace clickwhale\includes\front;
 
-use clickwhale\includes\admin\helpers\Clickwhale_Helper;
+use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
+use clickwhale\includes\helpers\{Helper, Linkpages_Helper, Links_Helper};
 
 /**
  * The public-facing functionality of the plugin.
@@ -24,45 +25,50 @@ use clickwhale\includes\admin\helpers\Clickwhale_Helper;
  * @subpackage Clickwhale/public
  * @author     fdmedia <https://fdmedia.io>
  */
-class Clickwhale_Public {
+final class Clickwhale_Public {
+	private string $path;
 
 	/**
-	 * The ID of this plugin.
-	 *
 	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
+	 * @var Clickwhale_Public|null
 	 */
-	private $plugin_name;
+	private static ?Clickwhale_Public $instance = null;
 
 	/**
-	 * The version of this plugin.
-	 *
+	 * @var Clickwhale_Public_Linkpages
 	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
 	 */
-	private $version;
+	public Clickwhale_Public_Linkpages $linkpages;
 
-	private $path;
+	/**
+	 * @var Clickwhale_Public_Tracking_Codes
+	 * @since    1.0.0
+	 */
+	public Clickwhale_Public_Tracking_Codes $tracking_codes;
+
+	/**
+	 * @return Clickwhale_Public
+	 * @since    1.0.0
+	 */
+	public static function get_instance(): ?Clickwhale_Public {
+		if ( empty( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $plugin_name The name of the plugin.
-	 * @param string $version The version of this plugin.
-	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
-		$this->path        = Clickwhale_Helper::get_public_path( true );
-
+	public function __construct() {
 		$this->load_dependencies();
-		$this->init_classes();
 
+		$this->path           = Helper::get_public_path( true );
+		$this->linkpages      = new Clickwhale_Public_Linkpages();
+		$this->tracking_codes = new Clickwhale_Public_Tracking_Codes( $this->path );
 	}
 
 	/**
@@ -77,21 +83,15 @@ class Clickwhale_Public {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/class-clickwhale-parser.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/class-clickwhale-visitor-track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/class-clickwhale-click-track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/class-clickwhale-view-track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Ajax.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_View_Track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Parser.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Visitor_Track.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Click_Track.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Linkpages.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Linkpage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Tracking_Codes.php';
-	}
-
-	private function init_classes() {
-		$linkpages = $trackingCodes = null;
-		if ( ! is_admin() ) {
-			$linkpages     = new Clickwhale_Public_Linkpages();
-			$trackingCodes = new Clickwhale_Public_Tracking_Codes( $this->path );
-		}
 	}
 
 	/**
@@ -101,12 +101,12 @@ class Clickwhale_Public {
 	 */
 	public function enqueue_styles() {
 
-		if ( ! is_admin() && $this->path && \clickwhale\includes\ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
+		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_style(
-				$this->plugin_name,
+				CLICKWHALE_NAME,
 				CLICKWHALE_PUBLIC_CSS_DIR . '/clickwhale-public.css',
 				array(),
-				$this->version
+				CLICKWHALE_VERSION
 			);
 		}
 
@@ -119,9 +119,9 @@ class Clickwhale_Public {
 	 */
 	public function enqueue_scripts() {
 
-		if ( ! is_admin() && $this->path && \clickwhale\includes\ClickwhaleLinkpagesHelper::is_linkpage( $this->path ) ) {
+		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_script(
-				$this->plugin_name . '_ionicons',
+				CLICKWHALE_NAME . '_ionicons',
 				CLICKWHALE_PUBLIC_JS_DIR . '/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0',
@@ -129,58 +129,121 @@ class Clickwhale_Public {
 			);
 
 			wp_enqueue_script(
-				$this->plugin_name,
+				CLICKWHALE_NAME,
 				CLICKWHALE_PUBLIC_JS_DIR . '/clickwhale-public.js',
 				array( 'jquery' ),
-				$this->version,
+				CLICKWHALE_VERSION,
 				true
 			);
 
 			wp_localize_script(
-				$this->plugin_name,
+				CLICKWHALE_NAME,
 				'clickwhale_public_js',
 				array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
 			);
 		}
 	}
 
+	/**
+	 * Clickwhale Link redirect to its url
+	 *
+	 * @return void
+	 * @since 1.0.0
+	 */
 	public function do_redirect_handler() {
-		global $wpdb;
-
 		if ( ! is_admin() && $this->path ) {
-			$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug = '%s'",
-				$this->path ) );
+			$results = Links_Helper::get_by_slug( $this->path, 'OBJECT' );
 		};
 
 		if ( ! empty( $results ) ) {
-
-			$id = intval( $results[0]->id );
+			$id = intval( $results->id );
 
 			// Track click on link
-			new \clickwhale\includes\Clickwhale_Click_Track( $id );
+			new Clickwhale_Click_Track( $id );
 
 			// Set headers
 			$nofollow  = '';
 			$sponsored = '';
 			$sep       = '';
 
-			if ( $results[0]->nofollow ) {
+			if ( $results->nofollow ) {
 				$nofollow = 'noindex, nofollow';
 			}
-			if ( $results[0]->sponsored ) {
+			if ( $results->sponsored ) {
 				$sponsored = 'sponsored';
 			}
-			if ( $results[0]->nofollow && $results[0]->sponsored ) {
+			if ( $results->nofollow && $results->sponsored ) {
 				$sep = ', ';
 			}
-			if ( $results[0]->nofollow || $results[0]->sponsored ) {
+			if ( $results->nofollow || $results->sponsored ) {
 				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
 			}
 
-			$link_url = apply_filters( 'clickwhale_url_params', $results[0]->url, $id );
-			wp_redirect( $link_url, $results[0]->redirection );
+			$link_url = apply_filters( 'clickwhale_url_params', $results->url, $id );
+			wp_redirect( $link_url, $results->redirection );
 			exit;
 		}
+	}
 
+	public function add_target_to_clickwhale_link( $content ) {
+
+		return preg_replace_callback( '/<a(.*?)?href=[\'"]?[\'"]?(.*?)?>/i', function ( $m ) {
+			$link = null;
+			$tpl  = array_shift( $m );
+			$hrf  = $m[1] ?? null;
+
+			// if link has target attr
+			if ( preg_match( '/target=[\'"]?(.*?)[\'"]?/i', $tpl ) ) {
+				return $tpl;
+			}
+
+			// if link is an anchor
+			if ( trim( $hrf ) && 0 === strpos( $hrf, '#' ) ) {
+				return $tpl;
+			}
+
+			// if link with params
+			if ( strpos( $hrf, '?' ) !== false ) {
+				return $tpl;
+			}
+
+			// get href attr
+			if ( preg_match( '/href=["\']?([^"\'>]+)["\']?/', $tpl, $matches ) ) {
+				// remove waste from href
+				$href_search = array(
+					'href="' . get_bloginfo( 'url' )       => '',
+					'href="' . get_bloginfo( 'url' ) . '/' => '',
+					'href="/'                              => '',
+					'/"'                                   => '',
+					'"'                                    => '',
+					"href='" . get_bloginfo( 'url' )       => '',
+					"href='" . get_bloginfo( 'url' ) . "/" => '',
+					"href='/"                              => '',
+					"/'"                                   => '',
+					"'"                                    => '',
+				);
+
+				// if is not Clickwhale Link
+				$link = Links_Helper::get_by_slug( strtr( $matches[0], $href_search ) );
+				if ( ! $link ) {
+					return $tpl;
+				}
+			}
+
+			$tpl = preg_replace_callback( '/href=/i', function ( $m3 ) {
+				return sprintf( 'target="_blank" %s', array_shift( $m3 ) );
+			}, $tpl );
+
+			if ( $link['sponsored'] ) {
+				if ( preg_match( '/rel=["\']?([^"\'>]+)["\']?/', $tpl, $matches ) ) {
+					$tpl = str_replace( 'rel="', 'rel="sponsored ', $tpl );
+				} else {
+					$tpl = str_replace( '">', '" rel="sponsored">', $tpl );
+				}
+			}
+
+			return $tpl;
+
+		}, $content );
 	}
 }

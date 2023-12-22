@@ -2,7 +2,9 @@
 
 namespace clickwhale\includes\front;
 
-use clickwhale\includes\admin\linkpages\LinkpageContentTemplates;
+use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use DOMDocument;
+use DOMXPath;
 
 class Clickwhale_Public_Linkpage {
 	private $post;
@@ -99,7 +101,7 @@ class Clickwhale_Public_Linkpage {
 			$in );
 
 		$dom = new DOMDocument;
-		$dom->loadHTML( $in, LIBXML_HTML_NODEFDTD );
+		@$dom->loadHTML( $in, LIBXML_HTML_NODEFDTD );
 		$xpath = new DOMXPath( $dom );
 
 		$tags = array(
@@ -226,7 +228,7 @@ class Clickwhale_Public_Linkpage {
 
 	public function get_links(): string {
 		$html     = '';
-		$template = new LinkpageContentTemplates();
+		$template = new Clickwhale_Linkpage_Content_Templates();
 		$target   = isset( $this->linkpages_options['linkpage_links_target'] ) ? '_blank' : '_self';
 
 		if ( $this->links ) {

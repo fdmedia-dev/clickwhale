@@ -2,6 +2,10 @@
 
 namespace clickwhale\includes\admin;
 
+use clickwhale\includes\Clickwhale;
+use clickwhale\includes\helpers\{Categories_Helper, Helper, Linkpages_Helper, Links_Helper, Tracking_Codes_Helper};
+use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+
 /**
  * The settings of the plugin.
  *
@@ -13,43 +17,9 @@ namespace clickwhale\includes\admin;
  */
 class Clickwhale_Ajax {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
-	private string $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
-	 */
-	private $version;
-
 	private static ?Clickwhale_Ajax $instance = null;
 
 	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 */
-	private function __construct() {
-
-		$this->plugin_name = CLICKWHALE_NAME;
-		$this->version     = CLICKWHALE_VERSION;
-		//$this->migration   = new Clickwhale_Migration();
-
-	}
-
-	/**
-	 * @param $plugin_name
-	 * @param $version
-	 *
 	 * @return Clickwhale_Ajax
 	 */
 	public static function get_instance(): ?Clickwhale_Ajax {
@@ -116,56 +86,56 @@ class Clickwhale_Ajax {
 		}
 	}
 
-
 	public function migration_to_clickwhale() {
 		check_ajax_referer( 'migration_to_clickwhale', 'security' );
 
-		$available = $this->migration->available_migrations();
+		$available = Clickwhale::get_instance()->tools->migration->available_migrations();
 		$options   = get_option( 'clickwhale_tools_migration_options' );
 		$migrant   = isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '';
 		$item      = $available[ $migrant ];
+		$result    = [];
 
-		if ( $item ) {
-			if ( $this->migration->check_active( $item['path'] ) ) {
-				$result          = [];
-				$result['title'] = $item['name'];
-
-				if ( isset( $options[ $item['slug'] . '_categories' ] )
-				     && $options[ $item['slug'] . '_categories' ] !== false
-				     || isset( $options[ $item['slug'] . '_links' ] )
-				        && $options[ $item['slug'] . '_links' ] !== false
-				) {
-					$migrator       = new $item['class']();
-					$result['data'] = $migrator->run_migration(
-						$options[ $item['slug'] . '_categories' ],
-						$options[ $item['slug'] . '_links' ]
-					);
-				} else {
-					$result['data'] = __( 'Nothing to migrate', $this->plugin_name );
-				}
-			}
-
-			$options_migrate             = get_option( 'clickwhale_hide_notice_migrate' );
-			$options_migrate[ $migrant ] = true;
-			update_option( 'clickwhale_hide_notice_migrate', $options_migrate );
-
-			$options_deactive             = get_option( 'clickwhale_hide_notice_deactive' );
-			$options_deactive[ $migrant ] = false;
-			update_option( 'clickwhale_hide_notice_deactive', $options_deactive );
-
-			wp_send_json_success( $result );
-
-		} else {
+		if ( ! $item ) {
 			wp_send_json_error();
+			wp_die();
 		}
+
+		if ( Clickwhale::get_instance()->tools->migration->check_active( $item['path'] ) ) {
+			$result['title'] = $item['name'];
+
+			if ( isset( $options[ $item['slug'] . '_categories' ] )
+			     && $options[ $item['slug'] . '_categories' ] !== false
+			     || isset( $options[ $item['slug'] . '_links' ] )
+			        && $options[ $item['slug'] . '_links' ] !== false
+			) {
+				//$migrator       = new $item['class']();
+				$migratorClass  = '\\clickwhale\\includes\\admin\\migration\\' . $item['class'];
+				$migrator       = new $migratorClass();
+				$result['data'] = $migrator->run_migration(
+					$options[ $item['slug'] . '_categories' ],
+					$options[ $item['slug'] . '_links' ]
+				);
+			} else {
+				$result['data'] = __( 'Nothing to migrate', CLICKWHALE_NAME );
+			}
+		}
+
+		$options_migrate             = get_option( 'clickwhale_hide_notice_migrate' );
+		$options_migrate[ $migrant ] = true;
+		update_option( 'clickwhale_hide_notice_migrate', $options_migrate );
+
+		$options_deactive             = get_option( 'clickwhale_hide_notice_deactive' );
+		$options_deactive[ $migrant ] = false;
+		update_option( 'clickwhale_hide_notice_deactive', $options_deactive );
+
+		wp_send_json_success( $result );
 		wp_die();
 	}
 
 	public function migration_reset() {
 		check_ajax_referer( 'migration_reset', 'security' );
 
-		foreach ( $this->migration->available_migrations() as $item ) {
-
+		foreach ( Clickwhale::get_instance()->tools->migration->available_migrations() as $item ) {
 			$migration_options[ $item['slug'] . '_categories' ]          = (bool) $item['data']['categories'];
 			$migration_options[ $item['slug'] . '_links' ]               = (bool) $item['data']['links'];
 			$notice_migrate_options[ $item['slug'] ]                     = false;
@@ -178,7 +148,7 @@ class Clickwhale_Ajax {
 		update_option( 'clickwhale_hide_notice_migrate', $notice_migrate_options );
 		update_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
 
-		$result = __( 'Successfully deleted! Page will reload...', $this->plugin_name );
+		$result = __( 'Successfully deleted! Page will reload...', CLICKWHALE_NAME );
 
 		wp_send_json_success( $result );
 
@@ -190,32 +160,40 @@ class Clickwhale_Ajax {
 
 		global $wpdb;
 		$result = [];
+		$text   = '';
 
 		if ( ! isset( $_POST['reset'] ) ) {
 			wp_send_json_error();
 			wp_die();
 		}
 
+		$table_categories = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$table_links      = Helper::get_clickwhale_bd_table_name( 'links' );
+		$table_linkpages  = Helper::get_clickwhale_bd_table_name( 'linkpages' );
+		$table_meta       = Helper::get_clickwhale_bd_table_name( 'meta' );
+		$table_track      = Helper::get_clickwhale_bd_table_name( 'track' );
+		$table_visitors   = Helper::get_clickwhale_bd_table_name( 'visitors' );
+
 		switch ( $_POST['reset'] ) {
 			case 'stats':
 				//result text
-				$text = __( 'All statistic has been reset', $this->plugin_name );
+				$text = __( 'All statistic has been reset', CLICKWHALE_NAME );
 
 				//drop tables
-				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_track, {$wpdb->prefix}clickwhale_visitors" );
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS $table_track, $table_visitors" );
 
 				break;
 			case 'db':
 				//result text
-				$text = __( 'All plugin tables has been reset', $this->plugin_name );
+				$text = __( 'All plugin tables has been reset', CLICKWHALE_NAME );
 
 				//drop tables
-				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}clickwhale_links, {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}clickwhale_linkpages, {$wpdb->prefix}clickwhale_meta, {$wpdb->prefix}clickwhale_track, {$wpdb->prefix}clickwhale_visitors" );
+				$result['status'] = $wpdb->query( "DROP TABLE IF EXISTS $table_links, $table_categories, $table_linkpages, $table_meta, $table_track, $table_visitors" );
 
 				break;
 			case 'settings':
 				//result text
-				$text = __( 'All plugin settings has been restored', $this->plugin_name );
+				$text = __( 'All plugin settings has been restored', CLICKWHALE_NAME );
 
 				// delete all options
 				delete_option( 'clickwhale_general_options' );
@@ -223,8 +201,7 @@ class Clickwhale_Ajax {
 				delete_option( 'clickwhale_other_options' );
 
 				// init settings class and set defaults
-				$settings = Clickwhale_Admin_Settings::get_instance();
-				$settings->add_default_options();
+				$settings = Clickwhale_Settings::get_instance()->add_default_options();
 
 				$result['status'] = true;
 
@@ -240,20 +217,31 @@ class Clickwhale_Ajax {
 		wp_die();
 	}
 
-	public function check_slug() {
-		check_ajax_referer( 'check_slug', 'security' );
+	public function slug_exists() {
+		check_ajax_referer( 'slug_exists', 'security' );
 
 		if ( empty( $_POST['slug'] ) ) {
 			wp_send_json_error();
 			wp_die();
 		}
 
-		$result = null;
+		$result = false;
 
-		if ( $_POST['type'] === 'linkpage' ) {
-			$result = Clickwhale_Linkpage_Edit::check_slug( $_POST['slug'] );
-		} else {
-			$result = Clickwhale_Link_Edit::check_slug( $_POST['slug'], $_POST['id'] );
+		switch ( $_POST['type'] ) {
+			case 'link':
+				$item   = Links_Helper::get_by_slug( $_POST['slug'] );
+				$result = $item && $item['id'] !== $_POST['id'];
+				break;
+			case 'category':
+				$slug   = sanitize_title( $_POST['slug'] );
+				$item   = Categories_Helper::get_by_slug( $slug );
+				$result = $item && $item['id'] !== $_POST['id'];
+				break;
+			case 'linkpage':
+				$is_post = Linkpages_Helper::check_slug( $_POST['slug'] );
+				$item    = Linkpages_Helper::get_by_slug( $_POST['slug'] );
+				$result  = ! $is_post && $item && $item['id'] !== $_POST['id'];
+				break;
 		}
 
 		wp_send_json_success( $result );
@@ -309,10 +297,7 @@ class Clickwhale_Ajax {
 		global $wpdb;
 
 		$result          = [];
-		$result['links'] = $wpdb->get_results(
-			"SELECT id,title,url from {$wpdb->prefix}clickwhale_links",
-			ARRAY_A
-		);
+		$result['links'] = Links_Helper::get_all( 'id', 'asc', 'ARRAY_A' );
 
 		if ( ! $result['links'] ) {
 			wp_send_json_error( 'ClickWhale Links Not Found!' );
@@ -325,27 +310,6 @@ class Clickwhale_Ajax {
 
 	/**
 	 * @return void
-	 * @since 1.1.0
-	 */
-	public function track_custom_link() {
-		check_ajax_referer( 'track_custom_link', 'security' );
-
-		if ( ! isset( $_POST['id'] ) || ! $_POST['id'] ) {
-			wp_send_json_error( 'Track Error!' );
-
-			wp_die();
-		}
-
-		// Track click on link
-		$track = new Clickwhale_Click_Track( $_POST['id'], true );
-
-		wp_send_json_success();
-
-		wp_die();
-	}
-
-	/**
-	 * @return void
 	 * @since 1.2.0
 	 */
 	public function tracking_code_toggle_active() {
@@ -353,14 +317,15 @@ class Clickwhale_Ajax {
 
 		check_ajax_referer( 'clickwhale_toggle_tracking_code', 'security' );
 
-		$result               = [];
-		$tracking_codes_table = $wpdb->prefix . 'clickwhale_tracking_codes';
-		$data                 = array( 'is_active' => sanitize_text_field( $_POST['status'] ) );
-		$where                = array( 'id' => intval( sanitize_text_field( $_POST['id'] ) ) );
+		$result = [];
 
-		$wpdb->update( $tracking_codes_table, $data, $where );
+		$table = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+		$data  = array( 'is_active' => sanitize_text_field( $_POST['status'] ) );
+		$where = array( 'id' => intval( sanitize_text_field( $_POST['id'] ) ) );
 
-		$result['action_disable_all'] = ClickwhaleTrackingCodesHelper::is_limit();
+		$wpdb->update( $table, $data, $where );
+
+		$result['action_disable_all'] = Tracking_Codes_Helper::is_active_limit();
 
 		wp_send_json_success( $result );
 
@@ -373,8 +338,9 @@ class Clickwhale_Ajax {
 	 */
 	public function add_link_to_linkpage() {
 		check_ajax_referer( 'clickwhale_add_link_to_linkpage', 'security' );
+
 		// activate item
-		$template           = new LinkpageContentTemplates();
+		$template           = new Clickwhale_Linkpage_Content_Templates();
 		$result['template'] = $template->get_template( $_POST['type'], false, false );
 
 		wp_send_json_success( $result );
@@ -405,7 +371,7 @@ class Clickwhale_Ajax {
 		$col_delimiter   = ",";
 		$delimiters      = [ ";", "\t", "|" ];
 		$html            = '';
-		$default_columns = ClickwhaleHelper::get_import_default_columns();
+		$default_columns = Helper::get_import_default_columns();
 
 		$file_data = fopen( $file['tmp_name'], 'r' );
 
@@ -503,7 +469,7 @@ class Clickwhale_Ajax {
 			307 => '307 redirect: Temporarily Redirect',
 			308 => '308 redirect: Permanent Redirect',
 		);
-		$default_columns  = ClickwhaleHelper::get_import_default_columns();
+		$default_columns  = Helper::get_import_default_columns();
 		$mapped_columns   = $_POST['mapped'] ? explode( ',', $_POST['mapped'] ) : [];
 		$excluded_columns = $_POST['excluded'] ? explode( ',', $_POST['excluded'] ) : [];
 		$filtered         = [];
@@ -700,7 +666,7 @@ class Clickwhale_Ajax {
 		header( "Content-Disposition: attachment;filename=clickwhale-links-export-{$date}.csv" );
 		header( "Content-Transfer-Encoding: binary" );
 
-		$headers    = $_POST['columns'] === 'all' ? ClickwhaleHelper::get_import_default_columns() : $_POST['columns'];
+		$headers    = $_POST['columns'] === 'all' ? Helper::get_import_default_columns() : $_POST['columns'];
 		$categories = '';
 		$merged     = [];
 

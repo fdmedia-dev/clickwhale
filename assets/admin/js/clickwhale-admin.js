@@ -85,7 +85,7 @@
                 $(this).val(slug);
                 $('#cw-slug--text').find('span').html(slug);
             })
-            .on('submit', '#form_edit_link, #form_edit_linkpage, #form_edit_tracking_code', function () {
+            .on('submit', '.clickwhale_form_edit', function () {
                 if ($('#created_at').val() === '') {
                     $('#created_at').val(formatDate(new Date()));
                 }

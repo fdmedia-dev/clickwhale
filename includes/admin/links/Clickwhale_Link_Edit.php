@@ -2,165 +2,62 @@
 
 namespace clickwhale\includes\admin\links;
 
-use Clickwhale_Admin_Settings;
+use clickwhale\includes\admin\Clickwhale_Instance_Edit;
+use clickwhale\includes\Clickwhale;
+use clickwhale\includes\helpers\{Links_Helper};
+use clickwhale\includes\helpers\Helper;
 
-class Clickwhale_Link_Edit {
+class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
-	private static $instance;
-
-	public function init() {
-		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
-	}
-
-	public static function getInstance() {
-		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
+	public function __construct() {
+		parent::__construct( 'links', 'link' );
 	}
 
 	/**
-	 * Default values for new link
 	 * Could be hooked by filter "clickwhale_link_defaults"
+	 *
 	 * @return array
 	 */
 	public function get_defaults(): array {
+		$plugin_defaults = Clickwhale::get_instance()->settings->default_options();
+
 		return array(
 			'id'          => 0,
-			'created_at'  => '',
-			'updated_at'  => '',
 			'title'       => '',
 			'url'         => '',
 			'slug'        => '',
-			'redirection' => $this->get_item_option( 'general', 'redirect_type' ),
+			'redirection' => $plugin_defaults['general']['options']['redirect_type'],
 			'nofollow'    => '',
 			'sponsored'   => '',
 			'description' => '',
 			'categories'  => '',
+			'author'      => 0,
+			'created_at'  => '',
+			'updated_at'  => '',
 		);
 	}
 
-	public function get_item( $request ) {
+	public function save_update() {
 		global $wpdb;
 
-		$notice   = '';
-		$defaults = apply_filters( 'clickwhale_link_defaults', $this->get_defaults() );
-
-		if ( isset( $request['id'] ) ) {
-			$item = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE id = %d",
-				intval( $request['id'] ) ), ARRAY_A );
-			if ( ! $item ) {
-				$item   = $defaults;
-				$notice = __( 'Item not found', 'clickwhale' );
-			}
-		} else {
-			$item = $defaults;
-		}
-
-		return $item;
-	}
-
-	public static function get_item_option( $group, $name ) {
-		$options = get_option( 'clickwhale_' . $group . '_options' );
-		if ( isset( $options[ $name ] ) && $options[ $name ] !== '' ) {
-			$option = $options[ $name ];
-		} else {
-			$settings = Clickwhale_Admin_Settings::get_instance();
-			$defaults = $settings->default_options();
-			$option   = $defaults[ $group ]['options'][ $name ];
-		}
-
-		return $option;
-	}
-
-	public function clickwhale_validate_link( $item ) {
-		$messages = array();
-
-		if ( empty( $item['title'] ) ) {
-			$messages[] = __( 'Title is required', 'clickwhale' );
-		}
-		if ( empty( $item['url'] ) ) {
-			$messages[] = __( 'Target URL is required', 'clickwhale' );
-		}
-		if ( empty( $item['slug'] ) ) {
-			$messages[] = __( 'Slug is required', 'clickwhale' );
-		}
-		if ( ! ctype_digit( $item['redirection'] ) ) {
-			$messages[] = __( 'Wrong redirection code', 'clickwhale' );
-		}
-		if ( ! empty( $item['redirection'] ) && ! absint( intval( $item['redirection'] ) ) ) {
-			$messages[] = __( 'Redirection code can not be less than zero' );
-		}
-		if ( ! empty( $item['redirection'] ) && ! preg_match( '/[0-9]+/', $item['redirection'] ) ) {
-			$messages[] = __( 'Redirection code must be number' );
-		}
-
-		if ( empty( $messages ) ) {
-			return true;
-		}
-
-		return implode( '<br />', $messages );
-	}
-
-	public function get_link_categories() {
-		global $wpdb;
-
-		$results = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories" );
-		if ( ! empty( $results ) ) {
-			return $results;
-		}
-	}
-
-	public function link_categories_to_string( array $categories ) {
-		return implode( ',', $categories );
-	}
-
-	/**
-	 * Check if Link slug already exists
-	 *
-	 * @param string $slug
-	 *
-	 * @return bool
-	 */
-	public static function check_slug( string $slug, $id ): bool {
-		global $wpdb;
-
-		$slug = esc_html( $slug );
-		$id   = intval( $id );
-
-		if ( $wpdb->get_row(
-			"SELECT slug FROM {$wpdb->prefix}clickwhale_links WHERE slug='$slug' AND id!=$id",
-			'ARRAY_A'
-		) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function save_update_link() {
-		global $wpdb;
-		$links_table        = $wpdb->prefix . 'clickwhale_links';
+		$links_table        = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
-		$item['categories'] = isset( $item['categories'] ) ? $this->link_categories_to_string( $item['categories'] ) : '';
-		$item['nofollow']   = isset( $item['nofollow'] ) ? 1 : 0;
-		$item['sponsored']  = isset( $item['sponsored'] ) ? 1 : 0;
+		$item['categories'] = isset( $item['categories'] ) ? implode( ',', $item['categories'] ) : '';
+		$item['nofollow']   = isset( $item['nofollow'] );
+		$item['sponsored']  = isset( $item['sponsored'] );
 		$item['author']     = get_current_user_id();
 
-		// Check if linkpage exists and then update or insert
+		// Check if item exists and then update or insert
 		// in some cases default check (not false and < 0) goes wrong
-		$link = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}clickwhale_links WHERE id=%d",
-			$item['id'] ) );
 
-		if ( $link ) {
+		if ( Links_Helper::get_by_id( intval( $item['id'] ) ) ) {
 			$wpdb->update(
 				$links_table,
 				$item,
 				array( 'id' => $item['id'] )
 			);
 			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
-			set_transient( 'link-' . $item['id'], 'link_updated', 45 );
+			$this->set_transient( $item['id'], 'updated' );
 		} else {
 			$wpdb->insert(
 				$links_table,
@@ -168,27 +65,16 @@ class Clickwhale_Link_Edit {
 			);
 			$item['id'] = $wpdb->insert_id;
 			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );
-			set_transient( 'link-' . $item['id'], 'link_added', 45 );
+			$this->set_transient( $item['id'], 'added' );
 		}
 
-		$url = 'admin.php?page=clickwhale-edit-link&id=' . $item['id'];
+		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
 
-	public function set_edit_link_page_title( $admin_title, $title ) {
-		return 'Edit Link' . $admin_title;
-	}
-
-	public function set_add_link_page_title( $admin_title, $title ) {
-		return 'Add Link' . $admin_title;
-	}
-
-	public function admin_scripts() {
-		$nonce              = wp_create_nonce( 'check_slug' );
-		$nonce_random       = wp_create_nonce( 'random_slug' );
-		$options_general    = get_option( 'clickwhale_general_options' );
-		$slugOptionsGeneral = ! empty( $options_general['slug'] ) ? trailingslashit( $options_general['slug'] ) : '';
+	public function admin_scripts(): void {
+		$nonce = wp_create_nonce( 'slug_exists' );
 		?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
@@ -202,11 +88,22 @@ class Clickwhale_Link_Edit {
 				 * if checked "Disable random slug" option
 				 * use title as slug
 				 */
-				if ( ! empty( $options_general['random_slug'] ) ) {
+				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
+				$slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
+					? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
+					: '';
 				?>
                 const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
-                title.on('input', function () {
-                    slug.val(slugOptionsGeneral + this.value).trigger("blur");
+
+                jQuery(title).on('blur', function () {
+                    if (!slug.val() || slug.val() === slugOptionsGeneral) {
+                        slug.val(slugOptionsGeneral + this.value).trigger("blur");
+                    }
+                });
+                jQuery(slug).on('blur', function () {
+                    if (title.val() && (!this.value || this.value === slugOptionsGeneral)) {
+                        slug.val(slugOptionsGeneral + title.val()).trigger("blur");
+                    }
                 });
 				<?php } ?>
 
@@ -217,34 +114,36 @@ class Clickwhale_Link_Edit {
                  * 3. Check slug (exists as post/page slug)
                  */
                 jQuery('#submit').click(function (e) {
+                    const slugExists = slug_exists();
 
-                    if (!title.val() || !slug.val() || check_slug() !== false) {
-
+                    if (!title.val()) {
                         e.preventDefault();
 
-                        if (!title.val()) {
-                            title.addClass('error')
-                                .next().text('<?php _e( 'Please enter title', 'clickwhale' ) ?>');
-                        } else {
-                            title.removeClass('error').next().text('');
-                        }
+                        title.addClass('error')
+                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                    } else {
+                        title.removeClass('error').next().text('');
+                    }
 
-                        if (!slug.val()) {
-                            slug.addClass('error')
-                                .next().text('<?php _e( 'Please enter slug', 'clickwhale' ) ?>')
-                        } else {
-                            slug.removeClass('error').next().text('');
-                        }
+                    if (!slug.val()) {
+                        e.preventDefault();
 
-                        if (check_slug() === true) {
-                            slug.addClass('error');
-                            jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-								'clickwhale' ) ?>')
-                        }
+                        slug.addClass('error')
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>')
+                    } else {
+                        slug.removeClass('error').next().text('');
+                    }
+
+                    if (slugExists === true) {
+                        e.preventDefault();
+
+                        slug.addClass('error');
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
+							CLICKWHALE_NAME ) ?>')
                     }
                 });
 
-                function check_slug() {
+                function slug_exists() {
                     let result = null;
                     jQuery.ajax({
                         async: false,
@@ -253,7 +152,7 @@ class Clickwhale_Link_Edit {
                         url: ajaxurl,
                         data: {
                             'security': '<?php echo $nonce ?>',
-                            'action': 'clickwhale/admin/check_slug',
+                            'action': 'clickwhale/admin/slug_exists',
                             'type': 'link',
                             'slug': slug.val(),
                             'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
