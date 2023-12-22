@@ -117,11 +117,7 @@ class Clickwhale_Linkpage_Content_Templates {
 					<?php echo $this->get_template_row_image( $data ) ?>
                     <div class="linkpage-row--link">
 						<?php if ( ! $data['id'] ) { ?>
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-                            <strong><?php _e( 'ClickWhale Link', 'clickwhale' ) ?></strong>
-=======
                             <strong><?php _e( 'ClickWhale Link', CLICKWHALE_NAME ) ?></strong>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                             <span></span>
 						<?php } else { ?>
                             <strong><?php echo $data['title'] ? wp_unslash( $data['title'] ) : $link['title'] ?></strong>
@@ -142,11 +138,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				if ( ! $data['id'] ) {
 					?>
                     <div class="linkpage-row--bottom--control-wrap">
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-                        <label><?php _e( 'Link', 'clickwhale' ) ?></label>
-=======
                         <label><?php _e( 'Link', CLICKWHALE_NAME ) ?></label>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
 						<?php if ( $links ) { ?>
                             <div>
                                 <select name="links[<?php echo esc_attr( $data['id'] ) ?>][id]"
@@ -225,11 +217,7 @@ class Clickwhale_Linkpage_Content_Templates {
                             <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
                             <span><?php echo esc_url( $data['url'] ) ?></span>
 						<?php } else { ?>
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-                            <strong><?php _e( 'Custom Link', 'clickwhale' ) ?></strong>
-=======
                             <strong><?php _e( 'Custom Link', CLICKWHALE_NAME ) ?></strong>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
@@ -342,11 +330,7 @@ class Clickwhale_Linkpage_Content_Templates {
 								<?php echo $post_status != 'publish' ? '(' . $post_status . ')' : '' ?>
                             </strong>
                             <span>
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-                                <?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': ' ?>
-=======
                                 <?php echo __( 'Original', CLICKWHALE_NAME ) . ' ' . $post_type_singular . ': ' ?>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
                                    target="_blank"
                                    rel="noopener">
@@ -775,11 +759,7 @@ class Clickwhale_Linkpage_Content_Templates {
 	public function get_template_row_start( $id, $is_active = '' ) {
 		?>
         <div class="linkpage-row--start">
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-            <div class="linkpage-row--drag" title="<?php _e( 'Change Order', 'clickwhale' ); ?>">
-=======
             <div class="linkpage-row--drag" title="<?php _e( 'Change Order', CLICKWHALE_NAME ); ?>">
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                 <svg class="feather">
                     <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#drag-2"></use>
                 </svg>
@@ -855,11 +835,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <input type="hidden"
                    name="links[<?php echo $data['id'] ?>][image][type]"
                    value="<?php echo $data['image']['type'] ?? '' ?>">
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-            <label><?php _e( 'Icon', 'clickwhale' ) ?></label>
-=======
             <label><?php _e( 'Icon', CLICKWHALE_NAME ) ?></label>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
 
             <div class="linkpage-row--image-select">
                 <p class="description">
@@ -888,17 +864,10 @@ class Clickwhale_Linkpage_Content_Templates {
                                 </label>
                             </div>
                             <a href="#" class="linkpage-row--image-upload">
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-								<?php _e( 'Upload image', 'clickwhale' ) ?>
-                            </a>
-                            <a href="#" class="linkpage-row--image-remove" style="display: none;">
-								<?php _e( 'Remove image', 'clickwhale' ) ?>
-=======
 								<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>
                             </a>
                             <a href="#" class="linkpage-row--image-remove" style="display: none;">
 								<?php _e( 'Remove image', CLICKWHALE_NAME ) ?>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                             </a>
                         </div>
 
@@ -920,11 +889,7 @@ class Clickwhale_Linkpage_Content_Templates {
                                 </label>
                             </div>
                             <a id="icon-picker-<?php echo $data['id'] ?>" class="icon-picker" href="#">
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-								<?php _e( 'Select Icon', 'clickwhale' ) ?>
-=======
 								<?php _e( 'Select Icon', CLICKWHALE_NAME ) ?>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                             </a>
                         </div>
 
@@ -943,11 +908,7 @@ class Clickwhale_Linkpage_Content_Templates {
 									<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>
                                 </label>
                             </div>
-<<<<<<< HEAD:admin/controllers/linkpages/LinkpageContentTemplates.php
-                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', 'clickwhale' ) ?></a>
-=======
                             <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', CLICKWHALE_NAME ) ?></a>
->>>>>>> feature/282:includes/content_templates/Clickwhale_Linkpage_Content_Templates.php
                         </div>
 
                         <div class="linkpage-row--image-select--reset">
