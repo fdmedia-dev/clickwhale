@@ -30,7 +30,7 @@ class Clickwhale_Migration {
 		// load classes if available plugin is active
 		foreach ( $this->available_migrations() as $item ) {
 			if ( $this->check_active( $item['path'] ) ) {
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'migration/' . $item['name'] . '_To_Clickwhale.php';
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'migration/' . $item['class'] . '.php';
 			}
 		}
 	}
