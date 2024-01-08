@@ -67,7 +67,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 								<?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
                             >
                             <label for="conversionStandard">
-                                <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR . '/vendors/logo-wordpress-dark.svg'; ?>"
+                                <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"
                                      alt="WordPress">
                                 <span><?php _e( 'Standard code tracking', CLICKWHALE_NAME ) ?></span>
                             </label>
@@ -78,7 +78,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 								<?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
-                                            <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
                                         </svg>
                                     </div>
                                     <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
@@ -93,7 +93,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 									?>
                                 >
                                 <label for="conversionProduct">
-                                    <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR . '/vendors/logo-woocommerce-short-purple.svg'; ?>"
+                                    <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
                                          alt="WooCommerce">
                                     <span><?php _e( 'WooCommerce conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>
@@ -105,7 +105,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 								<?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
-                                            <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#lock"></use>
+                                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
                                         </svg>
                                     </div>
                                     <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
@@ -120,7 +120,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 									?>
                                 >
                                 <label for="conversionDownload">
-                                    <img src="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR . '/vendors/logo-edd-short-dark.svg'; ?>"
+                                    <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-edd-short-dark.svg'; ?>"
                                          alt="Easy Digital Downloads">
                                     <span><?php _e( 'EDD conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>

@@ -179,7 +179,7 @@ final class Clickwhale_Admin {
 			'read',
 			CLICKWHALE_NAME,
 			'',
-			CLICKWHALE_ADMIN_IMAGES_DIR . '/click-icon.svg',
+			CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg',
 			26
 		);
 
@@ -269,13 +269,13 @@ final class Clickwhale_Admin {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style(
 			CLICKWHALE_NAME . '_select2',
-			CLICKWHALE_ADMIN_CSS_DIR . '/select2/select2.min.css',
+			CLICKWHALE_ADMIN_ASSETS_DIR . '/css/select2/select2.min.css',
 			array(),
 			'4.1.0-rc.0'
 		);
 		wp_enqueue_style(
 			CLICKWHALE_NAME,
-			CLICKWHALE_ADMIN_CSS_DIR . '/clickwhale-admin.css',
+			CLICKWHALE_ADMIN_ASSETS_DIR . '/css/clickwhale-admin.css',
 			array(),
 			CLICKWHALE_VERSION
 		);
@@ -300,19 +300,19 @@ final class Clickwhale_Admin {
 
 			wp_enqueue_script(
 				CLICKWHALE_NAME . '_picmo',
-				CLICKWHALE_ADMIN_JS_DIR . '/picmo/picmo.umd.min.js',
+				CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.umd.min.js',
 				array( 'jquery' ),
 				'5.8.1',
 			);
 			wp_enqueue_script(
 				CLICKWHALE_NAME . '_picmo_popup_picker',
-				CLICKWHALE_ADMIN_JS_DIR . '/picmo/popup-picker.umd.min.js',
+				CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/popup-picker.umd.min.js',
 				array( CLICKWHALE_NAME . '_picmo' ),
 				'5.8.1'
 			);
 			wp_enqueue_script(
 				CLICKWHALE_NAME . '_ionicons',
-				CLICKWHALE_PUBLIC_JS_DIR . '/ionicons/ionicons.js',
+				CLICKWHALE_PUBLIC_ASSETS_DIR . '/js/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0'
 			);
@@ -324,13 +324,13 @@ final class Clickwhale_Admin {
 
 		wp_enqueue_script(
 			CLICKWHALE_NAME . '_select2',
-			CLICKWHALE_ADMIN_JS_DIR . '/select2/select2.min.js',
+			CLICKWHALE_ADMIN_ASSETS_DIR . '/js/select2/select2.min.js',
 			array( 'jquery' ),
 			'4.1.0-rc.0'
 		);
 		wp_enqueue_script(
 			CLICKWHALE_NAME,
-			CLICKWHALE_ADMIN_JS_DIR . '/clickwhale-admin.js',
+			CLICKWHALE_ADMIN_ASSETS_DIR . '/js/clickwhale-admin.js',
 			array( 'jquery' ),
 			CLICKWHALE_VERSION
 		);
@@ -353,7 +353,7 @@ final class Clickwhale_Admin {
                 <a href="<?php echo $link_logo ?>"
                    target="_blank"
                    rel="noopener">
-                    <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_IMAGES_DIR . '/wordmark.svg' ) ?>"
+                    <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/wordmark.svg' ) ?>"
                          alt="<?php echo CLICKWHALE_NAME ?>">
                 </a>
             </div>
@@ -400,7 +400,7 @@ final class Clickwhale_Admin {
 	public function admin_pro_message() {
 		?>
         <div class="clickwhale-linkpage--message">
-			<?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
+			<?php _e( 'Available only in PRO version', CLICKWHALE_NAME ); ?>
         </div>
 		<?php
 	}
@@ -427,6 +427,27 @@ final class Clickwhale_Admin {
 		} else {
 			wp_redirect( admin_url( 'admin.php?page=clickwhale-pro&success=1#clickwhaleSubscribe' ) );
 		}
+	}
+
+	/**
+	 * Plugin links
+	 * @since 1.4.1
+	 */
+	public function settings_action_link( $links ) {
+		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-settings' ) );
+		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_NAME ) . '</a>';
+		array_unshift( $links, $settings_link );
+
+		return $links;
+	}
+
+	public function upgrade_action_link( $links ) {
+		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) );
+		$text          = __( 'Upgrade to PRO', CLICKWHALE_NAME );
+		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
+		$links[]       = $settings_link;
+
+		return $links;
 	}
 
 	/**
@@ -467,26 +488,46 @@ final class Clickwhale_Admin {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
-                    jQuery('#copy-link-url, #cw-slug--text').click(function (e) {
+                    jQuery('#copy-link-url').click(function (e) {
                         e.preventDefault();
-                        var $temp = jQuery('<input>'),
-                            textToCopy = jQuery('#cw-slug').val();
-
-                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
-                        jQuery('body').append($temp);
-                        $temp.val(textToCopy).select();
-                        document.execCommand("copy");
-                        jQuery(this).find('em').hide();
-                        jQuery(this).append('<span class="copied"><?php _e( 'Copied!',
-							CLICKWHALE_NAME ) ?></span>');
-
-                        $temp.remove();
-
+                        // remove appended message
+                        jQuery('.copied').remove();
+                        // copy slug
+                        copySlug();
+                        // append message
+                        jQuery('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>')
+                            .insertAfter(jQuery(this));
+                        // hide appended message
                         setTimeout(function () {
-                            jQuery('#cw-slug--text').find('em').show();
-                            jQuery('#cw-slug--text').find('.copied').remove();
+                            jQuery('.copied').remove();
                         }, 2000);
                     });
+
+                    jQuery('#cw-slug--text').click(function (e) {
+                        e.preventDefault();
+                        // remove appended message
+                        jQuery('.copied').remove();
+                        // copy slug
+                        copySlug();
+                        // append message
+                        jQuery(this)
+                            .append('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>');
+                        // hide appended message
+                        setTimeout(function () {
+                            jQuery('.copied').remove();
+                        }, 2000);
+                    });
+
+                    function copySlug() {
+                        const temp = jQuery('<input>');
+                        let textToCopy = jQuery('#cw-slug').val();
+
+                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                        jQuery('body').append(temp);
+                        temp.val(textToCopy).select();
+                        document.execCommand("copy");
+                        temp.remove();
+                    }
                 });
             </script>
 			<?php

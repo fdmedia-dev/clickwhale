@@ -15,7 +15,7 @@ class Clickwhale_Public_Tracking_Codes {
 
 	public function __construct( $path ) {
 		$this->path = $path;
-		add_action( 'init', [ $this, 'prepare_tracking_codes' ], PHP_INT_MAX );
+		add_action( 'init', [ $this, 'prepare_tracking_codes' ], 20 );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Clickwhale_Public_Tracking_Codes {
 		$page = [];
 
 		$current_page_path = $this->parse_current_page_path();
-		$linkpage       = Linkpages_Helper::get_by_slug( intval( $current_page_path ) );
+		$linkpage          = Linkpages_Helper::get_by_slug( $current_page_path );
 		$post_type_page_id = url_to_postid( $this->parse_current_page_path( 'url' ) );
 
 		if ( $linkpage ) {
@@ -177,6 +177,7 @@ class Clickwhale_Public_Tracking_Codes {
 			'clickwhale_tracking_code_credit_after',
 			'<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->'
 		);
+
 		add_action( $position, function () use ( $code, $credit_before, $credit_after ) {
 			if ( $credit_before ) {
 				echo PHP_EOL . $credit_before . PHP_EOL;

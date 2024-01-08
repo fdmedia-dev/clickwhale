@@ -36,4 +36,17 @@ class Links_Helper extends Helper_Abstract {
 		return $string;
 	}
 
+	public static function get_meta( int $link_id, string $meta_key, string $output = "ARRAY_A" ) {
+		global $wpdb;
+
+		$table = Helper::get_clickwhale_bd_table_name( 'meta' );
+
+		return $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table WHERE link_id=%d AND meta_key=%s",
+				$link_id, $meta_key ),
+			$output
+		);
+	}
+
 }

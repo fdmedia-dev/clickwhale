@@ -165,7 +165,7 @@ final class Clickwhale_Settings {
 				'control'     => 'select',
 				'id'          => 'redirect_type',
 				'name'        => 'clickwhale_general_options[redirect_type]',
-				'value'       => ! empty( $general_options['redirect_type'] ) && is_int( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
+				'value'       => ! empty( $general_options['redirect_type'] ) ? $general_options['redirect_type'] : $defaults['general']['options']['redirect_type'],
 				'options'     => array(
 					301 => __( '301 redirect: Moved permanently', CLICKWHALE_NAME ),
 					302 => __( '302 redirect: Found / Moved temporarily', CLICKWHALE_NAME ),
@@ -364,27 +364,6 @@ final class Clickwhale_Settings {
 		}
 
 		return $tabs;
-	}
-
-	/**
-	 * Plugin links
-	 * @since 1.4.1
-	 */
-	public function settings_action_link( $links ) {
-		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-settings' ) );
-		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_NAME ) . '</a>';
-		array_unshift( $links, $settings_link );
-
-		return $links;
-	}
-
-	public function upgrade_action_link( $links ) {
-		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) );
-		$text          = __( 'Upgrade to PRO', CLICKWHALE_NAME );
-		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
-		$links[]       = $settings_link;
-
-		return $links;
 	}
 
 	/**
