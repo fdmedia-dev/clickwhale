@@ -559,7 +559,7 @@ class Clickwhale_Ajax {
 
 				$html .= '<td class="for_import ' . $mapped_columns[ $c ] . '">' . $input . '</td>';
 			}
-			$html .= '<td><button type="button"><svg class="feather"><use href="' . CLICKWHALE_ADMIN_IMAGES_DIR . '/feather-sprite.svg#trash-2"></use></svg></button></td>';
+			$html .= '<td><button type="button"><svg class="feather"><use href="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/feather-sprite.svg#trash-2"></use></svg></button></td>';
 			$html .= '</tr>';
 		}
 		$html .= '</tbody></table>';

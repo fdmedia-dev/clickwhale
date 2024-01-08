@@ -3,6 +3,10 @@
 namespace clickwhale\includes\front\tracking;
 
 class Clickwhale_Bot {
+	/**
+	 * @var bool
+	 */
+	public bool $is_bot;
 
 	public function __construct( $ua ) {
 		$this->is_bot = false;

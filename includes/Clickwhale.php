@@ -65,70 +65,16 @@ final class Clickwhale {
 	 * @var      Clickwhale_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected Clickwhale_Loader $loader;
-
-	/**
-	 * @var Clickwhale_i18n
-	 * @access   private
-	 * @since    1.0.0
-	 */
 	private Clickwhale_i18n $locale;
-
-	/**
-	 * @var Clickwhale_Admin|null
-	 * @since    1.0.0
-	 */
 	public ?Clickwhale_Admin $admin;
-
-	/**
-	 * @var Clickwhale_Settings|null
-	 * @since    1.0.0
-	 */
 	public ?Clickwhale_Settings $settings;
-
-	/**
-	 * @var Clickwhale_Link_Edit
-	 * @since    1.6.0
-	 */
 	public Clickwhale_Link_Edit $link;
-
-	/**
-	 * @var Clickwhale_Category_Edit
-	 * @since    1.6.0
-	 */
 	public Clickwhale_Category_Edit $category;
-
-	/**
-	 * @var Clickwhale_Linkpage_Edit
-	 * @since    1.6.0
-	 */
 	public Clickwhale_Linkpage_Edit $linkpage;
-
-	/**
-	 * @var Clickwhale_Ajax|null
-	 * @since    1.0.0
-	 */
 	public ?Clickwhale_Ajax $ajax;
-
-	/**
-	 * @var Clickwhale_Tracking_Code_Edit
-	 * @since    1.6.0
-	 */
 	public Clickwhale_Tracking_Code_Edit $tracking_code;
-	/**
-	 * @var Clickwhale_Tools
-	 * @since    1.0.0
-	 */
 	public Clickwhale_Tools $tools;
-
-	/**
-	 * @var Clickwhale_Public_Ajax|null
-	 * @since    1.6.0
-	 */
 	public ?Clickwhale_Public_Ajax $public_ajax;
-
-	/**
-	 * @var Clickwhale_Public
-	 */
 	public Clickwhale_Public $public;
 	public Clickwhale_WP_User $user;
 
@@ -150,23 +96,19 @@ final class Clickwhale {
 
 			self::$instance->set_locale();
 
-			if ( is_admin() ) {
-				self::$instance->admin         = Clickwhale_Admin::get_instance();
-				self::$instance->settings      = Clickwhale_Settings::get_instance();
-				self::$instance->tools         = new Clickwhale_Tools();
-				self::$instance->ajax          = Clickwhale_Ajax::get_instance();
-				self::$instance->link          = new Clickwhale_Link_Edit();
-				self::$instance->category      = new Clickwhale_Category_Edit();
-				self::$instance->linkpage      = new Clickwhale_Linkpage_Edit();
-				self::$instance->tracking_code = new Clickwhale_Tracking_Code_Edit();
+			self::$instance->admin         = Clickwhale_Admin::get_instance();
+			self::$instance->settings      = Clickwhale_Settings::get_instance();
+			self::$instance->tools         = new Clickwhale_Tools();
+			self::$instance->ajax          = Clickwhale_Ajax::get_instance();
+			self::$instance->link          = new Clickwhale_Link_Edit();
+			self::$instance->category      = new Clickwhale_Category_Edit();
+			self::$instance->linkpage      = new Clickwhale_Linkpage_Edit();
+			self::$instance->tracking_code = new Clickwhale_Tracking_Code_Edit();
+			self::$instance->public        = Clickwhale_Public::get_instance();
+			self::$instance->public_ajax   = Clickwhale_Public_Ajax::get_instance();
 
-				self::$instance->define_admin_hooks();
-			} else {
-				self::$instance->public      = Clickwhale_Public::get_instance();
-				self::$instance->public_ajax = Clickwhale_Public_Ajax::get_instance();
-
-				self::$instance->define_public_hooks();
-			}
+			self::$instance->define_admin_hooks();
+			self::$instance->define_public_hooks();
 
 		}
 
@@ -192,7 +134,7 @@ final class Clickwhale {
 	 * object therefore, we don't want the object to be cloned.
 	 *
 	 * @return void
-	 * @since 1.5
+	 * @since 1.6.0
 	 * @access protected
 	 */
 	public function __clone() {
@@ -204,7 +146,7 @@ final class Clickwhale {
 	 * Disable un-serializing of the class.
 	 *
 	 * @return void
-	 * @since 1.5
+	 * @since 1.6.0
 	 * @access protected
 	 */
 	public function __wakeup() {
@@ -349,8 +291,8 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
 
-		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->settings, 'settings_action_link' );
-		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->settings, 'upgrade_action_link' );
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
+		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
 	}
 
 	/**
@@ -375,21 +317,25 @@ final class Clickwhale {
 			$this->public,
 			'enqueue_styles'
 		);
+
 		$this->loader->add_action(
 			'wp_enqueue_scripts',
 			$this->public,
 			'enqueue_scripts'
 		);
+
 		$this->loader->add_action(
 			'init',
 			$this->public,
 			'do_redirect_handler'
 		);
+
 		$this->loader->add_action(
 			'wp_ajax_clickwhale/public/track_custom_link',
 			$this->public_ajax,
 			'track_custom_link'
 		);
+
 		$this->loader->add_action(
 			'wp_ajax_nopriv_clickwhale/public/track_custom_link',
 			$this->public_ajax,
@@ -499,7 +445,7 @@ final class Clickwhale {
 	public function admin_bar_render( $wp_admin_bar ) {
 		$wp_admin_bar->add_node( array(
 				'id'    => CLICKWHALE_NAME,
-				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_IMAGES_DIR . '/click-icon.svg"/></span> ClickWhale',
+				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
 				'href'  => admin_url( 'admin.php?page=clickwhale' ),
 				'meta'  => array(
 					'class' => CLICKWHALE_NAME,

@@ -105,7 +105,7 @@ do_action( 'clickwhale_admin_banner' );
 									$url        = trailingslashit( $url_prefix . get_bloginfo( 'url' ) ); ?>
 									<?php echo trailingslashit( esc_html( $url ) . '<span>' . esc_html( $slug ) . '</span>' ); ?>
                                     <svg class="feather">
-                                        <use href="<?php echo CLICKWHALE_ADMIN_IMAGES_DIR ?>/feather-sprite.svg#copy"></use>
+                                        <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#copy"></use>
                                     </svg>
                                 </p>
                             </td>
