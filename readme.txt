@@ -4,8 +4,8 @@ Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
 Requires at least: 3.8
 Requires PHP: 7.4.0
-Tested up to: 6.2.1
-Stable tag: 1.4.2
+Tested up to: 6.3.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,26 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 1.5.3 (1st November 2023) =
+* Fix: Fixed problem with fatal_error after click on CW link
+
+= Version 1.5.2 (1st November 2023) =
+* Tweak: Updated bots list
+* Fix: Fixed PHP Warning: Undefined array key "HTTP_HOST"
+* Fix: Fixed links order problem after import
+* Fix: Fixed links order in the linkpage CW Links block
+
+= Version 1.5.1 (12th September 2023) =
+* Fix: Fixed a bug when a link has a previously deleted category
+* Fix: Fixed problem with export when there are no categories
+* Fix: Fixed default link redirect display
+
+= Version 1.5.0 (12th September 2023) =
+* New: Import ClickWhale links from CSV file
+* New: Export ClickWhale links to CSV file
+* New: Links bulk editing
+* Fix: Fixed copy button's text after click
+* Info: Wordpress 6.3 support
 
 = Version 1.4.2 (4th August 2023) =
 * Fix: Removed char unwanted html char while link saving
