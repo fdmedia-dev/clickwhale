@@ -1,12 +1,6 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
  *
  * @link              https://fdmedia.io
  * @since             1.0.0
@@ -16,7 +10,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
- * Version:           1.5.3
+ * Version:           1.6.0
  * Requires at least: 3.8
  * Requires PHP       7.4.0
  * Author:            ClickWhale
@@ -27,10 +21,14 @@
  * Domain Path:       /languages
  */
 
+
 // If this file is called directly, abort.
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 
 /**
  * Currently plugin version.
@@ -38,18 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 
-define( 'CLICKWHALE_VERSION', '1.5.3' );
+define( 'CLICKWHALE_VERSION', '1.6.0' );
 define( 'CLICKWHALE_NAME', 'clickwhale' );
-
-/**
- * @since 1.3.0
- */
-define( 'CLICKWHALE_ADMIN_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'admin/images' );
-define( 'CLICKWHALE_ADMIN_CSS_DIR', plugin_dir_url( __FILE__ ) . 'admin/css' );
-define( 'CLICKWHALE_ADMIN_JS_DIR', plugin_dir_url( __FILE__ ) . 'admin/js' );
-define( 'CLICKWHALE_PUBLIC_IMAGES_DIR', plugin_dir_url( __FILE__ ) . 'public/images' );
-define( 'CLICKWHALE_PUBLIC_CSS_DIR', plugin_dir_url( __FILE__ ) . 'public/css' );
-define( 'CLICKWHALE_PUBLIC_JS_DIR', plugin_dir_url( __FILE__ ) . 'public/js' );
 
 /**
  * @since 1.4.1
@@ -58,20 +46,28 @@ define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
 define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
 
 /**
+ * @since 1.6.0
+ */
+define( 'CLICKWHALE_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'includes/admin' );
+define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' );
+define( 'CLICKWHALE_TEMPLATES_DIR', plugin_dir_path( __FILE__ ) . 'templates' );
+define( 'CLICKWHALE_ADMIN_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin' );
+define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/public' );
+
+
+/**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-clickwhale-activator.php
  */
 function activate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Activator.php';
 	Clickwhale_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-clickwhale-deactivator.php
  */
 function deactivate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Deactivator.php';
 	Clickwhale_Deactivator::deactivate();
 }
 
@@ -87,10 +83,9 @@ register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
 add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
+ * The core plugin class
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
+require plugin_dir_path( __FILE__ ) . 'includes/Clickwhale.php';
 
 /**
  * Begins execution of the plugin.
@@ -103,9 +98,26 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-clickwhale.php';
  */
 function run_clickwhale() {
 
-	$plugin = new Clickwhale();
-	$plugin->run();
+	Clickwhale::get_instance()->run();
 
 }
 
-add_action( 'plugins_loaded', 'run_clickwhale', 10 );
+add_action( 'plugins_loaded', 'run_clickwhale' );
+
+/**
+ * Returns the instance of Clickwhale.
+ *
+ * The main function responsible for returning the one true Clickwhale
+ * instance to functions everywhere.
+ *
+ * Use this function like you would a global variable, except without needing
+ * to declare the global.
+ *
+ * Example: <?php $clickwhale = Clickwhale(); ?>
+ *
+ * @return Clickwhale|null The one true Clickwhale instance.
+ * @since 1.6.0
+ */
+function clickwhale(): ?Clickwhale {
+	return Clickwhale::get_instance();
+}
