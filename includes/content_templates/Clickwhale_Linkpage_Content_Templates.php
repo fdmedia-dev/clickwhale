@@ -385,7 +385,8 @@ class Clickwhale_Linkpage_Content_Templates {
 					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', CLICKWHALE_NAME ),
+					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title',
+						CLICKWHALE_NAME ),
 				);
 
 				echo $this->get_template_input_field(

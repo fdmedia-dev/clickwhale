@@ -26,6 +26,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	}
 
 	function extra_tablenav( $which ) {
+
 		$categories       = Categories_Helper::get_all();
 		$categories_count = $categories ? count( $categories ) : 0;
 

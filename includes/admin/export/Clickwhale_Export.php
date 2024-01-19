@@ -170,8 +170,7 @@ class Clickwhale_Export {
                         alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
                     });
                 })
-            })
-            ;
+            });
         </script>
 		<?php
 	}

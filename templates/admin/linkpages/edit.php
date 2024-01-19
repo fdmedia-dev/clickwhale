@@ -302,6 +302,8 @@ do_action( 'clickwhale_admin_banner' );
                         <caption hidden>Link Page Customization Options</caption>
                         <tbody>
 
+						<?php do_action( 'clickwhale_linkpage_before_general_styles', $item ); ?>
+
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
@@ -324,7 +326,7 @@ do_action( 'clickwhale_admin_banner' );
 							?>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="styles[bg_color]"><?php _e( 'Site Background',
+                                    <label for="styles[bg_color]"><?php _e( 'Page Background',
 											CLICKWHALE_NAME ); ?></label>
                                 </th>
                                 <td>
