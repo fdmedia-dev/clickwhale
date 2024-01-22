@@ -13,8 +13,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 	}
 
 	/**
-	 * Default values for new link
-	 * Could be hooked by filter "clickwhale_link_defaults"
+	 * Default values for new linkpage
+	 * Could be hooked by filter "clickwhale_linkpage_defaults"
 	 * @return array
 	 */
 	public function get_defaults(): array {
@@ -189,7 +189,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		$table = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
 		$item  = array_intersect_key(
 			$_POST,
-			apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() )
+			apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
 		);
 
 		$item['slug']   = sanitize_title( $item['slug'] );
@@ -250,9 +250,9 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery('#clickwhale-tabs').tabs({
                         activate: function (event, ui) {
                             if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-styles') {
-                                jQuery('#reset-colors').show();
+                                jQuery('#reset-styles').show();
                             } else {
-                                jQuery('#reset-colors').hide();
+                                jQuery('#reset-styles').hide();
                             }
                         }
                     });
@@ -650,18 +650,20 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 });
 
                 /**
-                 *  Reset selected colors
+                 *  Reset styles to default
                  */
-                jQuery('#reset-colors').on('click', function (e) {
+                jQuery('#reset-styles').on('click', function (e) {
                     e.preventDefault();
                     let defaults;
-                    if (window.confirm('<?php _e( 'Are you sure? This action will set colors to default. This process cannot be undone!',
+                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!',
 						CLICKWHALE_NAME ) ?>')) {
-                        defaults = <?php echo json_encode( $this->get_defaults() ) ?>;
+                        defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
 
                         jQuery.each(defaults.styles, function (key, val) {
                             jQuery('[name="styles[' + key + ']"').wpColorPicker('color', val);
                         });
+
+                        <?php do_action( 'clickwhale_linkpage_reset_styles' ); ?>
                     }
                 });
 
