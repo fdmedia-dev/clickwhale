@@ -151,7 +151,7 @@ final class Clickwhale_Settings {
 				'value'          => $general_options['access_level'] ?? [ 'administrator' ],
 				'options'        => Clickwhale_WP_User::get_all_roles(),
 				'always_checked' => [ 'administrator' ],
-				'description'    => __( 'Decide which users can view plugin admin pages and edit settings.',
+				'description'    => __( 'Decide who can access critical admin pages and the plugin settings.',
 					CLICKWHALE_NAME ),
 			)
 		);

@@ -3,6 +3,7 @@
 namespace clickwhale\includes\admin;
 
 use WP_User;
+use clickwhale\includes\helpers\Helper;
 
 /**
  * WP User information and is user able to be tracked
@@ -57,6 +58,21 @@ class Clickwhale_WP_User {
 		$id = self::get_loggedin_user_id();
 
 		return $id ? get_userdata( $id )->roles : false;
+	}
+
+	/**
+	 * Check if access for current user role is granted
+	 *
+	 * @return bool
+	 */
+	public static function is_current_user_role_access_granted(): bool {
+        $access_roles       = Helper::get_clickwhale_option( 'general', 'access_level' );
+        $current_user_roles = self::get_current_user_roles();
+
+		return ( ! empty( $access_roles ) &&
+                 ! empty( $current_user_roles ) &&
+                 array_intersect( $access_roles, $current_user_roles )
+        );
 	}
 
 	/**

@@ -124,35 +124,22 @@ final class Clickwhale_Admin {
 	}
 
 	/**
-	 * Register plugin menus
-	 *
-	 * @since    1.0.0
-	 */
-
-	/**
-	 * This function introduces the theme options into the 'Settings' menu and into a top-level
-	 * 'Clickwhale' menu.
+	 * Register plugin menus.
+     * Introduces theme options into the 'Settings' menu and into a top-level 'Clickwhale' menu.
+     *
+     * @since    1.0.0
 	 */
 	public function add_plugin_menu() {
 
-		$access_roles       = Helper::get_clickwhale_option( 'general', 'access_level' );
-		$current_user_roles = Clickwhale::get_instance()->user::get_current_user_roles();
-
-		if ( is_array( $access_roles )
-		     && is_array( $current_user_roles )
-		     && ! array_intersect( $access_roles, $current_user_roles ) ) {
-			return false;
-		}
-
 		$this->menus = array(
 			'subpages'  => array(
-				'links'              => __( 'Links', CLICKWHALE_NAME ),
-				'edit-link'          => __( 'Add New', CLICKWHALE_NAME ),
-				'categories'         => __( 'Categories', CLICKWHALE_NAME ),
-				'edit-category'      => __( 'Add New Category', CLICKWHALE_NAME ),
-				'linkpages'          => __( 'Link Pages', CLICKWHALE_NAME ),
-				'edit-linkpage'      => __( 'Add New Link Page', CLICKWHALE_NAME ),
-				'tracking-codes'     => __( 'Tracking Codes', CLICKWHALE_NAME ),
+				'links'              => __( 'Links',                 CLICKWHALE_NAME ),
+				'edit-link'          => __( 'Add New',               CLICKWHALE_NAME ),
+				'categories'         => __( 'Categories',            CLICKWHALE_NAME ),
+				'edit-category'      => __( 'Add New Category',      CLICKWHALE_NAME ),
+				'linkpages'          => __( 'Link Pages',            CLICKWHALE_NAME ),
+				'edit-linkpage'      => __( 'Add New Link Page',     CLICKWHALE_NAME ),
+				'tracking-codes'     => __( 'Tracking Codes',        CLICKWHALE_NAME ),
 				'edit-tracking-code' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
 			),
 			'templates' => array(
@@ -198,39 +185,45 @@ final class Clickwhale_Admin {
 
 		do_action( 'clickwhale_menu_before_settings' );
 
-		add_submenu_page(
-			CLICKWHALE_NAME,
-			__( 'Settings', CLICKWHALE_NAME ),
-			__( 'Settings', CLICKWHALE_NAME ),
-			'read',
-			CLICKWHALE_NAME . '-settings',
-			array( $this, 'render_settings_page_template' )
-		);
+		if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+            add_submenu_page(
+                CLICKWHALE_NAME,
+                __( 'Settings', CLICKWHALE_NAME ),
+                __( 'Settings', CLICKWHALE_NAME ),
+                'read',
+                CLICKWHALE_NAME . '-settings',
+                array( $this, 'render_settings_page_template' )
+            );
+		}
 
 		do_action( 'clickwhale_menu_before_tools' );
 
-		add_submenu_page(
-			CLICKWHALE_NAME,
-			__( 'Tools', CLICKWHALE_NAME ),
-			__( 'Tools', CLICKWHALE_NAME ),
-			'read',
-			CLICKWHALE_NAME . '-tools',
-			array( $this, 'render_tools_page_template' )
-		);
+        if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+            add_submenu_page(
+                CLICKWHALE_NAME,
+                __( 'Tools', CLICKWHALE_NAME ),
+                __( 'Tools', CLICKWHALE_NAME ),
+                'read',
+                CLICKWHALE_NAME . '-tools',
+                array( $this, 'render_tools_page_template' )
+            );
+        }
 
 		do_action( 'clickwhale_menu_after_all' );
 
 	}
 
 	public function show_pro_menu_item() {
-		add_submenu_page(
-			CLICKWHALE_NAME,
-			__( 'Upgrade to PRO', CLICKWHALE_NAME ),
-			__( 'Upgrade to PRO', CLICKWHALE_NAME ),
-			'read',
-			CLICKWHALE_NAME . '-pro',
-			array( $this, 'render_pro_page_template' )
-		);
+        if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+            add_submenu_page(
+                CLICKWHALE_NAME,
+                __( 'Upgrade to PRO', CLICKWHALE_NAME ),
+                __( 'Upgrade to PRO', CLICKWHALE_NAME ),
+                'read',
+                CLICKWHALE_NAME . '-pro',
+                array( $this, 'render_pro_page_template' )
+            );
+        }
 	}
 
 	/**
