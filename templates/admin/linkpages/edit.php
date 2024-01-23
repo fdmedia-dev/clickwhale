@@ -22,7 +22,7 @@ $select        = $linkpage->get_select_values();
 
 // STYLES
 $item['styles'] = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
-$item['social'] = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['styles'];
+$item['social'] = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['social'];
 $styles         = $item['styles'];
 $social         = $item['social'];
 
@@ -302,6 +302,8 @@ do_action( 'clickwhale_admin_banner' );
                         <caption hidden>Link Page Customization Options</caption>
                         <tbody>
 
+						<?php do_action( 'clickwhale_linkpage_before_general_styles', $item ); ?>
+
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
@@ -324,7 +326,7 @@ do_action( 'clickwhale_admin_banner' );
 							?>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="styles[bg_color]"><?php _e( 'Site Background',
+                                    <label for="styles[bg_color]"><?php _e( 'Page Background',
 											CLICKWHALE_NAME ); ?></label>
                                 </th>
                                 <td>
@@ -612,10 +614,10 @@ do_action( 'clickwhale_admin_banner' );
                    class="button-primary"
                    name="submit">
 
-            <input type="button" value="<?php _e( 'Reset colors', CLICKWHALE_NAME ) ?>"
-                   id="reset-colors"
+            <input type="button" value="<?php _e( 'Reset styles', CLICKWHALE_NAME ) ?>"
+                   id="reset-styles"
                    class="button"
-                   name="reset-colors"
+                   name="reset-styles"
                    style="display: none">
 
 			<?php
