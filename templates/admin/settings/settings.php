@@ -1,6 +1,5 @@
 <?php
 
-use clickwhale\includes\admin\Clickwhale_Methods;
 use clickwhale\includes\admin\Clickwhale_Settings;
 
 $tabs = Clickwhale_Settings::render_tabs();
