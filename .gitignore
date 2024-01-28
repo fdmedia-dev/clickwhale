@@ -22,8 +22,6 @@ $RECYCLE.BIN/
 *.pydevproject
 .project
 .metadata
-build/
-tmp/
 tests/clover.xml
 
 # Grunt, Bower, node etc.
@@ -36,6 +34,9 @@ package-lock.json
 
 # Folders to ignore
 cache
+build/
+tmp/
+vendor/
 
 # Temporary files
 *~
@@ -55,5 +56,3 @@ cache
 # Other
 deploy.sh
 /nbproject/private/
-build/
-vendor/
