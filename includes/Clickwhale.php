@@ -3,6 +3,7 @@
 namespace clickwhale\includes;
 
 use clickwhale\includes\front\Clickwhale_Public_Ajax;
+use clickwhale\includes\debuggers\Debugger;
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\admin\{
 	Clickwhale_Admin,
@@ -109,7 +110,6 @@ final class Clickwhale {
 
 			self::$instance->define_admin_hooks();
 			self::$instance->define_public_hooks();
-
 		}
 
 		return self::$instance;
@@ -183,6 +183,11 @@ final class Clickwhale {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Clickwhale_i18n.php';
+
+		/**
+		 * Debuggers
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/debuggers/Debugger.php';
 
 		/**
 		 * Helpers

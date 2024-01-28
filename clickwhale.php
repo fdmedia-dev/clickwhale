@@ -41,7 +41,7 @@ if ( ! function_exists( 'clickwhale_fs' ) ) {
                 'type'                => 'plugin',
                 'public_key'          => 'pk_07a5633bd94c00467e7e58c200504',
                 'is_premium'          => true, // ???
-                'is_premium_only'     => true, // ???
+                'is_premium_only'     => false, // ???
                 'has_addons'          => false,
                 'has_paid_plans'      => true,
                 'is_org_compliant'    => false, // ???
@@ -66,6 +66,7 @@ if ( ! function_exists( 'clickwhale_fs' ) ) {
     clickwhale_fs()->override_i18n([ 'account' => __( 'License', 'clickwhale' ) ]);
 }
 
+use clickwhale\includes\debuggers\Debugger;
 use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 
 /**
@@ -78,23 +79,25 @@ define( 'CLICKWHALE_NAME', 'clickwhale' );
 /**
  * @since 1.4.1
  */
-define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
-define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
+define( 'CLICKWHALE_SLUG',    plugin_basename( __DIR__ ) );
+define( 'CLICKWHALE_ID',      plugin_basename( __FILE__ ) );
+define( 'CLICKWHALE_DIR',     plugin_dir_path( __FILE__ ) );
+define( 'CLICKWHALE_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * @since 1.6.0
  */
-define( 'CLICKWHALE_ADMIN_DIR', plugin_dir_path( __FILE__ ) . 'includes/admin' );
-define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' );
-define( 'CLICKWHALE_TEMPLATES_DIR', plugin_dir_path( __FILE__ ) . 'templates' );
-define( 'CLICKWHALE_ADMIN_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin' );
-define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/public' );
+define( 'CLICKWHALE_ADMIN_DIR',         CLICKWHALE_DIR . 'includes/admin' );
+define( 'CLICKWHALE_PUBLIC_DIR',        CLICKWHALE_DIR . 'includes/front' );
+define( 'CLICKWHALE_TEMPLATES_DIR',     CLICKWHALE_DIR . 'templates' );
+define( 'CLICKWHALE_ADMIN_ASSETS_DIR',  CLICKWHALE_DIR_URL . 'assets/admin' );
+define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
 
 /**
  * The code that runs during plugin activation.
  */
 function activate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Activator.php';
+	require_once CLICKWHALE_DIR . 'includes/Clickwhale_Activator.php';
 	Clickwhale_Activator::activate();
 }
 
@@ -102,25 +105,17 @@ function activate_clickwhale() {
  * The code that runs during plugin deactivation.
  */
 function deactivate_clickwhale() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/Clickwhale_Deactivator.php';
+	require_once CLICKWHALE_DIR . 'includes/Clickwhale_Deactivator.php';
 	Clickwhale_Deactivator::deactivate();
-}
-
-function clickwhale_update_db_check() {
-	if ( version_compare( CLICKWHALE_VERSION, get_option( 'clickwhale_version' ), '>' ) ) {
-		activate_clickwhale();
-	}
 }
 
 register_activation_hook( __FILE__, 'activate_clickwhale' );
 register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
 
-add_action( 'plugins_loaded', 'clickwhale_update_db_check' );
-
 /**
  * The core plugin class
  */
-require plugin_dir_path( __FILE__ ) . 'includes/Clickwhale.php';
+require CLICKWHALE_DIR . 'includes/Clickwhale.php';
 
 /**
  * Begins execution of the plugin.
@@ -132,9 +127,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/Clickwhale.php';
  * @since    1.0.0
  */
 function run_clickwhale() {
-
 	Clickwhale::get_instance()->run();
-
 }
 
 add_action( 'plugins_loaded', 'run_clickwhale' );
@@ -155,4 +148,11 @@ add_action( 'plugins_loaded', 'run_clickwhale' );
  */
 function clickwhale(): ?Clickwhale {
 	return Clickwhale::get_instance();
+}
+
+/**
+ * PRO version
+ */
+if ( clickwhale_fs()->is__premium_only() ) {
+    require_once CLICKWHALE_DIR . 'pro/clickwhale-pro.php';
 }
