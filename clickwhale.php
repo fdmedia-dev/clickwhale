@@ -1,7 +1,5 @@
 <?php
-
 /**
- *
  * @link              https://fdmedia.io
  * @since             1.0.0
  * @package           Clickwhale
@@ -11,29 +9,67 @@
  * Plugin URI:        https://clickwhale.pro
  * Description:       Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress.
  * Version:           1.6.0
- * Requires at least: 3.8
- * Requires PHP       7.4.0
+ * Requires at least: 5.0
+ * Requires PHP:      7.4
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       clickwhale
  * Domain Path:       /languages
+ * @fs_premium_only   /pro/
  */
-
-
-// If this file is called directly, abort.
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Freemius Snippet
+if ( ! function_exists( 'clickwhale_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function clickwhale_fs() {
+        global $clickwhale_fs;
+
+        if ( ! isset( $clickwhale_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname(__FILE__) . '/freemius/start.php';
+
+            $clickwhale_fs = fs_dynamic_init( array(
+                'id'                  => '14609',
+                'slug'                => 'clickwhale',
+                'premium_slug'        => 'clickwhale-pro',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_07a5633bd94c00467e7e58c200504',
+                'is_premium'          => true, // ???
+                'is_premium_only'     => true, // ???
+                'has_addons'          => false,
+                'has_paid_plans'      => true,
+                'is_org_compliant'    => false, // ???
+                'has_affiliation'     => 'all',
+                'menu'                => array(
+                    'slug'           => 'clickwhale',
+                    'contact'        => false,
+                    'support'        => false,
+                    'pricing'        => false,
+                ),
+            ) );
+        }
+
+        return $clickwhale_fs;
+    }
+
+    // Init Freemius.
+    clickwhale_fs();
+    // Signal that SDK was initiated.
+    do_action( 'clickwhale_fs_loaded' );
+
+    clickwhale_fs()->override_i18n([ 'account' => __( 'License', 'clickwhale' ) ]);
+}
+
 use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 
 /**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
+ * Current plugin version.
  */
 
 define( 'CLICKWHALE_VERSION', '1.6.0' );
@@ -53,7 +89,6 @@ define( 'CLICKWHALE_PUBLIC_DIR', plugin_dir_path( __FILE__ ) . 'includes/front' 
 define( 'CLICKWHALE_TEMPLATES_DIR', plugin_dir_path( __FILE__ ) . 'templates' );
 define( 'CLICKWHALE_ADMIN_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/admin' );
 define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', plugin_dir_url( __FILE__ ) . 'assets/public' );
-
 
 /**
  * The code that runs during plugin activation.
