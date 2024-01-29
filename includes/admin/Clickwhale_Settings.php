@@ -157,7 +157,7 @@ final class Clickwhale_Settings {
 		);
 		add_settings_field(
 			'redirection',
-			__( 'Redirection Type', CLICKWHALE_NAME ),
+			__( 'Redirection Type TEST', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
