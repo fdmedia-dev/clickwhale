@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\front;
 
 use WC_Order;
@@ -23,7 +22,6 @@ class Clickwhale_Pro_Tracking_Code_Conversion {
 				add_action( 'edd_payment_receipt_after_table', [ $this, 'edd_thankyou' ] );
 				break;
 		}
-
 	}
 
 	public function woo_thankyou( $order_id ) {
@@ -121,5 +119,4 @@ class Clickwhale_Pro_Tracking_Code_Conversion {
 			echo wp_unslash( $code );
 		} );
 	}
-
 }

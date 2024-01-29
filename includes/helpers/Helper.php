@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\helpers;
 
 class Helper {
@@ -298,7 +297,7 @@ class Helper {
 			sprintf(
 				__(
 					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>',
-					CLICKWHALE_NAME ),
+					CLICKWHALE_SLUG ),
 				self::get_pro_link()
 			)
 		);

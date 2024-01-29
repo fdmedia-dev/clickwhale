@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\helpers;
 
 use stdClass;
@@ -60,10 +59,10 @@ class Tracking_Codes_Helper extends Helper_Abstract {
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d %s can be active at the same time.', CLICKWHALE_NAME ),
+			__( 'Currently, a maximum of %d %s can be active at the same time.', CLICKWHALE_SLUG ),
 			self::get_active_limit(),
-			self::get_active_limit() === 1 ? __( 'tracking code', CLICKWHALE_NAME ) : __( 'tracking codes',
-				CLICKWHALE_NAME )
+			self::get_active_limit() === 1 ? __( 'tracking code', CLICKWHALE_SLUG ) : __( 'tracking codes',
+				CLICKWHALE_SLUG )
 		);
 	}
 

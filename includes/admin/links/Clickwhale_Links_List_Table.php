@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\links;
 
 use clickwhale\includes\helpers\{Helper};
@@ -35,7 +34,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             <div class="alignleft actions bulkactions">
 				<?php if ( $categories ) { ?>
                     <select name="category" class="clickwhale-filter-categories">
-                        <option value=""><?php _e( 'All Categories', CLICKWHALE_NAME ) ?></option>
+                        <option value=""><?php _e( 'All Categories', CLICKWHALE_SLUG ) ?></option>
 						<?php
 						foreach ( $categories as $category ) {
 							$selected = isset( $_GET['category'] ) && $_GET['category'] == $category->id ? ' selected = "selected"' : '';
@@ -45,7 +44,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 						}
 						?>
                     </select>
-                    <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_NAME ); ?>">
+                    <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_SLUG ); ?>">
 					<?php
 				}
 				?>
@@ -142,11 +141,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 			wp_unslash( $item['title'] ) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'],
-				__( 'Edit', CLICKWHALE_NAME ) ),
+				__( 'Edit', CLICKWHALE_SLUG ) ),
 			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset Clicks', CLICKWHALE_NAME ) ),
+				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset Clicks', CLICKWHALE_SLUG ) ),
 			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%s">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', CLICKWHALE_NAME ) ),
+				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', CLICKWHALE_SLUG ) ),
 		);
 
 		return sprintf( '%s %s',
@@ -164,7 +163,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 */
 	public function column_slug( $item ) {
 		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link',
-				CLICKWHALE_NAME ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+				CLICKWHALE_SLUG ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
 	/**
@@ -265,12 +264,12 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
 		$columns = array(
 			'cb'           => '<input type="checkbox" />',             //Render a checkbox instead of text
-			'title'        => __( 'Title', CLICKWHALE_NAME ),
-			'slug'         => __( 'Slug', CLICKWHALE_NAME ),
-			'url'          => __( 'Target URL', CLICKWHALE_NAME ),
-			'categories'   => __( 'Categories', CLICKWHALE_NAME ),
-			'clicks_count' => __( 'Clicks', CLICKWHALE_NAME ),
-			'author'       => __( 'Author', CLICKWHALE_NAME )
+			'title'        => __( 'Title', CLICKWHALE_SLUG ),
+			'slug'         => __( 'Slug', CLICKWHALE_SLUG ),
+			'url'          => __( 'Target URL', CLICKWHALE_SLUG ),
+			'categories'   => __( 'Categories', CLICKWHALE_SLUG ),
+			'clicks_count' => __( 'Clicks', CLICKWHALE_SLUG ),
+			'author'       => __( 'Author', CLICKWHALE_SLUG )
 		);
 
 		if ( isset( $tracking_options['disable_tracking'] ) ) {
@@ -474,7 +473,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e( 'No Links Found.', CLICKWHALE_NAME );
+		_e( 'No Links Found.', CLICKWHALE_SLUG );
 	}
 
 	public function display() {

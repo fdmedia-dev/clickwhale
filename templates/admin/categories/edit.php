@@ -20,7 +20,7 @@ do_action( 'clickwhale_admin_banner' );
 	<?php
 	echo Helper::render_heading(
 		array(
-			'name'         => __( 'Category', CLICKWHALE_NAME ),
+			'name'         => __( 'Category', CLICKWHALE_SLUG ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
 			'link_to_list' => 'clickwhale-categories',
 			'link_to_add'  => 'clickwhale-edit-category',
@@ -48,7 +48,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="title"><?php _e( 'Title', CLICKWHALE_NAME ) ?></label>
+                                <label for="title"><?php _e( 'Title', CLICKWHALE_SLUG ) ?></label>
                             </th>
                             <td>
 								<?php
@@ -59,7 +59,7 @@ do_action( 'clickwhale_admin_banner' );
 										'name'        => 'title',
 										'type'        => 'text',
 										'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-										'placeholder' => __( 'E.g. Affiliate links', CLICKWHALE_NAME ),
+										'placeholder' => __( 'E.g. Affiliate links', CLICKWHALE_SLUG ),
 										'required'    => true,
 									)
 								);
@@ -70,7 +70,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="slug"><?php _e( 'Slug', CLICKWHALE_NAME ) ?></label>
+                                <label for="slug"><?php _e( 'Slug', CLICKWHALE_SLUG ) ?></label>
                             </th>
                             <td>
 								<?php
@@ -81,7 +81,7 @@ do_action( 'clickwhale_admin_banner' );
 										'name'        => 'slug',
 										'type'        => 'text',
 										'value'       => esc_attr( $item['slug'] ),
-										'placeholder' => __( 'E.g. affiliate-links', CLICKWHALE_NAME ),
+										'placeholder' => __( 'E.g. affiliate-links', CLICKWHALE_SLUG ),
 										'required'    => false,
 									)
 								);
@@ -93,13 +93,13 @@ do_action( 'clickwhale_admin_banner' );
 						<?php
 						echo Helper::render_control(
 							array(
-								'row_label'   => __( 'Description', CLICKWHALE_NAME ),
+								'row_label'   => __( 'Description', CLICKWHALE_SLUG ),
 								'control'     => 'textarea',
 								'id'          => 'description',
 								'name'        => 'description',
 								'value'       => esc_html( wp_unslash( $item['description'] ) ),
-								'placeholder' => __( 'Your comment here', CLICKWHALE_NAME ),
-								'description' => __( 'Optional comment for the category', CLICKWHALE_NAME ),
+								'placeholder' => __( 'Your comment here', CLICKWHALE_SLUG ),
+								'description' => __( 'Optional comment for the category', CLICKWHALE_SLUG ),
 							),
 							true
 						);
@@ -110,7 +110,7 @@ do_action( 'clickwhale_admin_banner' );
 
 					<?php if ( $count < $limit ) { ?>
                         <input type="submit"
-                               value="<?php _e( 'Save category', CLICKWHALE_NAME ) ?>"
+                               value="<?php _e( 'Save category', CLICKWHALE_SLUG ) ?>"
                                id="submit"
                                class="button-primary"
                                name="submit">

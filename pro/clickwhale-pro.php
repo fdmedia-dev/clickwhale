@@ -10,9 +10,13 @@ use clickwhale_pro\includes\{
     Clickwhale_Pro_Deactivator
 };
 
+/**
+ * Current pro version.
+ */
 define( 'CLICKWHALE_PRO_VERSION', '1.0.3' );
-define( 'CLICKWHALE_PRO_NAME', 'clickwhale-pro' );
+
 define( 'CLICKWHALE_PRO_SLUG', 'clickwhale-pro' );
+define( 'CLICKWHALE_PRO_ID', CLICKWHALE_SLUG . '/pro/' ); // `clickwhale/pro/`
 define( 'CLICKWHALE_PRO_DIR', CLICKWHALE_DIR . 'pro/' );
 define( 'CLICKWHALE_PRO_DIR_URL', CLICKWHALE_DIR_URL . 'pro/' );
 

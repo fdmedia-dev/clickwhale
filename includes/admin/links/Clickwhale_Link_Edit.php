@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\links;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
@@ -120,7 +119,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         title.addClass('error')
-                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_SLUG ) ?>');
                     } else {
                         title.removeClass('error').next().text('');
                     }
@@ -129,7 +128,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>')
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_SLUG ) ?>')
                     } else {
                         slug.removeClass('error').next().text('');
                     }
@@ -139,7 +138,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                         slug.addClass('error');
                         jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_NAME ) ?>')
+							CLICKWHALE_SLUG ) ?>')
                     }
                 });
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin\statistics;
 
 class Clickwhale_Pro_Clicks_Statistics {
@@ -30,10 +29,10 @@ class Clickwhale_Pro_Clicks_Statistics {
 			return false;
 		}
 
-		$options = '<option value="0" selected>' . __( 'All', CLICKWHALE_PRO_NAME ) . '</option>';
+		$options = '<option value="0" selected>' . __( 'All', CLICKWHALE_PRO_SLUG ) . '</option>';
 		foreach ( $links as $link ) {
 			if ( is_null( $link['item_id'] ) ) {
-				$link['title'] = __( 'Unknown Link', CLICKWHALE_PRO_NAME );
+				$link['title'] = __( 'Unknown Link', CLICKWHALE_PRO_SLUG );
 			}
 			$options .= '<option value="' . $link['id'] . '">' . wp_unslash( $link['title'] ) . ' (id: ' . $link['id'] . ')</option>';
 		}
@@ -48,14 +47,14 @@ class Clickwhale_Pro_Clicks_Statistics {
 
 		$rowID         = 'data-row="' . $link['id'] . '"';
 		$cellTitle     = is_null( $link['item_id'] )
-			? '<td>' . __( 'Unknown Link', CLICKWHALE_PRO_NAME ) . ' (id: ' . $link['id'] . ')' . '</td>'
+			? '<td>' . __( 'Unknown Link', CLICKWHALE_PRO_SLUG ) . ' (id: ' . $link['id'] . ')' . '</td>'
 			: '<td>' . wp_unslash( $link['title'] ) . ' (id: ' . $link['id'] . ')' . '</td>';
 		$cellURL       = is_null( $link['item_id'] )
 			? '<td></td>'
 			: '<td><small>' . $link['url'] . '</small></td>';
-		$editTooltip   = __( 'Edit link', CLICKWHALE_PRO_NAME );
-		$statTooltip   = __( 'Select link for the statistics', CLICKWHALE_PRO_NAME );
-		$removeTooltip = __( 'Remove link from the statistics', CLICKWHALE_PRO_NAME );
+		$editTooltip   = __( 'Edit link', CLICKWHALE_PRO_SLUG );
+		$statTooltip   = __( 'Select link for the statistics', CLICKWHALE_PRO_SLUG );
+		$removeTooltip = __( 'Remove link from the statistics', CLICKWHALE_PRO_SLUG );
 		$editURL       = esc_url( admin_url( 'admin.php?page=clickwhale-edit-link&id=' . $link['id'] ) );
 		$edit          = is_null( $link['item_id'] )
 			? ''
@@ -76,16 +75,16 @@ class Clickwhale_Pro_Clicks_Statistics {
 		$thead = '';
 
 		$thead .= '<thead><tr>';
-		$thead .= '<th>' . __( 'Link', CLICKWHALE_PRO_NAME ) . '</th>';
-		$thead .= '<th>' . __( 'URL', CLICKWHALE_PRO_NAME ) . '</th>';
-		$thead .= '<th width="100">' . __( 'Clicks', CLICKWHALE_PRO_NAME ) . '</th>';
+		$thead .= '<th>' . __( 'Link', CLICKWHALE_PRO_SLUG ) . '</th>';
+		$thead .= '<th>' . __( 'URL', CLICKWHALE_PRO_SLUG ) . '</th>';
+		$thead .= '<th width="100">' . __( 'Clicks', CLICKWHALE_PRO_SLUG ) . '</th>';
 		$thead .= '<th width="100"></th>';
 		$thead .= '</tr></thead>';
 
 		foreach ( $links as $link ) {
 			$rows .= $this->get_link_row( $link );
 		}
-		$tfoot = '<tfoot><tr><th colspan="4">' . __( 'Nothing to display', CLICKWHALE_PRO_NAME ) . '</th></tr></tfoot>';
+		$tfoot = '<tfoot><tr><th colspan="4">' . __( 'Nothing to display', CLICKWHALE_PRO_SLUG ) . '</th></tr></tfoot>';
 
 		return '<table id="clickwhaleClicksTable" class="wp-list-table">' . $thead . $rows . $tfoot . '</table>';
 	}
@@ -98,12 +97,12 @@ class Clickwhale_Pro_Clicks_Statistics {
         <div class="clickwhale-statistics--filters">
 
             <div class="clickwhale-statistics--filter filter-list filter-links">
-                <h4 class="wp-heading-inline"><?php _e( 'Select Link', CLICKWHALE_PRO_NAME ) ?></h4>
+                <h4 class="wp-heading-inline"><?php _e( 'Select Link', CLICKWHALE_PRO_SLUG ) ?></h4>
 				<?php echo $links_select ?>
             </div>
 
             <div class="clickwhale-statistics--filter filter-period">
-                <h4 class="wp-heading-inline"><?php _e( 'Period', CLICKWHALE_PRO_NAME ) ?></h4>
+                <h4 class="wp-heading-inline"><?php _e( 'Period', CLICKWHALE_PRO_SLUG ) ?></h4>
 				<?php if ( $periods ) { ?>
                     <select id="clickwhaleClicksPeriod" class="clickwhale-select">
 						<?php foreach ( $periods as $k => $period ) { ?>
@@ -122,36 +121,36 @@ class Clickwhale_Pro_Clicks_Statistics {
                            id="clickwhaleClicksCustomPeriodStart"
                            class="clickwhale-statistics--custom-period--start"
                            min="2022-12-11"
-                           placeholder="<?php _e( 'Start Date', CLICKWHALE_PRO_NAME ) ?>">
+                           placeholder="<?php _e( 'Start Date', CLICKWHALE_PRO_SLUG ) ?>">
                     <input type="text"
                            id="clickwhaleClicksCustomPeriodEnd"
                            class="clickwhale-statistics--custom-period--end"
-                           placeholder="<?php _e( 'End Date', CLICKWHALE_PRO_NAME ) ?>">
-                    <button class="button" type="button"><?php _e( 'Filter', CLICKWHALE_PRO_NAME ) ?></button>
+                           placeholder="<?php _e( 'End Date', CLICKWHALE_PRO_SLUG ) ?>">
+                    <button class="button" type="button"><?php _e( 'Filter', CLICKWHALE_PRO_SLUG ) ?></button>
                 </div>
             </div>
         </div>
 
         <div class="clickwhale-statistics--grid clickwhale-statistics--cards">
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="clicksPerToday">
-                <p><?php _e( 'Clicks for today', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Clicks for today', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from yesterday', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from yesterday', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="clicksPerWeek">
-                <p><?php _e( 'Clicks for this week', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Clicks for this week', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from last week', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from last week', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="clicksPerMonth">
-                <p><?php _e( 'Clicks for this month', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Clicks for this month', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from last month', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from last month', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
         </div>
@@ -159,7 +158,7 @@ class Clickwhale_Pro_Clicks_Statistics {
         <div class="clickwhale-statistics--grid clickwhale-statistics--charts">
             <div class="clickwhale-statistics--item">
                 <div class="clickwhale-statistics--item-header">
-					<?php _e( 'Link Clicks Overview', CLICKWHALE_PRO_NAME ); ?>
+					<?php _e( 'Link Clicks Overview', CLICKWHALE_PRO_SLUG ); ?>
                 </div>
 
                 <div class="clickwhale-statistics--chart-clicks">
@@ -168,7 +167,7 @@ class Clickwhale_Pro_Clicks_Statistics {
             </div>
             <div class="clickwhale-statistics--item">
                 <div class="clickwhale-statistics--item-header">
-					<?php _e( 'Most Clicked Links', CLICKWHALE_PRO_NAME ); ?>
+					<?php _e( 'Most Clicked Links', CLICKWHALE_PRO_SLUG ); ?>
                 </div>
                 <div class="clickwhale-statistics--chart-most-clicked">
                     <canvas id="clickwhaleMostClickedChart"></canvas>
@@ -178,7 +177,7 @@ class Clickwhale_Pro_Clicks_Statistics {
 
         <div class="clickwhale-statistics--item">
             <div class="clickwhale-statistics--item-header">
-				<?php _e( 'Total Links Clicks', CLICKWHALE_PRO_NAME ); ?>
+				<?php _e( 'Total Links Clicks', CLICKWHALE_PRO_SLUG ); ?>
             </div>
             <div class="clickwhale-statistics--table">
 				<?php echo $this->get_links_table( self::$withClicks ); ?>

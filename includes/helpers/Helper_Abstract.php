@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\helpers;
 
 use stdClass;

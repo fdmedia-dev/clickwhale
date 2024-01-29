@@ -1,0 +1,192 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+/*---------- CW FEED ---------*/
+
+.linkpage-feed--entry a {
+	color: var(--link-color)
+}
+
+.linkpage-feed--entry {
+	background-color: var(--link-bg-color);
+	transition: all .3s ease-in-out;
+}
+
+.linkpage-feed--title {
+	display: block;
+	color: var(--link-color);
+	text-decoration: none;
+	letter-spacing: normal;
+	font-weight: 500;
+}
+
+.linkpage-feed--image {
+	display: block;
+}
+
+.linkpage-feed--image img {
+	display: block;
+	margin: 0;
+	border-radius: 5px;
+	transition: all .3s ease-in-out;
+	object-fit: cover;
+	aspect-ratio: 1.618 / 1;
+	width: 100%;
+	height: auto;
+}
+
+.linkpage-public-row > [class^="linkpage-feed-layout--grid"] {
+	display: grid;
+	gap: 20px;
+}
+
+.linkpage-feed-layout--grid-2 {
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.linkpage-feed-layout--grid-3 {
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.linkpage-public-row > [class^="linkpage-feed-layout--grid"] .linkpage-feed--entry {
+	border-radius: 10px;
+	padding: .5rem .5rem;
+}
+
+.linkpage-feed-layout--grid-2 .linkpage-feed--title {
+	font-size: 1.2rem;
+	line-height: 1.2em;
+	font-weight: 500;
+	padding: 0 10px 10px;
+}
+
+.linkpage-feed-layout--grid-3 .linkpage-feed--title {
+	font-size: 1rem;
+	line-height: 1.3em;
+	padding: 0 5px 5px;
+}
+
+.linkpage-public-row > [class^="linkpage-feed-layout--list"] {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.linkpage-feed-layout--list-lg .linkpage-feed--entry {
+	border-radius: 10px;
+	padding: 1rem 1rem;
+}
+
+.linkpage-feed-layout--list-lg .linkpage-feed--title {
+	font-size: 1.5rem;
+	line-height: 1.2em;
+}
+
+.linkpage-feed-layout--list-sm .linkpage-feed--entry {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	border-radius: 10px;
+	padding: 1rem 1rem;
+	gap: 20px;
+}
+
+.linkpage-feed-layout--list-sm .linkpage-feed--image {
+	flex: 1;
+}
+
+.linkpage-feed-layout--list-sm .linkpage-feed--title {
+	flex: 2;
+	font-size: 1.3rem;
+	line-height: 1.2em;
+	margin: 0 !important;
+}
+
+.linkpage-public-row > [class^="linkpage-feed-layout--list"] a + a {
+	margin-top: 15px;
+}
+
+.linkpage-public-row > [class^="linkpage-feed-layout--grid"] a + a {
+	margin-top: 10px;
+}
+
+.linkpage-feed--entry:hover a {
+	color: var(--link-hover)
+}
+
+.linkpage-feed--entry:hover {
+	background-color: var(--link-bg-hover);
+	box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
+	color: var(--link-hover);
+}
+
+.linkpage-feed--entry:hover img {
+	opacity: .7;
+}
+
+/* ---------- */
+
+.linkpage-public--social {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-flow: row wrap;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 20px;
+}
+
+.linkpage-public--social > li > a {
+	display: block;
+	text-decoration: none;
+	color: var(--clickwhale-text-color);
+}
+
+.linkpage-public--social > li > a svg {
+	display: block;
+	width: 36px;
+	height: 36px;
+}
+
+.linkpage-public--social > li > a:hover {
+	opacity: .7;
+	color: var(--clickwhale-text-color);
+}
+
+.linkpage-public--links > .linkpage-public-row.linkpage-public-row--cw_social:first-child {
+	margin: -20px 0 40px 0;
+}
+
+.linkpage-public--links > .linkpage-public-row.linkpage-public-row--cw_social:last-child {
+	margin: 40px 0 0 0;
+}
+
+/* ---------- */
+
+@media (max-width: 700px) {
+	.linkpage-feed-layout--grid-2,
+	.linkpage-feed-layout--grid-3 {
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	}
+
+	.linkpage-feed-layout--grid-2 .linkpage-feed--title,
+	.linkpage-feed-layout--grid-3 .linkpage-feed--title,
+	.linkpage-feed-layout--list-lg .linkpage-feed--title {
+		font-size: 1.3rem;
+		line-height: 1.2em;
+	}
+
+	.linkpage-public--social{
+		gap: 10px;
+	}
+}
+
+@media (max-width: 600px) {
+	.linkpage-feed-layout--list-sm .linkpage-feed--entry {
+		flex-direction: column;
+	}
+}

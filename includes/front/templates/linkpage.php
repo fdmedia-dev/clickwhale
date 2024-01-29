@@ -48,4 +48,3 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 <?php wp_footer(); ?>
 </body>
 </html>
-

@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\import;
 
 class Clickwhale_Import {
@@ -13,7 +12,7 @@ class Clickwhale_Import {
 
 		add_settings_section(
 			'clickwhale_tools_import_section',
-			__( 'Import links from a CSV file', CLICKWHALE_NAME ),
+			__( 'Import links from a CSV file', CLICKWHALE_SLUG ),
 			array( $this, 'settings_section_callback' ),
 			'clickwhale_tools_import_settings',
 			array(
@@ -22,14 +21,14 @@ class Clickwhale_Import {
 						'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>',
 						CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
 					),
-					CLICKWHALE_NAME
+					CLICKWHALE_SLUG
 				),
 			)
 		);
 
 		add_settings_field(
 			'import_file',
-			__( 'Choose a CSV file from your computer', CLICKWHALE_NAME ),
+			__( 'Choose a CSV file from your computer', CLICKWHALE_SLUG ),
 			array( $this, 'import_file_callback' ),
 			'clickwhale_tools_import_settings',
 			'clickwhale_tools_import_section'
@@ -75,7 +74,7 @@ class Clickwhale_Import {
 
                     if (uploadedFile.type !== 'text/csv') {
                         jQuery(this).val('');
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
+                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_SLUG ) ?>');
                     }
 
                 });
@@ -115,7 +114,7 @@ class Clickwhale_Import {
                             }
                         });
                     } else {
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
+                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_SLUG ) ?>');
                     }
                 });
 
@@ -141,7 +140,7 @@ class Clickwhale_Import {
                                 mapped.push(selected);
                             } else {
                                 error = true;
-                                message = '<?php echo __( 'Duplicated field', CLICKWHALE_NAME ) ?>';
+                                message = '<?php echo __( 'Duplicated field', CLICKWHALE_SLUG ) ?>';
                                 select.css('border-color', 'red');
                                 select.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                             }
@@ -237,7 +236,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo __( 'Required field', CLICKWHALE_SLUG ) ?>'
                                                 );
 
                                                 break;
@@ -248,7 +247,7 @@ class Clickwhale_Import {
                                                 error = true;
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_SLUG ) ?>'
                                                 );
                                             }
 
@@ -258,7 +257,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_SLUG ) ?>'
                                                 );
                                                 break;
                                             } else {
@@ -300,7 +299,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     input,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo __( 'Required field', CLICKWHALE_SLUG ) ?>'
                                                 );
 
                                                 break;
@@ -346,7 +345,7 @@ class Clickwhale_Import {
 
                         } else {
                             error = true;
-                            alert('<?php echo __( 'No items', CLICKWHALE_NAME ) ?>');
+                            alert('<?php echo __( 'No items', CLICKWHALE_SLUG ) ?>');
                         }
                     }).fail(function (data) {
                         error = true;

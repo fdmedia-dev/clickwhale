@@ -11,7 +11,7 @@ $table->prepare_items();
 
 $message = '';
 if ( 'delete' === $table->current_action() ) {
-	$message = __( 'Items deleted', CLICKWHALE_NAME );
+	$message = __( 'Items deleted', CLICKWHALE_SLUG );
 }
 
 do_action( 'clickwhale_admin_banner' );

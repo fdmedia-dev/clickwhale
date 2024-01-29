@@ -1,6 +1,8 @@
 <?php
 namespace clickwhale\includes\admin\reset;
+
 class Clickwhale_Reset {
+
 	/**
 	 * The ID of this plugin.
 	 *

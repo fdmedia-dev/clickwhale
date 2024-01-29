@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 use clickwhale\includes\admin\migration\Clickwhale_Migration;
@@ -8,18 +7,13 @@ use clickwhale\includes\admin\import\Clickwhale_Import;
 use clickwhale\includes\admin\export\Clickwhale_Export;
 
 /**
- * The settings of the plugin.
+ * Setting tools of the plugin.
  *
  * @link       #
  * @since      1.0.0
  *
  * @package    Clickwhale
  * @subpackage Clickwhale/admin
- */
-
-/**
- * Class WordPress_Plugin_Template_Settings
- *
  */
 class Clickwhale_Tools {
 	/**
@@ -65,5 +59,4 @@ class Clickwhale_Tools {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/import/Clickwhale_Import.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/export/Clickwhale_Export.php';
 	}
-
 }

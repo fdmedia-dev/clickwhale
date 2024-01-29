@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin;
 
 use clickwhale\includes\admin\Clickwhale_Settings;
@@ -79,12 +78,11 @@ class Clickwhale_Pro_Settings {
 					'clickwhale_' . $k . '_options',
 					'clickwhale_' . $k . '_options'
 				);
-
 			}
 		}
 		add_settings_field(
 			'linkpage_credits',
-			__( 'Credits', CLICKWHALE_PRO_NAME ),
+			__( 'Credits', CLICKWHALE_PRO_SLUG ),
 			array( $this, 'render_control' ),
 			'clickwhale_linkpages_options',
 			'linkpages_settings_section',
@@ -93,13 +91,13 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'linkpage_credits',
 				'name'    => 'clickwhale_linkpages_options[linkpage_credits]',
 				'value'   => isset( $linkpages_options['linkpage_credits'] ) ? 1 : 0,
-				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_NAME ),
+				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_SLUG ),
 			)
 		);
 
 		add_settings_field(
 			'tracking_codes_credits',
-			__( 'Tracking Codes Credits', CLICKWHALE_PRO_NAME ),
+			__( 'Tracking Codes Credits', CLICKWHALE_PRO_SLUG ),
 			array( $this, 'render_control' ),
 			'clickwhale_tracking_codes_options',
 			'tracking_codes_settings_section',
@@ -108,13 +106,13 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'tracking_codes_credits',
 				'name'    => 'clickwhale_tracking_codes_options[tracking_codes_credits]',
 				'value'   => isset( $tracking_codes_options['tracking_codes_credits'] ) ? 1 : 0,
-				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_NAME ),
+				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_SLUG ),
 			)
 		);
 
 		add_settings_field(
 			'affiliate_id',
-			__( 'Affiliate ID', CLICKWHALE_PRO_NAME ),
+			__( 'Affiliate ID', CLICKWHALE_PRO_SLUG ),
 			array( $this, 'render_control' ),
 			'clickwhale_other_options',
 			'other_settings_section',
@@ -125,7 +123,7 @@ class Clickwhale_Pro_Settings {
 				'type'        => 'text',
 				'value'       => $other_options['affiliate_id'] ?? '',
 				'placeholder' => '123456',
-				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_NAME ),
+				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_SLUG ),
 			)
 		);
 	}

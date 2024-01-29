@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\migration;
 
 use clickwhale\includes\admin\migration\Clickwhale_Migration_Abstract;

@@ -10,7 +10,7 @@ $table->prepare_items();
 
 $message = '';
 if ( 'delete' === $table->current_action() ) {
-	$message = __( 'Items deleted', CLICKWHALE_NAME );
+	$message = __( 'Items deleted', CLICKWHALE_SLUG );
 }
 
 do_action( 'clickwhale_admin_banner' );
@@ -25,7 +25,7 @@ do_action( 'clickwhale_admin_banner' );
 			'link_to_add' => 'clickwhale-edit-link',
 			'link_custom'  => array(
 				'url'   => esc_url( admin_url( 'admin.php?page=clickwhale-tools&tab=import' ) ),
-				'title' => __( 'Import', CLICKWHALE_NAME )
+				'title' => __( 'Import', CLICKWHALE_SLUG )
 			)
 		)
 	);

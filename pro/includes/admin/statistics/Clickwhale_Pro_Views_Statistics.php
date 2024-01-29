@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin\statistics;
 
 class Clickwhale_Pro_Views_Statistics {
@@ -33,10 +32,10 @@ class Clickwhale_Pro_Views_Statistics {
 			return false;
 		}
 
-		$options = '<option value="0" selected>' . __( 'All', CLICKWHALE_PRO_NAME ) . '</option>';
+		$options = '<option value="0" selected>' . __( 'All', CLICKWHALE_PRO_SLUG ) . '</option>';
 		foreach ( $linkpages as $linkpage ) {
 			if ( is_null( $linkpage['item_id'] ) ) {
-				$linkpage['title'] = __( 'Unknown Link Page', CLICKWHALE_PRO_NAME );
+				$linkpage['title'] = __( 'Unknown Link Page', CLICKWHALE_PRO_SLUG );
 			}
 			$options .= '<option value="' . $linkpage['id'] . '">' . wp_unslash( $linkpage['title'] ) . ' (id: ' . $linkpage['id'] . ')</option>';
 		}
@@ -52,11 +51,11 @@ class Clickwhale_Pro_Views_Statistics {
 		$rowID         = 'data-row="' . $linkpage['id'] . '"';
 		$cellClicks    = '<td class="clickwhale-statistics---clicks">' . $linkpage['count'] ?: 0 . '</td>';
 		$cellTitle     = is_null( $linkpage['item_id'] )
-			? '<td>' . __( 'Unknown Link Page', CLICKWHALE_PRO_NAME ) . ' (id: ' . $linkpage['id'] . ')' . '</td>'
+			? '<td>' . __( 'Unknown Link Page', CLICKWHALE_PRO_SLUG ) . ' (id: ' . $linkpage['id'] . ')' . '</td>'
 			: '<td>' . wp_unslash( $linkpage['title'] ) . ' (id: ' . $linkpage['item_id'] . ')' . '</td>';
-		$editTooltip   = __( 'Edit Link Page', CLICKWHALE_PRO_NAME );
-		$statTooltip   = __( 'Select Link Page for the statistics', CLICKWHALE_PRO_NAME );
-		$removeTooltip = __( 'Remove Link Page from the statistics', CLICKWHALE_PRO_NAME );
+		$editTooltip   = __( 'Edit Link Page', CLICKWHALE_PRO_SLUG );
+		$statTooltip   = __( 'Select Link Page for the statistics', CLICKWHALE_PRO_SLUG );
+		$removeTooltip = __( 'Remove Link Page from the statistics', CLICKWHALE_PRO_SLUG );
 		$editURL       = esc_url( admin_url( 'admin.php?page=clickwhale-edit-linkpage&id=' . $linkpage['id'] ) );
 		$edit          = is_null( $linkpage['item_id'] )
 			? ''
@@ -76,8 +75,8 @@ class Clickwhale_Pro_Views_Statistics {
 		$thead = '';
 
 		$thead .= '<thead><tr>';
-		$thead .= '<th>' . __( 'Link Page', CLICKWHALE_PRO_NAME ) . '</th>';
-		$thead .= '<th width="100">' . __( 'Views', CLICKWHALE_PRO_NAME ) . '</th>';
+		$thead .= '<th>' . __( 'Link Page', CLICKWHALE_PRO_SLUG ) . '</th>';
+		$thead .= '<th width="100">' . __( 'Views', CLICKWHALE_PRO_SLUG ) . '</th>';
 		$thead .= '<th width="100"></th>';
 		$thead .= '</tr></thead>';
 
@@ -85,7 +84,7 @@ class Clickwhale_Pro_Views_Statistics {
 			$rows .= $this->get_linkpage_row( $linkpage );
 		}
 
-		$tfoot = '<tfoot><tr><th colspan="4">' . __( 'Nothing to display', CLICKWHALE_PRO_NAME ) . '</th></tr></tfoot>';
+		$tfoot = '<tfoot><tr><th colspan="4">' . __( 'Nothing to display', CLICKWHALE_PRO_SLUG ) . '</th></tr></tfoot>';
 
 		return '<table id="clickwhaleViewsTable" class="wp-list-table">' . $thead . $rows . $tfoot . '</table>';
 	}
@@ -98,12 +97,12 @@ class Clickwhale_Pro_Views_Statistics {
         <div class="clickwhale-statistics--filters">
 
             <div class="clickwhale-statistics--filter filter-list filter-linkpages">
-                <h4 class="wp-heading-inline"><?php _e( 'Select Link Page', CLICKWHALE_PRO_NAME ) ?></h4>
+                <h4 class="wp-heading-inline"><?php _e( 'Select Link Page', CLICKWHALE_PRO_SLUG ) ?></h4>
 				<?php echo $linkpages_select ?>
             </div>
 
             <div class="clickwhale-statistics--filter filter-period">
-                <h4 class="wp-heading-inline"><?php _e( 'Period', CLICKWHALE_PRO_NAME ) ?></h4>
+                <h4 class="wp-heading-inline"><?php _e( 'Period', CLICKWHALE_PRO_SLUG ) ?></h4>
 				<?php if ( $periods ) { ?>
                     <select id="clickwhaleViewsPeriod" class="clickwhale-select">
 						<?php foreach ( $periods as $k => $period ) { ?>
@@ -122,36 +121,36 @@ class Clickwhale_Pro_Views_Statistics {
                            id="clickwhaleViewsCustomPeriodStart"
                            class="clickwhale-statistics--custom-period--start"
                            min="2022-12-11"
-                           placeholder="<?php _e( 'Start Date', CLICKWHALE_PRO_NAME ) ?>">
+                           placeholder="<?php _e( 'Start Date', CLICKWHALE_PRO_SLUG ) ?>">
                     <input type="text"
                            id="clickwhaleViewsCustomPeriodEnd"
                            class="clickwhale-statistics--custom-period--end"
-                           placeholder="<?php _e( 'End Date', CLICKWHALE_PRO_NAME ) ?>">
-                    <button class="button" type="button"><?php _e( 'Filter', CLICKWHALE_PRO_NAME ) ?></button>
+                           placeholder="<?php _e( 'End Date', CLICKWHALE_PRO_SLUG ) ?>">
+                    <button class="button" type="button"><?php _e( 'Filter', CLICKWHALE_PRO_SLUG ) ?></button>
                 </div>
             </div>
         </div>
 
         <div class="clickwhale-statistics--grid clickwhale-statistics--cards">
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="viewsPerToday">
-                <p><?php _e( 'Views for today', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Views for today', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from yesterday', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from yesterday', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="viewsPerWeek">
-                <p><?php _e( 'Views for this week', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Views for this week', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from last week', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from last week', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
             <div class="clickwhale-statistics--item clickwhale-statistics--card" id="viewsPerMonth">
-                <p><?php _e( 'Views for this month', CLICKWHALE_PRO_NAME ) ?></p>
+                <p><?php _e( 'Views for this month', CLICKWHALE_PRO_SLUG ) ?></p>
                 <div class="clickwhale-statistics--card-value">
                     <h4>0</h4>
-                    <span>0%</span><?php _e( 'from last month', CLICKWHALE_PRO_NAME ) ?>
+                    <span>0%</span><?php _e( 'from last month', CLICKWHALE_PRO_SLUG ) ?>
                 </div>
             </div>
         </div>
@@ -159,7 +158,7 @@ class Clickwhale_Pro_Views_Statistics {
         <div class="clickwhale-statistics--grid clickwhale-statistics--charts">
             <div class="clickwhale-statistics--item">
                 <div class="clickwhale-statistics--item-header">
-					<?php _e( 'Link Pages Views Overview', CLICKWHALE_PRO_NAME ); ?>
+					<?php _e( 'Link Pages Views Overview', CLICKWHALE_PRO_SLUG ); ?>
                 </div>
 
                 <div class="clickwhale-statistics--chart-clicks">
@@ -168,7 +167,7 @@ class Clickwhale_Pro_Views_Statistics {
             </div>
             <div class="clickwhale-statistics--item">
                 <div class="clickwhale-statistics--item-header">
-					<?php _e( 'Most Viewed Link Pages', CLICKWHALE_PRO_NAME ); ?>
+					<?php _e( 'Most Viewed Link Pages', CLICKWHALE_PRO_SLUG ); ?>
                 </div>
                 <div class="clickwhale-statistics--chart-most-clicked">
                     <canvas id="clickwhaleMostViewedChart"></canvas>
@@ -178,7 +177,7 @@ class Clickwhale_Pro_Views_Statistics {
 
         <div class="clickwhale-statistics--item">
             <div class="clickwhale-statistics--item-header">
-				<?php _e( 'Total Link Pages Views', CLICKWHALE_PRO_NAME ); ?>
+				<?php _e( 'Total Link Pages Views', CLICKWHALE_PRO_SLUG ); ?>
             </div>
             <div class="clickwhale-statistics--table">
 				<?php echo $this->get_linkpages_table( self::$withViews ); ?>

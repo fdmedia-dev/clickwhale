@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin\linkpages;
 
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
@@ -16,7 +15,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 	}
 
 	public function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'linkpages/Clickwhale_Pro_Linkpage_Preview.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/linkpages/Clickwhale_Pro_Linkpage_Preview.php';
 	}
 
 	public function get_defaults(): array {
@@ -32,14 +31,14 @@ class Clickwhale_Pro_Linkpage_Edit {
 
 	public function linkpage_select( $select ) {
 		$pro = array(
-			'label'   => __( 'Pro Blocks', CLICKWHALE_PRO_NAME ),
+			'label'   => __( 'Pro Blocks', CLICKWHALE_PRO_SLUG ),
 			'options' => array(
 				'cw_feed'   => array(
-					'name' => __( 'Blog Posts Feed', CLICKWHALE_PRO_NAME ),
+					'name' => __( 'Blog Posts Feed', CLICKWHALE_PRO_SLUG ),
 					'icon' => 'list'
 				),
 				'cw_social' => array(
-					'name' => __( 'Social Profiles', CLICKWHALE_PRO_NAME ),
+					'name' => __( 'Social Profiles', CLICKWHALE_PRO_SLUG ),
 					'icon' => 'share-2'
 				),
 			),
@@ -53,29 +52,29 @@ class Clickwhale_Pro_Linkpage_Edit {
 	public function after_settings_fields( $item ) {
 		echo Helper::render_control(
 			array(
-				'row_label'   => __( 'Logo Style', CLICKWHALE_PRO_NAME ),
+				'row_label'   => __( 'Logo Style', CLICKWHALE_PRO_SLUG ),
 				'control'     => 'radio',
 				'id'          => 'logo_style',
 				'name'        => 'styles[logo_style]',
 				'value'       => $item['styles']['logo_style'] ?? '',
 				'options'     => array(
-					'default' => __( 'Square (Default)', CLICKWHALE_PRO_NAME ),
-					'rounded' => __( 'Rounded', CLICKWHALE_PRO_NAME ),
-					'circle'  => __( 'Circle', CLICKWHALE_PRO_NAME ),
+					'default' => __( 'Square (Default)', CLICKWHALE_PRO_SLUG ),
+					'rounded' => __( 'Rounded', CLICKWHALE_PRO_SLUG ),
+					'circle'  => __( 'Circle', CLICKWHALE_PRO_SLUG ),
 				),
 				'default'     => 'default',
-				'placeholder' => __( 'Set Link Page logo style', CLICKWHALE_PRO_NAME ),
+				'placeholder' => __( 'Set Link Page logo style', CLICKWHALE_PRO_SLUG ),
 			),
 			true
 		);
 		echo Helper::render_control(
 			array(
-				'row_label' => __( 'Logo Shadow', CLICKWHALE_PRO_NAME ),
+				'row_label' => __( 'Logo Shadow', CLICKWHALE_PRO_SLUG ),
 				'control'   => 'checkbox',
 				'id'        => 'logo_shadow',
 				'name'      => 'styles[logo_shadow]',
 				'value'     => $item['styles']['logo_shadow'] ?? '0',
-				'label'     => __( 'Add logo box shadow', CLICKWHALE_PRO_NAME ),
+				'label'     => __( 'Add logo box shadow', CLICKWHALE_PRO_SLUG ),
 			),
 			true
 		);
@@ -116,7 +115,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 	 */
 	public function linkpage_tabs( $tabs ) {
 		$tabs['social'] = array(
-			'name' => __( 'Social Profiles', CLICKWHALE_PRO_NAME ),
+			'name' => __( 'Social Profiles', CLICKWHALE_PRO_SLUG ),
 			'url'  => 'social'
 		);
 
@@ -148,7 +147,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 					case 'whatsapp':
 						$type        = 'tel';
 						$description = __( 'Number in the international format (with + and country code)',
-							CLICKWHALE_NAME );
+							CLICKWHALE_SLUG );
 						break;
 					case 'telegram':
 						$placeholder = 'e.g. https://t.me/telegram or https://t.me/s/telegram';
@@ -226,19 +225,19 @@ class Clickwhale_Pro_Linkpage_Edit {
 
 		echo Helper::render_control(
 			array(
-				'row_label'   => __( 'Site Background', CLICKWHALE_PRO_NAME ),
+				'row_label'   => __( 'Site Background', CLICKWHALE_PRO_SLUG ),
 				'control'     => 'radio',
 				'id'          => 'bg_style',
 				'name'        => 'styles[bg_style]',
 				'value'       => $item['styles']['bg_style'] ?? '',
 				'options'     => array(
-					'color'    => __( 'Solid Color', CLICKWHALE_PRO_NAME ),
-					'gradient' => __( 'Gradient', CLICKWHALE_PRO_NAME ),
-					'pattern'  => __( 'Pattern', CLICKWHALE_PRO_NAME ),
-					'image'    => __( 'Image', CLICKWHALE_PRO_NAME ),
+					'color'    => __( 'Solid Color', CLICKWHALE_PRO_SLUG ),
+					'gradient' => __( 'Gradient', CLICKWHALE_PRO_SLUG ),
+					'pattern'  => __( 'Pattern', CLICKWHALE_PRO_SLUG ),
+					'image'    => __( 'Image', CLICKWHALE_PRO_SLUG ),
 				),
 				'default'     => 'color',
-				'placeholder' => __( 'Choose page background style', CLICKWHALE_PRO_NAME ),
+				'placeholder' => __( 'Choose page background style', CLICKWHALE_PRO_SLUG ),
 			),
 			true
 		);
@@ -251,7 +250,7 @@ class Clickwhale_Pro_Linkpage_Edit {
                        class="cw-color-control"
                        type="text"
                        value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
-                <p class="description"><?php _e( 'Set page background color', CLICKWHALE_PRO_NAME ) ?></p>
+                <p class="description"><?php _e( 'Set page background color', CLICKWHALE_PRO_SLUG ) ?></p>
             </td>
         </tr>
         <tr class="form-field for-style for-gradient-style">
@@ -321,9 +320,9 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_gradient_custom][style]',
 									'value'   => $styles['bg_gradient_custom']['style'] ?? '',
 									'options' => array(
-										'linear' => __( 'Linear', CLICKWHALE_PRO_NAME ),
-										'radial' => __( 'Radial', CLICKWHALE_PRO_NAME ),
-										'conic'  => __( 'Conic', CLICKWHALE_PRO_NAME ),
+										'linear' => __( 'Linear', CLICKWHALE_PRO_SLUG ),
+										'radial' => __( 'Radial', CLICKWHALE_PRO_SLUG ),
+										'conic'  => __( 'Conic', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'linear'
 								)
@@ -340,11 +339,11 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_gradient_custom][direction]',
 									'value'   => $styles['bg_gradient_custom']['direction'] ?? '',
 									'options' => array(
-										'top'    => __( 'Top', CLICKWHALE_PRO_NAME ),
-										'right'  => __( 'Right', CLICKWHALE_PRO_NAME ),
-										'center' => __( 'Center', CLICKWHALE_PRO_NAME ),
-										'bottom' => __( 'Bottom', CLICKWHALE_PRO_NAME ),
-										'left'   => __( 'Left', CLICKWHALE_PRO_NAME ),
+										'top'    => __( 'Top', CLICKWHALE_PRO_SLUG ),
+										'right'  => __( 'Right', CLICKWHALE_PRO_SLUG ),
+										'center' => __( 'Center', CLICKWHALE_PRO_SLUG ),
+										'bottom' => __( 'Bottom', CLICKWHALE_PRO_SLUG ),
+										'left'   => __( 'Left', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'top'
 								)
@@ -395,22 +394,22 @@ class Clickwhale_Pro_Linkpage_Edit {
                             </a>
                             <a href="#"
                                class="button linkpage-image-remove"><?php _e( 'Remove image',
-									CLICKWHALE_PRO_NAME ) ?></a>
+									CLICKWHALE_PRO_SLUG ) ?></a>
                             <input type="hidden" name="styles[bg_image][image]"
                                    value="<?php echo esc_attr( $bg_id ); ?>">
 						<?php } else { ?>
                             <a href="#" class="button linkpage-image-upload">
-								<?php _e( 'Upload image', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'Upload image', CLICKWHALE_PRO_SLUG ) ?>
                             </a>
                             <a href="#" class="button linkpage-image-remove" style="display: none;">
-								<?php _e( 'Remove image', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'Remove image', CLICKWHALE_PRO_SLUG ) ?>
                             </a>
                             <input type="hidden" name="styles[bg_image][image]" value="">
 						<?php } ?>
                     </div>
                     <div class="clickwhale-background-image--controls">
                         <div>
-                            <p class="description"><?php _e( 'Horisontal position', CLICKWHALE_PRO_NAME ) ?></p>
+                            <p class="description"><?php _e( 'Horisontal position', CLICKWHALE_PRO_SLUG ) ?></p>
 							<?php
 							echo Helper::render_control(
 								array(
@@ -419,9 +418,9 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_image][x]',
 									'value'   => $styles['bg_image']['x'] ?? 'center',
 									'options' => array(
-										'left'   => __( 'Left', CLICKWHALE_PRO_NAME ),
-										'center' => __( 'Center', CLICKWHALE_PRO_NAME ),
-										'right'  => __( 'Right', CLICKWHALE_PRO_NAME ),
+										'left'   => __( 'Left', CLICKWHALE_PRO_SLUG ),
+										'center' => __( 'Center', CLICKWHALE_PRO_SLUG ),
+										'right'  => __( 'Right', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'center'
 								)
@@ -429,7 +428,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 							?>
                         </div>
                         <div>
-                            <p class="description"><?php _e( 'Vertical position', CLICKWHALE_PRO_NAME ) ?></p>
+                            <p class="description"><?php _e( 'Vertical position', CLICKWHALE_PRO_SLUG ) ?></p>
 							<?php
 							echo Helper::render_control(
 								array(
@@ -438,9 +437,9 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_image][y]',
 									'value'   => $styles['bg_image']['y'] ?? 'top',
 									'options' => array(
-										'top'    => __( 'Top', CLICKWHALE_PRO_NAME ),
-										'center' => __( 'Center', CLICKWHALE_PRO_NAME ),
-										'bottom' => __( 'Bottom', CLICKWHALE_PRO_NAME ),
+										'top'    => __( 'Top', CLICKWHALE_PRO_SLUG ),
+										'center' => __( 'Center', CLICKWHALE_PRO_SLUG ),
+										'bottom' => __( 'Bottom', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'center'
 								)
@@ -448,7 +447,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 							?>
                         </div>
                         <div>
-                            <p class="description"><?php _e( 'Repeat', CLICKWHALE_PRO_NAME ) ?></p>
+                            <p class="description"><?php _e( 'Repeat', CLICKWHALE_PRO_SLUG ) ?></p>
 							<?php
 							echo Helper::render_control(
 								array(
@@ -457,8 +456,8 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_image][repeat]',
 									'value'   => $styles['bg_image']['repeat'] ?? 'no-repeat',
 									'options' => array(
-										'no-repeat' => __( 'No repeat', CLICKWHALE_PRO_NAME ),
-										'repeat'    => __( 'Repeat', CLICKWHALE_PRO_NAME ),
+										'no-repeat' => __( 'No repeat', CLICKWHALE_PRO_SLUG ),
+										'repeat'    => __( 'Repeat', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'no-repeat'
 								)
@@ -466,7 +465,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 							?>
                         </div>
                         <div>
-                            <p class="description"><?php _e( 'Size', CLICKWHALE_PRO_NAME ) ?></p>
+                            <p class="description"><?php _e( 'Size', CLICKWHALE_PRO_SLUG ) ?></p>
 							<?php
 							echo Helper::render_control(
 								array(
@@ -475,9 +474,9 @@ class Clickwhale_Pro_Linkpage_Edit {
 									'name'    => 'styles[bg_image][size]',
 									'value'   => $styles['bg_image']['size'] ?? 'cover',
 									'options' => array(
-										'cover'   => __( 'Cover', CLICKWHALE_PRO_NAME ),
-										'contain' => __( 'Contain', CLICKWHALE_PRO_NAME ),
-										'auto'    => __( 'Auto', CLICKWHALE_PRO_NAME ),
+										'cover'   => __( 'Cover', CLICKWHALE_PRO_SLUG ),
+										'contain' => __( 'Contain', CLICKWHALE_PRO_SLUG ),
+										'auto'    => __( 'Auto', CLICKWHALE_PRO_SLUG ),
 									),
 									'default' => 'cover'
 								)
@@ -539,12 +538,12 @@ class Clickwhale_Pro_Linkpage_Edit {
                     <div class="linkpage-row--link">
 						<?php if ( isset( $data['taxonomy_id'] ) && $data['taxonomy_id'] ) { ?>
                             <strong>
-								<?php _e( 'Feed: ', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'Feed: ', CLICKWHALE_PRO_SLUG ) ?>
 								<?php echo get_term( $data['taxonomy_id'], $data['taxonomy'] )->name; ?>
                             </strong>
-                            <span><?php _e( 'Layout: ', CLICKWHALE_PRO_NAME ) ?><?php echo $data['layout'] ?></span>
+                            <span><?php _e( 'Layout: ', CLICKWHALE_PRO_SLUG ) ?><?php echo $data['layout'] ?></span>
 						<?php } else { ?>
-                            <strong><?php _e( 'Feed', CLICKWHALE_PRO_NAME ); ?></strong>
+                            <strong><?php _e( 'Feed', CLICKWHALE_PRO_SLUG ); ?></strong>
 						<?php } ?>
                     </div>
                 </div>
@@ -554,7 +553,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 				<?php echo $template->get_template_hidden_field( $data, array( 'taxonomy' ) ); ?>
                 <div class="linkpage-row--bottom--control-wrap">
                     <label for="links[<?php echo esc_attr( $data['id'] ) ?>][taxonomy_id]">
-						<?php _e( 'Category', CLICKWHALE_PRO_NAME ); ?>
+						<?php _e( 'Category', CLICKWHALE_PRO_SLUG ); ?>
                     </label>
                     <div>
                         <select name="links[<?php echo esc_attr( $data['id'] ) ?>][taxonomy_id]">
@@ -575,7 +574,7 @@ class Clickwhale_Pro_Linkpage_Edit {
                 </div>
                 <div class="linkpage-row--bottom--control-wrap">
                     <label for="links[<?php echo esc_attr( $data['id'] ) ?>][quantity]">
-						<?php _e( 'Number of Posts', CLICKWHALE_PRO_NAME ); ?>
+						<?php _e( 'Number of Posts', CLICKWHALE_PRO_SLUG ); ?>
                     </label>
                     <div>
                         <input name="links[<?php echo esc_attr( $data['id'] ) ?>][quantity]"
@@ -588,21 +587,21 @@ class Clickwhale_Pro_Linkpage_Edit {
                 </div>
                 <div class="linkpage-row--bottom--control-wrap">
                     <label for="links[<?php echo esc_attr( $data['id'] ) ?>][layout]">
-						<?php _e( 'Layout', CLICKWHALE_PRO_NAME ); ?>
+						<?php _e( 'Layout', CLICKWHALE_PRO_SLUG ); ?>
                     </label>
                     <div>
                         <select name="links[<?php echo esc_attr( $data['id'] ) ?>][layout]">
                             <option value="list-lg" <?php echo selected( $data['layout'], 'list-lg' ) ?>>
-								<?php _e( 'List with large thumbnail', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'List with large thumbnail', CLICKWHALE_PRO_SLUG ) ?>
                             </option>
                             <option value="list-sm" <?php echo selected( $data['layout'], 'list-sm' ) ?>>
-								<?php _e( 'List with small thumbnail', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'List with small thumbnail', CLICKWHALE_PRO_SLUG ) ?>
                             </option>
                             <option value="grid-2" <?php echo selected( $data['layout'], 'grid-2' ) ?>>
-								<?php _e( 'Grid (2 columns)', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'Grid (2 columns)', CLICKWHALE_PRO_SLUG ) ?>
                             </option>
                             <option value="grid-3" <?php echo selected( $data['layout'], 'grid-3' ) ?>>
-								<?php _e( 'Grid (3 columns)', CLICKWHALE_PRO_NAME ) ?>
+								<?php _e( 'Grid (3 columns)', CLICKWHALE_PRO_SLUG ) ?>
                             </option>
                         </select>
                     </div>
@@ -610,7 +609,7 @@ class Clickwhale_Pro_Linkpage_Edit {
 
                 <div class="linkpage-row--bottom--control-wrap">
                     <label>
-						<?php _e( 'Hide Title', CLICKWHALE_PRO_NAME ); ?>
+						<?php _e( 'Hide Title', CLICKWHALE_PRO_SLUG ); ?>
                     </label>
                     <div>
                         <input type="checkbox"
@@ -619,7 +618,7 @@ class Clickwhale_Pro_Linkpage_Edit {
                                value="1"
 							<?php echo $checked . ' ' . $disabled ?>>
                         <label for="is_<?php echo esc_attr( $data['id'] ) ?>_title">
-							<?php _e( 'Check to hide title on the frontend', CLICKWHALE_PRO_NAME ); ?>
+							<?php _e( 'Check to hide title on the frontend', CLICKWHALE_PRO_SLUG ); ?>
                         </label>
                     </div>
                 </div>
@@ -902,6 +901,5 @@ class Clickwhale_Pro_Linkpage_Edit {
             </script>
 			<?php
 		}
-
 	}
 }

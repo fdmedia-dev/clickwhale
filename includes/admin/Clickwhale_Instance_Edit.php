@@ -1,8 +1,8 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 abstract class Clickwhale_Instance_Edit {
+
 	/**
 	 * Instance type as plural e.g. "links", "linkpages"
 	 *
@@ -10,6 +10,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	public string $instance_plural;
+
 	/**
 	 * Instance type as single e.g. "link", "linkpage"
 	 *
@@ -94,10 +95,10 @@ abstract class Clickwhale_Instance_Edit {
 	 */
 	protected function no_item() {
 		wp_die(
-			__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', CLICKWHALE_NAME ),
-			__( 'Error', CLICKWHALE_NAME ),
+			__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', CLICKWHALE_SLUG ),
+			__( 'Error', CLICKWHALE_SLUG ),
 			array(
-				'link_text' => esc_html( __( "Back", CLICKWHALE_NAME ) ),
+				'link_text' => esc_html( __( "Back", CLICKWHALE_SLUG ) ),
 			)
 		);
 	}
@@ -132,11 +133,11 @@ abstract class Clickwhale_Instance_Edit {
 		}
 
 		if ( $transient === 'added' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
+			echo '<div class="updated"><p>' . __( 'Item was successfully saved', CLICKWHALE_SLUG ) . '</p></div>';
 		}
 
 		if ( $transient === 'updated' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
+			echo '<div class="updated"><p>' . __( 'Item was successfully updated', CLICKWHALE_SLUG ) . '</p></div>';
 		}
 
 		delete_transient( 'link-' . $id );

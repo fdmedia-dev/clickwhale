@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 use WP_User;
@@ -66,8 +65,13 @@ class Clickwhale_WP_User {
 	 * @return bool
 	 */
 	public static function is_current_user_role_access_granted(): bool {
-        $access_roles       = Helper::get_clickwhale_option( 'general', 'access_level' );
         $current_user_roles = self::get_current_user_roles();
+
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            return true;
+        }
+
+        $access_roles = Helper::get_clickwhale_option( 'general', 'access_level' );
 
 		return ( ! empty( $access_roles ) &&
                  ! empty( $current_user_roles ) &&
@@ -142,5 +146,4 @@ class Clickwhale_WP_User {
 	public function disallow_track(): bool {
 		return $this->is_track_disabled() || $this->is_user_untracked();
 	}
-
 }

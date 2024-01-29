@@ -1,13 +1,16 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
+ *
+ *  Defines the plugin name, version, and two examples hooks for how to
+ *  enqueue the public-facing stylesheet and JavaScript.
  *
  * @link       https://fdmedia.io/
  * @since      1.0.0
  *
  * @package    Clickwhale_Pro
  * @subpackage Clickwhale_Pro/public
+ * @author     fdmedia <dev@krapan.net>
  */
 
 namespace clickwhale_pro\includes\front;
@@ -17,16 +20,6 @@ use clickwhale\includes\helpers\Linkpages_Helper;
 use clickwhale\includes\helpers\Tracking_Codes_Helper;
 use clickwhale_pro\includes\helpers\Linkpage_Styles_Helper;
 
-/**
- * The public-facing functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
- * @package    Clickwhale_Pro
- * @subpackage Clickwhale_Pro/public
- * @author     fdmedia <dev@krapan.net>
- */
 class Clickwhale_Pro_Public {
 	/**
 	 * The unique instance of the plugin.
@@ -55,11 +48,10 @@ class Clickwhale_Pro_Public {
 	 *
 	 * @since    1.0.0
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
 	public function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Pro_Tracking_Code_Conversion.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/front/Clickwhale_Pro_Tracking_Code_Conversion.php';
 	}
 
 	/**
@@ -70,7 +62,7 @@ class Clickwhale_Pro_Public {
 	public function enqueue_styles() {
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_style(
-				CLICKWHALE_PRO_NAME,
+				CLICKWHALE_PRO_SLUG,
 				CLICKWHALE_PRO_PUBLIC_ASSETS_DIR . '/css/clickwhale-pro-public.css',
 				array(),
 				CLICKWHALE_PRO_VERSION
@@ -86,7 +78,7 @@ class Clickwhale_Pro_Public {
 	public function enqueue_scripts() {
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_script(
-				CLICKWHALE_PRO_NAME,
+				CLICKWHALE_PRO_SLUG,
 				CLICKWHALE_PRO_PUBLIC_ASSETS_DIR . '/js/clickwhale-pro-public.js',
 				array( 'jquery' ),
 				CLICKWHALE_PRO_VERSION,

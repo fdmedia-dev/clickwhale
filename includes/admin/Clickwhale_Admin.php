@@ -1,19 +1,9 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\Helper;
-
-/**
- * The admin-specific functionality of the plugin.
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/admin
- */
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
 /**
  * The admin-specific functionality of the plugin.
@@ -55,32 +45,8 @@ final class Clickwhale_Admin {
 		$this->load_dependencies();
 	}
 
-	/**
-	 * Throw error on object clone.
-	 *
-	 * The whole idea of the singleton design pattern is that there is a single
-	 * object therefore, we don't want the object to be cloned.
-	 *
-	 * @return void
-	 * @since 1.5
-	 * @access protected
-	 */
-	public function __clone() {
-		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
-
-	/**
-	 * Disable un-serializing of the class.
-	 *
-	 * @return void
-	 * @since 1.5
-	 * @access protected
-	 */
-	public function __wakeup() {
-		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
+    use Singleton_Clone;
+    use Singleton_Wakeup;
 
 	/**
 	 * Load the required dependencies for the Admin facing functionality.
@@ -133,14 +99,14 @@ final class Clickwhale_Admin {
 
 		$this->menus = array(
 			'subpages'  => array(
-				'links'              => __( 'Links',                 CLICKWHALE_NAME ),
-				'edit-link'          => __( 'Add New',               CLICKWHALE_NAME ),
-				'categories'         => __( 'Categories',            CLICKWHALE_NAME ),
-				'edit-category'      => __( 'Add New Category',      CLICKWHALE_NAME ),
-				'linkpages'          => __( 'Link Pages',            CLICKWHALE_NAME ),
-				'edit-linkpage'      => __( 'Add New Link Page',     CLICKWHALE_NAME ),
-				'tracking-codes'     => __( 'Tracking Codes',        CLICKWHALE_NAME ),
-				'edit-tracking-code' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
+				'links'              => __( 'Links',                 CLICKWHALE_SLUG ),
+				'edit-link'          => __( 'Add New',               CLICKWHALE_SLUG ),
+				'categories'         => __( 'Categories',            CLICKWHALE_SLUG ),
+				'edit-category'      => __( 'Add New Category',      CLICKWHALE_SLUG ),
+				'linkpages'          => __( 'Link Pages',            CLICKWHALE_SLUG ),
+				'edit-linkpage'      => __( 'Add New Link Page',     CLICKWHALE_SLUG ),
+				'tracking-codes'     => __( 'Tracking Codes',        CLICKWHALE_SLUG ),
+				'edit-tracking-code' => __( 'Add New Tracking Code', CLICKWHALE_SLUG )
 			),
 			'templates' => array(
 				'toplevel_page_clickwhale'                  => 'links/list',
@@ -161,24 +127,24 @@ final class Clickwhale_Admin {
 		do_action( 'clickwhale_menu_before_all' );
 
 		add_menu_page(
-			__( 'ClickWhale Links', CLICKWHALE_NAME ),
-			__( 'ClickWhale', CLICKWHALE_NAME ),
+			__( 'ClickWhale Links', CLICKWHALE_SLUG ),
+			__( 'ClickWhale', CLICKWHALE_SLUG ),
 			'read',
-			CLICKWHALE_NAME,
+			CLICKWHALE_SLUG,
 			'',
 			CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg',
 			26
 		);
 
 		foreach ( $this->menus['subpages'] as $k => $v ) {
-			$parent = in_array( $k, $this->menus['toplevel'] ) ? CLICKWHALE_NAME : '';
+			$parent = in_array( $k, $this->menus['toplevel'] ) ? CLICKWHALE_SLUG : '';
 
 			add_submenu_page(
 				$parent,
 				$v,
 				$v,
 				'read',
-				$k !== 'links' ? CLICKWHALE_NAME . '-' . $k : CLICKWHALE_NAME,
+				$k !== 'links' ? CLICKWHALE_SLUG . '-' . $k : CLICKWHALE_SLUG,
 				array( $this, 'get_template' )
 			);
 		}
@@ -187,11 +153,11 @@ final class Clickwhale_Admin {
 
 		if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
             add_submenu_page(
-                CLICKWHALE_NAME,
-                __( 'Settings', CLICKWHALE_NAME ),
-                __( 'Settings', CLICKWHALE_NAME ),
+                CLICKWHALE_SLUG,
+                __( 'Settings', CLICKWHALE_SLUG ),
+                __( 'Settings', CLICKWHALE_SLUG ),
                 'read',
-                CLICKWHALE_NAME . '-settings',
+                CLICKWHALE_SLUG . '-settings',
                 array( $this, 'render_settings_page_template' )
             );
 		}
@@ -200,11 +166,11 @@ final class Clickwhale_Admin {
 
         if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
             add_submenu_page(
-                CLICKWHALE_NAME,
-                __( 'Tools', CLICKWHALE_NAME ),
-                __( 'Tools', CLICKWHALE_NAME ),
+                CLICKWHALE_SLUG,
+                __( 'Tools', CLICKWHALE_SLUG ),
+                __( 'Tools', CLICKWHALE_SLUG ),
                 'read',
-                CLICKWHALE_NAME . '-tools',
+                CLICKWHALE_SLUG . '-tools',
                 array( $this, 'render_tools_page_template' )
             );
         }
@@ -216,11 +182,11 @@ final class Clickwhale_Admin {
 	public function show_pro_menu_item() {
         if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
             add_submenu_page(
-                CLICKWHALE_NAME,
-                __( 'Upgrade to PRO', CLICKWHALE_NAME ),
-                __( 'Upgrade to PRO', CLICKWHALE_NAME ),
+                CLICKWHALE_SLUG,
+                __( 'Upgrade to PRO', CLICKWHALE_SLUG ),
+                __( 'Upgrade to PRO', CLICKWHALE_SLUG ),
                 'read',
-                CLICKWHALE_NAME . '-pro',
+                CLICKWHALE_SLUG . '-pro',
                 array( $this, 'render_pro_page_template' )
             );
         }
@@ -261,13 +227,13 @@ final class Clickwhale_Admin {
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style(
-			CLICKWHALE_NAME . '_select2',
+			CLICKWHALE_SLUG . '_select2',
 			CLICKWHALE_ADMIN_ASSETS_DIR . '/css/select2/select2.min.css',
 			array(),
 			'4.1.0-rc.0'
 		);
 		wp_enqueue_style(
-			CLICKWHALE_NAME,
+			CLICKWHALE_SLUG,
 			CLICKWHALE_ADMIN_ASSETS_DIR . '/css/clickwhale-admin.css',
 			array(),
 			CLICKWHALE_VERSION
@@ -292,19 +258,19 @@ final class Clickwhale_Admin {
 			wp_enqueue_script( 'wp-color-picker' );
 
 			wp_enqueue_script(
-				CLICKWHALE_NAME . '_picmo',
+				CLICKWHALE_SLUG . '_picmo',
 				CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.umd.min.js',
 				array( 'jquery' ),
 				'5.8.1',
 			);
 			wp_enqueue_script(
-				CLICKWHALE_NAME . '_picmo_popup_picker',
+				CLICKWHALE_SLUG . '_picmo_popup_picker',
 				CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/popup-picker.umd.min.js',
-				array( CLICKWHALE_NAME . '_picmo' ),
+				array( CLICKWHALE_SLUG . '_picmo' ),
 				'5.8.1'
 			);
 			wp_enqueue_script(
-				CLICKWHALE_NAME . '_ionicons',
+				CLICKWHALE_SLUG . '_ionicons',
 				CLICKWHALE_PUBLIC_ASSETS_DIR . '/js/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0'
@@ -316,19 +282,19 @@ final class Clickwhale_Admin {
 		}
 
 		wp_enqueue_script(
-			CLICKWHALE_NAME . '_select2',
+			CLICKWHALE_SLUG . '_select2',
 			CLICKWHALE_ADMIN_ASSETS_DIR . '/js/select2/select2.min.js',
 			array( 'jquery' ),
 			'4.1.0-rc.0'
 		);
 		wp_enqueue_script(
-			CLICKWHALE_NAME,
+			CLICKWHALE_SLUG,
 			CLICKWHALE_ADMIN_ASSETS_DIR . '/js/clickwhale-admin.js',
 			array( 'jquery' ),
 			CLICKWHALE_VERSION
 		);
 		wp_localize_script(
-			CLICKWHALE_NAME,
+			CLICKWHALE_SLUG,
 			'clickwhale_admin', array(
 				'siteurl' => home_url(),
 			)
@@ -347,14 +313,14 @@ final class Clickwhale_Admin {
                    target="_blank"
                    rel="noopener">
                     <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/wordmark.svg' ) ?>"
-                         alt="<?php echo CLICKWHALE_NAME ?>">
+                         alt="<?php echo CLICKWHALE_SLUG ?>">
                 </a>
             </div>
             <div class="clickwhale-banner--links">
 				<?php if ( $link_review ) { ?>
                     <div class="clickwhale-banner--link-review">
 						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>',
-							CLICKWHALE_NAME ), esc_url( $link_review ) ); ?>
+							CLICKWHALE_SLUG ), esc_url( $link_review ) ); ?>
                         <span class="clickwhale-banner--link-review--raiting">
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
@@ -369,7 +335,7 @@ final class Clickwhale_Admin {
                        class="clickwhale-banner--button outlined dark"
                        target="_blank"
                        rel="noopener">
-						<?php _e( 'Need help?', CLICKWHALE_NAME ) ?>
+						<?php _e( 'Need help?', CLICKWHALE_SLUG ) ?>
                     </a>
 				<?php } ?>
 
@@ -385,7 +351,7 @@ final class Clickwhale_Admin {
         <a href="<?php echo esc_attr( Helper::get_pro_link() ) ?>"
            class="clickwhale-banner--button"
            target="_blank">
-			<?php _e( 'Upgrade to PRO', CLICKWHALE_NAME ) ?>
+			<?php _e( 'Upgrade to PRO', CLICKWHALE_SLUG ) ?>
         </a>
 		<?php
 	}
@@ -393,7 +359,7 @@ final class Clickwhale_Admin {
 	public function admin_pro_message() {
 		?>
         <div class="clickwhale-linkpage--message">
-			<?php _e( 'Available only in PRO version', CLICKWHALE_NAME ); ?>
+			<?php _e( 'Available only in PRO version', CLICKWHALE_SLUG ); ?>
         </div>
 		<?php
 	}
@@ -428,7 +394,7 @@ final class Clickwhale_Admin {
 	 */
 	public function settings_action_link( $links ) {
 		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-settings' ) );
-		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_NAME ) . '</a>';
+		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_SLUG ) . '</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -436,7 +402,7 @@ final class Clickwhale_Admin {
 
 	public function upgrade_action_link( $links ) {
 		$url           = esc_url( admin_url( 'admin.php?page=clickwhale-pro' ) );
-		$text          = __( 'Upgrade to PRO', CLICKWHALE_NAME );
+		$text          = __( 'Upgrade to PRO', CLICKWHALE_SLUG );
 		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
 		$links[]       = $settings_link;
 
@@ -488,7 +454,7 @@ final class Clickwhale_Admin {
                         // copy slug
                         copySlug();
                         // append message
-                        jQuery('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>')
+                        jQuery('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_SLUG ) ?></span>')
                             .insertAfter(jQuery(this));
                         // hide appended message
                         setTimeout(function () {
@@ -504,7 +470,7 @@ final class Clickwhale_Admin {
                         copySlug();
                         // append message
                         jQuery(this)
-                            .append('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>');
+                            .append('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_SLUG ) ?></span>');
                         // hide appended message
                         setTimeout(function () {
                             jQuery('.copied').remove();
@@ -553,6 +519,5 @@ final class Clickwhale_Admin {
             </script>
 			<?php
 		}
-
 	}
 }

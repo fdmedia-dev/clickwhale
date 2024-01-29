@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;

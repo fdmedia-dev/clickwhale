@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\linkpages;
 
 use clickwhale\includes\helpers\{Helper};

@@ -279,5 +279,4 @@ class Clickwhale_Activator {
 
 		update_option( 'clickwhale_version', CLICKWHALE_VERSION );
 	}
-
 }

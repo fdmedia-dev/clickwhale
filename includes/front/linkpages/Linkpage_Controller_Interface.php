@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front\linkpages;
 
 interface Linkpage_Controller_Interface {

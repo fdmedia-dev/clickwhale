@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\export;
 
 use clickwhale\includes\helpers\{Helper};
@@ -15,20 +14,20 @@ class Clickwhale_Export {
 	public function export_settings() {
 		add_settings_section(
 			'clickwhale_tools_export_section',
-			__( 'Export links to a CSV file', CLICKWHALE_NAME ),
+			__( 'Export links to a CSV file', CLICKWHALE_SLUG ),
 			array( $this, 'settings_section_callback' ),
 			'clickwhale_tools_export_settings',
 			array(
 				'text' => __(
 					'This tool allows you to generate and download a CSV file containing a list of all lists.',
-					CLICKWHALE_NAME
+					CLICKWHALE_SLUG
 				),
 			)
 		);
 
 		add_settings_field(
 			'export_columns',
-			__( 'Filter columns', CLICKWHALE_NAME ),
+			__( 'Filter columns', CLICKWHALE_SLUG ),
 			array( $this, 'export_columns_callback' ),
 			'clickwhale_tools_export_settings',
 			'clickwhale_tools_export_section'
@@ -36,7 +35,7 @@ class Clickwhale_Export {
 
 		add_settings_field(
 			'export_categories',
-			__( 'Filter categories', CLICKWHALE_NAME ),
+			__( 'Filter categories', CLICKWHALE_SLUG ),
 			array( $this, 'export_categories_callback' ),
 			'clickwhale_tools_export_settings',
 			'clickwhale_tools_export_section'
@@ -50,7 +49,7 @@ class Clickwhale_Export {
 
 	public function export_columns_callback() {
 		$select = '<select id="select_columns" class="clickwhale-select" multiple>';
-		$select .= '<option selected value="0">' . __( 'Export all columns', CLICKWHALE_NAME ) . '</option>';
+		$select .= '<option selected value="0">' . __( 'Export all columns', CLICKWHALE_SLUG ) . '</option>';
 		foreach ( Helper::get_import_default_columns() as $option ) {
 			$select .= '<option value="' . $option . '">' . $option . '</option>';
 		}
@@ -64,7 +63,7 @@ class Clickwhale_Export {
 
 		if ( $categories ) {
 			$select = '<select id="select_categories" class="clickwhale-select" multiple>';
-			$select .= '<option selected value="0">' . __( 'Export all categories', CLICKWHALE_NAME ) . '</option>';
+			$select .= '<option selected value="0">' . __( 'Export all categories', CLICKWHALE_SLUG ) . '</option>';
 			foreach ( $categories as $category ) {
 				$select .= '<option value="' . $category['id'] . '">' . $category['title'] . '</option>';
 			}
@@ -72,7 +71,7 @@ class Clickwhale_Export {
 
 			echo $select;
 		} else {
-			_e( 'No categories', CLICKWHALE_NAME );
+			_e( 'No categories', CLICKWHALE_SLUG );
 		}
 	}
 
@@ -167,7 +166,7 @@ class Clickwhale_Export {
                             alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
                         }
                     }).fail(function (xhr, textStatus, errorThrown) {
-                        alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
+                        alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_SLUG ) ?>')
                     });
                 })
             });

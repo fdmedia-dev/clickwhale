@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\debuggers;
 
 class Debugger {

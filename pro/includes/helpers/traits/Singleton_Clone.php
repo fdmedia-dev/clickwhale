@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\helpers\traits;
 
 trait Singleton_Clone {
@@ -15,6 +14,6 @@ trait Singleton_Clone {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_PRO_NAME ), '1.0.3' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_PRO_SLUG ), CLICKWHALE_PRO_VERSION );
 	}
 }

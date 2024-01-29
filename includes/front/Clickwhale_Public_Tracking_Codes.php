@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\admin\Clickwhale_WP_User;

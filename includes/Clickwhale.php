@@ -1,10 +1,23 @@
 <?php
+/**
+ * The file that defines the core plugin class
+ *
+ * A class definition that includes attributes and functions used across both the
+ * public-facing side of the site and the admin area.
+ *
+ * @link       #
+ * @since      1.0.0
+ *
+ * @package    Clickwhale
+ * @subpackage Clickwhale/includes
+ */
 
 namespace clickwhale\includes;
 
 use clickwhale\includes\front\Clickwhale_Public_Ajax;
-use clickwhale\includes\debuggers\Debugger;
 use clickwhale\includes\helpers\Helper;
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
 use clickwhale\includes\admin\{
 	Clickwhale_Admin,
 	Clickwhale_Ajax,
@@ -19,19 +32,6 @@ use clickwhale\includes\admin\links\Clickwhale_Link_Edit;
 use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
 
 use clickwhale\includes\front\Clickwhale_Public;
-
-/**
- * The file that defines the core plugin class
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/includes
- */
 
 /**
  * The core plugin class.
@@ -124,35 +124,10 @@ final class Clickwhale {
 	 *
 	 * @since    1.0.0
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
-	/**
-	 * Throw error on object clone.
-	 *
-	 * The whole idea of the singleton design pattern is that there is a single
-	 * object therefore, we don't want the object to be cloned.
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 * @access protected
-	 */
-	public function __clone() {
-		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
-
-	/**
-	 * Disable un-serializing of the class.
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 * @access protected
-	 */
-	public function __wakeup() {
-		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
+    use Singleton_Clone;
+    use Singleton_Wakeup;
 
 	/**
 	 * Load the required dependencies for this plugin.
@@ -176,49 +151,49 @@ final class Clickwhale {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Clickwhale_Loader.php';
+		require_once CLICKWHALE_DIR . 'includes/Clickwhale_Loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/Clickwhale_i18n.php';
+		require_once CLICKWHALE_DIR . 'includes/Clickwhale_i18n.php';
 
 		/**
 		 * Debuggers
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/debuggers/Debugger.php';
+		require_once CLICKWHALE_DIR . 'includes/debuggers/Debugger.php';
 
 		/**
 		 * Helpers
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Helper_Abstract.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Helper.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Links_Helper.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Categories_Helper.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Linkpages_Helper.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/helpers/Tracking_Codes_Helper.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Helper_Abstract.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Helper.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Links_Helper.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Categories_Helper.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Linkpages_Helper.php';
+		require_once CLICKWHALE_DIR . 'includes/helpers/Tracking_Codes_Helper.php';
 
 		/**
 		 * Templates
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/content_templates/Clickwhale_Linkpage_Content_Templates.php';
+		require_once CLICKWHALE_DIR . 'includes/content_templates/Clickwhale_Linkpage_Content_Templates.php';
 
 		/**
 		 * The class responsible for defining user functionality
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/admin/Clickwhale_WP_User.php';
+		require_once CLICKWHALE_DIR . 'includes/admin/Clickwhale_WP_User.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/admin/Clickwhale_Admin.php';
+		require_once CLICKWHALE_DIR . 'includes/admin/Clickwhale_Admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/front/Clickwhale_Public.php';
+		require_once CLICKWHALE_DIR . 'includes/front/Clickwhale_Public.php';
 	}
 
 	/**
@@ -232,7 +207,6 @@ final class Clickwhale {
 	 */
 	private function set_locale() {
 		$this->loader->add_action( 'plugins_loaded', $this->locale, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -370,9 +344,9 @@ final class Clickwhale {
 	 * @return    string    The name of the plugin.
 	 * @since     1.0.0
 	 */
-	public function get_plugin_name(): string {
-		return CLICKWHALE_NAME;
-	}
+//	public function get_plugin_name(): string {
+//		return CLICKWHALE_SLUG;
+//	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
@@ -402,8 +376,8 @@ final class Clickwhale {
 	public function default_options(): array {
 		return array(
 			'general'        => array(
-				'name'    => __( 'General', CLICKWHALE_NAME ),
-				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_NAME ),
+				'name'    => __( 'General', CLICKWHALE_SLUG ),
+				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_SLUG ),
 				'options' => array(
 					'access_level'        => [ 'administrator' ],
 					'redirect_type'       => 301,
@@ -415,8 +389,8 @@ final class Clickwhale {
 				)
 			),
 			'tracking'       => array(
-				'name'    => __( 'Tracking', CLICKWHALE_NAME ),
-				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_NAME ),
+				'name'    => __( 'Tracking', CLICKWHALE_SLUG ),
+				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_SLUG ),
 				'options' => array(
 					'tracking_duration'    => 30,
 					'disable_tracking'     => 0,
@@ -424,20 +398,20 @@ final class Clickwhale {
 				)
 			),
 			'linkpages'      => array(
-				'name'    => __( 'Link Pages', CLICKWHALE_NAME ),
-				'text'    => __( 'Global settings for the Link Pages.', CLICKWHALE_NAME ),
+				'name'    => __( 'Link Pages', CLICKWHALE_SLUG ),
+				'text'    => __( 'Global settings for the Link Pages.', CLICKWHALE_SLUG ),
 				'options' => array(
 					'linkpage_links_target' => 0
 				)
 			),
 			'tracking_codes' => array(
-				'name'    => __( 'Tracking Codes', CLICKWHALE_NAME ),
-				'text'    => __( 'Global settings for the Tracking Codes.', CLICKWHALE_NAME ),
+				'name'    => __( 'Tracking Codes', CLICKWHALE_SLUG ),
+				'text'    => __( 'Global settings for the Tracking Codes.', CLICKWHALE_SLUG ),
 				'options' => array()
 			),
 			'other'          => array(
-				'name'    => __( 'Other', CLICKWHALE_NAME ),
-				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_NAME ),
+				'name'    => __( 'Other', CLICKWHALE_SLUG ),
+				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_SLUG ),
 				'options' => array()
 			)
 		);
@@ -449,60 +423,59 @@ final class Clickwhale {
 	 */
 	public function admin_bar_render( $wp_admin_bar ) {
 		$wp_admin_bar->add_node( array(
-				'id'    => CLICKWHALE_NAME,
+				'id'    => CLICKWHALE_SLUG,
 				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
 				'href'  => admin_url( 'admin.php?page=clickwhale' ),
 				'meta'  => array(
-					'class' => CLICKWHALE_NAME,
+					'class' => CLICKWHALE_SLUG,
 					'title' => 'ClickWhale'
 				)
 			)
 		);
 
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-link',
-				'title'  => __( 'New Link', CLICKWHALE_NAME ),
+				'id'     => CLICKWHALE_SLUG . '-new-link',
+				'title'  => __( 'New Link', CLICKWHALE_SLUG ),
 				'href'   => admin_url( 'admin.php?page=clickwhale-edit-link&id=0' ),
-				'parent' => CLICKWHALE_NAME,
+				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-link',
-					'title' => __( 'Add New Link', CLICKWHALE_NAME )
+					'class' => CLICKWHALE_SLUG . 'new-link',
+					'title' => __( 'Add New Link', CLICKWHALE_SLUG )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-category',
-				'title'  => __( 'New Category', CLICKWHALE_NAME ),
+				'id'     => CLICKWHALE_SLUG . '-new-category',
+				'title'  => __( 'New Category', CLICKWHALE_SLUG ),
 				'href'   => admin_url( 'admin.php?page=clickwhale-edit-category&id=0' ),
-				'parent' => CLICKWHALE_NAME,
+				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-category',
-					'title' => __( 'Add New Category', CLICKWHALE_NAME )
+					'class' => CLICKWHALE_SLUG . 'new-category',
+					'title' => __( 'Add New Category', CLICKWHALE_SLUG )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-linkpage',
-				'title'  => __( 'New Link Page', CLICKWHALE_NAME ),
+				'id'     => CLICKWHALE_SLUG . '-new-linkpage',
+				'title'  => __( 'New Link Page', CLICKWHALE_SLUG ),
 				'href'   => admin_url( 'admin.php?page=clickwhale-edit-linkpage&id=0' ),
-				'parent' => CLICKWHALE_NAME,
+				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-linkpage',
-					'title' => __( 'Add New Link Page', CLICKWHALE_NAME )
+					'class' => CLICKWHALE_SLUG . 'new-linkpage',
+					'title' => __( 'Add New Link Page', CLICKWHALE_SLUG )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-tracking code',
-				'title'  => __( 'New Tracking Code', CLICKWHALE_NAME ),
+				'id'     => CLICKWHALE_SLUG . '-new-tracking code',
+				'title'  => __( 'New Tracking Code', CLICKWHALE_SLUG ),
 				'href'   => admin_url( 'admin.php?page=clickwhale-edit-tracking-code&id=0' ),
-				'parent' => CLICKWHALE_NAME,
+				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-tracking-code',
-					'title' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
+					'class' => CLICKWHALE_SLUG . 'new-tracking-code',
+					'title' => __( 'Add New Tracking Code', CLICKWHALE_SLUG )
 				)
 			)
 		);
 	}
-
 }

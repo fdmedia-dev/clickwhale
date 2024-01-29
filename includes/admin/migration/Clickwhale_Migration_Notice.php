@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\migration;
 
 /**
@@ -90,10 +89,10 @@ class Clickwhale_Migration_Notice {
         <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo $this->migrant ?>-migrate">
             <p>
                 <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.',
-						CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
+						CLICKWHALE_SLUG ), $this->migrant_full ); ?></span>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale-tools' ) ); ?>"
-                   class="button button-primary"><?php _e( 'Start Migration', CLICKWHALE_NAME ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Not now', CLICKWHALE_NAME ); ?></a>
+                   class="button button-primary"><?php _e( 'Start Migration', CLICKWHALE_SLUG ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Not now', CLICKWHALE_SLUG ); ?></a>
             </p>
         </div>
 		<?php
@@ -109,11 +108,11 @@ class Clickwhale_Migration_Notice {
         <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_html( $this->migrant ) ?>-deactive">
             <p>
                 <span> <?php printf( __( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.',
-						CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
+						CLICKWHALE_SLUG ), $this->migrant_full ); ?></span>
                 <a href="#"
-                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', CLICKWHALE_NAME ),
+                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', CLICKWHALE_SLUG ),
 						$this->migrant_full ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', CLICKWHALE_NAME ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', CLICKWHALE_SLUG ); ?></a>
             </p>
         </div>
 		<?php

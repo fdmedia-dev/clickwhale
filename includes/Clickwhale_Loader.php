@@ -1,16 +1,5 @@
 <?php
-
 namespace clickwhale\includes;
-
-/**
- * Register all actions and filters for the plugin
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/includes
- */
 
 /**
  * Register all actions and filters for the plugin.
@@ -202,7 +191,5 @@ class Clickwhale_Loader {
 				$hook['callback']
 			), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
-
 }

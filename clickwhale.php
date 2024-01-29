@@ -72,15 +72,13 @@ use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivato
 /**
  * Current plugin version.
  */
-
 define( 'CLICKWHALE_VERSION', '1.6.0' );
-define( 'CLICKWHALE_NAME', 'clickwhale' );
 
 /**
  * @since 1.4.1
  */
-define( 'CLICKWHALE_SLUG',    plugin_basename( __DIR__ ) );
-define( 'CLICKWHALE_ID',      plugin_basename( __FILE__ ) );
+define( 'CLICKWHALE_SLUG',    plugin_basename( __DIR__ ) ); // `clickwhale`
+define( 'CLICKWHALE_ID',      plugin_basename( __FILE__ ) ); // `clickwhale/clickwhale.php`
 define( 'CLICKWHALE_DIR',     plugin_dir_path( __FILE__ ) );
 define( 'CLICKWHALE_DIR_URL', plugin_dir_url( __FILE__ ) );
 
@@ -111,6 +109,16 @@ function deactivate_clickwhale() {
 
 register_activation_hook( __FILE__, 'activate_clickwhale' );
 register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+/**
+ * Traits for Singleton
+ */
+require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Clone.php';
+require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
 
 /**
  * The core plugin class

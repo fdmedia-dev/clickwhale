@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\helpers;
 
 use Exception;
@@ -17,7 +16,7 @@ class Links_Helper extends Helper_Abstract {
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_NAME ),
+			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_SLUG ),
 			self::get_limit(),
 		);
 	}
@@ -48,5 +47,4 @@ class Links_Helper extends Helper_Abstract {
 			$output
 		);
 	}
-
 }

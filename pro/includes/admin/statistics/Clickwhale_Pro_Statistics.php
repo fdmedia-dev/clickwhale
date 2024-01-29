@@ -1,15 +1,11 @@
 <?php
-
 namespace clickwhale_pro\includes\admin\statistics;
 
 class Clickwhale_Pro_Statistics {
-	private static string $plugin_name;
-
 	public Clickwhale_Pro_Clicks_Statistics $clicksStatistics;
 	public Clickwhale_Pro_Views_Statistics $viewsStatistics;
 
 	public function __construct() {
-		self::$plugin_name = CLICKWHALE_PRO_NAME;
 		$this->load_dependencies();
 
 		$this->clicksStatistics = new Clickwhale_Pro_Clicks_Statistics();
@@ -19,8 +15,8 @@ class Clickwhale_Pro_Statistics {
 	}
 
 	public function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'statistics/Clickwhale_Pro_Clicks_Statistics.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'statistics/Clickwhale_Pro_Views_Statistics.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/statistics/Clickwhale_Pro_Clicks_Statistics.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/statistics/Clickwhale_Pro_Views_Statistics.php';
 	}
 
 	public static function statistic_periods(): array {
@@ -28,49 +24,49 @@ class Clickwhale_Pro_Statistics {
 			'today'      => array(
 				'start' => date( 'Y-m-d' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'Today', self::$plugin_name )
+				'label' => __( 'Today', CLICKWHALE_PRO_SLUG )
 			),
 			'yesterday'  => array(
 				'start' => date( 'Y-m-d', strtotime( '-1 days' ) ),
 				'end'   => date( 'Y-m-d', strtotime( '-1 days' ) ),
-				'label' => __( 'Yesterday', self::$plugin_name )
+				'label' => __( 'Yesterday', CLICKWHALE_PRO_SLUG )
 			),
 			'last7days'  => array(
 				'start'    => date( 'Y-m-d', strtotime( '-6 days' ) ),
 				'end'      => date( 'Y-m-d' ),
-				'label'    => __( 'Last 7 Days', self::$plugin_name ),
+				'label'    => __( 'Last 7 Days', CLICKWHALE_PRO_SLUG ),
 				'selected' => true
 			),
 			'last30days' => array(
 				'start' => date( 'Y-m-d', strtotime( '-29 days' ) ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'Last 30 Days', self::$plugin_name )
+				'label' => __( 'Last 30 Days', CLICKWHALE_PRO_SLUG )
 			),
 			'thisMonth'  => array(
 				'start' => date( 'Y-m-01' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'This Month', self::$plugin_name )
+				'label' => __( 'This Month', CLICKWHALE_PRO_SLUG )
 			),
 			'lastMonth'  => array(
 				'start' => date( 'Y-m-d', strtotime( 'first day of last month' ) ),
 				'end'   => date( 'Y-m-d', strtotime( 'last day of last month' ) ),
-				'label' => __( 'Last Month', self::$plugin_name )
+				'label' => __( 'Last Month', CLICKWHALE_PRO_SLUG )
 			),
 			'thisYear'   => array(
 				'start' => date( 'Y-01-01' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'This Year', self::$plugin_name )
+				'label' => __( 'This Year', CLICKWHALE_PRO_SLUG )
 			),
 			'LastYear'   => array(
 				'start' => date( 'Y-m-d', strtotime( 'last year January 1st' ) ),
 				'end'   => date( 'Y-m-d', strtotime( 'last year December 31st' ) ),
-				'label' => __( 'Last Year', self::$plugin_name )
+				'label' => __( 'Last Year', CLICKWHALE_PRO_SLUG )
 			),
 			'all'        => array(
-				'label' => __( 'All Time', self::$plugin_name )
+				'label' => __( 'All Time', CLICKWHALE_PRO_SLUG )
 			),
 			'custom'     => array(
-				'label' => __( 'Custom', self::$plugin_name )
+				'label' => __( 'Custom', CLICKWHALE_PRO_SLUG )
 			)
 		);
 	}
@@ -163,7 +159,7 @@ class Clickwhale_Pro_Statistics {
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
                                 ctx.fillText('<?php _e( 'No data to display',
-									self::$plugin_name ) ?>', centerX, centerY);
+									CLICKWHALE_PRO_SLUG ) ?>', centerX, centerY);
                                 ctx.arc(centerX, centerY, (r - radiusDecrease || 0), 0, 2 * Math.PI);
                                 ctx.stroke();
                             }
@@ -460,7 +456,7 @@ class Clickwhale_Pro_Statistics {
                         borderJoinStyle: 'round',
                         borderWidth: 2,
                         fill: true,
-                        label: "<?php _e( 'All', self::$plugin_name ); ?>",
+                        label: "<?php _e( 'All', CLICKWHALE_PRO_SLUG ); ?>",
                         pointBorderWidth: 2,
                         pointHoverBorderWidth: 2,
                         pointRadius: 2,
@@ -568,11 +564,11 @@ class Clickwhale_Pro_Statistics {
                     }
 
                     const
-                        unknown = '<?php _e( 'Unknown', self::$plugin_name ) ?>',
+                        unknown = '<?php _e( 'Unknown', CLICKWHALE_PRO_SLUG ) ?>',
                         data = {
                             labels: [],
                             datasets: [{
-                                label: '<?php _e( 'Total', self::$plugin_name ) ?>',
+                                label: '<?php _e( 'Total', CLICKWHALE_PRO_SLUG ) ?>',
                                 data: []
                             }]
                         };
@@ -853,7 +849,7 @@ class Clickwhale_Pro_Statistics {
                 function addChartData(chart, id, label, period, array = []) {
                     const dataset = setMainChartDefaultData();
                     if (id === '0') {
-                        dataset.label = "<?php _e( 'All', self::$plugin_name ); ?>";
+                        dataset.label = "<?php _e( 'All', CLICKWHALE_PRO_SLUG ); ?>";
                     } else {
                         dataset.label = label;
                     }

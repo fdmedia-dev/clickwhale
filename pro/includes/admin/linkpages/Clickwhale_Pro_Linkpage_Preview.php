@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin\linkpages;
 
 class Clickwhale_Pro_Linkpage_Preview {

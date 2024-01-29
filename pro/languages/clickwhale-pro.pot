@@ -1,0 +1,623 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: ClickWhale Pro\n"
+"POT-Creation-Date: 2023-07-11 18:29+0300\n"
+"PO-Revision-Date: 2023-07-11 18:27+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: clickwhale-pro.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: admin/class-clickwhale-pro-license.php:19
+#: admin/class-clickwhale-pro-license.php:20
+msgid "License"
+msgstr ""
+
+#: admin/class-clickwhale-pro-license.php:36
+msgid "License Settings"
+msgstr ""
+
+#: admin/class-clickwhale-pro-license.php:78
+#, php-format
+msgid "License is active. You have %s/%s instances activated."
+msgstr ""
+
+#: admin/class-clickwhale-pro-license.php:81
+msgid ""
+"License for this site is not active. Click the button below to activate."
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:32
+#: admin/class-clickwhale-pro-settings.php:33
+#: admin/views/statistics/statistics.php:9
+msgid "Statistics"
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:82
+msgid "Credits"
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:91
+msgid "Check to hide Link Page credits."
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:97
+msgid "Tracking Codes Credits"
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:106
+msgid "Hide plugin HTML credits for the active tracking codes."
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:112
+msgid "Affiliate ID"
+msgstr ""
+
+#: admin/class-clickwhale-pro-settings.php:123
+msgid "Enter your Affiliate ID."
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:219
+msgid "Pro Blocks"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:222
+msgid "Custom Content"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:226
+msgid "Blog Posts Feed"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:240
+msgid "Logo Style"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:246
+msgid "Square (Default)"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:247
+msgid "Rounded"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:248
+msgid "Circle"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:251
+msgid "Set Link Page logo style"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:257
+msgid "Logo Shadow"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:262
+msgid "Add logo box shadow"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:303
+msgid "Social"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:320
+msgid "Facebook"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:326
+msgid "e.g. https://facebook.com"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:327
+msgid "Facebook profile link"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:333
+msgid "Instagram"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:339
+msgid "e.g. https://instagram.com"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:340
+msgid "Instagram profile link"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:346
+msgid "Twitter"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:352
+msgid "e.g. https://twitter.com"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:353
+msgid "Twitter profile link"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:376
+msgid "Site Background"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:382
+msgid "Solid Color"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:383
+msgid "Gradient"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:384
+msgid "Pattern"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:385
+msgid "Image"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:388
+msgid "Choose page background style"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:401
+msgid "Set page background color"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:471
+msgid "Linear"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:472
+msgid "Radial"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:473
+msgid "Conic"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:490
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:587
+msgid "Top"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:491
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:570
+msgid "Right"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:492
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:569
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:588
+msgid "Center"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:493
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:589
+msgid "Bottom"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:494
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:568
+msgid "Left"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:544
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:552
+msgid "Remove image"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:549
+msgid "Upload image"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:559
+msgid "Horisontal position"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:578
+msgid "Vertical position"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:597
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:607
+msgid "Repeat"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:606
+msgid "No repeat"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:615
+msgid "Size"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:624
+msgid "Cover"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:625
+msgid "Contain"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:626
+msgid "Auto"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:688
+msgid "Feed: "
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:691
+msgid "Layout: "
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:693
+msgid "Feed"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:703
+msgid "Category"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:724
+msgid "Number of Posts"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:737
+msgid "Layout"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:742
+msgid "List with large thumbnail"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:745
+msgid "List with small thumbnail"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:748
+msgid "Grid (2 columns)"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:751
+msgid "Grid (3 columns)"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:759
+msgid "Hide Title"
+msgstr ""
+
+#: admin/controllers/linkpages/class-clickwhale-pro-linkpage-edit.php:768
+msgid "Check to hide title on the frontend"
+msgstr ""
+
+#: admin/controllers/links/class-clickwhale-pro-link-edit.php:74
+#, php-format
+msgid "%1$s"
+msgstr ""
+
+#: admin/controllers/links/class-clickwhale-pro-link-edit.php:88
+msgid "UTM Parameters"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:35
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:38
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:460
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:853
+msgid "All"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:38
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:53
+msgid "Unknown Link"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:58
+msgid "Edit link"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:59
+msgid "Select link for the statistics"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:60
+msgid "Remove link from the statistics"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:81
+msgid "Link"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:82
+msgid "URL"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:83
+msgid "Clicks"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:90
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:90
+msgid "Nothing to display"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:103
+msgid "Select Link"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:108
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:108
+msgid "Period"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:127
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:127
+msgid "Start Date"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:131
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:131
+msgid "End Date"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:132
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:132
+msgid "Filter"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:139
+msgid "Clicks for today"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:142
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:142
+msgid "from yesterday"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:146
+msgid "Clicks for this week"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:149
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:149
+msgid "from last week"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:153
+msgid "Clicks for this month"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:156
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:156
+msgid "from last month"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:164
+msgid "Link Clicks Overview"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:173
+msgid "Most Clicked Links"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProClicksStatistics.php:183
+msgid "Total Links Clicks"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:41
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:57
+msgid "Unknown Link Page"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:59
+msgid "Edit Link Page"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:60
+msgid "Select Link Page for the statistics"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:61
+msgid "Remove Link Page from the statistics"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:81
+msgid "Link Page"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:82
+msgid "Views"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:103
+msgid "Select Link Page"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:139
+msgid "Views for today"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:146
+msgid "Views for this week"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:153
+msgid "Views for this month"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:164
+msgid "Link Pages Views Overview"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:173
+msgid "Most Viewed Link Pages"
+msgstr ""
+
+#: admin/controllers/statistics/ClickwhaleProViewsStatistics.php:183
+msgid "Total Link Pages Views"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:29
+msgid "Today"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:34
+msgid "Yesterday"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:39
+msgid "Last 7 Days"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:45
+msgid "Last 30 Days"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:50
+msgid "This Month"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:55
+msgid "Last Month"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:60
+msgid "This Year"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:65
+msgid "Last Year"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:68
+msgid "All Time"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:71
+msgid "Custom"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:163
+msgid "No data to display"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:568
+msgid "Unknown"
+msgstr ""
+
+#: admin/controllers/statistics/class-clickwhale-pro-statistics.php:572
+msgid "Total"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:27
+msgid "See Dynamic conversion values tags below:"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:29
+msgid "return the order id"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:30
+msgid "return the order currency"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:31
+msgid "return the user's full name"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:32
+msgid "return the user's email"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:33
+msgid "return the name of the purchased products separated by a comma"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:34
+msgid "return the amount of the cart payment"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:34
+msgid "tax and shipping excluded"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:35
+msgid "return the amount of the tax in the purchase"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:36
+msgid "return the total amount of the purchase"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:36
+msgid "tax included"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:49
+msgid "WooCommerce Products for tracking"
+msgstr ""
+
+#: admin/controllers/tracking-codes/class-clickwhale-pro-tracking-code-edit.php:68
+msgid "Easy Digital Downloads Products for tracking"
+msgstr ""
+
+#: admin/views/statistics/statistics.php:15
+msgid "Links"
+msgstr ""
+
+#: admin/views/statistics/statistics.php:16
+msgid "Linkpages"
+msgstr ""
+
+#: includes/class-clickwhale-pro-activator.php:41
+msgid "ClickWhale PRO"
+msgstr ""
+
+#: includes/class-clickwhale-pro-activator.php:42
+msgid "from here"
+msgstr ""
+
+#: includes/class-clickwhale-pro-activator.php:44
+msgid "plugins page"
+msgstr ""
+
+#: includes/class-clickwhale-pro-activator.php:71
+msgid "<h3>Could not be activated!</h3>"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "ClickWhale Pro"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://clickwhale.pro"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"This is a short description of what the plugin does. It's displayed in the "
+"WordPress admin area."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "fdmedia"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://fdmedia.io/"
+msgstr ""

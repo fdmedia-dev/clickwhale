@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\helpers;
 
 class Categories_Helper extends Helper_Abstract {
@@ -16,7 +15,7 @@ class Categories_Helper extends Helper_Abstract {
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d categories can be added.', CLICKWHALE_NAME ),
+			__( 'Currently, a maximum of %d categories can be added.', CLICKWHALE_SLUG ),
 			self::get_limit(),
 		);
 	}

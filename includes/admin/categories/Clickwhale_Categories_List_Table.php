@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\categories;
 
 use clickwhale\includes\helpers\Helper;
@@ -80,9 +79,9 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 			wp_unslash( $item['title'] ) );
 		$actions = array(
 			'edit'   => sprintf( '<a href="?page=clickwhale-edit-category&id=%d">%s</a>', intval( $item['id'] ),
-				__( 'Edit', CLICKWHALE_NAME ) ),
+				__( 'Edit', CLICKWHALE_SLUG ) ),
 			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%d">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), intval( $item['id'] ), __( 'Delete', CLICKWHALE_NAME ) ),
+				sanitize_text_field( $_REQUEST['page'] ), intval( $item['id'] ), __( 'Delete', CLICKWHALE_SLUG ) ),
 		);
 
 		return sprintf( '%s %s',
@@ -135,9 +134,9 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
-			'title'       => __( 'Title', CLICKWHALE_NAME ),
-			'description' => __( 'Description', CLICKWHALE_NAME ),
-			'count'       => __( 'Links count', CLICKWHALE_NAME ),
+			'title'       => __( 'Title', CLICKWHALE_SLUG ),
+			'description' => __( 'Description', CLICKWHALE_SLUG ),
+			'count'       => __( 'Links count', CLICKWHALE_SLUG ),
 		);
 
 		return $columns;

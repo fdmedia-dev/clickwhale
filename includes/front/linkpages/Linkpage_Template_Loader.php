@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front\linkpages;
 
 class Linkpage_Template_Loader implements Linkpage_Template_Loader_Interface {

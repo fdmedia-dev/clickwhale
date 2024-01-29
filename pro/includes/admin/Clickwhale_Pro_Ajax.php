@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale_pro\includes\admin;
 
 use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
@@ -77,12 +76,11 @@ class Clickwhale_Pro_Ajax {
 
 		if ( ! $result['items'] ) {
 			wp_send_json_error( 'No items!' );
-			wp_die();
+			//wp_die();
 		}
 
 		wp_send_json_success( $result );
-
-		wp_die();
+		//wp_die();
 	}
 
 	public static function get_clicks_count_for_day_and_id() {
@@ -107,12 +105,11 @@ class Clickwhale_Pro_Ajax {
 
 		if ( ! $result['items'] ) {
 			wp_send_json_error( 'No items!' );
-			wp_die();
+			//wp_die();
 		}
 
 		wp_send_json_success( $result );
-
-		wp_die();
+		//wp_die();
 	}
 
 	public function get_total_views_for_period() {
@@ -155,12 +152,11 @@ class Clickwhale_Pro_Ajax {
 
 		if ( ! $result['items'] ) {
 			wp_send_json_error( 'No items!' );
-			wp_die();
+			//wp_die();
 		}
 
 		wp_send_json_success( $result );
-
-		wp_die();
+		//wp_die();
 	}
 
 	public static function get_views_count_for_day_and_id() {
@@ -184,12 +180,10 @@ class Clickwhale_Pro_Ajax {
 
 		if ( ! $result['items'] ) {
 			wp_send_json_error( 'No items!' );
-			wp_die();
+			//wp_die();
 		}
 
 		wp_send_json_success( $result );
-
-		wp_die();
+		//wp_die();
 	}
-
 }

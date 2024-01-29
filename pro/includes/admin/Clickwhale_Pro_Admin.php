@@ -1,7 +1,9 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
+ *
+ *  Defines the plugin name, version, and two examples hooks for how to
+ *  enqueue the admin-specific stylesheet and JavaScript.
  *
  * @link       https://fdmedia.io/
  * @since      1.0.0
@@ -17,15 +19,6 @@ use clickwhale_pro\includes\admin\links\Clickwhale_Pro_Link_Edit;
 use clickwhale_pro\includes\admin\tracking_codes\Clickwhale_Pro_Tracking_Code_Edit;
 use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Clickwhale_Pro
- * @subpackage Clickwhale_Pro/admin
- */
 final class Clickwhale_Pro_Admin {
 	/**
 	 * @since    1.5.0
@@ -80,21 +73,21 @@ final class Clickwhale_Pro_Admin {
 	 */
 	private function load_dependencies() {
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Pro_Settings.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Pro_Ajax.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/links/Clickwhale_Pro_Link_Edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/statistics/Clickwhale_Pro_Statistics.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/Clickwhale_Pro_Settings.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/Clickwhale_Pro_Ajax.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/links/Clickwhale_Pro_Link_Edit.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php';
+		require_once CLICKWHALE_PRO_DIR . 'includes/admin/statistics/Clickwhale_Pro_Statistics.php';
 	}
 
 	public function add_menu_items_before_settings() {
 		add_submenu_page(
 			'clickwhale',
-			__( 'Statistics', CLICKWHALE_PRO_NAME ),
-			__( 'Statistics', CLICKWHALE_PRO_NAME ),
+			__( 'Statistics', CLICKWHALE_PRO_SLUG ),
+			__( 'Statistics', CLICKWHALE_PRO_SLUG ),
 			'manage_options',
-			CLICKWHALE_NAME . '-statistics',
+			CLICKWHALE_SLUG . '-statistics',
 			array( $this, 'render_statistics_page_template' )
 		);
 	}
@@ -106,7 +99,7 @@ final class Clickwhale_Pro_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style(
-			CLICKWHALE_PRO_NAME,
+			CLICKWHALE_PRO_SLUG,
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/css/clickwhale-pro-admin.css', array(),
 			CLICKWHALE_PRO_VERSION,
 		);
@@ -119,7 +112,7 @@ final class Clickwhale_Pro_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script(
-			CLICKWHALE_PRO_NAME . '_chartjs',
+			CLICKWHALE_PRO_SLUG . '_chartjs',
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/js/chartjs/chart.js',
 			'',
 			'4.2.1',
@@ -127,7 +120,7 @@ final class Clickwhale_Pro_Admin {
 		);
 
 		wp_enqueue_script(
-			CLICKWHALE_PRO_NAME,
+			CLICKWHALE_PRO_SLUG,
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/js/clickwhale-pro-admin.js',
 			array( 'jquery' ),
 			CLICKWHALE_PRO_VERSION,
