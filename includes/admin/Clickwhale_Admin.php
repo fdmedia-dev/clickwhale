@@ -137,7 +137,7 @@ final class Clickwhale_Admin {
 				'edit-link'          => __( 'Add New',               CLICKWHALE_NAME ),
 				'categories'         => __( 'Categories',            CLICKWHALE_NAME ),
 				'edit-category'      => __( 'Add New Category',      CLICKWHALE_NAME ),
-				'linkpages'          => __( 'Link Pages',            CLICKWHALE_NAME ),
+				'linkpages'          => __( 'Link Pages TEST',            CLICKWHALE_NAME ),
 				'edit-linkpage'      => __( 'Add New Link Page',     CLICKWHALE_NAME ),
 				'tracking-codes'     => __( 'Tracking Codes',        CLICKWHALE_NAME ),
 				'edit-tracking-code' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
