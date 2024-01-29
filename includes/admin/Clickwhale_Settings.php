@@ -157,7 +157,7 @@ final class Clickwhale_Settings {
 		);
 		add_settings_field(
 			'redirection',
-			__( 'Redirection Type TEST', CLICKWHALE_NAME ),
+			__( 'Redirection Type', CLICKWHALE_NAME ),
 			array( $this, 'render_controls' ),
 			'clickwhale_general_options',
 			'general_settings_section',
@@ -173,7 +173,7 @@ final class Clickwhale_Settings {
 					307 => __( '307 redirect: Temporarily Redirect', CLICKWHALE_NAME ),
 					308 => __( '308 redirect: Permanent Redirect', CLICKWHALE_NAME )
 				),
-				'description' => __( 'Set default redirection type which will be used for new links.',
+				'description' => __( 'Set default redirection type which will be used for new links (test).',
 					CLICKWHALE_NAME ),
 			)
 		);
