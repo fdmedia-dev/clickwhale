@@ -40,11 +40,11 @@ if ( ! function_exists( 'clickwhale_fs' ) ) {
                 'premium_slug'        => 'clickwhale-pro',
                 'type'                => 'plugin',
                 'public_key'          => 'pk_07a5633bd94c00467e7e58c200504',
-                'is_premium'          => true, // ???
-                'is_premium_only'     => false, // ???
+                'is_premium'          => true,
+                'premium_suffix'      => 'Pro',
+                'has_premium_version' => true,
                 'has_addons'          => false,
                 'has_paid_plans'      => true,
-                'is_org_compliant'    => false, // ???
                 'has_affiliation'     => 'all',
                 'menu'                => array(
                     'slug'           => 'clickwhale',
