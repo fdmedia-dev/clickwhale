@@ -20,13 +20,13 @@ use clickwhale_pro\includes\front\Clickwhale_Pro_Public;
 use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
 /**
- * The core plugin class.
+ * The core Pro version class.
  *
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
+ * version of the Pro version.
  *
  * @since      1.0.0
  * @package    Clickwhale_Pro
@@ -36,12 +36,13 @@ use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 final class Clickwhale_Pro {
 
 	/**
-	 * The unique instance of the plugin.
+	 * The unique instance of the Pro version.
 	 *
-	 * @var Clickwhale_Pro|null
+	 * @var Clickwhale_Pro
+     *
 	 * @since 1.0.3
 	 */
-	private static ?Clickwhale_Pro $instance = null;
+	private static $instance;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -51,15 +52,14 @@ final class Clickwhale_Pro {
 	 * @access   protected
 	 * @since    1.0.0
 	 */
-	protected Clickwhale_Pro_Loader $loader;
-	private Clickwhale_Pro_i18n $locale;
-	public ?Clickwhale_Pro_Admin $admin;
-	public ?Clickwhale_Pro_Settings $settings;
-	public ?Clickwhale_Pro_Public $public;
+	protected $loader;
+	private $locale;
+	public $admin;
+	public $settings;
+	public $public;
 
-	public static function get_instance(): ?Clickwhale_Pro {
+	public static function get_instance(): Clickwhale_Pro {
 
-		// init instance
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 

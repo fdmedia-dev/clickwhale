@@ -5,9 +5,20 @@ use stdClass;
 
 abstract class Helper_Abstract {
 
-	protected static string $single;
-	protected static string $plural;
-	protected static int $limit;
+    /**
+     * @var string
+     */
+	protected static $single;
+
+    /**
+     * @var string
+     */
+	protected static $plural;
+
+    /**
+     * @var int
+     */
+	protected static $limit;
 
 	/**
 	 * Get items count

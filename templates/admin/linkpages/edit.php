@@ -7,7 +7,7 @@ use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 
 Linkpages_Helper::get_limitation_error( $_GET['id'] );
 
-$linkpage = Clickwhale::get_instance()->linkpage;
+$linkpage = clickwhale()->linkpage;
 $item     = $linkpage->get_item( $_REQUEST );
 
 // ITEM

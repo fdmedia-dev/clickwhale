@@ -5,9 +5,20 @@ use Exception;
 
 class Links_Helper extends Helper_Abstract {
 
-	protected static string $single = 'link';
-	protected static string $plural = 'links';
-	protected static int $limit = 9999;
+    /**
+     * @var string
+     */
+	protected static $single = 'link';
+
+    /**
+     * @var string
+     */
+	protected static $plural = 'links';
+
+    /**
+     * @var int
+     */
+	protected static $limit = 9999;
 
 	/**
 	 * Return limitation notice string
@@ -17,7 +28,7 @@ class Links_Helper extends Helper_Abstract {
 	public static function get_limitation_notice(): string {
 		return sprintf(
 			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_SLUG ),
-			self::get_limit(),
+			self::get_limit()
 		);
 	}
 

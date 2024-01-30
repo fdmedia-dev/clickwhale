@@ -75,6 +75,5 @@ class Clickwhale_Public_Linkpages {
 			           ->setLinkpage( $linkpage )
 			           ->setTemplate( 'linkpage.php' );
 		}
-
 	}
 }

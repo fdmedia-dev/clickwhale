@@ -2,7 +2,6 @@
 namespace clickwhale\includes\admin\categories;
 
 use clickwhale\includes\helpers\Helper;
-use HTML;
 use WP_List_Table;
 
 /**
@@ -47,7 +46,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	 * @param $item - row (key, value array)
 	 * @param $column_name - string (key)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
@@ -59,7 +58,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 
 	/**

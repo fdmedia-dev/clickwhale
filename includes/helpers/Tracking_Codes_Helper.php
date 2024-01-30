@@ -8,10 +8,25 @@ use stdClass;
  */
 class Tracking_Codes_Helper extends Helper_Abstract {
 
-	protected static string $single = 'tracking_code';
-	protected static string $plural = 'tracking_codes';
-	protected static int $limit = 9999;
-	protected static int $active_limit = 3;
+    /**
+     * @var string
+     */
+	protected static $single = 'tracking_code';
+
+    /**
+     * @var string
+     */
+	protected static $plural = 'tracking_codes';
+
+    /**
+     * @var int
+     */
+	protected static $limit = 9999;
+
+    /**
+     * @var int
+     */
+	protected static $active_limit = 3;
 
 	/**
 	 * Filter function

@@ -1,13 +1,19 @@
 <?php
 namespace clickwhale\includes\front;
 
+use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
+
 class Clickwhale_Public_Ajax {
-	private static ?Clickwhale_Public_Ajax $instance = null;
+
+    /**
+     * @var Clickwhale_Public_Ajax
+     */
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Public_Ajax
 	 */
-	public static function get_instance(): ?Clickwhale_Public_Ajax {
+	public static function get_instance(): Clickwhale_Public_Ajax {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}

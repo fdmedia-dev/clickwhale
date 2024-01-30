@@ -3,9 +3,20 @@ namespace clickwhale\includes\helpers;
 
 class Categories_Helper extends Helper_Abstract {
 
-	protected static string $single = 'category';
-	protected static string $plural = 'categories';
-	protected static int $limit = 10;
+    /**
+     * @var string
+     */
+	protected static $single = 'category';
+
+    /**
+     * @var string
+     */
+	protected static $plural = 'categories';
+
+    /**
+     * @var int
+     */
+	protected static $limit = 10;
 
 	/**
 	 * Return limitation notice string
@@ -16,7 +27,7 @@ class Categories_Helper extends Helper_Abstract {
 	public static function get_limitation_notice(): string {
 		return sprintf(
 			__( 'Currently, a maximum of %d categories can be added.', CLICKWHALE_SLUG ),
-			self::get_limit(),
+			self::get_limit()
 		);
 	}
 }

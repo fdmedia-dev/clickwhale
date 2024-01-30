@@ -8,14 +8,14 @@ use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 class Clickwhale_Pro_Settings {
 	/**
 	 * @since    1.0.0
-	 * @var Clickwhale_Pro_Settings|null
+	 * @var Clickwhale_Pro_Settings
 	 */
-	private static ?Clickwhale_Pro_Settings $instance = null;
+	private static $instance;
 
 	/**
-	 * @return Clickwhale_Pro_Settings|null
+	 * @return Clickwhale_Pro_Settings
 	 */
-	public static function get_instance(): ?Clickwhale_Pro_Settings {
+	public static function get_instance(): Clickwhale_Pro_Settings {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -91,7 +91,7 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'linkpage_credits',
 				'name'    => 'clickwhale_linkpages_options[linkpage_credits]',
 				'value'   => isset( $linkpages_options['linkpage_credits'] ) ? 1 : 0,
-				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_SLUG ),
+				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_SLUG )
 			)
 		);
 
@@ -106,7 +106,7 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'tracking_codes_credits',
 				'name'    => 'clickwhale_tracking_codes_options[tracking_codes_credits]',
 				'value'   => isset( $tracking_codes_options['tracking_codes_credits'] ) ? 1 : 0,
-				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_SLUG ),
+				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_SLUG )
 			)
 		);
 
@@ -123,7 +123,7 @@ class Clickwhale_Pro_Settings {
 				'type'        => 'text',
 				'value'       => $other_options['affiliate_id'] ?? '',
 				'placeholder' => '123456',
-				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_SLUG ),
+				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_SLUG )
 			)
 		);
 	}

@@ -3,7 +3,6 @@ namespace clickwhale\includes\admin\linkpages;
 
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Linkpages_Helper;
-use HTML;
 use WP_List_Table;
 
 /**
@@ -25,17 +24,11 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	 * @param $item - row (key, value array)
 	 * @param $column_name - string (key)
 	 *
-	 * @return HTML
+	 * @return string
 	 */
 	function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
 	}
-
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return HTML
-	 */
 
 	/**
 	 * @param $item - row (key, value array)

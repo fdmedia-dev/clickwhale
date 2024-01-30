@@ -66,7 +66,7 @@ class Clickwhale_Visitor_Track {
 			if ( isset( $tracking_options['tracking_duration'] ) && $tracking_options['tracking_duration'] !== '' ) {
 				$tracking_duration = $tracking_options['tracking_duration'];
 			} else {
-				$settings          = Clickwhale::get_instance()->default_options();
+				$settings          = clickwhale()->default_options();
 				$tracking_duration = $settings['tracking']['options']['tracking_duration'];
 			}
 

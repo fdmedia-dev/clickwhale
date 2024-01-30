@@ -7,7 +7,7 @@ use clickwhale\includes\helpers\Helper;
 
 Links_Helper::get_limitation_error( $_GET['id'] );
 
-$link            = Clickwhale::get_instance()->link;
+$link            = clickwhale()->link;
 $item            = $link->get_item( $_REQUEST );
 $item_categories = Categories_Helper::get_all();
 

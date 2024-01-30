@@ -3,17 +3,51 @@ namespace clickwhale\includes\front;
 
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 use DOMDocument;
+use DOMException;
 use DOMXPath;
+use WP_Post;
 
 class Clickwhale_Public_Linkpage {
+
+    /**
+     * @var WP_Post $post;
+     */
 	private $post;
+
+    /**
+     * @var false|mixed|null
+     */
 	private $linkpages_options;
+
+    /**
+     * @var false|mixed|null
+     */
 	private $other_options;
+
+    /**
+     * @var mixed|string
+     */
 	private $data;
+
+    /**
+     * @var false|mixed|string
+     */
 	private $social;
+
+    /**
+     * @var mixed|string
+     */
 	private $links;
+
+    /**
+     * @var mixed|string
+     */
 	private $styles;
-	private string $logo;
+
+    /**
+     * @var string
+     */
+	private $logo;
 
 	public function __construct( $post ) {
 		$this->post              = $post;

@@ -10,7 +10,11 @@ use clickwhale\includes\helpers\Tracking_Codes_Helper;
  * @since 1.2.0
  */
 class Clickwhale_Public_Tracking_Codes {
-	public string $path;
+
+    /**
+     * @var string
+     */
+	public $path;
 
 	public function __construct( $path ) {
 		$this->path = $path;
@@ -77,7 +81,7 @@ class Clickwhale_Public_Tracking_Codes {
 	private function is_user_untracked( array $position ): bool {
 		$current_user_roles = Clickwhale_WP_User::get_current_user_roles();
 
-		if ( isset( $position['exclude_user_by_role'] ) && is_array( $current_user_roles ) ) {
+		if ( isset( $position['exclude_user_by_role'] ) && ! empty( $current_user_roles ) ) {
 			return count( array_intersect( $current_user_roles, $position['exclude_user_by_role'] ) ) > 0;
 		}
 

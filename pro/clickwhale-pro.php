@@ -60,7 +60,7 @@ require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Clone.php';
 require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
 
 /**
- * Plugin
+ * Core class of Pro version
  */
 require CLICKWHALE_PRO_DIR . 'includes/Clickwhale_Pro.php';
 
@@ -88,10 +88,10 @@ function run_clickwhale_pro() {
  *
  * Example: <?php $clickwhale_pro = Clickwhale_Pro(); ?>
  *
- * @return Clickwhale_Pro|null The one true Clickwhale_Pro instance.
+ * @return Clickwhale_Pro The one true Clickwhale_Pro instance.
  *
  * @since 1.6.0
  */
-function clickwhale_pro(): ?Clickwhale_Pro {
+function clickwhale_pro(): Clickwhale_Pro {
 	return Clickwhale_Pro::get_instance();
 }

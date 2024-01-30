@@ -22,19 +22,35 @@ use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 final class Clickwhale_Pro_Admin {
 	/**
 	 * @since    1.5.0
-	 * @var Clickwhale_Pro_Admin|null
+	 * @var Clickwhale_Pro_Admin
 	 */
-	private static ?Clickwhale_Pro_Admin $instance = null;
-	public ?Clickwhale_Pro_Ajax $ajax;
-	public Clickwhale_Pro_Link_Edit $link;
-	public Clickwhale_Pro_Linkpage_Edit $linkpage;
-	public Clickwhale_Pro_Tracking_Code_Edit $tracking_code;
+	private static $instance;
+
+    /**
+     * @var Clickwhale_Pro_Ajax
+     */
+	public $ajax;
+
+    /**
+     * @var Clickwhale_Pro_Link_Edit
+     */
+	public $link;
+
+    /**
+     * @var Clickwhale_Pro_Linkpage_Edit
+     */
+	public $linkpage;
+
+    /**
+     * @var Clickwhale_Pro_Tracking_Code_Edit
+     */
+	public $tracking_code;
 
 	/**
 	 * @return Clickwhale_Pro_Admin
 	 * @since    1.0.0
 	 */
-	public static function get_instance(): ?Clickwhale_Pro_Admin {
+	public static function get_instance(): Clickwhale_Pro_Admin {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 
@@ -101,7 +117,7 @@ final class Clickwhale_Pro_Admin {
 		wp_enqueue_style(
 			CLICKWHALE_PRO_SLUG,
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/css/clickwhale-pro-admin.css', array(),
-			CLICKWHALE_PRO_VERSION,
+			CLICKWHALE_PRO_VERSION
 		);
 	}
 

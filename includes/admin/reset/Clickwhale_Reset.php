@@ -12,9 +12,12 @@ class Clickwhale_Reset {
 	 */
 	private $plugin_name;
 
+    /**
+     * @var Clickwhale_Reset
+     */
 	private static $instance;
 
-	public static function getInstance() {
+	public static function getInstance(): Clickwhale_Reset {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}

@@ -4,6 +4,7 @@ namespace clickwhale\includes\admin;
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Categories_Helper, Helper, Linkpages_Helper, Links_Helper, Tracking_Codes_Helper};
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use WP_Error;
 
 /**
  * Ajax functionality of the plugin.
@@ -16,12 +17,15 @@ use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
  */
 class Clickwhale_Ajax {
 
-	private static ?Clickwhale_Ajax $instance = null;
+    /**
+     * @var Clickwhale_Ajax
+     */
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Ajax
 	 */
-	public static function get_instance(): ?Clickwhale_Ajax {
+	public static function get_instance(): Clickwhale_Ajax {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -87,7 +91,7 @@ class Clickwhale_Ajax {
 	public function migration_to_clickwhale() {
 		check_ajax_referer( 'migration_to_clickwhale', 'security' );
 
-		$available = Clickwhale::get_instance()->tools->migration->available_migrations();
+		$available = clickwhale()->tools->migration->available_migrations();
 		$options   = get_option( 'clickwhale_tools_migration_options' );
 		$migrant   = isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '';
 		$item      = $available[ $migrant ];
@@ -98,7 +102,7 @@ class Clickwhale_Ajax {
 			//wp_die();
 		}
 
-		if ( Clickwhale::get_instance()->tools->migration->check_active( $item['path'] ) ) {
+		if ( clickwhale()->tools->migration->check_active( $item['path'] ) ) {
 			$result['title'] = $item['name'];
 
 			if ( isset( $options[ $item['slug'] . '_categories' ] )
@@ -133,7 +137,7 @@ class Clickwhale_Ajax {
 	public function migration_reset() {
 		check_ajax_referer( 'migration_reset', 'security' );
 
-		foreach ( Clickwhale::get_instance()->tools->migration->available_migrations() as $item ) {
+		foreach ( clickwhale()->tools->migration->available_migrations() as $item ) {
 			$migration_options[ $item['slug'] . '_categories' ]          = (bool) $item['data']['categories'];
 			$migration_options[ $item['slug'] . '_links' ]               = (bool) $item['data']['links'];
 			$notice_migrate_options[ $item['slug'] ]                     = false;

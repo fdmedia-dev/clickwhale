@@ -18,7 +18,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 	 * @return array
 	 */
 	public function get_defaults(): array {
-		$plugin_defaults = Clickwhale::get_instance()->settings->default_options();
+		$plugin_defaults = clickwhale()->settings->default_options();
 
 		return array(
 			'id'          => 0,

@@ -21,7 +21,7 @@ class Clickwhale_Loader {
 	 * @access   protected
 	 * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
 	 */
-	protected array $actions;
+	protected $actions;
 
 	/**
 	 * The array of filters registered with WordPress.
@@ -30,7 +30,7 @@ class Clickwhale_Loader {
 	 * @access   protected
 	 * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
 	 */
-	protected array $filters;
+	protected $filters;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -82,7 +82,7 @@ class Clickwhale_Loader {
 	 * @param string $method_to_remove Method name for the filter's callback.
 	 * @param int $priority The priority of the method (default 10).
 	 *
-	 * @return   $removed bool Whether the function is removed.
+	 * @return   bool Whether the function is removed.
 	 * @since    1.0.0
 	 */
 	public function remove_filter( $tag, $class_name = '', $method_to_remove = '', $priority = 10 ) {
@@ -97,7 +97,6 @@ class Clickwhale_Loader {
 				foreach ( $filters as $filter ) {
 
 					if ( $filter['function'][1] == $method_to_remove
-					     && is_object( $filter['function'][0] ) // only WP 4.7 and above. This plugin is requiring at least WP 4.9.
 					     && $filter['function'][0] instanceof $class_name ) {
 						$removed = $wp_filter[ $tag ]->remove_filter( $tag, array(
 							$filter['function'][0],
@@ -120,7 +119,7 @@ class Clickwhale_Loader {
 	 * @param string $method_to_remove Method name for the filter's callback.
 	 * @param int $priority The priority of the method (default 10).
 	 *
-	 * @return   $removed bool Whether the function is removed.
+	 * @return   bool Whether the function is removed.
 	 * @since    1.0.0
 	 */
 	public function remove_action( $tag, $class_name = '', $method_to_remove = '', $priority = 10 ) {

@@ -6,7 +6,7 @@ class Clickwhale_Bot {
 	/**
 	 * @var bool
 	 */
-	public bool $is_bot;
+	public $is_bot;
 
 	public function __construct( $ua ) {
 		$this->is_bot = false;
@@ -41,5 +41,4 @@ class Clickwhale_Bot {
 
 		return $this;
 	}
-
 }

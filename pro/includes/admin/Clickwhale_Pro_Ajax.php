@@ -16,15 +16,15 @@ class Clickwhale_Pro_Ajax {
 
 	/**
 	 * @since    1.5.0
-	 * @var Clickwhale_Pro_Ajax|null
+	 * @var Clickwhale_Pro_Ajax
 	 */
-	private static ?Clickwhale_Pro_Ajax $instance = null;
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Pro_Ajax
 	 * @since    1.5.0
 	 */
-	public static function get_instance(): ?Clickwhale_Pro_Ajax {
+	public static function get_instance(): Clickwhale_Pro_Ajax {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}

@@ -5,8 +5,16 @@ use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Categories_Helper;
 
 class Clickwhale_Links_Bulk_Edit {
-	private array $posts;
-	protected int $columns;
+
+    /**
+     * @var array
+     */
+	private $posts;
+
+    /**
+     * @var int
+     */
+	protected $columns;
 
 	public function __construct( array $posts, int $columns ) {
 		$this->posts   = $posts;

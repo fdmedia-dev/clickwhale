@@ -16,25 +16,31 @@ use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
  * @author     fdmedia <https://fdmedia.io>
  */
 final class Clickwhale_Admin {
+
+    /**
+     * @var array
+     */
+    public $menus;
+
 	/**
-	 * @since    1.5.0
-	 * @var Clickwhale_Admin|null
-	 */
-	private static ?Clickwhale_Admin $instance = null;
+	 * @var Clickwhale_Admin
+     *
+     * @since    1.5.0
+     */
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Admin
+     *
 	 * @since    1.5.0
 	 */
-	public static function get_instance(): ?Clickwhale_Admin {
+	public static function get_instance(): Clickwhale_Admin {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
-
-	public array $menus;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -97,7 +103,8 @@ final class Clickwhale_Admin {
 	 */
 	public function add_plugin_menu() {
 
-		$this->menus = array(
+        $user = clickwhale()->user;
+		$this->menus = apply_filters( 'clickwhale_menus', array(
 			'subpages'  => array(
 				'links'              => __( 'Links',                 CLICKWHALE_SLUG ),
 				'edit-link'          => __( 'Add New',               CLICKWHALE_SLUG ),
@@ -119,9 +126,7 @@ final class Clickwhale_Admin {
 				'admin_page_clickwhale-edit-tracking-code'  => 'tracking-codes/edit',
 			),
 			'toplevel'  => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
-		);
-
-		$this->menus = apply_filters( 'clickwhale_menus', $this->menus );
+		) );
 
 		// Add menu pages
 		do_action( 'clickwhale_menu_before_all' );
@@ -151,7 +156,7 @@ final class Clickwhale_Admin {
 
 		do_action( 'clickwhale_menu_before_settings' );
 
-		if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+		if ( $user::is_current_user_role_access_granted() ) {
             add_submenu_page(
                 CLICKWHALE_SLUG,
                 __( 'Settings', CLICKWHALE_SLUG ),
@@ -164,7 +169,7 @@ final class Clickwhale_Admin {
 
 		do_action( 'clickwhale_menu_before_tools' );
 
-        if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+        if ( $user::is_current_user_role_access_granted() ) {
             add_submenu_page(
                 CLICKWHALE_SLUG,
                 __( 'Tools', CLICKWHALE_SLUG ),
@@ -176,11 +181,12 @@ final class Clickwhale_Admin {
         }
 
 		do_action( 'clickwhale_menu_after_all' );
-
 	}
 
 	public function show_pro_menu_item() {
-        if ( Clickwhale::get_instance()->user::is_current_user_role_access_granted() ) {
+
+        $user = clickwhale()->user;
+        if ( $user::is_current_user_role_access_granted() ) {
             add_submenu_page(
                 CLICKWHALE_SLUG,
                 __( 'Upgrade to PRO', CLICKWHALE_SLUG ),
@@ -261,7 +267,7 @@ final class Clickwhale_Admin {
 				CLICKWHALE_SLUG . '_picmo',
 				CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.umd.min.js',
 				array( 'jquery' ),
-				'5.8.1',
+				'5.8.1'
 			);
 			wp_enqueue_script(
 				CLICKWHALE_SLUG . '_picmo_popup_picker',

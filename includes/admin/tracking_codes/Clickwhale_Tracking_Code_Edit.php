@@ -10,7 +10,10 @@ use clickwhale\includes\helpers\{
 
 class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
-	public bool $conversion;
+    /**
+     * @var bool
+     */
+	public $conversion;
 
 	public function __construct() {
 		parent::__construct( 'tracking_codes', 'tracking_code' );

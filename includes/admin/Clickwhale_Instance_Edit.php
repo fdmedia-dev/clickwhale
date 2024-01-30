@@ -9,7 +9,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public string $instance_plural;
+	public $instance_plural;
 
 	/**
 	 * Instance type as single e.g. "link", "linkpage"
@@ -17,9 +17,17 @@ abstract class Clickwhale_Instance_Edit {
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public string $instance_single;
-	protected string $page;
-	protected string $filter_param;
+	public $instance_single;
+
+    /**
+     * @var string
+     */
+	protected $page;
+
+    /**
+     * @var string
+     */
+	protected $filter_param;
 
 	public function __construct( string $instance_plural, string $instance_single ) {
 		$this->instance_plural = $instance_plural;

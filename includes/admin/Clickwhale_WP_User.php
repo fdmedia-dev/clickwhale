@@ -19,7 +19,11 @@ use clickwhale\includes\helpers\Helper;
  *
  */
 class Clickwhale_WP_User {
-	protected ?WP_User $user;
+
+    /**
+     * @var WP_User
+     */
+	protected $user;
 
 	public function __construct() {
 		$this->user = wp_get_current_user();
@@ -43,20 +47,20 @@ class Clickwhale_WP_User {
 	 * @return      string
 	 * @since       1.0.0
 	 */
-	public static function get_loggedin_user_id(): string {
+	public static function get_logged_in_user_id(): string {
 		return is_user_logged_in() ? get_current_user_id() : '';
 	}
 
 	/**
-	 * Get current user roles array (yes, array!)
+	 * Get current user roles array
 	 *
 	 * @return      array
 	 * @since       1.0.0
 	 */
 	public static function get_current_user_roles() {
-		$id = self::get_loggedin_user_id();
+		$id = self::get_logged_in_user_id();
 
-		return $id ? get_userdata( $id )->roles : false;
+		return $id ? get_userdata( $id )->roles : array();
 	}
 
 	/**
@@ -64,7 +68,7 @@ class Clickwhale_WP_User {
 	 *
 	 * @return bool
 	 */
-	public static function is_current_user_role_access_granted(): bool {
+    static public function is_current_user_role_access_granted(): bool {
         $current_user_roles = self::get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
@@ -90,20 +94,19 @@ class Clickwhale_WP_User {
 	}
 
 	/**
-	 * Get disalowed user roles from get_track_options() function
+	 * Get disallowed user roles from get_track_options() function
 	 *
 	 * @return      array
 	 * @since       1.0.0
 	 */
 	public function get_disallowed_user_roles(): array {
 		$tracking_options = $this->get_track_options();
-		$roles            = [];
 
 		if ( isset( $tracking_options['exclude_user_by_role'] ) ) {
-			$roles = $tracking_options['exclude_user_by_role'];
+			return $tracking_options['exclude_user_by_role'];
 		}
 
-		return $roles;
+		return array();
 	}
 
 	/**
@@ -116,8 +119,8 @@ class Clickwhale_WP_User {
 		$current_user_roles = $this->get_current_user_roles();
 		$disallowed_roles   = $this->get_disallowed_user_roles();
 
-		if ( is_array( $current_user_roles ) && is_array( $disallowed_roles ) ) {
-			// if current user role in array of disalowed roles
+		if ( ! empty( $current_user_roles ) && ! empty( $disallowed_roles ) ) {
+			// if current user role in array of disallowed roles
 			return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
 		} else {
 			// user can be tracked

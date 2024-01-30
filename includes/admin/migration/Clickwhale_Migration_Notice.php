@@ -17,7 +17,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public string $migrant;
+	public $migrant;
 
 	/**
 	 * Plugin full name for messages.
@@ -26,7 +26,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public string $migrant_full;
+	public $migrant_full;
 
 	/**
 	 * Plugin directory/name for deactivation.
@@ -35,7 +35,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public string $migrant_file;
+	public $migrant_file;
 
 	/**
 	 * Initialize the class and set its properties.

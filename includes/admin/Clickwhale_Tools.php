@@ -19,22 +19,22 @@ class Clickwhale_Tools {
 	/**
 	 * @var Clickwhale_Migration
 	 */
-	public Clickwhale_Migration $migration;
+	public $migration;
 
 	/**
 	 * @var Clickwhale_Reset
 	 */
-	public Clickwhale_Reset $reset;
+	public $reset;
 
 	/**
 	 * @var Clickwhale_Import
 	 */
-	public Clickwhale_Import $import;
+	public $import;
 
 	/**
 	 * @var Clickwhale_Export
 	 */
-	public Clickwhale_Export $export;
+	public $export;
 
 	/**
 	 * Initialize the class and set its properties.

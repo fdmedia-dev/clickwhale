@@ -15,31 +15,35 @@ use clickwhale\includes\helpers\{Helper, Linkpages_Helper, Links_Helper};
  * @author     fdmedia <https://fdmedia.io>
  */
 final class Clickwhale_Public {
-	private string $path;
 
-	/**
-	 * @since    1.0.0
-	 * @var Clickwhale_Public|null
-	 */
-	private static ?Clickwhale_Public $instance = null;
+    /**
+     * @since    1.0.0
+     * @var Clickwhale_Public
+     */
+    private static $instance;
+
+    /**
+     * @var string
+     */
+	private $path;
 
 	/**
 	 * @var Clickwhale_Public_Linkpages
 	 * @since    1.0.0
 	 */
-	public Clickwhale_Public_Linkpages $linkpages;
+	public $linkpages;
 
 	/**
 	 * @var Clickwhale_Public_Tracking_Codes
 	 * @since    1.0.0
 	 */
-	public Clickwhale_Public_Tracking_Codes $tracking_codes;
+	public $tracking_codes;
 
 	/**
 	 * @return Clickwhale_Public
 	 * @since    1.0.0
 	 */
-	public static function get_instance(): ?Clickwhale_Public {
+	public static function get_instance(): Clickwhale_Public {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}

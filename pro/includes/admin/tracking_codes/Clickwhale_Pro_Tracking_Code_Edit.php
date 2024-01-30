@@ -38,6 +38,7 @@ class Clickwhale_Pro_Tracking_Code_Edit {
 	public function tracking_code_conversion_fields( $item ) {
 		$is_woo = class_exists( 'WooCommerce' );
 		$is_edd = function_exists( 'EDD' );
+        $tracking_code = clickwhale()->tracking_code;
 
 		if ( $is_woo ) {
 			echo Helper::render_control(
@@ -48,7 +49,7 @@ class Clickwhale_Pro_Tracking_Code_Edit {
 					'class'       => 'with-select2',
 					'name'        => 'position[conversion_items][product][ids][]',
 					'value'       => $item['position']['conversion_items']['product']['ids'] ?? '',
-					'options'     => Clickwhale::get_instance()->tracking_code::get_posts_by_post_type( 'product' ),
+					'options'     => $tracking_code::get_posts_by_post_type( 'product' ),
 					'default'     => '',
 					'multiple'    => true,
 					'description' => self::default_dynamic_values_text()
@@ -67,7 +68,7 @@ class Clickwhale_Pro_Tracking_Code_Edit {
 					'class'       => 'with-select2',
 					'name'        => 'position[conversion_items][download][ids][]',
 					'value'       => $item['position']['conversion_items']['download']['ids'] ?? '',
-					'options'     => Clickwhale::get_instance()->tracking_code::get_posts_by_post_type( 'download' ),
+					'options'     => $tracking_code::get_posts_by_post_type( 'download' ),
 					'default'     => '',
 					'multiple'    => true,
 					'description' => self::default_dynamic_values_text()

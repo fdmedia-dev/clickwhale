@@ -20,7 +20,7 @@
  * @fs_premium_only   /pro/
  */
 
-if ( ! defined( 'WPINC' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
@@ -49,7 +49,6 @@ if ( ! function_exists( 'clickwhale_fs' ) ) {
                 'menu'                => array(
                     'slug'           => 'clickwhale',
                     'contact'        => false,
-                    'support'        => false,
                     'pricing'        => false,
                 ),
             ) );
@@ -64,9 +63,11 @@ if ( ! function_exists( 'clickwhale_fs' ) ) {
     do_action( 'clickwhale_fs_loaded' );
 
     clickwhale_fs()->override_i18n([ 'account' => __( 'License', 'clickwhale' ) ]);
+
+    // Uninstall action
+    clickwhale_fs()->add_action('after_uninstall', 'clickwhale_uninstall_cleanup');
 }
 
-use clickwhale\includes\debuggers\Debugger;
 use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 
 /**
@@ -111,9 +112,12 @@ register_activation_hook( __FILE__, 'activate_clickwhale' );
 register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
+ * The code for Freemius that runs after the plugin uninstall event.
  */
+function clickwhale_uninstall_cleanup() {
+    delete_option( 'clickwhale_version' );
+}
+
 /**
  * Traits for Singleton
  */
@@ -121,7 +125,7 @@ require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Clone.php';
 require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
 
 /**
- * The core plugin class
+ * Core class of plugin
  */
 require CLICKWHALE_DIR . 'includes/Clickwhale.php';
 
@@ -135,7 +139,7 @@ require CLICKWHALE_DIR . 'includes/Clickwhale.php';
  * @since    1.0.0
  */
 function run_clickwhale() {
-	Clickwhale::get_instance()->run();
+    clickwhale()->run();
 }
 
 add_action( 'plugins_loaded', 'run_clickwhale' );
@@ -151,10 +155,10 @@ add_action( 'plugins_loaded', 'run_clickwhale' );
  *
  * Example: <?php $clickwhale = Clickwhale(); ?>
  *
- * @return Clickwhale|null The one true Clickwhale instance.
+ * @return Clickwhale The one true Clickwhale instance.
  * @since 1.6.0
  */
-function clickwhale(): ?Clickwhale {
+function clickwhale(): Clickwhale {
 	return Clickwhale::get_instance();
 }
 

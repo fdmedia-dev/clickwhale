@@ -8,7 +8,10 @@ use WC_Order;
  */
 class Clickwhale_Pro_Tracking_Code_Conversion {
 
-	public array $tracking_code;
+    /**
+     * @var array
+     */
+	public $tracking_code;
 
 	public function __construct( array $tracking_code ) {
 		$this->tracking_code = $tracking_code;

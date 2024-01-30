@@ -24,14 +24,17 @@ class Clickwhale_Pro_Public {
 	/**
 	 * The unique instance of the plugin.
 	 *
-	 * @var Clickwhale_Pro_Public|null
+	 * @var Clickwhale_Pro_Public
 	 * @since 1.0.3
 	 */
-	private static ?Clickwhale_Pro_Public $instance = null;
+	private static $instance;
 
-	private string $path;
+    /**
+     * @var string
+     */
+	private $path;
 
-	public static function get_instance(): ?Clickwhale_Pro_Public {
+	public static function get_instance(): Clickwhale_Pro_Public {
 		if ( empty( self::$instance ) ) {
 			self::$instance       = new self();
 			self::$instance->path = Helper::get_public_path( true );

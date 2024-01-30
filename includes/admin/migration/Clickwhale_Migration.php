@@ -5,8 +5,15 @@ use clickwhale\includes\helpers\Helper;
 
 class Clickwhale_Migration {
 
-	private string $options;
-	private string $last_migration;
+    /**
+     * @var string
+     */
+	private $options;
+
+    /**
+     * @var string
+     */
+	private $last_migration;
 
 	public function __construct() {
 		$this->options        = 'clickwhale_tools_migration_options';

@@ -18,14 +18,14 @@ final class Clickwhale_Settings {
 
 	/**
 	 * @since    1.5.0
-	 * @var Clickwhale_Settings|null
+	 * @var Clickwhale_Settings
 	 */
-	private static ?Clickwhale_Settings $instance = null;
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Settings|null
 	 */
-	public static function get_instance(): ?Clickwhale_Settings {
+	public static function get_instance(): Clickwhale_Settings {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -49,7 +49,7 @@ final class Clickwhale_Settings {
 	 * @return array
 	 */
 	public static function default_options(): array {
-		return Clickwhale::get_instance()->default_options();
+		return clickwhale()->default_options();
 	}
 
 	public function add_default_options() {

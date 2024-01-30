@@ -7,7 +7,7 @@ use clickwhale\includes\helpers\Tracking_Codes_Helper;
 
 Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
 
-$tracking_code = Clickwhale::get_instance()->tracking_code;
+$tracking_code = clickwhale()->tracking_code;
 
 $item       = $tracking_code->get_item( $_REQUEST );
 $linkpages  = $tracking_code->get_linkpages();

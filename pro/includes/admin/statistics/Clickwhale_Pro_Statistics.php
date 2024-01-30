@@ -2,8 +2,16 @@
 namespace clickwhale_pro\includes\admin\statistics;
 
 class Clickwhale_Pro_Statistics {
-	public Clickwhale_Pro_Clicks_Statistics $clicksStatistics;
-	public Clickwhale_Pro_Views_Statistics $viewsStatistics;
+
+    /**
+     * @var Clickwhale_Pro_Clicks_Statistics
+     */
+	public $clicksStatistics;
+
+    /**
+     * @var Clickwhale_Pro_Views_Statistics
+     */
+	public $viewsStatistics;
 
 	public function __construct() {
 		$this->load_dependencies();

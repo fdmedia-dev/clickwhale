@@ -34,10 +34,8 @@ use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
 use clickwhale\includes\front\Clickwhale_Public;
 
 /**
- * The core plugin class.
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
+ * The core plugin class that is used to define internationalization,
+ *  admin-specific hooks, and public-facing site hooks.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
@@ -52,10 +50,11 @@ final class Clickwhale {
 	/**
 	 * The unique instance of the plugin.
 	 *
-	 * @var Clickwhale|null
+	 * @var Clickwhale
+     *
 	 * @since 1.5.0
 	 */
-	private static ?Clickwhale $instance = null;
+	private static $instance;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -65,27 +64,77 @@ final class Clickwhale {
 	 * @access   protected
 	 * @var      Clickwhale_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
-	protected Clickwhale_Loader $loader;
-	private Clickwhale_i18n $locale;
-	public ?Clickwhale_Admin $admin;
-	public ?Clickwhale_Settings $settings;
-	public Clickwhale_Link_Edit $link;
-	public Clickwhale_Category_Edit $category;
-	public Clickwhale_Linkpage_Edit $linkpage;
-	public ?Clickwhale_Ajax $ajax;
-	public Clickwhale_Tracking_Code_Edit $tracking_code;
-	public Clickwhale_Tools $tools;
-	public ?Clickwhale_Public_Ajax $public_ajax;
-	public Clickwhale_Public $public;
-	public Clickwhale_WP_User $user;
+	protected $loader;
+
+    /**
+     * @var Clickwhale_i18n
+     */
+	private $locale;
+
+    /**
+     * @var Clickwhale_Admin
+     */
+	public $admin;
+
+    /**
+     * @var Clickwhale_Settings
+     */
+    public $settings;
+
+    /**
+     * @var Clickwhale_Link_Edit
+     */
+    public $link;
+
+    /**
+     * @var Clickwhale_Category_Edit
+     */
+	public $category;
+
+    /**
+     * @var Clickwhale_Linkpage_Edit
+     */
+	public $linkpage;
+
+    /**
+     * @var Clickwhale_Ajax
+     */
+	public $ajax;
+
+    /**
+     * @var Clickwhale_Tracking_Code_Edit
+     */
+	public $tracking_code;
+
+    /**
+     * @var Clickwhale_Tools
+     */
+	public $tools;
+
+    /**
+     * @var Clickwhale_Public_Ajax
+     */
+	public $public_ajax;
+
+    /**
+     * @var Clickwhale_Public
+     */
+	public $public;
+
+    /**
+     * @var Clickwhale_WP_User
+     */
+	public $user;
 
 	/**
 	 * Gets an instance of our plugin.
 	 *
 	 * @return Clickwhale
+     *
 	 * @since 1.5.0
 	 */
-	public static function get_instance(): ?Clickwhale {
+	public static function get_instance(): Clickwhale {
+
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 
