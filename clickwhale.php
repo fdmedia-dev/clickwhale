@@ -51,11 +51,11 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'premium_suffix'   => 'Pro',
                     'has_addons'       => false,
                     'has_paid_plans'   => true,
-                    //'is_org_compliant' => true,
+                    'is_org_compliant' => true,
                     'has_affiliation'  => 'all',
                     'menu'             => array(
                         'slug'    => 'clickwhale',
-                        //'contact' => false,
+                        'contact' => false,
                         //'pricing' => false,
                     ),
                 ) );
