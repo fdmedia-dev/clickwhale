@@ -11,7 +11,7 @@ $table->prepare_items();
 
 $message = '';
 if ( 'delete' === $table->current_action() ) {
-	$message = __( 'Items deleted', CLICKWHALE_SLUG );
+	$message = __( 'Items deleted', CLICKWHALE_NAME );
 }
 
 do_action( 'clickwhale_admin_banner' );
@@ -23,7 +23,7 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
-			'link_to_add' => 'clickwhale-edit-linkpage',
+			'link_to_add' => CLICKWHALE_SLUG . '-edit-linkpage',
 			'is_limit'     => Linkpages_Helper::get_count() >= Linkpages_Helper::get_limit()
 		)
 	);

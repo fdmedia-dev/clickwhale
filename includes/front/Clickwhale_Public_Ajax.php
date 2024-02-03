@@ -3,6 +3,10 @@ namespace clickwhale\includes\front;
 
 use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Public_Ajax {
 
     /**

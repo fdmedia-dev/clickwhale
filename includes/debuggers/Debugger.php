@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\debuggers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Debugger {
 
     /**

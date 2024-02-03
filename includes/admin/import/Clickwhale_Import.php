@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\admin\import;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Import {
 
 	public function __construct() {
@@ -12,23 +16,20 @@ class Clickwhale_Import {
 
 		add_settings_section(
 			'clickwhale_tools_import_section',
-			__( 'Import links from a CSV file', CLICKWHALE_SLUG ),
+			__( 'Import links from a CSV file', CLICKWHALE_NAME ),
 			array( $this, 'settings_section_callback' ),
 			'clickwhale_tools_import_settings',
 			array(
-				'text' => __(
-					sprintf(
-						'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>',
-						CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
-					),
-					CLICKWHALE_SLUG
-				),
-			)
+                'text' => sprintf(
+                    __( 'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>', CLICKWHALE_NAME ),
+					CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
+                )
+            )
 		);
 
 		add_settings_field(
 			'import_file',
-			__( 'Choose a CSV file from your computer', CLICKWHALE_SLUG ),
+			__( 'Choose a CSV file from your computer', CLICKWHALE_NAME ),
 			array( $this, 'import_file_callback' ),
 			'clickwhale_tools_import_settings',
 			'clickwhale_tools_import_section'
@@ -49,7 +50,7 @@ class Clickwhale_Import {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== 'clickwhale-tools' ) {
+		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
 			return false;
 		}
 
@@ -74,7 +75,7 @@ class Clickwhale_Import {
 
                     if (uploadedFile.type !== 'text/csv') {
                         jQuery(this).val('');
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_SLUG ) ?>');
+                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
                     }
 
                 });
@@ -114,7 +115,7 @@ class Clickwhale_Import {
                             }
                         });
                     } else {
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_SLUG ) ?>');
+                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
                     }
                 });
 
@@ -140,7 +141,7 @@ class Clickwhale_Import {
                                 mapped.push(selected);
                             } else {
                                 error = true;
-                                message = '<?php echo __( 'Duplicated field', CLICKWHALE_SLUG ) ?>';
+                                message = '<?php echo __( 'Duplicated field', CLICKWHALE_NAME ) ?>';
                                 select.css('border-color', 'red');
                                 select.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                             }
@@ -236,7 +237,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_SLUG ) ?>'
+                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
                                                 );
 
                                                 break;
@@ -247,7 +248,7 @@ class Clickwhale_Import {
                                                 error = true;
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_SLUG ) ?>'
+                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>'
                                                 );
                                             }
 
@@ -257,7 +258,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_SLUG ) ?>'
+                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
                                                 );
                                                 break;
                                             } else {
@@ -299,7 +300,7 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     input,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_SLUG ) ?>'
+                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
                                                 );
 
                                                 break;
@@ -345,7 +346,7 @@ class Clickwhale_Import {
 
                         } else {
                             error = true;
-                            alert('<?php echo __( 'No items', CLICKWHALE_SLUG ) ?>');
+                            alert('<?php echo __( 'No items', CLICKWHALE_NAME ) ?>');
                         }
                     }).fail(function (data) {
                         error = true;

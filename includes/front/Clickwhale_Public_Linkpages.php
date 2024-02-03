@@ -8,6 +8,10 @@ use clickwhale\includes\front\linkpages\{
 };
 use clickwhale\includes\helpers\Linkpages_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Public_Linkpages {
 	/**
 	 * Initialize the class and set its properties.

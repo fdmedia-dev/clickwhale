@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\front\linkpages;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Linkpage_Template_Loader implements Linkpage_Template_Loader_Interface {
 	public function init( $page ) {
 		$this->templates = wp_parse_args(

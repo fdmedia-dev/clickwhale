@@ -3,6 +3,10 @@
 use clickwhale\includes\front\Clickwhale_Public_Linkpage;
 use clickwhale\includes\front\tracking\Clickwhale_View_Track;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 global $post;
 
 $linkpage = new Clickwhale_Public_Linkpage( $post );

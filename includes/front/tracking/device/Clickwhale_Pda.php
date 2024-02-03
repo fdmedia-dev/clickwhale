@@ -1,6 +1,9 @@
 <?php
-
 namespace clickwhale\includes\front\tracking\device;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Pda {
 	public function __construct( $ua ) {

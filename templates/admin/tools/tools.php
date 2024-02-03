@@ -8,27 +8,27 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'Tools', CLICKWHALE_SLUG ); ?></h1>
+    <h1 class="wp-heading-inline"><?php _e( 'Tools', CLICKWHALE_NAME ); ?></h1>
 	<?php settings_errors(); ?>
 
 	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=clickwhale-tools&tab=migration_options"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=migration_options"
            class="nav-tab <?php echo $active_tab == 'migration_options' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Migration', CLICKWHALE_SLUG ); ?>
+			<?php _e( 'Migration', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=reset_options"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=reset_options"
            class="nav-tab <?php echo $active_tab == 'reset_options' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Reset', CLICKWHALE_SLUG ); ?>
+			<?php _e( 'Reset', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=import"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=import"
            class="nav-tab <?php echo $active_tab == 'import' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Import', CLICKWHALE_SLUG ); ?>
+			<?php _e( 'Import', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=export"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=export"
            class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>">
-			<?php _e( 'Export', CLICKWHALE_SLUG ); ?>
+			<?php _e( 'Export', CLICKWHALE_NAME ); ?>
         </a>
     </h2>
 
@@ -51,7 +51,7 @@ do_action( 'clickwhale_admin_banner' );
                         <button type="button"
                                 class="button button_start_migrate"
                                 data-migration="<?php echo esc_attr( $item['slug'] ) ?>">
-							<?php _e( 'Start migration', CLICKWHALE_SLUG ) ?>
+							<?php _e( 'Start migration', CLICKWHALE_NAME ) ?>
                         </button>
                         <span class="spinner"></span>
                     </div>
@@ -65,13 +65,13 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <div id="clickwhale-tools-migration-reset">
                 <button class="button button-primary button_reset_migrate"
-                        type="button"><?php _e( 'Set default options and clear cache', CLICKWHALE_SLUG ) ?></button>
+                        type="button"><?php _e( 'Set default options and clear cache', CLICKWHALE_NAME ) ?></button>
                 <span class="results"></span>
                 <span class="spinner"></span>
             </div>
 		<?php } else { ?>
-            <h3 class=""><?php _e( 'No data to migrate! ', CLICKWHALE_SLUG ); ?></h3>
-            <p><?php _e( 'You do not have active plugins from which we can transfer data.', CLICKWHALE_SLUG ); ?></p>
+            <h3 class=""><?php _e( 'No data to migrate! ', CLICKWHALE_NAME ); ?></h3>
+            <p><?php _e( 'You do not have active plugins from which we can transfer data.', CLICKWHALE_NAME ); ?></p>
 		<?php }
 	}
 
@@ -84,7 +84,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-settings" class="button button-primary"
-                        type="button"><?php _e( 'Restore default settings', CLICKWHALE_SLUG ) ?></button>
+                        type="button"><?php _e( 'Restore default settings', CLICKWHALE_NAME ) ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -95,7 +95,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-db" class="button button-primary"
-                        type="button"><?php _e( 'Delete all plugin data now', CLICKWHALE_SLUG ) ?></button>
+                        type="button"><?php _e( 'Delete all plugin data now', CLICKWHALE_NAME ) ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -106,7 +106,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-stats" class="button button-primary"
-                        type="button"><?php _e( 'Reset all tracking data now', CLICKWHALE_SLUG ) ?></button>
+                        type="button"><?php _e( 'Reset all tracking data now', CLICKWHALE_NAME ) ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -123,16 +123,16 @@ do_action( 'clickwhale_admin_banner' );
                 <div class="import-progress--bar"></div>
                 <div class="import-progress--placeholder"></div>
                 <div id="point-01" class="import-progress--point active">
-                    01. <?php _e( 'Upload CSV file', CLICKWHALE_SLUG ) ?>
+                    01. <?php _e( 'Upload CSV file', CLICKWHALE_NAME ) ?>
                 </div>
                 <div id="point-02" class="import-progress--point">
-                    02. <?php _e( 'Column mapping', CLICKWHALE_SLUG ) ?>
+                    02. <?php _e( 'Column mapping', CLICKWHALE_NAME ) ?>
                 </div>
                 <div id="point-03" class="import-progress--point">
-                    03. <?php _e( 'Edit fields', CLICKWHALE_SLUG ) ?>
+                    03. <?php _e( 'Edit fields', CLICKWHALE_NAME ) ?>
                 </div>
                 <div id="point-04" class="import-progress--point">
-                    04. <?php _e( 'Import', CLICKWHALE_SLUG ) ?>
+                    04. <?php _e( 'Import', CLICKWHALE_NAME ) ?>
                 </div>
             </div>
 
@@ -141,21 +141,21 @@ do_action( 'clickwhale_admin_banner' );
 				settings_fields( 'clickwhale_tools_import_settings' );
 				do_settings_sections( 'clickwhale_tools_import_settings' );
 
-				submit_button( __( 'Upload import file', CLICKWHALE_SLUG ) );
+				submit_button( __( 'Upload import file', CLICKWHALE_NAME ) );
 				?>
             </form>
 
             <div id="mapping_table">
                 <p class="submit">
                     <button id="mapping_button" class="button button-primary" type="button">
-						<?php _e( 'Continue', CLICKWHALE_SLUG ); ?>
+						<?php _e( 'Continue', CLICKWHALE_NAME ); ?>
                     </button>
                 </p>
             </div>
             <div id="import_table">
                 <p class="submit">
                     <button id="import_button" class="button button-primary" type="button">
-						<?php _e( 'Run Importer', CLICKWHALE_SLUG ); ?>
+						<?php _e( 'Run Importer', CLICKWHALE_NAME ); ?>
                     </button>
                     <span class="spinner" style="float: none;"></span>
                 </p>
@@ -165,8 +165,8 @@ do_action( 'clickwhale_admin_banner' );
                    style="display: none;"
                    rel="noopener"
                    target="_blank"
-                   href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale' ) ) ?>">
-					<?php _e( 'Go to links', CLICKWHALE_SLUG ) ?>
+                   href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ) ?>">
+					<?php _e( 'Go to links', CLICKWHALE_NAME ) ?>
                 </a>
             </div>
 
@@ -182,7 +182,7 @@ do_action( 'clickwhale_admin_banner' );
 				settings_fields( 'clickwhale_tools_export_settings' );
 				do_settings_sections( 'clickwhale_tools_export_settings' );
 
-				submit_button( __( 'Generate CSV', CLICKWHALE_SLUG ) );
+				submit_button( __( 'Generate CSV', CLICKWHALE_NAME ) );
 				?>
             </form>
 

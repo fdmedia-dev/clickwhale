@@ -20,6 +20,12 @@
 	--clickwhale-preview-link-hover: #397eff;
 }
 
+body.toplevel_page_clickwhale-pro #wpbody-content,
+body[class*="clickwhale_page_clickwhale-pro"] #wpbody-content,
+body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
+	padding-top: 80px;
+}
+
 .clickwhale-statistics--item {
 	background: #ffffff;
 	border-radius: 10px;
@@ -654,5 +660,13 @@ tr.for_mode:not(.for_standard_mode) {
 
 	.linkpage-preview--wrap {
 		display: none;
+	}
+}
+
+@media (max-width: 768px) {
+	body.toplevel_page_clickwhale-pro #wpbody-content,
+	body[class*="clickwhale_page_clickwhale-pro"] #wpbody-content,
+	body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
+		padding-top: 180px;
 	}
 }

@@ -6,6 +6,10 @@ use clickwhale\includes\admin\reset\Clickwhale_Reset;
 use clickwhale\includes\admin\import\Clickwhale_Import;
 use clickwhale\includes\admin\export\Clickwhale_Export;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Setting tools of the plugin.
  *

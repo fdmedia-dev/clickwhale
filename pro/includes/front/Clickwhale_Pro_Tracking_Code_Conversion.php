@@ -3,6 +3,10 @@ namespace clickwhale_pro\includes\front;
 
 use WC_Order;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @since 1.3.6
  */

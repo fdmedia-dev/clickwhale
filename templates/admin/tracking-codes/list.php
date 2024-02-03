@@ -12,7 +12,7 @@ $limit = Tracking_Codes_Helper::is_limit() ? 'block' : 'none';
 
 $message = '';
 if ( 'delete' === $table->current_action() ) {
-	$message = __( 'Tracking code deleted', 'clickwhale' );
+	$message = __( 'Tracking code deleted', CLICKWHALE_NAME );
 }
 
 do_action( 'clickwhale_admin_banner' );
@@ -24,7 +24,7 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
-			'link_to_add' => 'clickwhale-edit-tracking-code',
+			'link_to_add' => CLICKWHALE_SLUG . '-edit-tracking-code',
 		)
 	);
 	?>

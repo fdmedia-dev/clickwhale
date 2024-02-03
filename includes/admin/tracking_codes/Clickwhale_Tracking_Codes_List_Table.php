@@ -5,6 +5,10 @@ use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Tracking_Codes_Helper;
 use WP_List_Table;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * @since 1.2.0
  */
@@ -36,13 +40,23 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ): string {
-		$title   = sprintf( '<a href="?page=clickwhale-edit-tracking-code&id=%d">%s</a>', $item['id'],
-			wp_unslash( $item['title'] ) );
+		$title = sprintf(
+            '<a href="?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=%d">%s</a>',
+            $item['id'],
+			wp_unslash( $item['title'] )
+        );
 		$actions = array(
-			'edit'   => sprintf( '<a href="?page=clickwhale-edit-tracking-code&id=%d">%s</a>', $item['id'],
-				__( 'Edit', 'clickwhale' ) ),
-			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%d">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', 'clickwhale' ) ),
+			'edit'   => sprintf(
+                '<a href="?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=%d">%s</a>',
+                $item['id'],
+				__( 'Edit', CLICKWHALE_NAME )
+            ),
+			'delete' => sprintf(
+                '<a href="?page=%s&action=delete&id=%d">%s</a>',
+				sanitize_text_field( $_REQUEST['page'] ),
+                $item['id'],
+                __( 'Delete', CLICKWHALE_NAME )
+            )
 		);
 
 		return sprintf( '%s %s',
@@ -114,7 +128,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 		$user_info = get_userdata( $item['author'] );
 
 		return '<a href="' . get_admin_url( get_current_blog_id(),
-				'admin.php?page=clickwhale' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
+				'admin.php?page=' . CLICKWHALE_SLUG ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
 	}
 
 	/**
@@ -144,12 +158,12 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'          => '<input type="checkbox" />',
-			'is_active'   => __( 'Active', 'clickwhale' ),
-			'title'       => __( 'Tilte', 'clickwhale' ),
-			'description' => __( 'Description', 'clickwhale' ),
-			'position'    => __( 'Position', 'clickwhale' ),
-			'author'      => __( 'Author', 'clickwhale' ),
-			'created_at'  => __( 'Created', 'clickwhale' ),
+			'is_active'   => __( 'Active',      CLICKWHALE_NAME ),
+			'title'       => __( 'Tilte',       CLICKWHALE_NAME ),
+			'description' => __( 'Description', CLICKWHALE_NAME ),
+			'position'    => __( 'Position',    CLICKWHALE_NAME ),
+			'author'      => __( 'Author',      CLICKWHALE_NAME ),
+			'created_at'  => __( 'Created',     CLICKWHALE_NAME ),
 		);
 	}
 
@@ -256,6 +270,6 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	}
 
 	public function no_items() {
-		_e( 'No Tracking Codes Found.', 'clickwhale' );
+		_e( 'No Tracking Codes Found.', CLICKWHALE_NAME );
 	}
 }

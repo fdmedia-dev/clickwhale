@@ -4,6 +4,10 @@ namespace clickwhale\includes\front\linkpages;
 use SplObjectStorage;
 use WP_Post;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Linkpage_Controller implements Linkpage_Controller_Interface {
 
 	private $pages;

@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\admin\migration;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 abstract class Clickwhale_Migration_Abstract {
 
 	public function run_migration( $categories, $links ) {
@@ -82,11 +86,11 @@ abstract class Clickwhale_Migration_Abstract {
 	}
 
 	public function link_item_import_success( $item ) {
-		return sprintf( __( 'Link "%1$s" imported successfully.', 'clickwhale' ), $item );
+		return sprintf( __( 'Link "%1$s" imported successfully.', CLICKWHALE_NAME ), $item );
 	}
 
 	public function link_item_import_error( $item ) {
-		return sprintf( __( '<strong>Import failed!</strong> Link %1$s already exists', 'clickwhale' ), $item );
+		return sprintf( __( '<strong>Import failed!</strong> Link %1$s already exists', CLICKWHALE_NAME ), $item );
 	}
 
 
@@ -147,11 +151,11 @@ abstract class Clickwhale_Migration_Abstract {
 	}
 
 	public function category_item_import_success( $item ) {
-		return sprintf( __( 'Category "%1$s" imported successfully.', 'clickwhale' ), $item );
+		return sprintf( __( 'Category "%1$s" imported successfully.', CLICKWHALE_NAME ), $item );
 	}
 
 	public function category_item_import_error( $item ) {
-		return sprintf( __( '<strong>Import failed!</strong> Category "%1$s" already exists', 'clickwhale' ), $item );
+		return sprintf( __( '<strong>Import failed!</strong> Category "%1$s" already exists', CLICKWHALE_NAME ), $item );
 	}
 
 	public function run_links_migration( $data ) {

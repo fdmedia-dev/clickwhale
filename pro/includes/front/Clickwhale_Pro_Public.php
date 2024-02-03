@@ -20,6 +20,10 @@ use clickwhale\includes\helpers\Linkpages_Helper;
 use clickwhale\includes\helpers\Tracking_Codes_Helper;
 use clickwhale_pro\includes\helpers\Linkpage_Styles_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Pro_Public {
 	/**
 	 * The unique instance of the plugin.
@@ -65,7 +69,7 @@ class Clickwhale_Pro_Public {
 	public function enqueue_styles() {
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_style(
-				CLICKWHALE_PRO_SLUG,
+                CLICKWHALE_PRO_NAME,
 				CLICKWHALE_PRO_PUBLIC_ASSETS_DIR . '/css/clickwhale-pro-public.css',
 				array(),
 				CLICKWHALE_PRO_VERSION
@@ -81,7 +85,7 @@ class Clickwhale_Pro_Public {
 	public function enqueue_scripts() {
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_script(
-				CLICKWHALE_PRO_SLUG,
+                CLICKWHALE_PRO_NAME,
 				CLICKWHALE_PRO_PUBLIC_ASSETS_DIR . '/js/clickwhale-pro-public.js',
 				array( 'jquery' ),
 				CLICKWHALE_PRO_VERSION,

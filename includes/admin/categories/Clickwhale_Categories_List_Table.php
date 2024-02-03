@@ -4,6 +4,10 @@ namespace clickwhale\includes\admin\categories;
 use clickwhale\includes\helpers\Helper;
 use WP_List_Table;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Custom_Table_Example_List_Table class that will display our custom table
  * records in nice table
@@ -74,13 +78,23 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
-		$title   = sprintf( '<a href="?page=clickwhale-edit-category&id=%d">%s</a>', intval( $item['id'] ),
-			wp_unslash( $item['title'] ) );
+		$title = sprintf(
+            '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
+            intval( $item['id'] ),
+            wp_unslash( $item['title'] )
+        );
 		$actions = array(
-			'edit'   => sprintf( '<a href="?page=clickwhale-edit-category&id=%d">%s</a>', intval( $item['id'] ),
-				__( 'Edit', CLICKWHALE_SLUG ) ),
-			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%d">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), intval( $item['id'] ), __( 'Delete', CLICKWHALE_SLUG ) ),
+			'edit'   => sprintf(
+                '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
+                intval( $item['id'] ),
+				__( 'Edit', CLICKWHALE_NAME )
+            ),
+			'delete' => sprintf(
+                '<a href="?page=%s&action=delete&id=%d">%s</a>',
+				sanitize_text_field( $_REQUEST['page'] ),
+                intval( $item['id'] ),
+                __( 'Delete', CLICKWHALE_NAME )
+            )
 		);
 
 		return sprintf( '%s %s',
@@ -101,7 +115,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 		$total    = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE categories = '{$category}' OR categories LIKE '{$category},%' OR categories LIKE '%,{$category},%' OR categories LIKE '%,{$category}'" ) );
 		if ( $total ) {
 			return '<a href="' . get_admin_url( get_current_blog_id(),
-					'admin.php?page=clickwhale' ) . '&category=' . $category . '">' . $total . '</a>';
+					'admin.php?page=' . CLICKWHALE_SLUG ) . '&category=' . $category . '">' . $total . '</a>';
 		} else {
 			return false;
 		}
@@ -133,9 +147,9 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'          => '<input type="checkbox" />', //Render a checkbox instead of text
-			'title'       => __( 'Title', CLICKWHALE_SLUG ),
-			'description' => __( 'Description', CLICKWHALE_SLUG ),
-			'count'       => __( 'Links count', CLICKWHALE_SLUG ),
+			'title'       => __( 'Title', CLICKWHALE_NAME ),
+			'description' => __( 'Description', CLICKWHALE_NAME ),
+			'count'       => __( 'Links count', CLICKWHALE_NAME ),
 		);
 
 		return $columns;

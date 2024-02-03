@@ -4,6 +4,10 @@ namespace clickwhale\includes\admin;
 use WP_User;
 use clickwhale\includes\helpers\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * WP User information and is user able to be tracked
  *

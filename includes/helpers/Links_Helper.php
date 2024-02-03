@@ -3,6 +3,10 @@ namespace clickwhale\includes\helpers;
 
 use Exception;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Links_Helper extends Helper_Abstract {
 
     /**
@@ -27,7 +31,7 @@ class Links_Helper extends Helper_Abstract {
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_SLUG ),
+			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_NAME ),
 			self::get_limit()
 		);
 	}

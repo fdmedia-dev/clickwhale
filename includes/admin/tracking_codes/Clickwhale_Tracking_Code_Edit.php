@@ -8,6 +8,10 @@ use clickwhale\includes\helpers\{
 	Tracking_Codes_Helper
 };
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
     /**
@@ -49,7 +53,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         <tr class="form-field">
             <th scope="row">
                 <label for="position">
-					<?php _e( 'Where do you want to add this code?', CLICKWHALE_SLUG ) ?>
+					<?php _e( 'Where do you want to add this code?', CLICKWHALE_NAME ) ?>
                 </label>
             </th>
             <td>
@@ -71,7 +75,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             <label for="conversionStandard">
                                 <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"
                                      alt="WordPress">
-                                <span><?php _e( 'Standard code tracking', CLICKWHALE_SLUG ) ?></span>
+                                <span><?php _e( 'Standard code tracking', CLICKWHALE_NAME ) ?></span>
                             </label>
                         </div>
 
@@ -97,7 +101,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                 <label for="conversionProduct">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
                                          alt="WooCommerce">
-                                    <span><?php _e( 'WooCommerce conversion', CLICKWHALE_SLUG ) ?></span>
+                                    <span><?php _e( 'WooCommerce conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>
                             </div>
 						<?php } ?>
@@ -124,7 +128,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                 <label for="conversionDownload">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-edd-short-dark.svg'; ?>"
                                          alt="Easy Digital Downloads">
-                                    <span><?php _e( 'EDD conversion', CLICKWHALE_SLUG ) ?></span>
+                                    <span><?php _e( 'EDD conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>
                             </div>
 						<?php } ?>
@@ -171,7 +175,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 		$result    = [];
 		$linkpages = Linkpages_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
 		if ( $linkpages ) {
-			$result['all'] = __( 'All', CLICKWHALE_SLUG );
+			$result['all'] = __( 'All', CLICKWHALE_NAME );
 			foreach ( $linkpages as $linkpage ) {
 				$result[ $linkpage['id'] ] = $linkpage['title'];
 			}
@@ -192,7 +196,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 		$posts  = get_posts( $args );
 
 		if ( $posts ) {
-			$result['all'] = __( 'All', CLICKWHALE_SLUG );
+			$result['all'] = __( 'All', CLICKWHALE_NAME );
 			foreach ( $posts as $post ) {
 				$result[ $post->ID ] = $post->post_title;
 			}
@@ -209,7 +213,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 		);
 		$terms  = get_terms( $args );
 		if ( $terms ) {
-			$result['all'] = __( 'All', CLICKWHALE_SLUG );
+			$result['all'] = __( 'All', CLICKWHALE_NAME );
 			foreach ( $terms as $term ) {
 				$result[ $term->term_id ] = $term->name;
 			}
@@ -290,7 +294,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 			$this->set_transient( $item['id'], 'added' );
 		}
 
-		$url = 'admin.php?page=clickwhale-edit-tracking-code&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
@@ -300,12 +304,12 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         <script type='text/javascript'>
             jQuery(document).ready(function () {
                 jQuery('#position_code').select2({
-                    placeholder: '<?php _e( 'Select Code position', CLICKWHALE_SLUG ) ?>',
+                    placeholder: '<?php _e( 'Select Code position', CLICKWHALE_NAME ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
                 jQuery('.with-select2').select2({
-                    placeholder: '<?php _e( 'Select', CLICKWHALE_SLUG ) ?>',
+                    placeholder: '<?php _e( 'Select', CLICKWHALE_NAME ) ?>',
                     width: '100%',
                     multiple: true,
                     minimumResultsForSearch: 10

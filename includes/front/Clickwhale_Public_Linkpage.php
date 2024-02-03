@@ -7,6 +7,10 @@ use DOMException;
 use DOMXPath;
 use WP_Post;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Public_Linkpage {
 
     /**
@@ -343,8 +347,8 @@ class Clickwhale_Public_Linkpage {
 
 		$wp_admin_bar->add_node( array(
 				'id'    => 'edit',
-				'title' => __( 'Edit Link Page', 'clickwhale' ),
-				'href'  => admin_url( 'admin.php?page=clickwhale-edit-linkpage&id=' . $data->linkpage['id'] ),
+				'title' => __( 'Edit Link Page', CLICKWHALE_NAME ),
+				'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $data->linkpage['id'] ),
 			)
 		);
 	}
@@ -398,7 +402,7 @@ class Clickwhale_Public_Linkpage {
                 jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
                     var link = jQuery(this);
 
-                    jQuery.post(clickwhale_public_js.ajaxurl, {
+                    jQuery.post(clickwhale_public.ajaxurl, {
                         'security': '<?php echo $nonce ?>',
                         'action': 'clickwhale/public/track_custom_link',
                         'id': link.data('id'),

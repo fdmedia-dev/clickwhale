@@ -5,6 +5,10 @@ use clickwhale\includes\admin\Clickwhale_Instance_Edit;
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Categories_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 
 	public function __construct() {
@@ -47,7 +51,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 			$this->set_transient( $item['id'], 'added' );
 		}
 
-		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
@@ -74,7 +78,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                     if (!title.val()) {
                         e.preventDefault();
 
-                        title.addClass('error').next().text('<?php _e( 'Please enter title', CLICKWHALE_SLUG ) ?>');
+                        title.addClass('error').next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
                     } else {
                         title.removeClass('error').next().text('');
                     }
@@ -83,8 +87,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_SLUG ) ?>')
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>')
                     }
 
                 });

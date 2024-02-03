@@ -4,6 +4,10 @@ namespace clickwhale\includes\front;
 use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
 use clickwhale\includes\helpers\{Helper, Linkpages_Helper, Links_Helper};
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -96,7 +100,7 @@ final class Clickwhale_Public {
 
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_style(
-				CLICKWHALE_SLUG,
+				CLICKWHALE_NAME,
 				CLICKWHALE_PUBLIC_ASSETS_DIR . '/css/clickwhale-public.css',
 				array(),
 				CLICKWHALE_VERSION
@@ -114,7 +118,7 @@ final class Clickwhale_Public {
 
 		if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
 			wp_enqueue_script(
-				CLICKWHALE_SLUG . '_ionicons',
+				CLICKWHALE_NAME . '_ionicons',
 				CLICKWHALE_PUBLIC_ASSETS_DIR . '/js/ionicons/ionicons.js',
 				array( 'jquery' ),
 				'7.1.0',
@@ -122,7 +126,7 @@ final class Clickwhale_Public {
 			);
 
 			wp_enqueue_script(
-				CLICKWHALE_SLUG,
+				CLICKWHALE_NAME,
 				CLICKWHALE_PUBLIC_ASSETS_DIR . '/js/clickwhale-public.js',
 				array( 'jquery' ),
 				CLICKWHALE_VERSION,
@@ -130,8 +134,8 @@ final class Clickwhale_Public {
 			);
 
 			wp_localize_script(
-				CLICKWHALE_SLUG,
-				'clickwhale_public_js',
+				CLICKWHALE_NAME,
+				'clickwhale_public',
 				array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) )
 			);
 		}

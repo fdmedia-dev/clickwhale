@@ -5,6 +5,10 @@ use clickwhale\includes\admin\Clickwhale_Instance_Edit;
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Linkpages_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
 	public function __construct() {
@@ -44,19 +48,19 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 	public function render_tabs() {
 		$tabs = array(
 			'settings' => array(
-				'name' => __( 'Settings', CLICKWHALE_SLUG ),
+				'name' => __( 'Settings', CLICKWHALE_NAME ),
 				'url'  => 'settings',
 			),
 			'contents' => array(
-				'name' => __( 'Contents', CLICKWHALE_SLUG ),
+				'name' => __( 'Contents', CLICKWHALE_NAME ),
 				'url'  => 'contents'
 			),
 			'styles'   => array(
-				'name' => __( 'Styles', CLICKWHALE_SLUG ),
+				'name' => __( 'Styles', CLICKWHALE_NAME ),
 				'url'  => 'styles'
 			),
 			'seo'      => array(
-				'name' => __( 'SEO', CLICKWHALE_SLUG ),
+				'name' => __( 'SEO', CLICKWHALE_NAME ),
 				'url'  => 'seo'
 			),
 		);
@@ -74,18 +78,18 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		// ClickWhale Content
 
 		$cw = array(
-			'label'   => __( 'ClickWhale Content', CLICKWHALE_SLUG ),
+			'label'   => __( 'ClickWhale Content', CLICKWHALE_NAME ),
 			'options' => array(
 				'cw_link'           => array(
-					'name' => __( 'ClickWhale Link', CLICKWHALE_SLUG ),
+					'name' => __( 'ClickWhale Link', CLICKWHALE_NAME ),
 					'icon' => 'link'
 				),
 				'cw_custom_link'    => array(
-					'name' => __( 'Custom Link', CLICKWHALE_SLUG ),
+					'name' => __( 'Custom Link', CLICKWHALE_NAME ),
 					'icon' => 'link-2'
 				),
 				'cw_custom_content' => array(
-					'name' => __( 'Custom Content', CLICKWHALE_SLUG ),
+					'name' => __( 'Custom Content', CLICKWHALE_NAME ),
 					'icon' => 'edit'
 				)
 			),
@@ -95,7 +99,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
 		$post_types       = Helper::get_post_types();
 		$post_types_group = array(
-			'label'   => __( 'Post Types', CLICKWHALE_SLUG ),
+			'label'   => __( 'Post Types', CLICKWHALE_NAME ),
 			'options' => array()
 		);
 
@@ -107,14 +111,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		// Formatting
 
 		$formatting = array(
-			'label'   => __( 'Formatting', CLICKWHALE_SLUG ),
+			'label'   => __( 'Formatting', CLICKWHALE_NAME ),
 			'options' => array(
 				'cw_heading'   => array(
-					'name' => __( 'Heading', CLICKWHALE_SLUG ),
+					'name' => __( 'Heading', CLICKWHALE_NAME ),
 					'icon' => 'type'
 				),
 				'cw_separator' => array(
-					'name' => __( 'Separator', CLICKWHALE_SLUG ),
+					'name' => __( 'Separator', CLICKWHALE_NAME ),
 					'icon' => 'minus'
 				)
 			),
@@ -135,7 +139,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 	public static function get_nav_menus() {
 		$menus      = wp_get_nav_menus();
 		$result     = array();
-		$result[''] = __( 'No Menu', CLICKWHALE_SLUG );
+		$result[''] = __( 'No Menu', CLICKWHALE_NAME );
 		foreach ( $menus as $menu ) {
 			$result[ $menu->term_id ] = $menu->name;
 		}
@@ -233,7 +237,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
 
 		// redirect to new record
-		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
@@ -242,7 +246,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		$nonce          = wp_create_nonce( 'slug_exists' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
@@ -294,7 +298,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 /* Select2 init */
                 linksType.select2({
-                    placeholder: '<?php _e( 'Select Content Type', CLICKWHALE_SLUG ) ?>',
+                    placeholder: '<?php _e( 'Select Content Type', CLICKWHALE_NAME ) ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
@@ -354,7 +358,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                     replace_block(el, template);
 
                                     jQuery('.select-link').select2({
-                                        placeholder: '<?php _e( 'Select Item', CLICKWHALE_SLUG ) ?>',
+                                        placeholder: '<?php _e( 'Select Item', CLICKWHALE_NAME ) ?>',
                                         width: '100%',
                                         minimumResultsForSearch: 10
                                     });
@@ -513,7 +517,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php _e( 'Select Image', CLICKWHALE_SLUG ) ?>',
+                                    text: '<?php _e( 'Select Image', CLICKWHALE_NAME ) ?>',
                                 },
                                 multiple: false
                             }).on('select', function () {
@@ -532,7 +536,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         const button = jQuery(this);
 
                         button.next().val(''); // emptying the hidden field
-                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', CLICKWHALE_SLUG ) ?>');
+                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>');
 
                         disable_ogpreview_button();
                     })
@@ -625,7 +629,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         title.addClass('error')
-                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_SLUG ) ?>');
+                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
                     } else {
                         title.removeClass('error').next().text('');
                     }
@@ -634,7 +638,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_SLUG ) ?>')
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>')
                     } else {
                         slug.removeClass('error').next().text('');
                     }
@@ -643,8 +647,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_SLUG ) ?>')
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>')
                     }
                 });
 
@@ -654,8 +657,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 jQuery('#reset-styles').on('click', function (e) {
                     e.preventDefault();
                     let defaults;
-                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!',
-						CLICKWHALE_SLUG ) ?>')) {
+                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', CLICKWHALE_NAME ) ?>')) {
                         defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
 
                         jQuery.each(defaults.styles, function (key, val) {
@@ -711,7 +713,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery('#opengraph-live-preview')
                         .addClass('disabled')
                         .next()
-                        .text('<?php _e( 'Save page to view Open Graph preview', CLICKWHALE_SLUG ) ?>');
+                        .text('<?php _e( 'Save page to view Open Graph preview', CLICKWHALE_NAME ) ?>');
                 }
 
                 function change_row_image(element, image, active = true) {

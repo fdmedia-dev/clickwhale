@@ -17,7 +17,11 @@ namespace clickwhale_pro\includes;
 use clickwhale\includes\admin\Clickwhale_Admin;
 use clickwhale_pro\includes\admin\{Clickwhale_Pro_Admin, Clickwhale_Pro_Settings};
 use clickwhale_pro\includes\front\Clickwhale_Pro_Public;
-use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * The core Pro version class.
@@ -168,7 +172,8 @@ final class Clickwhale_Pro {
 
 		/* ACTIONS */
 		/* ADD */
-		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
+		//if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
+        if ( isset( $_GET['page'] ) && strpos( $_GET['page'], CLICKWHALE_SLUG ) === 0 ) {
 			$this->loader->add_action(
 				'admin_enqueue_scripts',
 				$this->admin,
@@ -487,7 +492,7 @@ final class Clickwhale_Pro {
 	 * @since     1.0.0
 	 */
 //	public function get_plugin_name(): string {
-//		return CLICKWHALE_PRO_SLUG;
+//		return CLICKWHALE_PRO_NAME;
 //	}
 
 	/**

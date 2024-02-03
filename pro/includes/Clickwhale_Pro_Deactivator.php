@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Fired during plugin deactivation
  *
@@ -18,6 +22,6 @@ class Clickwhale_Pro_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		delete_option( 'clickwhale_pro_version' );
+		//delete_option( 'clickwhale_pro_version' );
 	}
 }

@@ -3,6 +3,10 @@ namespace clickwhale\includes\helpers;
 
 use stdClass;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 abstract class Helper_Abstract {
 
     /**

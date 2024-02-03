@@ -17,7 +17,11 @@ namespace clickwhale_pro\includes\admin;
 use clickwhale_pro\includes\admin\linkpages\Clickwhale_Pro_Linkpage_Edit;
 use clickwhale_pro\includes\admin\links\Clickwhale_Pro_Link_Edit;
 use clickwhale_pro\includes\admin\tracking_codes\Clickwhale_Pro_Tracking_Code_Edit;
-use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 final class Clickwhale_Pro_Admin {
 	/**
@@ -99,9 +103,9 @@ final class Clickwhale_Pro_Admin {
 
 	public function add_menu_items_before_settings() {
 		add_submenu_page(
-			'clickwhale',
-			__( 'Statistics', CLICKWHALE_PRO_SLUG ),
-			__( 'Statistics', CLICKWHALE_PRO_SLUG ),
+            CLICKWHALE_SLUG,
+			__( 'Statistics', CLICKWHALE_PRO_NAME ),
+			__( 'Statistics', CLICKWHALE_PRO_NAME ),
 			'manage_options',
 			CLICKWHALE_SLUG . '-statistics',
 			array( $this, 'render_statistics_page_template' )
@@ -115,7 +119,7 @@ final class Clickwhale_Pro_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style(
-			CLICKWHALE_PRO_SLUG,
+			CLICKWHALE_PRO_NAME,
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/css/clickwhale-pro-admin.css', array(),
 			CLICKWHALE_PRO_VERSION
 		);
@@ -128,7 +132,7 @@ final class Clickwhale_Pro_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script(
-			CLICKWHALE_PRO_SLUG . '_chartjs',
+            CLICKWHALE_PRO_NAME . '_chartjs',
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/js/chartjs/chart.js',
 			'',
 			'4.2.1',
@@ -136,7 +140,7 @@ final class Clickwhale_Pro_Admin {
 		);
 
 		wp_enqueue_script(
-			CLICKWHALE_PRO_SLUG,
+            CLICKWHALE_PRO_NAME,
 			CLICKWHALE_PRO_ADMIN_ASSETS_DIR . '/js/clickwhale-pro-admin.js',
 			array( 'jquery' ),
 			CLICKWHALE_PRO_VERSION,

@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Define the internationalization functionality
  *
@@ -24,9 +28,9 @@ class Clickwhale_Pro_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'clickwhale-pro',
+            CLICKWHALE_PRO_NAME,
 			false,
-            CLICKWHALE_PRO_ID . 'languages/'
+            CLICKWHALE_PRO_SLUG . '/languages/'
 		);
 	}
 }

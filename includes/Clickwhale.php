@@ -33,6 +33,10 @@ use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
 
 use clickwhale\includes\front\Clickwhale_Public;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * The core plugin class that is used to define internationalization,
  *  admin-specific hooks, and public-facing site hooks.
@@ -274,7 +278,8 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
 		$this->loader->add_action( 'admin_head', $this->admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
-		if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
+		//if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
+		if ( isset( $_GET['page'] ) && strpos( $_GET['page'], CLICKWHALE_SLUG ) === 0 ) {
 			$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
 		}
@@ -394,7 +399,7 @@ final class Clickwhale {
 	 * @since     1.0.0
 	 */
 //	public function get_plugin_name(): string {
-//		return CLICKWHALE_SLUG;
+//		return CLICKWHALE_NAME;
 //	}
 
 	/**
@@ -425,8 +430,8 @@ final class Clickwhale {
 	public function default_options(): array {
 		return array(
 			'general'        => array(
-				'name'    => __( 'General', CLICKWHALE_SLUG ),
-				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_SLUG ),
+				'name'    => __( 'General', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_NAME ),
 				'options' => array(
 					'access_level'        => [ 'administrator' ],
 					'redirect_type'       => 301,
@@ -438,8 +443,8 @@ final class Clickwhale {
 				)
 			),
 			'tracking'       => array(
-				'name'    => __( 'Tracking', CLICKWHALE_SLUG ),
-				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_SLUG ),
+				'name'    => __( 'Tracking', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_NAME ),
 				'options' => array(
 					'tracking_duration'    => 30,
 					'disable_tracking'     => 0,
@@ -447,20 +452,20 @@ final class Clickwhale {
 				)
 			),
 			'linkpages'      => array(
-				'name'    => __( 'Link Pages', CLICKWHALE_SLUG ),
-				'text'    => __( 'Global settings for the Link Pages.', CLICKWHALE_SLUG ),
+				'name'    => __( 'Link Pages', CLICKWHALE_NAME ),
+				'text'    => __( 'Global settings for the Link Pages.', CLICKWHALE_NAME ),
 				'options' => array(
 					'linkpage_links_target' => 0
 				)
 			),
 			'tracking_codes' => array(
-				'name'    => __( 'Tracking Codes', CLICKWHALE_SLUG ),
-				'text'    => __( 'Global settings for the Tracking Codes.', CLICKWHALE_SLUG ),
+				'name'    => __( 'Tracking Codes', CLICKWHALE_NAME ),
+				'text'    => __( 'Global settings for the Tracking Codes.', CLICKWHALE_NAME ),
 				'options' => array()
 			),
 			'other'          => array(
-				'name'    => __( 'Other', CLICKWHALE_SLUG ),
-				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_SLUG ),
+				'name'    => __( 'Other', CLICKWHALE_NAME ),
+				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_NAME ),
 				'options' => array()
 			)
 		);
@@ -472,57 +477,57 @@ final class Clickwhale {
 	 */
 	public function admin_bar_render( $wp_admin_bar ) {
 		$wp_admin_bar->add_node( array(
-				'id'    => CLICKWHALE_SLUG,
+				'id'    => CLICKWHALE_NAME,
 				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
-				'href'  => admin_url( 'admin.php?page=clickwhale' ),
+				'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ),
 				'meta'  => array(
-					'class' => CLICKWHALE_SLUG,
+					'class' => CLICKWHALE_NAME,
 					'title' => 'ClickWhale'
 				)
 			)
 		);
 
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_SLUG . '-new-link',
-				'title'  => __( 'New Link', CLICKWHALE_SLUG ),
-				'href'   => admin_url( 'admin.php?page=clickwhale-edit-link&id=0' ),
+				'id'     => CLICKWHALE_NAME . '-new-link',
+				'title'  => __( 'New Link', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_SLUG . 'new-link',
-					'title' => __( 'Add New Link', CLICKWHALE_SLUG )
+					'class' => CLICKWHALE_NAME . 'new-link',
+					'title' => __( 'Add New Link', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_SLUG . '-new-category',
-				'title'  => __( 'New Category', CLICKWHALE_SLUG ),
-				'href'   => admin_url( 'admin.php?page=clickwhale-edit-category&id=0' ),
+				'id'     => CLICKWHALE_NAME . '-new-category',
+				'title'  => __( 'New Category', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_SLUG . 'new-category',
-					'title' => __( 'Add New Category', CLICKWHALE_SLUG )
+					'class' => CLICKWHALE_NAME . 'new-category',
+					'title' => __( 'Add New Category', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_SLUG . '-new-linkpage',
-				'title'  => __( 'New Link Page', CLICKWHALE_SLUG ),
-				'href'   => admin_url( 'admin.php?page=clickwhale-edit-linkpage&id=0' ),
+				'id'     => CLICKWHALE_NAME . '-new-linkpage',
+				'title'  => __( 'New Link Page', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_SLUG . 'new-linkpage',
-					'title' => __( 'Add New Link Page', CLICKWHALE_SLUG )
+					'class' => CLICKWHALE_NAME . 'new-linkpage',
+					'title' => __( 'Add New Link Page', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_SLUG . '-new-tracking code',
-				'title'  => __( 'New Tracking Code', CLICKWHALE_SLUG ),
-				'href'   => admin_url( 'admin.php?page=clickwhale-edit-tracking-code&id=0' ),
+				'id'     => CLICKWHALE_NAME . '-new-tracking code',
+				'title'  => __( 'New Tracking Code', CLICKWHALE_NAME ),
+				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_SLUG . 'new-tracking-code',
-					'title' => __( 'Add New Tracking Code', CLICKWHALE_SLUG )
+					'class' => CLICKWHALE_NAME . 'new-tracking-code',
+					'title' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
 				)
 			)
 		);

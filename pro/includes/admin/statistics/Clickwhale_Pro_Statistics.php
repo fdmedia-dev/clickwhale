@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes\admin\statistics;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Pro_Statistics {
 
     /**
@@ -32,49 +36,49 @@ class Clickwhale_Pro_Statistics {
 			'today'      => array(
 				'start' => date( 'Y-m-d' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'Today', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Today', CLICKWHALE_PRO_NAME )
 			),
 			'yesterday'  => array(
 				'start' => date( 'Y-m-d', strtotime( '-1 days' ) ),
 				'end'   => date( 'Y-m-d', strtotime( '-1 days' ) ),
-				'label' => __( 'Yesterday', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Yesterday', CLICKWHALE_PRO_NAME )
 			),
 			'last7days'  => array(
 				'start'    => date( 'Y-m-d', strtotime( '-6 days' ) ),
 				'end'      => date( 'Y-m-d' ),
-				'label'    => __( 'Last 7 Days', CLICKWHALE_PRO_SLUG ),
+				'label'    => __( 'Last 7 Days', CLICKWHALE_PRO_NAME ),
 				'selected' => true
 			),
 			'last30days' => array(
 				'start' => date( 'Y-m-d', strtotime( '-29 days' ) ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'Last 30 Days', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Last 30 Days', CLICKWHALE_PRO_NAME )
 			),
 			'thisMonth'  => array(
 				'start' => date( 'Y-m-01' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'This Month', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'This Month', CLICKWHALE_PRO_NAME )
 			),
 			'lastMonth'  => array(
 				'start' => date( 'Y-m-d', strtotime( 'first day of last month' ) ),
 				'end'   => date( 'Y-m-d', strtotime( 'last day of last month' ) ),
-				'label' => __( 'Last Month', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Last Month', CLICKWHALE_PRO_NAME )
 			),
 			'thisYear'   => array(
 				'start' => date( 'Y-01-01' ),
 				'end'   => date( 'Y-m-d' ),
-				'label' => __( 'This Year', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'This Year', CLICKWHALE_PRO_NAME )
 			),
 			'LastYear'   => array(
 				'start' => date( 'Y-m-d', strtotime( 'last year January 1st' ) ),
 				'end'   => date( 'Y-m-d', strtotime( 'last year December 31st' ) ),
-				'label' => __( 'Last Year', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Last Year', CLICKWHALE_PRO_NAME )
 			),
 			'all'        => array(
-				'label' => __( 'All Time', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'All Time', CLICKWHALE_PRO_NAME )
 			),
 			'custom'     => array(
-				'label' => __( 'Custom', CLICKWHALE_PRO_SLUG )
+				'label' => __( 'Custom', CLICKWHALE_PRO_NAME )
 			)
 		);
 	}
@@ -166,8 +170,7 @@ class Clickwhale_Pro_Statistics {
                                 ctx.strokeStyle = color || 'rgba(255, 128, 0, 0.5)';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
-                                ctx.fillText('<?php _e( 'No data to display',
-									CLICKWHALE_PRO_SLUG ) ?>', centerX, centerY);
+                                ctx.fillText('<?php _e( 'No data to display', CLICKWHALE_PRO_NAME ) ?>', centerX, centerY);
                                 ctx.arc(centerX, centerY, (r - radiusDecrease || 0), 0, 2 * Math.PI);
                                 ctx.stroke();
                             }
@@ -464,7 +467,7 @@ class Clickwhale_Pro_Statistics {
                         borderJoinStyle: 'round',
                         borderWidth: 2,
                         fill: true,
-                        label: "<?php _e( 'All', CLICKWHALE_PRO_SLUG ); ?>",
+                        label: "<?php _e( 'All', CLICKWHALE_PRO_NAME ); ?>",
                         pointBorderWidth: 2,
                         pointHoverBorderWidth: 2,
                         pointRadius: 2,
@@ -572,11 +575,11 @@ class Clickwhale_Pro_Statistics {
                     }
 
                     const
-                        unknown = '<?php _e( 'Unknown', CLICKWHALE_PRO_SLUG ) ?>',
+                        unknown = '<?php _e( 'Unknown', CLICKWHALE_PRO_NAME ) ?>',
                         data = {
                             labels: [],
                             datasets: [{
-                                label: '<?php _e( 'Total', CLICKWHALE_PRO_SLUG ) ?>',
+                                label: '<?php _e( 'Total', CLICKWHALE_PRO_NAME ) ?>',
                                 data: []
                             }]
                         };
@@ -857,7 +860,7 @@ class Clickwhale_Pro_Statistics {
                 function addChartData(chart, id, label, period, array = []) {
                     const dataset = setMainChartDefaultData();
                     if (id === '0') {
-                        dataset.label = "<?php _e( 'All', CLICKWHALE_PRO_SLUG ); ?>";
+                        dataset.label = "<?php _e( 'All', CLICKWHALE_PRO_NAME ); ?>";
                     } else {
                         dataset.label = label;
                     }

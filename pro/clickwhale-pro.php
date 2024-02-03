@@ -1,23 +1,22 @@
 <?php
-
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
 use clickwhale_pro\includes\{
     Clickwhale_Pro,
     Clickwhale_Pro_Activator,
     Clickwhale_Pro_Deactivator
 };
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Current pro version.
  */
 define( 'CLICKWHALE_PRO_VERSION', '1.0.3' );
 
-define( 'CLICKWHALE_PRO_SLUG', 'clickwhale-pro' );
-define( 'CLICKWHALE_PRO_ID', CLICKWHALE_SLUG . '/pro/' ); // `clickwhale/pro/`
-define( 'CLICKWHALE_PRO_DIR', CLICKWHALE_DIR . 'pro/' );
+define( 'CLICKWHALE_PRO_NAME',    'clickwhale-pro' );
+define( 'CLICKWHALE_PRO_SLUG',    CLICKWHALE_SLUG . '/pro' );
+define( 'CLICKWHALE_PRO_DIR',     CLICKWHALE_DIR . 'pro/' );
 define( 'CLICKWHALE_PRO_DIR_URL', CLICKWHALE_DIR_URL . 'pro/' );
 
 define( 'CLICKWHALE_PRO_ADMIN_DIR',         CLICKWHALE_PRO_DIR . 'includes/admin' );
@@ -26,10 +25,12 @@ define( 'CLICKWHALE_PRO_TEMPLATES_DIR',     CLICKWHALE_PRO_DIR . 'templates' );
 define( 'CLICKWHALE_PRO_ADMIN_ASSETS_DIR',  CLICKWHALE_PRO_DIR_URL . 'assets/admin' );
 define( 'CLICKWHALE_PRO_PUBLIC_ASSETS_DIR', CLICKWHALE_PRO_DIR_URL . 'assets/front' );
 
-register_activation_hook( CLICKWHALE_DIR . 'clickwhale.php', 'activate_clickwhale_pro' );
-register_deactivation_hook( CLICKWHALE_DIR . 'clickwhale.php', 'deactivate_clickwhale_pro' );
+register_activation_hook( CLICKWHALE_DIR . CLICKWHALE_NAME . '.php', 'activate_clickwhale_pro' );
+register_deactivation_hook( CLICKWHALE_DIR . CLICKWHALE_NAME . '.php', 'deactivate_clickwhale_pro' );
 
 add_action( 'plugins_loaded', 'run_clickwhale_pro', 11 );
+
+add_action( 'clickwhale_uninstall_cleanup', 'clickwhale_pro_uninstall_cleanup' );
 
 /**
  * The code that runs during plugin activation.
@@ -50,14 +51,21 @@ function deactivate_clickwhale_pro() {
 }
 
 /**
+ * The code for Freemius that runs after the plugin uninstall event.
+ */
+function clickwhale_pro_uninstall_cleanup() {
+    delete_option( 'clickwhale_pro_version' );
+}
+
+/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 /**
  * Traits for Singleton
  */
-require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Clone.php';
-require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
+//require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Clone.php';
+//require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
 
 /**
  * Core class of Pro version

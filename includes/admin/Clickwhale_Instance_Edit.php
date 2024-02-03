@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\admin;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 abstract class Clickwhale_Instance_Edit {
 
 	/**
@@ -32,7 +36,7 @@ abstract class Clickwhale_Instance_Edit {
 	public function __construct( string $instance_plural, string $instance_single ) {
 		$this->instance_plural = $instance_plural;
 		$this->instance_single = $instance_single;
-		$this->page            = 'clickwhale-edit-' . str_replace( '_', '-', $this->instance_single );
+		$this->page            = CLICKWHALE_SLUG . '-edit-' . str_replace( '_', '-', $this->instance_single );
 		$this->filter_param    = ! empty ( $_GET['id'] ) ? 'edit' : 'add';
 
 		add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );
@@ -103,10 +107,10 @@ abstract class Clickwhale_Instance_Edit {
 	 */
 	protected function no_item() {
 		wp_die(
-			__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', CLICKWHALE_SLUG ),
-			__( 'Error', CLICKWHALE_SLUG ),
+			__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', CLICKWHALE_NAME ),
+			__( 'Error', CLICKWHALE_NAME ),
 			array(
-				'link_text' => esc_html( __( "Back", CLICKWHALE_SLUG ) ),
+				'link_text' => esc_html( __( "Back", CLICKWHALE_NAME ) ),
 			)
 		);
 	}
@@ -141,11 +145,11 @@ abstract class Clickwhale_Instance_Edit {
 		}
 
 		if ( $transient === 'added' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully saved', CLICKWHALE_SLUG ) . '</p></div>';
+			echo '<div class="updated"><p>' . __( 'Item was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
 		}
 
 		if ( $transient === 'updated' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully updated', CLICKWHALE_SLUG ) . '</p></div>';
+			echo '<div class="updated"><p>' . __( 'Item was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
 		}
 
 		delete_transient( 'link-' . $id );

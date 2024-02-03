@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\front\linkpages;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 interface Linkpage_Template_Loader_Interface {
 	/**
 	 * Setup loader for a page objects

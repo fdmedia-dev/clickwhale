@@ -1,7 +1,11 @@
 <?php
 namespace clickwhale_pro\includes\admin;
 
-use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * The settings of the plugin.

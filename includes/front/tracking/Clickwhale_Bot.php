@@ -1,6 +1,9 @@
 <?php
-
 namespace clickwhale\includes\front\tracking;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Bot {
 	/**

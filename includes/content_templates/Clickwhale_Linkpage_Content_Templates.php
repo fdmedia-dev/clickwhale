@@ -6,6 +6,10 @@ use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Linkpages_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Linkpage_Content_Templates {
 
 	public function get_defaults() {
@@ -115,7 +119,7 @@ class Clickwhale_Linkpage_Content_Templates {
 					<?php echo $this->get_template_row_image( $data ) ?>
                     <div class="linkpage-row--link">
 						<?php if ( ! $data['id'] ) { ?>
-                            <strong><?php _e( 'ClickWhale Link', CLICKWHALE_SLUG ) ?></strong>
+                            <strong><?php _e( 'ClickWhale Link', CLICKWHALE_NAME ) ?></strong>
                             <span></span>
 						<?php } else { ?>
                             <strong><?php echo $data['title'] ? wp_unslash( $data['title'] ) : $link['title'] ?></strong>
@@ -136,7 +140,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				if ( ! $data['id'] ) {
 					?>
                     <div class="linkpage-row--bottom--control-wrap">
-                        <label><?php _e( 'Link', CLICKWHALE_SLUG ) ?></label>
+                        <label><?php _e( 'Link', CLICKWHALE_NAME ) ?></label>
 						<?php if ( $links ) { ?>
                             <div>
                                 <select name="links[<?php echo esc_attr( $data['id'] ) ?>][id]"
@@ -154,7 +158,7 @@ class Clickwhale_Linkpage_Content_Templates {
                             </div>
 							<?php
 						} else {
-							_e( 'Nothing found', CLICKWHALE_SLUG );
+							_e( 'Nothing found', CLICKWHALE_NAME );
 						}
 						?>
 
@@ -163,17 +167,17 @@ class Clickwhale_Linkpage_Content_Templates {
 				}
 
 				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_SLUG ),
+					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					$data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_SLUG )
+					$data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_SLUG ),
+					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_SLUG )
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				$this->get_template_row_images( $data );
@@ -215,7 +219,7 @@ class Clickwhale_Linkpage_Content_Templates {
                             <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
                             <span><?php echo esc_url( $data['url'] ) ?></span>
 						<?php } else { ?>
-                            <strong><?php _e( 'Custom Link', CLICKWHALE_SLUG ) ?></strong>
+                            <strong><?php _e( 'Custom Link', CLICKWHALE_NAME ) ?></strong>
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
@@ -234,25 +238,25 @@ class Clickwhale_Linkpage_Content_Templates {
 
 				// normal fields
 				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_SLUG ),
+					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_SLUG ),
+					__( 'e.g. My link', CLICKWHALE_NAME ),
 					true
 				);
 
 				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_SLUG ),
+					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_SLUG )
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
-					__( 'URL', CLICKWHALE_SLUG ),
+					__( 'URL', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][url]',
 					$data['url'] ?? '',
-					__( 'e.g. https://mysite.com', CLICKWHALE_SLUG ),
+					__( 'e.g. https://mysite.com', CLICKWHALE_NAME ),
 					true
 				);
 
@@ -328,7 +332,7 @@ class Clickwhale_Linkpage_Content_Templates {
 								<?php echo $post_status != 'publish' ? '(' . $post_status . ')' : '' ?>
                             </strong>
                             <span>
-                                <?php echo __( 'Original', CLICKWHALE_SLUG ) . ' ' . $post_type_singular . ': ' ?>
+                                <?php echo __( 'Original', CLICKWHALE_NAME ) . ' ' . $post_type_singular . ': ' ?>
                                 <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
                                    target="_blank"
                                    rel="noopener">
@@ -380,18 +384,17 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php
 				// normal fields
 				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_SLUG ),
+					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title',
-						CLICKWHALE_SLUG )
+					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_SLUG ),
+					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_SLUG )
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				$this->get_template_row_images( $data );
@@ -430,7 +433,7 @@ class Clickwhale_Linkpage_Content_Templates {
 						<?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
 						<?php } else { ?>
-                            <strong><?php _e( 'Heading', 'clickwhale-pro' ) ?></strong>
+                            <strong><?php _e( 'Heading', CLICKWHALE_PRO_NAME ) ?></strong>
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
@@ -444,17 +447,17 @@ class Clickwhale_Linkpage_Content_Templates {
 
 				// normal fields
 				echo $this->get_template_input_field(
-					__( 'Heading', CLICKWHALE_SLUG ),
+					__( 'Heading', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					__( 'e.g. My Links Heading', CLICKWHALE_SLUG )
+					__( 'e.g. My Links Heading', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
-					__( 'Description', CLICKWHALE_SLUG ),
+					__( 'Description', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][description]',
 					$data['description'] ?? '',
-					__( 'e.g. My Links Description', CLICKWHALE_SLUG )
+					__( 'e.g. My Links Description', CLICKWHALE_NAME )
 				);
 				?>
             </div><!-- ./linkpage-row--bottom -->
@@ -485,7 +488,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Separator', 'clickwhale-pro' ); ?></strong>
+                        <strong><?php _e( 'Separator', CLICKWHALE_PRO_NAME ); ?></strong>
                     </div>
                 </div>
 				<?php $this->get_template_row_end( $data['type'], false ); ?>
@@ -524,7 +527,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Custom Content', 'clickwhale-pro' ) ?></strong>
+                        <strong><?php _e( 'Custom Content', CLICKWHALE_PRO_NAME ) ?></strong>
                     </div><!-- ./linkpage-link -->
                 </div>
 				<?php $this->get_template_row_end( $data['type'] ); ?>
@@ -535,16 +538,16 @@ class Clickwhale_Linkpage_Content_Templates {
 				echo $this->get_template_hidden_field( $data );
 
 				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_SLUG ),
+					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_SLUG )
+					__( 'e.g. My link', CLICKWHALE_NAME )
 				);
 				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_SLUG ),
+					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_SLUG )
+					__( 'e.g. My link', CLICKWHALE_NAME )
 				);
 				?>
                 <hr>
@@ -758,7 +761,7 @@ class Clickwhale_Linkpage_Content_Templates {
 	public function get_template_row_start( $id, $is_active = '' ) {
 		?>
         <div class="linkpage-row--start">
-            <div class="linkpage-row--drag" title="<?php _e( 'Change Order', CLICKWHALE_SLUG ); ?>">
+            <div class="linkpage-row--drag" title="<?php _e( 'Change Order', CLICKWHALE_NAME ); ?>">
                 <svg class="feather">
                     <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#drag-2"></use>
                 </svg>
@@ -835,13 +838,12 @@ class Clickwhale_Linkpage_Content_Templates {
             <input type="hidden"
                    name="links[<?php echo $data['id'] ?>][image][type]"
                    value="<?php echo $data['image']['type'] ?? '' ?>">
-            <label><?php _e( 'Icon', CLICKWHALE_SLUG ) ?></label>
+            <label><?php _e( 'Icon', CLICKWHALE_NAME ) ?></label>
 
             <div class="linkpage-row--image-select">
                 <p class="description">
 					<?php
-					_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.',
-						CLICKWHALE_SLUG );
+					_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', CLICKWHALE_NAME );
 					?>
                 </p>
                 <div class="linkpage-row--image-select--tab">
@@ -864,10 +866,10 @@ class Clickwhale_Linkpage_Content_Templates {
                                 </label>
                             </div>
                             <a href="#" class="linkpage-row--image-upload">
-								<?php _e( 'Upload image', CLICKWHALE_SLUG ) ?>
+								<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>
                             </a>
                             <a href="#" class="linkpage-row--image-remove" style="display: none;">
-								<?php _e( 'Remove image', CLICKWHALE_SLUG ) ?>
+								<?php _e( 'Remove image', CLICKWHALE_NAME ) ?>
                             </a>
                         </div>
 
@@ -889,7 +891,7 @@ class Clickwhale_Linkpage_Content_Templates {
                                 </label>
                             </div>
                             <a id="icon-picker-<?php echo $data['id'] ?>" class="icon-picker" href="#">
-								<?php _e( 'Select Icon', CLICKWHALE_SLUG ) ?>
+								<?php _e( 'Select Icon', CLICKWHALE_NAME ) ?>
                             </a>
                         </div>
 
@@ -908,7 +910,7 @@ class Clickwhale_Linkpage_Content_Templates {
 									<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>
                                 </label>
                             </div>
-                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', CLICKWHALE_SLUG ) ?></a>
+                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', CLICKWHALE_NAME ) ?></a>
                         </div>
 
                         <div class="linkpage-row--image-select--reset">

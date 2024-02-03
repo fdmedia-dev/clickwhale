@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\helpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Categories_Helper extends Helper_Abstract {
 
     /**
@@ -26,7 +30,7 @@ class Categories_Helper extends Helper_Abstract {
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d categories can be added.', CLICKWHALE_SLUG ),
+			__( 'Currently, a maximum of %d categories can be added.', CLICKWHALE_NAME ),
 			self::get_limit()
 		);
 	}

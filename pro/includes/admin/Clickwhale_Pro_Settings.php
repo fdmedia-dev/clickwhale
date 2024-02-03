@@ -3,7 +3,11 @@ namespace clickwhale_pro\includes\admin;
 
 use clickwhale\includes\admin\Clickwhale_Settings;
 use clickwhale\includes\helpers\Helper;
-use clickwhale_pro\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Pro_Settings {
 	/**
@@ -82,7 +86,7 @@ class Clickwhale_Pro_Settings {
 		}
 		add_settings_field(
 			'linkpage_credits',
-			__( 'Credits', CLICKWHALE_PRO_SLUG ),
+			__( 'Credits', CLICKWHALE_PRO_NAME ),
 			array( $this, 'render_control' ),
 			'clickwhale_linkpages_options',
 			'linkpages_settings_section',
@@ -91,13 +95,13 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'linkpage_credits',
 				'name'    => 'clickwhale_linkpages_options[linkpage_credits]',
 				'value'   => isset( $linkpages_options['linkpage_credits'] ) ? 1 : 0,
-				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_SLUG )
+				'label'   => __( 'Check to hide Link Page credits.', CLICKWHALE_PRO_NAME )
 			)
 		);
 
 		add_settings_field(
 			'tracking_codes_credits',
-			__( 'Tracking Codes Credits', CLICKWHALE_PRO_SLUG ),
+			__( 'Tracking Codes Credits', CLICKWHALE_PRO_NAME ),
 			array( $this, 'render_control' ),
 			'clickwhale_tracking_codes_options',
 			'tracking_codes_settings_section',
@@ -106,13 +110,13 @@ class Clickwhale_Pro_Settings {
 				'id'      => 'tracking_codes_credits',
 				'name'    => 'clickwhale_tracking_codes_options[tracking_codes_credits]',
 				'value'   => isset( $tracking_codes_options['tracking_codes_credits'] ) ? 1 : 0,
-				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_SLUG )
+				'label'   => __( 'Hide plugin HTML credits for the active tracking codes.', CLICKWHALE_PRO_NAME )
 			)
 		);
 
 		add_settings_field(
 			'affiliate_id',
-			__( 'Affiliate ID', CLICKWHALE_PRO_SLUG ),
+			__( 'Affiliate ID', CLICKWHALE_PRO_NAME ),
 			array( $this, 'render_control' ),
 			'clickwhale_other_options',
 			'other_settings_section',
@@ -123,7 +127,7 @@ class Clickwhale_Pro_Settings {
 				'type'        => 'text',
 				'value'       => $other_options['affiliate_id'] ?? '',
 				'placeholder' => '123456',
-				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_SLUG )
+				'description' => __( 'Enter your Affiliate ID.', CLICKWHALE_PRO_NAME )
 			)
 		);
 	}

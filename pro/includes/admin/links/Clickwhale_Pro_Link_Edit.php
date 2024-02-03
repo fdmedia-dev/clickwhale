@@ -4,6 +4,10 @@ namespace clickwhale_pro\includes\admin\links;
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Links_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Pro_Link_Edit {
 
 	private function utms_default(): array {
@@ -56,8 +60,7 @@ class Clickwhale_Pro_Link_Edit {
 		$field = '';
 
 		$field .= '<tr class="form-field">';
-		$field .= '<th valign="top" scope="row"><label for="' . $name . '">' . sprintf( __( '%1$s',
-				CLICKWHALE_PRO_SLUG ), $label ) . '</label></th>';
+		$field .= '<th valign="top" scope="row"><label for="' . $name . '">' . sprintf( __( '%1$s', CLICKWHALE_PRO_NAME ), $label ) . '</label></th>';
 		$field .= '<td><input id="' . $name . '" type="text" name="' . $name . '" value="' . $value . '" placeholder="" style="width: 95%" size="50"></td>';
 		$field .= '</tr>';
 
@@ -70,7 +73,7 @@ class Clickwhale_Pro_Link_Edit {
 		$fields  = '';
 
 		$fields .= '<div class="clear"></div>';
-		$fields .= '<h3>' . __( 'UTM Parameters', CLICKWHALE_PRO_SLUG ) . '</h3>';
+		$fields .= '<h3>' . __( 'UTM Parameters', CLICKWHALE_PRO_NAME ) . '</h3>';
 		$fields .= '<table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table"><tbody>';
 		foreach ( $utms as $utm ) {
 			$row    = isset( $request['id'] ) ? Links_Helper::get_meta( $request['id'], $utm['name'] ) : '';

@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\helpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Helper {
 
 	/**
@@ -197,9 +201,9 @@ class Helper {
 
 		if ( isset( $data['is_edit'] ) ) {
 			if ( $data['is_edit'] ) {
-				$wpHeading = sprintf( __( 'Edit %s', 'clickwhale' ), $data['name'] );
+				$wpHeading = sprintf( __( 'Edit %s', CLICKWHALE_NAME ), $data['name'] );
 			} else {
-				$wpHeading = sprintf( __( 'Add %s', 'clickwhale' ), $data['name'] );
+				$wpHeading = sprintf( __( 'Add %s', CLICKWHALE_NAME ), $data['name'] );
 			}
 		} elseif ( ! empty( $data['is_list'] ) ) {
 			$wpHeading = $data['name'];
@@ -208,7 +212,7 @@ class Helper {
 		if ( ! empty( $data['link_to_list'] ) ) {
 			$linkToListArgs = array(
 				'url'   => esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . $data['link_to_list'] ) ),
-				'title' => __( 'Back to list', 'clickwhale' )
+				'title' => __( 'Back to list', CLICKWHALE_NAME )
 			);
 			$linkToList     = '<a class="page-title-action" href="' . $linkToListArgs['url'] . '">' . $linkToListArgs['title'] . '</a>';
 		}
@@ -222,7 +226,7 @@ class Helper {
 						'admin.php?page=' . $data['link_to_add'] . '&id=0'
 					)
 				),
-				'title' => __( 'Add new', 'clickwhale' )
+				'title' => __( 'Add new', CLICKWHALE_NAME )
 			);
 			$linkToAdd     = '<a class="page-title-action" href="' . $linkToAddArgs['url'] . '">' . $linkToAddArgs['title'] . '</a>';
 		}
@@ -230,7 +234,7 @@ class Helper {
 		if ( ! empty( $data['link_to_view'] ) ) {
 			$linkToViewArgs = array(
 				'url'   => $data['link_to_view'],
-				'title' => __( 'View page', 'clickwhale' )
+				'title' => __( 'View page', CLICKWHALE_NAME )
 			);
 			$linkToView     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkToViewArgs['url'] . '">' . $linkToViewArgs['title'] . '</a>';
 		}
@@ -296,8 +300,7 @@ class Helper {
 			'clickwhale_get_pro_message',
 			sprintf(
 				__(
-					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>',
-					CLICKWHALE_SLUG ),
+					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>', CLICKWHALE_NAME ),
 				self::get_pro_link()
 			)
 		);

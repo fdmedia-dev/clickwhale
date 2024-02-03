@@ -4,6 +4,10 @@ namespace clickwhale\includes\admin\links;
 use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Categories_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Links_Bulk_Edit {
 
     /**
@@ -72,7 +76,7 @@ class Clickwhale_Links_Bulk_Edit {
 		$categories_output .= '<fieldset class="inline-edit-col-center inline-edit-categories">';
 		$categories_output .= '<div class="inline-edit-col">';
 		$categories_output .= '<span class="title inline-edit-categories-label">';
-		$categories_output .= __( 'Categories', CLICKWHALE_SLUG );
+		$categories_output .= __( 'Categories', CLICKWHALE_NAME );
 		$categories_output .= '</span>';
 		$categories_output .= '<ul class="cat-checklist category-checklist">';
 		foreach ( $categories as $category ) {
@@ -163,7 +167,7 @@ class Clickwhale_Links_Bulk_Edit {
                 <div class="inline-edit-wrapper" role="region" aria-labelledby="bulk-edit-legend" tabindex="-1">
                     <fieldset class="inline-edit-col-left">
                         <legend class="inline-edit-legend" id="bulk-edit-legend">
-							<?php _e( 'Bulk Edit', CLICKWHALE_SLUG ); ?>
+							<?php _e( 'Bulk Edit', CLICKWHALE_NAME ); ?>
                         </legend>
                         <div class="inline-edit-col">
 
@@ -196,7 +200,7 @@ class Clickwhale_Links_Bulk_Edit {
 
                     <fieldset class="inline-edit-col-right">
                         <label class="inline-edit-tags wp-clearfix">
-                            <span class="title"><?php _e( 'Options', CLICKWHALE_SLUG ); ?></span>
+                            <span class="title"><?php _e( 'Options', CLICKWHALE_NAME ); ?></span>
                         </label>
                         <div class="inline-edit-col">
 							<?php
@@ -211,10 +215,10 @@ class Clickwhale_Links_Bulk_Edit {
 
                     <div class="submit inline-edit-save">
                         <button type="submit" class="button button-primary" id="bulk_edit">
-							<?php _e( 'Update', CLICKWHALE_SLUG ); ?>
+							<?php _e( 'Update', CLICKWHALE_NAME ); ?>
                         </button>
                         <button type="button" class="button cancel">
-							<?php _e( 'Cancel', CLICKWHALE_SLUG ); ?>
+							<?php _e( 'Cancel', CLICKWHALE_NAME ); ?>
                         </button>
 
                         <div class="notice notice-error notice-alt inline hidden">

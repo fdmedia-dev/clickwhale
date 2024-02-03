@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\front\linkpages;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 interface Linkpage_Interface {
 
 	function getUrl();

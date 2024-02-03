@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Fired during plugin activation
  *

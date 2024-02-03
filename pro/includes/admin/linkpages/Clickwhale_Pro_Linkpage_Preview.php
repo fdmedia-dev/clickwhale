@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes\admin\linkpages;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Pro_Linkpage_Preview {
 	public function __construct() {
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );

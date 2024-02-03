@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\admin\reset;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Reset {
 
 	/**
@@ -84,7 +88,7 @@ class Clickwhale_Reset {
 	}
 
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-tools' ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-tools' ) {
 			$nonce = wp_create_nonce( 'clickwhale_reset' );
 			?>
 

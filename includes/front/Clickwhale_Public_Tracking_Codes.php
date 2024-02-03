@@ -5,6 +5,10 @@ use clickwhale\includes\admin\Clickwhale_WP_User;
 use clickwhale\includes\helpers\Linkpages_Helper;
 use clickwhale\includes\helpers\Tracking_Codes_Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Do tracking code on the current page
  * @since 1.2.0

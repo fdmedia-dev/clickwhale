@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale\includes\admin\migration;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 /**
  * Show migration admin notice
  *
@@ -65,7 +69,7 @@ class Clickwhale_Migration_Notice {
 		$options_hide_deactive  = get_option( 'clickwhale_hide_notice_deactive' );
 		$options_last_migration = get_option( 'clickwhale_tools_last_migration_options' );
 
-		$is_tools_page = isset( $_GET['page'] ) && $_GET['page'] == 'clickwhale-tools';
+		$is_tools_page = isset( $_GET['page'] ) && $_GET['page'] == CLICKWHALE_SLUG . '-tools';
 
 		if ( ! $options_hide_migrate[ $this->migrant ] && ! $is_tools_page ) {
 			add_action( 'admin_notices', [ $this, 'migration_notice' ] );
@@ -88,11 +92,10 @@ class Clickwhale_Migration_Notice {
 		?>
         <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo $this->migrant ?>-migrate">
             <p>
-                <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.',
-						CLICKWHALE_SLUG ), $this->migrant_full ); ?></span>
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale-tools' ) ); ?>"
-                   class="button button-primary"><?php _e( 'Start Migration', CLICKWHALE_SLUG ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Not now', CLICKWHALE_SLUG ); ?></a>
+                <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.', CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools' ) ); ?>"
+                   class="button button-primary"><?php _e( 'Start Migration', CLICKWHALE_NAME ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Not now', CLICKWHALE_NAME ); ?></a>
             </p>
         </div>
 		<?php
@@ -107,12 +110,11 @@ class Clickwhale_Migration_Notice {
 		?>
         <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_html( $this->migrant ) ?>-deactive">
             <p>
-                <span> <?php printf( __( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.',
-						CLICKWHALE_SLUG ), $this->migrant_full ); ?></span>
+                <span> <?php printf( __( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.', CLICKWHALE_NAME ), $this->migrant_full ); ?></span>
                 <a href="#"
-                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', CLICKWHALE_SLUG ),
+                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', CLICKWHALE_NAME ),
 						$this->migrant_full ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', CLICKWHALE_SLUG ); ?></a>
+                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', CLICKWHALE_NAME ); ?></a>
             </p>
         </div>
 		<?php

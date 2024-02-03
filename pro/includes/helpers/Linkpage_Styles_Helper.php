@@ -1,6 +1,10 @@
 <?php
 namespace clickwhale_pro\includes\helpers;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Linkpage_Styles_Helper {
 
 	public static function get_gradients(): array {
@@ -151,7 +155,7 @@ class Linkpage_Styles_Helper {
 
 	public static function get_patterns(): array {
 		$result   = [];
-		$patterns = scandir( WP_PLUGIN_DIR . '/' . CLICKWHALE_PRO_ID . 'assets/front/patterns/' );
+		$patterns = scandir( WP_PLUGIN_DIR . '/' . CLICKWHALE_PRO_SLUG . '/assets/front/patterns/' );
 
 		foreach ( $patterns as $k => $pattern ) {
 			if ( $pattern === '.' || $pattern === '..' ) {
