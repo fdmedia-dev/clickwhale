@@ -30,6 +30,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( function_exists( 'clickwhale_fs' ) ) {
     clickwhale_fs()->set_basename( true, __FILE__ );
 } else {
+    /**
+     * Current plugin version.
+     */
+    define( 'CLICKWHALE_VERSION', '1.6.0' );
+    define( 'CLICKWHALE_NAME', 'clickwhale' );
+
+    /**
+     * @since 1.4.1
+     */
+    define( 'CLICKWHALE_SLUG',    plugin_basename( __DIR__ ) ); // `<plugin-dir>`
+    define( 'CLICKWHALE_ID',      plugin_basename( __FILE__ ) ); // `<plugin-dir>/<plugin-file>.php`
+    define( 'CLICKWHALE_DIR',     plugin_dir_path( __FILE__ ) );
+    define( 'CLICKWHALE_DIR_URL', plugin_dir_url( __FILE__ ) );
+
+    /**
+     * @since 1.6.0
+     */
+    define( 'CLICKWHALE_ADMIN_DIR',         CLICKWHALE_DIR . 'includes/admin' );
+    define( 'CLICKWHALE_PUBLIC_DIR',        CLICKWHALE_DIR . 'includes/front' );
+    define( 'CLICKWHALE_TEMPLATES_DIR',     CLICKWHALE_DIR . 'templates' );
+    define( 'CLICKWHALE_ADMIN_ASSETS_DIR',  CLICKWHALE_DIR_URL . 'assets/admin' );
+    define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
+
     // DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
     if ( !function_exists( 'clickwhale_fs' ) ) {
         // Create a helper function for easy SDK access.
@@ -67,36 +90,13 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         // Signal that SDK was initiated.
         do_action( 'clickwhale_fs_loaded' );
 
-//        clickwhale_fs()->override_i18n( [
-//            'account' => __( 'License', CLICKWHALE_NAME ),
-//        ] );
+        clickwhale_fs()->override_i18n( [
+            'account' => __( 'License', CLICKWHALE_NAME ),
+        ] );
 
         // Uninstall action
         clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
     }
-
-    /**
-     * Current plugin version.
-     */
-    define( 'CLICKWHALE_VERSION', '1.6.0' );
-    define( 'CLICKWHALE_NAME', 'clickwhale' );
-
-    /**
-     * @since 1.4.1
-     */
-    define( 'CLICKWHALE_SLUG',    plugin_basename( __DIR__ ) ); // `<plugin-dir>`
-    define( 'CLICKWHALE_ID',      plugin_basename( __FILE__ ) ); // `<plugin-dir>/<plugin-file>.php`
-    define( 'CLICKWHALE_DIR',     plugin_dir_path( __FILE__ ) );
-    define( 'CLICKWHALE_DIR_URL', plugin_dir_url( __FILE__ ) );
-
-    /**
-     * @since 1.6.0
-     */
-    define( 'CLICKWHALE_ADMIN_DIR',         CLICKWHALE_DIR . 'includes/admin' );
-    define( 'CLICKWHALE_PUBLIC_DIR',        CLICKWHALE_DIR . 'includes/front' );
-    define( 'CLICKWHALE_TEMPLATES_DIR',     CLICKWHALE_DIR . 'templates' );
-    define( 'CLICKWHALE_ADMIN_ASSETS_DIR',  CLICKWHALE_DIR_URL . 'assets/admin' );
-    define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
 
     /**
      * The code that runs during plugin activation.
