@@ -63,17 +63,17 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 $clickwhale_fs = fs_dynamic_init( array(
-                    'id'               => '14609',
-                    'slug'             => 'clickwhale',
-                    'premium_slug'     => 'clickwhale-pro',
-                    'type'             => 'plugin',
-                    'public_key'       => 'pk_07a5633bd94c00467e7e58c200504',
-                    'is_premium'       => true,
-                    'premium_suffix'   => 'Pro',
-                    'has_addons'       => false,
-                    'has_paid_plans'   => true,
-                    'is_org_compliant' => true,
-                    'has_affiliation'  => 'all',
+                    'id'                  => '14609',
+                    'slug'                => 'clickwhale',
+                    'premium_slug'        => 'clickwhale-pro',
+                    'type'                => 'plugin',
+                    'public_key'          => 'pk_07a5633bd94c00467e7e58c200504',
+                    'is_premium'          => true,
+                    'premium_suffix'      => 'Pro',
+                    'has_premium_version' => true,
+                    'has_addons'          => false,
+                    'has_paid_plans'      => true,
+                    'has_affiliation'     => 'all',
                     'menu'             => array(
                         'slug'    => 'clickwhale',
                         'contact' => false,
@@ -90,9 +90,9 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         // Signal that SDK was initiated.
         do_action( 'clickwhale_fs_loaded' );
 
-        clickwhale_fs()->override_i18n( [
-            'account' => __( 'License', CLICKWHALE_NAME ),
-        ] );
+//        clickwhale_fs()->override_i18n( [
+//            'account' => __( 'License', CLICKWHALE_NAME ),
+//        ] );
 
         // Uninstall action
         clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
