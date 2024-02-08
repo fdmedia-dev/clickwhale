@@ -25,8 +25,8 @@ define( 'CLICKWHALE_PRO_TEMPLATES_DIR',     CLICKWHALE_PRO_DIR . 'templates' );
 define( 'CLICKWHALE_PRO_ADMIN_ASSETS_DIR',  CLICKWHALE_PRO_DIR_URL . 'assets/admin' );
 define( 'CLICKWHALE_PRO_PUBLIC_ASSETS_DIR', CLICKWHALE_PRO_DIR_URL . 'assets/front' );
 
-register_activation_hook( CLICKWHALE_DIR . CLICKWHALE_NAME . '.php', 'activate_clickwhale_pro' );
-register_deactivation_hook( CLICKWHALE_DIR . CLICKWHALE_NAME . '.php', 'deactivate_clickwhale_pro' );
+register_activation_hook( CLICKWHALE_DIR . 'clickwhale.php', 'activate_clickwhale_pro' );     // Abs path to `clickwhale-pro/clickwhale.php`
+register_deactivation_hook( CLICKWHALE_DIR . 'clickwhale.php', 'deactivate_clickwhale_pro' ); // Abs path to `clickwhale-pro/clickwhale.php`
 
 add_action( 'plugins_loaded', 'run_clickwhale_pro', 11 );
 
@@ -56,16 +56,6 @@ function deactivate_clickwhale_pro() {
 function clickwhale_pro_uninstall_cleanup() {
     delete_option( 'clickwhale_pro_version' );
 }
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-/**
- * Traits for Singleton
- */
-//require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Clone.php';
-//require_once CLICKWHALE_PRO_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
 
 /**
  * Core class of Pro version

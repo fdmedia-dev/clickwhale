@@ -75,7 +75,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'has_paid_plans'      => true,
                     'has_affiliation'     => 'all',
                     'menu'             => array(
-                        'slug'    => 'clickwhale',
+                        'slug'    => CLICKWHALE_SLUG,
                         'contact' => false,
                         'pricing' => false,
                     ),

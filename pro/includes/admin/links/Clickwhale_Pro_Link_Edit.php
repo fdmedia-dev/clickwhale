@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale_pro\includes\admin\links;
 
-use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Links_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {

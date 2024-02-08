@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\content_templates;
 
-use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Linkpages_Helper;
@@ -433,7 +432,7 @@ class Clickwhale_Linkpage_Content_Templates {
 						<?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
 						<?php } else { ?>
-                            <strong><?php _e( 'Heading', CLICKWHALE_PRO_NAME ) ?></strong>
+                            <strong><?php _e( 'Heading', CLICKWHALE_NAME ) ?></strong>
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
@@ -488,7 +487,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Separator', CLICKWHALE_PRO_NAME ); ?></strong>
+                        <strong><?php _e( 'Separator', CLICKWHALE_NAME ); ?></strong>
                     </div>
                 </div>
 				<?php $this->get_template_row_end( $data['type'], false ); ?>
@@ -527,7 +526,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Custom Content', CLICKWHALE_PRO_NAME ) ?></strong>
+                        <strong><?php _e( 'Custom Content', CLICKWHALE_NAME ) ?></strong>
                     </div><!-- ./linkpage-link -->
                 </div>
 				<?php $this->get_template_row_end( $data['type'] ); ?>

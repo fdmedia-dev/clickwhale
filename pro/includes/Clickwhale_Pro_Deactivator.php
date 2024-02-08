@@ -22,6 +22,6 @@ class Clickwhale_Pro_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		//delete_option( 'clickwhale_pro_version' );
+		delete_option( 'clickwhale_pro_version' );
 	}
 }
