@@ -189,6 +189,10 @@ final class Clickwhale_Admin {
 
 	public function show_pro_menu_item() {
 
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return;
+        }
+
         $user = clickwhale()->user;
         if ( $user::is_current_user_role_access_granted() ) {
             add_submenu_page(
@@ -357,6 +361,10 @@ final class Clickwhale_Admin {
 	}
 
 	public function admin_banner_pro_button() {
+
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return;
+        }
 		?>
         <a href="<?php echo esc_attr( Helper::get_pro_link() ) ?>"
            class="clickwhale-banner--button"
@@ -411,7 +419,12 @@ final class Clickwhale_Admin {
 	}
 
 	public function upgrade_action_link( $links ) {
-		$url           = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro' ) );
+
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return $links;
+        }
+
+        $url           = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro' ) );
 		$text          = __( 'Upgrade to PRO', CLICKWHALE_NAME );
 		$settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
 		$links[]       = $settings_link;
