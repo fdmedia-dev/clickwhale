@@ -90,9 +90,9 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         // Signal that SDK was initiated.
         do_action( 'clickwhale_fs_loaded' );
 
-//        clickwhale_fs()->override_i18n( [
-//            'account' => __( 'License', CLICKWHALE_NAME ),
-//        ] );
+        clickwhale_fs()->override_i18n([
+            'account' => __( 'License', CLICKWHALE_NAME ),
+        ]);
 
         // Uninstall action
         clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
