@@ -170,9 +170,14 @@ final class Clickwhale_Pro {
 
 		$base_admin_class = get_class( Clickwhale_Admin::get_instance() );
 
+        $this->loader->add_action(
+            'admin_init',
+            $this->admin,
+            'old_license_key_migration'
+        );
+
 		/* ACTIONS */
 		/* ADD */
-		//if ( isset( $_GET['page'] ) && substr( $_GET['page'], 0, strlen( 'clickwhale' ) ) === 'clickwhale' ) {
         if ( isset( $_GET['page'] ) && strpos( $_GET['page'], CLICKWHALE_SLUG ) === 0 ) {
 			$this->loader->add_action(
 				'admin_enqueue_scripts',

@@ -18,6 +18,7 @@ use clickwhale_pro\includes\admin\linkpages\Clickwhale_Pro_Linkpage_Edit;
 use clickwhale_pro\includes\admin\links\Clickwhale_Pro_Link_Edit;
 use clickwhale_pro\includes\admin\tracking_codes\Clickwhale_Pro_Tracking_Code_Edit;
 use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use Exception;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -100,6 +101,54 @@ final class Clickwhale_Pro_Admin {
 		require_once CLICKWHALE_PRO_DIR . 'includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php';
 		require_once CLICKWHALE_PRO_DIR . 'includes/admin/statistics/Clickwhale_Pro_Statistics.php';
 	}
+
+    public function old_license_key_migration() {
+
+        if ( ! clickwhale_fs()->has_api_connectivity() || clickwhale_fs()->is_registered() ) {
+            // No connectivity OR the user already opted-in to Freemius.
+            return;
+        }
+
+        if ( 'pending' != get_option( 'clickwhale_fs_migrated2fs', 'pending' ) ) {
+            return;
+        }
+
+        $license_options = get_option( 'clickwhale_pro_license' );
+
+        if ( empty( $license_options ) ) {
+            return;
+        }
+
+        // No key to migrate.
+        if ( empty( $license_options['api_key_0'] ) ) {
+            return;
+        }
+
+        // Get the license key from the previous eCommerce platform's storage.
+        $license_key = $license_options['api_key_0'];
+
+        // Get the first 32 characters.
+        $license_key = substr( $license_key, 0, 32 );
+
+        try {
+            $next_page = clickwhale_fs()->activate_migrated_license( $license_key );
+
+        } catch ( Exception $e ) {
+            update_option( 'clickwhale_fs_migrated2fs', 'unexpected_error' );
+            return;
+        }
+
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            update_option( 'clickwhale_fs_migrated2fs', 'done' );
+
+            if ( is_string( $next_page ) ) {
+                fs_redirect( $next_page );
+            }
+
+        } else {
+            update_option( 'clickwhale_fs_migrated2fs', 'failed' );
+        }
+    }
 
 	public function add_menu_items_before_settings() {
 		add_submenu_page(
