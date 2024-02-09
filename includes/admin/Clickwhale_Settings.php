@@ -68,6 +68,17 @@ final class Clickwhale_Settings {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
 	}
 
+    public function add_custom_capabilities() {
+        $general_options = get_option( 'clickwhale_general_options' );
+        $permitted_roles = $general_options['access_level'] ?? [ 'administrator' ];
+        foreach ( $permitted_roles as $role ) {
+            $role_obj = get_role( $role );
+            if ( $role_obj ) {
+                $role_obj->add_cap( 'manage_options' ); // Add higher capability to permitted roles
+            }
+        }
+    }
+
 	/**
 	 * Provides default values Options.
 	 *

@@ -241,6 +241,8 @@ final class Clickwhale {
 		$Clickwhale_Tools_Reset = Clickwhale_Reset::getInstance();
 
 		// ACTIONS
+        $this->loader->add_action( 'admin_init', $this->settings, 'add_custom_capabilities' );
+
 		$this->loader->add_action( 'admin_menu', $this->admin, 'add_plugin_menu' );
 		$this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
