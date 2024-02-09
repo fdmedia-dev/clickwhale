@@ -170,14 +170,19 @@ final class Clickwhale_Pro {
 
 		$base_admin_class = get_class( Clickwhale_Admin::get_instance() );
 
+		/**
+         * ACTIONS
+         */
+
+		/**
+         * ADD
+         */
         $this->loader->add_action(
             'admin_init',
             $this->admin,
             'old_license_key_migration'
         );
 
-		/* ACTIONS */
-		/* ADD */
         if ( isset( $_GET['page'] ) && strpos( $_GET['page'], CLICKWHALE_SLUG ) === 0 ) {
 			$this->loader->add_action(
 				'admin_enqueue_scripts',
@@ -255,7 +260,9 @@ final class Clickwhale_Pro {
 			20
 		);
 
-		/* REMOVE */
+        /**
+         * REMOVE
+         */
 		// Remove pro button from the plugin's banner
 		$this->loader->remove_action(
 			'clickwhale_admin_banner_pro_button',
@@ -269,7 +276,7 @@ final class Clickwhale_Pro {
 			'clickwhale_admin_pro_message_callback'
 		);
 
-		// hide pro promo page from the menu
+		// Hide pro promo page from the menu
 		if ( $_SERVER['HTTP_HOST'] !== 'dev.clickwhale.pro' ) {
 			$this->loader->remove_action(
 				'clickwhale_menu_after_all',
@@ -278,8 +285,13 @@ final class Clickwhale_Pro {
 			);
 		}
 
-		/* FILTERS */
-		$this->loader->add_filter(
+		/**
+         * FILTERS
+         */
+        // Hide Support Forum page from the PRO menu
+        clickwhale_fs()->add_filter( 'is_submenu_visible', array( $this->admin, 'hide_support_menu_item' ), 10, 2 );
+
+        $this->loader->add_filter(
 			'clickwhale_settings_defaults',
 			$this->settings,
 			'settings_defaults'
@@ -399,7 +411,10 @@ final class Clickwhale_Pro {
 			'is_tracking_code_conversion'
 		);
 
-		// hide pro links on plugins.php
+        /**
+         * REMOVE
+         */
+        // Hide pro links on plugins.php
 		if ( defined( 'CLICKWHALE_ID' ) ) {
 			$this->loader->remove_filter(
 				'plugin_action_links_' . CLICKWHALE_ID,
@@ -407,7 +422,9 @@ final class Clickwhale_Pro {
 				'upgrade_action_link' );
 		}
 
-		/* AJAX */
+		/**
+         * AJAX
+         */
 		// Statistics
 		$this->loader->add_action(
 			'wp_ajax_clickwhale_pro/admin/get_total_clicks_for_period',
@@ -442,8 +459,13 @@ final class Clickwhale_Pro {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		/* ACTIONS */
-		/* ADD */
+		/**
+         * ACTIONS
+         */
+
+		/**
+         * ADD
+         */
 		$this->loader->add_action(
 			'wp_enqueue_scripts',
 			$this->public,
@@ -456,11 +478,18 @@ final class Clickwhale_Pro {
 			'enqueue_scripts'
 		);
 
-		/* REMOVE */
+		/**
+         * REMOVE
+         */
 
 
-		/* FILTERS */
-		/* ADD */
+		/**
+         * FILTERS
+         */
+
+		/**
+         * ADD
+         */
 		$this->loader->add_filter(
 			'clickwhale_url_params',
 			$this->public,
@@ -477,7 +506,9 @@ final class Clickwhale_Pro {
 			2
 		);
 
-		/* REMOVE */
+		/**
+         * REMOVE
+         */
 	}
 
 	/**
@@ -488,17 +519,6 @@ final class Clickwhale_Pro {
 	public function run() {
 		$this->loader->run();
 	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @return    string    The name of the plugin.
-	 * @since     1.0.0
-	 */
-//	public function get_plugin_name(): string {
-//		return CLICKWHALE_PRO_NAME;
-//	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.

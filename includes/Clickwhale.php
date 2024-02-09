@@ -272,7 +272,9 @@ final class Clickwhale {
 	private function define_admin_hooks() {
 		$Clickwhale_Tools_Reset = Clickwhale_Reset::getInstance();
 
-		// ACTIONS
+        /**
+         * ACTIONS
+         */
 		$this->loader->add_action( 'admin_menu', $this->admin, 'add_plugin_menu' );
 		$this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
@@ -336,6 +338,10 @@ final class Clickwhale {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
+
+        /**
+         * ACTIONS
+         */
 		// Clickwhale menu in the admin bar
 		if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
 			$this->loader->add_action(
@@ -375,6 +381,9 @@ final class Clickwhale {
 			'track_custom_link'
 		);
 
+        /**
+         * FILTERS
+         */
 		$this->loader->add_filter(
 			'the_content',
 			$this->public,
@@ -390,17 +399,6 @@ final class Clickwhale {
 	public function run() {
 		self::$instance->loader->run();
 	}
-
-	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @return    string    The name of the plugin.
-	 * @since     1.0.0
-	 */
-//	public function get_plugin_name(): string {
-//		return CLICKWHALE_NAME;
-//	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.

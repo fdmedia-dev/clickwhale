@@ -161,6 +161,14 @@ final class Clickwhale_Pro_Admin {
 		);
 	}
 
+    public function hide_support_menu_item( $is_visible, $menu_id ) {
+
+        if ( 'support' === $menu_id ) {
+            return false;
+        }
+        return $is_visible;
+    }
+
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
