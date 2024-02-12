@@ -241,8 +241,6 @@ final class Clickwhale {
 		$Clickwhale_Tools_Reset = Clickwhale_Reset::getInstance();
 
 		// ACTIONS
-        $this->loader->add_action( 'admin_init', $this->settings, 'add_custom_capabilities' );
-
 		$this->loader->add_action( 'admin_menu', $this->admin, 'add_plugin_menu' );
 		$this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
@@ -293,8 +291,15 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
 
+        // FILTERS
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
+
+        $tabs = Clickwhale_Settings::render_tabs();
+        foreach ( $tabs as $tab ) {
+            $this->loader->add_filter( 'option_page_capability_clickwhale_' . $tab['url'], $this->settings, 'add_capability' );
+            $this->loader->add_filter( 'sanitize_option_clickwhale_' . $tab['url'], $this->settings, 'remove_capability' );
+        }
 	}
 
 	/**

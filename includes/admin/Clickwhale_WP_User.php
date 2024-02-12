@@ -26,6 +26,10 @@ class Clickwhale_WP_User {
 		$this->user = wp_get_current_user();
 	}
 
+    public function get_user(): WP_User {
+        return $this->user;
+    }
+
 	public static function get_all_roles(): array {
 		global $wp_roles;
 
@@ -49,15 +53,15 @@ class Clickwhale_WP_User {
 	}
 
 	/**
-	 * Get current user roles array (yes, array!)
+	 * Get current user roles array
 	 *
 	 * @return      array
 	 * @since       1.0.0
 	 */
-	public static function get_current_user_roles() {
+	public static function get_current_user_roles(): array {
 		$id = self::get_loggedin_user_id();
 
-		return $id ? get_userdata( $id )->roles : false;
+		return $id ? get_userdata( $id )->roles : array();
 	}
 
 	/**
@@ -86,7 +90,7 @@ class Clickwhale_WP_User {
 	}
 
 	/**
-	 * Get disalowed user roles from get_track_options() function
+	 * Get disallowed user roles from get_track_options() function
 	 *
 	 * @return      array
 	 * @since       1.0.0
@@ -112,8 +116,8 @@ class Clickwhale_WP_User {
 		$current_user_roles = $this->get_current_user_roles();
 		$disallowed_roles   = $this->get_disallowed_user_roles();
 
-		if ( is_array( $current_user_roles ) && is_array( $disallowed_roles ) ) {
-			// if current user role in array of disalowed roles
+		if ( ! empty( $current_user_roles ) && ! empty( $disallowed_roles ) ) {
+			// if current user role in array of disallowed roles
 			return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
 		} else {
 			// user can be tracked
