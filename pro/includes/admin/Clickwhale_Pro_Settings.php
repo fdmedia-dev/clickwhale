@@ -142,4 +142,17 @@ class Clickwhale_Pro_Settings {
 		echo Helper::render_control( $args );
 	}
 
+    public static function render_tabs(): array {
+        return array(
+            'tracking_codes' => array(
+                'name' => __( 'Tracking Codes', CLICKWHALE_NAME ),
+                'url'  => 'tracking_codes_options'
+            ),
+            'other'          => array(
+                'name' => __( 'Other Options', CLICKWHALE_NAME ),
+                'url'  => 'other_options'
+            ),
+        );
+    }
+
 }

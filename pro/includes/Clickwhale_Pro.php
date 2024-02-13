@@ -411,6 +411,12 @@ final class Clickwhale_Pro {
 			'is_tracking_code_conversion'
 		);
 
+        $tabs = Clickwhale_Pro_Settings::render_tabs();
+        foreach ( $tabs as $tab ) {
+            $this->loader->add_filter( 'option_page_capability_clickwhale_' . $tab['url'], clickwhale()->settings, 'add_capability' );
+            $this->loader->add_filter( 'sanitize_option_clickwhale_' . $tab['url'], clickwhale()->settings, 'remove_capability' );
+        }
+
         /**
          * REMOVE
          */
