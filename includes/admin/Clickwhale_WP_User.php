@@ -33,6 +33,10 @@ class Clickwhale_WP_User {
 		$this->user = wp_get_current_user();
 	}
 
+    public function get_user(): WP_User {
+        return $this->user;
+    }
+
 	public static function get_all_roles(): array {
 		global $wp_roles;
 
@@ -61,7 +65,7 @@ class Clickwhale_WP_User {
 	 * @return      array
 	 * @since       1.0.0
 	 */
-	public static function get_current_user_roles() {
+	public static function get_current_user_roles(): array {
 		$id = self::get_logged_in_user_id();
 
 		return $id ? get_userdata( $id )->roles : array();
