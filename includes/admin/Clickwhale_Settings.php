@@ -112,6 +112,9 @@ final class Clickwhale_Settings {
 			30 => __( '30 days', CLICKWHALE_NAME ),
 		) );
 
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
 		if ( $defaults ) {
 			// add settings sections
 			// register settings
@@ -137,6 +140,15 @@ final class Clickwhale_Settings {
 			}
 		}
 
+        // `always_checked` current user roles
+        $always_checked_roles = ['administrator'];
+
+        foreach ( $current_user_roles as $user_role ) {
+            if ( 'administrator' != $user_role ) {
+                $always_checked_roles[] = $user_role;
+            }
+        }
+
 		// Add fields
 		add_settings_field(
 			'access_level',
@@ -150,7 +162,7 @@ final class Clickwhale_Settings {
 				'name'           => 'clickwhale_general_options[access_level][]',
 				'value'          => $general_options['access_level'] ?? [ 'administrator' ],
 				'options'        => Clickwhale_WP_User::get_all_roles(),
-				'always_checked' => [ 'administrator' ],
+				'always_checked' => $always_checked_roles,
 				'description'    => __( 'Decide who can access critical admin pages and the plugin settings.',
 					CLICKWHALE_NAME ),
 			)
@@ -326,11 +338,11 @@ final class Clickwhale_Settings {
 	/**
 	 * Render plugin settings tabs
 	 * Hook: Filter 'clickwhale_settings_tabs';
-	 * @return mixed|null
+	 * @return array
 	 *
 	 * @since 1.3.0
 	 */
-	public static function render_tabs() {
+	public static function render_tabs(): array {
 		$defaults = apply_filters( 'clickwhale_settings_defaults', self::default_options() );
 		$tabs     = array(
 			'general'        => array(
@@ -373,4 +385,64 @@ final class Clickwhale_Settings {
 	public static function render_controls( $args ) {
 		echo Helper::render_control( $args );
 	}
+
+    public function add_capability( $capability ) {
+
+        $general_options = get_option( 'clickwhale_general_options' );
+        $access_roles = $general_options['access_level'] ?? ['administrator'];
+
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            return $capability;
+        }
+
+        if ( $current_user->get_user()->has_cap( 'manage_options' ) ) {
+            return $capability;
+        }
+
+        if ( array_intersect( $access_roles, $current_user_roles ) ) {
+
+            // Cache current user role caps for a few seconds
+            set_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps', $current_user->get_user()->get_role_caps(), 10 ); // 10 seconds
+
+            // Add higher capability to permitted roles
+            $current_user->get_user()->add_cap( 'manage_options' );
+        }
+
+        return $capability;
+    }
+
+    public function remove_capability( $options ) {
+
+//        if ( isset( $_POST['option_page'] ) ) {
+//            Debugger::debug_log( '$_POST[option_page]: ' . $_POST['option_page'] );
+//        }
+
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            return $options;
+        }
+
+        $cached_role_caps = get_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+
+        if ( ! $cached_role_caps ) {
+            return $options;
+        }
+
+        if ( ! isset( $cached_role_caps['manage_options'] ) ) {
+
+            // Remove higher capability to permitted roles
+            $current_user->get_user()->remove_cap( 'manage_options' );
+
+            // Delete from cache
+            delete_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+        }
+
+        return $options;
+    }
+
 }
