@@ -122,8 +122,9 @@ final class Clickwhale_Settings {
         // `always_checked` current user roles
         $always_checked_roles = ['administrator'];
 
-        foreach ( $current_user_roles as $user_role ) {
-            if ( 'administrator' != $user_role ) {
+        if ( ! in_array( 'administrator', $current_user_roles ) ) {
+
+            foreach ( $current_user_roles as $user_role ) {
                 $always_checked_roles[] = $user_role;
             }
         }
