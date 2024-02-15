@@ -411,6 +411,11 @@ final class Clickwhale_Admin {
 	 * @since 1.4.1
 	 */
 	public function settings_action_link( $links ) {
+
+        if ( clickwhale_fs()->is_activation_mode() ) {
+            return $links;
+        }
+
 		$url           = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-settings' ) );
 		$settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', CLICKWHALE_NAME ) . '</a>';
 		array_unshift( $links, $settings_link );
@@ -419,6 +424,10 @@ final class Clickwhale_Admin {
 	}
 
 	public function upgrade_action_link( $links ) {
+
+        if ( clickwhale_fs()->is_activation_mode() ) {
+            return $links;
+        }
 
         if ( clickwhale_fs()->can_use_premium_code() ) {
             return $links;
