@@ -482,56 +482,56 @@ final class Clickwhale {
 	 */
 	public function admin_bar_render( $wp_admin_bar ) {
 		$wp_admin_bar->add_node( array(
-				'id'    => CLICKWHALE_NAME,
+				'id'    => CLICKWHALE_SLUG,
 				'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
 				'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ),
 				'meta'  => array(
-					'class' => CLICKWHALE_NAME,
+					'class' => CLICKWHALE_SLUG,
 					'title' => 'ClickWhale'
 				)
 			)
 		);
 
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-link',
+				'id'     => CLICKWHALE_SLUG . '-new-link',
 				'title'  => __( 'New Link', CLICKWHALE_NAME ),
 				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-link',
+					'class' => CLICKWHALE_SLUG . '-new-link',
 					'title' => __( 'Add New Link', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-category',
+				'id'     => CLICKWHALE_SLUG . '-new-category',
 				'title'  => __( 'New Category', CLICKWHALE_NAME ),
 				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-category',
+					'class' => CLICKWHALE_SLUG . '-new-category',
 					'title' => __( 'Add New Category', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-linkpage',
+				'id'     => CLICKWHALE_SLUG . '-new-linkpage',
 				'title'  => __( 'New Link Page', CLICKWHALE_NAME ),
 				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-linkpage',
+					'class' => CLICKWHALE_SLUG . '-new-linkpage',
 					'title' => __( 'Add New Link Page', CLICKWHALE_NAME )
 				)
 			)
 		);
 		$wp_admin_bar->add_node( array(
-				'id'     => CLICKWHALE_NAME . '-new-tracking code',
+				'id'     => CLICKWHALE_SLUG . '-new-tracking-code',
 				'title'  => __( 'New Tracking Code', CLICKWHALE_NAME ),
 				'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ),
 				'parent' => CLICKWHALE_SLUG,
 				'meta'   => array(
-					'class' => CLICKWHALE_NAME . 'new-tracking-code',
+					'class' => CLICKWHALE_SLUG . '-new-tracking-code',
 					'title' => __( 'Add New Tracking Code', CLICKWHALE_NAME )
 				)
 			)
