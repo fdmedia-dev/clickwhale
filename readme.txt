@@ -1,11 +1,11 @@
 === ClickWhale - Link Shortener, Click Tracker & Link Pages ===
-Contributors: flowdee, krapan88, liquiemm
+Contributors: flowdee, krapan88, webdj, liquiemm
 Donate link: https://github.com/sponsors/flowdee
 Tags: links, link shortener, link pages, affiliate links, link tracker
-Requires at least: 3.8
+Requires at least: 5.0
 Requires PHP: 7.4.0
-Tested up to: 6.3.2
-Stable tag: 1.5.3
+Tested up to: 6.4
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,7 +79,7 @@ ClickWhale is a fully GDPR compatible WordPress plugin. We don’t track or stor
 Yes, ClickWhale has full translation and localization support via the `clickwhale` textdomain. Based on your site language, required `.mo` and `.po` translation files will be downloaded and placed into the default WordPress languages directory.
 
 = Do you offer support? =
-Of course! We offer support in the [support forum](https://wordpress.org/support/plugin/clickwhale/) here on WordPress.org
+Of course! We offer support in the [support forum](https://WordPress.org/support/plugin/clickwhale/) here on WordPress.org
 
 == Screenshots ==
 
@@ -93,6 +93,13 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.0.0 (23rd February 2024) =
+* New: Added access control system
+* New: Added Freemius update system
+* Fix: Fixed unwanted ? or & at the end of links sometimes
+* Info: WordPress 6.4.3 support
+* Info: PHP version changed from 7.0.0 to 7.4.0
+
 = Version 1.5.3 (1st November 2023) =
 * Fix: Fixed problem with fatal_error after click on CW link
 
@@ -100,7 +107,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * Tweak: Updated bots list
 * Fix: Fixed PHP Warning: Undefined array key "HTTP_HOST"
 * Fix: Fixed links order problem after import
-* Fix: Fixed links order in the linkpage CW Links block
+* Fix: Fixed links order in the link page CW Links block
 
 = Version 1.5.1 (12th September 2023) =
 * Fix: Fixed a bug when a link has a previously deleted category
@@ -112,7 +119,7 @@ Of course! We offer support in the [support forum](https://wordpress.org/support
 * New: Export ClickWhale links to CSV file
 * New: Links bulk editing
 * Fix: Fixed copy button's text after click
-* Info: Wordpress 6.3 support
+* Info: WordPress 6.3 support
 
 = Version 1.4.2 (4th August 2023) =
 * Fix: Removed char unwanted html char while link saving

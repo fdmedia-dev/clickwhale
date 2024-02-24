@@ -1,10 +1,13 @@
 <?php
-
 namespace clickwhale\includes\admin\linkpages;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Linkpages_Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
@@ -234,7 +237,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
 
 		// redirect to new record
-		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}
@@ -243,7 +246,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		$nonce          = wp_create_nonce( 'slug_exists' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-edit-linkpage' ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
 			?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
@@ -644,8 +647,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_NAME ) ?>')
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>')
                     }
                 });
 
@@ -655,8 +657,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 jQuery('#reset-styles').on('click', function (e) {
                     e.preventDefault();
                     let defaults;
-                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!',
-						CLICKWHALE_NAME ) ?>')) {
+                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', CLICKWHALE_NAME ) ?>')) {
                         defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
 
                         jQuery.each(defaults.styles, function (key, val) {

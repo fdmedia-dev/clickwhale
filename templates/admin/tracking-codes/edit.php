@@ -7,7 +7,7 @@ use clickwhale\includes\helpers\Tracking_Codes_Helper;
 
 Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
 
-$tracking_code = Clickwhale::get_instance()->tracking_code;
+$tracking_code = clickwhale()->tracking_code;
 
 $item       = $tracking_code->get_item( $_REQUEST );
 $linkpages  = $tracking_code->get_linkpages();
@@ -23,8 +23,8 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => __( 'Tracking Code', CLICKWHALE_NAME ),
 			'is_edit'      => ! empty( $item['id'] ),
-			'link_to_list' => 'clickwhale-tracking-codes',
-			'link_to_add'  => 'clickwhale-edit-tracking-code',
+			'link_to_list' => CLICKWHALE_SLUG . '-tracking-codes',
+			'link_to_add'  => CLICKWHALE_SLUG . '-edit-tracking-code',
 		)
 	);
 
@@ -97,8 +97,7 @@ do_action( 'clickwhale_admin_banner' );
 
                 <tr class="form-field for_mode for_standard_mode">
                     <th scope="row">
-                        <label for="position"><?php _e( 'In which page do you want to insert this code?',
-								CLICKWHALE_NAME ) ?></label>
+                        <label for="position"><?php _e( 'In which page do you want to insert this code?', CLICKWHALE_NAME ) ?></label>
                     </th>
                     <td>
 						<?php
@@ -330,8 +329,7 @@ do_action( 'clickwhale_admin_banner' );
 						'name'        => 'position[exclude_user_by_role][]',
 						'value'       => $item['position']['exclude_user_by_role'] ?? 0,
 						'options'     => Clickwhale_WP_User::get_all_roles(),
-						'description' => __( 'Check the user roles for which the script should not be executed.',
-							CLICKWHALE_NAME ),
+						'description' => __( 'Check the user roles for which the script should not be executed.', CLICKWHALE_NAME ),
 					),
 					true
 				);

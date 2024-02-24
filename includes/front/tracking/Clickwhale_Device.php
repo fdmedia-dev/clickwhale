@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front\tracking;
 
 use clickwhale\includes\front\tracking\device\{
@@ -11,6 +10,10 @@ use clickwhale\includes\front\tracking\device\{
 	Clickwhale_Pda,
 	Clickwhale_Tablet
 };
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Device {
 

@@ -1,18 +1,12 @@
 <?php
 namespace clickwhale\includes;
 
-/**
- * Fired during plugin deactivation
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/includes
- */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
- * Fired during plugin deactivation.
+ * Fired during plugin deactivation
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
@@ -30,8 +24,6 @@ class Clickwhale_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
-
-	}
+	public static function deactivate() {}
 
 }

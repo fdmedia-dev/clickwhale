@@ -1,29 +1,42 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 abstract class Clickwhale_Instance_Edit {
+
 	/**
 	 * Instance type as plural e.g. "links", "linkpages"
 	 *
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public string $instance_plural;
+	public $instance_plural;
+
 	/**
 	 * Instance type as single e.g. "link", "linkpage"
 	 *
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public string $instance_single;
-	protected string $page;
-	protected string $filter_param;
+	public $instance_single;
+
+    /**
+     * @var string
+     */
+	protected $page;
+
+    /**
+     * @var string
+     */
+	protected $filter_param;
 
 	public function __construct( string $instance_plural, string $instance_single ) {
 		$this->instance_plural = $instance_plural;
 		$this->instance_single = $instance_single;
-		$this->page            = 'clickwhale-edit-' . str_replace( '_', '-', $this->instance_single );
+		$this->page            = CLICKWHALE_SLUG . '-edit-' . str_replace( '_', '-', $this->instance_single );
 		$this->filter_param    = ! empty ( $_GET['id'] ) ? 'edit' : 'add';
 
 		add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );

@@ -2,7 +2,7 @@
 
 use clickwhale\includes\Clickwhale;
 
-$migration = Clickwhale::get_instance()->tools->migration;
+$migration = clickwhale()->tools->migration;
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -14,19 +14,19 @@ do_action( 'clickwhale_admin_banner' );
 	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=clickwhale-tools&tab=migration_options"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=migration_options"
            class="nav-tab <?php echo $active_tab == 'migration_options' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Migration', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=reset_options"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=reset_options"
            class="nav-tab <?php echo $active_tab == 'reset_options' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Reset', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=import"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=import"
            class="nav-tab <?php echo $active_tab == 'import' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Import', CLICKWHALE_NAME ); ?>
         </a>
-        <a href="?page=clickwhale-tools&tab=export"
+        <a href="?page=<?php echo CLICKWHALE_SLUG; ?>-tools&tab=export"
            class="nav-tab <?php echo $active_tab == 'export' ? 'nav-tab-active' : ''; ?>">
 			<?php _e( 'Export', CLICKWHALE_NAME ); ?>
         </a>
@@ -165,7 +165,7 @@ do_action( 'clickwhale_admin_banner' );
                    style="display: none;"
                    rel="noopener"
                    target="_blank"
-                   href="<?php echo esc_url( admin_url( 'admin.php?page=clickwhale' ) ) ?>">
+                   href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ) ?>">
 					<?php _e( 'Go to links', CLICKWHALE_NAME ) ?>
                 </a>
             </div>

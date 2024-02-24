@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front\tracking;
 
 use clickwhale\includes\admin\Clickwhale_Settings;
@@ -7,6 +6,10 @@ use clickwhale\includes\admin\Clickwhale_WP_User;
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\front\tracking\Clickwhale_Parser;
 use clickwhale\includes\helpers\Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Visitor_Track {
 	protected $parser;
@@ -66,7 +69,7 @@ class Clickwhale_Visitor_Track {
 			if ( isset( $tracking_options['tracking_duration'] ) && $tracking_options['tracking_duration'] !== '' ) {
 				$tracking_duration = $tracking_options['tracking_duration'];
 			} else {
-				$settings          = Clickwhale::get_instance()->default_options();
+				$settings          = clickwhale()->default_options();
 				$tracking_duration = $settings['tracking']['options']['tracking_duration'];
 			}
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\front\linkpages\{
@@ -8,6 +7,10 @@ use clickwhale\includes\front\linkpages\{
 	Linkpage_Template_Loader
 };
 use clickwhale\includes\helpers\Linkpages_Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Public_Linkpages {
 	/**
@@ -76,6 +79,5 @@ class Clickwhale_Public_Linkpages {
 			           ->setLinkpage( $linkpage )
 			           ->setTemplate( 'linkpage.php' );
 		}
-
 	}
 }

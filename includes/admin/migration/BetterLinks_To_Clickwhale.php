@@ -1,8 +1,11 @@
 <?php
-
 namespace clickwhale\includes\admin\migration;
 
 use clickwhale\includes\admin\migration\Clickwhale_Migration_Abstract;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 

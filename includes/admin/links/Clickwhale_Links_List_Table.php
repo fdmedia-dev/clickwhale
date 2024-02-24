@@ -1,10 +1,13 @@
 <?php
-
 namespace clickwhale\includes\admin\links;
 
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Categories_Helper;
 use WP_List_Table;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Custom_Table_Example_List_Table class that will display our custom table
@@ -138,15 +141,29 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		// notice how we used $_REQUEST['page'], so action will be done on curren page
 		// also notice how we use $this->_args['singular'] so in this example it will
 		// be something like &link=2
-		$title   = sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'],
-			wp_unslash( $item['title'] ) );
+		$title = sprintf(
+            '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%s">%s</a>',
+            $item['id'],
+			wp_unslash( $item['title'] )
+        );
 		$actions = array(
-			'edit'   => sprintf( '<a href="?page=clickwhale-edit-link&id=%s">%s</a>', $item['id'],
-				__( 'Edit', CLICKWHALE_NAME ) ),
-			'reset'  => sprintf( '<a href="?page=%s&action=reset&id=%s">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Reset Clicks', CLICKWHALE_NAME ) ),
-			'delete' => sprintf( '<a href="?page=%s&action=delete&id=%s">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ), $item['id'], __( 'Delete', CLICKWHALE_NAME ) ),
+			'edit'   => sprintf(
+                '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%s">%s</a>',
+                $item['id'],
+				__( 'Edit', CLICKWHALE_NAME )
+            ),
+			'reset'  => sprintf(
+                '<a href="?page=%s&action=reset&id=%s">%s</a>',
+				sanitize_text_field( $_REQUEST['page'] ),
+                $item['id'],
+                __( 'Reset Clicks', CLICKWHALE_NAME )
+            ),
+			'delete' => sprintf(
+                '<a href="?page=%s&action=delete&id=%s">%s</a>',
+				sanitize_text_field( $_REQUEST['page'] ),
+                $item['id'],
+                __( 'Delete', CLICKWHALE_NAME )
+            )
 		);
 
 		return sprintf( '%s %s',
@@ -163,8 +180,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_slug( $item ) {
-		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link',
-				CLICKWHALE_NAME ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+		return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . $item['slug'] . '" readonly><a href="#" class="slug-input--btn" data-id="' . $item['id'] . '" title="' . __( 'Copy Link', CLICKWHALE_NAME ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
 	}
 
 	/**
@@ -207,13 +223,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				continue;
 			}
 
-			$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(),
-					'admin.php?page=clickwhale' ) . '&category=' . $result['id'] . '">' . wp_unslash( $result['title'] ) . '</a>';
+			$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) . '&category=' . $result['id'] . '">' . wp_unslash( $result['title'] ) . '</a>';
 			if ( $v != $lastElement ) {
 				$current_categories .= ', ';
 			}
 		}
-
 
 		return $current_categories;
 	}
@@ -234,10 +248,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	public function column_author( $item ) {
 		$user_info = get_userdata( $item['author'] );
 
-		return '<a href="' . get_admin_url( get_current_blog_id(),
-				'admin.php?page=clickwhale' ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
+		return '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
 	}
-
 
 	/**
 	 * [REQUIRED] this is how checkbox column renders

@@ -1,13 +1,23 @@
 <?php
-
 namespace clickwhale\includes\admin\migration;
 
 use clickwhale\includes\helpers\Helper;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Migration {
 
-	private string $options;
-	private string $last_migration;
+    /**
+     * @var string
+     */
+	private $options;
+
+    /**
+     * @var string
+     */
+	private $last_migration;
 
 	public function __construct() {
 		$this->options        = 'clickwhale_tools_migration_options';
@@ -271,10 +281,10 @@ class Clickwhale_Migration {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] === 'clickwhale-tools' ) {
+		if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-tools' ) {
 			$nonce       = wp_create_nonce( 'migration_to_clickwhale' );
 			$nonce_reset = wp_create_nonce( 'migration_reset' );
-			$linksURL    = esc_url( admin_url( 'admin.php?page=clickwhale' ) )
+			$linksURL    = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) )
 			?>
             <script type='text/javascript'>
 
@@ -350,7 +360,7 @@ class Clickwhale_Migration {
                                 if ('object' === typeof result.data) {
                                     jQuery(migrationResult).append('<br>' +
                                         '<a href="<?php echo $linksURL ?>" class="button-primary"> ' +
-                                        '<?php _e( 'Get started with ClickWhale now', 'clickwhale' ) ?>' +
+                                        '<?php _e( 'Get started with ClickWhale now', CLICKWHALE_NAME ) ?>' +
                                         '</a>');
                                 }
                             }

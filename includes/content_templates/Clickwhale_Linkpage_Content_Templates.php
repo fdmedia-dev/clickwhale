@@ -1,11 +1,13 @@
 <?php
-
 namespace clickwhale\includes\content_templates;
 
-use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\Linkpages_Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Linkpage_Content_Templates {
 
@@ -46,15 +48,14 @@ class Clickwhale_Linkpage_Content_Templates {
 	 * array $data['data'] - DB query result.
 	 * bool $data['edit'] - is block editable
 	 *
-	 *
 	 * @param string $type
-	 * @param $echo
+	 * @param bool $echo
 	 * @param bool $public
 	 * @param array $data
 	 *
 	 * @return false|mixed
 	 */
-	public function get_template( string $type, $echo, bool $public, array $data = [] ) {
+	public function get_template( string $type, bool $echo, bool $public, array $data = [] ) {
 		$callback     = $this->get_defaults();
 		$post_types   = Helper::get_post_types();
 		$data['type'] = $type;
@@ -168,14 +169,14 @@ class Clickwhale_Linkpage_Content_Templates {
 					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					$data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_NAME ),
+					$data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
 					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME ),
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				$this->get_template_row_images( $data );
@@ -247,7 +248,7 @@ class Clickwhale_Linkpage_Content_Templates {
 					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME ),
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
@@ -304,7 +305,7 @@ class Clickwhale_Linkpage_Content_Templates {
 					$pt_posts[] = array(
 						'id'    => $post->ID,
 						'title' => $post->post_title,
-						'url'   => get_permalink( $post->ID ),
+						'url'   => get_permalink( $post->ID )
 					);
 				}
 			}
@@ -385,15 +386,14 @@ class Clickwhale_Linkpage_Content_Templates {
 					__( 'Title', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][title]',
 					$data['title'] ?? '',
-					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title',
-						CLICKWHALE_NAME ),
+					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', CLICKWHALE_NAME )
 				);
 
 				echo $this->get_template_input_field(
 					__( 'Subtitle', CLICKWHALE_NAME ),
 					'links[' . $data['id'] . '][subtitle]',
 					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME ),
+					__( 'e.g. Read more about something', CLICKWHALE_NAME )
 				);
 
 				$this->get_template_row_images( $data );
@@ -432,11 +432,11 @@ class Clickwhale_Linkpage_Content_Templates {
 						<?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
 						<?php } else { ?>
-                            <strong><?php _e( 'Heading', 'clickwhale-pro' ) ?></strong>
+                            <strong><?php _e( 'Heading', CLICKWHALE_NAME ) ?></strong>
 						<?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
-				<?php $this->get_template_row_end( $data['type'], ); ?>
+				<?php $this->get_template_row_end( $data['type'] ); ?>
             </div><!-- ./linkpage-row--top -->
             <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
 
@@ -487,7 +487,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Separator', 'clickwhale-pro' ); ?></strong>
+                        <strong><?php _e( 'Separator', CLICKWHALE_NAME ); ?></strong>
                     </div>
                 </div>
 				<?php $this->get_template_row_end( $data['type'], false ); ?>
@@ -526,7 +526,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Custom Content', 'clickwhale-pro' ) ?></strong>
+                        <strong><?php _e( 'Custom Content', CLICKWHALE_NAME ) ?></strong>
                     </div><!-- ./linkpage-link -->
                 </div>
 				<?php $this->get_template_row_end( $data['type'] ); ?>
@@ -779,8 +779,9 @@ class Clickwhale_Linkpage_Content_Templates {
 
 	public static function get_template_row_badge( string $type ): string {
 		$badge  = '';
-		$select = Clickwhale::get_instance()->linkpage::get_select_values();
-		foreach ( $select as $optgroup ) {
+        $linkpage = clickwhale()->linkpage;
+
+		foreach ( $linkpage::get_select_values() as $optgroup ) {
 			if ( isset( $optgroup['options'][ $type ]['name'] ) ) {
 				$badge = $optgroup['label'];
 				break;
@@ -841,8 +842,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="linkpage-row--image-select">
                 <p class="description">
 					<?php
-					_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.',
-						CLICKWHALE_NAME );
+					_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', CLICKWHALE_NAME );
 					?>
                 </p>
                 <div class="linkpage-row--image-select--tab">

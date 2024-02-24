@@ -7,7 +7,7 @@ use clickwhale\includes\helpers\Helper;
 
 Links_Helper::get_limitation_error( $_GET['id'] );
 
-$link            = Clickwhale::get_instance()->link;
+$link            = clickwhale()->link;
 $item            = $link->get_item( $_REQUEST );
 $item_categories = Categories_Helper::get_all();
 
@@ -34,8 +34,8 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => __( 'Link', CLICKWHALE_NAME ),
 			'is_edit'      => ! empty( $item['id'] ),
-			'link_to_list' => 'clickwhale',
-			'link_to_add'  => 'clickwhale-edit-link',
+			'link_to_list' => CLICKWHALE_SLUG,
+			'link_to_add'  => CLICKWHALE_SLUG . '-edit-link',
 		)
 	);
 

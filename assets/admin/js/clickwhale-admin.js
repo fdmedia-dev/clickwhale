@@ -1,6 +1,8 @@
 (function ($) {
     'use strict';
 
+    /* global clickwhale_admin */
+
     /**
      * All of the code for your admin-facing JavaScript source
      * should reside in this file.
@@ -33,21 +35,21 @@
         var urlSearchParams = new URLSearchParams(window.location.search),
             params = Object.fromEntries(urlSearchParams.entries());
         if (params !== 'undefined') {
-            if (params['page'] === 'clickwhale-edit-category') {
+            if (params['page'] === clickwhale_admin.plugin_slug + '-edit-category') {
                 setCurrentTopLevelPage();
-                setCurrentSubmenuPage('clickwhale-categories');
+                setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-categories');
             }
-            if (params['page'] === 'clickwhale-edit-link') {
+            if (params['page'] === clickwhale_admin.plugin_slug + '-edit-link') {
                 setCurrentTopLevelPage();
-                setCurrentSubmenuPage('clickwhale');
+                setCurrentSubmenuPage(clickwhale_admin.plugin_slug);
             }
-            if (params['page'] === 'clickwhale-edit-linkpage') {
+            if (params['page'] === clickwhale_admin.plugin_slug + '-edit-linkpage') {
                 setCurrentTopLevelPage();
-                setCurrentSubmenuPage('clickwhale-linkpages');
+                setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-linkpages');
             }
-            if (params['page'] === 'clickwhale-edit-tracking-code') {
+            if (params['page'] === clickwhale_admin.plugin_slug + '-edit-tracking-code') {
                 setCurrentTopLevelPage();
-                setCurrentSubmenuPage('clickwhale-tracking-codes');
+                setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-tracking-codes');
             }
         }
 
@@ -116,13 +118,13 @@
     }
 
     function setCurrentTopLevelPage() {
-        $('#toplevel_page_clickwhale, #toplevel_page_clickwhale > a')
+        $('#toplevel_page_' + clickwhale_admin.plugin_slug + ', #toplevel_page_' + clickwhale_admin.plugin_slug + ' > a')
             .removeClass('wp-not-current-submenu')
             .addClass('wp-has-submenu wp-has-current-submenu wp-menu-open');
     }
 
     function setCurrentSubmenuPage($item) {
-        $('#toplevel_page_clickwhale a').each(function () {
+        $('#toplevel_page_' + clickwhale_admin.plugin_slug + ' a').each(function () {
             var url = $(this).attr('href');
             if (url.endsWith($item)) {
                 $(this).parent().addClass('current');

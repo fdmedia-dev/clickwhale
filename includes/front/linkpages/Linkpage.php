@@ -1,8 +1,11 @@
 <?php
-
 namespace clickwhale\includes\front\linkpages;
 
 use WP_Post;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Linkpage implements Linkpage_Interface {
 

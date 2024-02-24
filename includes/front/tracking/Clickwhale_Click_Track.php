@@ -1,9 +1,12 @@
 <?php
-
 namespace clickwhale\includes\front\tracking;
 
 use clickwhale\includes\front\tracking\Clickwhale_Visitor_Track;
 use clickwhale\includes\helpers\Linkpages_Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Click_Track {
 	/**

@@ -1,13 +1,17 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Categories_Helper, Helper, Linkpages_Helper, Links_Helper, Tracking_Codes_Helper};
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use WP_Error;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
- * The settings of the plugin.
+ * Ajax functionality of the plugin.
  *
  * @link       #
  * @since      1.0.0
@@ -17,12 +21,15 @@ use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
  */
 class Clickwhale_Ajax {
 
-	private static ?Clickwhale_Ajax $instance = null;
+    /**
+     * @var Clickwhale_Ajax
+     */
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Ajax
 	 */
-	public static function get_instance(): ?Clickwhale_Ajax {
+	public static function get_instance(): Clickwhale_Ajax {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -65,8 +72,7 @@ class Clickwhale_Ajax {
 		$deactivate = deactivate_plugins( $target );
 
 		wp_send_json_success( $deactivate );
-
-		wp_die();
+		//wp_die();
 	}
 
 	public function save_migration_option() {
@@ -80,7 +86,7 @@ class Clickwhale_Ajax {
 
 			update_option( 'clickwhale_tools_migration_options', $options );
 			wp_send_json_success();
-			wp_die();
+			//wp_die();
 		} else {
 			return false;
 		}
@@ -89,7 +95,7 @@ class Clickwhale_Ajax {
 	public function migration_to_clickwhale() {
 		check_ajax_referer( 'migration_to_clickwhale', 'security' );
 
-		$available = Clickwhale::get_instance()->tools->migration->available_migrations();
+		$available = clickwhale()->tools->migration->available_migrations();
 		$options   = get_option( 'clickwhale_tools_migration_options' );
 		$migrant   = isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '';
 		$item      = $available[ $migrant ];
@@ -97,10 +103,10 @@ class Clickwhale_Ajax {
 
 		if ( ! $item ) {
 			wp_send_json_error();
-			wp_die();
+			//wp_die();
 		}
 
-		if ( Clickwhale::get_instance()->tools->migration->check_active( $item['path'] ) ) {
+		if ( clickwhale()->tools->migration->check_active( $item['path'] ) ) {
 			$result['title'] = $item['name'];
 
 			if ( isset( $options[ $item['slug'] . '_categories' ] )
@@ -129,13 +135,13 @@ class Clickwhale_Ajax {
 		update_option( 'clickwhale_hide_notice_deactive', $options_deactive );
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 
 	public function migration_reset() {
 		check_ajax_referer( 'migration_reset', 'security' );
 
-		foreach ( Clickwhale::get_instance()->tools->migration->available_migrations() as $item ) {
+		foreach ( clickwhale()->tools->migration->available_migrations() as $item ) {
 			$migration_options[ $item['slug'] . '_categories' ]          = (bool) $item['data']['categories'];
 			$migration_options[ $item['slug'] . '_links' ]               = (bool) $item['data']['links'];
 			$notice_migrate_options[ $item['slug'] ]                     = false;
@@ -151,8 +157,7 @@ class Clickwhale_Ajax {
 		$result = __( 'Successfully deleted! Page will reload...', CLICKWHALE_NAME );
 
 		wp_send_json_success( $result );
-
-		wp_die();
+		//wp_die();
 	}
 
 	public function clickwhale_reset() {
@@ -164,7 +169,7 @@ class Clickwhale_Ajax {
 
 		if ( ! isset( $_POST['reset'] ) ) {
 			wp_send_json_error();
-			wp_die();
+			//wp_die();
 		}
 
 		$table_categories = Helper::get_clickwhale_bd_table_name( 'categories' );
@@ -213,8 +218,7 @@ class Clickwhale_Ajax {
 		activate_clickwhale();
 
 		wp_send_json_success( $result );
-
-		wp_die();
+        //wp_die();
 	}
 
 	public function slug_exists() {
@@ -222,7 +226,7 @@ class Clickwhale_Ajax {
 
 		if ( empty( $_POST['slug'] ) ) {
 			wp_send_json_error();
-			wp_die();
+			//wp_die();
 		}
 
 		$result = false;
@@ -245,7 +249,7 @@ class Clickwhale_Ajax {
 		}
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 
 	/**
@@ -257,7 +261,7 @@ class Clickwhale_Ajax {
 
 		if ( ! isset( $_POST['post_type'] ) || ! $_POST['post_type'] ) {
 			wp_send_json_error( 'Post Type Error!' );
-			wp_die();
+			//wp_die();
 		}
 
 		$result = [];
@@ -284,7 +288,7 @@ class Clickwhale_Ajax {
 		}
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 
 	/**
@@ -301,11 +305,11 @@ class Clickwhale_Ajax {
 
 		if ( ! $result['links'] ) {
 			wp_send_json_error( 'ClickWhale Links Not Found!' );
-			wp_die();
+			//wp_die();
 		}
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 
 	/**
@@ -328,8 +332,7 @@ class Clickwhale_Ajax {
 		$result['action_disable_all'] = Tracking_Codes_Helper::is_active_limit();
 
 		wp_send_json_success( $result );
-
-		wp_die();
+        //wp_die();
 	}
 
 	/**
@@ -344,8 +347,7 @@ class Clickwhale_Ajax {
 		$result['template'] = $template->get_template( $_POST['type'], false, false );
 
 		wp_send_json_success( $result );
-
-		wp_die();
+        //wp_die();
 	}
 
 	public function upload_csv() {
@@ -365,7 +367,7 @@ class Clickwhale_Ajax {
 				$file['type']
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		$col_delimiter   = ",";
@@ -377,7 +379,7 @@ class Clickwhale_Ajax {
 
 		if ( $file_data === false ) {
 			wp_send_json_error( 'Error opening file!' );
-			wp_die();
+			//wp_die();
 		}
 
 		// find col head and delimiter
@@ -443,8 +445,7 @@ class Clickwhale_Ajax {
 		$result['table']     = $html;
 
 		wp_send_json_success( $result );
-
-		wp_die();
+        //wp_die();
 	}
 
 	public function map_csv() {
@@ -457,7 +458,7 @@ class Clickwhale_Ajax {
 				$_FILES['file']['type']
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		$html             = '';
@@ -482,7 +483,7 @@ class Clickwhale_Ajax {
 				__( 'Error opening file!', CLICKWHALE_NAME )
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		// get headings
@@ -565,8 +566,7 @@ class Clickwhale_Ajax {
 		$html .= '</tbody></table>';
 
 		wp_send_json_success( $html );
-
-		wp_die();
+        //wp_die();
 	}
 
 	public function check_slug_for_import() {
@@ -577,7 +577,7 @@ class Clickwhale_Ajax {
 		$result = $wpdb->get_results( "SELECT slug FROM {$wpdb->prefix}clickwhale_links", ARRAY_A );
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 
 	public function import_csv() {
@@ -593,7 +593,7 @@ class Clickwhale_Ajax {
 				__( 'Nothing to import!', CLICKWHALE_NAME )
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		$links_table = $wpdb->prefix . 'clickwhale_links';
@@ -618,21 +618,14 @@ class Clickwhale_Ajax {
 			);
 
 			if ( $insert ) {
-				$result[] = __(
-					'Link <strong>&quot;' . $v['title'] . '&quot;</strong> successfully imported!',
-					CLICKWHALE_NAME
-				);
+				$result[] = __( 'Link <strong>&quot;' . $v['title'] . '&quot;</strong> successfully imported!', CLICKWHALE_NAME );
 			} else {
-				$result[] = __(
-					'<strong>Error!</strong> Link <strong>&quot;' . $v['title'] . '&quot;</strong> not imported!',
-					CLICKWHALE_NAME
-				);
+				$result[] = __( '<strong>Error!</strong> Link <strong>&quot;' . $v['title'] . '&quot;</strong> not imported!', CLICKWHALE_NAME );
 			}
 		}
 
 		wp_send_json_success( $result );
-
-		wp_die();
+        //wp_die();
 	}
 
 	public function export_csv() {
@@ -644,7 +637,7 @@ class Clickwhale_Ajax {
 				__( 'Bad request', CLICKWHALE_NAME )
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		global $wpdb;
@@ -687,7 +680,7 @@ class Clickwhale_Ajax {
 				__( 'Nothing to export', CLICKWHALE_NAME )
 			);
 			wp_send_json_error( $error );
-			wp_die();
+			//wp_die();
 		}
 
 		//ob_start();
@@ -702,6 +695,6 @@ class Clickwhale_Ajax {
 		$result['filename'] = "clickwhale-links-export-{$date}.csv";
 
 		wp_send_json_success( $result );
-		wp_die();
+		//wp_die();
 	}
 }

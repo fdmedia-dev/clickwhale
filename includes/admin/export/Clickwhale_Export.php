@@ -1,9 +1,12 @@
 <?php
-
 namespace clickwhale\includes\admin\export;
 
 use clickwhale\includes\helpers\{Helper};
 use clickwhale\includes\helpers\Categories_Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Export {
 
@@ -20,9 +23,7 @@ class Clickwhale_Export {
 			'clickwhale_tools_export_settings',
 			array(
 				'text' => __(
-					'This tool allows you to generate and download a CSV file containing a list of all lists.',
-					CLICKWHALE_NAME
-				),
+					'This tool allows you to generate and download a CSV file containing a list of all lists.', CLICKWHALE_NAME ),
 			)
 		);
 
@@ -81,7 +82,7 @@ class Clickwhale_Export {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== 'clickwhale-tools' ) {
+		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
 			return false;
 		}
 

@@ -1,12 +1,16 @@
 <?php
-
 namespace clickwhale\includes\admin;
 
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\Helper;
+use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
- * The settings of the plugin.
+ * Settings of the plugin.
  *
  * @link       #
  * @since      1.0.0
@@ -18,14 +22,14 @@ final class Clickwhale_Settings {
 
 	/**
 	 * @since    1.5.0
-	 * @var Clickwhale_Settings|null
+	 * @var Clickwhale_Settings
 	 */
-	private static ?Clickwhale_Settings $instance = null;
+	private static $instance;
 
 	/**
 	 * @return Clickwhale_Settings|null
 	 */
-	public static function get_instance(): ?Clickwhale_Settings {
+	public static function get_instance(): Clickwhale_Settings {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -38,35 +42,10 @@ final class Clickwhale_Settings {
 	 *
 	 * @since    1.0.0
 	 */
-	private function __construct() {
-	}
+	private function __construct() {}
 
-	/**
-	 * Throw error on object clone.
-	 *
-	 * The whole idea of the singleton design pattern is that there is a single
-	 * object therefore, we don't want the object to be cloned.
-	 *
-	 * @return void
-	 * @since 1.5
-	 * @access protected
-	 */
-	public function __clone() {
-		// Cloning instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
-
-	/**
-	 * Disable un-serializing of the class.
-	 *
-	 * @return void
-	 * @since 1.5
-	 * @access protected
-	 */
-	public function __wakeup() {
-		// Unserializing instances of the class is forbidden.
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', CLICKWHALE_NAME ), '1.5' );
-	}
+    use Singleton_Clone;
+    use Singleton_Wakeup;
 
 	/**
 	 * Provides default values Options.
@@ -74,7 +53,7 @@ final class Clickwhale_Settings {
 	 * @return array
 	 */
 	public static function default_options(): array {
-		return Clickwhale::get_instance()->default_options();
+		return clickwhale()->default_options();
 	}
 
 	public function add_default_options() {
@@ -112,6 +91,9 @@ final class Clickwhale_Settings {
 			30 => __( '30 days', CLICKWHALE_NAME ),
 		) );
 
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
 		if ( $defaults ) {
 			// add settings sections
 			// register settings
@@ -137,6 +119,16 @@ final class Clickwhale_Settings {
 			}
 		}
 
+        // `always_checked` current user roles
+        $always_checked_roles = ['administrator'];
+
+        if ( ! in_array( 'administrator', $current_user_roles ) ) {
+
+            foreach ( $current_user_roles as $user_role ) {
+                $always_checked_roles[] = $user_role;
+            }
+        }
+
 		// Add fields
 		add_settings_field(
 			'access_level',
@@ -150,7 +142,7 @@ final class Clickwhale_Settings {
 				'name'           => 'clickwhale_general_options[access_level][]',
 				'value'          => $general_options['access_level'] ?? [ 'administrator' ],
 				'options'        => Clickwhale_WP_User::get_all_roles(),
-				'always_checked' => [ 'administrator' ],
+				'always_checked' => $always_checked_roles,
 				'description'    => __( 'Decide who can access critical admin pages and the plugin settings.',
 					CLICKWHALE_NAME ),
 			)
@@ -173,8 +165,7 @@ final class Clickwhale_Settings {
 					307 => __( '307 redirect: Temporarily Redirect', CLICKWHALE_NAME ),
 					308 => __( '308 redirect: Permanent Redirect', CLICKWHALE_NAME )
 				),
-				'description' => __( 'Set default redirection type which will be used for new links.',
-					CLICKWHALE_NAME ),
+				'description' => __( 'Set default redirection type which will be used for new links.', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
@@ -219,8 +210,7 @@ final class Clickwhale_Settings {
 				'type'        => 'text',
 				'value'       => $general_options['slug'],
 				'placeholder' => '',
-				'description' => __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.',
-					CLICKWHALE_NAME ),
+				'description' => __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
@@ -234,8 +224,7 @@ final class Clickwhale_Settings {
 				'id'      => 'random_slug',
 				'name'    => 'clickwhale_general_options[random_slug]',
 				'value'   => isset( $general_options['random_slug'] ) ? 1 : 0,
-				'label'   => __( 'Check to <u>not</u> suggest a random link slug when creating a new link',
-					CLICKWHALE_NAME ),
+				'label'   => __( 'Check to <u>not</u> suggest a random link slug when creating a new link', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
@@ -249,8 +238,7 @@ final class Clickwhale_Settings {
 				'id'      => 'hide_admin_bar_menu',
 				'name'    => 'clickwhale_general_options[hide_admin_bar_menu]',
 				'value'   => isset( $general_options['hide_admin_bar_menu'] ) ? 1 : 0,
-				'label'   => __( 'Check to hide Clickwhale quick menu from the admin bar',
-					CLICKWHALE_NAME ),
+				'label'   => __( 'Check to hide Clickwhale quick menu from the admin bar', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
@@ -293,8 +281,7 @@ final class Clickwhale_Settings {
 				'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
 				'value'       => $tracking_options['exclude_user_by_role'] ?? 0,
 				'options'     => Clickwhale_WP_User::get_all_roles(),
-				'description' => __( 'Check the user roles that should be excluded from tracking.',
-					CLICKWHALE_NAME ),
+				'description' => __( 'Check the user roles that should be excluded from tracking.', CLICKWHALE_NAME ),
 			)
 		);
 		add_settings_field(
@@ -326,11 +313,11 @@ final class Clickwhale_Settings {
 	/**
 	 * Render plugin settings tabs
 	 * Hook: Filter 'clickwhale_settings_tabs';
-	 * @return mixed|null
+	 * @return array
 	 *
 	 * @since 1.3.0
 	 */
-	public static function render_tabs() {
+	public static function render_tabs(): array {
 		$defaults = apply_filters( 'clickwhale_settings_defaults', self::default_options() );
 		$tabs     = array(
 			'general'        => array(
@@ -369,9 +356,67 @@ final class Clickwhale_Settings {
 	/**
 	 * This function renders the interface elements.
 	 */
-
 	public static function render_controls( $args ) {
 		echo Helper::render_control( $args );
 	}
+
+    public function add_capability( $capability ) {
+
+        $general_options = get_option( 'clickwhale_general_options' );
+        $access_roles = $general_options['access_level'] ?? ['administrator'];
+
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            return $capability;
+        }
+
+        if ( $current_user->get_user()->has_cap( 'manage_options' ) ) {
+            return $capability;
+        }
+
+        if ( array_intersect( $access_roles, $current_user_roles ) ) {
+
+            // Cache current user role caps for a few seconds
+            set_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps', $current_user->get_user()->get_role_caps(), 10 ); // 10 seconds
+
+            // Add higher capability to permitted roles
+            $current_user->get_user()->add_cap( 'manage_options' );
+        }
+
+        return $capability;
+    }
+
+    public function remove_capability( $options ) {
+
+//        if ( isset( $_POST['option_page'] ) ) {
+//            Debugger::debug_log( '$_POST[option_page]: ' . $_POST['option_page'] );
+//        }
+
+        $current_user = Clickwhale::get_instance()->user;
+        $current_user_roles = $current_user::get_current_user_roles();
+
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            return $options;
+        }
+
+        $cached_role_caps = get_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+
+        if ( ! $cached_role_caps ) {
+            return $options;
+        }
+
+        if ( ! isset( $cached_role_caps['manage_options'] ) ) {
+
+            // Remove higher capability to permitted roles
+            $current_user->get_user()->remove_cap( 'manage_options' );
+
+            // Delete from cache
+            delete_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+        }
+
+        return $options;
+    }
 
 }

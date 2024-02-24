@@ -1,5 +1,4 @@
 <?php
-
 namespace clickwhale\includes\admin\tracking_codes;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
@@ -9,9 +8,16 @@ use clickwhale\includes\helpers\{
 	Tracking_Codes_Helper
 };
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
-	public bool $conversion;
+    /**
+     * @var bool
+     */
+	public $conversion;
 
 	public function __construct() {
 		parent::__construct( 'tracking_codes', 'tracking_code' );
@@ -288,7 +294,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 			$this->set_transient( $item['id'], 'added' );
 		}
 
-		$url = 'admin.php?page=clickwhale-edit-tracking-code&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}

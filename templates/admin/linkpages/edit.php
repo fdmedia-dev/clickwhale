@@ -7,7 +7,7 @@ use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 
 Linkpages_Helper::get_limitation_error( $_GET['id'] );
 
-$linkpage = Clickwhale::get_instance()->linkpage;
+$linkpage = clickwhale()->linkpage;
 $item     = $linkpage->get_item( $_REQUEST );
 
 // ITEM
@@ -35,13 +35,11 @@ $seoDescription   = $social['seo']['description'] ?? get_bloginfo( 'description'
 $robots           = array(
 	'noindex'      => array(
 		'title'       => __( "No Index", CLICKWHALE_NAME ),
-		'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.",
-			CLICKWHALE_NAME )
+		'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.", CLICKWHALE_NAME )
 	),
 	'nofollow'     => array(
 		'title'       => __( "No Follow", CLICKWHALE_NAME ),
-		'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages",
-			CLICKWHALE_NAME )
+		'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages", CLICKWHALE_NAME )
 	),
 	'noarchive'    => array(
 		'title'       => __( "No Archive", CLICKWHALE_NAME ),
@@ -49,8 +47,7 @@ $robots           = array(
 	),
 	'nosnippet'    => array(
 		'title'       => __( "No Snippet", CLICKWHALE_NAME ),
-		'description' => __( "Do not show a text snippet or video preview in the search results for this page.",
-			CLICKWHALE_NAME ),
+		'description' => __( "Do not show a text snippet or video preview in the search results for this page.", CLICKWHALE_NAME ),
 	),
 	'noimageindex' => array(
 		'title'       => __( "No Image Index", CLICKWHALE_NAME ),
@@ -75,8 +72,8 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => __( 'Link Page', CLICKWHALE_NAME ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
-			'link_to_list' => 'clickwhale-linkpages',
-			'link_to_add' => 'clickwhale-edit-linkpage',
+			'link_to_list' => CLICKWHALE_SLUG . '-linkpages',
+			'link_to_add' => CLICKWHALE_SLUG . '-edit-linkpage',
 			'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ) . '/',
 			'is_limit'     => Linkpages_Helper::get_count() >= Linkpages_Helper::get_limit()
 		)
@@ -168,9 +165,9 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text"
                                    class="code"
-                                   title="<?php _e( 'Copy url', CLICKWHALE_NAME ) ?>">
-									<?php $url = __( 'URL Preview',
-											CLICKWHALE_NAME ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
+                                   title="<?php _e( 'Copy url', CLICKWHALE_NAME ) ?>"
+                                >
+									<?php $url = __( 'URL Preview', CLICKWHALE_NAME ) . ': ' . get_bloginfo( 'url' ) . '/'; ?>
 									<?php echo esc_html( $url ) ?><span><?php echo esc_html( $item['slug'] ) ?></span>/
                                     <em class="dashicons dashicons-clipboard"></em>
 
@@ -194,15 +191,15 @@ do_action( 'clickwhale_admin_banner' );
                                         <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
 									<?php } else { ?>
                                         <a href="#" class="button linkpage-image-upload">
-											<?php _e( 'Upload image', 'clickwhale' ) ?>
+											<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>
                                         </a>
                                         <a href="#" class="button linkpage-image-remove" style="display: none;">
-											<?php _e( 'Remove image', 'clickwhale' ) ?>
+											<?php _e( 'Remove image', CLICKWHALE_NAME ) ?>
                                         </a>
                                         <input type="hidden" name="logo" value="">
 									<?php } ?>
                                 </div>
-                                <p><?php _e( 'Max logo size 275px * 275px', 'clickwhale' ); ?></p>
+                                <p><?php _e( 'Max logo size 275px * 275px', CLICKWHALE_NAME ); ?></p>
                             </td>
                         </tr>
 
@@ -307,8 +304,7 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[text_color]"><?php _e( 'Page Text Color',
-										CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color', CLICKWHALE_NAME ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[text_color]"
@@ -326,16 +322,14 @@ do_action( 'clickwhale_admin_banner' );
 							?>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="styles[bg_color]"><?php _e( 'Page Background',
-											CLICKWHALE_NAME ); ?></label>
+                                    <label for="styles[bg_color]"><?php _e( 'Page Background', CLICKWHALE_NAME ); ?></label>
                                 </th>
                                 <td>
                                     <input name="styles[bg_color]"
                                            class="cw-color-control"
                                            type="text"
                                            value="<?php echo esc_attr( $styles['bg_color'] ) ?>"/>
-                                    <p class="description"><?php _e( 'Set page background color',
-											CLICKWHALE_NAME ) ?></p>
+                                    <p class="description"><?php _e( 'Set page background color', CLICKWHALE_NAME ) ?></p>
                                 </td>
                             </tr>
 
@@ -357,24 +351,21 @@ do_action( 'clickwhale_admin_banner' );
 						<?php // LINK BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',
-										CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',  CLICKWHALE_NAME ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
                                        class="cw-color-control"
                                        type="text"
                                        value="<?php echo esc_attr( $styles['link_bg_color'] ) ?>"/>
-                                <p class="description"><?php _e( 'Set link background color (normal state)',
-										CLICKWHALE_NAME ) ?></p>
+                                <p class="description"><?php _e( 'Set link background color (normal state)',  CLICKWHALE_NAME ) ?></p>
                             </td>
                         </tr>
 
 						<?php // LINK BACKGROUND:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)',
-										CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', CLICKWHALE_NAME ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"

@@ -1,11 +1,14 @@
 <?php
-
 namespace clickwhale\includes\admin\links;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
 use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Links_Helper};
 use clickwhale\includes\helpers\Helper;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
@@ -19,7 +22,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 	 * @return array
 	 */
 	public function get_defaults(): array {
-		$plugin_defaults = Clickwhale::get_instance()->settings->default_options();
+		$plugin_defaults = clickwhale()->settings->default_options();
 
 		return array(
 			'id'          => 0,
@@ -68,7 +71,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 			$this->set_transient( $item['id'], 'added' );
 		}
 
-		$url = 'admin.php?page=clickwhale-edit-' . $this->instance_single . '&id=' . $item['id'];
+		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
 		die;
 	}

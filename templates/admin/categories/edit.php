@@ -7,7 +7,7 @@ use clickwhale\includes\helpers\Categories_Helper;
 
 Categories_Helper::get_limitation_error( $_GET['id'] );
 
-$category = Clickwhale::get_instance()->category;
+$category = clickwhale()->category;
 $item     = $category->get_item( $_REQUEST );
 $count    = Categories_Helper::get_count();
 $limit    = Categories_Helper::get_limit();
@@ -22,8 +22,8 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => __( 'Category', CLICKWHALE_NAME ),
 			'is_edit'      => isset( $item['id'] ) && $item['id'] !== 0,
-			'link_to_list' => 'clickwhale-categories',
-			'link_to_add'  => 'clickwhale-edit-category',
+			'link_to_list' => CLICKWHALE_SLUG . '-categories',
+			'link_to_add'  => CLICKWHALE_SLUG . '-edit-category',
 			'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
 		)
 	);

@@ -1,19 +1,9 @@
 <?php
-
 namespace clickwhale\includes;
 
-/**
- * Define the internationalization functionality
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @link       #
- * @since      1.0.0
- *
- * @package    Clickwhale
- * @subpackage Clickwhale/includes
- */
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 /**
  * Define the internationalization functionality.
@@ -28,7 +18,6 @@ namespace clickwhale\includes;
  */
 class Clickwhale_i18n {
 
-
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -37,12 +26,9 @@ class Clickwhale_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'clickwhale',
+            CLICKWHALE_NAME,
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+            CLICKWHALE_SLUG . '/languages/'
 		);
-
 	}
-
-
 }

@@ -1302,8 +1302,8 @@ table.tracking-codes .column-is_active {
 
 /* PRO PAGE PROMO */
 
-#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"],
-#adminmenu .wp-submenu a[href="admin.php?page=clickwhale-pro"].current {
+#adminmenu #toplevel_page_clickwhale .wp-submenu a[href="admin.php?page=clickwhale-pro"],
+#adminmenu #toplevel_page_clickwhale .wp-submenu a[href="admin.php?page=clickwhale-pro"].current {
 	color: #FDD231;
 	font-weight: 700;
 }

@@ -1,6 +1,12 @@
 <?php
 namespace clickwhale\includes\admin\reset;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class Clickwhale_Reset {
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -10,9 +16,12 @@ class Clickwhale_Reset {
 	 */
 	private $plugin_name;
 
+    /**
+     * @var Clickwhale_Reset
+     */
 	private static $instance;
 
-	public static function getInstance() {
+	public static function getInstance(): Clickwhale_Reset {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -79,7 +88,7 @@ class Clickwhale_Reset {
 	}
 
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'clickwhale-tools' ) {
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-tools' ) {
 			$nonce = wp_create_nonce( 'clickwhale_reset' );
 			?>
 

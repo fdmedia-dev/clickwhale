@@ -1,6 +1,9 @@
 <?php
-
 namespace clickwhale\includes\admin\import;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Clickwhale_Import {
 
@@ -17,14 +20,11 @@ class Clickwhale_Import {
 			array( $this, 'settings_section_callback' ),
 			'clickwhale_tools_import_settings',
 			array(
-				'text' => __(
-					sprintf(
-						'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>',
-						CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
-					),
-					CLICKWHALE_NAME
-				),
-			)
+                'text' => sprintf(
+                    __( 'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>', CLICKWHALE_NAME ),
+					CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
+                )
+            )
 		);
 
 		add_settings_field(
@@ -50,7 +50,7 @@ class Clickwhale_Import {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== 'clickwhale-tools' ) {
+		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
 			return false;
 		}
 

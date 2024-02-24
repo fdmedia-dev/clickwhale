@@ -1,12 +1,27 @@
 <?php
-
 namespace clickwhale\includes\helpers;
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 class Linkpages_Helper extends Helper_Abstract {
 
-	protected static string $single = 'linkpage';
-	protected static string $plural = 'linkpages';
-	protected static int $limit = 2;
+
+    /**
+     * @var string
+     */
+	protected static $single = 'linkpage';
+
+    /**
+     * @var string
+     */
+	protected static $plural = 'linkpages';
+
+    /**
+     * @var int
+     */
+	protected static $limit = 2;
 
 	/**
 	 * Return link pages limitation notice string
@@ -16,7 +31,7 @@ class Linkpages_Helper extends Helper_Abstract {
 	public static function get_limitation_notice(): string {
 		return sprintf(
 			__( 'Currently, a maximum of %d link page can be added.', CLICKWHALE_NAME ),
-			self::get_limit(),
+			self::get_limit()
 		);
 	}
 
@@ -28,7 +43,7 @@ class Linkpages_Helper extends Helper_Abstract {
 	public static function get_links_limitation_notice(): string {
 		return sprintf(
 			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_NAME ),
-			self::get_linkpage_links_limit(),
+			self::get_linkpage_links_limit()
 		);
 	}
 
