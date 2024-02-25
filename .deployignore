@@ -1,7 +1,0 @@
-# Test files
-.travis.yml export-ignore
-/bin/ export-ignore
-/tests/ export-ignore
-phpunit.xml.dist export-ignore
-/.github/
-/.wordpress-org/
