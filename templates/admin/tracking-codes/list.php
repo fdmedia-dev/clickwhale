@@ -3,8 +3,7 @@
 global $wpdb;
 
 use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Codes_List_Table;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Tracking_Codes_Helper;
+use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
 $table = new Clickwhale_Tracking_Codes_List_Table();
 $table->prepare_items();

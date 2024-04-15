@@ -3,8 +3,7 @@
 global $wpdb;
 
 use clickwhale\includes\admin\categories\Clickwhale_Categories_List_Table;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Categories_Helper;
+use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
 $categories_table = $wpdb->prefix . 'clickwhale_categories';
 $total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM $categories_table" );

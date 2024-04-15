@@ -220,7 +220,7 @@ class Clickwhale_Migration {
 
 			add_settings_field(
 				"{$item['slug']}_links",
-				__( 'links', CLICKWHALE_NAME ),
+				__( 'Links', CLICKWHALE_NAME ),
 				array( $this, 'render_controls' ),
 				"clickwhale_tools_{$item['slug']}_migration_options",
 				"clickwhale_tools_migration_{$item['slug']}_section",

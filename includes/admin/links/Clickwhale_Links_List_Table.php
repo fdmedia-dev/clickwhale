@@ -1,8 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\links;
 
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Categories_Helper;
+use clickwhale\includes\helpers\{Helper, Categories_Helper};
 use WP_List_Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -61,8 +60,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	private function get_users_data( $order, $orderby, $params ) {
 		global $wpdb;
 
-		$table_links = Helper::get_clickwhale_bd_table_name( 'links' );
-		$table_track = Helper::get_clickwhale_bd_table_name( 'track' );
+		$table_links = Helper::get_db_table_name( 'links' );
+		$table_track = Helper::get_db_table_name( 'track' );
 		if ( empty( $params ) ) {
 			return $wpdb->get_results(
 				"SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.author, COALESCE(track.clicks,0) AS clicks_count 
@@ -365,7 +364,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				if ( $data ) {
 					foreach ( $ids as $id ) {
 						$wpdb->update(
-							Helper::get_clickwhale_bd_table_name( 'links' ),
+							Helper::get_db_table_name( 'links' ),
 							$data,
 							array( 'id' => $id )
 						);
@@ -392,8 +391,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				}
 				break;
 			case 'delete':
-				$links_table = Helper::get_clickwhale_bd_table_name( 'links' );
-				$meta_table  = Helper::get_clickwhale_bd_table_name( 'meta' );
+				$links_table = Helper::get_db_table_name( 'links' );
+				$meta_table  = Helper::get_db_table_name( 'meta' );
 				foreach ( $ids as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(
@@ -410,7 +409,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				}
 				break;
 			case 'reset':
-				$table = Helper::get_clickwhale_bd_table_name( 'track' );
+				$table = Helper::get_db_table_name( 'track' );
 				foreach ( $ids as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(

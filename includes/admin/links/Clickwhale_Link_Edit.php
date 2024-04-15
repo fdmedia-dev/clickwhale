@@ -2,9 +2,7 @@
 namespace clickwhale\includes\admin\links;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\helpers\{Links_Helper};
-use clickwhale\includes\helpers\Helper;
+use clickwhale\includes\helpers\{Helper, Links_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -40,11 +38,23 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 		);
 	}
 
+    public function render_tabs() {
+        $tabs = array(
+            'general' => array(
+                'name' => __( 'General', CLICKWHALE_NAME ),
+                'url'  => 'general',
+            )
+        );
+
+        return apply_filters( 'clickwhale_link_tabs', $tabs );
+    }
+
 	public function save_update() {
 		global $wpdb;
 
-		$links_table        = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
+		$links_table        = Helper::get_db_table_name( $this->instance_plural );
 		$item               = array_intersect_key( $_POST, $this->get_defaults() );
+
 		$item['categories'] = isset( $item['categories'] ) ? implode( ',', $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] );
 		$item['sponsored']  = isset( $item['sponsored'] );
@@ -73,12 +83,29 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
 		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
-		die;
 	}
 
 	public function admin_scripts(): void {
 		$nonce = wp_create_nonce( 'slug_exists' );
-		?>
+
+        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) : ?>
+            <script type='text/javascript'>
+                jQuery(document).ready(function () {
+
+                    <?php if (isset( $_GET['id'] )) { ?>
+                    const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                    if (localStorage.getItem('tab-' + page_id)) {
+                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                    }
+
+                    jQuery('#clickwhale-tabs li').click(function () {
+                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                    });
+                    <?php } ?>
+                });
+            </script>
+        <?php endif; ?>
+
         <script type='text/javascript'>
             jQuery(document).ready(function () {
 
@@ -91,24 +118,25 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 				 * if checked "Disable random slug" option
 				 * use title as slug
 				 */
-				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
-				$slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
-					? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
-					: '';
-				?>
-                const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
+				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) :
+                    $slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
+                        ? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
+                        : '';
+                ?>
+                    const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
 
-                jQuery(title).on('blur', function () {
-                    if (!slug.val() || slug.val() === slugOptionsGeneral) {
-                        slug.val(slugOptionsGeneral + this.value).trigger("blur");
-                    }
-                });
-                jQuery(slug).on('blur', function () {
-                    if (title.val() && (!this.value || this.value === slugOptionsGeneral)) {
-                        slug.val(slugOptionsGeneral + title.val()).trigger("blur");
-                    }
-                });
-				<?php } ?>
+                    jQuery(title).on('blur', function () {
+                        if (!slug.val() || slug.val() === slugOptionsGeneral) {
+                            slug.val(slugOptionsGeneral + this.value).trigger("blur");
+                        }
+                    });
+                    jQuery(slug).on('blur', function () {
+                        if (title.val() && (!this.value || this.value === slugOptionsGeneral)) {
+                            slug.val(slugOptionsGeneral + title.val()).trigger("blur");
+                        }
+                    });
+
+				<?php endif; ?>
 
                 /**
                  * Submit action
@@ -118,6 +146,8 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                  */
                 jQuery('#submit').click(function (e) {
                     const slugExists = slug_exists();
+
+                    jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
                     if (!title.val()) {
                         e.preventDefault();

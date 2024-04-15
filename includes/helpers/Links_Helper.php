@@ -36,16 +36,18 @@ class Links_Helper extends Helper_Abstract {
 		);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	public static function get_link_random_slug( int $length = 6 ): string {
 		$characters = 'abcdefghijklmnopqrstuvwxyz';
 		$string     = '';
 
-		for ( $i = 0; $i < $length; $i ++ ) {
-			$string .= $characters[ random_int( 0, strlen( $characters ) - 1 ) ];
-		}
+        try {
+            for ( $i = 0; $i < $length; $i ++ ) {
+                $string .= $characters[ random_int( 0, strlen( $characters ) - 1 ) ];
+            }
+
+        } catch ( Exception $e ) {
+            return $string;
+        }
 
 		return $string;
 	}
@@ -53,7 +55,7 @@ class Links_Helper extends Helper_Abstract {
 	public static function get_meta( int $link_id, string $meta_key, string $output = "ARRAY_A" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( 'meta' );
+		$table = Helper::get_db_table_name( 'meta' );
 
 		return $wpdb->get_row(
 			$wpdb->prepare(

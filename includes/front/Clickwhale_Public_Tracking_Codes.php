@@ -2,8 +2,7 @@
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\admin\Clickwhale_WP_User;
-use clickwhale\includes\helpers\Linkpages_Helper;
-use clickwhale\includes\helpers\Tracking_Codes_Helper;
+use clickwhale\includes\helpers\{Linkpages_Helper, Tracking_Codes_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

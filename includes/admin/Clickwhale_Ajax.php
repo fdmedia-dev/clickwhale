@@ -1,8 +1,13 @@
 <?php
 namespace clickwhale\includes\admin;
 
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\helpers\{Categories_Helper, Helper, Linkpages_Helper, Links_Helper, Tracking_Codes_Helper};
+use clickwhale\includes\helpers\{
+    Helper,
+    Categories_Helper,
+    Linkpages_Helper,
+    Links_Helper,
+    Tracking_Codes_Helper
+};
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 use WP_Error;
 
@@ -172,12 +177,12 @@ class Clickwhale_Ajax {
 			//wp_die();
 		}
 
-		$table_categories = Helper::get_clickwhale_bd_table_name( 'categories' );
-		$table_links      = Helper::get_clickwhale_bd_table_name( 'links' );
-		$table_linkpages  = Helper::get_clickwhale_bd_table_name( 'linkpages' );
-		$table_meta       = Helper::get_clickwhale_bd_table_name( 'meta' );
-		$table_track      = Helper::get_clickwhale_bd_table_name( 'track' );
-		$table_visitors   = Helper::get_clickwhale_bd_table_name( 'visitors' );
+		$table_categories = Helper::get_db_table_name( 'categories' );
+		$table_links      = Helper::get_db_table_name( 'links' );
+		$table_linkpages  = Helper::get_db_table_name( 'linkpages' );
+		$table_meta       = Helper::get_db_table_name( 'meta' );
+		$table_track      = Helper::get_db_table_name( 'track' );
+		$table_visitors   = Helper::get_db_table_name( 'visitors' );
 
 		switch ( $_POST['reset'] ) {
 			case 'stats':
@@ -323,7 +328,7 @@ class Clickwhale_Ajax {
 
 		$result = [];
 
-		$table = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+		$table = Helper::get_db_table_name( 'tracking_codes' );
 		$data  = array( 'is_active' => sanitize_text_field( $_POST['status'] ) );
 		$where = array( 'id' => intval( sanitize_text_field( $_POST['id'] ) ) );
 

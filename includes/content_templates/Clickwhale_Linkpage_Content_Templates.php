@@ -1,9 +1,11 @@
 <?php
 namespace clickwhale\includes\content_templates;
 
-use clickwhale\includes\helpers\{Links_Helper};
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\{
+    Helper,
+    Links_Helper,
+    Linkpages_Helper
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

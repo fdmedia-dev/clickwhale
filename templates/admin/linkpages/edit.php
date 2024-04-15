@@ -1,8 +1,6 @@
 <?php
 
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 
 Linkpages_Helper::get_limitation_error( $_GET['id'] );
@@ -105,7 +103,7 @@ do_action( 'clickwhale_admin_banner' );
 
                 <div id="lp-tab-settings">
                     <table style="width: 100%;" class="form-table">
-                        <caption hidden>Linkpage Main Settings</caption>
+                        <caption hidden><?php _e( 'Link Page Main Settings', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
 
                         <tr class="form-field">
@@ -296,7 +294,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'General', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden>Link Page Customization Options</caption>
+                        <caption hidden><?php _e( 'Link Page Customization Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
 
 						<?php do_action( 'clickwhale_linkpage_before_general_styles', $item ); ?>
@@ -345,7 +343,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'Links', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden>Link Page Links Customization Options</caption>
+                        <caption hidden><?php _e( 'Link Page Links Customization Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
 
 						<?php // LINK BACKGROUND ?>
@@ -415,7 +413,7 @@ do_action( 'clickwhale_admin_banner' );
 
                 <div id="lp-tab-seo">
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden>Link Page SEO Options</caption>
+                        <caption hidden><?php _e( 'Link Page SEO Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
 
                         <h2><?php _e( 'SEO Options', CLICKWHALE_NAME ); ?></h2>
@@ -506,7 +504,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <h2><?php _e( 'Open Graph Options', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden>Link Page Open Graph Options</caption>
+                        <caption hidden><?php _e( 'Link Page Open Graph Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
 						<?php
 						echo Helper::render_control(

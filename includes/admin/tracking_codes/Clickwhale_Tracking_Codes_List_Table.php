@@ -1,8 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\tracking_codes;
 
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\helpers\Tracking_Codes_Helper;
+use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 use WP_List_Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -188,7 +187,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+		$table = Helper::get_db_table_name( 'tracking_codes' );
 
 		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
 			if ( is_array( $_REQUEST['id'] ) ) {
@@ -206,7 +205,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		global $wpdb;
 
-		$table                 = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+		$table                 = Helper::get_db_table_name( 'tracking_codes' );
 		$per_page              = 20;
 		$orderby               = 'id';
 		$order                 = 'desc';

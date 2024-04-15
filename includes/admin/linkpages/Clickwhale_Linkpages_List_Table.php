@@ -1,8 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\linkpages;
 
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
 use WP_List_Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -177,8 +176,8 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
-		$linkpages_table = Helper::get_clickwhale_bd_table_name( 'linkpages' );
-		$meta_table      = Helper::get_clickwhale_bd_table_name( 'meta' );
+		$linkpages_table = Helper::get_db_table_name( 'linkpages' );
+		$meta_table      = Helper::get_db_table_name( 'meta' );
 
 		if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
 			return;
@@ -219,8 +218,8 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		global $wpdb;
 
-		$table_linkpages = Helper::get_clickwhale_bd_table_name( 'linkpages' );
-		$table_track     = Helper::get_clickwhale_bd_table_name( 'track' );
+		$table_linkpages = Helper::get_db_table_name( 'linkpages' );
+		$table_track     = Helper::get_db_table_name( 'track' );
 		$per_page        = 20; // constant, how much records will be shown per page
 		$columns         = $this->get_columns();
 		$hidden          = array();

@@ -45,7 +45,7 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 		if ( $linkpage->get_legals_menu() ) {
 			echo $linkpage->get_legals_menu();
 		}
-		echo $linkpage->get_copyright();
+		echo $linkpage->get_credits_link();
 		?>
     </div>
 </div>

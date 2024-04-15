@@ -2,8 +2,7 @@
 namespace clickwhale\includes\admin\linkpages;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -189,7 +188,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 	public function save_update() {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
+		$table = Helper::get_db_table_name( $this->instance_plural );
 		$item  = array_intersect_key(
 			$_POST,
 			apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
@@ -235,19 +234,16 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'insert' );
 		}
 
-
 		// redirect to new record
 		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
-		die;
 	}
 
 	public function admin_scripts(): void {
-		$nonce          = wp_create_nonce( 'slug_exists' );
+		$nonce = wp_create_nonce( 'slug_exists' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
-			?>
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) : ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function () {
                     jQuery('#clickwhale-tabs').tabs({
@@ -260,7 +256,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         }
                     });
 
-					<?php if(isset( $_GET['id'] )) { ?>
+					<?php if (isset( $_GET['id'] )) { ?>
                     const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
                     if (localStorage.getItem('tab-' + page_id)) {
                         jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
@@ -270,9 +266,9 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         localStorage.setItem('tab-' + page_id, jQuery(this).index());
                     });
 					<?php } ?>
-                })
+                });
             </script>
-		<?php } ?>
+		<?php endif; ?>
 
         <script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
@@ -612,14 +608,12 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     disable_ogpreview_button();
                 });
 
-
                 /**
                  * Submit action
                  * 1. Check title (not null)
                  * 2. Check slug (not null)
                  * 3. Check slug (exists as post/page slug)
                  */
-
                 jQuery('#submit').click(function (e) {
                     const slugExists = slug_exists();
 
@@ -732,8 +726,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery('#icon-picker--wrap').hide().find('button').show();
                     jQuery('[name="icon-picker--search"]').val('');
                 }
-            })
-            ;
+            });
         </script>
 		<?php
 	}

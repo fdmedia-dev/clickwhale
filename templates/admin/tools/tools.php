@@ -1,7 +1,5 @@
 <?php
 
-use clickwhale\includes\Clickwhale;
-
 $migration = clickwhale()->tools->migration;
 
 do_action( 'clickwhale_admin_banner' );

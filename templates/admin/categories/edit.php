@@ -1,9 +1,7 @@
 <?php
 global $wpdb;
 
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Categories_Helper;
+use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
 Categories_Helper::get_limitation_error( $_GET['id'] );
 

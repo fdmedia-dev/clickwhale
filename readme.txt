@@ -1,36 +1,39 @@
-=== ClickWhale - Link Shortener, Click Tracker & Link Pages ===
+=== ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
 Contributors: flowdee, krapan88, webdj, liquiemm
 Donate link: https://github.com/sponsors/flowdee
-Tags: links, link shortener, link pages, affiliate links, link tracker
+Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
-Tested up to: 6.4
-Stable tag: 2.0.1
+Tested up to: 6.5
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best Link Shortener, Click Tracker & Link Pages Plugin for WordPress
+Best Link Manager, Link Shortener, Click Tracker & Link Pages Plugin for WordPress
 
 == Description ==
 
-With ClickWhale, you can **easily manage, shorten and analyze links** on your WordPress site. All this, using your own domain!
+With ClickWhale, you can **easily manage, shorten/cloak, analyze internal and affiliate links** on your WordPress site. All this, using your own domain!  You're doing social media? Then you don't want to miss out having a bio link page for your profiles.
 
-With our plugin, you can shorten links and define the URL of the shortened links yourself.
-But that's not all. ClickWhale combines some useful features in one plugin. Let's take a closer look:
+> **Interested in a quick look 🚀 at the plugin <ins>without</ins> installation?**
+> [Check out our 1-click live demo with sample content](https://clickwhale.pro/link/live-demo/) 👈
 
-= ⭐️ The most flexible link manager =
+But that's not all. ClickWhale combines some useful marketing features in one plugin. Let's take a closer look:
+
+## ⭐️ Link Manager: A must-have for affiliate marketing
+Are you looking for a WordPress [link manager](https://clickwhale.pro/link-manager/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Manager) plugin to organize all your placed affiliate links? Then you've found it!
 
 - **Easily create and manage links** - Create your links to track and organize them into categories.
 - **Apply SEO settings to links** - Flag your links with SEO attributes like “no follow” or “sponsored”.
 - **Place and share links** - Place your created links anywhere in your website content or share them on social media.
-- **Detailed statistics** - Analyze the clicks of your links with our click statistics.
+- **Click statistics** - Analyze the clicks of your links with our click statistics.
+
+***Practical example***: Turn a long URL into, e.g. `domain.com/link/product` 🤩
 
 All of these key features are available in this free version of [ClickWhale](https://clickwhale.pro/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version). That’s some crazy value!
 
-= 🔥 Link Pages: Update & share your content on Social Media =
-
-Moreover, we are the best plugin to **create your own [link page](https://clickwhale.pro/linkpages/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages
-)** on your WordPress site.
+## 🔥 Link Pages: Update & share your content on Social Media
+Moreover, we are the best plugin to **create your own [link page](https://clickwhale.pro/linkpages/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages)** or link in bio page for social media - within your own WordPress site!
 
 - **Easily add and manage links** - Add previously created links to your link pages. Or add custom links, pages, posts and much more. Change their order via drag & drop or customize link titles.
 - **Manage contents** - Enter your link page title and description texts. Upload your brand or website logo.
@@ -38,12 +41,10 @@ Moreover, we are the best plugin to **create your own [link page](https://clickw
 - **You choose the URL** - Determine the URL under which the link page is accessible on your website, and you are ready to go.
 - **Optimize your link page for SEO** - Enter SEO and Open Graph metadata and test how they look right after via a preview link!
 
-Here you can find a [live example](https://clickwhale.pro/links/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages%3A+Demo+Link
-) of our own link page, created with ClickWhale, of course!
+Here you can find a [live example](https://clickwhale.pro/links/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages%3A+Demo+Link) of our own link page, created with ClickWhale, of course!
 
-= 🕵 Tracking Codes: Manage tracking codes and scripts directly in the ClickWhale interface =
-
-ClickWhale also offers you the possibility to embed any tracking codes or code snippets directly on your website without having to intervene in the code of your website.
+## 🕵 Tracking Codes: Place tracking codes and scripts (e.g. Analytics)
+ClickWhale also offers you the possibility to embed any [tracking codes](https://clickwhale.pro/tracking-codes/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Tracking+Codes) or code snippets directly on your website without having to intervene in the code of your website.
 
 - **Place all the codes and snippets you need!** - For example: Google Analytics, Facebook Pixel, Google Conversion Tracking  - simply all the codes you need!
 - **Output the code snippet only where you want it to go** - Determine whether the code should apply to the entire website or all pages or posts, or only to specific content such as individual posts, categories and so on.
@@ -51,7 +52,23 @@ ClickWhale also offers you the possibility to embed any tracking codes or code s
 
 From now on, you don't need a third-party service, you save on monthly subscriptions and have full control. All this, on your own domain. Brilliant, isn't it?
 
-== Credits
+## 🌟 ClickWhale PRO brings even more features 🌟
+Do you want to get even more out of your affiliate marketing game and take it to the **next level**?
+
+Here are the highlights of [ClickWhale PRO](https://clickwhale.pro/pricing/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=ClickWhale+PRO) below:
+
+- **Detailed Analytics** - Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy.
+- **UTM Campaign Tracking** - Dedicated statistics admin page which allows you to filter and analyze clicks and views on links and link pages.
+- **E-Commerce Conversion Tracking** - Easily place conversion tracking codes to track the performance of your WooCommerce or Easy Digital Downloads store.
+- **Advanced Customization Options** - Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more.
+- **Blog Post Feeds** - Automatically show the latest blog posts directly on your link pages for further reach.
+- **Social Profiles** - Add your social profiles to your link page to gain more followers on your favorite social networks.
+
+This was just a selection of the additional features that await you. If you already like ClickWhale, then you should definitely consider [upgrading](https://clickwhale.pro/pricing/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Upgrade+to+Pro).
+
+You won't regret it. ✊
+
+### Credits
 - Thanks to [ionicons](https://ionic.io/ionicons) for designing and providing your great icons.
 
 == Installation ==
@@ -66,13 +83,17 @@ On the settings page, you will find all the instructions and credentials which a
 
 == Frequently Asked Questions ==
 
-= Multisite supported? =
-
-Yes! ClickWhale can be used on multisite installations.
-
 = Is ClickWhale GDPR compatible? =
 
 ClickWhale is a fully GDPR compatible WordPress plugin. We don’t track or store any data ourselves.
+
+= Is there a live demo for the plugin? =
+
+Indeed, there is a [live](https://clickwhale.pro/link/live-demo/) where you can try out the plugin for yourself without any obligation. It only takes a few seconds to spin up!
+
+= Multisite supported? =
+
+Yes! ClickWhale can be used on multisite installations.
 
 = Is ClickWhale translation ready? =
 
@@ -93,6 +114,12 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.1.0 (15th April 2024) =
+* New: Added tab navigation for link edit screen
+* Tweak: Tracking is enabled by default now
+* Info: WordPress v6.5.2 compatibility
+* Info: Updated Freemius SDK to v2.7.0
+
 = Version 2.0.1 (25th February 2024) =
 * Fix: Problem with the distribution of assets
 
@@ -100,7 +127,7 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 * New: Added access control system
 * New: Added Freemius update system
 * Fix: Fixed unwanted ? or & at the end of links sometimes
-* Info: WordPress 6.4.3 support
+* Info: WordPress v6.4.3 compatibility
 * Info: PHP version changed from 7.0.0 to 7.4.0
 
 = Version 1.5.3 (1st November 2023) =
@@ -122,7 +149,7 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 * New: Export ClickWhale links to CSV file
 * New: Links bulk editing
 * Fix: Fixed copy button's text after click
-* Info: WordPress 6.3 support
+* Info: WordPress v6.3 compatibility
 
 = Version 1.4.2 (4th August 2023) =
 * Fix: Removed char unwanted html char while link saving
@@ -150,7 +177,7 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 * Fix: Fixed an issue that caused an error on the Link Page when using a post (page or custom post type) that has been removed
 * Fix: Fixed an issue that caused an error on the Link Page when saving Custom Content Block without a title/subtitle
 * Fix: Fixed an issue where the Link Page styles were overlapping with styles from themes or plugins
-* Info: WP 6.2.1 support
+* Info: WordPress v6.2.1 compatibility
 
 = Version 1.3.3 (12th May 2023) =
 * Fix: Fixed a bug when inactive blocks on the Link Page become active again when the plugin is updated

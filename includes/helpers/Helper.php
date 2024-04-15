@@ -15,7 +15,7 @@ class Helper {
 	 * @return string
 	 * @since 1.5.0
 	 */
-	public static function get_clickwhale_bd_table_name( string $name ): string {
+	public static function get_db_table_name( string $name ): string {
 		global $wpdb;
 
 		return "{$wpdb->prefix}clickwhale_$name";
@@ -58,6 +58,7 @@ class Helper {
 		$value    = $args['value'];
 		$required = isset( $args['required'] ) && $args['required'] ? ' required' : '';
 		$disabled = isset( $args['disabled'] ) && $args['disabled'] ? ' disabled="disabled"' : '';
+		$extra_desc = esc_attr( $args['extra_desc'] ?? '' );
 
 		if ( isset( $args['default'] ) && $args['default'] ) {
 			$value = $value ?: $args['default'];
@@ -73,7 +74,11 @@ class Helper {
 		switch ( $args['control'] ) {
 			case 'input':
 				$class = $class ? $class . ' regular-text' : $class;
-				$item  .= '<input ' . $id . $class . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" ' . $disabled . $required . '>';
+				$item  .= '<input ' . $id . $class . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" style="width: 300px;" ' . $disabled . $required . '>';
+
+                if ( ! empty( $extra_desc ) ) {
+                    $item .= '<code style="display: inline-block; margin-left: 16px;">' . $extra_desc . '</code>';
+                }
 				break;
 
 			case 'checkbox':
@@ -305,6 +310,13 @@ class Helper {
 			)
 		);
 	}
+
+    /**
+     * @return string
+     */
+    public static function get_affiliates_link(): string {
+        return 'https://clickwhale.pro/affiliates/';
+    }
 
 	private static function public_path( bool $trimmed = false ): string {
 		if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {

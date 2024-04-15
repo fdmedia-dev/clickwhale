@@ -67,7 +67,7 @@ class Linkpages_Helper extends Helper_Abstract {
 	public static function is_linkpage( string $slug ): ?string {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( self::$plural );
+		$table = Helper::get_db_table_name( self::$plural );
 
 		return $wpdb->get_var(
 			$wpdb->prepare( "SELECT count(*) FROM $table WHERE slug=%s", $slug )
@@ -81,7 +81,7 @@ class Linkpages_Helper extends Helper_Abstract {
 	public static function get_linkpage_link_clicks( string $linkpage_id, string $link_id, bool $is_link = true ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( 'track' );
+		$table = Helper::get_db_table_name( 'track' );
 
 		if ( $is_link ) {
 			$result = $wpdb->get_var(
@@ -121,7 +121,7 @@ class Linkpages_Helper extends Helper_Abstract {
 	public static function get_meta( int $linkpage_id, string $meta_key, string $output = "ARRAY_A" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( 'meta' );
+		$table = Helper::get_db_table_name( 'meta' );
 
 		return $wpdb->get_row(
 			$wpdb->prepare(

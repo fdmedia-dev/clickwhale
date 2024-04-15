@@ -2,8 +2,7 @@
 namespace clickwhale\includes\admin\categories;
 
 use clickwhale\includes\admin\Clickwhale_Instance_Edit;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Categories_Helper;
+use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -27,7 +26,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 	public function save_update() {
 		global $wpdb;
 
-		$table        = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$table        = Helper::get_db_table_name( 'categories' );
 		$item         = array_intersect_key( $_POST, $this->get_defaults() );
 		$item['slug'] = $item['slug'] ? sanitize_title( $item['slug'] ) : sanitize_title( $item['title'] );
 
@@ -53,7 +52,6 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 
 		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
-		die;
 	}
 
 	public function admin_scripts(): void {

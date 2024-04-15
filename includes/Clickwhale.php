@@ -14,7 +14,7 @@
 
 namespace clickwhale\includes;
 
-use clickwhale\includes\front\Clickwhale_Public_Ajax;
+use clickwhale\includes\front\{Clickwhale_Public, Clickwhale_Public_Ajax};
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
@@ -30,8 +30,6 @@ use clickwhale\includes\admin\categories\Clickwhale_Category_Edit;
 use clickwhale\includes\admin\linkpages\Clickwhale_Linkpage_Edit;
 use clickwhale\includes\admin\links\Clickwhale_Link_Edit;
 use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
-
-use clickwhale\includes\front\Clickwhale_Public;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -329,6 +327,7 @@ final class Clickwhale {
         // FILTERS
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
+		$this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
 
         $tabs = Clickwhale_Settings::render_tabs();
         foreach ( $tabs as $tab ) {
@@ -452,7 +451,6 @@ final class Clickwhale {
 				'text'    => __( 'Set up ClickWhale plugin global link tracking options.', CLICKWHALE_NAME ),
 				'options' => array(
 					'tracking_duration'    => 30,
-					'disable_tracking'     => 0,
 					'exclude_user_by_role' => [ 'administrator' ]
 				)
 			),

@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\admin;
 
-use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
@@ -452,9 +451,23 @@ final class Clickwhale_Admin {
 		}
 	}
 
+    public function plugin_meta_links( array $meta, string $file ) {
+
+        if ( $file !== CLICKWHALE_ID ) {
+            return $meta;
+        }
+
+        $meta[] = '<a href="https://clickwhale.pro/docs/" target="_blank" rel="nofollow" title="' . esc_html__( 'Documentation', CLICKWHALE_NAME ) . '">' . esc_html__( 'Documentation', CLICKWHALE_NAME ) . '</a>';
+        $meta[] = '<a href="https://wordpress.org/support/plugin/clickwhale/reviews/?filter=5" rel="nofollow" target="_blank" title="' . esc_html__( 'Rate ClickWhale on WordPress.org', CLICKWHALE_NAME ) . '" style="color: #ffb900">'
+            . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 )
+            . '</a>';
+
+        return $meta;
+    }
+
 	public function admin_scripts() {
 		if ( empty( $_GET['page'] ) ) {
-			return false;
+			return;
 		}
 		if ( $_GET['page'] === CLICKWHALE_SLUG || $_GET['page'] === CLICKWHALE_SLUG . '-linkpages' ) {
 			?>

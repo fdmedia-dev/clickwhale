@@ -1,8 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\links;
 
-use clickwhale\includes\helpers\{Links_Helper};
-use clickwhale\includes\helpers\Categories_Helper;
+use clickwhale\includes\helpers\{Links_Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

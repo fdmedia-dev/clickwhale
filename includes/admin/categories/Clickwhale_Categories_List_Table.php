@@ -27,7 +27,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
 	private function get_users_data( $search = "" ) {
 		global $wpdb;
-		$table = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$table = Helper::get_db_table_name( 'categories' );
 
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results(
@@ -109,7 +109,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
 	function column_count( $item ) {
 		global $wpdb;
-		$table = Helper::get_clickwhale_bd_table_name( 'links' );
+		$table = Helper::get_db_table_name( 'links' );
 
 		$category = intval( $item['id'] );
 		$total    = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $table WHERE categories = '{$category}' OR categories LIKE '{$category},%' OR categories LIKE '%,{$category},%' OR categories LIKE '%,{$category}'" ) );
@@ -191,7 +191,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	function process_bulk_action() {
 		global $wpdb;
 
-		$categories_table = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$categories_table = Helper::get_db_table_name( 'categories' );
 
 		if ( 'delete' === $this->current_action() ) {
 
@@ -228,7 +228,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	private function update_link_categories( int $id ) {
 		global $wpdb;
 
-		$links_table = Helper::get_clickwhale_bd_table_name( 'links' );
+		$links_table = Helper::get_db_table_name( 'links' );
 		$links       = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM $links_table WHERE categories = $id OR categories LIKE '{$id},%' OR categories LIKE '%,{$id},%' OR categories LIKE '%,{$id}'"
@@ -266,7 +266,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 	function prepare_items() {
 		global $wpdb;
 
-		$table        = Helper::get_clickwhale_bd_table_name( 'categories' );
+		$table        = Helper::get_db_table_name( 'categories' );
 		$per_page     = 20; // constant, how much records will be shown per page
 		$current_page = $this->get_pagenum();
 		$columns      = $this->get_columns();

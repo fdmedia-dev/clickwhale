@@ -226,7 +226,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 	public function save_update() {
 		global $wpdb;
 
-		$tracking_codes_table = Helper::get_clickwhale_bd_table_name( $this->instance_plural );
+		$tracking_codes_table = Helper::get_db_table_name( $this->instance_plural );
 		$item                 = array_intersect_key( $_POST, $this->get_defaults() );
 		$item['description']  = esc_html( $item['description'] );
 		$item['author']       = get_current_user_id();
@@ -296,7 +296,6 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
 		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=' . $item['id'];
 		wp_redirect( admin_url( $url ) );
-		die;
 	}
 
 	public function admin_scripts(): void {

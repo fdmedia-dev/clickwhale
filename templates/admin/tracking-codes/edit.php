@@ -1,9 +1,7 @@
 <?php
 
 use clickwhale\includes\admin\Clickwhale_WP_User;
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Tracking_Codes_Helper;
+use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
 Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
 
@@ -44,7 +42,7 @@ do_action( 'clickwhale_admin_banner' );
         <div id="post-body-content">
 
             <table style="width: 100%;" class="form-table">
-                <caption style="display: none">Tracking code edit table</caption>
+                <caption style="display: none"><?php _e( 'Tracking Code Edit Table', CLICKWHALE_NAME ); ?></caption>
                 <tbody>
 
 				<?php

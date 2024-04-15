@@ -33,7 +33,7 @@ abstract class Helper_Abstract {
 	public static function get_count(): int {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( static::$plural );
+		$table = Helper::get_db_table_name( static::$plural );
 		$count = $wpdb->get_var( "SELECT count(*) FROM $table" );
 
 		return $count ? intval( $count ) : 0;
@@ -96,7 +96,7 @@ abstract class Helper_Abstract {
 	public static function get_all( string $orderby = 'title', string $order = "asc", string $output = "OBJECT" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( static::$plural );
+		$table = Helper::get_db_table_name( static::$plural );
 
 		return $wpdb->get_results(
 			"SELECT * FROM $table order by $orderby $order",
@@ -115,7 +115,7 @@ abstract class Helper_Abstract {
 	public static function get_by_id( int $id, string $output = "ARRAY_A" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( static::$plural );
+		$table = Helper::get_db_table_name( static::$plural );
 
 		return $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM $table WHERE id=%d", $id ),
@@ -135,7 +135,7 @@ abstract class Helper_Abstract {
 	public static function get_by_title( string $title, string $output = "ARRAY_A" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( static::$plural );
+		$table = Helper::get_db_table_name( static::$plural );
 
 		return $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM $table WHERE title=%s", $title ),
@@ -155,7 +155,7 @@ abstract class Helper_Abstract {
 	public static function get_by_slug( string $slug, string $output = "ARRAY_A" ) {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( static::$plural );
+		$table = Helper::get_db_table_name( static::$plural );
 
 		return $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM $table WHERE slug=%s", $slug ),

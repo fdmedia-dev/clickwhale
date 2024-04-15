@@ -64,7 +64,7 @@ class Tracking_Codes_Helper extends Helper_Abstract {
 	public static function get_active() {
 		global $wpdb;
 
-		$table = Helper::get_clickwhale_bd_table_name( 'tracking_codes' );
+		$table = Helper::get_db_table_name( 'tracking_codes' );
 
 		return $wpdb->get_results(
 			"SELECT * FROM $table WHERE is_active = '1' OR is_active = 1",

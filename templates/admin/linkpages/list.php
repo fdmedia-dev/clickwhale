@@ -3,8 +3,7 @@
 global $wpdb;
 
 use clickwhale\includes\admin\linkpages\Clickwhale_Linkpages_List_Table;
-use clickwhale\includes\helpers\{Helper};
-use clickwhale\includes\helpers\Linkpages_Helper;
+use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
 
 $table = new Clickwhale_Linkpages_List_Table();
 $table->prepare_items();

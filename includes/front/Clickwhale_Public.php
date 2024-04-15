@@ -178,7 +178,6 @@ final class Clickwhale_Public {
 
 			$link_url = apply_filters( 'clickwhale_url_params', $results->url, $id );
 			wp_redirect( $link_url, $results->redirection );
-			exit;
 		}
 	}
 
