@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.1.0
+ * Version:           2.1.1
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -19,19 +19,18 @@
  * Text Domain:       clickwhale
  * Domain Path:       /languages
  */
-use clickwhale\includes\{ Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator };
+use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 // Note from Freemius docs: The SDK comes with a special mechanism to auto deactivate the free version when activating the paid one. In order for this mechanism to work properly, you'd need to slightly adjust the code of the plugin's main file
-
 if ( function_exists( 'clickwhale_fs' ) ) {
     clickwhale_fs()->set_basename( false, __FILE__ );
 } else {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.1.0' );
+    define( 'CLICKWHALE_VERSION', '2.1.1' );
     define( 'CLICKWHALE_NAME', 'clickwhale' );
     /**
      * @since 1.4.1
@@ -51,13 +50,10 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     define( 'CLICKWHALE_ADMIN_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/admin' );
     define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
     // DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
-    
     if ( !function_exists( 'clickwhale_fs' ) ) {
         // Create a helper function for easy SDK access.
-        function clickwhale_fs()
-        {
-            global  $clickwhale_fs ;
-            
+        function clickwhale_fs() {
+            global $clickwhale_fs;
             if ( !isset( $clickwhale_fs ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
@@ -73,16 +69,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'has_paid_plans'  => true,
                     'has_affiliation' => 'all',
                     'menu'            => array(
-                    'slug'    => CLICKWHALE_SLUG,
-                    'contact' => false,
-                ),
+                        'slug'    => CLICKWHALE_SLUG,
+                        'contact' => false,
+                    ),
                     'is_live'         => true,
                 ) );
             }
-            
             return $clickwhale_fs;
         }
-        
+
         // Init Freemius.
         clickwhale_fs();
         // Signal that SDK was initiated.
@@ -93,36 +88,32 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         // Uninstall action
         clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
     }
-    
     /**
      * The code that runs during plugin activation.
      */
-    function activate_clickwhale()
-    {
+    function activate_clickwhale() {
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Activator.php';
         Clickwhale_Activator::activate();
     }
-    
+
     /**
      * The code that runs during plugin deactivation.
      */
-    function deactivate_clickwhale()
-    {
+    function deactivate_clickwhale() {
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Deactivator.php';
         Clickwhale_Deactivator::deactivate();
     }
-    
+
     register_activation_hook( __FILE__, 'activate_clickwhale' );
     register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
     /**
      * The code for Freemius that runs after the plugin uninstall event.
      */
-    function clickwhale_uninstall_cleanup()
-    {
+    function clickwhale_uninstall_cleanup() {
         delete_option( 'clickwhale_version' );
         do_action( 'clickwhale_uninstall_cleanup' );
     }
-    
+
     /**
      * Traits for Singleton
      */
@@ -141,11 +132,10 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      *
      * @since    1.0.0
      */
-    function run_clickwhale()
-    {
+    function run_clickwhale() {
         clickwhale()->run();
     }
-    
+
     add_action( 'plugins_loaded', 'run_clickwhale' );
     /**
      * Returns the instance of Clickwhale.
@@ -161,8 +151,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      * @return Clickwhale The one true Clickwhale instance.
      * @since 1.6.0
      */
-    function clickwhale() : Clickwhale
-    {
+    function clickwhale() : Clickwhale {
         return Clickwhale::get_instance();
     }
 

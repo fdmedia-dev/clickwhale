@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.5
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,10 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.1.1 (16th April 2024) =
+* Tweak: Optimized admin pages meta title
+* Fix: Fixed link redirection
+
 = Version 2.1.0 (15th April 2024) =
 * New: Added tab navigation for link edit screen
 * Tweak: Tracking is enabled by default now
@@ -250,6 +254,9 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 * Initial Release
 
 == Upgrade Notice ==
+
+= Version 2.1.1 (16th April 2024) =
+* Fixed link redirection issue after update v2.1.0
 
 = Version 1.0.0 (11th December 2022) =
 * Initial Release

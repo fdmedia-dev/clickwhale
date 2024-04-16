@@ -145,11 +145,11 @@ abstract class Clickwhale_Instance_Edit {
 		}
 
 		if ( $transient === 'added' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
+			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
 		}
 
 		if ( $transient === 'updated' ) {
-			echo '<div class="updated"><p>' . __( 'Item was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
+			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
 		}
 
 		delete_transient( 'link-' . $id );
@@ -165,7 +165,10 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	public function set_edit_page_title( string $admin_title, string $title ): string {
-		return 'Edit ' . str_replace( '_', ' ', $this->instance_single ) . ' ' . $admin_title;
+
+        $item = $this->get_item( $_REQUEST );
+
+		return 'Edit &#8220;' . esc_attr( wp_unslash( $item['title'] ) ) . '&#8221; ' . str_replace( '_', ' ', $this->instance_single ) . ' ' . $admin_title;
 	}
 
 	/**
@@ -178,12 +181,12 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	public function set_add_page_title( string $admin_title, string $title ): string {
-		return 'Add ' . str_replace( '_', ' ', $this->instance_single ) . ' ' . $admin_title;
+		return 'Add ' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . ' ' . $admin_title;
 	}
 
 	/**
 	 * JS for current page
-	 * ¬
+	 *
 	 * @return void
 	 * @since 1.6.0
 	 */
