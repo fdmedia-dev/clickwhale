@@ -5,10 +5,11 @@ use clickwhale\includes\admin\Clickwhale_Settings;
 $tabs = Clickwhale_Settings::render_tabs();
 do_action( 'clickwhale_admin_banner' );
 ?>
-
 <div class="wrap clickwhale-settings-wrap">
     <h1 class="wp-heading-inline"><?php _e( 'Settings', CLICKWHALE_NAME ); ?></h1>
 	<?php settings_errors(); ?>
+
+    <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
 	<?php
 	if ( $tabs ) {
@@ -37,4 +38,6 @@ do_action( 'clickwhale_admin_banner' );
         </form>
 
 	<?php } ?>
+
+    <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
 </div>

@@ -4,8 +4,10 @@
  */
 
 body.toplevel_page_clickwhale #wpbody-content,
+body.toplevel_page_clickwhale-pro #wpbody-content,
 body[class*="clickwhale_page_clickwhale"] #wpbody-content,
-body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+body[class*="admin_page_clickwhale-edit"] #wpbody-content,
+body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
 	padding-top: 80px;
 }
 
@@ -1739,6 +1741,11 @@ table.tracking-codes .column-is_active {
 	background: #4B7CF7 0 0 no-repeat padding-box !important;
 }
 
+#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle:hover,
+#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle:hover {
+	background-color: #1a1c1d !important;
+}
+
 #root .fs-package,
 #fs_pricing_app .fs-package {
 	margin: 2.8em 0.8em 0 !important;
@@ -1816,6 +1823,72 @@ table.tracking-codes .column-is_active {
 	border-radius: 10px !important;
 }
 
+#root .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover,
+#fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover {
+	background-color: #1a1c1d !important;
+	border-color: #1a1c1d !important;
+}
+
+/* Upgrade to PRO Widget */
+
+#poststuff .postbox.clickwhale-upgrade-to-pro {
+	border-width: 0;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .hero img {
+	height: auto;
+	width: 100%;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .title {
+	margin-top: -2px;
+	padding: 1.4rem;
+	font-size: 16px;
+	background-color: #ffffff;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside {
+	margin-top: 0;
+	padding: 0 1.4em 0.8em;
+	background-color: #ffffff;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius: 0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside ul {
+	margin-top: 0;
+	line-height: 2;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside ul li .text {
+	padding-left: 2px;
+	color: #5B7184;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button {
+	padding: 1em 0 1.6em;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button a {
+	display: block;
+	padding: 14px;
+	font-size: 14px;
+	background-color: #397EFF;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button a:hover {
+	background-color: #1a1c1d;
+	color: #ffffff;
+}
+
 /* @media */
 
 @media (max-width: 1150px) {
@@ -1826,8 +1899,10 @@ table.tracking-codes .column-is_active {
 
 @media (max-width: 768px) {
 	body.toplevel_page_clickwhale #wpbody-content,
+	body.toplevel_page_clickwhale-pro #wpbody-content,
 	body[class*="clickwhale_page_clickwhale"] #wpbody-content,
-	body[class*="admin_page_clickwhale-edit"] #wpbody-content {
+	body[class*="admin_page_clickwhale-edit"] #wpbody-content,
+	body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
 		padding-top: 180px;
 	}
 

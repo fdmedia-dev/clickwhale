@@ -4,10 +4,11 @@ $migration = clickwhale()->tools->migration;
 
 do_action( 'clickwhale_admin_banner' );
 ?>
-
 <div class="wrap">
     <h1 class="wp-heading-inline"><?php _e( 'Tools', CLICKWHALE_NAME ); ?></h1>
 	<?php settings_errors(); ?>
+
+    <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
 	<?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
 
@@ -31,7 +32,6 @@ do_action( 'clickwhale_admin_banner' );
     </h2>
 
 	<?php
-
 	if ( $active_tab == 'migration_options' ) {
 		$show_settings = false;
 
@@ -171,6 +171,7 @@ do_action( 'clickwhale_admin_banner' );
         </div>
 		<?php
 	}
+
 	if ( $active_tab == 'export' ) {
 		?>
         <div id="clickwhale_tools_export">
@@ -186,5 +187,7 @@ do_action( 'clickwhale_admin_banner' );
 
         </div>
 	<?php } ?>
+
+    <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
 
 </div><!-- ./wrap -->

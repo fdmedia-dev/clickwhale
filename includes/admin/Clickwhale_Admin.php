@@ -381,6 +381,59 @@ final class Clickwhale_Admin {
 		<?php
 	}
 
+	public function admin_sidebar_begin() {
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return; // pro version sidebar begin
+        } else { ?>
+            <div id="poststuff">
+                <div id="post-body" class="metabox-holder columns-2">
+                    <div id="post-body-content">
+        <?php }
+    }
+
+	public function admin_sidebar_end() {
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return; // pro version sidebar end
+        } else { ?>
+                    </div><!-- /#post-body-content -->
+                    <div id="postbox-container-1" class="postbox-container">
+                        <?php do_action( 'clickwhale_admin_free_version_widget' ); ?>
+                    </div><!-- /.postbox-container -->
+                </div><!-- /#post-body -->
+            </div><!-- /#poststuff -->
+        <?php }
+    }
+
+	public function upgrade_to_pro_widget() {
+        if ( clickwhale_fs()->can_use_premium_code() ) {
+            return;
+        } ?>
+        <div class="postbox clickwhale-upgrade-to-pro">
+            <div class="hero">
+                <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/upgrade_to_pro_widget_hero.svg' ) ?>"
+                     alt="<?php echo CLICKWHALE_NAME ?>">
+            </div>
+            <h3 class="title"><?php esc_attr_e( 'Upgrade to ClickWhale Pro', CLICKWHALE_NAME ); ?></h3>
+            <div class="inside">
+                <ul>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Detailed Statistics', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'UTM Campaign Tracking', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Advanced Customization Options', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'More Blocks for Link Pages', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Remove Plugin Credits', CLICKWHALE_NAME ); ?></span></li>
+                </ul>
+
+                <div class="clickwhale-pro-button">
+                    <a href="<?php echo admin_url('admin.php?page=clickwhale-pricing'); ?>"
+                       class="button-get-pro"
+                       rel="noopener"><?php esc_attr_e( 'View Upgrade', CLICKWHALE_NAME ); ?> 🚀</a>
+                </div>
+            </div>
+        </div>
+		<?php
+	}
+
 	/**
 	 * @return void
 	 * @since 1.4.0

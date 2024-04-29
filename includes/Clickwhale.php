@@ -287,6 +287,9 @@ final class Clickwhale {
 		$this->loader->add_action( 'clickwhale_admin_banner', $this->admin, 'admin_banner' );
 		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $this->admin, 'admin_banner_pro_button' );
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $this->admin, 'admin_pro_message' );
+		$this->loader->add_action( 'clickwhale_admin_sidebar_begin', $this->admin, 'admin_sidebar_begin' );
+		$this->loader->add_action( 'clickwhale_admin_sidebar_end', $this->admin, 'admin_sidebar_end' );
+		$this->loader->add_action( 'clickwhale_admin_free_version_widget', $this->admin, 'upgrade_to_pro_widget' );
 		// Clickwhale menu in the admin bar in the admin
 		if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
 			$this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );

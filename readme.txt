@@ -1,11 +1,11 @@
 === ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
-Contributors: flowdee, krapan88, webdj, liquiemm
+Contributors: flowdee, krapan88, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.5
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,11 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.1.2 (29th April 2024) =
+* New: Added "Upgrade to PRO" sidebar for admin pages
+* Fix: Fixed styles of admin pages header
+* Info: Updated Freemius SDK to v2.7.2
+
 = Version 2.1.1 (16th April 2024) =
 * Tweak: Optimized admin pages meta title
 * Fix: Fixed link redirection

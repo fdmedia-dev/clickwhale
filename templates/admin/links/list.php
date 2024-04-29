@@ -15,7 +15,6 @@ if ( 'delete' === $table->current_action() ) {
 
 do_action( 'clickwhale_admin_banner' );
 ?>
-
 <div class="wrap">
 	<?php
 	echo Helper::render_heading(
@@ -29,13 +28,14 @@ do_action( 'clickwhale_admin_banner' );
 			)
 		)
 	);
-	?>
 
-	<?php if ( ! empty( $message ) ) { ?>
+    if ( ! empty( $message ) ) { ?>
         <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
 	<?php } ?>
 
     <hr class="wp-header-end">
+
+    <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
         <input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
@@ -44,5 +44,7 @@ do_action( 'clickwhale_admin_banner' );
 		$table->display();
 		?>
     </form>
+
+    <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
 
 </div>
