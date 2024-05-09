@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\front\tracking;
 
-use clickwhale\includes\front\tracking\Clickwhale_Visitor_Track;
 use clickwhale\includes\helpers\Linkpages_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +15,6 @@ class Clickwhale_Click_Track {
 	 * @access   protected
 	 */
 	protected $link_id;
-	protected $linkage_id;
 	protected $user;
 	protected $visitor;
 	protected $is_custom;
@@ -42,7 +40,7 @@ class Clickwhale_Click_Track {
 		return ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
 	}
 
-	private function get_linkpage_id() {
+	private function get_linkpage_id(): int {
 		$url = strtolower( $this->get_link_referer() );
 
 		if ( ! $url && ! str_contains( $url, get_bloginfo( 'url' ) ) ) {
@@ -53,7 +51,7 @@ class Clickwhale_Click_Track {
 		$url    = str_replace( '/', '', $url );
 		$result = Linkpages_Helper::get_by_slug( $url );
 
-		return $result['id'];
+		return $result['id'] ?? 0;
 	}
 
 	private function update_track_database( $visitor_id ) {
@@ -64,7 +62,7 @@ class Clickwhale_Click_Track {
 		$item['event_type']     = 'click';
 		$item['link_id']        = ! $this->is_custom ? $this->link_id : 0;
 		$item['custom_link_id'] = $this->is_custom ? $this->link_id : '';
-		$item['linkpage_id']    = $this->get_linkpage_id() ? $this->get_linkpage_id() : 0;
+		$item['linkpage_id']    = $this->get_linkpage_id();
 		$item['visitor_id']     = $visitor_id;
 		$item['referer']        = $this->get_link_referer();
 		$item['created_at']     = gmdate( 'Y-m-d H:i:s' );

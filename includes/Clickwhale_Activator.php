@@ -211,6 +211,17 @@ class Clickwhale_Activator {
 				"ALTER TABLE {$wpdb->prefix}clickwhale_meta ADD linkpage_id int(11) NOT NULL AFTER link_id"
 			);
 		}
+
+        /* @since 2.1.3 */
+        if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '>=' ) &&
+            ! get_option( 'clickwhale_updated_links_table_url_column' )
+        ){
+            $query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
+
+            if ( $query ) {
+                add_option( 'clickwhale_updated_links_table_url_column', CLICKWHALE_VERSION );
+            }
+        }
 	}
 
 	/**

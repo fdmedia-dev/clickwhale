@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.5
-Stable tag: 2.1.2
+Stable tag: 2.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,11 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.1.3 (9th May 2024) =
+* Fix: Fixed issue when long links were not stored to DB
+* Fix: Fixed "Trying to access array offset on value of type null" PHP warning
+* Info: WordPress v6.5.3 compatibility
+
 = Version 2.1.2 (29th April 2024) =
 * New: Added "Upgrade to PRO" sidebar for admin pages
 * Fix: Fixed styles of admin pages header

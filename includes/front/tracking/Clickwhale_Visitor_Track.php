@@ -1,10 +1,7 @@
 <?php
 namespace clickwhale\includes\front\tracking;
 
-use clickwhale\includes\admin\Clickwhale_Settings;
 use clickwhale\includes\admin\Clickwhale_WP_User;
-use clickwhale\includes\Clickwhale;
-use clickwhale\includes\front\tracking\Clickwhale_Parser;
 use clickwhale\includes\helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {

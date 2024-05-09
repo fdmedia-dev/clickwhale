@@ -10,8 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
-	public function __construct() {
+    /**
+     * @var string
+     */
+    private $links_table;
+
+    public function __construct() {
 		parent::__construct( 'links', 'link' );
+
+        $this->links_table = Helper::get_db_table_name( $this->instance_plural );
 	}
 
 	/**
@@ -52,9 +59,19 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 	public function save_update() {
 		global $wpdb;
 
-		$links_table        = Helper::get_db_table_name( $this->instance_plural );
-		$item               = array_intersect_key( $_POST, $this->get_defaults() );
+        /* @since 2.1.3 */
+        if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '>=' ) &&
+            ! get_option( 'clickwhale_updated_links_table_url_column' )
+        ){
+            require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+            $query = $wpdb->query( "ALTER TABLE $this->links_table MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
 
+            if ( $query ) {
+                add_option( 'clickwhale_updated_links_table_url_column', CLICKWHALE_VERSION );
+            }
+        }
+
+		$item = array_intersect_key( $_POST, $this->get_defaults() );
 		$item['categories'] = isset( $item['categories'] ) ? implode( ',', $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] );
 		$item['sponsored']  = isset( $item['sponsored'] );
@@ -65,7 +82,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
 		if ( Links_Helper::get_by_id( intval( $item['id'] ) ) ) {
 			$wpdb->update(
-				$links_table,
+                $this->links_table,
 				$item,
 				array( 'id' => $item['id'] )
 			);
@@ -73,7 +90,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 			$this->set_transient( $item['id'], 'updated' );
 		} else {
 			$wpdb->insert(
-				$links_table,
+                $this->links_table,
 				$item
 			);
 			$item['id'] = $wpdb->insert_id;

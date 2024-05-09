@@ -5,12 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-use clickwhale\includes\front\tracking\{
-	Clickwhale_Bot,
-	Clickwhale_Device,
-	Clickwhale_OS
-};
-
 class Clickwhale_Parser {
 	/**
 	 * User Agent String
