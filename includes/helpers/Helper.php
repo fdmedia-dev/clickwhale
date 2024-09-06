@@ -281,7 +281,7 @@ class Helper {
 	 */
 
 	private static function pro_link(): string {
-		return 'https://clickwhale.pro/pricing/?campaign=ClickWhale%20Free%20Plugin%3A%20Pro%20Upgrade&ref=5';
+		return 'https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_upgrade_to_pro_button';
 	}
 
 	/**
@@ -315,7 +315,7 @@ class Helper {
      * @return string
      */
     public static function get_affiliates_link(): string {
-        return 'https://clickwhale.pro/affiliates/';
+        return 'https://clickwhale.pro/affiliates/?utm_source=users&utm_medium=link&utm_campaign=plugin_admin&utm_content=settings_affiliate_program';
     }
 
 	private static function public_path( bool $trimmed = false ): string {

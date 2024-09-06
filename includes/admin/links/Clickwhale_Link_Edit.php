@@ -107,7 +107,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
         if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) : ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function () {
+                jQuery(document).ready(function() {
 
                     <?php if (isset( $_GET['id'] )) { ?>
                     const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
@@ -115,7 +115,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
                     }
 
-                    jQuery('#clickwhale-tabs li').click(function () {
+                    jQuery('#clickwhale-tabs li').on('click', function() {
                         localStorage.setItem('tab-' + page_id, jQuery(this).index());
                     });
                     <?php } ?>
@@ -124,8 +124,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         <?php endif; ?>
 
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
-
+            jQuery(document).ready(function() {
                 const
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug');
@@ -142,12 +141,12 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                 ?>
                     const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
 
-                    jQuery(title).on('blur', function () {
+                    jQuery(title).on('blur', function() {
                         if (!slug.val() || slug.val() === slugOptionsGeneral) {
                             slug.val(slugOptionsGeneral + this.value).trigger("blur");
                         }
                     });
-                    jQuery(slug).on('blur', function () {
+                    jQuery(slug).on('blur', function() {
                         if (title.val() && (!this.value || this.value === slugOptionsGeneral)) {
                             slug.val(slugOptionsGeneral + title.val()).trigger("blur");
                         }
@@ -161,7 +160,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                  * 2. Check slug (not null)
                  * 3. Check slug (exists as post/page slug)
                  */
-                jQuery('#submit').click(function (e) {
+                jQuery('#submit').on('click', function(e) {
                     const slugExists = slug_exists();
 
                     jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
@@ -179,7 +178,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>')
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>');
                     } else {
                         slug.removeClass('error').next().text('');
                     }
@@ -189,7 +188,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                         slug.addClass('error');
                         jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_NAME ) ?>')
+							CLICKWHALE_NAME ) ?>');
                     }
                 });
 
@@ -206,14 +205,13 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             'type': 'link',
                             'slug': slug.val(),
                             'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
-                        }, success: function (response) {
+                        }, success: function(response) {
                             result = response.data;
                         }
                     });
 
                     return result;
                 }
-
             });
         </script>
 		<?php

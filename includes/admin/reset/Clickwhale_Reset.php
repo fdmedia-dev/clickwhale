@@ -80,7 +80,7 @@ class Clickwhale_Reset {
 	}
 
 	public function reset_db_settings_callback() {
-		echo '<p>' . __( 'At this point. you can delete all entries (links, categories and stats) from the database tables of our plugin.', $this->plugin_name ) . '</p>';
+		echo '<p>' . __( 'At this point you can delete all entries (links, categories and stats) from the database tables of our plugin.', $this->plugin_name ) . '</p>';
 	}
 
 	public function reset_stats_settings_callback() {

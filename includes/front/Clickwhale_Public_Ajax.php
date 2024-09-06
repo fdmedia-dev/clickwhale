@@ -34,13 +34,10 @@ class Clickwhale_Public_Ajax {
 
 		if ( ! isset( $_POST['id'] ) || ! $_POST['id'] ) {
 			wp_send_json_error( 'Track Error!' );
-			//wp_die();
 		}
 
 		// Track click on link
 		$track = new Clickwhale_Click_Track( $_POST['id'], true );
-
 		wp_send_json_success();
-		//wp_die();
 	}
 }

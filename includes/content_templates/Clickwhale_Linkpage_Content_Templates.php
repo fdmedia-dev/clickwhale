@@ -581,11 +581,15 @@ class Clickwhale_Linkpage_Content_Templates {
 	}
 
 	public function template_public_cw_custom_link( $args ): string {
+
+        $url = $args['data']['url'];
+        $url_array = parse_url( $url );
+
 		return $this->get_public_link_template(
 			array(
 				'title'    => $args['data']['title'],
 				'subtitle' => $args['data']['subtitle'] ?? '',
-				'url'      => trailingslashit( $args['data']['url'] ),
+				'url'      => ( isset( $url_array['query'] ) ) ? $url : trailingslashit( $url ),
 			),
 			$args );
 	}
@@ -672,8 +676,8 @@ class Clickwhale_Linkpage_Content_Templates {
 		ob_start();
 		?>
         <div class="linkpage-public-row linkpage-public-row--<?php echo $type ?>" data-type="<?php echo $type ?>">
-            <a class="linkpage-public-row-link" href="<?php echo esc_url( $url ) ?>"
-               class="cw-track" <?php echo $target ?>>
+            <a class="linkpage-public-row-link cw-track" href="<?php echo esc_url( $url ) ?>"
+               <?php echo $target ?>>
 				<?php
 				if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
 					echo $this->get_template_row_image( $args['data'] );

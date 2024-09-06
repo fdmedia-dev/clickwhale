@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.5
-Stable tag: 2.1.3
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,12 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.2.0 (6th September 2024) =
+* Tweak: Enhanced the admin pages documentation widgets
+* Fix: Fixed trailing slash applied to custom link with URL parameters on link pages
+* Info: WordPress v6.6.1 compatibility
+* Info: Updated Freemius SDK to v2.7.4
+
 = Version 2.1.3 (9th May 2024) =
 * Fix: Fixed issue when long links were not stored to DB
 * Fix: Fixed "Trying to access array offset on value of type null" PHP warning

@@ -26,7 +26,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	/**
 	 * @param $item - row (key, value array)
 	 * @param $column_name - string (key)
-	 *
 	 * @return string
 	 */
 	function column_default( $item, $column_name ) {
@@ -35,7 +34,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_title( $item ) {
@@ -69,7 +67,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	 * Link url with copy button
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_slug( $item ) {
@@ -78,7 +75,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 * @since 1.1.0
 	 *
@@ -89,7 +85,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 * @since 1.1.0
 	 *
@@ -106,7 +101,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_links( $item ) {
@@ -118,7 +112,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
 	/**
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_cb( $item ): string {

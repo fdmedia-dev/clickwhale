@@ -1,4 +1,4 @@
-(function ($) {
+(function($) {
     'use strict';
 
     /* global clickwhale_admin */
@@ -31,10 +31,12 @@
      * practising this, we should strive to set a better example in our own work.
      */
 
-    $(function () {
-        var urlSearchParams = new URLSearchParams(window.location.search),
+    $(function() {
+        let
+            urlSearchParams = new URLSearchParams(window.location.search),
             params = Object.fromEntries(urlSearchParams.entries());
-        if (params !== 'undefined') {
+
+        if (params !== undefined) {
             if (params['page'] === clickwhale_admin.plugin_slug + '-edit-category') {
                 setCurrentTopLevelPage();
                 setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-categories');
@@ -55,8 +57,8 @@
 
         // Init jQuery UI tabs
         jQuery('.clickwhale-tabs').tabs({
-            activate: function (event, ui) {
-                // on tab switch re-init select2
+            activate: function(event, ui) {
+                // On tab switch re-init select2
                 jQuery('.clickwhale-select').select2({
                     minimumResultsForSearch: 10
                 });
@@ -69,25 +71,25 @@
         });
 
         $(document)
-            .on('click', '#button-reset-db', function () {
-                var arr = [];
-                for (var i = 0; i < localStorage.length; i++) {
-                    if (localStorage.key(i).substring(0, 3) == 'PLtab_') {
+            .on('click', '#button-reset-db', function() {
+                let arr = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    if (localStorage.key(i).substring(0, 3) === 'PLtab_') {
                         arr.push(localStorage.key(i));
                     }
                 }
 
                 // Iterate over arr and remove the items by key
-                for (var i = 0; i < arr.length; i++) {
+                for (let i = 0; i < arr.length; i++) {
                     localStorage.removeItem(arr[i]);
                 }
             })
-            .on('blur', '#cw-slug', function () {
-                var slug = wpCWSanitizeTitle($(this).val());
+            .on('blur', '#cw-slug', function() {
+                let slug = wpCWSanitizeTitle($(this).val());
                 $(this).val(slug);
                 $('#cw-slug--text').find('span').html(slug);
             })
-            .on('submit', '.clickwhale_form_edit', function () {
+            .on('submit', '.clickwhale_form_edit', function() {
                 if ($('#created_at').val() === '') {
                     $('#created_at').val(formatDate(new Date()));
                 }
@@ -95,7 +97,7 @@
             });
     });
 
-    // functions
+    // FUNCTIONS
 
     function padTo2Digits(num) {
         return num.toString().padStart(2, '0');
@@ -124,8 +126,8 @@
     }
 
     function setCurrentSubmenuPage($item) {
-        $('#toplevel_page_' + clickwhale_admin.plugin_slug + ' a').each(function () {
-            var url = $(this).attr('href');
+        $('#toplevel_page_' + clickwhale_admin.plugin_slug + ' a').each(function() {
+            let url = $(this).attr('href');
             if (url.endsWith($item)) {
                 $(this).parent().addClass('current');
             }
@@ -143,11 +145,11 @@
      * Note: the WordPress PHP function sanitize_title() accepts two additional
      * optional parameters. At this time, this function does not.
      *
-     * @param string title The title to be santized.
+     * @param title The title to be sanitized.
      * @return string The sanitized string.
      */
     function wpCWSanitizeTitle(title) {
-        var diacriticsMap;
+        let diacriticsMap;
 
         return removeSingleTrailingDash(
             replaceSpacesWithDash(
@@ -208,7 +210,7 @@
         /**
          * If the string end in a dash, remove it.
          *
-         * @param string str The string which may or may not end in a dash.
+         * @param str The string which may or may not end in a dash.
          * @return string The string without a dash on the end.
          */
         function removeSingleTrailingDash(str) {
@@ -329,9 +331,9 @@
             ];
 
             diacriticsMap = {};
-            for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
-                var letters = defaultDiacriticsRemovalMap [i].letters;
-                for (var j = 0; j < letters.length; j++) {
+            for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
+                let letters = defaultDiacriticsRemovalMap [i].letters;
+                for (let j = 0; j < letters.length; j++) {
                     diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap [i].base;
                 }
             }
@@ -341,7 +343,7 @@
         // Remove accent characters/diacritics from the string.
         function removeAccents(str) {
             diacriticsMap = getDiacriticsRemovalMap();
-            return str.replace(/[^\u007E]/g, function (a) {
+            return str.replace(/[^\u007E]/g, function(a) {
                 return diacriticsMap[a] || a;
             });
         }

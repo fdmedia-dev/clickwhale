@@ -147,23 +147,23 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 			$this->no_item();
 		}
 
-		// get default values
+		// Get default values
 		$defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
 
-		// if item id=0 or id doesn't set/exists than use $defaults
+		// If item id=0 or id doesn't set/exists than use $defaults
 		if ( empty( $request['id'] ) ) {
 			return $defaults;
 		}
 
-		// get data by id
+		// Get data by id
 		$helper = ucfirst( "{$this->instance_plural}_Helper" );
 
-		$item             = call_user_func(
+		$item = call_user_func(
 			array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
 			$request['id'] );
 		$item['position'] = maybe_unserialize( $item['position'] );
 
-		// if link with id doesn't exist
+		// If link with id doesn't exist
 		if ( ! $item ) {
 			$this->no_item();
 		}
@@ -245,7 +245,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 			unset( $item['position']['conversion_items'] );
 		}
 
-		// handle CW Link Pages
+		// Handle CW Link Pages
 		if ( ! isset( $item['position']['items_included']['cw_linkpage']['active'] ) ) {
 			unset( $item['position']['items_included']['cw_linkpage'] );
 		}
@@ -314,7 +314,6 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                     minimumResultsForSearch: 10
                 });
 
-
                 if (jQuery('#code').length) {
                     var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
                     editorSettings.codemirror = _.extend(
@@ -325,7 +324,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             tabSize: 2,
                         }
                     );
-                    var editor = wp.codeEditor.initialize(jQuery('#code'), editorSettings);
+                    let editor = wp.codeEditor.initialize(jQuery('#code'), editorSettings);
                 }
 
                 // Toggle pages select
@@ -339,7 +338,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
                 // Toggle page select
                 jQuery('.cw-posts-row').each(function () {
-                    var checkbox = jQuery(this).find('[type="checkbox"]'),
+                    let checkbox = jQuery(this).find('[type="checkbox"]'),
                         selectWrap = jQuery(this).find('.cw-posts-row--select');
 
                     if (checkbox.is(':checked')) {
@@ -364,14 +363,13 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                         }
                     })
                     .on('change', '.cw-posts-row [type="checkbox"]', function () {
-                        var parent = jQuery(this).closest('.cw-posts-row');
+                        let parent = jQuery(this).closest('.cw-posts-row');
                         if (jQuery(this).is(':checked')) {
                             jQuery(parent).find('.cw-posts-row--select').show()
                         } else {
                             jQuery(parent).find('.cw-posts-row--select').hide()
                         }
                     })
-
             });
         </script>
 		<?php

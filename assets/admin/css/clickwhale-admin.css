@@ -262,7 +262,7 @@ ion-icon {
 .clickwhale-banner--link-review--raiting {
 	display: inline-flex;
 	justify-content: flex-end;
-	align-items: center;
+	align-items: baseline;
 }
 
 .clickwhale-banner--link-review span.dashicons {
@@ -1302,6 +1302,12 @@ table.tracking-codes .column-is_active {
 	font-style: normal;
 }
 
+/* SETTINGS PAGE MENU */
+
+.nav-tab-wrapper {
+	padding-bottom: 0 !important;
+}
+
 /* PRO PAGE PROMO */
 
 #adminmenu #toplevel_page_clickwhale .wp-submenu a[href="admin.php?page=clickwhale-pro"],
@@ -1829,9 +1835,9 @@ table.tracking-codes .column-is_active {
 	border-color: #1a1c1d !important;
 }
 
-/* Upgrade to PRO Widget */
+/* ADMIN SIDEBAR WIDGETS */
 
-#poststuff .postbox.clickwhale-upgrade-to-pro {
+#poststuff .postbox.clickwhale-admin-widget {
 	border-width: 0;
 	background-color: transparent;
 	-webkit-box-shadow: none;
@@ -1839,19 +1845,19 @@ table.tracking-codes .column-is_active {
 	box-shadow: none;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .hero img {
+#poststuff .postbox.clickwhale-admin-widget .hero img {
 	height: auto;
 	width: 100%;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .title {
+#poststuff .postbox.clickwhale-admin-widget .title {
 	margin-top: -2px;
 	padding: 1.4rem;
 	font-size: 16px;
 	background-color: #ffffff;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside {
+#poststuff .postbox.clickwhale-admin-widget .inside {
 	margin-top: 0;
 	padding: 0 1.4em 0.8em;
 	background-color: #ffffff;
@@ -1860,21 +1866,58 @@ table.tracking-codes .column-is_active {
 	border-radius: 0 0 6px 6px;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside ul {
+#poststuff .postbox.clickwhale-admin-widget .inside ul {
 	margin-top: 0;
 	line-height: 2;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside ul li .text {
-	padding-left: 2px;
+#poststuff .postbox.clickwhale-admin-widget .inside ul li {
+	position: relative;
+	padding-left: 24px;
+}
+
+#poststuff .postbox.clickwhale-admin-widget .inside ul li::before {
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	height: 16px;
+	width: 16px;
+	content: none;
+}
+
+#poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__upgrade .inside ul li::before {
+	top: 3px;
+	content: url("https://s.w.org/images/core/emoji/15.0.3/svg/2b50.svg");
+}
+
+#poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__docs .inside ul li::before {
+	top: 4px;
+	content: url("data:image/svg+xml;charset=UTF-8, %3Csvg xmlns='http://www.w3.org/2000/svg' height='16' width='16' viewBox='0 0 384 512' fill='%23666'%3E%3Cpath d='M288 248v28c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-28c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm-12 72H108c-6.6 0-12 5.4-12 12v28c0 6.6 5.4 12 12 12h168c6.6 0 12-5.4 12-12v-28c0-6.6-5.4-12-12-12zm108-188.1V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V48C0 21.5 21.5 0 48 0h204.1C264.8 0 277 5.1 286 14.1L369.9 98c9 8.9 14.1 21.2 14.1 33.9zm-128-80V128h76.1L256 51.9zM336 464V176H232c-13.3 0-24-10.7-24-24V48H48v416h288z'/%3E%3C/svg%3E");
+}
+
+#poststuff .postbox.clickwhale-admin-widget .inside ul li .text {
 	color: #5B7184;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button {
+#poststuff .postbox.clickwhale-admin-widget .inside ul li a.text {
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+#poststuff .postbox.clickwhale-admin-widget .inside ul li a.text:hover {
+	color: #397eff;
+}
+
+#poststuff .postbox.clickwhale-admin-widget .inside .clickwhale-pro-button {
 	padding: 1em 0 1.6em;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button a {
+#poststuff .postbox.clickwhale-admin-widget .inside .clickwhale-pro-button a {
 	display: block;
 	padding: 14px;
 	font-size: 14px;
@@ -1882,9 +1925,18 @@ table.tracking-codes .column-is_active {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
 }
 
-#poststuff .postbox.clickwhale-upgrade-to-pro .inside .clickwhale-pro-button a:hover {
+#poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__upgrade .inside .clickwhale-pro-button a {
+	padding-left: calc(0.5em + 14px); /* offset for a ~ half of emoji's width + margin */
+}
+
+#poststuff .postbox.clickwhale-admin-widget .inside .clickwhale-pro-button a:hover {
 	background-color: #1a1c1d;
 	color: #ffffff;
 }

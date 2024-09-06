@@ -40,7 +40,7 @@ do_action( 'clickwhale_admin_banner' );
 	$link->show_message( $item['id'] );
 	?>
 
-    <?php //do_action( 'clickwhale_admin_sidebar_begin' ); ?>
+    <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form id="form_edit_<?php echo $link->instance_single ?>"
           class="clickwhale_form_edit"
@@ -245,6 +245,6 @@ do_action( 'clickwhale_admin_banner' );
         </div>
     </form>
 
-    <?php //do_action( 'clickwhale_admin_sidebar_end' ); ?>
+    <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
 
 </div>

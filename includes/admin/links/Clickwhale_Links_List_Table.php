@@ -52,7 +52,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				}
 				?>
             </div>
-
 			<?php
 		}
 	}
@@ -111,8 +110,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 *
 	 * @param $item - row (key, value array)
 	 * @param $column_name - string (key)
-	 *
-	 * @return HTML
+	 * @return string
 	 */
 	public function column_default( $item, $column_name ) {
 		return $item[ $column_name ];
@@ -123,8 +121,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * method name must be like this: "column_[ column_name ]"
 	 *
 	 * @param $item - row (key, value array)
-	 *
-	 * @return HTML
+	 * @return string
 	 */
 
 	/**
@@ -132,7 +129,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * when you hover row "Edit | Delete" links showed
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_title( $item ) {
@@ -175,7 +171,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * Link url with copy button
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_slug( $item ) {
@@ -186,8 +181,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * Target URL
 	 *
 	 * @param $item - row (key, value array)
-	 *
-	 * @return HTML
+	 * @return string
 	 */
 	public function column_url( $item ) {
 		return $item['url'];
@@ -197,7 +191,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * List of categories
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_categories( $item ) {
@@ -235,7 +228,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * Total clicks per link
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 * @since 1.1.0
 	 *
@@ -254,7 +246,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * [REQUIRED] this is how checkbox column renders
 	 *
 	 * @param $item - row (key, value array)
-	 *
 	 * @return string
 	 */
 	public function column_cb( $item ) {
@@ -342,7 +333,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
 		switch ( $action ) {
 			case 'edit':
-
 				$data = array();
 
 				if ( isset( $_GET['link_category'] ) ) {
@@ -390,6 +380,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 					echo( "<script>location.href = '" . $url . "'</script>" );
 				}
 				break;
+
 			case 'delete':
 				$links_table = Helper::get_db_table_name( 'links' );
 				$meta_table  = Helper::get_db_table_name( 'meta' );
@@ -408,6 +399,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 					);
 				}
 				break;
+
 			case 'reset':
 				$table = Helper::get_db_table_name( 'track' );
 				foreach ( $ids as $id ) {
@@ -419,14 +411,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 					);
 				}
 				break;
-			default:
-				break;
 		}
 	}
 
 	/**
-	 * This is the most important method
-	 *
+	 * This is the most important method.
 	 * It will get rows from database and prepare them to be showed in table
 	 */
 	public function prepare_items() {
@@ -438,13 +427,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		$hidden       = array();
 		$sortable     = $this->get_sortable_columns();
 
-		// here we configure table headers, defined in our methods
+		// Here we configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		//  process bulk action if any
+		//  Process bulk action if any
 		$this->process_bulk_action();
 
-		// prepare query params, as usual current page, order by and order direction
+		// Prepare query params, as usual current page, order by and order direction
 		$sort    = Helper::get_sort_params(
 			$sortable,
 			$_REQUEST['order'] ?? '',
@@ -454,7 +443,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		$orderby = $sort['orderby'];
 		$paged   = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
-		// will be used in pagination settings
+		// Will be used in pagination settings
 		$params = array();
 
 		if ( ! empty( $_GET['s'] ) ) {
@@ -478,8 +467,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
 		// [REQUIRED] configure pagination
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,                  // total items defined above
-			'per_page'    => $per_page,                        // per page constant defined at top of method
+			'total_items' => $total_items,                    // total items defined above
+			'per_page'    => $per_page,                       // per page constant defined at top of method
 			'total_pages' => ceil( $total_items / $per_page ) // calculate pages count
 		) );
 	}
@@ -490,9 +479,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
 	public function display() {
 		$singular = $this->_args['singular'];
-
 		$this->display_tablenav( 'top' );
-
 		$this->screen->render_screen_reader_content( 'heading_list' );
 		?>
         <table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
@@ -502,25 +489,20 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				<?php $this->print_column_headers(); ?>
             </tr>
             </thead>
-
             <tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
-
 			<?php
 			if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'edit' ) && ! empty( $_REQUEST['id'] ) ) {
 				$quick_edit = new Clickwhale_Links_Bulk_Edit( $_REQUEST['id'], $this->get_column_count() );
 				echo $quick_edit->render_quick_edit();
 			}
 			?>
-
 			<?php $this->display_rows_or_placeholder(); ?>
             </tbody>
-
             <tfoot>
             <tr>
 				<?php $this->print_column_headers( false ); ?>
             </tr>
             </tfoot>
-
         </table>
 		<?php
 		$this->display_tablenav( 'bottom' );

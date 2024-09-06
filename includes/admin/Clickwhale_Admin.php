@@ -316,8 +316,8 @@ final class Clickwhale_Admin {
 	}
 
 	public function admin_banner() {
-		$link_logo     = 'https://clickwhale.pro?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
-		$link_helpdesk = 'https://clickwhale.pro/contact/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=help-link';
+		$link_logo     = 'https://clickwhale.pro/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
+		$link_helpdesk = 'https://clickwhale.pro/docs/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_need_help';
 		$link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
 		?>
 
@@ -333,7 +333,18 @@ final class Clickwhale_Admin {
             <div class="clickwhale-banner--links">
 				<?php if ( $link_review ) { ?>
                     <div class="clickwhale-banner--link-review">
-						<?php printf( __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', CLICKWHALE_NAME ), esc_url( $link_review ) ); ?>
+						<?php printf(
+                            wp_kses(
+                                __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', CLICKWHALE_NAME ),
+                                array(
+                                    'a' => array(
+                                        'href' => array(),
+                                        'target' => array( '_blank' )
+                                    )
+                                )
+                            ),
+                            esc_url( $link_review )
+                        ); ?>
                         <span class="clickwhale-banner--link-review--raiting">
                             <span class="dashicons dashicons-star-filled"></span>
                             <span class="dashicons dashicons-star-filled"></span>
@@ -353,7 +364,6 @@ final class Clickwhale_Admin {
 				<?php } ?>
 
 				<?php do_action( 'clickwhale_admin_banner_pro_button' ) ?>
-
             </div>
         </div>
 		<?php
@@ -382,52 +392,87 @@ final class Clickwhale_Admin {
 	}
 
 	public function admin_sidebar_begin() {
-        if ( clickwhale_fs()->can_use_premium_code() ) {
-            return; // pro version sidebar begin
-        } else { ?>
+        ?>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div id="post-body-content">
-        <?php }
+        <?php
     }
 
 	public function admin_sidebar_end() {
-        if ( clickwhale_fs()->can_use_premium_code() ) {
-            return; // pro version sidebar end
-        } else { ?>
+        ?>
                     </div><!-- /#post-body-content -->
                     <div id="postbox-container-1" class="postbox-container">
-                        <?php do_action( 'clickwhale_admin_free_version_widget' ); ?>
+                        <?php do_action( 'clickwhale_admin_sidebar_area' ); ?>
                     </div><!-- /.postbox-container -->
                 </div><!-- /#post-body -->
             </div><!-- /#poststuff -->
-        <?php }
+        <?php
     }
 
-	public function upgrade_to_pro_widget() {
+	public function admin_widget_upgrade() {
         if ( clickwhale_fs()->can_use_premium_code() ) {
             return;
         } ?>
-        <div class="postbox clickwhale-upgrade-to-pro">
+        <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__upgrade">
             <div class="hero">
-                <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/upgrade_to_pro_widget_hero.svg' ) ?>"
+                <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/upgrade_to_pro_widget_hero.svg' ) ?>"
                      alt="<?php echo CLICKWHALE_NAME ?>">
             </div>
             <h3 class="title"><?php esc_attr_e( 'Upgrade to ClickWhale Pro', CLICKWHALE_NAME ); ?></h3>
             <div class="inside">
                 <ul>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Detailed Statistics', CLICKWHALE_NAME ); ?></span></li>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'UTM Campaign Tracking', CLICKWHALE_NAME ); ?></span></li>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', CLICKWHALE_NAME ); ?></span></li>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Advanced Customization Options', CLICKWHALE_NAME ); ?></span></li>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'More Blocks for Link Pages', CLICKWHALE_NAME ); ?></span></li>
-                    <li><span>⭐</span> <span class="text"><?php esc_attr_e( 'Remove Plugin Credits', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'Detailed Statistics', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'UTM Campaign Tracking', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'Advanced Customization Options', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'More Blocks for Link Pages', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'Remove Plugin Credits', CLICKWHALE_NAME ); ?></span></li>
                 </ul>
 
                 <div class="clickwhale-pro-button">
-                    <a href="<?php echo admin_url('admin.php?page=clickwhale-pricing'); ?>"
+                    <a href="https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=upgrade_to_pro_widget"
                        class="button-get-pro"
                        rel="noopener"><?php esc_attr_e( 'View Upgrade', CLICKWHALE_NAME ); ?> 🚀</a>
+                </div>
+            </div>
+        </div>
+		<?php
+	}
+
+	public function admin_widget_docs() {
+        ?>
+        <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__docs">
+            <div class="hero">
+                <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/docs_widget_hero.png' ) ?>"
+                     alt="<?php echo CLICKWHALE_NAME ?>">
+            </div>
+            <h3 class="title"><?php esc_attr_e( 'Plugin Documentation', CLICKWHALE_NAME ); ?></h3>
+            <div class="inside">
+                <ul>
+                    <li><a href="https://clickwhale.pro/docs/article/how-to-shorten-links-and-create-redirects/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           class="text"
+                           target="_blank"
+                           rel="nofollow"
+                           title="<?php esc_attr_e( 'How To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?></a></li>
+
+                    <li><a href="https://clickwhale.pro/docs/article/creating-your-first-link-page/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           class="text"
+                           target="_blank"
+                           rel="nofollow"
+                           title="<?php esc_attr_e( 'Creating Your First Link Page', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'Creating Your First Link Page', CLICKWHALE_NAME ); ?></a></li>
+                    <li><a href="https://clickwhale.pro/docs/article/add-google-tag-manager-to-wordpress/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           class="text"
+                           target="_blank"
+                           rel="nofollow"
+                           title="<?php esc_attr_e( 'How To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?></a></li>
+                </ul>
+
+                <div class="clickwhale-pro-button">
+                    <a href="https://clickwhale.pro/docs/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                       class="button-get-pro"
+                       rel="noopener"
+                       target="_blank"><?php esc_attr_e( 'View all Articles', CLICKWHALE_NAME ); ?></a>
                 </div>
             </div>
         </div>
@@ -525,10 +570,11 @@ final class Clickwhale_Admin {
 		if ( $_GET['page'] === CLICKWHALE_SLUG || $_GET['page'] === CLICKWHALE_SLUG . '-linkpages' ) {
 			?>
             <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('.slug-input--btn').click(function (e) {
+                jQuery(document).ready(function() {
+                    jQuery('.slug-input--btn').on('click', function(e) {
                         e.preventDefault();
-                        var $temp = jQuery('<input>'),
+                        let
+                            $temp = jQuery('<input>'),
                             textToCopy = jQuery(this).parent().find('input').val();
 
                         textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
@@ -544,33 +590,41 @@ final class Clickwhale_Admin {
 		if ( $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' || $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
 			?>
             <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('#copy-link-url').click(function (e) {
+                jQuery(document).ready(function() {
+                    jQuery('#copy-link-url').on('click', function(e) {
                         e.preventDefault();
-                        // remove appended message
+
+                        // Remove appended message
                         jQuery('.copied').remove();
-                        // copy slug
+
+                        // Copy slug
                         copySlug();
-                        // append message
+
+                        // Append message
                         jQuery('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>')
                             .insertAfter(jQuery(this));
-                        // hide appended message
-                        setTimeout(function () {
+
+                        // Hide appended message
+                        setTimeout(function() {
                             jQuery('.copied').remove();
                         }, 2000);
                     });
 
-                    jQuery('#cw-slug--text').click(function (e) {
+                    jQuery('#cw-slug--text').on('click', function(e) {
                         e.preventDefault();
-                        // remove appended message
+
+                        // Remove appended message
                         jQuery('.copied').remove();
-                        // copy slug
+
+                        // Copy slug
                         copySlug();
-                        // append message
+
+                        // Append message
                         jQuery(this)
                             .append('<span class="copied"><?php _e( 'Copied!', CLICKWHALE_NAME ) ?></span>');
-                        // hide appended message
-                        setTimeout(function () {
+
+                        // Hide appended message
+                        setTimeout(function() {
                             jQuery('.copied').remove();
                         }, 2000);
                     });
@@ -593,9 +647,10 @@ final class Clickwhale_Admin {
 			$nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
 			?>
             <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').change(function () {
-                        var active = this.checked,
+                jQuery(document).ready(function() {
+                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function() {
+                        let
+                            active = this.checked,
                             id = this.dataset.id;
 
                         jQuery.post(ajaxurl, {
@@ -603,7 +658,7 @@ final class Clickwhale_Admin {
                             'action': 'clickwhale/admin/tracking_code_toggle_active',
                             'status': active ? 1 : 0,
                             'id': id
-                        }, function (response) {
+                        }, function(response) {
                             if (response.data.action_disable_all) {
                                 jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
                                 jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
