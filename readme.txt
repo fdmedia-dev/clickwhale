@@ -1,11 +1,11 @@
 === ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
-Contributors: flowdee, krapan88, webdj, liquiemm, freemius
+Contributors: flowdee, krapan88, webdj, liquiemm
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
-Tested up to: 6.5
-Stable tag: 2.2.0
+Tested up to: 6.6
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,16 +55,18 @@ From now on, you don't need a third-party service, you save on monthly subscript
 ## 🌟 ClickWhale PRO brings even more features 🌟
 Do you want to get even more out of your affiliate marketing game and take it to the **next level**?
 
-Here are the highlights of [ClickWhale PRO](https://clickwhale.pro/pricing/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=ClickWhale+PRO) below:
+Here are the highlights of [ClickWhale PRO](https://clickwhale.pro/upgrade/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=ClickWhale+PRO) below:
 
+- **Keyword Auto Linker** - Define keywords that will be automatically replaced with links throughout your posts, pages and custom post types.
 - **Detailed Analytics** - Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy.
 - **UTM Campaign Tracking** - Dedicated statistics admin page which allows you to filter and analyze clicks and views on links and link pages.
 - **E-Commerce Conversion Tracking** - Easily place conversion tracking codes to track the performance of your WooCommerce or Easy Digital Downloads store.
 - **Advanced Customization Options** - Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more.
 - **Blog Post Feeds** - Automatically show the latest blog posts directly on your link pages for further reach.
+- **Forms Block** - Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers.
 - **Social Profiles** - Add your social profiles to your link page to gain more followers on your favorite social networks.
 
-This was just a selection of the additional features that await you. If you already like ClickWhale, then you should definitely consider [upgrading](https://clickwhale.pro/pricing/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Upgrade+to+Pro).
+This was just a selection of the additional features that await you. If you already like ClickWhale, then you should definitely consider [upgrading](https://clickwhale.pro/upgrade/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Upgrade+to+Pro).
 
 You won't regret it. ✊
 
@@ -114,6 +116,11 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.3.0 (2nd October 2024) =
+* Fix: Fixed "Deprecated: strip_tags()" issue occurred on admin pages
+* Info: WordPress v6.6.2 compatibility
+* Info: Updated Freemius SDK to v2.8.1
+
 = Version 2.2.0 (6th September 2024) =
 * Tweak: Enhanced the admin pages documentation widgets
 * Fix: Fixed trailing slash applied to custom link with URL parameters on link pages

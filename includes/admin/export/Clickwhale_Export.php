@@ -81,15 +81,19 @@ class Clickwhale_Export {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
-			return false;
+        if ( empty( $_GET['page'] ) ) {
+            return;
+        }
+
+        if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
+			return;
 		}
 
 		$nonce_export_csv = wp_create_nonce( 'export_csv' );
 		?>
 
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
+            jQuery(document).ready(function() {
                 const
                     selectColumns = jQuery('#select_columns'),
                     selectCategories = jQuery('#select_categories');
@@ -102,7 +106,7 @@ class Clickwhale_Export {
                     placeholder: "Select categories you want to export"
                 });
 
-                jQuery('#clickwhale_tools_export select').on('select2:select', function (e) {
+                jQuery('#clickwhale_tools_export select').on('select2:select', function(e) {
                     const
                         select = jQuery(this),
                         data = e.params.data,
@@ -120,7 +124,7 @@ class Clickwhale_Export {
                     }
                 });
 
-                jQuery('#export_form').on('submit', function (e) {
+                jQuery('#export_form').on('submit', function(e) {
                     e.preventDefault();
 
                     const
@@ -144,7 +148,7 @@ class Clickwhale_Export {
                         'action': 'clickwhale/admin/export_csv',
                         'columns': columns,
                         'categories': categories
-                    }, function (response) {
+                    }, function(response) {
                         if (response.success) {
                             const
                                 file = response.data.file,
@@ -166,7 +170,7 @@ class Clickwhale_Export {
                         } else {
                             alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
                         }
-                    }).fail(function (xhr, textStatus, errorThrown) {
+                    }).fail(function(xhr, textStatus, errorThrown) {
                         alert('<?php _e( 'An error occurred, try changing the request', CLICKWHALE_NAME ) ?>')
                     });
                 })

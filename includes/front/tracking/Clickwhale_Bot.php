@@ -25,7 +25,9 @@ class Clickwhale_Bot {
 			/* Detect bots based on common markers */
 			$this->is_bot = true;
 		} else {
-			/* Detect based on a predefined list or markers */
+			/* Detect based on a predefined list or markers
+			    https://github.com/monperrus/crawler-user-agents/blob/master/crawler-user-agents.json
+			*/
 			$url     = plugin_dir_url( __FILE__ ) . 'library/crawler-user-agents.json';
 			$request = wp_remote_get( $url );
 

@@ -301,7 +301,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 	public function admin_scripts(): void {
 		?>
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
+            jQuery(document).ready(function() {
                 jQuery('#position_code').select2({
                     placeholder: '<?php _e( 'Select Code position', CLICKWHALE_NAME ) ?>',
                     width: '100%',
@@ -315,7 +315,8 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 });
 
                 if (jQuery('#code').length) {
-                    var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+                    let editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+
                     editorSettings.codemirror = _.extend(
                         {},
                         editorSettings.codemirror,
@@ -337,8 +338,9 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 // Toggle page select
-                jQuery('.cw-posts-row').each(function () {
-                    let checkbox = jQuery(this).find('[type="checkbox"]'),
+                jQuery('.cw-posts-row').each(function() {
+                    let
+                        checkbox = jQuery(this).find('[type="checkbox"]'),
                         selectWrap = jQuery(this).find('.cw-posts-row--select');
 
                     if (checkbox.is(':checked')) {
@@ -353,7 +355,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 jQuery('[name="position[conversion]"][value="standard"]').prop('disabled', false);
 
                 jQuery(document)
-                    .on('change', '[name="position[pages]"]', function () {
+                    .on('change', '[name="position[pages]"]', function() {
                         if (jQuery(this).val() !== 'all') {
                             jQuery('.cw-posts-row--included').show();
                             jQuery('.cw-posts-row--excluded').hide();
@@ -362,8 +364,9 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             jQuery('.cw-posts-row--excluded').show();
                         }
                     })
-                    .on('change', '.cw-posts-row [type="checkbox"]', function () {
+                    .on('change', '.cw-posts-row [type="checkbox"]', function() {
                         let parent = jQuery(this).closest('.cw-posts-row');
+
                         if (jQuery(this).is(':checked')) {
                             jQuery(parent).find('.cw-posts-row--select').show()
                         } else {

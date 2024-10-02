@@ -98,6 +98,17 @@ final class Clickwhale_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php';
 	}
 
+    private function add_submenu_page( $parent, $k, $v ): void {
+        add_submenu_page(
+            $parent,
+            $v,
+            $v,
+            'read',
+            $k !== 'links' ? CLICKWHALE_SLUG . '-' . $k : CLICKWHALE_SLUG,
+            array( $this, 'get_template' )
+        );
+    }
+
 	/**
 	 * Register plugin menus.
      * Introduces theme options into the 'Settings' menu and into a top-level 'Clickwhale' menu.
@@ -110,7 +121,7 @@ final class Clickwhale_Admin {
 		$this->menus = apply_filters( 'clickwhale_menus', array(
 			'subpages'  => array(
 				'links'              => __( 'Links',                 CLICKWHALE_NAME ),
-				'edit-link'          => __( 'Add New',               CLICKWHALE_NAME ),
+				'edit-link'          => __( 'Add New Link',          CLICKWHALE_NAME ),
 				'categories'         => __( 'Categories',            CLICKWHALE_NAME ),
 				'edit-category'      => __( 'Add New Category',      CLICKWHALE_NAME ),
 				'linkpages'          => __( 'Link Pages',            CLICKWHALE_NAME ),
@@ -145,16 +156,37 @@ final class Clickwhale_Admin {
 		);
 
 		foreach ( $this->menus['subpages'] as $k => $v ) {
-			$parent = in_array( $k, $this->menus['toplevel'] ) ? CLICKWHALE_SLUG : '';
 
-			add_submenu_page(
-				$parent,
-				$v,
-				$v,
-				'read',
-				$k !== 'links' ? CLICKWHALE_SLUG . '-' . $k : CLICKWHALE_SLUG,
-				array( $this, 'get_template' )
-			);
+            if ( in_array( $k, $this->menus['toplevel'] ) ) {
+                $parent = CLICKWHALE_SLUG;
+                $this->add_submenu_page( $parent, $k, $v );
+                continue;
+            }
+
+            if ( empty( $_REQUEST['page'] ) ) {
+                continue;
+            }
+
+            $page = $_REQUEST['page'];
+
+            if ( ! strpos( $page, $k ) ) {
+                continue;
+            }
+
+            $pos = strpos( $page, '-edit-' );
+
+            if ( $pos === false ) {
+                continue;
+            }
+
+            $instance_slug = substr( $page, $pos + strlen( '-edit-' ) );
+            $parent = $this->menus['subpages']['edit-' . $instance_slug];
+
+            if ( ! empty( $_REQUEST['id'] ) ) {
+                $parent = 'Edit' . str_replace( 'Add New', '', $parent );
+            }
+
+			$this->add_submenu_page( $parent, $k, $v );
 		}
 
 		do_action( 'clickwhale_menu_before_settings' );
@@ -227,7 +259,7 @@ final class Clickwhale_Admin {
 	 * @since 1.3.0
 	 */
 	public function get_template() {
-		$current_template = $this->menus['templates'][ current_filter() ];
+		$current_template = $this->menus['templates'][current_filter()];
 		include_once( CLICKWHALE_TEMPLATES_DIR . '/admin/' . $current_template . '.php' );
 	}
 
@@ -288,6 +320,10 @@ final class Clickwhale_Admin {
 				array( 'jquery' ),
 				'7.1.0'
 			);
+		}
+
+		if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) {
+			wp_enqueue_script( 'jquery-ui-sortable' );
 		}
 
 		if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-tracking-code' ) {

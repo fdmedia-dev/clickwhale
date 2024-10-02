@@ -16,7 +16,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
 	private $users_data;
 
-	function __construct() {
+    public function __construct() {
 		global $status, $page;
 		parent::__construct(
 			array(
@@ -25,35 +25,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				'ajax'     => true
 			)
 		);
-	}
-
-	function extra_tablenav( $which ) {
-
-		$categories       = Categories_Helper::get_all();
-		$categories_count = $categories ? count( $categories ) : 0;
-
-		if ( $categories_count > 0 && $which == "top" ) {
-			?>
-            <div class="alignleft actions bulkactions">
-				<?php if ( $categories ) { ?>
-                    <select name="category" class="clickwhale-filter-categories">
-                        <option value=""><?php _e( 'All Categories', CLICKWHALE_NAME ) ?></option>
-						<?php
-						foreach ( $categories as $category ) {
-							$selected = isset( $_GET['category'] ) && $_GET['category'] == $category->id ? ' selected = "selected"' : '';
-							?>
-                            <option value="<?php echo $category->id; ?>" <?php echo $selected; ?>><?php echo $category->title; ?></option>
-							<?php
-						}
-						?>
-                    </select>
-                    <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_NAME ); ?>">
-					<?php
-				}
-				?>
-            </div>
-			<?php
-		}
 	}
 
 	private function get_users_data( $order, $orderby, $params ) {
@@ -104,6 +75,35 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 			ARRAY_A
 		);
 	}
+
+    public function extra_tablenav( $which ) {
+
+        $categories = Categories_Helper::get_all();
+        $categories_count = $categories ? count( $categories ) : 0;
+
+        if ( $categories_count > 0 && $which == "top" ) {
+            ?>
+            <div class="alignleft actions bulkactions">
+                <?php if ( $categories ) { ?>
+                    <select name="category" class="clickwhale-filter-categories">
+                        <option value=""><?php _e( 'All Categories', CLICKWHALE_NAME ) ?></option>
+                        <?php
+                        foreach ( $categories as $category ) {
+                            $selected = isset( $_GET['category'] ) && $_GET['category'] == $category->id ? ' selected = "selected"' : '';
+                            ?>
+                            <option value="<?php echo $category->id; ?>" <?php echo $selected; ?>><?php echo $category->title; ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                    <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_NAME ); ?>">
+                    <?php
+                }
+                ?>
+            </div>
+            <?php
+        }
+    }
 
 	/**
 	 * [REQUIRED] this is a default column renderer
@@ -193,21 +193,24 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 	 * @param $item - row (key, value array)
 	 * @return string
 	 */
-	public function column_categories( $item ) {
+    public function column_categories( $item ) {
+        $dash = '&mdash;';
+
 		if ( empty( $item['categories'] ) ) {
-			return false;
+			return $dash;
 		}
+
 		$current_categories = '';
-		$categories         = Categories_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
+		$categories = Categories_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
 
 		if ( ! $categories ) {
-			return false;
+			return $dash;
 		}
 
 		$link_categories = explode( ',', $item['categories'] );
-		$lastElement     = end( $link_categories );
+        $last = end( $link_categories );
 
-		foreach ( $link_categories as $k => $v ) {
+		foreach ( $link_categories as $v ) {
 			$v      = intval( $v );
 			$result = array_column( $categories, null, 'id' )[ $v ] ?? false;
 
@@ -216,12 +219,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 			}
 
 			$current_categories .= '<a href="' . get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) . '&category=' . $result['id'] . '">' . wp_unslash( $result['title'] ) . '</a>';
-			if ( $v != $lastElement ) {
-				$current_categories .= ', ';
+			if ( $v != $last ) {
+				//$current_categories .= ', ';
+				$current_categories .= ',<br>';
 			}
 		}
 
-		return $current_categories;
+		return $current_categories ?: $dash;
 	}
 
 	/**
@@ -266,7 +270,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		$tracking_options = get_option( 'clickwhale_tracking_options' );
 
 		$columns = array(
-			'cb'           => '<input type="checkbox" />',             //Render a checkbox instead of text
+			'cb'           => '<input type="checkbox" />',             //Render checkbox instead of text
 			'title'        => __( 'Title', CLICKWHALE_NAME ),
 			'slug'         => __( 'Slug', CLICKWHALE_NAME ),
 			'url'          => __( 'Target URL', CLICKWHALE_NAME ),
@@ -279,7 +283,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 			unset( $columns['clicks_count'] );
 		}
 
-		return $columns;
+		return apply_filters( 'clickwhale_links_list_table', $columns );
 	}
 
 	/**
@@ -387,17 +391,18 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				foreach ( $ids as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(
-							"DELETE FROM $links_table WHERE id IN(%d)",
+							"DELETE FROM $links_table WHERE id=%d",
 							intval( $id )
 						)
 					);
 					$wpdb->query(
 						$wpdb->prepare(
-							"DELETE FROM $meta_table WHERE link_id = %d",
+							"DELETE FROM $meta_table WHERE link_id=%d",
 							intval( $id )
 						)
 					);
 				}
+                do_action( 'clickwhale_link_deleted', $ids );
 				break;
 
 			case 'reset':
@@ -405,7 +410,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 				foreach ( $ids as $id ) {
 					$wpdb->query(
 						$wpdb->prepare(
-							"DELETE FROM $table WHERE link_id IN(%d)",
+							"DELETE FROM $table WHERE link_id=%d",
 							intval( $id )
 						)
 					);
@@ -427,10 +432,10 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		$hidden       = array();
 		$sortable     = $this->get_sortable_columns();
 
-		// Here we configure table headers, defined in our methods
+		// Configure table headers, defined in our methods
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
-		//  Process bulk action if any
+		// Process bulk action if any
 		$this->process_bulk_action();
 
 		// Prepare query params, as usual current page, order by and order direction
@@ -465,10 +470,10 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 		$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 		$this->items      = $this->users_data;
 
-		// [REQUIRED] configure pagination
+		// [REQUIRED] Configure pagination
 		$this->set_pagination_args( array(
-			'total_items' => $total_items,                    // total items defined above
-			'per_page'    => $per_page,                       // per page constant defined at top of method
+			'total_items' => $total_items,                  // total items defined above
+			'per_page'    => $per_page,                        // per page constant defined at top of method
 			'total_pages' => ceil( $total_items / $per_page ) // calculate pages count
 		) );
 	}
@@ -491,12 +496,12 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             </thead>
             <tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
 			<?php
-			if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'edit' ) && ! empty( $_REQUEST['id'] ) ) {
-				$quick_edit = new Clickwhale_Links_Bulk_Edit( $_REQUEST['id'], $this->get_column_count() );
-				echo $quick_edit->render_quick_edit();
-			}
-			?>
-			<?php $this->display_rows_or_placeholder(); ?>
+                if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'edit' ) && ! empty( $_REQUEST['id'] ) ) {
+                    $quick_edit = new Clickwhale_Links_Bulk_Edit( $_REQUEST['id'], $this->get_column_count() );
+                    echo $quick_edit->render_quick_edit();
+                }
+                $this->display_rows_or_placeholder();
+            ?>
             </tbody>
             <tfoot>
             <tr>

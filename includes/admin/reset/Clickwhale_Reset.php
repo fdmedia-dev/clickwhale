@@ -21,7 +21,7 @@ class Clickwhale_Reset {
      */
 	private static $instance;
 
-	public static function getInstance(): Clickwhale_Reset {
+	public static function get_instance(): Clickwhale_Reset {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
@@ -88,66 +88,72 @@ class Clickwhale_Reset {
 	}
 
 	public function admin_scripts() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-tools' ) {
-			$nonce = wp_create_nonce( 'clickwhale_reset' );
-			?>
+        if ( empty( $_GET['page'] ) ) {
+            return;
+        }
 
-            <script type='text/javascript'>
+        if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
+            return;
+        }
 
-                jQuery(document).ready(function () {
-                    jQuery('#clickwhale-tools-reset').on('click', 'button', function (e) {
-                        e.preventDefault();
+        $nonce = wp_create_nonce( 'clickwhale_reset' );
+        ?>
+        <script type='text/javascript'>
+            jQuery(document).ready(function() {
+                jQuery('#clickwhale-tools-reset').on('click', 'button', function(e) {
+                    e.preventDefault();
 
-                        var buttonContainer = jQuery(this).parent(),
-                            resetButton = jQuery(this),
-                            resetSpinner = jQuery(buttonContainer).find('.spinner'),
-                            resetResult = jQuery(buttonContainer).find('.results'),
-                            resetConfirm,
-                            resetType;
+                    let
+                        buttonContainer = jQuery(this).parent(),
+                        resetButton = jQuery(this),
+                        resetSpinner = jQuery(buttonContainer).find('.spinner'),
+                        resetResult = jQuery(buttonContainer).find('.results'),
+                        resetConfirm,
+                        resetType;
 
-                        jQuery(resetButton).prop('disabled', true);
-                        jQuery(resetSpinner).addClass("is-active");
-                        jQuery(resetResult).html('');
+                    jQuery(resetButton).prop('disabled', true);
+                    jQuery(resetSpinner).addClass("is-active");
+                    jQuery(resetResult).html('');
 
-                        switch (resetButton.attr('id')) {
-                            case 'button-reset-settings':
-                                resetConfirm = '<?php _e( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', $this->plugin_name ) ?>';
-                                resetType = 'settings';
-                                break;
-                            case 'button-reset-db':
-                                resetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
-                                resetType = 'db';
-                                break;
-                            case 'button-reset-stats':
-                                resetConfirm = '<?php _e( 'Are you sure? This action will reset all statistic. This process cannot be undone!', $this->plugin_name ) ?>';
-                                resetType = 'stats';
-                                break;
-                        }
+                    switch (resetButton.attr('id')) {
+                        case 'button-reset-settings':
+                            resetConfirm = '<?php _e( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', $this->plugin_name ) ?>';
+                            resetType = 'settings';
+                            break;
+                        case 'button-reset-db':
+                            resetConfirm = '<?php _e( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', $this->plugin_name ) ?>';
+                            resetType = 'db';
+                            break;
+                        case 'button-reset-stats':
+                            resetConfirm = '<?php _e( 'Are you sure? This action will reset all statistic. This process cannot be undone!', $this->plugin_name ) ?>';
+                            resetType = 'stats';
+                            break;
+                    }
 
-                        if (window.confirm(resetConfirm)) {
-                            jQuery.post(ajaxurl, {
-                                'security': '<?php echo esc_attr( $nonce ) ?>',
-                                'action': 'clickwhale/admin/clickwhale_reset',
-                                'reset': resetType,
-                            }, function (response) {
-                                if (response.success) {
-                                    var itemClass = response.data.status ? 'success' : 'error',
-                                        itemText = response.data.text;
-                                    jQuery(resetResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
+                    if (window.confirm(resetConfirm)) {
+                        jQuery.post(ajaxurl, {
+                            'security': '<?php echo esc_attr( $nonce ) ?>',
+                            'action': 'clickwhale/admin/clickwhale_reset',
+                            'reset': resetType,
+                        }, function(response) {
+                            if (response.success) {
+                                let
+                                    itemClass = response.data.status ? 'success' : 'error',
+                                    itemText = response.data.text;
 
-                                    jQuery(resetButton).prop('disabled', false);
-                                    jQuery(resetSpinner).removeClass("is-active");
-                                }
-                            });
-                        } else {
-                            jQuery(resetButton).prop('disabled', false);
-                            jQuery(resetSpinner).removeClass("is-active");
-                        }
-                    });
+                                jQuery(resetResult).append('<div class="notice notice-' + itemClass + '"><p>' + itemText + '</p></div>');
+
+                                jQuery(resetButton).prop('disabled', false);
+                                jQuery(resetSpinner).removeClass("is-active");
+                            }
+                        });
+                    } else {
+                        jQuery(resetButton).prop('disabled', false);
+                        jQuery(resetSpinner).removeClass("is-active");
+                    }
                 });
-            </script>
-            }
-			<?php
-		}
+            });
+        </script>
+        <?php
 	}
 }

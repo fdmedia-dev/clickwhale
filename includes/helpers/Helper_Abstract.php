@@ -66,8 +66,7 @@ abstract class Helper_Abstract {
 	 * Show message and exit when limit is reached
 	 *
 	 * @param $id
-	 *
-	 * @return false|void
+	 * @return void
 	 */
 	public static function get_limitation_error( $id ) {
 		if ( empty( $id ) && static::is_limit() ) {

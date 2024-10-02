@@ -421,7 +421,8 @@ ion-icon {
 	flex: 1;
 }
 
-.linkpage-row {
+.linkpage-row,
+.link-row {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -431,21 +432,26 @@ ion-icon {
 	background: #ffffff;
 }
 
-.linkpage-row.ui-sortable-helper {
+.linkpage-row.ui-sortable-helper,
+.link-row.ui-sortable-helper {
 	cursor: move;
 	box-shadow: 0 0 25px rgba(0, 0, 0, .1);
 }
 
 .linkpage-row--top,
 .linkpage-row--start,
-.linkpage-row--end {
+.linkpage-row--end,
+.link-row--top,
+.link-row--start,
+.link-row--end {
 	position: relative;
 	display: flex;
 	align-items: center;
 	gap: 5px;
 }
 
-.linkpage-row--top {
+.linkpage-row--top,
+.link-row--top {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -455,7 +461,8 @@ ion-icon {
 	gap: 25px;
 }
 
-.linkpage-row--start {
+.linkpage-row--start,
+.link-row--start {
 	position: relative;
 	display: flex;
 	justify-content: flex-start;
@@ -463,7 +470,8 @@ ion-icon {
 	gap: 5px;
 }
 
-.linkpage-row--end {
+.linkpage-row--end,
+.link-row--end {
 	position: relative;
 	display: flex;
 	justify-content: flex-end;
@@ -471,11 +479,8 @@ ion-icon {
 	gap: 15px;
 }
 
-.linkpage-row--drag {
-	cursor: move;
-}
-
-.linkpage-row--drag {
+.linkpage-row--drag,
+.link-row--drag {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -485,16 +490,19 @@ ion-icon {
 	border-radius: 5px;
 	padding: 8px;
 	color: #000000;
+	cursor: move;
 }
 
-.linkpage-row--drag svg {
+.linkpage-row--drag svg,
+.link-row--drag svg {
 	display: flex;
 	width: 16px;
 	height: 16px;
 	opacity: .5;
 }
 
-.linkpage-row--content {
+.linkpage-row--content,
+.link-row--content {
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -503,7 +511,8 @@ ion-icon {
 	gap: 5px;
 }
 
-.linkpage-row--content input {
+.linkpage-row--content input,
+.link-row--content input {
 	width: 100% !important;
 }
 
@@ -602,17 +611,20 @@ ion-icon {
 	opacity: .5;
 }
 
-.linkpage-row--actions {
+.linkpage-row--actions,
+.link-row--actions {
 	display: flex;
 	align-items: center;
 	gap: 5px;
 }
 
-.linkpage-row--actions.no-edit {
+.linkpage-row--actions.no-edit,
+.link-row--actions.no-edit {
 	padding-left: 37px;
 }
 
-.linkpage-row--actions button {
+.linkpage-row--actions button,
+.link-row--actions button {
 	border: none;
 	padding: 8px 8px;
 	border-radius: 4px;
@@ -620,38 +632,45 @@ ion-icon {
 	color: #000000;
 }
 
-.linkpage-row--actions button svg {
+.linkpage-row--actions button svg,
+.link-row--actions button svg {
 	display: block;
 	width: 16px;
 	height: 16px;
 	opacity: .5;
 }
 
-.linkpage-row--actions button:hover {
+.linkpage-row--actions button:hover,
+.link-row--actions button:hover {
 	background: #f7f7f7;
 	color: #007AFF;
 	cursor: pointer;
 }
 
-.linkpage-row--actions button:hover svg {
+.linkpage-row--actions button:hover svg,
+.link-row--actions button:hover svg {
 	opacity: 1;
 }
 
-.linkpage-row--actions button.linkpage-row--actions--button-remove:hover {
+.linkpage-row--actions button.linkpage-row--actions--button-remove:hover,
+.link-row--actions button.link-row--actions--button-remove:hover {
 	color: red;
 }
 
-.linkpage-row--bottom {
+.linkpage-row--bottom,
+.link-row--bottom {
 	display: none;
 	border-top: 1px solid #eeeeee;
 	padding: 20px 13px;
 }
 
-.linkpage-row--bottom.active {
+.linkpage-row--bottom.active,
+.link-row--bottom.active {
 	display: block;
 }
 
-.linkpage-row--bottom--control-wrap {
+.linkpage-row--bottom--control-wrap,
+.link-row--bottom--control-wrap {
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-start;
@@ -659,18 +678,21 @@ ion-icon {
 	margin-bottom: 10px;
 }
 
-.linkpage-row--bottom--control-wrap label {
+.linkpage-row--bottom--control-wrap label,
+.link-row--bottom--control-wrap label {
 	flex: 0 0 125px;
 	margin-top: 7px;
 }
 
-.linkpage-row--bottom--control-wrap > div {
+.linkpage-row--bottom--control-wrap > div,
+.link-row--bottom--control-wrap > div {
 	width: 100%;
 }
 
 .linkpage-row--bottom--control-wrap input[type="text"],
 .linkpage-row--bottom--control-wrap input[type="number"],
-.linkpage-row--bottom--control-wrap select {
+.linkpage-row--bottom--control-wrap select,
+.link-row--bottom--control-wrap input[type="text"] {
 	width: 100%;
 	max-width: 25rem;
 }
@@ -987,6 +1009,10 @@ ion-icon {
 
 td > .links-info {
 	max-width: 95%;
+}
+
+.clickwhale-tabs {
+	margin-bottom: 40px;
 }
 
 .clickwhale-tabs > ul {

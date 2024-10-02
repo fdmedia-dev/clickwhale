@@ -2,7 +2,11 @@
 namespace clickwhale\includes\front;
 
 use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
-use clickwhale\includes\helpers\{Helper, Linkpages_Helper, Links_Helper};
+use clickwhale\includes\helpers\{
+    Helper,
+    Linkpages_Helper,
+    Links_Helper
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -148,38 +152,43 @@ final class Clickwhale_Public {
 	 * @since 1.0.0
 	 */
 	public function do_redirect_handler() {
-		if ( ! is_admin() && $this->path ) {
-			$results = Links_Helper::get_by_slug( $this->path, 'OBJECT' );
-		};
+        if ( ! is_admin() && $this->path ) {
+            $results = Links_Helper::get_by_slug( $this->path, 'OBJECT' );
+        }
 
-		if ( ! empty( $results ) ) {
-			$id = intval( $results->id );
+        if ( empty( $results ) ) {
+            return;
+        }
 
-			// Track click on link
-			new Clickwhale_Click_Track( $id );
+        $id = intval( $results->id );
 
-			// Set headers
-			$nofollow  = '';
-			$sponsored = '';
-			$sep       = '';
+        // Track click on link
+        new Clickwhale_Click_Track( $id );
 
-			if ( $results->nofollow ) {
-				$nofollow = 'noindex, nofollow';
-			}
-			if ( $results->sponsored ) {
-				$sponsored = 'sponsored';
-			}
-			if ( $results->nofollow && $results->sponsored ) {
-				$sep = ', ';
-			}
-			if ( $results->nofollow || $results->sponsored ) {
-				header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
-			}
+        // Set headers
+        $nofollow  = '';
+        $sponsored = '';
+        $sep       = '';
 
-			$link_url = apply_filters( 'clickwhale_url_params', $results->url, $id );
-			wp_redirect( $link_url, $results->redirection );
-            exit;
-		}
+        if ( $results->nofollow ) {
+            $nofollow = 'noindex, nofollow';
+        }
+
+        if ( $results->sponsored ) {
+            $sponsored = 'sponsored';
+        }
+
+        if ( $results->nofollow && $results->sponsored ) {
+            $sep = ', ';
+        }
+
+        if ( $results->nofollow || $results->sponsored ) {
+            header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
+        }
+
+		$link_url = apply_filters( 'clickwhale_url_params', $results->url, $id );
+		wp_redirect( $link_url, $results->redirection );
+        exit;
 	}
 
 	public function add_target_to_clickwhale_link( $content ) {

@@ -236,7 +236,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 		);
 
 		if ( ! $links ) {
-			return false;
+			return;
 		}
 
 		foreach ( $links as $link ) {
@@ -255,7 +255,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 				array( 'id' => $link['id'] )
 			);
 		}
-
 	}
 
 	/**

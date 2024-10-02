@@ -1,7 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\migration;
 
-use clickwhale\includes\admin\migration\Clickwhale_Migration_Abstract;
+//use clickwhale\includes\admin\migration\Clickwhale_Migration_Abstract;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -43,7 +43,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
 				$insert_id = $this->run_links_migration( $array );
 				if ( isset( $link_data['utms'] ) ) {
-					do_action( 'clickwhale_update_link_meta', $insert_id, $link_data['utms'] );
+					do_action( 'clickwhale_link_updated', $insert_id, $link_data['utms'] );
 				}
 
 				$message[] = $this->link_item_import_success( $item->link_title );

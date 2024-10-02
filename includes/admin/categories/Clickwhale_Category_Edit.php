@@ -58,7 +58,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 		$nonce = wp_create_nonce( 'slug_exists' );
 		?>
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
+            jQuery(document).ready(function() {
 
                 const
                     title = jQuery('#title'),
@@ -70,8 +70,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                  * 2. Check slug (not null)
                  * 3. Check slug (exists as post/page slug)
                  */
-                jQuery('#submit').click(function (e) {
-                    const slugExists = slug_exists();
+                jQuery('#submit').on('click', function(e) {
 
                     if (!title.val()) {
                         e.preventDefault();
@@ -81,7 +80,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         title.removeClass('error').next().text('');
                     }
 
-                    if (slugExists === true) {
+                    if (slugExists() === true) {
                         e.preventDefault();
 
                         slug.addClass('error');
@@ -90,9 +89,14 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 
                 });
 
-                function slug_exists() {
-                    let result = null;
+                /**
+                 *
+                 * JS FUNCTIONS
+                 *
+                 */
 
+                function slugExists() {
+                    let result = null;
                     jQuery.ajax({
                         async: false,
                         type: 'post',
@@ -104,11 +108,10 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                             'type': 'category',
                             'slug': slug.val() ? slug.val() : title.val(),
                             'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
-                        }, success: function (response) {
+                        }, success: function(response) {
                             result = response.data;
                         }
                     });
-
                     return result;
                 }
 

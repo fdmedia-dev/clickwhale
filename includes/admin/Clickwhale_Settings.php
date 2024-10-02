@@ -53,17 +53,12 @@ final class Clickwhale_Settings {
 	 * @return array
 	 */
 	public static function default_options(): array {
-		return clickwhale()->default_options();
+		return apply_filters( 'clickwhale_default_options', clickwhale()->default_options() );
 	}
 
 	public function add_default_options() {
-		/* @Since 1.2.1 */
-		if ( ! get_option( 'clickwhale_version' ) ) {
-			add_option( 'clickwhale_version', CLICKWHALE_VERSION );
-		}
-
-		/* @Since 1.0.0 */
-		$defaults = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
+		/* @since 1.0.0 */
+		$defaults = self::default_options();
 
 		foreach ( $defaults as $k => $v ) {
 			$option_name = 'clickwhale_' . $k . '_options';
@@ -81,13 +76,12 @@ final class Clickwhale_Settings {
 	 * @since 1.0.0
 	 */
 	public function add_settings_fields() {
-		$defaults               = apply_filters( 'clickwhale_settings_defaults', $this->default_options() );
+		$defaults               = self::default_options();
 		$general_options        = get_option( 'clickwhale_general_options' );
 		$tracking_options       = get_option( 'clickwhale_tracking_options' );
 		$linkpages_options      = get_option( 'clickwhale_linkpages_options' );
-		$tracking_codes_options = get_option( 'clickwhale_tracking_codes_options' );
-		$other_options          = get_option( 'clickwhale_other_options' );
-		$duration               = apply_filters( 'clickwhale_tracking_duration', array(
+
+		$duration = apply_filters( 'clickwhale_tracking_duration', array(
 			30 => __( '30 days', CLICKWHALE_NAME ),
 		) );
 
@@ -95,8 +89,10 @@ final class Clickwhale_Settings {
         $current_user_roles = $current_user::get_current_user_roles();
 
 		if ( $defaults ) {
-			// add settings sections
-			// register settings
+
+			// Add settings sections
+
+			// Register settings
 			foreach ( $defaults as $k => $v ) {
 
 				if ( ! $v['options'] ) {
@@ -115,7 +111,6 @@ final class Clickwhale_Settings {
 					'clickwhale_' . $k . '_options',
 					'clickwhale_' . $k . '_options'
 				);
-
 			}
 		}
 
@@ -123,13 +118,14 @@ final class Clickwhale_Settings {
         $always_checked_roles = ['administrator'];
 
         if ( ! in_array( 'administrator', $current_user_roles ) ) {
-
             foreach ( $current_user_roles as $user_role ) {
                 $always_checked_roles[] = $user_role;
             }
         }
 
 		// Add fields
+
+        // General options
 		add_settings_field(
 			'access_level',
 			__( 'Access Level', CLICKWHALE_NAME ),
@@ -241,6 +237,8 @@ final class Clickwhale_Settings {
 				'label'   => __( 'Check to hide Clickwhale quick menu from the admin bar', CLICKWHALE_NAME ),
 			)
 		);
+
+        // Tracking options
 		add_settings_field(
 			'tracking_duration',
 			__( 'Tracking Duration', CLICKWHALE_NAME ),
@@ -284,6 +282,8 @@ final class Clickwhale_Settings {
 				'description' => __( 'Check the user roles that should be excluded from tracking.', CLICKWHALE_NAME ),
 			)
 		);
+
+        // Linkpages options
 		add_settings_field(
 			'linkpage_links_target',
 			__( 'Links: Target', CLICKWHALE_NAME ),
@@ -299,7 +299,7 @@ final class Clickwhale_Settings {
 			)
 		);
 
-		apply_filters( 'clickwhale_settings_fields', '' );
+		do_action( 'clickwhale_settings_fields' );
 	}
 
 	/**
@@ -318,7 +318,7 @@ final class Clickwhale_Settings {
 	 * @since 1.3.0
 	 */
 	public static function render_tabs(): array {
-		$defaults = apply_filters( 'clickwhale_settings_defaults', self::default_options() );
+		$defaults = self::default_options();
 		$tabs     = array(
 			'general'        => array(
 				'name' => __( 'General Options', CLICKWHALE_NAME ),
@@ -339,7 +339,7 @@ final class Clickwhale_Settings {
 			'other'          => array(
 				'name' => __( 'Other Options', CLICKWHALE_NAME ),
 				'url'  => 'other_options'
-			),
+			)
 		);
 
 		$tabs = apply_filters( 'clickwhale_settings_tabs', $tabs );
@@ -389,11 +389,6 @@ final class Clickwhale_Settings {
     }
 
     public function remove_capability( $options ) {
-
-//        if ( isset( $_POST['option_page'] ) ) {
-//            Debugger::debug_log( '$_POST[option_page]: ' . $_POST['option_page'] );
-//        }
-
         $current_user = Clickwhale::get_instance()->user;
         $current_user_roles = $current_user::get_current_user_roles();
 

@@ -238,16 +238,16 @@ class Clickwhale_Links_Bulk_Edit {
 		$nonce = wp_create_nonce( 'bulk_edit' );
 		?>
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
+            jQuery(document).ready(function() {
 
                 jQuery('#bulk-action-selector-top, #bulk-action-selector-bottom').val('edit');
 
-                jQuery('#bulk-titles-list li').each(function () {
+                jQuery('#bulk-titles-list li').each(function() {
                     const link_id = (jQuery(this).find('button').attr('id'));
                     jQuery('.check-column input[type="checkbox"][value="' + link_id + '"]').prop('checked', true);
                 });
 
-                jQuery('#bulk-titles-list .button-link').on('click', function (e) {
+                jQuery('#bulk-titles-list .button-link').on('click', function(e) {
                     e.preventDefault();
                     const selected_links = jQuery('#bulk-titles-list li').length;
 
@@ -259,7 +259,7 @@ class Clickwhale_Links_Bulk_Edit {
                     }
                 });
 
-                jQuery('.inline-edit-save .cancel').on('click', function (e) {
+                jQuery('.inline-edit-save .cancel').on('click', function(e) {
                     e.preventDefault();
                     jQuery('#bulk-edit').remove();
                     jQuery('.check-column input[type="checkbox"]').prop('checked', false);
@@ -274,7 +274,6 @@ class Clickwhale_Links_Bulk_Edit {
 
                     window.location.href = url;
                 });
-
             });
         </script>
 		<?php

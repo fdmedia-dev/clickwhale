@@ -20,18 +20,24 @@ class Links_Helper extends Helper_Abstract {
 	protected static $plural = 'links';
 
     /**
+     * Links limitation
      * @var int
      */
 	protected static $limit = 9999;
 
 	/**
-	 * Return limitation notice string
+	 * Return links limitation notice string
 	 * @return string
 	 * @since 1.4.0
 	 */
 	public static function get_limitation_notice(): string {
 		return sprintf(
-			__( 'Currently, a maximum of %d links can be added.', CLICKWHALE_NAME ),
+            _n(
+                'Currently, a maximum of 1 link can be added.',
+                'Currently, a maximum of %d links can be added.',
+                self::get_limit(),
+                CLICKWHALE_NAME
+            ),
 			self::get_limit()
 		);
 	}

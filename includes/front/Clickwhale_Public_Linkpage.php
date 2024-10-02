@@ -239,7 +239,7 @@ class Clickwhale_Public_Linkpage {
 	 * Get LInk Page Description from DB
 	 * @return string
 	 */
-	public function get_description() {
+	public function get_desc() {
 		return isset( $this->post->linkpage['description'] ) ? wp_kses( wp_unslash( $this->post->linkpage['description'] ),
 			wp_kses_allowed_html( 'post' ) ) : '';
 	}
@@ -397,17 +397,15 @@ class Clickwhale_Public_Linkpage {
 		$nonce = wp_create_nonce( 'track_custom_link' );
 		?>
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
-                jQuery('.linkpage-public--links').on('click', '.cw-track', function (e) {
-                    var link = jQuery(this);
+            jQuery(document).ready(function() {
+                jQuery('.linkpage-public--links').on('click', '.cw-track', function(e) {
+                    let link = jQuery(this);
 
                     jQuery.post(clickwhale_public.ajaxurl, {
                         'security': '<?php echo $nonce ?>',
                         'action': 'clickwhale/public/track_custom_link',
                         'id': link.data('id'),
-                    }, function (response) {
-                    });
-
+                    }, function(response) {});
                 });
             });
         </script>

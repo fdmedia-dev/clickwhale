@@ -125,7 +125,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	protected function set_transient( string $id, string $value ) {
-		set_transient( $this->instance_single . '-' . $id, $value, 45 );
+		set_transient( $this->instance_single . '-' . $id, $value, 15 ); // 15 seconds
 	}
 
 	/**
@@ -133,26 +133,28 @@ abstract class Clickwhale_Instance_Edit {
 	 *
 	 * @param string $id
 	 *
-	 * @return false|void
+	 * @return void
 	 * @since 1.6.0
 	 */
 	public function show_message( string $id ) {
+        if ( empty( $id ) ) {
+            return;
+        }
 
-		$transient = get_transient( "$this->instance_single-$id" );
+        $transient = get_transient( "$this->instance_single-$id" );
 
 		if ( empty( $transient ) ) {
-			return false;
+			return;
 		}
 
 		if ( $transient === 'added' ) {
 			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
-		}
 
-		if ( $transient === 'updated' ) {
+		} elseif ( $transient === 'updated' ) {
 			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
 		}
 
-		delete_transient( 'link-' . $id );
+        delete_transient( "$this->instance_single-$id" );
 	}
 
 	/**

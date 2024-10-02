@@ -436,7 +436,7 @@ class Clickwhale_Linkpage_Content_Templates {
 						<?php } else { ?>
                             <strong><?php _e( 'Heading', CLICKWHALE_NAME ) ?></strong>
 						<?php } ?>
-                    </div><!-- ./linkpage-link -->
+                    </div><!-- ./linkpage-row--link -->
                 </div>
 				<?php $this->get_template_row_end( $data['type'] ); ?>
             </div><!-- ./linkpage-row--top -->
@@ -774,7 +774,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <label class="clickwhale-checkbox--toggle">
                 <input type="checkbox"
                        name="links[<?php echo $id ?>][is_active]"
-                       class="clickwhale_tc_active_toggle"
+                       class="clickwhale_linkpage_active_toggle"
                        value="1"
 					<?php checked( $is_active, 1 ) ?>>
                 <span class="clickwhale-checkbox--toggle-slider"></span>

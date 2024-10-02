@@ -281,121 +281,124 @@ class Clickwhale_Migration {
 	}
 
 	public function admin_scripts() {
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-tools' ) {
-			$nonce       = wp_create_nonce( 'migration_to_clickwhale' );
-			$nonce_reset = wp_create_nonce( 'migration_reset' );
-			$linksURL    = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) )
-			?>
-            <script type='text/javascript'>
+        if ( empty( $_GET['page'] ) ) {
+            return;
+        }
 
-                jQuery(document).ready(function () {
+        if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
+            return;
+        }
 
-                    jQuery('.clickwhale-migration-section [type="checkbox"]').change(function () {
-                        var migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
-                            migrationButton = jQuery(migrationContainer).find('.button_start_migrate'),
-                            checkbox = jQuery(this),
-                            name = jQuery(checkbox).attr('name'),
-                            matches = name.match(/\[(.*?)\]/),
-                            value = jQuery(checkbox).prop('checked') ? 1 : 0;
+        $nonce       = wp_create_nonce( 'migration_to_clickwhale' );
+        $nonce_reset = wp_create_nonce( 'migration_reset' );
+        $linksURL    = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) )
+        ?>
+        <script type='text/javascript'>
 
-                        jQuery(migrationButton).prop('disabled', true);
+            jQuery(document).ready(function() {
 
-                        jQuery.post(ajaxurl, {
-                            'security': '<?php echo $nonce ?>',
-                            'action': 'clickwhale/admin/save_migration_option',
-                            'name': matches[1],
-                            'value': value
-                        }, function (response) {
-                            jQuery(migrationButton).prop('disabled', false);
-                        })
+                jQuery('.clickwhale-migration-section [type="checkbox"]').on('change', function() {
+                    let migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
+                        migrationButton = jQuery(migrationContainer).find('.button_start_migrate'),
+                        checkbox = jQuery(this),
+                        name = jQuery(checkbox).attr('name'),
+                        matches = name.match(/\[(.*?)\]/),
+                        value = jQuery(checkbox).prop('checked') ? 1 : 0;
+
+                    jQuery(migrationButton).prop('disabled', true);
+
+                    jQuery.post(ajaxurl, {
+                        'security': '<?php echo $nonce ?>',
+                        'action': 'clickwhale/admin/save_migration_option',
+                        'name': matches[1],
+                        'value': value
+                    }, function(response) {
+                        jQuery(migrationButton).prop('disabled', false);
                     })
+                })
 
-                    jQuery('.button_start_migrate').click(function (e) {
-                        e.preventDefault();
+                jQuery('.button_start_migrate').on('click', function(e) {
+                    e.preventDefault();
 
-                        var migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
-                            migrationButton = jQuery(this),
-                            migrationSpinner = jQuery(migrationContainer).find('.spinner'),
-                            migrationResult = jQuery(migrationContainer).find('.results');
+                    let migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
+                        migrationButton = jQuery(this),
+                        migrationSpinner = jQuery(migrationContainer).find('.spinner'),
+                        migrationResult = jQuery(migrationContainer).find('.results');
 
-                        jQuery(migrationButton).prop('disabled', true);
-                        jQuery(migrationSpinner).addClass("is-active");
-                        jQuery(migrationResult).removeClass("is-active").html('');
+                    jQuery(migrationButton).prop('disabled', true);
+                    jQuery(migrationSpinner).addClass("is-active");
+                    jQuery(migrationResult).removeClass("is-active").html('');
 
-                        jQuery.post(ajaxurl, {
-                            'security': '<?php echo esc_attr( $nonce ) ?>',
-                            'action': 'clickwhale/admin/migration_to_clickwhale',
-                            'migrant': migrationButton.data('migration')
-                        }, function (response) {
-                            if (response.success) {
-                                var result = response.data;
+                    jQuery.post(ajaxurl, {
+                        'security': '<?php echo esc_attr( $nonce ) ?>',
+                        'action': 'clickwhale/admin/migration_to_clickwhale',
+                        'migrant': migrationButton.data('migration')
+                    }, function(response) {
+                        if (response.success) {
+                            let result = response.data;
 
-                                if ('string' === typeof result.data) {
-                                    jQuery(migrationResult).append('<p>' + result.data + '</p>');
-                                } else if ('object' === typeof result.data) {
+                            if ('string' === typeof result.data) {
+                                jQuery(migrationResult).append('<p>' + result.data + '</p>');
+                            } else if ('object' === typeof result.data) {
 
-                                    for (var type in result.data) {
-                                        var categories = result.data[type].categories,
-                                            links = result.data[type].links;
+                                for (let type in result.data) {
+                                    let categories = result.data[type].categories,
+                                        links = result.data[type].links;
 
-                                        if (categories !== null) {
-                                            for (var category in categories) {
-                                                jQuery(migrationResult).append('<p>' + categories[category] + '</p>');
-                                            }
-                                        }
-
-                                        if (links !== null) {
-                                            for (var link in links) {
-                                                jQuery(migrationResult).append('<p>' + links[link] + '</p>');
-                                            }
+                                    if (categories !== null) {
+                                        for (let category in categories) {
+                                            jQuery(migrationResult).append('<p>' + categories[category] + '</p>');
                                         }
                                     }
 
-                                }
-
-                                jQuery(migrationResult).addClass("is-active");
-                                jQuery(migrationButton).prop('disabled', false);
-                                jQuery(migrationSpinner).removeClass("is-active");
-
-                                if ('object' === typeof result.data) {
-                                    jQuery(migrationResult).append('<br>' +
-                                        '<a href="<?php echo $linksURL ?>" class="button-primary"> ' +
-                                        '<?php _e( 'Get started with ClickWhale now', CLICKWHALE_NAME ) ?>' +
-                                        '</a>');
+                                    if (links !== null) {
+                                        for (let link in links) {
+                                            jQuery(migrationResult).append('<p>' + links[link] + '</p>');
+                                        }
+                                    }
                                 }
                             }
-                        });
-                    })
 
-                    jQuery('.button_reset_migrate').click(function (e) {
-                        e.preventDefault();
+                            jQuery(migrationResult).addClass("is-active");
+                            jQuery(migrationButton).prop('disabled', false);
+                            jQuery(migrationSpinner).removeClass("is-active");
 
-                        var resetContainer = jQuery('#clickwhale-tools-migration-reset'),
-                            resetButton = jQuery(this),
-                            resetSpinner = jQuery(resetContainer).find('.spinner'),
-                            resetResult = jQuery(resetContainer).find('.results');
-
-                        jQuery(resetButton).prop('disabled', true);
-                        jQuery(resetSpinner).addClass("is-active");
-
-                        jQuery.post(ajaxurl, {
-                            'security': '<?php echo $nonce_reset ?>',
-                            'action': 'clickwhale/admin/migration_reset'
-                        }, function (response) {
-                            if (response.success) {
-                                jQuery(resetButton).prop('disabled', false);
-                                jQuery(resetSpinner).removeClass("is-active");
-                                jQuery(resetResult).html(response.data);
-
-                                location.reload(true);
+                            if ('object' === typeof result.data) {
+                                jQuery(migrationResult).append('<br>' +
+                                    '<a href="<?php echo $linksURL ?>" class="button-primary"> ' +
+                                    '<?php _e( 'Get started with ClickWhale now', CLICKWHALE_NAME ) ?>' +
+                                    '</a>');
                             }
-                        });
+                        }
+                    });
+                })
 
+                jQuery('.button_reset_migrate').on('click', function(e) {
+                    e.preventDefault();
 
-                    })
-                });
-            </script>
-			<?php
-		}
+                    let resetContainer = jQuery('#clickwhale-tools-migration-reset'),
+                        resetButton = jQuery(this),
+                        resetSpinner = jQuery(resetContainer).find('.spinner'),
+                        resetResult = jQuery(resetContainer).find('.results');
+
+                    jQuery(resetButton).prop('disabled', true);
+                    jQuery(resetSpinner).addClass("is-active");
+
+                    jQuery.post(ajaxurl, {
+                        'security': '<?php echo $nonce_reset ?>',
+                        'action': 'clickwhale/admin/migration_reset'
+                    }, function(response) {
+                        if (response.success) {
+                            jQuery(resetButton).prop('disabled', false);
+                            jQuery(resetSpinner).removeClass("is-active");
+                            jQuery(resetResult).html(response.data);
+
+                            location.reload(true);
+                        }
+                    });
+                })
+            });
+        </script>
+        <?php
 	}
 }

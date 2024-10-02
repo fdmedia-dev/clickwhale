@@ -22,8 +22,6 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 	}
 
 	/**
-	 * Could be hooked by filter "clickwhale_link_defaults"
-	 *
 	 * @return array
 	 */
 	public function get_defaults(): array {
@@ -56,85 +54,81 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         return apply_filters( 'clickwhale_link_tabs', $tabs );
     }
 
-	public function save_update() {
-		global $wpdb;
+    public function save_update(): void {
+        global $wpdb;
 
-        /* @since 2.1.3 */
-        if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '>=' ) &&
-            ! get_option( 'clickwhale_updated_links_table_url_column' )
-        ){
-            require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-            $query = $wpdb->query( "ALTER TABLE $this->links_table MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
+        $item = array_intersect_key( $_POST, $this->get_defaults() );
 
-            if ( $query ) {
-                add_option( 'clickwhale_updated_links_table_url_column', CLICKWHALE_VERSION );
-            }
-        }
-
-		$item = array_intersect_key( $_POST, $this->get_defaults() );
 		$item['categories'] = isset( $item['categories'] ) ? implode( ',', $item['categories'] ) : '';
 		$item['nofollow']   = isset( $item['nofollow'] );
 		$item['sponsored']  = isset( $item['sponsored'] );
 		$item['author']     = get_current_user_id();
 
-		// Check if item exists and then update or insert
-		// in some cases default check (not false and < 0) goes wrong
-
+		// Check if item exists and then update or insert.
+		// In some cases default check (not false or 0) goes wrong
 		if ( Links_Helper::get_by_id( intval( $item['id'] ) ) ) {
 			$wpdb->update(
                 $this->links_table,
 				$item,
 				array( 'id' => $item['id'] )
 			);
-			do_action( 'clickwhale_update_link_meta', $item['id'], $_POST );
-			$this->set_transient( $item['id'], 'updated' );
-		} else {
-			$wpdb->insert(
-                $this->links_table,
-				$item
-			);
-			$item['id'] = $wpdb->insert_id;
-			do_action( 'clickwhale_insert_link_meta', $item['id'], $_POST );
-			$this->set_transient( $item['id'], 'added' );
-		}
 
-		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
-		wp_redirect( admin_url( $url ) );
+            do_action( 'clickwhale_link_updated', $item['id'], $_POST );
+			$this->set_transient( $item['id'], 'updated' );
+
+		} else {
+            $wpdb->insert(
+                $this->links_table,
+                $item
+            );
+
+            $item['id'] = $wpdb->insert_id;
+            do_action( 'clickwhale_link_inserted', $item['id'], $_POST );
+            $this->set_transient( $item['id'], 'added' );
+        }
+
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link' . '&id=' . $item['id'];
+        wp_redirect( admin_url( $url ) );
 	}
 
 	public function admin_scripts(): void {
 		$nonce = wp_create_nonce( 'slug_exists' );
 
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) : ?>
+        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) { ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
 
-                    <?php if (isset( $_GET['id'] )) { ?>
-                    const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
-                    if (localStorage.getItem('tab-' + page_id)) {
-                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
-                    }
+                    <?php if ( isset( $_GET['id'] ) ) { ?>
+                        const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
 
-                    jQuery('#clickwhale-tabs li').on('click', function() {
-                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
-                    });
+                        if (localStorage.getItem('tab-' + page_id)) {
+                            jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                        }
+
+                        jQuery('#clickwhale-tabs li').on('click', function() {
+                            localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                        });
                     <?php } ?>
                 });
             </script>
-        <?php endif; ?>
+        <?php } ?>
 
         <script type='text/javascript'>
             jQuery(document).ready(function() {
-                const
+                let
+                    submit = jQuery('#submit'),
+                    form = submit.closest('form'),
                     title = jQuery('#title'),
-                    slug = jQuery('#cw-slug');
+                    slug = jQuery('#cw-slug'),
+                    url = jQuery('#url');
 
+                /* Slug */
 				<?php
 				/**
-				 * if checked "Disable random slug" option
+				 * If checked "Disable random slug" option
 				 * use title as slug
 				 */
-				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) :
+				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
                     $slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
                         ? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
                         : '';
@@ -151,48 +145,66 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             slug.val(slugOptionsGeneral + title.val()).trigger("blur");
                         }
                     });
-
-				<?php endif; ?>
+				<?php } ?>
 
                 /**
                  * Submit action
                  * 1. Check title (not null)
                  * 2. Check slug (not null)
                  * 3. Check slug (exists as post/page slug)
+                 * 4. Check url (not null)
                  */
-                jQuery('#submit').on('click', function(e) {
-                    const slugExists = slug_exists();
-
+                form.on('submit', function(e) {
                     jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
                     if (!title.val()) {
                         e.preventDefault();
-
+                        generalTabNotValid();
                         title.addClass('error')
                             .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                        return false;
                     } else {
                         title.removeClass('error').next().text('');
                     }
 
                     if (!slug.val()) {
                         e.preventDefault();
-
+                        generalTabNotValid();
                         slug.addClass('error')
                             .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>');
+                        return false;
                     } else {
                         slug.removeClass('error').next().text('');
                     }
 
-                    if (slugExists === true) {
+                    if (slugExists() === true) {
                         e.preventDefault();
-
-                        slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug',
-							CLICKWHALE_NAME ) ?>');
+                        generalTabNotValid();
+                        slug.addClass('error')
+                            .next().text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>');
+                        return false;
+                    } else {
+                        slug.removeClass('error').next().text('');
                     }
+
+                    if (!url.val()) {
+                        e.preventDefault();
+                        generalTabNotValid();
+                        url.addClass('error')
+                            .next().text('<?php _e( 'Please enter URL', CLICKWHALE_NAME ) ?>');
+                        return false;
+                    } else {
+                        url.removeClass('error').next().text('');
+                    }
+
+                    submit.trigger('clickwhale.link.save', { formEvent: e });
                 });
 
-                function slug_exists() {
+                /**
+                 * JS FUNCTIONS
+                 */
+
+                function slugExists() {
                     let result = null;
                     jQuery.ajax({
                         async: false,
@@ -209,11 +221,18 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             result = response.data;
                         }
                     });
-
                     return result;
+                }
+
+                function generalTabNotValid() {
+                    // Delete previous `success` notice
+                    jQuery('.updated').remove();
+
+                    // Scroll page to top
+                    jQuery('html, body').animate({ scrollTop: 0 }, 'fast');
                 }
             });
         </script>
 		<?php
-	}
+    }
 }

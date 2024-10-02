@@ -129,9 +129,9 @@ class Clickwhale_Migration_Notice {
 		$nonce = wp_create_nonce( 'clickwhale_' . $this->migrant . '_admin_nonce' );
 		?>
         <script type='text/javascript'>
-            jQuery(document).ready(function () {
+            jQuery(document).ready(function() {
 
-                jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.deactive', function (e) {
+                jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.deactive', function(e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 
@@ -140,14 +140,14 @@ class Clickwhale_Migration_Notice {
                         'security': '<?php echo esc_attr( $nonce ); ?>',
                         'plugin': '<?php echo esc_attr( $this->migrant ); ?>',
                         'target': '<?php echo esc_attr( $this->migrant_file ); ?>'
-                    }, function (response) {
+                    }, function(response) {
                         if (response.success) {
                             location.reload(true);
                         }
                     });
                 })
 
-                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-migrate').on('click', '.button-dismiss', function (e) {
+                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-migrate').on('click', '.button-dismiss', function(e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 
@@ -156,11 +156,10 @@ class Clickwhale_Migration_Notice {
                         'security': '<?php echo esc_attr( $nonce ); ?>',
                         'plugin': '<?php echo esc_attr( $this->migrant ) ?>',
                         'type': 'migrate'
-                    }, function (response) {
-                    });
+                    }, function(response) {});
                 });
 
-                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-deactive').on('click', '.button-dismiss', function (e) {
+                jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-deactive').on('click', '.button-dismiss', function(e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 
@@ -169,9 +168,8 @@ class Clickwhale_Migration_Notice {
                         'security': '<?php echo esc_attr( $nonce ); ?>',
                         'plugin': '<?php echo esc_attr( $this->migrant ) ?>',
                         'type': 'deactive'
-                    }, function (response) {
-                    });
-                })
+                    }, function(response) {});
+                });
             });
         </script>
 		<?php

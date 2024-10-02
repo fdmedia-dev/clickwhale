@@ -118,16 +118,16 @@ class Linkpages_Helper extends Helper_Abstract {
 		return (bool) $wpdb->get_row( "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name='$slug'", 'ARRAY_A' );
 	}
 
-	public static function get_meta( int $linkpage_id, string $meta_key, string $output = "ARRAY_A" ) {
-		global $wpdb;
-
-		$table = Helper::get_db_table_name( 'meta' );
-
-		return $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM $table WHERE linkpage_id=%d AND meta_key=%s",
-				$linkpage_id, $meta_key ),
-			$output
-		);
-	}
+//	public static function get_meta( int $linkpage_id, string $meta_key, string $output = "ARRAY_A" ) {
+//		global $wpdb;
+//
+//		$table = Helper::get_db_table_name( 'meta' );
+//
+//		return $wpdb->get_row(
+//			$wpdb->prepare(
+//				"SELECT * FROM $table WHERE linkpage_id=%d AND meta_key=%s",
+//				$linkpage_id, $meta_key ),
+//			$output
+//		);
+//	}
 }

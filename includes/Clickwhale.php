@@ -74,6 +74,11 @@ final class Clickwhale {
 	private $locale;
 
     /**
+     * @var Clickwhale_WP_User
+     */
+    public $user;
+
+    /**
      * @var Clickwhale_Admin
      */
 	public $admin;
@@ -82,6 +87,21 @@ final class Clickwhale {
      * @var Clickwhale_Settings
      */
     public $settings;
+
+    /**
+     * @var Clickwhale_Tools
+     */
+    public $tools;
+
+    /**
+     * @var Clickwhale_Reset
+     */
+    public $reset;
+
+    /**
+     * @var Clickwhale_Ajax
+     */
+    public $ajax;
 
     /**
      * @var Clickwhale_Link_Edit
@@ -99,34 +119,19 @@ final class Clickwhale {
 	public $linkpage;
 
     /**
-     * @var Clickwhale_Ajax
-     */
-	public $ajax;
-
-    /**
      * @var Clickwhale_Tracking_Code_Edit
      */
 	public $tracking_code;
 
     /**
-     * @var Clickwhale_Tools
+     * @var Clickwhale_Public
      */
-	public $tools;
+    public $public;
 
     /**
      * @var Clickwhale_Public_Ajax
      */
 	public $public_ajax;
-
-    /**
-     * @var Clickwhale_Public
-     */
-	public $public;
-
-    /**
-     * @var Clickwhale_WP_User
-     */
-	public $user;
 
 	/**
 	 * Gets an instance of our plugin.
@@ -151,6 +156,7 @@ final class Clickwhale {
 			self::$instance->admin         = Clickwhale_Admin::get_instance();
 			self::$instance->settings      = Clickwhale_Settings::get_instance();
 			self::$instance->tools         = new Clickwhale_Tools();
+			self::$instance->reset         = Clickwhale_Reset::get_instance();
 			self::$instance->ajax          = Clickwhale_Ajax::get_instance();
 			self::$instance->link          = new Clickwhale_Link_Edit();
 			self::$instance->category      = new Clickwhale_Category_Edit();
@@ -268,7 +274,6 @@ final class Clickwhale {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-		$Clickwhale_Tools_Reset = Clickwhale_Reset::getInstance();
 
         /**
          * ACTIONS
@@ -323,10 +328,10 @@ final class Clickwhale {
 		);
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $this->ajax, 'import_csv' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $this->ajax, 'export_csv' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_settings_options' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_db_options' );
-		$this->loader->add_action( 'admin_init', $Clickwhale_Tools_Reset, 'initialize_reset_stats_options' );
-		$this->loader->add_action( 'admin_print_footer_scripts', $Clickwhale_Tools_Reset, 'admin_scripts' );
+		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_settings_options' );
+		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_db_options' );
+		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_stats_options' );
+		$this->loader->add_action( 'admin_print_footer_scripts', $this->reset, 'admin_scripts' );
 
         // FILTERS
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
@@ -436,7 +441,7 @@ final class Clickwhale {
 	 * @return array
 	 */
 	public function default_options(): array {
-		return array(
+		return apply_filters( 'clickwhale_settings_defaults', array(
 			'general'        => array(
 				'name'    => __( 'General', CLICKWHALE_NAME ),
 				'text'    => __( 'Set up ClickWhale plugin global options.', CLICKWHALE_NAME ),
@@ -475,7 +480,7 @@ final class Clickwhale {
 				'text'    => __( 'Set up other ClickWhale plugin useful options.', CLICKWHALE_NAME ),
 				'options' => array()
 			)
-		);
+		) );
 	}
 
 	/**

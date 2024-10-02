@@ -21,7 +21,7 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
     <link rel="profile" href="https://gmpg.org/xfn/11">
 
 	<?php wp_head(); ?>
-	<?php echo $linkpage->get_styles() ?>
+	<?php echo $linkpage->get_styles(); ?>
 </head>
 
 <body <?php body_class(); ?>>
@@ -31,13 +31,13 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
 
         <div class="linkpage-public--logo"><?php echo $linkpage->get_logo(); ?></div>
 
-        <div class="linkpage-public--title"><?php echo $linkpage->get_title() ?></div>
+        <div class="linkpage-public--title"><?php echo $linkpage->get_title(); ?></div>
 
-		<?php if ( $linkpage->get_description() ) { ?>
-            <div class="linkpage-public--description"><?php echo $linkpage->get_description() ?></div>
+		<?php if ( $linkpage->get_desc() ) { ?>
+            <div class="linkpage-public--description"><?php echo $linkpage->get_desc(); ?></div>
 		<?php } ?>
 
-        <div class="linkpage-public--links"><?php echo $linkpage->get_links() ?></div>
+        <div class="linkpage-public--links"><?php echo $linkpage->get_links(); ?></div>
 
     </div>
     <div class="linkpage-public--bottom">

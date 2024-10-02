@@ -74,7 +74,16 @@ class Helper {
 		switch ( $args['control'] ) {
 			case 'input':
 				$class = $class ? $class . ' regular-text' : $class;
-				$item  .= '<input ' . $id . $class . $name . ' type="' . esc_attr( $args['type'] ) . '" value="' . esc_attr( $value ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '" style="width: 300px;" ' . $disabled . $required . '>';
+                $type  = esc_attr( $args['type'] );
+                $width = ( 'number' !== $type ) ? '300' : '60';
+                $placeholder  = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
+				$item  .= '<input ' . $id . $class . $name . ' type="' . $type . '" value="' . esc_attr( $value ) . '"' . $placeholder . $disabled . $required . ' style="width: ' . $width . 'px;"';
+                if ( 'number' === $type ) {
+                    $min = isset( $args['min'] ) ? esc_attr( $args['min'] ) : '1';
+                    $max = isset( $args['max'] ) ? esc_attr( $args['max'] ) : '1';
+                    $item .= ' min="' . $min . '"' . ' max="' . $max . '"';
+                }
+                $item .= ' />';
 
                 if ( ! empty( $extra_desc ) ) {
                     $item .= '<code style="display: inline-block; margin-left: 16px;">' . $extra_desc . '</code>';
@@ -99,28 +108,26 @@ class Helper {
 				if ( isset( $args['screenreader'] ) ) {
 					$item .= '<legend class="screen-reader-text"><span>' . $args['screenreader'] . '</span></legend>';
 				}
-				$always_checked = ! empty( $args['always_checked'] ) ? $args['always_checked'] : null;
+
+				$always_checked = ( ! empty( $args['always_checked'] ) && is_array( $args['always_checked'] ) ) ? $args['always_checked'] : array();
+
 				foreach ( $args['options'] as $k => $v ) {
-					if ( is_array( $always_checked ) and in_array( $k, $always_checked ) ) {
+					if ( $always_checked && in_array( $k, $always_checked ) ) {
 						$item .= '<label class="disabled">';
 					} else {
 						$item .= '<label>';
 					}
-					if ( is_array( $value ) ) {
-						if ( is_array( $always_checked ) and in_array( $k, $always_checked ) ) {
-							$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" checked="checked" class="disabled" />';
-						} else {
-							$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . checked( in_array( $k,
-									$value ), 1, false ) . $disabled . ' />';
-						}
-					} else {
-						if ( is_array( $always_checked ) and in_array( $k, $always_checked ) ) {
-							$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" checked="checked" class="disabled" />';
-						} else {
-							$item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '" ' . $disabled . ' />';
-						}
-					}
-					$item .= $v;
+
+                    $item .= '<input type="checkbox" id="' . esc_attr( $args['id'] . '_' . $k ) . '" ' . $name . ' value="' . esc_attr( $k ) . '"';
+
+                    if ( $always_checked && in_array( $k, $always_checked ) ) {
+                        $item .= ' checked="checked" class="disabled" />';
+                    } else {
+                        $checked = ( is_array( $value ) ) ? checked( in_array( $k, $value ), 1, false ) : '';
+                        $item .= $checked . $disabled . ' />';
+                    }
+
+                    $item .= $v;
 					$item .= '</label><br>';
 				}
 				$item .= '</fieldset>';
@@ -300,14 +307,17 @@ class Helper {
 		return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
 	}
 
-	public static function get_pro_message() {
+	public static function get_pro_message( $prompt = '' ) {
+        if ( '' == $prompt ) {
+            $prompt = __( 'Unlimited with', CLICKWHALE_NAME );
+        }
+
 		return apply_filters(
 			'clickwhale_get_pro_message',
-			sprintf(
-				__(
-					' <strong>Unlimited with <a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a></strong>', CLICKWHALE_NAME ),
+            ' <strong>' . $prompt . ' ' . sprintf(
+				__( '<a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a>', CLICKWHALE_NAME ),
 				self::get_pro_link()
-			)
+			) . '</strong>'
 		);
 	}
 

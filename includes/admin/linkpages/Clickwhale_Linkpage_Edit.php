@@ -194,9 +194,16 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 			apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
 		);
 
-		$item['slug']   = sanitize_title( $item['slug'] );
-		$item['links']  = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
-		$item['styles'] = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
+		$item['slug']  = sanitize_title( $item['slug'] );
+		$item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+
+        if ( isset( $item['styles'] ) ) {
+            $styles = apply_filters( 'clickwhale_linkpage_styles_before_save', $item['styles'] );
+            $item['styles'] = maybe_serialize( $styles );
+        } else {
+            $item['styles'] = '';
+        }
+
 		$item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
 		$item['author'] = get_current_user_id();
 
@@ -242,7 +249,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		$nonce = wp_create_nonce( 'slug_exists' );
 		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) : ?>
+		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) { ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
                     jQuery('#clickwhale-tabs').tabs({
@@ -262,25 +269,25 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     });
 
 					<?php if (isset( $_GET['id'] )) { ?>
-                    const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
-                    if (localStorage.getItem('tab-' + page_id)) {
-                        jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
-                    }
-
-                    jQuery('#clickwhale-tabs li').on('click', function() {
-                        localStorage.setItem('tab-' + page_id, jQuery(this).index());
-
-                        // If tab is not `Contents`
-                        if ('1' !== localStorage.getItem('tab-' + page_id)){
-                            // Show Clickwhale Widget Sidebar
-                            jQuery('#poststuff > #post-body.metabox-holder #postbox-container-1').show();
-                            jQuery('#poststuff > #post-body.metabox-holder').addClass('columns-2');
+                        const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                        if (localStorage.getItem('tab-' + page_id)) {
+                            jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
                         }
-                    });
+
+                        jQuery('#clickwhale-tabs li').on('click', function() {
+                            localStorage.setItem('tab-' + page_id, jQuery(this).index());
+
+                            // If tab is not `Contents`
+                            if ('1' !== localStorage.getItem('tab-' + page_id)){
+                                // Show Clickwhale Widget Sidebar
+                                jQuery('#poststuff > #post-body.metabox-holder #postbox-container-1').show();
+                                jQuery('#poststuff > #post-body.metabox-holder').addClass('columns-2');
+                            }
+                        });
 					<?php } ?>
                 });
             </script>
-		<?php endif; ?>
+		<?php } ?>
 
         <script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
@@ -329,7 +336,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     });
                 });
 
-                // Draggable, Droppable, Sortable
+                /* Draggable, Droppable, Sortable */
                 let
                     contentWrap = jQuery('.links-list-wrap'),
                     contentItems = jQuery('.cw-content--items');
@@ -370,8 +377,6 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                         width: '100%',
                                         minimumResultsForSearch: 10
                                     });
-
-                                    //console.log(count_links(), limit);
 
                                     if (count_links() >= limit) {
                                         links_limit_warning();
@@ -426,7 +431,6 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         parent.find('[name$="[post_id]"]').val(value);
                         parent.find('.linkpage-row--link strong').text(title);
                         parent.find('.linkpage-row--link span').text(url);
-
                     })
 
                     // Show Edit section
@@ -542,8 +546,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 button.removeClass('button').html('<img src="' + url + '">').next().show();
                                 mediaInput.val(attachment.id).trigger("change");
                             }).open();
-
                     })
+
                     .on('click', '.linkpage-image-remove', function(e) {
                         e.preventDefault();
 
@@ -635,13 +639,10 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                  * 3. Check slug (exists as post/page slug)
                  */
                 jQuery('#submit').on('click', function(e) {
-                    const slugExists = slug_exists();
-
                     jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
                     if (!title.val()) {
                         e.preventDefault();
-
                         title.addClass('error')
                             .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
                     } else {
@@ -650,16 +651,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                     if (!slug.val()) {
                         e.preventDefault();
-
                         slug.addClass('error')
                             .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>');
                     } else {
                         slug.removeClass('error').next().text('');
                     }
 
-                    if (slugExists === true) {
+                    if (slugExists() === true) {
                         e.preventDefault();
-
                         slug.addClass('error');
                         jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>');
                     }
@@ -670,7 +669,9 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                  */
                 jQuery('#reset-styles').on('click', function(e) {
                     e.preventDefault();
+
                     let defaults;
+
                     if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', CLICKWHALE_NAME ) ?>')) {
                         defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
 
@@ -686,7 +687,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                  * FUNCTIONS
                  */
 
-                function slug_exists() {
+                function slugExists() {
                     let result = null;
                     jQuery.ajax({
                         async: false,
@@ -703,7 +704,6 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             result = response.data;
                         }
                     });
-
                     return result;
                 }
 

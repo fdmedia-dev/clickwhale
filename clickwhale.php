@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.2.0
+ * Version:           2.3.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,15 +30,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.2.0' );
+    define( 'CLICKWHALE_VERSION', '2.3.0' );
     define( 'CLICKWHALE_NAME', 'clickwhale' );
     /**
      * @since 1.4.1
      */
-    define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
     // `<plugin-dir>`
-    define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
+    define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
     // `<plugin-dir>/<plugin-file>.php`
+    define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
     define( 'CLICKWHALE_DIR', plugin_dir_path( __FILE__ ) );
     define( 'CLICKWHALE_DIR_URL', plugin_dir_url( __FILE__ ) );
     /**
@@ -49,6 +49,10 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     define( 'CLICKWHALE_TEMPLATES_DIR', CLICKWHALE_DIR . 'templates' );
     define( 'CLICKWHALE_ADMIN_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/admin' );
     define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
+    /**
+     * @since 2.3.0
+     */
+    define( 'CLICKWHALE_URL_COLUMN', 'clickwhale_updated_links_table_url_column' );
     // DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
     if ( !function_exists( 'clickwhale_fs' ) ) {
         // Create a helper function for easy SDK access.
@@ -79,42 +83,80 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             return $clickwhale_fs;
         }
 
-        // Init Freemius.
+        // Init Freemius
         clickwhale_fs();
-        // Signal that SDK was initiated.
+        // Signal that SDK was initiated
         do_action( 'clickwhale_fs_loaded' );
         clickwhale_fs()->override_i18n( [
             'account' => __( 'License', CLICKWHALE_NAME ),
         ] );
-        // Uninstall action
-        clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
     }
-    /**
-     * The code that runs during plugin activation.
-     */
-    function activate_clickwhale() {
+    function clickwhale_activate() {
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Activator.php';
         Clickwhale_Activator::activate();
     }
 
-    /**
-     * The code that runs during plugin deactivation.
-     */
-    function deactivate_clickwhale() {
+    function clickwhale_deactivate() {
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Deactivator.php';
         Clickwhale_Deactivator::deactivate();
     }
 
-    register_activation_hook( __FILE__, 'activate_clickwhale' );
-    register_deactivation_hook( __FILE__, 'deactivate_clickwhale' );
-    /**
-     * The code for Freemius that runs after the plugin uninstall event.
-     */
     function clickwhale_uninstall_cleanup() {
         delete_option( 'clickwhale_version' );
-        do_action( 'clickwhale_uninstall_cleanup' );
+        delete_option( CLICKWHALE_URL_COLUMN );
     }
 
+    /**
+     * returns:
+     *  `true` if:
+     *    `clickwhale_version` was not stored in DB at all. calls `add_option`
+     *     OR
+     *    `clickwhale_version` is stored with old value less than `CLICKWHALE_VERSION`. calls `update_option`
+     *
+     *  `false` if:
+     *    `clickwhale_version` value is equal to `CLICKWHALE_VERSION`
+     *
+     * @return bool
+     */
+    function clickwhale_maybe_add_or_update_version() : bool {
+        $db_cw_version = get_option( 'clickwhale_version' );
+        if ( !$db_cw_version ) {
+            add_option( 'clickwhale_version', CLICKWHALE_VERSION );
+            return true;
+        } elseif ( version_compare( CLICKWHALE_VERSION, $db_cw_version, '>' ) ) {
+            update_option( 'clickwhale_version', CLICKWHALE_VERSION );
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function clickwhale_maybe_add_or_update_url_column() {
+        if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '<=' ) ) {
+            return;
+        }
+        global $wpdb;
+        $updated_url_column = get_option( CLICKWHALE_URL_COLUMN );
+        if ( !$updated_url_column ) {
+            $action = 'add';
+        } elseif ( version_compare( $updated_url_column, CLICKWHALE_VERSION, '!=' ) ) {
+            $action = 'update';
+        } else {
+            return;
+        }
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        $query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
+        if ( !$query ) {
+            return;
+        }
+        $function = $action . '_option';
+        $function( CLICKWHALE_URL_COLUMN, CLICKWHALE_VERSION );
+    }
+
+    register_activation_hook( __FILE__, 'clickwhale_activate' );
+    register_deactivation_hook( __FILE__, 'clickwhale_deactivate' );
+    // Uninstall action
+    clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
     /**
      * Traits for Singleton
      */
@@ -127,14 +169,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Begins execution of the plugin.
      *
-     * Since everything within the plugin is registered via hooks,
-     * then kicking off the plugin from this point in the file does
-     * not affect the page life cycle.
-     *
      * @since    1.0.0
      */
     function run_clickwhale() {
         clickwhale()->run();
+        /* @since 2.3.0 */
+        $maybe_update_version = clickwhale_maybe_add_or_update_version();
+        if ( $maybe_update_version ) {
+            clickwhale_maybe_add_or_update_url_column();
+        }
     }
 
     add_action( 'plugins_loaded', 'run_clickwhale' );

@@ -16,6 +16,7 @@ $tabs            = $linkpage->render_tabs();
 // LINKS
 $item['links'] = maybe_unserialize( $item['links'] );
 $links         = $item['links'];
+$links_limit  = $links && count( $links ) >= Linkpages_Helper::get_linkpage_links_limit();
 $select        = $linkpage->get_select_values();
 
 // STYLES
@@ -102,10 +103,10 @@ do_action( 'clickwhale_admin_banner' );
 				<?php } ?>
 
                 <div id="lp-tab-settings">
+                    <h2><?php _e( 'General', CLICKWHALE_NAME ); ?></h2>
                     <table style="width: 100%;" class="form-table">
                         <caption hidden><?php _e( 'Link Page Main Settings', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
-
                         <tr class="form-field">
                             <th scope="row">
                                 <label for="title"><?php _e( 'Title', CLICKWHALE_NAME ) ?></label>
@@ -233,12 +234,13 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-contents">
+                    <h2><?php _e( 'Contents', CLICKWHALE_NAME ); ?></h2>
                     <div class="contents-wrap">
                         <div class="contents-aside">
                             <div class="contents-aside--inner">
                                 <div class="add-content-wrap">
 									<?php
-									$disabled = $links && count( $links ) >= Linkpages_Helper::get_linkpage_links_limit() ? 'disabled' : '';
+									$disabled = $links_limit ? 'disabled' : '';
 									foreach ( $select as $g => $group ) {
 										?>
                                         <div class="cw-content--group">
@@ -280,9 +282,9 @@ do_action( 'clickwhale_admin_banner' );
 								}
 								?>
                             </div>
-							<?php if ( $links && count( $links ) >= Linkpages_Helper::get_linkpage_links_limit() ) { ?>
+							<?php if ( $links_limit ) { ?>
                                 <div class="links-info">
-									<?php echo Linkpages_Helper::get_links_limitation_notice() ?>
+									<?php echo Linkpages_Helper::get_links_limitation_notice(); ?>
 									<?php echo Helper::get_pro_message(); ?>
                                 </div>
 							<?php } ?>
@@ -291,8 +293,7 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-styles">
-
-                    <h2><?php _e( 'General', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'Styles', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <caption hidden><?php _e( 'Link Page Customization Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
@@ -412,11 +413,10 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-seo">
+                    <h2><?php _e( 'SEO Options', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
                         <caption hidden><?php _e( 'Link Page SEO Options', CLICKWHALE_NAME ); ?></caption>
                         <tbody>
-
-                        <h2><?php _e( 'SEO Options', CLICKWHALE_NAME ); ?></h2>
 						<?php
 						echo Helper::render_control(
 							array(
@@ -593,8 +593,6 @@ do_action( 'clickwhale_admin_banner' );
 				<?php do_action( 'clickwhale_linkpage_after_tabs_content', $item ); ?>
 
             </div>
-
-            <hr>
 
             <input type="hidden" id="created_at" name="created_at"
                    value="<?php echo esc_attr( $item['created_at'] ) ?>">
