@@ -9,6 +9,7 @@
 /tests/ export-ignore
 /.github/ export-ignore
 /.wordpress-org/ export-ignore
+/includes/debuggers/ export-ignore
 composer.json export-ignore
 composer.lock export-ignore
 Gruntfile.js export-ignore
