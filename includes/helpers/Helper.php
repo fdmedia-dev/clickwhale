@@ -79,14 +79,17 @@ class Helper {
                 $placeholder  = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
 				$item  .= '<input ' . $id . $class . $name . ' type="' . $type . '" value="' . esc_attr( $value ) . '"' . $placeholder . $disabled . $required . ' style="width: ' . $width . 'px;"';
                 if ( 'number' === $type ) {
-                    $min = isset( $args['min'] ) ? esc_attr( $args['min'] ) : '1';
-                    $max = isset( $args['max'] ) ? esc_attr( $args['max'] ) : '1';
-                    $item .= ' min="' . $min . '"' . ' max="' . $max . '"';
+                    if ( isset( $args['min'] ) ) {
+                        $item .= ' min="' . esc_attr( $args['min'] ) . '"';
+                    }
+                    if ( isset( $args['max'] ) ) {
+                        $item .= ' max="' . esc_attr( $args['max'] ) . '"';
+                    }
                 }
                 $item .= ' />';
 
                 if ( ! empty( $extra_desc ) ) {
-                    $item .= '<code style="display: inline-block; margin-left: 16px;">' . $extra_desc . '</code>';
+                    $item .= '<p class="description">' . $extra_desc . '</p>';
                 }
 				break;
 
@@ -353,10 +356,11 @@ class Helper {
 		return array( 'title', 'slug', 'url', 'redirection', 'nofollow', 'sponsored' );
 	}
 
-	/**
-	 * @return array
-	 * @since 1.6.0
-	 */
+    /**
+     * @param string $label
+     * @return array
+     * @since 1.6.0
+     */
 	public static function get_post_types( $label = 'singular_name' ): array {
 		$posts      = [];
 		$args       = array(
@@ -371,4 +375,14 @@ class Helper {
 
 		return $posts;
 	}
+
+    /**
+     * Check if media file exists in Wordpress Media library
+     *
+     * @param string $image_url
+     * @return bool
+     */
+    public static function get_media_file_path( $image_url ): bool {
+        return file_exists( str_replace( home_url('/'), ABSPATH, $image_url ) );
+    }
 }

@@ -32,8 +32,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 				'bg_color'            => '#fdd231',
 				'text_color'          => '#1a1c1d',
 				'link_bg_color'       => '#fee06f',
+                'link_bg_color_hover' => '#ffffff',
 				'link_color'          => '#1a1c1d',
-				'link_bg_color_hover' => '#ffffff',
 				'link_color_hover'    => '#397eff',
 			),
 			'social'               => array(
@@ -198,8 +198,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		$item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
 
         if ( isset( $item['styles'] ) ) {
-            $styles = apply_filters( 'clickwhale_linkpage_styles_before_save', $item['styles'] );
-            $item['styles'] = maybe_serialize( $styles );
+            $item['styles'] = maybe_serialize( $item['styles'] );
         } else {
             $item['styles'] = '';
         }
@@ -296,6 +295,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 /* Vars */
                 const
+                    defaults = <?php echo json_encode( $this->get_defaults() ); ?>,
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
                     limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit() ?>'),
@@ -309,7 +309,13 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         toolbar4: '',
                         textarea_rows: 20
                     },
-                    quicktagsOptions = {buttons: 'strong,em,link,block,del,ins,img,ul,ol,li,code,close'};
+                    quicktagsOptions = {buttons: 'strong,em,link,block,del,ins,img,ul,ol,li,code,close'},
+                    textColor = jQuery('[name="styles[text_color]"]'),
+                    bgColor = jQuery('[name="styles[bg_color]"]'),
+                    linkBgColor = jQuery('[name="styles[link_bg_color]"]'),
+                    linkBgColorHover = jQuery('[name="styles[link_bg_color_hover]"]'),
+                    linkColor = jQuery('[name="styles[link_color]"]'),
+                    linkColorHover = jQuery('[name="styles[link_color_hover]"]');
 
                 /* Select2 init */
                 linksType.select2({
@@ -494,7 +500,6 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 iconsContainer.find('[data-icon="' + result + '"]').show();
                             })
                         });
-
                     })
                     .on('click', '#icon-picker--wrap button', function(e) {
                         e.preventDefault();
@@ -615,9 +620,165 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
                     .on('click', '.reset-image', function() {
                         jQuery(this).closest('.linkpage-row').find('.linkpage-row--image').removeClass('with-image').html('');
-                        jQuery(this).closest('.linkpage-row').find('[name$="[image_id]"]').prop('checked', false);
+                        jQuery(this).closest('.linkpage-row').find('.image-item').find('label').html('');
+                        jQuery(this).closest('.linkpage-row').find('[name$="[image][image_id]"]').prop('checked', false);
                         jQuery(this).closest('.linkpage-row').find('[name$="[image][type]"]').val('');
                     });
+
+                /* Page text color */
+
+                // Check if `page text color` hex color is valid on page load
+                // because `wpColorPicker` doesn't sometimes
+                if ( !validateHexColor(textColor.val()) ) {
+                    // Fallback to default `page text color` value
+                    textColor.val(defaults.styles.text_color);
+
+                    const resultButton = textColor.closest('.wp-picker-container').find('button.wp-color-result');
+
+                    resultButton.css('background', textColor.val());
+                }
+
+                // Dynamically change `button.wp-color-result` background for `page text color`
+                textColor.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
+
+                /* Page background color */
+
+                // Dynamically change `button.wp-color-result` background for `page background color`
+                bgColor.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
+
+                /* Link background color */
+
+                // Check if `link background color` hex color is valid on page load
+                // because `wpColorPicker` doesn't sometimes
+                if ( !validateHexColor(linkBgColor.val()) ) {
+                    const resultButton = linkBgColor.closest('.wp-picker-container').find('button.wp-color-result');
+
+                    resultButton.css('background', 'transparent');
+                }
+
+                // Dynamically change `button.wp-color-result` background for `link background color`
+                linkBgColor.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
+
+                /* Link background color:hover */
+
+                // Dynamically change `button.wp-color-result` background for `link background color:hover`
+                linkBgColorHover.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
+
+                /* Link text color */
+
+                // Check if `link text color` hex color is valid on page load
+                // because `wpColorPicker` doesn't sometimes
+                if ( !validateHexColor(linkColor.val()) ) {
+                    // Fallback to default `link text color` value
+                    linkColor.val(defaults.styles.link_color);
+
+                    const resultButton = linkColor.closest('.wp-picker-container').find('button.wp-color-result');
+
+                    resultButton.css('background', linkColor.val());
+                }
+
+                // Dynamically change `button.wp-color-result` background for `link text color`
+                linkColor.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
+
+                /* Link text color:hover */
+
+                // Check if `link text color:hover` hex color is valid on page load
+                // because `wpColorPicker` doesn't sometimes
+                if ( !validateHexColor(linkColorHover.val()) ) {
+                    // Fallback to default `link text color` value
+                    linkColorHover.val(defaults.styles.link_color_hover);
+
+                    const resultButton = linkColorHover.closest('.wp-picker-container').find('button.wp-color-result');
+
+                    resultButton.css('background', linkColorHover.val());
+                }
+
+                // Dynamically change `button.wp-color-result` background for `link text color:hover`
+                linkColorHover.on('input', debounce(function(){
+                    const
+                        inputField = jQuery(this),
+                        resultButton = jQuery(this).closest('.wp-picker-container').find('button.wp-color-result');
+
+                    if (inputField.hasClass('iris-error')) {
+                        resultButton.css('background', 'transparent');
+                    } else {
+                        // Change `button.wp-color-result` background color when hex color is valid
+                        // because `wpColorPicker` doesn't sometimes
+                        if (validateHexColor(inputField.val())) {
+                            resultButton.css('background', inputField.val());
+                        }
+                    }
+                }));
 
                 /**
                  * Disable OpenGraph Preview button
@@ -744,8 +905,23 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery('#icon-picker--wrap').hide().find('button').show();
                     jQuery('[name="icon-picker--search"]').val('');
                 }
+
+                // Debounce function to limit the frequency of function calls
+                // e.g. for handling user input events from color picker
+                function debounce(func, delay = 300) {
+                    let timer;
+                    return function(...args) {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => func.apply(this, args), delay);
+                    };
+                }
+
+                // Validate hex color
+                function validateHexColor(val) {
+                    return /^#([0-9A-F]{3}){1,2}$/i.test(val);
+                }
             });
         </script>
-		<?php
-	}
+        <?php
+    }
 }

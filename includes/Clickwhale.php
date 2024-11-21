@@ -333,7 +333,10 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_stats_options' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $this->reset, 'admin_scripts' );
 
-        // FILTERS
+        /**
+         * FILTERS
+         */
+        clickwhale_fs()->add_filter( 'templates/pricing.php', [ $this->admin, 'enqueue_fs_pricing_styles' ] );
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
 		$this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
 		$this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );

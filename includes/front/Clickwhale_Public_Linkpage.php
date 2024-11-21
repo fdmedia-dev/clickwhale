@@ -1,6 +1,7 @@
 <?php
 namespace clickwhale\includes\front;
 
+use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 use DOMDocument;
 use DOMException;
@@ -133,6 +134,12 @@ class Clickwhale_Public_Linkpage {
 	public function end_wp_head_buffer() {
 		$in = ob_get_clean();
 
+        if ( ! empty( $this->social['seo']['ogimage'] ) ) {
+            $src = wp_get_attachment_image_src( $this->social['seo']['ogimage'], 'full' );
+        } else {
+            $src = false;
+        }
+
 		// replace <title>
 		$in = preg_replace( '/<title>(.*)<\/title>/i', '<title>' . $this->get_og_defaults()['title'] . '</title>',
 			$in );
@@ -160,9 +167,7 @@ class Clickwhale_Public_Linkpage {
 			'ogimage'       => array(
 				'name'    => 'og:image',
 				'content' =>
-					isset( $this->social['seo']['ogimage'] ) && $this->social['seo']['ogimage']
-						? esc_url( wp_get_attachment_image_src( $this->social['seo']['ogimage'], 'full' )[0] )
-						: $this->get_og_defaults()['image'],
+					is_array( $src ) ? esc_url( $src[0] ) : $this->get_og_defaults()['image']
 			),
 			'ogtype'        => array(
 				'name'    => 'og:type',
@@ -206,24 +211,45 @@ class Clickwhale_Public_Linkpage {
 
 	/**
 	 * Get Open Graph Data
-	 * @return mixed|string
+	 * @return array
 	 * @since 1.1.1
 	 *
 	 */
-	private function get_og_defaults() {
+	private function get_og_defaults(): array {
+
+        // Title
+        if ( ! empty( $this->social['seo']['title'] ) ) {
+            $title = $this->social['seo']['title'];
+        } else {
+            $title = wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
+        }
+
+        // Description
+        if ( ! empty( $this->social['seo']['description'] ) ) {
+            $description = $this->social['seo']['description'];
+        } else {
+            $description = get_bloginfo( 'description' );
+        }
+
+        // Image
+        $image = esc_url( $this->logo );
+
+        if ( ! empty( $this->post->linkpage['logo'] ) ) {
+            $img_data = wp_get_attachment_image_src( $this->post->linkpage['logo'], 'full' );
+
+            if ( is_array( $img_data ) ) {
+                $img_url = esc_url( $img_data[0] );
+
+                if ( Helper::get_media_file_path( $img_url ) ) {
+                    $image = $img_url;
+                }
+            }
+        }
+
 		return array(
-			'title'       =>
-				isset( $this->social['seo']['title'] ) && $this->social['seo']['title']
-					? $this->social['seo']['title']
-					: wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) ),
-			'description' =>
-				isset( $this->social['seo']['description'] ) && $this->social['seo']['description']
-					? $this->social['seo']['description']
-					: get_bloginfo( 'description' ),
-			'image'       =>
-				isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo']
-					? esc_url( wp_get_attachment_image_src( $this->post->linkpage['logo'], 'full' )[0] )
-					: esc_url( $this->logo )
+			'title'       => $title,
+			'description' => $description,
+			'image'       => $image
 		);
 	}
 
@@ -231,38 +257,62 @@ class Clickwhale_Public_Linkpage {
 	 * Get link Page Title from DB
 	 * @return string
 	 */
-	public function get_title() {
+	public function get_title(): string {
 		return wp_kses( wp_unslash( $this->post->post_title ), wp_kses_allowed_html( 'post' ) );
 	}
 
 	/**
-	 * Get LInk Page Description from DB
+	 * Get Link Page Description from DB
 	 * @return string
 	 */
-	public function get_desc() {
+	public function get_desc(): string {
 		return isset( $this->post->linkpage['description'] ) ? wp_kses( wp_unslash( $this->post->linkpage['description'] ),
 			wp_kses_allowed_html( 'post' ) ) : '';
 	}
 
-	public function get_logo() {
-		$img     = $this->logo;
-		$srcset  = '';
-		$classes = [];
-		if ( isset( $this->styles['logo_style'] ) ) {
-			$classes[] = $this->styles['logo_style'];
-		}
-		if ( isset( $this->styles['logo_shadow'] ) ) {
-			$classes[] = 'with-shadow';
-		}
-		if ( isset( $this->post->linkpage['logo'] ) && $this->post->linkpage['logo'] ) {
-			$srcset = wp_get_attachment_image_srcset( $this->post->linkpage['logo'] );
-			$img    = wp_get_attachment_image_url( $this->post->linkpage['logo'] );
-		}
-		$class = implode( ' ', $classes );
+    /**
+     * @return string
+     */
+    public function get_logo(): string {
 
-		return '<img class="' . $class . '" src="' . esc_url( $img ) . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '">';
-	}
+        if ( empty( $this->post->linkpage['logo'] ) ) {
+            return '';
+        }
 
+        $image_url = wp_get_attachment_image_url( $this->post->linkpage['logo'] );
+
+        if ( ! $image_url ) {
+            return '';
+        }
+
+        $image_url = esc_url( $image_url );
+
+        if ( ! Helper::get_media_file_path( $image_url ) ) {
+            return '';
+        }
+
+        $srcset = wp_get_attachment_image_srcset( $this->post->linkpage['logo'] );
+
+        if ( empty( $srcset ) ) {
+            $srcset = '';
+        }
+
+        $classes = [];
+
+        if ( isset( $this->styles['logo_style'] ) ) {
+            $classes[] = $this->styles['logo_style'];
+        }
+
+        if ( isset( $this->styles['logo_shadow'] ) ) {
+            $classes[] = 'with-shadow';
+        }
+
+        return '<div class="linkpage-public--logo"><img class="' . implode( ' ', $classes ) . '" src="' . $image_url . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '" /></div>';
+    }
+
+    /**
+     * @return string
+     */
 	public function get_links(): string {
 		$html     = '';
 		$template = new Clickwhale_Linkpage_Content_Templates();
@@ -287,19 +337,41 @@ class Clickwhale_Public_Linkpage {
 		return $html;
 	}
 
-	public function get_styles() {
+	public function get_styles(): string {
 		$style = '';
 
 		if ( $this->styles ) {
-			$style .= ':root{ --clickwhale-page-bg-color: ' . $this->styles['bg_color'] . '; --clickwhale-text-color: ' . $this->styles['text_color'] . '; --clickwhale-link-bg-color: ' . $this->styles['link_bg_color'] . '; --clickwhale-link-color: ' . $this->styles['link_color'] . '; --clickwhale-link-bg-hover: ' . $this->styles['link_bg_color_hover'] . '; --clickwhale-link-hover: ' . $this->styles['link_color_hover'] . ';  }';
+
+            $default_styles = clickwhale()->linkpage->get_defaults()['styles'];
+
+            // Validate colors
+            // `$text_color`
+            // `$link_color`
+            // `$link_color_hover`
+            foreach ( array( 'text_color', 'link_color', 'link_color_hover' ) as $color ) {
+                if ( preg_match( '/^#([0-9A-F]{3}){1,2}$/i', $this->styles[$color] ) ) {
+                    $$color = $this->styles[$color];
+                } else {
+                    $$color = $default_styles[$color];
+                }
+            }
+
+            $style .= ' :root{';
+            $style .= '--clickwhale-text-color: '    . $text_color . ';';
+		    $style .= '--clickwhale-page-bg-color: ' . $this->styles['bg_color'] . ';';
+            $style .= '--clickwhale-link-bg-color: ' . $this->styles['link_bg_color'] . ';';
+            $style .= '--clickwhale-link-bg-hover: ' . $this->styles['link_bg_color_hover'] . ';';
+            $style .= '--clickwhale-link-color: '    . $link_color . ';';
+            $style .= '--clickwhale-link-hover: '    . $link_color_hover . ';';
+            $style .= '}';
 		}
 
 		$style = apply_filters( 'clickwhale_linkpage_styles', $style, $this->styles );
 
-		return ' <style>' . $style . ' </style > ';
+		return '<style>' . $style . '</style>';
 	}
 
-	private function socials_svg() {
+	private function socials_svg(): array {
 		return array(
 			'facebook'  => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.652 49.652" fill="currentColor"><path data-name="Pfad 739" d="M24.826 0a24.826 24.826 0 1 0 24.826 24.826A24.854 24.854 0 0 0 24.826 0ZM31 25.7h-4.039v14.4h-5.985V25.7h-2.845v-5.088h2.845v-3.291c0-2.357 1.12-6.04 6.04-6.04l4.435.017v4.939h-3.219a1.219 1.219 0 0 0-1.269 1.386v2.99h4.56Z"/></svg>',
 			'instagram' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49.652 49.652" fill="currentColor"><path data-name="Pfad 740" d="M24.825 29.8a4.962 4.962 0 1 0-4.968-4.971 4.978 4.978 0 0 0 4.968 4.971Z"/><path data-name="Pfad 741" d="M35.678 18.746V13.96h-.623l-4.164.013.016 4.787Z"/><path data-name="Pfad 742" d="M24.826 0a24.826 24.826 0 1 0 24.826 24.826A24.854 24.854 0 0 0 24.826 0Zm14.119 21.929v11.56a5.463 5.463 0 0 1-5.457 5.458H16.164a5.462 5.462 0 0 1-5.457-5.458V16.165a5.462 5.462 0 0 1 5.457-5.457h17.323a5.463 5.463 0 0 1 5.458 5.457Z"/><path data-name="Pfad 743" d="M32.549 24.826a7.723 7.723 0 1 1-14.877-2.9h-4.215v11.56a2.706 2.706 0 0 0 2.706 2.7h17.323a2.707 2.707 0 0 0 2.706-2.7V21.929h-4.217a7.617 7.617 0 0 1 .574 2.9Z"/></svg>',

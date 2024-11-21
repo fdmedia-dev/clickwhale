@@ -35,7 +35,6 @@ body.clickwhale-linkpage.admin-bar {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 1.25rem;
 	min-height: 100vh;
 	margin-top: 0;
 	border: none;
@@ -69,28 +68,28 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	transition: all .3s ease-in-out;
 }
 
-.linkpage-public--inner {
+.linkpage-public--top {
+	margin: 0 auto;
+	width: 100%;
+}
+
+.linkpage-public--header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin: 0 auto;
-	max-width: 700px;
 	width: 100%;
+	padding: 2rem 2rem 3rem;
+	margin-bottom: 2rem;
 }
 
-.linkpage-public--logo {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 150px;
-	height: 150px;
-}
+.linkpage-public--logo {}
 
 .linkpage-public--logo img {
 	position: relative;
 	width: 100%;
-	height: 100%;
+	max-width: 150px;
+	max-height: 150px;
 	object-fit: cover;
 }
 
@@ -106,26 +105,28 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	box-shadow: 0 10px 15px rgba(0, 0, 0, .1);
 }
 
-.linkpage-public--title {
+.linkpage-public--title,
+.linkpage-public--description,
+.linkpage-public--links {
+	max-width: 700px;
+	width: 100%;
 	text-align: center;
+}
+
+.linkpage-public--title {
 	font-size: 3.5rem;
 	line-height: 1em;
 	color: var(--clickwhale-text-color);
 	font-weight: 700;
-	margin: 1.5rem 0 0 0;
-	max-width: 800px;
-	width: 100%;
+	margin-top: 1.5rem;
 }
 
 .linkpage-public--description {
-	text-align: center;
 	font-size: 1.5rem;
 	line-height: 1.2em;
 	color: var(--clickwhale-text-color);
 	opacity: .7;
-	margin: .5rem 0 0 0;
-	max-width: 800px;
-	width: 100%;
+	margin-top: .5rem;
 }
 
 .linkpage-public--links {
@@ -134,8 +135,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
-	width: 100%;
-	margin: 3rem 0 0 0;
+	margin: 0 auto;
 }
 
 .linkpage-public--links > *:first-child {
@@ -426,7 +426,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 /* ---------- */
 
 .linkpage-public--bottom {
-	margin-top: 3rem;
+	margin: 3rem 0 1.25rem;
 }
 
 .linkpage-menu--wrap {
@@ -486,7 +486,9 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 }
 
 @media (min-width: 1600px) {
-	.linkpage-public--inner {
+	.linkpage-public--title,
+	.linkpage-public--description,
+	.linkpage-public--links {
 		max-width: 900px;
 	}
 
@@ -498,7 +500,9 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 }
 
 @media (min-width: 1300px) and (max-width: 1600px) {
-	.linkpage-public--inner {
+	.linkpage-public--title,
+	.linkpage-public--description,
+	.linkpage-public--links {
 		max-width: 800px;
 	}
 }
@@ -508,24 +512,28 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 		--admin-bar-height: 46px;
 	}
 
-	.linkpage-public--logo {
-		width: 75px;
-		height: 75px;
+	.linkpage-public--header {
+		padding-bottom: 2rem;
+	}
+
+	.linkpage-public--logo {}
+
+	.linkpage-public--logo img {
+		max-width: 75px;
+		max-height: 75px;
 	}
 
 	.linkpage-public--title {
 		font-size: 2rem;
-		margin: 1rem 0 0 0;
+		margin-top: 1rem;
 	}
 
 	.linkpage-public--description {
 		font-size: 1.125rem;
-		margin: .5rem 0 0 0;
 	}
 
 	.linkpage-public--links {
 		gap: .5rem;
-		margin: 2rem 0 0 0;
 	}
 
 	.linkpage-public-row a.linkpage-public-row-link {

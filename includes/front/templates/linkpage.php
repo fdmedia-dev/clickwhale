@@ -10,33 +10,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 global $post;
 
 $linkpage = new Clickwhale_Public_Linkpage( $post );
-$view     = new Clickwhale_View_Track( $post->linkpage['id'] );
+$view = new Clickwhale_View_Track( $post->linkpage['id'] );
+$user_id = get_current_user_id();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="profile" href="https://gmpg.org/xfn/11">
-
 	<?php wp_head(); ?>
 	<?php echo $linkpage->get_styles(); ?>
+	<?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
 </head>
-
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div class="linkpage-public--wrap">
-    <div class="linkpage-public--inner">
-
-        <div class="linkpage-public--logo"><?php echo $linkpage->get_logo(); ?></div>
-
-        <div class="linkpage-public--title"><?php echo $linkpage->get_title(); ?></div>
-
-		<?php if ( $linkpage->get_desc() ) { ?>
-            <div class="linkpage-public--description"><?php echo $linkpage->get_desc(); ?></div>
-		<?php } ?>
-
+    <div class="linkpage-public--top">
+        <div class="linkpage-public--header">
+            <?php echo $linkpage->get_logo(); ?>
+            <div class="linkpage-public--title"><?php echo $linkpage->get_title(); ?></div>
+            <?php if ( $linkpage->get_desc() ) { ?>
+                <div class="linkpage-public--description"><?php echo $linkpage->get_desc(); ?></div>
+            <?php } ?>
+        </div>
         <div class="linkpage-public--links"><?php echo $linkpage->get_links(); ?></div>
 
     </div>
@@ -50,5 +47,6 @@ $view     = new Clickwhale_View_Track( $post->linkpage['id'] );
     </div>
 </div>
 <?php wp_footer(); ?>
+<?php do_action( 'clickwhale/link_page_footer', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
 </body>
 </html>

@@ -734,30 +734,31 @@ class Clickwhale_Linkpage_Content_Templates {
 	}
 
 	public function get_template_row_image( array $data ): string {
-		if ( ! isset( $data['image']['type'] ) && ! isset( $data['image']['image_id'] ) ) {
+        if ( empty( $data['image']['type'] ) && empty( $data['image']['image_id'] ) ) {
 			return '<div class="linkpage-row--image"></div>';
 		}
 
+        $image_id = $data['image']['image_id'];
 		$image = '';
 		$class = '';
 
 		switch ( $data['image']['type'] ) {
 			case 'icon':
 				$class = 'with-image';
-				$src   = $data['image']['image_id'];
-				$image = '<ion-icon name="' . $src . '"></ion-icon>';
+				$image = '<ion-icon name="' . $image_id . '"></ion-icon>';
 				break;
 			case 'emoji':
 				$class = 'with-image';
-				$image = $data['image']['image_id'];
+				$image = $image_id;
 				break;
 			case 'image' :
-				$image_alt = get_post_meta( $data['image']['image_id'], '_wp_attachment_image_alt', true );
-				$alt       = $image_alt ?: get_the_title( $data['image']['image_id'] );
-				$src       = wp_get_attachment_image_src( $data['image']['image_id'] );
-				$image     = '<img alt="' . $alt . '" src="' . $src[0] . '"/>';
+				$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+				$alt = $image_alt ?: get_the_title( $image_id );
+				$src = wp_get_attachment_image_url( $image_id );
+                if ( $src ) {
+                    $image = '<img alt="' . $alt . '" src="' . esc_url( $src ) . '" />';
+                }
 				break;
-			default:
 		}
 
 		return '<div class="linkpage-row--image ' . $class . '">' . $image . '</div>';
@@ -776,7 +777,8 @@ class Clickwhale_Linkpage_Content_Templates {
                        name="links[<?php echo $id ?>][is_active]"
                        class="clickwhale_linkpage_active_toggle"
                        value="1"
-					<?php checked( $is_active, 1 ) ?>>
+                       <?php checked( $is_active, 1 ); ?>
+                />
                 <span class="clickwhale-checkbox--toggle-slider"></span>
             </label>
         </div>
@@ -846,36 +848,34 @@ class Clickwhale_Linkpage_Content_Templates {
             <label><?php _e( 'Icon', CLICKWHALE_NAME ) ?></label>
 
             <div class="linkpage-row--image-select">
-                <p class="description">
-					<?php
-					_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', CLICKWHALE_NAME );
-					?>
-                </p>
+                <p class="description"><?php _e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', CLICKWHALE_NAME ); ?></p>
                 <div class="linkpage-row--image-select--tab">
                     <div class="linkpage-row--image-select--tab-inner tab-multiple">
                         <div class="linkpage-row--image-select--item item-image">
                             <div class="image-item">
                                 <input type="radio"
                                        data-type="image"
-                                       id="image-<?php echo $data['id'] ?>-0"
-                                       name="links[<?php echo $data['id'] ?>][image][image_id]"
-                                       value="<?php echo $image_type == 'image' ? $image_id : '' ?>"
-									<?php if ( $image_id && $image_type == 'image' ) { ?>
-                                        checked
-									<?php } ?>
-                                >
-                                <label for="image-<?php echo $data['id'] ?>-0">
+                                       id="image-<?php echo $data['id']; ?>-0"
+                                       name="links[<?php echo $data['id']; ?>][image][image_id]"
+                                       value="<?php echo $image_type == 'image' ? $image_id : ''; ?>"
+									   <?php if ( $image_id && $image_type == 'image' ) { echo 'checked'; } ?>
+                                />
+                                <label for="image-<?php echo $data['id']; ?>-0">
 									<?php if ( $image_id && $image_type == 'image' ) {
-										echo '<img src="' . wp_get_attachment_image_src( $image_id )[0] . '"/>';
+                                        $src = wp_get_attachment_image_url( $image_id );
+                                        if ( $src ) {
+                                            echo '<img src="' . esc_url( $src ) . '" />';
+                                        }
 									} ?>
                                 </label>
                             </div>
-                            <a href="#" class="linkpage-row--image-upload">
-								<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>
-                            </a>
-                            <a href="#" class="linkpage-row--image-remove" style="display: none;">
-								<?php _e( 'Remove image', CLICKWHALE_NAME ) ?>
-                            </a>
+                            <a href="#"
+                               class="linkpage-row--image-upload"
+                            ><?php _e( 'Upload image', CLICKWHALE_NAME ); ?></a>
+                            <a href="#"
+                               class="linkpage-row--image-remove"
+                               style="display: none;"
+                            ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
                         </div>
 
                         <div class="linkpage-row--image-select--item item--icon">
@@ -919,7 +919,7 @@ class Clickwhale_Linkpage_Content_Templates {
                         </div>
 
                         <div class="linkpage-row--image-select--reset">
-                            <button type="button" class="reset-image">Reset</button>
+                            <button type="button" class="reset-image"><?php _e( 'Reset', CLICKWHALE_NAME ); ?></button>
                         </div>
                     </div>
                 </div>

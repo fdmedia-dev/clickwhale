@@ -351,7 +351,131 @@ final class Clickwhale_Admin {
 		);
 	}
 
-	public function admin_banner() {
+    /**
+     * Extend the stylesheets for Freemius pricing page
+     *
+     * @param string $template
+     * @return string
+     */
+    public function enqueue_fs_pricing_styles( $template ) {
+        $style = <<<'CSS'
+<style>
+#root .fs-app-header .fs-page-title,
+#fs_pricing_app .fs-app-header .fs-page-title {
+    display: block !important;
+}
+#root .fs-app-header .fs-page-title h1,
+#fs_pricing_app .fs-app-header .fs-page-title h1 {
+    font-size: 2.5em !important;
+}
+#root .fs-app-header .fs-page-title h3,
+#fs_pricing_app .fs-app-header .fs-page-title h3 {
+    color:  #1A1C1D !important;
+    font-size: small !important;
+    font-weight: 600 !important;
+}
+#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle,
+#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle {
+    background: #4B7CF7 0 0 no-repeat padding-box !important;
+    color: #FFFFFF !important;
+}
+#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover,
+#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover {
+    color: #FFFFFF !important;
+}
+#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover,
+#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover {
+    background-color: #1A1C1D !important;
+}
+#root .fs-package,
+#fs_pricing_app .fs-package {
+    margin: 2.8em 0.8em 0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 1px #00000029 !important;
+}
+#root .fs-package.fs-featured-plan,
+#fs_pricing_app .fs-package.fs-featured-plan {
+    background: #FDD231 0 0 no-repeat padding-box !important;
+}
+#root .fs-package.fs-featured-plan .fs-most-popular,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular {
+    background: #4B7CF7 0 0 no-repeat padding-box !important;
+    opacity: 1 !important;
+    border-radius: 20px 20px 0 0 !important;
+    font-size: 1.2em !important;
+    text-transform: uppercase !important;
+    color: #FFFFFF !important;
+    line-height: 2.6em !important;
+    margin: -2.5em 0 -1px 0 !important;
+}
+#root .fs-package.fs-featured-plan .fs-most-popular h4,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular h4 {
+    color: #FFFFFF !important;
+}
+#root .fs-package .fs-plan-title,
+#fs_pricing_app .fs-package .fs-plan-title {
+    background: #f8f8f9 !important;
+    text-transform: capitalize !important;
+}
+#root .fs-package:not(.fs-featured-plan) .fs-plan-title,
+#fs_pricing_app .fs-package:not(.fs-featured-plan) .fs-plan-title {
+    border-radius: 20px 20px 0 0 !important;
+}
+#root .fs-package.fs-featured-plan .fs-plan-title,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-plan-title {
+    background: #1A1C1D 0 0 no-repeat padding-box !important;
+    color: #FFFFFF !important;
+    border-color: transparent !important;
+    border-radius: 0 !important;
+}
+#root .fs-package .fs-selected-pricing-cycle,
+#fs_pricing_app .fs-package .fs-selected-pricing-cycle {
+    text-transform: capitalize !important;
+}
+#root .fs-package .fs-selected-pricing-license-quantity,
+#fs_pricing_app .fs-package .fs-selected-pricing-license-quantity {
+    color: #47AED6 !important;
+}
+#root .fs-package .fs-plan-features li .fs-icon,
+#root .fs-package .fs-plan-features li .fs-tooltip,
+#fs_pricing_app .fs-package .fs-plan-features li .fs-icon,
+#fs_pricing_app .fs-package .fs-plan-features li .fs-tooltip {
+    color: #47AED6 !important;
+}
+#root .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
+#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+#root .fs-package.fs-featured-plan .fs-plan-features li .fs-icon,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-plan-features li .fs-icon {
+    color: #4B7CF7 !important;
+}
+#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path {
+    fill: #4B7CF7 !important;
+}
+#root .fs-package .fs-upgrade-button-container .fs-upgrade-button,
+#fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button {
+    background: #4B7CF7 0 0 no-repeat padding-box !important;
+    color: #FFFFFF !important;
+    border: 1px solid #4B7CF7 !important;
+    border-radius: 10px !important;
+}
+#root .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover,
+#fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover {
+    background-color: #1A1C1D !important;
+    border-color: #1A1C1D !important;
+}
+</style>
+CSS;
+        return $template . $style;
+    }
+
+    public function admin_banner() {
 		$link_logo     = 'https://clickwhale.pro/?utm_source=user+site&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
 		$link_helpdesk = 'https://clickwhale.pro/docs/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_need_help';
 		$link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
@@ -452,13 +576,14 @@ final class Clickwhale_Admin {
         } ?>
         <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__upgrade">
             <div class="hero">
-                <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/upgrade_to_pro_widget_hero.svg' ) ?>"
-                     alt="<?php echo CLICKWHALE_NAME ?>">
+                <img src="<?php esc_attr_e( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/upgrade_to_pro_widget_hero.svg' ); ?>"
+                     alt="<?php echo CLICKWHALE_NAME; ?>">
             </div>
             <h3 class="title"><?php esc_attr_e( 'Upgrade to ClickWhale Pro', CLICKWHALE_NAME ); ?></h3>
             <div class="inside">
                 <ul>
                     <li><span class="text"><?php esc_attr_e( 'Detailed Statistics', CLICKWHALE_NAME ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'Keyword Auto Linker', CLICKWHALE_NAME ); ?></span></li>
                     <li><span class="text"><?php esc_attr_e( 'UTM Campaign Tracking', CLICKWHALE_NAME ); ?></span></li>
                     <li><span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', CLICKWHALE_NAME ); ?></span></li>
                     <li><span class="text"><?php esc_attr_e( 'Advanced Customization Options', CLICKWHALE_NAME ); ?></span></li>
@@ -469,7 +594,7 @@ final class Clickwhale_Admin {
                 <div class="clickwhale-pro-button">
                     <a href="https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=upgrade_to_pro_widget"
                        class="button-get-pro"
-                       rel="noopener"><?php esc_attr_e( 'View Upgrade', CLICKWHALE_NAME ); ?> 🚀</a>
+                       rel="noopener"><?php esc_attr_e( 'Upgrade Now', CLICKWHALE_NAME ); ?> 🚀</a>
                 </div>
             </div>
         </div>
@@ -490,7 +615,19 @@ final class Clickwhale_Admin {
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How-To Shorten Links & Create Redirects', CLICKWHALE_NAME ); ?></a></li>
+
+                    <li><a href="https://clickwhale.pro/docs/article/how-to-import-links/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           class="text"
+                           target="_blank"
+                           rel="nofollow"
+                           title="<?php esc_attr_e( 'How-To Import Links', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How-To Import Links', CLICKWHALE_NAME ); ?></a></li>
+
+                    <li><a href="https://clickwhale.pro/docs/article/how-to-use-the-keyword-auto-linker/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           class="text"
+                           target="_blank"
+                           rel="nofollow"
+                           title="<?php esc_attr_e( 'How-To Use the Keyword Auto Linker', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How-To Use the Keyword Auto Linker', CLICKWHALE_NAME ); ?></a></li>
 
                     <li><a href="https://clickwhale.pro/docs/article/creating-your-first-link-page/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
@@ -501,7 +638,7 @@ final class Clickwhale_Admin {
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?>"><?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', CLICKWHALE_NAME ); ?></a></li>
                 </ul>
 
                 <div class="clickwhale-pro-button">

@@ -175,27 +175,30 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="logo"><?php _e( 'Page Logo', CLICKWHALE_NAME ) ?></label>
+                                <label for="logo"><?php _e( 'Page Logo', CLICKWHALE_NAME ); ?></label>
                             </th>
                             <td>
                                 <div class="logo-field image-field">
 									<?php
-									if ( $logo_id ) {
-										$image = wp_get_attachment_image_src( $logo_id );
-										?>
+                                    $src = wp_get_attachment_image_url( $logo_id );
+
+									if ( $logo_id && $src ) { ?>
                                         <a href="#" class="linkpage-image-upload">
-                                            <img alt="linkpage-logo" src="<?php echo esc_url( $image[0] ) ?>"/>
+                                            <img alt="linkpage-logo" src="<?php echo esc_url( $src ); ?>" />
                                         </a>
-                                        <a href="#" class="button linkpage-image-remove">Remove image</a>
-                                        <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>">
+                                        <a href="#"
+                                           class="button linkpage-image-remove"
+                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        <input type="hidden" name="logo" value="<?php esc_attr_e( $logo_id ); ?>" />
 									<?php } else { ?>
-                                        <a href="#" class="button linkpage-image-upload">
-											<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>
-                                        </a>
-                                        <a href="#" class="button linkpage-image-remove" style="display: none;">
-											<?php _e( 'Remove image', CLICKWHALE_NAME ) ?>
-                                        </a>
-                                        <input type="hidden" name="logo" value="">
+                                        <a href="#"
+                                           class="button linkpage-image-upload"
+                                        ><?php _e( 'Upload image', CLICKWHALE_NAME ); ?></a>
+                                        <a href="#"
+                                           class="button linkpage-image-remove"
+                                           style="display: none;"
+                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        <input type="hidden" name="logo" value="" />
 									<?php } ?>
                                 </div>
                                 <p><?php _e( 'Max logo size 275px * 275px', CLICKWHALE_NAME ); ?></p>
@@ -341,6 +344,9 @@ do_action( 'clickwhale_admin_banner' );
                     </table>
 
                     <hr>
+                    <?php do_action( 'clickwhale_linkpage_before_links_styles', $item ); ?>
+
+                    <?php do_action( 'clickwhale_linkpage_after_general_styles_table', $item ) ?>
 
                     <h2><?php _e( 'Links', CLICKWHALE_NAME ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
@@ -539,28 +545,30 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="ogimage"><?php _e( 'Open Graph Image', CLICKWHALE_NAME ) ?></label>
+                                <label for="ogimage"><?php _e( 'Open Graph Image', CLICKWHALE_NAME ); ?></label>
                             </th>
                             <td>
                                 <div class="og-image-field image-field">
 									<?php
-									if ( $seoOGImageId ) {
-										$ogImage = wp_get_attachment_image_src( $seoOGImageId );
-										?>
+                                    $ogImage = wp_get_attachment_image_url( $seoOGImageId );
+
+									if ( $seoOGImageId && $ogImage ) { ?>
                                         <a href="#" class="linkpage-image-upload">
-                                            <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage[0] ) ?>"/>
+                                            <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage ); ?>" />
                                         </a>
-                                        <a href="#" class="linkpage-image-remove">Remove image</a>
-                                        <input type="hidden" name="social[seo][ogimage]"
-                                               value="<?php echo esc_attr( $seoOGImageId ); ?>">
+                                        <a href="#"
+                                           class="linkpage-image-remove"
+                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        <input type="hidden" name="social[seo][ogimage]" value="<?php esc_attr_e( $seoOGImageId ); ?>" />
 									<?php } else { ?>
-                                        <a href="#" class="linkpage-image-upload">
-											<?php _e( 'Upload image' ) ?>
-                                        </a>
-                                        <a href="#" class="linkpage-image-remove" style="display:none">
-											<?php _e( 'Remove image' ) ?>
-                                        </a>
-                                        <input type="hidden" name="social[seo][ogimage]" value="">
+                                        <a href="#"
+                                           class="linkpage-image-upload"
+                                        ><?php _e( 'Upload image', CLICKWHALE_NAME ); ?></a>
+                                        <a href="#"
+                                           class="linkpage-image-remove"
+                                           style="display:none"
+                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        <input type="hidden" name="social[seo][ogimage]" value="" />
 									<?php } ?>
                                 </div>
                                 <p><?php _e( 'Recommended image size 1200px * 630px', CLICKWHALE_NAME ); ?></p>
