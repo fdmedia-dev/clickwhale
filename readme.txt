@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,10 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.1 (21st November 2024) =
+* Fix: Ensure the debugger file exists before including it
+* Info: WordPress v6.7.1 compatibility
+
 = Version 2.4.0 (21st November 2024) =
 * New: Added hooks to insert third-party plugins code in the page header and footer
 * Tweak: Enhanced the admin pages documentation widgets

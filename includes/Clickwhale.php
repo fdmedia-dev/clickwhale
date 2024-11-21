@@ -219,7 +219,9 @@ final class Clickwhale {
 		/**
 		 * Debuggers
 		 */
-		require_once CLICKWHALE_DIR . 'includes/debuggers/Debugger.php';
+		if ( file_exists( CLICKWHALE_DIR . 'includes/debuggers/Debugger.php' ) ) {
+			require_once CLICKWHALE_DIR . 'includes/debuggers/Debugger.php';
+		}
 
 		/**
 		 * Helpers
