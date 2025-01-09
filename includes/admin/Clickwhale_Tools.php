@@ -20,25 +20,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @subpackage Clickwhale/admin
  */
 class Clickwhale_Tools {
+
 	/**
 	 * @var Clickwhale_Migration
 	 */
-	public $migration;
+	public Clickwhale_Migration $migration;
 
 	/**
 	 * @var Clickwhale_Reset
 	 */
-	public $reset;
+	public Clickwhale_Reset $reset;
 
 	/**
 	 * @var Clickwhale_Import
 	 */
-	public $import;
+	public Clickwhale_Import $import;
 
 	/**
 	 * @var Clickwhale_Export
 	 */
-	public $export;
+	public Clickwhale_Export $export;
 
 	/**
 	 * Initialize the class and set its properties.

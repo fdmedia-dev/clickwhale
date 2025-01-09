@@ -15,52 +15,52 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Clickwhale_Public_Linkpage {
 
     /**
-     * @var WP_Post $post;
+     * @var WP_Post
      */
-	private $post;
+	private WP_Post $post;
 
     /**
-     * @var false|mixed|null
+     * @var array
      */
-	private $linkpages_options;
+	private array $linkpages_options;
+
+//    /**
+//     * @var array
+//     */
+//	private array $other_options;
 
     /**
-     * @var false|mixed|null
+     * @var array
      */
-	private $other_options;
+	private array $data;
 
     /**
-     * @var mixed|string
+     * @var array
      */
-	private $data;
+	private array $social;
 
     /**
-     * @var false|mixed|string
+     * @var array
      */
-	private $social;
+	private array $links;
 
     /**
-     * @var mixed|string
+     * @var array
      */
-	private $links;
-
-    /**
-     * @var mixed|string
-     */
-	private $styles;
+	private array $styles;
 
     /**
      * @var string
      */
-	private $logo;
+	private string $logo;
 
 	public function __construct( $post ) {
 		$this->post              = $post;
 		$this->linkpages_options = get_option( 'clickwhale_linkpages_options' );
-		$this->other_options     = get_option( 'clickwhale_other_options' );
+		//$this->other_options     = get_option( 'clickwhale_other_options' );
 		$this->data              = maybe_unserialize( $this->post->linkpage );
-		$this->links             = maybe_unserialize( $this->post->linkpage['links'] );
-		$this->styles            = maybe_unserialize( $this->post->linkpage['styles'] );
+		$this->links             = (array) maybe_unserialize( $this->data['links'] );
+		$this->styles            = (array) maybe_unserialize( $this->data['styles'] );
 		$this->social            = isset( $this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
 		$this->logo              = trailingslashit( CLICKWHALE_PUBLIC_ASSETS_DIR ) . 'images/whale.svg';
 
@@ -82,13 +82,12 @@ class Clickwhale_Public_Linkpage {
 	}
 
 	/**
-	 * @param $robots
-	 *
-	 * @return mixed
+	 * @param array $robots
+	 * @return array
 	 * @since 1.1.0
 	 *
 	 */
-	public function robots_tag( $robots ) {
+	public function robots_tag( array $robots ): array {
 		$robotsData = isset( $this->social['seo']['robots'] ) ? maybe_unserialize( $this->social['seo']['robots'] ) : false;
 
 		// by default we need set this values because without SEO Plugin it can be empty
@@ -119,7 +118,6 @@ class Clickwhale_Public_Linkpage {
 	/**
 	 * @return void
 	 * @since 1.1.0
-	 *
 	 */
 	public function start_wp_head_buffer() {
 		ob_start();
@@ -186,9 +184,8 @@ class Clickwhale_Public_Linkpage {
 			),
 		);
 
-		foreach ( $tags as $k => $v ) {
+		foreach ( $tags as $v ) {
 			if ( $v['content'] ) {
-
 				$metaTag = $xpath->query( '//meta[@property="' . $v['name'] . '"]' )[0];
 				if ( $metaTag ) {
 					$metaTag->setAttribute( 'content', $v['content'] );
@@ -198,12 +195,10 @@ class Clickwhale_Public_Linkpage {
 					$newMetaTag->setAttribute( "content", $v['content'] );
 					$dom->appendChild( $newMetaTag );
 				}
-
 			}
 		}
 
 		$in = $dom->saveHTML();
-
 		$in = str_replace( array( '<html>', '</html>', '<head>', '</head>' ), '', $in );
 
 		echo $in;
@@ -379,9 +374,9 @@ class Clickwhale_Public_Linkpage {
 		);
 	}
 
-	public function get_socails() {
+	public function get_socails(): string {
 		if ( ! isset( $this->post->linkpage['social'] ) ) {
-			return false;
+			return '';
 		}
 
 		$social_html = '';
@@ -390,7 +385,7 @@ class Clickwhale_Public_Linkpage {
 		if ( isset( $socials['profiles'] ) ) {
 			foreach ( $socials['profiles'] as $k => $v ) {
 				if ( $v ) {
-					$social_html .= ' <li><a href = "' . $v . '" target = "_blank" > ' . $social_svg[ $k ] . '</a ></li > ';
+					$social_html .= ' <li><a href = "' . esc_url( $v ) . '" target = "_blank" > ' . $social_svg[ $k ] . '</a></li> ';
 				}
 			}
 		}
@@ -414,12 +409,10 @@ class Clickwhale_Public_Linkpage {
 	public function admin_bar_render() {
 		global $wp_admin_bar;
 
-		$data = $this->post;
-
 		$wp_admin_bar->add_node( array(
 				'id'    => 'edit',
 				'title' => __( 'Edit Link Page', CLICKWHALE_NAME ),
-				'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $data->linkpage['id'] ),
+				'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $this->post->linkpage['id'] ),
 			)
 		);
 	}
@@ -427,12 +420,11 @@ class Clickwhale_Public_Linkpage {
 	/**
 	 * Add body classes
 	 *
-	 * @param $classes
-	 *
-	 * @return mixed
+	 * @param array $classes
+	 * @return array
 	 * @since 1.3.2
 	 */
-	public static function linkpage_classes( $classes ) {
+	public static function linkpage_classes( array $classes ): array {
 		$classes[] = 'clickwhale-linkpage';
 
 		return $classes;
@@ -440,16 +432,14 @@ class Clickwhale_Public_Linkpage {
 
 	public function get_legals_menu() {
 		global $wpdb;
-
 		$table_links_meta = $wpdb->prefix . 'clickwhale_meta';
-		$linkpage_id      = $this->data['id'];
-
-		$legals_menu_id = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT * FROM $table_links_meta WHERE linkpage_id=%s AND meta_key='legals_menu_id'",
-				$linkpage_id ),
-			ARRAY_A
-		);
+        $legals_menu_id = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $table_links_meta WHERE linkpage_id=%d AND meta_key='legals_menu_id'",
+                intval( $this->data['id'] )
+            ),
+            ARRAY_A
+        );
 
 		if ( ! $legals_menu_id || ! $legals_menu_id['meta_value'] ) {
 			return false;

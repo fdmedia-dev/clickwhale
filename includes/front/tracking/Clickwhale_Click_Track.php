@@ -8,25 +8,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Clickwhale_Click_Track {
+
 	/**
 	 * Link ID
 	 *
 	 * @since    1.0.0
 	 * @access   protected
 	 */
-	protected $link_id;
-	protected $user;
-	protected $visitor;
-	protected $is_custom;
+	protected int $link_id;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @param string $link_id Link id.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct( string $link_id = '', bool $is_custom = false ) {
+	//protected $user;
+
+	protected Clickwhale_Visitor_Track $visitor;
+
+	protected bool $is_custom;
+
+    /**
+     * Initialize the class and set its properties
+     *
+     * @param int $link_id
+     * @param bool $is_custom
+     * @since 1.0.0
+     */
+	public function __construct( int $link_id = 0, bool $is_custom = false ) {
 		$this->link_id   = $link_id;
 		$this->is_custom = $is_custom;
 		$this->visitor   = new Clickwhale_Visitor_Track();
@@ -43,7 +47,10 @@ class Clickwhale_Click_Track {
 	private function get_linkpage_id(): int {
 		$url = strtolower( $this->get_link_referer() );
 
-		if ( ! $url && ! str_contains( $url, get_bloginfo( 'url' ) ) ) {
+		if ( ! $url ) {
+			return false;
+		}
+		if ( ! str_contains( $url, get_bloginfo( 'url' ) ) ) {
 			return false;
 		}
 		$url    = strtok( $url, '?' );
@@ -56,7 +63,6 @@ class Clickwhale_Click_Track {
 
 	private function update_track_database( $visitor_id ) {
 		global $wpdb;
-
 		$table_name             = $wpdb->prefix . 'clickwhale_track';
 		$item                   = [];
 		$item['event_type']     = 'click';
@@ -67,7 +73,7 @@ class Clickwhale_Click_Track {
 		$item['referer']        = $this->get_link_referer();
 		$item['created_at']     = gmdate( 'Y-m-d H:i:s' );
 
-		return $wpdb->insert( $table_name, $item );
+		$wpdb->insert( $table_name, $item );
 	}
 
 }

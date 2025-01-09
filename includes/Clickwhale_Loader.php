@@ -25,7 +25,7 @@ class Clickwhale_Loader {
 	 * @access   protected
 	 * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
 	 */
-	protected $actions;
+	protected array $actions;
 
 	/**
 	 * The array of filters registered with WordPress.
@@ -34,7 +34,9 @@ class Clickwhale_Loader {
 	 * @access   protected
 	 * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
 	 */
-	protected $filters;
+	protected array $filters;
+
+    protected array $shortcodes;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -42,10 +44,8 @@ class Clickwhale_Loader {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-
 		$this->actions = array();
 		$this->filters = array();
-
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Clickwhale_Loader {
 	 *
 	 * @since    1.0.0
 	 */
-	public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+	public function add_action( string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1 ) {
 		$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
 	}
 
@@ -74,7 +74,7 @@ class Clickwhale_Loader {
 	 *
 	 * @since    1.0.0
 	 */
-	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+	public function add_filter( string $hook, object $component, string $callback, int $priority = 10, int $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
 	}
 
@@ -86,20 +86,16 @@ class Clickwhale_Loader {
 	 * @param string $method_to_remove Method name for the filter's callback.
 	 * @param int $priority The priority of the method (default 10).
 	 *
-	 * @return   bool Whether the function is removed.
+	 * @return bool $removed Whether the function is removed.
 	 * @since    1.0.0
 	 */
-	public function remove_filter( $tag, $class_name = '', $method_to_remove = '', $priority = 10 ) {
-
+	public function remove_filter( string $tag, string $class_name = '', string $method_to_remove = '', int $priority = 10 ): bool {
 		global $wp_filter;
 		$removed = false;
 
 		foreach ( $wp_filter[ $tag ]->callbacks as $filter_priority => $filters ) {
-
 			if ( $filter_priority == $priority ) {
-
 				foreach ( $filters as $filter ) {
-
 					if ( $filter['function'][1] == $method_to_remove
 					     && $filter['function'][0] instanceof $class_name ) {
 						$removed = $wp_filter[ $tag ]->remove_filter( $tag, array(
@@ -112,7 +108,6 @@ class Clickwhale_Loader {
 		}
 
 		return $removed;
-
 	}
 
 	/**
@@ -126,7 +121,7 @@ class Clickwhale_Loader {
 	 * @return   bool Whether the function is removed.
 	 * @since    1.0.0
 	 */
-	public function remove_action( $tag, $class_name = '', $method_to_remove = '', $priority = 10 ) {
+	public function remove_action( string $tag, string $class_name = '', string $method_to_remove = '', int $priority = 10 ): bool {
 		return $this->remove_filter( $tag, $class_name, $method_to_remove, $priority );
 	}
 
@@ -141,7 +136,7 @@ class Clickwhale_Loader {
 	 *
 	 * @since     1.0.0
 	 */
-	public function add_shortcode( $tag, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+	public function add_shortcode( string $tag, object $component, string $callback, int $priority = 10, int $accepted_args = 1 ) {
 		$this->shortcodes = $this->add( $this->shortcodes, $tag, $component, $callback, $priority, $accepted_args );
 	}
 
@@ -160,7 +155,7 @@ class Clickwhale_Loader {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
+	private function add( array $hooks, string $hook, object $component, string $callback, int $priority, int $accepted_args ): array {
 
 		$hooks[] = array(
 			'hook'          => $hook,
@@ -171,7 +166,6 @@ class Clickwhale_Loader {
 		);
 
 		return $hooks;
-
 	}
 
 	/**

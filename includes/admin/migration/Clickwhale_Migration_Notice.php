@@ -21,7 +21,7 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant;
+	public string $migrant;
 
 	/**
 	 * Plugin full name for messages.
@@ -30,16 +30,16 @@ class Clickwhale_Migration_Notice {
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant_full;
+	public string $migrant_full;
 
 	/**
-	 * Plugin directory/name for deactivation.
+	 * Plugin directory name for deactivation.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 * @var      string
 	 */
-	public $migrant_file;
+	public string $migrant_file;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -67,7 +67,7 @@ class Clickwhale_Migration_Notice {
 
 		$options_hide_migrate   = get_option( 'clickwhale_hide_notice_migrate' );
 		$options_hide_deactive  = get_option( 'clickwhale_hide_notice_deactive' );
-		$options_last_migration = get_option( 'clickwhale_tools_last_migration_options' );
+		//$options_last_migration = get_option( 'clickwhale_tools_last_migration_options' );
 
 		$is_tools_page = isset( $_GET['page'] ) && $_GET['page'] == CLICKWHALE_SLUG . '-tools';
 
@@ -80,7 +80,6 @@ class Clickwhale_Migration_Notice {
 			add_action( 'admin_notices', [ $this, 'deactive_notice' ] );
 			add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
 		}
-
 	}
 
 	/**
@@ -131,7 +130,7 @@ class Clickwhale_Migration_Notice {
         <script type='text/javascript'>
             jQuery(document).ready(function() {
 
-                jQuery('.clickwhale-notice-<?php echo $this->migrant ?>-deactive').on('click', '.deactive', function(e) {
+                jQuery('.clickwhale-notice-<?php echo $this->migrant; ?>-deactive').on('click', '.deactive', function(e) {
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
 
@@ -142,10 +141,12 @@ class Clickwhale_Migration_Notice {
                         'target': '<?php echo esc_attr( $this->migrant_file ); ?>'
                     }, function(response) {
                         if (response.success) {
-                            location.reload(true);
+                            location.reload();
+                        } else {
+                            console.log('migration_deactive action error');
                         }
                     });
-                })
+                });
 
                 jQuery('.clickwhale-notice-<?php echo esc_attr( $this->migrant ) ?>-migrate').on('click', '.button-dismiss', function(e) {
                     e.preventDefault();

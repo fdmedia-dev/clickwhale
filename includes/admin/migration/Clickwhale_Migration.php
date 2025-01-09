@@ -12,12 +12,12 @@ class Clickwhale_Migration {
     /**
      * @var string
      */
-	private $options;
+	private string $options;
 
     /**
      * @var string
      */
-	private $last_migration;
+	private string $last_migration;
 
 	public function __construct() {
 		$this->options        = 'clickwhale_tools_migration_options';
@@ -99,6 +99,7 @@ class Clickwhale_Migration {
 	 */
 	public function add_notice_migrate_options() {
 		if ( ! get_option( 'clickwhale_hide_notice_migrate' ) ) {
+            $notice_migrate_options = array();
 
 			foreach ( $this->available_migrations() as $item ) {
 				$notice_migrate_options[ $item['slug'] ] = false;
@@ -115,6 +116,7 @@ class Clickwhale_Migration {
 	 */
 	public function add_notice_deactive_options() {
 		if ( ! get_option( 'clickwhale_hide_notice_deactive' ) ) {
+            $notice_deactive_options = array();
 
 			foreach ( $this->available_migrations() as $item ) {
 				$notice_deactive_options[ $item['slug'] ] = true;
@@ -146,24 +148,22 @@ class Clickwhale_Migration {
 	 */
 	public function get_plugin_data( string $plugin ): array {
 		global $wpdb;
-
-		$data = [];
+		$data = array();
 
 		switch ( $plugin ) {
 			case 'betterlinks':
-				$data['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks" );
-				$data['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks_terms" );
-
+				$data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks" ) );
+				$data['categories'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks_terms" ) );
 				break;
+
 			case 'thirstyaffiliates':
-				$data['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type='thirstylink' AND post_status='publish'" );
-				$data['categories'] = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}term_taxonomy WHERE taxonomy='thirstylink-category'" );
-
+				$data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type='thirstylink' AND post_status='publish'" ) );
+				$data['categories'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}term_taxonomy WHERE taxonomy='thirstylink-category'" ) );
 				break;
-			case 'prettylinks':
-				$data['links']      = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}prli_links" );
-				$data['categories'] = '';
 
+			case 'prettylinks':
+				$data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}prli_links" ) );
+				$data['categories'] = '';
 				break;
 		}
 
@@ -241,8 +241,7 @@ class Clickwhale_Migration {
 	}
 
 	/**
-	 * This function provides a simple description for the Options section.
-	 *
+	 * This function provides a simple description for the Options section
 	 */
 	public function migration_settings_section_callback( $item ) {
 		$data         = $this->get_plugin_data( $item['slug'] );
@@ -269,13 +268,10 @@ class Clickwhale_Migration {
 		<?php
 	}
 
-	/**
-	 * @param $item
-	 *
-	 * @return void
-	 */
-
-
+    /**
+     * @param $args
+     * @return void
+     */
 	public static function render_controls( $args ) {
 		echo Helper::render_control( $args );
 	}
@@ -393,7 +389,7 @@ class Clickwhale_Migration {
                             jQuery(resetSpinner).removeClass("is-active");
                             jQuery(resetResult).html(response.data);
 
-                            location.reload(true);
+                            location.reload();
                         }
                     });
                 })

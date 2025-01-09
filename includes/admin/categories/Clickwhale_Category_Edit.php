@@ -23,40 +23,40 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 		);
 	}
 
-	public function save_update() {
-		global $wpdb;
+    public function save_update() {
+        global $wpdb;
+        $table = Helper::get_db_table_name( 'categories' );
+        $item = array_intersect_key( $_POST, $this->get_defaults() );
+        $item['slug'] = $item['slug'] ? sanitize_title( $item['slug'] ) : sanitize_title( $item['title'] );
+        $id = intval( $item['id'] );
 
-		$table        = Helper::get_db_table_name( 'categories' );
-		$item         = array_intersect_key( $_POST, $this->get_defaults() );
-		$item['slug'] = $item['slug'] ? sanitize_title( $item['slug'] ) : sanitize_title( $item['title'] );
+        // Check if category exists and then update or insert
+        // in some cases default check (not false and < 0) goes wrong
+        if ( Categories_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                $table,
+                $item,
+                array( 'id' => $id )
+            );
+            $this->set_transient( $id, 'updated' );
 
-		// Check if item exists and then update or insert
-		// in some cases default check (not false and < 0) goes wrong
-		$category = Categories_Helper::get_by_id( intval( $item['id'] ) );
+        } else {
+            $wpdb->insert(
+                $table,
+                $item
+            );
+            $id = $wpdb->insert_id;
+            $this->set_transient( $id, 'added' );
+        }
 
-		if ( $category ) {
-			$wpdb->update(
-				$table,
-				$item,
-				array( 'id' => $item['id'] )
-			);
-			$this->set_transient( $item['id'], 'updated' );
-		} else {
-			$wpdb->insert(
-				$table,
-				$item
-			);
-			$item['id'] = $wpdb->insert_id;
-			$this->set_transient( $item['id'], 'added' );
-		}
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
+    }
 
-		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
-		wp_redirect( admin_url( $url ) );
-	}
-
-	public function admin_scripts(): void {
-		$nonce = wp_create_nonce( 'slug_exists' );
-		?>
+    public function admin_scripts(): void {
+        $nonce = wp_create_nonce( 'slug_exists' );
+        ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
 
@@ -84,15 +84,12 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>')
+                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ); ?>')
                     }
-
                 });
 
                 /**
-                 *
                  * JS FUNCTIONS
-                 *
                  */
 
                 function slugExists() {
@@ -107,16 +104,15 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'category',
                             'slug': slug.val() ? slug.val() : title.val(),
-                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
                         }, success: function(response) {
                             result = response.data;
                         }
                     });
                     return result;
                 }
-
             });
         </script>
-		<?php
-	}
+        <?php
+    }
 }

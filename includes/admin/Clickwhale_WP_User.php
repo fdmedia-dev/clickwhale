@@ -25,9 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Clickwhale_WP_User {
 
     /**
-     * @var WP_User
+     * @var WP_User|null
      */
-	protected $user;
+	protected ?WP_User $user;
 
 	public function __construct() {
 		$this->user = wp_get_current_user();

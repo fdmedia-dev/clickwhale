@@ -17,7 +17,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
     /**
      * @var bool
      */
-	public $conversion;
+    public bool $conversion;
 
 	public function __construct() {
 		parent::__construct( 'tracking_codes', 'tracking_code' );
@@ -45,32 +45,32 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 		);
 	}
 
-	public static function conversion_fields( $item ) {
-		$is_woo = class_exists( 'WooCommerce' );
-		$is_edd = function_exists( 'EDD' );
-		?>
+    public static function conversion_fields( $item ) {
+        $is_woo = class_exists( 'WooCommerce' );
+        $is_edd = function_exists( 'EDD' );
+        ?>
 
         <tr class="form-field">
             <th scope="row">
                 <label for="position">
-					<?php _e( 'Where do you want to add this code?', CLICKWHALE_NAME ) ?>
+                    <?php _e( 'Where do you want to add this code?', CLICKWHALE_NAME ); ?>
                 </label>
             </th>
             <td>
                 <fieldset>
-					<?php
-					$is_pro_label   = Helper::admin_pro_label();
-					$radio_class    = $is_pro_label ? 'disabled' : '';
-					$is_disabled    = $is_pro_label ? 'disabled="disabled"' : '';
-					$conversion_val = $item['position']['conversion'] ?? '';
-					?>
+                    <?php
+                    $is_pro_label   = Helper::admin_pro_label();
+                    $radio_class    = $is_pro_label ? 'disabled' : '';
+                    $is_disabled    = $is_pro_label ? 'disabled="disabled"' : '';
+                    $conversion_val = esc_attr( $item['position']['conversion'] ?? '' );
+                    ?>
                     <div class="radio-cards">
                         <div class="radio-card radio-conversion">
                             <input id="conversionStandard"
                                    type="radio"
                                    name="position[conversion]"
                                    value="standard"
-								<?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
+                                <?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
                             >
                             <label for="conversionStandard">
                                 <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"
@@ -79,24 +79,24 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             </label>
                         </div>
 
-						<?php if ( $is_woo ) { ?>
+                        <?php if ( $is_woo ) { ?>
                             <div class="radio-card radio-conversion <?php echo $radio_class ?>">
-								<?php if ( $is_pro_label ) { ?>
+                                <?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
                                             <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
                                         </svg>
                                     </div>
                                     <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
-								<?php } ?>
+                                <?php } ?>
                                 <input id="conversionProduct"
                                        type="radio"
                                        name="position[conversion]"
                                        value="product"
-									<?php
-									echo $is_disabled;
-									checked( $conversion_val, 'product' );
-									?>
+                                    <?php
+                                    echo $is_disabled;
+                                    checked( $conversion_val, 'product' );
+                                    ?>
                                 >
                                 <label for="conversionProduct">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
@@ -104,26 +104,26 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                     <span><?php _e( 'WooCommerce conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>
                             </div>
-						<?php } ?>
+                        <?php } ?>
 
-						<?php if ( $is_edd ) { ?>
+                        <?php if ( $is_edd ) { ?>
                             <div class="radio-card radio-conversion <?php echo $radio_class ?>">
-								<?php if ( $is_pro_label ) { ?>
+                                <?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
                                             <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
                                         </svg>
                                     </div>
                                     <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
-								<?php } ?>
+                                <?php } ?>
                                 <input id="conversionDownload"
                                        type="radio"
                                        name="position[conversion]"
                                        value="download"
-									<?php
-									echo $is_disabled;
-									checked( $conversion_val, 'download' );
-									?>
+                                    <?php
+                                    echo $is_disabled;
+                                    checked( $conversion_val, 'download' );
+                                    ?>
                                 >
                                 <label for="conversionDownload">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-edd-short-dark.svg'; ?>"
@@ -131,48 +131,49 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                     <span><?php _e( 'EDD conversion', CLICKWHALE_NAME ) ?></span>
                                 </label>
                             </div>
-						<?php } ?>
+                        <?php } ?>
                     </div>
                 </fieldset>
             </td>
         </tr>
 
-		<?php
-		do_action( 'clickwhale_tracking_code_conversion_fields', $item );
-	}
+        <?php
+        do_action( 'clickwhale_tracking_code_conversion_fields', $item );
+    }
 
-	public function get_item( $request ) {
+    public function get_item( $request ) {
+        if ( ! is_numeric( $request['id'] ) ) {
+            $this->no_item();
+        }
 
-		if ( ! is_numeric( $request['id'] ) ) {
-			$this->no_item();
-		}
+        // Get default values
+        $defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
 
-		// Get default values
-		$defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
+        // If item id=0 or id doesn't set/exists than use $defaults
+        if ( empty( $request['id'] ) ) {
+            return $defaults;
+        }
 
-		// If item id=0 or id doesn't set/exists than use $defaults
-		if ( empty( $request['id'] ) ) {
-			return $defaults;
-		}
+        // Get data by id
+        $helper = ucfirst( "{$this->instance_plural}_Helper" );
 
-		// Get data by id
-		$helper = ucfirst( "{$this->instance_plural}_Helper" );
+        $item = call_user_func(
+            array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
+            intval( $request['id'] )
+        );
 
-		$item = call_user_func(
-			array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
-			$request['id'] );
-		$item['position'] = maybe_unserialize( $item['position'] );
+        $item['position'] = maybe_unserialize( $item['position'] );
 
-		// If link with id doesn't exist
-		if ( ! $item ) {
-			$this->no_item();
-		}
+        // If link with id doesn't exist
+        if ( ! $item ) {
+            $this->no_item();
+        }
 
-		return $item;
-	}
+        return $item;
+    }
 
 	public function get_linkpages(): array {
-		$result    = [];
+		$result = array();
 		$linkpages = Linkpages_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
 		if ( $linkpages ) {
 			$result['all'] = __( 'All', CLICKWHALE_NAME );
@@ -223,83 +224,86 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
 	}
 
-	public function save_update() {
-		global $wpdb;
+    public function save_update() {
+        global $wpdb;
 
-		$tracking_codes_table = Helper::get_db_table_name( $this->instance_plural );
-		$item                 = array_intersect_key( $_POST, $this->get_defaults() );
-		$item['description']  = esc_html( $item['description'] );
-		$item['author']       = get_current_user_id();
+        $tracking_codes_table = Helper::get_db_table_name( $this->instance_plural );
+        $item                 = array_intersect_key( $_POST, $this->get_defaults() );
+        $item['description']  = esc_html( $item['description'] );
+        $item['author']       = get_current_user_id();
 
-		if ( isset( $item['position']['conversion'] ) && $item['position']['conversion'] !== 'standard' ) {
-			unset( $item['position']['items_included'] );
-			unset( $item['position']['items_excluded'] );
-			unset( $item['position']['code'] );
-			unset( $item['position']['pages'] );
-			foreach ( $item['position']['conversion_items'] as $k => $v ) {
-				if ( $k !== $item['position']['conversion'] ) {
-					unset( $item['position']['conversion_items'][ $k ] );
-				}
-			}
-		} else {
-			unset( $item['position']['conversion_items'] );
-		}
+        if ( isset( $item['position']['conversion'] ) && $item['position']['conversion'] !== 'standard' ) {
+            unset( $item['position']['items_included'] );
+            unset( $item['position']['items_excluded'] );
+            unset( $item['position']['code'] );
+            unset( $item['position']['pages'] );
+            foreach ( $item['position']['conversion_items'] as $k => $v ) {
+                if ( $k !== $item['position']['conversion'] ) {
+                    unset( $item['position']['conversion_items'][ $k ] );
+                }
+            }
+        } else {
+            unset( $item['position']['conversion_items'] );
+        }
 
-		// Handle CW Link Pages
-		if ( ! isset( $item['position']['items_included']['cw_linkpage']['active'] ) ) {
-			unset( $item['position']['items_included']['cw_linkpage'] );
-		}
-		if ( ! isset( $item['position']['items_excluded']['cw_linkpage']['active'] ) ) {
-			unset( $item['position']['items_excluded']['cw_linkpage'] );
-		}
+        // Handle CW Link Pages
+        if ( ! isset( $item['position']['items_included']['cw_linkpage']['active'] ) ) {
+            unset( $item['position']['items_included']['cw_linkpage'] );
+        }
+        if ( ! isset( $item['position']['items_excluded']['cw_linkpage']['active'] ) ) {
+            unset( $item['position']['items_excluded']['cw_linkpage'] );
+        }
 
-		// Handle Post Types
-		foreach ( Tracking_Codes_Helper::get_default_post_types() as $post_type ) {
-			if ( ! isset( $item['position']['items_included'][ $post_type ]['active'] ) ) {
-				unset( $item['position']['items_included'][ $post_type ] );
-			}
-			if ( ! isset( $item['position']['items_excluded'][ $post_type ]['active'] ) ) {
-				unset( $item['position']['items_excluded'][ $post_type ] );
-			}
-		}
+        // Handle Post Types
+        foreach ( Tracking_Codes_Helper::get_default_post_types() as $post_type ) {
+            if ( ! isset( $item['position']['items_included'][ $post_type ]['active'] ) ) {
+                unset( $item['position']['items_included'][ $post_type ] );
+            }
+            if ( ! isset( $item['position']['items_excluded'][ $post_type ]['active'] ) ) {
+                unset( $item['position']['items_excluded'][ $post_type ] );
+            }
+        }
 
-		// Handle Taxonomies
-		foreach ( Tracking_Codes_Helper::get_default_terms_tax() as $taxonomy ) {
-			if ( ! isset( $item['position']['items_included'][ $taxonomy ]['active'] ) ) {
-				unset( $item['position']['items_included'][ $taxonomy ] );
-			}
-			if ( ! isset( $item['position']['items_excluded'][ $taxonomy ]['active'] ) ) {
-				unset( $item['position']['items_excluded'][ $taxonomy ] );
-			}
-		}
+        // Handle Taxonomies
+        foreach ( Tracking_Codes_Helper::get_default_terms_tax() as $taxonomy ) {
+            if ( ! isset( $item['position']['items_included'][ $taxonomy ]['active'] ) ) {
+                unset( $item['position']['items_included'][ $taxonomy ] );
+            }
+            if ( ! isset( $item['position']['items_excluded'][ $taxonomy ]['active'] ) ) {
+                unset( $item['position']['items_excluded'][ $taxonomy ] );
+            }
+        }
 
-		$item['position']  = maybe_serialize( $item['position'] );
-		$item['is_active'] = $item['is_active'] ?? 0;
+        $item['position'] = maybe_serialize( $item['position'] );
+        //$item['is_active'] = ( isset( $item['is_active'] ) ) ? intval( $item['is_active'] ) : 0;
+        $item['is_active'] = ! empty( $item['is_active'] ) ? 1 : 0;
+        $item = apply_filters( 'clickwhale_tracking_code_data_before_save', $item );
+        $id = intval( $item['id'] );
 
-		$item = apply_filters( 'clickwhale_tracking_code_data_before_save', $item );
+        if ( Tracking_Codes_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                $tracking_codes_table,
+                $item,
+                array( 'id' => $id )
+            );
+            $this->set_transient( $id, 'updated' );
 
-		if ( Tracking_Codes_Helper::get_by_id( intval( $item['id'] ) ) ) {
-			$wpdb->update(
-				$tracking_codes_table,
-				$item,
-				array( 'id' => $item['id'] )
-			);
-			$this->set_transient( $item['id'], 'updated' );
-		} else {
-			$wpdb->insert(
-				$tracking_codes_table,
-				$item
-			);
-			$item['id'] = $wpdb->insert_id;
-			$this->set_transient( $item['id'], 'added' );
-		}
+        } else {
+            $wpdb->insert(
+                $tracking_codes_table,
+                $item
+            );
+            $id = $wpdb->insert_id;
+            $this->set_transient( $id, 'added' );
+        }
 
-		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=' . $item['id'];
-		wp_redirect( admin_url( $url ) );
-	}
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code' . '&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
+    }
 
-	public function admin_scripts(): void {
-		?>
+    public function admin_scripts(): void {
+        ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
                 jQuery('#position_code').select2({
@@ -375,6 +379,6 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                     })
             });
         </script>
-		<?php
-	}
+        <?php
+    }
 }

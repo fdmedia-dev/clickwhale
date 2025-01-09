@@ -21,238 +21,257 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 		);
 	}
 
-	/**
-	 * [REQUIRED] this is a default column renderer
-	 *
-	 * @param $item - row (key, value array)
-	 * @param $column_name - string (key)
-	 *
-	 * @return string
-	 */
-	public function column_default( $item, $column_name ) {
-		return $item[ $column_name ];
-	}
+    /**
+     * [REQUIRED] this is a default column renderer
+     *
+     * @param $item - row (key, value array)
+     * @param $column_name - string (key)
+     *
+     * @return string
+     */
+    public function column_default( $item, $column_name ): string {
+        return esc_html( $item[ $column_name ] );
+    }
 
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return string
-	 */
-	public function column_title( $item ): string {
-		$title = sprintf(
+    /**
+     * @param $item - row (key, value array)
+     *
+     * @return string
+     */
+    public function column_title( $item ): string {
+        $id = intval( $item['id'] );
+        $title = sprintf(
             '<a href="?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=%d">%s</a>',
-            $item['id'],
-			wp_unslash( $item['title'] )
+            $id,
+            esc_html( wp_unslash( $item['title'] ) )
         );
-		$actions = array(
-			'edit'   => sprintf(
+        $actions = array(
+            'edit'   => sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=%d">%s</a>',
-                $item['id'],
-				__( 'Edit', CLICKWHALE_NAME )
+                $id,
+                __( 'Edit', CLICKWHALE_NAME )
             ),
-			'delete' => sprintf(
+            'delete' => sprintf(
                 '<a href="?page=%s&action=delete&id=%d">%s</a>',
-				sanitize_text_field( $_REQUEST['page'] ),
-                $item['id'],
+                sanitize_text_field( $_REQUEST['page'] ),
+                $id,
                 __( 'Delete', CLICKWHALE_NAME )
             )
-		);
+        );
 
-		return sprintf( '%s %s',
-			$title,
-			$this->row_actions( $actions )
-		);
-	}
+        return sprintf( '%s %s',
+            $title,
+            $this->row_actions( $actions )
+        );
+    }
 
-	public function column_is_active( $item ): string {
-		$checked  = checked( intval( $item['is_active'] ), 1, false );
-		$disabled = ! $checked && Tracking_Codes_Helper::is_active_limit() ? ' disabled="disabled"' : '';
-		$output   = '';
+    public function column_is_active( $item ): string {
+        $checked = checked( intval( $item['is_active'] ), 1, false );
+        $disabled = ! $checked && Tracking_Codes_Helper::is_active_limit() ? 'disabled="disabled"' : '';
 
-		$output .= '<label class="clickwhale-checkbox--toggle">';
-		$output .= sprintf(
-			'<input type="checkbox" name="is_active" class="clickwhale_tc_active_toggle" value="1" data-id="%d" ' . $checked . $disabled . ' />',
-			$item['id']
-		);
-		$output .= '<span class="clickwhale-checkbox--toggle-slider"></span>';
-		$output .= '</label>';
+        $output = '<label class="clickwhale-checkbox--toggle">';
+        $output .= sprintf(
+            '<input type="checkbox" name="is_active" class="clickwhale_tc_active_toggle" value="1" data-id="%d" %s %s />',
+            intval( $item['id'] ),
+            $checked,
+            $disabled
+        );
+        $output .= '<span class="clickwhale-checkbox--toggle-slider"></span>';
+        $output .= '</label>';
 
-		return $output;
-	}
+        return $output;
+    }
 
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return string
-	 */
-	public function column_description( $item ): string {
-		return wp_unslash( $item['description'] );
-	}
+    /**
+     * @param $item - row (key, value array)
+     * @return string
+     */
+    public function column_description( $item ): string {
+        return esc_html( wp_unslash( $item['description'] ) );
+    }
 
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return string
-	 */
-	public function column_position( $item ): string {
-		$position     = '';
-		$positionCode = maybe_unserialize( $item['position'] );
+    /**
+     * @param $item - row (key, value array)
+     * @return string
+     */
+    public function column_position( $item ): string {
+        $positionCode = maybe_unserialize( $item['position'] );
 
-		if ( ! isset( $positionCode['code'] ) ) {
-			return $position;
-		}
-		switch ( $positionCode['code'] ) {
-			case 'wp_head':
-				$position = 'before <code>&lt;/head&gt;</code>';
-				break;
-			case 'wp_body_open':
-				$position = 'after <code>&lt;body&gt;</code>';
-				break;
-			case 'wp_footer':
-				$position = 'before <code>&lt;/body&gt;</code>';
-				break;
-		}
+        if ( ! isset( $positionCode['code'] ) ) {
+            return '';
+        }
 
-		return $position;
-	}
+        switch ( $positionCode['code'] ) {
+            case 'wp_head':
+                $position = 'before <code>&lt;/head&gt;</code>';
+                break;
+            case 'wp_body_open':
+                $position = 'after <code>&lt;body&gt;</code>';
+                break;
+            case 'wp_footer':
+                $position = 'before <code>&lt;/body&gt;</code>';
+                break;
+            default:
+                $position = '';
+        }
 
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 * @since 1.2.0
-	 *
-	 */
-	public function column_author( $item ): string {
-		$user_info = get_userdata( $item['author'] );
+        return $position;
+    }
 
-		return '<a href="' . get_admin_url( get_current_blog_id(),
-				'admin.php?page=' . CLICKWHALE_SLUG ) . '&author=' . $user_info->ID . '">' . $user_info->display_name . '</a>';
-	}
+    /**
+     * @param $item
+     * @return string
+     * @since 1.2.0
+     */
+    public function column_author( $item ): string {
+        $user_info = get_userdata( $item['author'] );
 
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return string
-	 */
-	public function column_created_at( $item ): string {
-		return $item['created_at'];
-	}
+        return sprintf(
+            '<a href="%s&author=%d">%s</a>',
+            get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ),
+            $user_info->ID,
+            $user_info->display_name
+        );
+    }
 
-	/**
-	 * @param $item - row (key, value array)
-	 *
-	 * @return string
-	 */
-	public function column_cb( $item ): string {
-		return sprintf(
-			'<input type="checkbox" name="id[]" value="%s" />',
-			$item['id']
-		);
-	}
+    /**
+     * @param $item - row (key, value array)
+     * @return string
+     */
+    public function column_created_at( $item ): string {
+        return esc_html( $item['created_at'] );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function get_columns() {
-		return array(
-			'cb'          => '<input type="checkbox" />',
-			'is_active'   => __( 'Active',      CLICKWHALE_NAME ),
-			'title'       => __( 'Tilte',       CLICKWHALE_NAME ),
-			'description' => __( 'Description', CLICKWHALE_NAME ),
-			'position'    => __( 'Position',    CLICKWHALE_NAME ),
-			'author'      => __( 'Author',      CLICKWHALE_NAME ),
-			'created_at'  => __( 'Created',     CLICKWHALE_NAME ),
-		);
-	}
+    /**
+     * @param $item - row (key, value array)
+     * @return string
+     */
+    public function column_cb( $item ): string {
+        return sprintf(
+            '<input type="checkbox" name="id[]" value="%d" />',
+            intval( $item['id'] )
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function get_sortable_columns() {
-		return array(
-			'title' => array( 'title', true ),
-		);
-	}
+    /**
+     * [REQUIRED] This method return columns to display in table
+     *  you can skip columns that you do not want to show
+     *
+     * @return array
+     */
+    public function get_columns(): array {
+        return array(
+            'cb'          => '<input type="checkbox" />',
+            'is_active'   => __( 'Active',      CLICKWHALE_NAME ),
+            'title'       => __( 'Title',       CLICKWHALE_NAME ),
+            'description' => __( 'Description', CLICKWHALE_NAME ),
+            'position'    => __( 'Position',    CLICKWHALE_NAME ),
+            'author'      => __( 'Author',      CLICKWHALE_NAME ),
+            'created_at'  => __( 'Created',     CLICKWHALE_NAME ),
+        );
+    }
 
-	/**
-	 * @return array
-	 */
-	public function get_bulk_actions() {
-		return array(
-			'delete' => 'Delete'
-		);
-	}
+    /**
+     * @return array
+     */
+    public function get_sortable_columns(): array {
+        return array(
+            'title' => array( 'title', true ),
+        );
+    }
 
-	public function process_bulk_action() {
-		global $wpdb;
+    /**
+     * @return array
+     */
+    public function get_bulk_actions(): array {
+        return array(
+            'delete' => __( 'Delete', CLICKWHALE_NAME )
+        );
+    }
 
-		$table = Helper::get_db_table_name( 'tracking_codes' );
+    public function process_bulk_action() {
+        global $wpdb;
 
-		if ( 'delete' === $this->current_action() && isset( $_REQUEST['id'] ) ) {
-			if ( is_array( $_REQUEST['id'] ) ) {
-				foreach ( $_REQUEST['id'] as $id ) {
-					$wpdb->query( $wpdb->prepare( "DELETE FROM $table WHERE id IN(%d)",
-						intval( $id ) ) );
-				}
-			} else {
-				$wpdb->query( $wpdb->prepare( "DELETE FROM $table WHERE id IN(%d)",
-					intval( $_REQUEST['id'] ) ) );
-			}
-		}
-	}
+        $table = Helper::get_db_table_name( 'tracking_codes' );
 
-	public function prepare_items() {
-		global $wpdb;
+        if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
+            return;
+        }
 
-		$table                 = Helper::get_db_table_name( 'tracking_codes' );
-		$per_page              = 20;
-		$orderby               = 'id';
-		$order                 = 'desc';
-		$columns               = $this->get_columns();
-		$hidden                = [];
-		$sortable              = $this->get_sortable_columns();
-		$total_items           = $wpdb->get_var( "SELECT COUNT(id) FROM $table" );
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+        if ( is_array( $_REQUEST['id'] ) ) {
+            foreach ( $_REQUEST['id'] as $id ) {
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE FROM $table WHERE id IN(%d)",
+                        intval( $id )
+                    )
+                );
+            }
+        } else {
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM $table WHERE id IN(%d)",
+                    intval( $_REQUEST['id'] )
+                )
+            );
+        }
+    }
 
-		$this->process_bulk_action();
+    public function prepare_items() {
+        global $wpdb;
+        $table       = Helper::get_db_table_name( 'tracking_codes' );
+        $per_page    = 20;
+        $columns     = $this->get_columns();
+        $hidden      = [];
+        $sortable    = $this->get_sortable_columns();
+        $total_items = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $table" ) );
 
-		if ( isset( $_REQUEST['orderby'] ) ) {
-			$orderByArg = htmlspecialchars( $_REQUEST['orderby'], ENT_QUOTES );
-			$orderby    = in_array( $orderByArg, array_keys( $this->get_sortable_columns() ) ) ? $orderByArg : $orderby;
-		}
-		if ( isset( $_REQUEST['order'] ) ) {
-			$orderArg = htmlspecialchars( $_REQUEST['order'], ENT_QUOTES );
-			$order    = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
+        $this->_column_headers = array( $columns, $hidden, $sortable );
+        $this->process_bulk_action();
 
-		$paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+        $order_arg = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : 'desc';
+        $orderby_arg = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+        $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
+        $order = $sort['order'];
+        $orderby = $sort['orderby'];
+        $paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
 
-		// [REQUIRED] define $items array
-		// notice that last argument is ARRAY_A, so we will retrieve array
+        $where_clause = '';
+        $prepare_args = array();
 
-		$this->items = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM $table ORDER BY $orderby $order LIMIT %d OFFSET %d",
-			$per_page, $paged ),
-			ARRAY_A
-		);
+        if ( isset( $_GET['author'] ) ) {
+            $author = intval( $_GET['author'] );
 
-		if ( isset( $_GET['author'] ) && $_GET['author'] > 0 ) {
-			$author = sanitize_text_field( intval( $_GET['author'] ) );
+            if ( $author > 0 ) {
+                $where_clause = "WHERE author = %d";
+                $prepare_args[] = $author;
+            }
+        }
 
-			$this->items = $wpdb->get_results( $wpdb->prepare(
-				"SELECT * FROM $table ORDER BY $orderby $order LIMIT %d OFFSET %d",
-				$author, $per_page, $paged ),
-				ARRAY_A
-			);
-		}
+        $prepare_args[] = $per_page;
+        $prepare_args[] = $paged;
 
-		$this->set_pagination_args( array(
-			'per_page'    => $per_page,
-			'total_items' => $total_items,
-			'total_pages' => ceil( $total_items / $per_page )
-		) );
-	}
+        $current_data = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM $table
+                $where_clause
+                ORDER BY $orderby $order LIMIT %d OFFSET %d",
+                ...$prepare_args
+            ),
+            ARRAY_A
+        );
+        if ( ! $current_data ) {
+            $current_data = array();
+        }
+
+        $this->items = $current_data;
+
+        $this->set_pagination_args( array(
+            'per_page'    => $per_page,
+            'total_items' => $total_items,
+            'total_pages' => ceil( $total_items / $per_page )
+        ) );
+    }
 
 	public function display_tablenav( $which ) {
 		?>

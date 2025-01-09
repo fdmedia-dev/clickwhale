@@ -7,7 +7,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Ereader {
 
-	public function __construct( $ua ) {
+    /**
+     * @var string 
+     */
+    public string $type;
+
+    /**
+     * @var array
+     */
+    public array $data;
+
+	public function __construct($ua ) {
 		$this->detectKindle( $ua );
 		$this->detectNook( $ua );
 		$this->detectBookeen( $ua );
@@ -27,17 +37,17 @@ class Clickwhale_Ereader {
 			);
 
 			if ( preg_match( '/Kindle SkipStone/u', $ua ) ) {
-				$this->data->model = 'Kindle Touch or later';
+				$this->data['model'] = 'Kindle Touch or later';
 			} elseif ( preg_match( '/Kindle\/3.0\+/u', $ua ) ) {
-				$this->data->model = 'Kindle 3 or later';
+				$this->data['model'] = 'Kindle 3 or later';
 			} elseif ( preg_match( '/Kindle\/3.0/u', $ua ) ) {
-				$this->data->model = 'Kindle 3';
+				$this->data['model'] = 'Kindle 3';
 			} elseif ( preg_match( '/Kindle\/2.5/u', $ua ) ) {
-				$this->data->model = 'Kindle 2';
+				$this->data['model'] = 'Kindle 2';
 			} elseif ( preg_match( '/Kindle\/2.0/u', $ua ) ) {
-				$this->data->model = 'Kindle 2';
+				$this->data['model'] = 'Kindle 2';
 			} elseif ( preg_match( '/Kindle\/1.0/u', $ua ) ) {
-				$this->data->model = 'Kindle 1';
+				$this->data['model'] = 'Kindle 1';
 			}
 		}
 	}
@@ -72,7 +82,7 @@ class Clickwhale_Ereader {
 	/* Kobo */
 
 	private function detectKobo( $ua ) {
-		if ( preg_match( '/Kobo (eReader|Touch)/u', $ua, $match ) ) {
+		if ( preg_match( '/Kobo (eReader|Touch)/u', $ua ) ) {
 			$this->type = 'ereader';
 			$this->data = array(
 				'manufacturer' => 'Kobo',
@@ -85,7 +95,7 @@ class Clickwhale_Ereader {
 	/* Sony Reader */
 
 	private function detectSonyreader( $ua ) {
-		if ( preg_match( '/EBRD([0-9]+)/u', $ua, $match ) ) {
+		if ( preg_match( '/EBRD([0-9]+)/u', $ua ) ) {
 			$this->type = 'ereader';
 			$this->data = array(
 				'manufacturer' => 'Sony',
@@ -97,7 +107,7 @@ class Clickwhale_Ereader {
 	/* PocketBook */
 
 	private function detectPocketbook( $ua ) {
-		if ( preg_match( '/PocketBook/u', $ua, $match ) ) {
+		if ( preg_match( '/PocketBook/u', $ua ) ) {
 			$this->type = 'ereader';
 			$this->data = array(
 				'manufacturer' => 'PocketBook',

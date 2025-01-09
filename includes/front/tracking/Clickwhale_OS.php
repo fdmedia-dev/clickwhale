@@ -7,6 +7,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_OS {
 
+    /**
+     * @var string
+     */
+    public string $name;
+
+    /**
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * @var string
+     */
+    public string $version;
+
+    /**
+     * @var string
+     */
+    public string $manufacturer;
+
+    /**
+     * @var string
+     */
+    public string $model;
+
 	public function __construct( $ua ) {
 		$this->detectUnix( $ua );
 		$this->detectLinux( $ua );
@@ -77,7 +102,7 @@ class Clickwhale_OS {
 				$this->version = str_replace( ',', '.', $match[1] );
 			}
 
-			if ( $this->version && $this->version === '10.16' ) {
+			if ( ! empty( $this->version ) && $this->version === '10.16' ) {
 				$this->version = '11.0';
 			}
 
@@ -353,7 +378,7 @@ class Clickwhale_OS {
 
 		if ( preg_match( '/Baidu Yi/u', $ua ) ) {
 			$this->name    = 'Baidu Yi';
-			$this->version = null;
+			$this->version = '';
 		}
 
 		/* Google TV */
@@ -399,7 +424,7 @@ class Clickwhale_OS {
 				$this->version = $match[1];
 			} elseif ( preg_match( '/COS like Android/ui', $ua, $match ) ) {
 				$this->name    = 'COS';
-				$this->version = null;
+				$this->version = '';
 				$this->type    = 'mobile';
 			} elseif ( preg_match( '/(COS like Android|COSBrowser\/|\(COS;|\(COS 998;)/ui', $ua, $match ) ) {
 				$this->name = 'COS';
@@ -410,7 +435,7 @@ class Clickwhale_OS {
 
 		if ( preg_match( '/RemixOS/u', $ua ) ) {
 			$this->name    = 'Remix OS';
-			$this->version = null;
+			$this->version = '';
 
 			if ( preg_match( '/RemixOS ([0-9]\.[0-9])/u', $ua, $match ) ) {
 				switch ( $match[1] ) {
@@ -641,7 +666,7 @@ class Clickwhale_OS {
 	private function detectSailfish( $ua ) {
 		if ( preg_match( '/Sailfish;/u', $ua ) ) {
 			$this->name    = 'Sailfish';
-			$this->version = null;
+			$this->version = '';
 
 			if ( preg_match( '/Mobile/u', $ua ) ) {
 				$this->type = 'mobile';
@@ -686,7 +711,7 @@ class Clickwhale_OS {
 
 		if ( preg_match( '/Linux\; U\; Android [0-9.]+\; ko\-kr\; SAMSUNG\; (NX[0-9]+[^\)]]*)/u', $ua, $match ) ) {
 			$this->name    = 'Tizen';
-			$this->version = null;
+			$this->version = '';
 			$this->type    = 'camera';
 		}
 	}
@@ -905,7 +930,7 @@ class Clickwhale_OS {
 		if ( preg_match( '/OpenTV/ui', $ua, $match ) ) {
 			$this->type    = 'tv';
 			$this->name    = 'OpenTV';
-			$this->version = null;
+			$this->version = '';
 
 			if ( preg_match( '/OpenTV Build\/([0-9\.]+)/u', $ua, $match ) ) {
 				$this->version = $match[1];
@@ -1529,7 +1554,7 @@ class Clickwhale_OS {
 					if ( isset( $match[1] ) && $match[1] ) {
 						$this->version = $match[1];
 					} else {
-						$this->version = null;
+						$this->version = '';
 					}
 
 					if ( isset( $patterns[ $b ]['type'] ) ) {

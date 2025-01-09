@@ -9,7 +9,7 @@ class Clickwhale_Bot {
 	/**
 	 * @var bool
 	 */
-	public $is_bot;
+	public bool $is_bot;
 
 	public function __construct( $ua ) {
 		$this->is_bot = false;

@@ -12,15 +12,15 @@ class Clickwhale_Links_Bulk_Edit {
     /**
      * @var array
      */
-	private $posts;
+    private array $posts;
 
     /**
      * @var int
      */
-	protected $columns;
+    protected int $columns;
 
 	public function __construct( array $posts, int $columns ) {
-		$this->posts   = $posts;
+		$this->posts = $posts;
 		$this->columns = $columns;
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
@@ -70,19 +70,18 @@ class Clickwhale_Links_Bulk_Edit {
 			return false;
 		}
 
-		$categories_output = '';
-
-		$categories_output .= '<fieldset class="inline-edit-col-center inline-edit-categories">';
+		$categories_output = '<fieldset class="inline-edit-col-center inline-edit-categories">';
 		$categories_output .= '<div class="inline-edit-col">';
 		$categories_output .= '<span class="title inline-edit-categories-label">';
 		$categories_output .= __( 'Categories', CLICKWHALE_NAME );
 		$categories_output .= '</span>';
 		$categories_output .= '<ul class="cat-checklist category-checklist">';
 		foreach ( $categories as $category ) {
-			$categories_output .= '<li id="category-' . $category->id . '">';
+			$category_id = intval( $category->id );
+			$categories_output .= '<li id="category-' . $category_id . '">';
 			$categories_output .= '<label class="selectit">';
-			$categories_output .= '<input value="' . $category->id . '" type="checkbox" name="link_category[]" id="in-category-' . $category->id . '">';
-			$categories_output .= ' ' . $category->title;
+			$categories_output .= '<input value="' . $category_id . '" type="checkbox" name="link_category[]" id="in-category-' . $category_id . '">';
+			$categories_output .= ' ' . esc_html( $category->title );
 			$categories_output .= '</label>';
 			$categories_output .= '</li>';
 		}
@@ -156,68 +155,62 @@ class Clickwhale_Links_Bulk_Edit {
 		return $sponsored_dropdown;
 	}
 
-	public function render_quick_edit() {
-		ob_start();
-		?>
+    public function render_quick_edit(): string {
+        ob_start();
+        ?>
         <tr class="hidden"></tr>
         <tr id="bulk-edit"
             class="inline-edit-row inline-edit-row-post bulk-edit-row bulk-edit-row-post bulk-edit-post inline-editor">
-            <td class="colspanchange" colspan="<?php echo $this->columns ?>">
+            <td class="colspanchange" colspan="<?php esc_attr_e( $this->columns ); ?>">
                 <div class="inline-edit-wrapper" role="region" aria-labelledby="bulk-edit-legend" tabindex="-1">
                     <fieldset class="inline-edit-col-left">
                         <legend class="inline-edit-legend" id="bulk-edit-legend">
-							<?php _e( 'Bulk Edit', CLICKWHALE_NAME ); ?>
+                            <?php _e( 'Bulk Edit', CLICKWHALE_NAME ); ?>
                         </legend>
                         <div class="inline-edit-col">
-
                             <div id="bulk-title-div">
                                 <div id="bulk-titles">
-
                                     <ul id="bulk-titles-list" role="list">
-										<?php
-										foreach ( $this->posts as $link_id ) {
-											$link = Links_Helper::get_by_id( intval( $link_id ) );
-											?>
-                                            <li class="ntdelitem">
-                                                <button type="button"
-                                                        id="<?php echo $link['id'] ?>"
-                                                        class="button-link ntdelbutton"></button>
-                                                <span class="ntdeltitle" aria-hidden="true">
-                                                    <?php echo $link['title'] ?>
-                                                </span>
-                                            </li>
-										<?php } ?>
+                                        <?php
+                                        foreach ( $this->posts as $link_id ) {
+                                            $link = Links_Helper::get_by_id( intval( $link_id ) );
+                                            if ( $link ) { ?>
+                                                <li class="ntdelitem">
+                                                    <button type="button"
+                                                            id="<?php esc_attr_e( $link['id'] ); ?>"
+                                                            class="button-link ntdelbutton"></button>
+                                                    <span class="ntdeltitle" aria-hidden="true"><?php esc_html_e( $link['title'] ); ?></span>
+                                                </li>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </ul>
-
                                 </div>
                             </div>
-
                         </div>
                     </fieldset>
 
-					<?php echo $this->get_categories(); ?>
+                    <?php echo $this->get_categories(); ?>
 
                     <fieldset class="inline-edit-col-right">
                         <label class="inline-edit-tags wp-clearfix">
                             <span class="title"><?php _e( 'Options', CLICKWHALE_NAME ); ?></span>
                         </label>
                         <div class="inline-edit-col">
-							<?php
-							echo $this->get_authors();
-							echo $this->get_redirection();
-							echo $this->get_nofollow();
-							echo $this->get_sponsored();
-							?>
+                            <?php
+                            echo $this->get_authors();
+                            echo $this->get_redirection();
+                            echo $this->get_nofollow();
+                            echo $this->get_sponsored();
+                            ?>
                         </div>
                     </fieldset>
 
-
                     <div class="submit inline-edit-save">
                         <button type="submit" class="button button-primary" id="bulk_edit">
-							<?php _e( 'Update', CLICKWHALE_NAME ); ?>
+                            <?php _e( 'Update', CLICKWHALE_NAME ); ?>
                         </button>
                         <button type="button" class="button cancel">
-							<?php _e( 'Cancel', CLICKWHALE_NAME ); ?>
+                            <?php _e( 'Cancel', CLICKWHALE_NAME ); ?>
                         </button>
 
                         <div class="notice notice-error notice-alt inline hidden">
@@ -227,16 +220,16 @@ class Clickwhale_Links_Bulk_Edit {
                 </div>
             </td>
         </tr>
-		<?php
-		$output = ob_get_contents();
-		ob_clean();
+        <?php
+        $output = ob_get_contents();
+        ob_clean();
 
-		return $output;
-	}
+        return $output;
+    }
 
-	public function admin_scripts() {
-		$nonce = wp_create_nonce( 'bulk_edit' );
-		?>
+    public function admin_scripts() {
+        //$nonce = wp_create_nonce( 'bulk_edit' );
+        ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
 
@@ -264,18 +257,14 @@ class Clickwhale_Links_Bulk_Edit {
                     jQuery('#bulk-edit').remove();
                     jQuery('.check-column input[type="checkbox"]').prop('checked', false);
 
-                    let url = window.location.href;
-
-                    url = url
-                        .replace('action=edit', 'action=-1')
-                        .replace('action2=edit', 'action2=-1')
-                        .replace(/&id[\d*]=\d*/gm, '')
-                        .replace(/&id%5B\d*%5D=\d*/gm, '');
-
-                    window.location.href = url;
+                    window.location.href = "<?php echo esc_js( add_query_arg( array(
+                        'action' => '-1',  // replace `action`
+                        'action2' => '-1', // replace `action2`
+                        'id' => false      // remove `id`
+                    ) ) ); ?>";
                 });
             });
         </script>
-		<?php
-	}
+        <?php
+    }
 }

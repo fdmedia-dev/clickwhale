@@ -22,12 +22,12 @@ do_action( 'clickwhale_admin_banner' );
 		array(
 			'name'         => esc_html( get_admin_page_title() ),
 			'is_list'      => true,
-			'link_to_add' => CLICKWHALE_SLUG . '-edit-tracking-code',
+			'link_to_add' => CLICKWHALE_SLUG . '-edit-tracking-code'
 		)
 	);
 
     if ( ! empty( $message ) ) { ?>
-        <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ) ?></p></div>
+        <div class="updated below-h2" id="message"><p><?php echo esc_html( $message ); ?></p></div>
 	<?php } ?>
 
     <div id="clickwhale_tracking_codes_list_limit_notice"
@@ -43,7 +43,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
+        <input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
 		<?php $table->display(); ?>
     </form>
 

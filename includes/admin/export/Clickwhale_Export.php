@@ -52,7 +52,7 @@ class Clickwhale_Export {
 		$select = '<select id="select_columns" class="clickwhale-select" multiple>';
 		$select .= '<option selected value="0">' . __( 'Export all columns', CLICKWHALE_NAME ) . '</option>';
 		foreach ( Helper::get_import_default_columns() as $option ) {
-			$select .= '<option value="' . $option . '">' . $option . '</option>';
+			$select .= '<option value="' . esc_attr( $option ) . '">' . esc_html( $option ) . '</option>';
 		}
 		$select .= '</select>';
 
@@ -66,7 +66,7 @@ class Clickwhale_Export {
 			$select = '<select id="select_categories" class="clickwhale-select" multiple>';
 			$select .= '<option selected value="0">' . __( 'Export all categories', CLICKWHALE_NAME ) . '</option>';
 			foreach ( $categories as $category ) {
-				$select .= '<option value="' . $category['id'] . '">' . $category['title'] . '</option>';
+				$select .= '<option value="' . esc_attr( $category['id'] ) . '">' . esc_html( $category['title'] ) . '</option>';
 			}
 			$select .= '</select>';
 

@@ -24,11 +24,11 @@ final class Clickwhale_Settings {
 	 * @since    1.5.0
 	 * @var Clickwhale_Settings
 	 */
-	private static $instance;
+	private static Clickwhale_Settings $instance;
 
-	/**
-	 * @return Clickwhale_Settings|null
-	 */
+    /**
+     * @return Clickwhale_Settings
+     */
 	public static function get_instance(): Clickwhale_Settings {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();

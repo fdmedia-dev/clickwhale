@@ -7,6 +7,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Mobile {
 
+    /**
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * @var array
+     */
+    public array $data;
+
 	public function __construct( $ua ) {
 		/* Detect the type based on some common markers */
 		$this->detectGenericMobile( $ua );
@@ -17,7 +27,6 @@ class Clickwhale_Mobile {
 
 		/* Try to parse some generic methods to store device information */
 		$this->detectGenericMobileModels( $ua );
-
 	}
 
 	/* Generic markers */

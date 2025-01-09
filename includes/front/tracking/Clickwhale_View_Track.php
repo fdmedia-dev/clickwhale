@@ -12,20 +12,25 @@ class Clickwhale_View_Track {
 	 * @since    1.0.0
 	 * @access   protected
 	 */
-	protected $linkpage_id;
-	protected $user;
-	protected $visitor;
+	protected int $linkpage_id;
+
+	//protected $user;
+
+    /**
+     * @var Clickwhale_Visitor_Track
+     */
+	protected Clickwhale_Visitor_Track $visitor;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $linkpage_id Link id.
+	 * @param int $linkpage_id
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $linkpage_id = 0 ) {
-		$this->linkpage_id = (int) $linkpage_id;
-		$this->visitor     = new Clickwhale_Visitor_Track();
+	public function __construct( int $linkpage_id = 0 ) {
+		$this->linkpage_id = $linkpage_id;
+		$this->visitor = new Clickwhale_Visitor_Track();
 
 		if ( $this->visitor->visitor_id ) {
 			$this->update_track_database( $this->visitor->visitor_id );
@@ -33,12 +38,11 @@ class Clickwhale_View_Track {
 	}
 
 	private function get_link_referer() {
-		return isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
+		return $_SERVER['HTTP_REFERER'] ?? '';
 	}
 
 	private function update_track_database( $visitor_id ) {
 		global $wpdb;
-
 		$table_name          = $wpdb->prefix . 'clickwhale_track';
 		$item                = [];
 		$item['event_type']  = 'view';
@@ -48,7 +52,7 @@ class Clickwhale_View_Track {
 		$item['referer']     = $this->get_link_referer();
 		$item['created_at']  = gmdate( 'Y-m-d H:i:s' );
 
-		return $wpdb->insert( $table_name, $item );
+        $wpdb->insert( $table_name, $item );
 	}
 
 }

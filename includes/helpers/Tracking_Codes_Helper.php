@@ -1,8 +1,6 @@
 <?php
 namespace clickwhale\includes\helpers;
 
-use stdClass;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -15,58 +13,46 @@ class Tracking_Codes_Helper extends Helper_Abstract {
     /**
      * @var string
      */
-	protected static $single = 'tracking_code';
+	protected static string $single = 'tracking_code';
 
     /**
      * @var string
      */
-	protected static $plural = 'tracking_codes';
+	protected static string $plural = 'tracking_codes';
 
     /**
      * @var int
      */
-	protected static $limit = 9999;
+	protected static int $limit = 9999;
 
     /**
      * @var int
      */
-	protected static $active_limit = 3;
+	protected static int $active_limit = 3;
 
 	/**
 	 * Filter function
 	 * return number of available items
 	 *
-	 * @return mixed|void
+	 * @return int
 	 * @since 1.6.0
 	 */
-	public static function get_active_limit() {
+	public static function get_active_limit(): int {
 		return apply_filters( 'clickwhale_active_' . static::$plural . '_limit', static::$active_limit );
 	}
 
-	/**
-	 * Count active tracking codes in DB
-	 *
-	 * @return int
-	 */
-	public static function get_active_count(): int {
-		$active = self::get_active();
-
-		return $active ? count( $active ) : 0;
-	}
-
 	public static function is_active_limit(): bool {
-		return self::get_active_count() >= self::get_active_limit();
+		return count( self::get_active() ) >= self::get_active_limit();
 	}
 
 	/**
-	 * @return array|object|stdClass[]|null
+	 * @return array
 	 */
-	public static function get_active() {
+	public static function get_active(): array {
 		global $wpdb;
-
 		$table = Helper::get_db_table_name( 'tracking_codes' );
 
-		return $wpdb->get_results(
+		return (array) $wpdb->get_results(
 			"SELECT * FROM $table WHERE is_active = '1' OR is_active = 1",
 			ARRAY_A
 		);

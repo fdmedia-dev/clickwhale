@@ -41,7 +41,7 @@ do_action( 'clickwhale_admin_sidebar_begin' );
 
     <form method="GET">
         <input type="hidden" name="page" value="<?php 
-echo esc_attr( $_REQUEST['page'] );
+esc_attr_e( $_REQUEST['page'] );
 ?>"/>
 		<?php 
 $table->search_box( __( 'Search', CLICKWHALE_NAME ), 'search_id' );

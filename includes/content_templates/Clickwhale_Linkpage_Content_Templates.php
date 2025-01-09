@@ -79,489 +79,473 @@ class Clickwhale_Linkpage_Content_Templates {
 
 	/* ADMIN TEMPLATES */
 
-	public function template_admin_cw_link( $args ) {
+    public function template_admin_cw_link( $args ): string {
 
-		$defaults = $this->get_template_data_defaults();
-		$links    = '';
-		$link     = '';
-		$active   = false;
-		$row_id   = $defaults['data']['id'];
-		$error    = '';
+        $defaults = $this->get_template_data_defaults();
+        $links    = '';
+        $link     = '';
+        $active   = false;
+        $row_id   = $defaults['data']['id'];
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$row_id           = $args['data']['id'];
-			$defaults['data'] = $args['data'];
-			$link             = Links_Helper::get_by_id( intval( $defaults['data']['id'] ) );
-			$error            = is_null( $link ) ? 'with-error' : $error;
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $row_id = $args['data']['id'];
+            $defaults['data'] = $args['data'];
+            $link = Links_Helper::get_by_id( intval( $defaults['data']['id'] ) );
 
-			if ( ! $link ) {
-				return false;
-			}
-		} else {
-			$active                       = true;
-			$defaults['data']['id']       = 0;
-			$defaults['data']['type']     = $args['type'];
-			$defaults['data']['subtitle'] = '';
-			$links                        = Links_Helper::get_all( 'title', 'asc', ARRAY_A );
-		}
+            if ( ! $link ) {
+                return '';
+            }
 
-		$data = $defaults['data'];
+        } else {
+            $active                       = true;
+            $defaults['data']['id']       = 0;
+            $defaults['data']['type']     = $args['type'];
+            $defaults['data']['subtitle'] = '';
+            $links                        = Links_Helper::get_all( 'title', 'asc', ARRAY_A );
+        }
 
-		if ( is_null( $link ) ) {
-			return false;
-		}
+        $data = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?> <?php echo $error ?>" id="row-<?php echo $row_id ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?>" id="row-<?php esc_attr_e( $row_id ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
-					<?php echo $this->get_template_row_image( $data ) ?>
+                    <?php echo $this->get_template_row_image( $data ); ?>
                     <div class="linkpage-row--link">
-						<?php if ( ! $data['id'] ) { ?>
-                            <strong><?php _e( 'ClickWhale Link', CLICKWHALE_NAME ) ?></strong>
+                        <?php if ( ! $data['id'] ) { ?>
+                            <strong><?php _e( 'ClickWhale Link', CLICKWHALE_NAME ); ?></strong>
                             <span></span>
-						<?php } else { ?>
-                            <strong><?php echo $data['title'] ? wp_unslash( $data['title'] ) : $link['title'] ?></strong>
-                            <span><?php echo esc_url( $link['url'] ) ?></span>
-						<?php } ?>
+                        <?php } else { ?>
+                            <strong><?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : esc_html( $link['title'] ); ?></strong>
+                            <span><?php echo esc_url( $link['url'] ); ?></span>
+                        <?php } ?>
                     </div>
                 </div>
-				<?php $this->get_template_row_end(
-					$data['type'],
-					true,
-					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
-				); ?>
+                <?php $this->get_template_row_end(
+                    $data['type'],
+                    true,
+                    $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
+                ); ?>
             </div><!-- ./linkpage-row--top -->
 
             <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
-				<?php echo $this->get_template_hidden_field( $data ); ?>
-				<?php
-				if ( ! $data['id'] ) {
-					?>
+                <?php echo $this->get_template_hidden_field( $data ); ?>
+                <?php if ( ! $data['id'] ) { ?>
                     <div class="linkpage-row--bottom--control-wrap">
-                        <label><?php _e( 'Link', CLICKWHALE_NAME ) ?></label>
-						<?php if ( $links ) { ?>
+                        <label><?php _e( 'Link', CLICKWHALE_NAME ); ?></label>
+                        <?php if ( $links ) { ?>
                             <div>
-                                <select name="links[<?php echo esc_attr( $data['id'] ) ?>][id]"
+                                <select name="links[<?php esc_attr_e( $data['id'] ); ?>][id]"
                                         class="select-link"
-                                        required>
-                                    <option></option>
-									<?php foreach ( $links as $cw_link ) { ?>
-                                        <option value="<?php echo esc_attr( $cw_link['id'] ) ?>"
-                                                data-title="<?php echo esc_attr( $cw_link['title'] ) ?>"
-                                                data-url="<?php echo esc_attr( $cw_link['url'] ) ?>">
-											<?php echo $cw_link['title'] . ' (' . $cw_link['url'] . ')' ?>
-                                        </option>
-									<?php } ?>
+                                        required
+                                ><option></option>
+                                    <?php foreach ( $links as $cw_link ) { ?>
+                                        <option value="<?php esc_attr_e( $cw_link['id'] ); ?>"
+                                                data-title="<?php esc_attr_e( $cw_link['title'] ); ?>"
+                                                data-url="<?php esc_attr_e( $cw_link['url'] ); ?>"
+                                        ><?php echo esc_html( $cw_link['title'] ) . ' (' . esc_html( $cw_link['url'] ) . ')'; ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
-							<?php
-						} else {
-							_e( 'Nothing found', CLICKWHALE_NAME );
-						}
-						?>
-
+                            <?php
+                        } else {
+                            _e( 'Nothing found', CLICKWHALE_NAME );
+                        }
+                        ?>
                     </div>
-					<?php
-				}
+                <?php }
 
-				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][title]',
-					$data['title'] ?? '',
-					$data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_NAME )
-				);
+                echo $this->get_template_input_field(
+                    __( 'Title', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][title]',
+                    $data['title'] ?? '',
+                    $data['id'] ? $link['title'] : __( 'Custom Title', CLICKWHALE_NAME )
+                );
 
-				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME )
-				);
+                echo $this->get_template_input_field(
+                    __( 'Subtitle', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][subtitle]',
+                    $data['subtitle'] ?? '',
+                    __( 'e.g. Read more about something', CLICKWHALE_NAME )
+                );
 
-				$this->get_template_row_images( $data );
-				?>
+                $this->get_template_row_images( $data );
+                ?>
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_admin_cw_custom_link( $args ) {
+    public function template_admin_cw_custom_link( $args ): string {
 
-		$defaults = $this->get_template_data_defaults();
-		$active   = false;
+        $defaults = $this->get_template_data_defaults();
+        $active   = false;
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$defaults['data'] = $args['data'];
-		} else {
-			$active                       = true;
-			$defaults['data']['type']     = $args['type'];
-			$defaults['data']['url']      = '';
-			$defaults['data']['subtitle'] = '';
-		}
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $defaults['data'] = $args['data'];
+        } else {
+            $active                       = true;
+            $defaults['data']['type']     = $args['type'];
+            $defaults['data']['url']      = '';
+            $defaults['data']['subtitle'] = '';
+        }
 
-		$data = $defaults['data'];
+        $data = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?>" id="row-<?php echo $data['id'] ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?>" id="row-<?php esc_attr_e( $data['id'] ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
-					<?php echo $this->get_template_row_image( $data ) ?>
+                    <?php echo $this->get_template_row_image( $data ) ?>
                     <div class="linkpage-row--link">
-						<?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
-                            <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
-                            <span><?php echo esc_url( $data['url'] ) ?></span>
-						<?php } else { ?>
+                        <?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
+                            <strong><?php esc_html_e( wp_unslash( $data['title'] ) ); ?></strong>
+                            <span><?php echo esc_url( $data['url'] ); ?></span>
+                        <?php } else { ?>
                             <strong><?php _e( 'Custom Link', CLICKWHALE_NAME ) ?></strong>
-						<?php } ?>
+                        <?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
-				<?php $this->get_template_row_end(
-					$data['type'],
-					true,
-					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
-				); ?>
+                <?php $this->get_template_row_end(
+                    $data['type'],
+                    true,
+                    $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
+                ); ?>
             </div><!-- ./linkpage-row--top -->
 
-            <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
+            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
-				<?php
-				// hidden fields
-				echo $this->get_template_hidden_field( $data );
+                <?php
+                // hidden fields
+                echo $this->get_template_hidden_field( $data );
 
-				// normal fields
-				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][title]',
-					$data['title'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_NAME ),
-					true
-				);
+                // normal fields
+                echo $this->get_template_input_field(
+                    __( 'Title', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][title]',
+                    $data['title'] ?? '',
+                    __( 'e.g. My link', CLICKWHALE_NAME ),
+                    true
+                );
 
-				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME )
-				);
+                echo $this->get_template_input_field(
+                    __( 'Subtitle', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][subtitle]',
+                    $data['subtitle'] ?? '',
+                    __( 'e.g. Read more about something', CLICKWHALE_NAME )
+                );
 
-				echo $this->get_template_input_field(
-					__( 'URL', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][url]',
-					$data['url'] ?? '',
-					__( 'e.g. https://mysite.com', CLICKWHALE_NAME ),
-					true
-				);
+                echo $this->get_template_input_field(
+                    __( 'URL', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][url]',
+                    $data['url'] ?? '',
+                    __( 'e.g. https://mysite.com', CLICKWHALE_NAME ),
+                    true
+                );
 
-				$this->get_template_row_images( $data );
-				?>
+                $this->get_template_row_images( $data );
+                ?>
 
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_admin_post_type( $args ) {
+    public function template_admin_post_type( $args ): string {
 
-		$defaults    = $this->get_template_data_defaults();
-		$pt_posts    = [];
-		$active      = false;
-		$post_status = '';
+        $defaults    = $this->get_template_data_defaults();
+        $pt_posts    = [];
+        $active      = false;
+        $post_status = '';
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$defaults['data'] = $args['data'];
-			$post             = get_post( $args['data']['post_id'] );
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $defaults['data'] = $args['data'];
+            $post             = get_post( $args['data']['post_id'] );
 
-			if ( ! $post ) {
-				return false;
-			}
-			$post_status = $post->post_status;
-		} else {
-			$active                       = true;
-			$defaults['data']['type']     = $args['type'];
-			$defaults['data']['subtitle'] = '';
+            if ( ! $post ) {
+                return '';
+            }
+            $post_status = $post->post_status;
+        } else {
+            $active                       = true;
+            $defaults['data']['type']     = $args['type'];
+            $defaults['data']['subtitle'] = '';
 
-			$args  = array(
-				'numberposts' => - 1,
-				'post_type'   => $args['type'],
-				'orderby'     => 'title',
-				'order'       => 'ASC',
-				'post_status' => 'publish'
-			);
-			$posts = get_posts( $args );
+            $args  = array(
+                'numberposts' => - 1,
+                'post_type'   => $args['type'],
+                'orderby'     => 'title',
+                'order'       => 'ASC',
+                'post_status' => 'publish'
+            );
+            $posts = get_posts( $args );
 
-			if ( $posts ) {
-				foreach ( $posts as $post ) {
-					$pt_posts[] = array(
-						'id'    => $post->ID,
-						'title' => $post->post_title,
-						'url'   => get_permalink( $post->ID )
-					);
-				}
-			}
-		}
+            if ( $posts ) {
+                foreach ( $posts as $post ) {
+                    $pt_posts[] = array(
+                        'id'    => $post->ID,
+                        'title' => $post->post_title,
+                        'url'   => get_permalink( $post->ID )
+                    );
+                }
+            }
+        }
 
-		$post_types         = Helper::get_post_types();
-		$post_type_singular = $post_types[ $defaults['data']['type'] ];
-		$data               = $defaults['data'];
+        $post_types         = Helper::get_post_types();
+        $post_type_singular = esc_html( $post_types[ $defaults['data']['type'] ] );
+        $data               = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?>" id="row-<?php echo $data['id'] ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?>" id="row-<?php esc_attr_e( $data['id'] ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
-					<?php echo $this->get_template_row_image( $data ) ?>
+                    <?php echo $this->get_template_row_image( $data ); ?>
                     <div class="linkpage-row--link">
-						<?php if ( ! isset( $data['post_id'] ) ) { ?>
-                            <strong><?php echo $post_type_singular ?></strong>
-						<?php } else { ?>
+                        <?php if ( ! isset( $data['post_id'] ) ) { ?>
+                            <strong><?php echo $post_type_singular; ?></strong>
+                        <?php } else { ?>
                             <strong>
-								<?php echo $data['title'] ? wp_unslash( $data['title'] ) : get_the_title( $data['post_id'] ) ?>
-								<?php echo $post_status != 'publish' ? '(' . $post_status . ')' : '' ?>
+                                <?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : get_the_title( $data['post_id'] ); ?>
+                                <?php echo ( $post_status != 'publish' ) ? '(' . $post_status . ')' : '' ?>
                             </strong>
                             <span>
-                                <?php echo __( 'Original', CLICKWHALE_NAME ) . ' ' . $post_type_singular . ': ' ?>
-                                <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ) ?>"
+                                <?php echo __( 'Original', CLICKWHALE_NAME ) . ' ' . $post_type_singular . ': '; ?>
+                                <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ); ?>"
                                    target="_blank"
                                    rel="noopener">
-                                    <?php echo get_the_title( $data['post_id'] ) ?>
+                                    <?php echo get_the_title( $data['post_id'] ); ?>
                                 </a>
                             </span>
-						<?php } ?>
+                        <?php } ?>
                     </div><!-- ./linkpage-link -->
                 </div>
-				<?php $this->get_template_row_end(
-					$data['type'],
-					true,
-					$this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
-				); ?>
+                <?php $this->get_template_row_end(
+                    $data['type'],
+                    true,
+                    $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
+                ); ?>
             </div><!-- ./linkpage-row--top -->
 
-            <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
-
-				<?php echo $this->get_template_hidden_field( $data, array( 'post_id' ) ); ?>
-
-				<?php if ( ! isset( $data['post_id'] ) ) { ?>
+            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+                <?php echo $this->get_template_hidden_field( $data, array( 'post_id' ) ); ?>
+                <?php if ( ! isset( $data['post_id'] ) ) { ?>
                     <div class="linkpage-row--bottom--control-wrap">
-                        <label for="links[<?php echo esc_attr( $data['id'] ) ?>][post_id]">
-							<?php echo $post_type_singular ?>
+                        <label for="links[<?php esc_attr_e( $data['id'] ); ?>][post_id]">
+                            <?php echo $post_type_singular ?>
                         </label>
                         <div>
-                            <select name="links[<?php echo esc_attr( $data['id'] ) ?>][post_id]"
+                            <select name="links[<?php esc_attr_e( $data['id'] ); ?>][post_id]"
                                     class="select-link"
-                                    required>
-                                <option></option>
-								<?php
-								if ( $pt_posts ) {
-									foreach ( $pt_posts as $pt_post ) {
-										?>
-                                        <option value="<?php echo esc_attr( $pt_post['id'] ) ?>"
-                                                data-title="<?php echo esc_attr( $pt_post['title'] ) ?>"
-                                                data-url="<?php echo esc_attr( $pt_post['url'] ) ?>">
-											<?php echo $pt_post['title'] ?>
-                                        </option>
-										<?php
-									}
-								}
-								?>
+                                    required
+                            ><option></option>
+                                <?php if ( $pt_posts ) {
+                                    foreach ( $pt_posts as $pt_post ) { ?>
+                                        <option value="<?php echo esc_attr( $pt_post['id'] ); ?>"
+                                                data-title="<?php echo esc_attr( $pt_post['title'] ); ?>"
+                                                data-url="<?php echo esc_attr( $pt_post['url'] ); ?>"
+                                        ><?php echo esc_html( $pt_post['title'] ); ?></option>
+                                    <?php }
+                                } ?>
                             </select>
                         </div>
                     </div>
-				<?php } ?>
+                <?php } ?>
 
-				<?php
-				// normal fields
-				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][title]',
-					$data['title'] ?? '',
-					isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', CLICKWHALE_NAME )
-				);
+                <?php
+                // normal fields
+                echo $this->get_template_input_field(
+                    __( 'Title', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][title]',
+                    $data['title'] ?? '',
+                    isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', CLICKWHALE_NAME )
+                );
 
-				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'] ?? '',
-					__( 'e.g. Read more about something', CLICKWHALE_NAME )
-				);
+                echo $this->get_template_input_field(
+                    __( 'Subtitle', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][subtitle]',
+                    $data['subtitle'] ?? '',
+                    __( 'e.g. Read more about something', CLICKWHALE_NAME )
+                );
 
-				$this->get_template_row_images( $data );
-				?>
+                $this->get_template_row_images( $data );
+                ?>
 
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_admin_cw_heading( $args ) {
-		$defaults = $this->get_template_data_defaults();
-		$active   = false;
+    public function template_admin_cw_heading( $args ): string {
+        $defaults = $this->get_template_data_defaults();
+        $active   = false;
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$defaults['data'] = $args['data'];
-		} else {
-			$active                   = true;
-			$defaults['data']['type'] = $args['type'];
-			unset( $defaults['image'] );
-		}
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $defaults['data'] = $args['data'];
+        } else {
+            $active                   = true;
+            $defaults['data']['type'] = $args['type'];
+            unset( $defaults['image'] );
+        }
 
-		$data = $defaults['data'];
+        $data = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?> no-image" id="row-<?php echo $data['id'] ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?> no-image" id="row-<?php esc_attr_e( $data['id'] ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-						<?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
-                            <strong><?php echo wp_unslash( $data['title'] ) ?></strong>
-						<?php } else { ?>
-                            <strong><?php _e( 'Heading', CLICKWHALE_NAME ) ?></strong>
-						<?php } ?>
+                        <?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
+                            <strong><?php esc_html_e( wp_unslash( $data['title'] ) ); ?></strong>
+                        <?php } else { ?>
+                            <strong><?php _e( 'Heading', CLICKWHALE_NAME ); ?></strong>
+                        <?php } ?>
                     </div><!-- ./linkpage-row--link -->
                 </div>
-				<?php $this->get_template_row_end( $data['type'] ); ?>
+                <?php $this->get_template_row_end( $data['type'] ); ?>
             </div><!-- ./linkpage-row--top -->
-            <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
+            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
-				<?php
-				// hidden fields
-				echo $this->get_template_hidden_field( $data );
+                <?php
+                // hidden fields
+                echo $this->get_template_hidden_field( $data );
 
-				// normal fields
-				echo $this->get_template_input_field(
-					__( 'Heading', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][title]',
-					$data['title'] ?? '',
-					__( 'e.g. My Links Heading', CLICKWHALE_NAME )
-				);
+                // normal fields
+                echo $this->get_template_input_field(
+                    __( 'Heading', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][title]',
+                    $data['title'] ?? '',
+                    __( 'e.g. My Links Heading', CLICKWHALE_NAME )
+                );
 
-				echo $this->get_template_input_field(
-					__( 'Description', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][description]',
-					$data['description'] ?? '',
-					__( 'e.g. My Links Description', CLICKWHALE_NAME )
-				);
-				?>
+                echo $this->get_template_input_field(
+                    __( 'Description', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][description]',
+                    $data['description'] ?? '',
+                    __( 'e.g. My Links Description', CLICKWHALE_NAME )
+                );
+                ?>
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_admin_cw_separator( $args ) {
-		$defaults = $this->get_template_data_defaults();
+    public function template_admin_cw_separator( $args ): string {
+        $defaults = $this->get_template_data_defaults();
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$defaults['data'] = $args['data'];
-		} else {
-			$defaults['data']['type'] = $args['type'];
-			unset( $defaults['title'], $defaults['image'] );
-		}
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $defaults['data'] = $args['data'];
+        } else {
+            $defaults['data']['type'] = $args['type'];
+            unset( $defaults['title'], $defaults['image'] );
+        }
 
-		$data = $defaults['data'];
+        $data = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?> no-image" id="row-<?php echo $data['id'] ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?> no-image" id="row-<?php esc_attr_e( $data['id'] ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
                         <strong><?php _e( 'Separator', CLICKWHALE_NAME ); ?></strong>
                     </div>
                 </div>
-				<?php $this->get_template_row_end( $data['type'], false ); ?>
+                <?php $this->get_template_row_end( $data['type'], false ); ?>
             </div><!-- ./linkpage-row--top -->
             <div class="linkpage-row--bottom">
-				<?php echo $this->get_template_hidden_field( $data ); ?>
+                <?php echo $this->get_template_hidden_field( $data ); ?>
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_admin_cw_custom_content( $args ) {
-		$defaults = $this->get_template_data_defaults();
-		$active   = false;
+    public function template_admin_cw_custom_content( $args ): string {
+        $defaults = $this->get_template_data_defaults();
+        $active   = false;
 
-		if ( isset( $args['data'] ) && $args['data'] ) {
-			$defaults['data'] = $args['data'];
-		} else {
-			$active                       = true;
-			$defaults['data']['type']     = $args['type'];
-			$defaults['data']['subtitle'] = '';
-			$defaults['data']['content']  = '';
-			unset( $defaults['image'] );
-		}
+        if ( isset( $args['data'] ) && $args['data'] ) {
+            $defaults['data'] = $args['data'];
+        } else {
+            $active                       = true;
+            $defaults['data']['type']     = $args['type'];
+            $defaults['data']['subtitle'] = '';
+            $defaults['data']['content']  = '';
+            unset( $defaults['image'] );
+        }
 
-		$data = $defaults['data'];
+        $data = $defaults['data'];
 
-		ob_start();
-		?>
-        <div class="linkpage-row row--<?php echo $data['type'] ?> no-image" id="row-<?php echo $data['id'] ?>">
+        ob_start();
+        ?>
+        <div class="linkpage-row row--<?php esc_attr_e( $data['type'] ); ?> no-image" id="row-<?php esc_attr_e( $data['id'] ); ?>">
             <div class="linkpage-row--top">
-				<?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
+                <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="linkpage-row--content">
                     <div class="linkpage-row--link">
-                        <strong><?php _e( 'Custom Content', CLICKWHALE_NAME ) ?></strong>
+                        <strong><?php _e( 'Custom Content', CLICKWHALE_NAME ); ?></strong>
                     </div><!-- ./linkpage-link -->
                 </div>
-				<?php $this->get_template_row_end( $data['type'] ); ?>
+                <?php $this->get_template_row_end( $data['type'] ); ?>
             </div><!-- ./linkpage-row--top -->
-            <div class="linkpage-row--bottom <?php echo $active ? 'active' : '' ?>">
+            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
-				<?php
-				echo $this->get_template_hidden_field( $data );
+                <?php
+                echo $this->get_template_hidden_field( $data );
 
-				echo $this->get_template_input_field(
-					__( 'Title', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][title]',
-					$data['title'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_NAME )
-				);
-				echo $this->get_template_input_field(
-					__( 'Subtitle', CLICKWHALE_NAME ),
-					'links[' . $data['id'] . '][subtitle]',
-					$data['subtitle'] ?? '',
-					__( 'e.g. My link', CLICKWHALE_NAME )
-				);
-				?>
+                echo $this->get_template_input_field(
+                    __( 'Title', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][title]',
+                    $data['title'] ?? '',
+                    __( 'e.g. My link', CLICKWHALE_NAME )
+                );
+                echo $this->get_template_input_field(
+                    __( 'Subtitle', CLICKWHALE_NAME ),
+                    'links[' . $data['id'] . '][subtitle]',
+                    $data['subtitle'] ?? '',
+                    __( 'e.g. My link', CLICKWHALE_NAME )
+                );
+                ?>
                 <hr>
-                <textarea id="cw_custom_content_<?php echo $data['id'] ?>"
-                          name="links[<?php echo $data['id'] ?>][content]"><?php echo wp_unslash( $data['content'] ) ?></textarea>
+                <textarea id="cw_custom_content_<?php esc_attr_e( $data['id'] ); ?>"
+                          name="links[<?php esc_attr_e( $data['id'] ); ?>][content]"
+                ><?php esc_html_e( wp_unslash( $data['content'] ) ); ?></textarea>
             </div><!-- ./linkpage-row--bottom -->
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
 	/* PUBLIC TEMPLATES */
 
@@ -610,96 +594,96 @@ class Clickwhale_Linkpage_Content_Templates {
 			$args );
 	}
 
-	public function template_public_cw_heading( $args ): string {
-		ob_start();
-		?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
-             data-type="<?php echo $args['type'] ?>">
-            <h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
-			<?php if ( isset( $args['data']['description'] ) && $args['data']['description'] ) { ?>
-                <p><?php echo wp_unslash( $args['data']['description'] ) ?></p>
-			<?php } ?>
+    public function template_public_cw_heading( $args ): string {
+        ob_start();
+        ?>
+        <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+             data-type="<?php echo esc_attr( $args['type'] ); ?>">
+            <h2><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
+            <?php if ( isset( $args['data']['description'] ) && $args['data']['description'] ) { ?>
+                <p><?php echo esc_html( wp_unslash( $args['data']['description'] ) ); ?></p>
+            <?php } ?>
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_public_cw_separator( $args ): string {
-		ob_start();
-		?>
-        <hr class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
-            data-type="<?php echo $args['type'] ?>"/>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+    public function template_public_cw_separator( $args ): string {
+        ob_start();
+        ?>
+        <hr class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+            data-type="<?php echo esc_attr( $args['type'] ); ?>" />
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function template_public_cw_custom_content( $args ): string {
-		ob_start();
-		if ( ! empty( $args['data']['title'] ) || ! empty( $args['data']['subtitle'] ) ) {
-			?>
+    public function template_public_cw_custom_content( $args ): string {
+        ob_start();
+        if ( ! empty( $args['data']['title'] ) || ! empty( $args['data']['subtitle'] ) ) {
+            ?>
             <div class="linkpage-public-row linkpage-public-row--cw_heading">
-				<?php if ( ! empty( $args['data']['title'] ) ) { ?>
-                    <h2><?php echo wp_unslash( $args['data']['title'] ) ?></h2>
-				<?php } ?>
-				<?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
-                    <p><?php echo wp_unslash( $args['data']['subtitle'] ) ?></p>
-				<?php } ?>
+                <?php if ( ! empty( $args['data']['title'] ) ) { ?>
+                    <h2><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
+                <?php } ?>
+                <?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
+                    <p><?php echo esc_html( wp_unslash( $args['data']['subtitle'] ) ); ?></p>
+                <?php } ?>
             </div>
-		<?php } ?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo $args['type'] ?>"
-             data-type="<?php echo $args['type'] ?>">
+        <?php } ?>
+        <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+             data-type="<?php echo esc_attr( $args['type'] ); ?>"
+        >
             <div class="linkpage-public-row--content">
-				<?php echo wpautop( wp_unslash( $args['data']['content'] ) ); ?>
+                <?php echo wpautop( wp_unslash( $args['data']['content'] ) ); ?>
             </div>
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
-	// OTHER METHODS
+    // OTHER METHODS
 
-	public function get_public_link_template( array $data, array $args ) {
-		$target   = 'target="' . esc_attr( $args['target'] ) . '"';
-		$title    = $data['title'];
-		$subtitle = $data['subtitle'];
-		$type     = $args['data']['type'];
-		$url      = $data['url'];
-		ob_start();
-		?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo $type ?>" data-type="<?php echo $type ?>">
-            <a class="linkpage-public-row-link cw-track" href="<?php echo esc_url( $url ) ?>"
-               <?php echo $target ?>>
-				<?php
-				if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
-					echo $this->get_template_row_image( $args['data'] );
-				}
-				?>
+    public function get_public_link_template( array $data, array $args ): string {
+        $target   = esc_attr( $args['target'] );
+        $title    = esc_html( wp_unslash( $data['title'] ) );
+        $subtitle = esc_html( wp_unslash( $data['subtitle'] ) );
+        $type     = esc_attr( $args['data']['type'] );
+        $url      = esc_url( $data['url'] );
+        ob_start();
+        ?>
+        <div class="linkpage-public-row linkpage-public-row--<?php echo $type; ?>" data-type="<?php echo $type; ?>">
+            <a class="linkpage-public-row-link cw-track"
+               href="<?php echo $url; ?>"
+               target="<?php echo $target; ?>"
+            ><?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
+                    echo $this->get_template_row_image( $args['data'] );
+                } ?>
                 <div class="linkpage-row--title--wrap">
-                    <div class="linkpage-row--title"><?php echo wp_unslash( $title ) ?></div>
-					<?php if ( $subtitle ) { ?>
-                        <p class="linkpage-row--subtitle"><?php echo wp_unslash( $subtitle ) ?></p>
-					<?php } ?>
+                    <div class="linkpage-row--title"><?php echo $title; ?></div>
+                    <?php if ( $subtitle ) { ?>
+                        <p class="linkpage-row--subtitle"><?php echo $subtitle; ?></p>
+                    <?php } ?>
                 </div>
-				<?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
+                <?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
                     <div class="linkpage-row--end"></div>
-				<?php } ?>
+                <?php } ?>
             </a>
         </div>
-		<?php
-		$result = ob_get_contents();
-		ob_end_clean();
+        <?php
+        $result = ob_get_contents();
+        ob_end_clean();
 
-		return $result;
-	}
+        return $result;
+    }
 
 	public function get_template_hidden_field( array $data, array $fields = [] ): string {
 		$result  = '';
@@ -811,7 +795,7 @@ class Clickwhale_Linkpage_Content_Templates {
                         <svg class="feather">
                             <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#bar-chart-2"></use>
                         </svg>
-                        Clicks: <?php echo $stats ?: 0 ?>
+                        Clicks: <?php echo intval( $stats ); ?>
                     </span>
                 </div><!-- ./linkpage-row--statistics -->
 			<?php } ?>
@@ -834,18 +818,19 @@ class Clickwhale_Linkpage_Content_Templates {
 		<?php
 	}
 
-	public function get_template_row_images( array $data ) {
-		$image_type = $data['image']['type'] ?? '';
-		$image_id   = $data['image']['image_id'] ?? '';
+    public function get_template_row_images( array $data ) {
+        $id = esc_attr( $data['id'] );
+        $image_type = esc_attr( $data['image']['type'] ?? '' );
+        $image_id = esc_attr( $data['image']['image_id'] ?? '' );
 
-		$emoji_class = $image_id && $image_type == 'emoji' ? 'with-image' : '';
-		$icon_class  = $image_id && $image_type == 'icon' ? 'with-image' : '';
-		?>
+        $emoji_class = $image_id && $image_type == 'emoji' ? 'with-image' : '';
+        $icon_class  = $image_id && $image_type == 'icon' ? 'with-image' : '';
+        ?>
         <div class="linkpage-row--bottom--control-wrap linkpage-row--image-select--wrap">
             <input type="hidden"
-                   name="links[<?php echo $data['id'] ?>][image][type]"
-                   value="<?php echo $data['image']['type'] ?? '' ?>">
-            <label><?php _e( 'Icon', CLICKWHALE_NAME ) ?></label>
+                   name="links[<?php echo $id; ?>][image][type]"
+                   value="<?php echo esc_attr( $data['image']['type'] ?? '' ); ?>">
+            <label><?php _e( 'Icon', CLICKWHALE_NAME ); ?></label>
 
             <div class="linkpage-row--image-select">
                 <p class="description"><?php _e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', CLICKWHALE_NAME ); ?></p>
@@ -855,18 +840,18 @@ class Clickwhale_Linkpage_Content_Templates {
                             <div class="image-item">
                                 <input type="radio"
                                        data-type="image"
-                                       id="image-<?php echo $data['id']; ?>-0"
-                                       name="links[<?php echo $data['id']; ?>][image][image_id]"
+                                       id="image-<?php echo $id; ?>-0"
+                                       name="links[<?php echo $id; ?>][image][image_id]"
                                        value="<?php echo $image_type == 'image' ? $image_id : ''; ?>"
-									   <?php if ( $image_id && $image_type == 'image' ) { echo 'checked'; } ?>
+                                    <?php if ( $image_id && $image_type == 'image' ) { echo 'checked'; } ?>
                                 />
-                                <label for="image-<?php echo $data['id']; ?>-0">
-									<?php if ( $image_id && $image_type == 'image' ) {
+                                <label for="image-<?php echo $id; ?>-0">
+                                    <?php if ( $image_id && $image_type == 'image' ) {
                                         $src = wp_get_attachment_image_url( $image_id );
                                         if ( $src ) {
                                             echo '<img src="' . esc_url( $src ) . '" />';
                                         }
-									} ?>
+                                    } ?>
                                 </label>
                             </div>
                             <a href="#"
@@ -879,43 +864,41 @@ class Clickwhale_Linkpage_Content_Templates {
                         </div>
 
                         <div class="linkpage-row--image-select--item item--icon">
-                            <div class="image-item <?php echo $icon_class ?>">
+                            <div class="image-item <?php echo $icon_class; ?>">
                                 <input type="radio"
                                        data-type="icon"
-                                       id="image-<?php echo $data['id'] ?>-icon"
-                                       name="links[<?php echo $data['id'] ?>][image][image_id]"
-                                       value="<?php echo $image_id && $image_type == 'icon' ? $image_id : '' ?>"
-									<?php if ( $image_id && $image_type == 'icon' ) { ?>
+                                       id="image-<?php echo $id; ?>-icon"
+                                       name="links[<?php echo $id; ?>][image][image_id]"
+                                       value="<?php echo $image_id && $image_type == 'icon' ? $image_id : ''; ?>"
+                                    <?php if ( $image_id && $image_type == 'icon' ) { ?>
                                         checked
-									<?php } ?>
+                                    <?php } ?>
                                 >
-                                <label for="image-<?php echo $data['id'] ?>-icon">
-									<?php if ( $image_id && $image_type == 'icon' ) { ?>
-                                        <ion-icon name="<?php echo $image_id ?>"></ion-icon>
-									<?php } ?>
+                                <label for="image-<?php echo $id; ?>-icon">
+                                    <?php if ( $image_id && $image_type == 'icon' ) { ?>
+                                        <ion-icon name="<?php echo $image_id; ?>"></ion-icon>
+                                    <?php } ?>
                                 </label>
                             </div>
-                            <a id="icon-picker-<?php echo $data['id'] ?>" class="icon-picker" href="#">
-								<?php _e( 'Select Icon', CLICKWHALE_NAME ) ?>
-                            </a>
+                            <a id="icon-picker-<?php echo $id; ?>"
+                               class="icon-picker" href="#"
+                            ><?php _e( 'Select Icon', CLICKWHALE_NAME ); ?></a>
                         </div>
 
                         <div class="linkpage-row--image-select--item item--emoji">
-                            <div class="image-item <?php echo $emoji_class ?>">
+                            <div class="image-item <?php echo $emoji_class; ?>">
                                 <input type="radio"
                                        data-type="emoji"
-                                       id="image-<?php echo $data['id'] ?>-emoji"
-                                       name="links[<?php echo $data['id'] ?>][image][image_id]"
-                                       value="<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>"
-									<?php if ( $image_id && $image_type == 'emoji' ) { ?>
-                                        checked
-									<?php } ?>
-                                >
-                                <label for="image-<?php echo $data['id'] ?>-emoji">
-									<?php echo $image_id && $image_type == 'emoji' ? $image_id : '' ?>
+                                       id="image-<?php echo $id; ?>-emoji"
+                                       name="links[<?php echo $id; ?>][image][image_id]"
+                                       value="<?php echo $image_id && $image_type == 'emoji' ? $image_id : ''; ?>"
+                                    <?php if ( $image_id && $image_type == 'emoji' ) { echo 'checked'; } ?>
+                                />
+                                <label for="image-<?php echo $id; ?>-emoji">
+                                    <?php echo $image_id && $image_type == 'emoji' ? $image_id : ''; ?>
                                 </label>
                             </div>
-                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', CLICKWHALE_NAME ) ?></a>
+                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', CLICKWHALE_NAME ); ?></a>
                         </div>
 
                         <div class="linkpage-row--image-select--reset">
@@ -925,8 +908,8 @@ class Clickwhale_Linkpage_Content_Templates {
                 </div>
             </div>
         </div><!-- ./linkpage-row--image-select-wrap -->
-		<?php
-	}
+        <?php
+    }
 
 	public static function get_images(): array {
 		return array(
@@ -1439,7 +1422,7 @@ class Clickwhale_Linkpage_Content_Templates {
 		);
 	}
 
-	private function get_clicks( string $linkpage_id, string $id, bool $is_link = true ) {
-		return Linkpages_Helper::get_linkpage_link_clicks( $linkpage_id, $id, $is_link );
+	private function get_clicks( string $linkpage_id, string $id ): int {
+		return Linkpages_Helper::get_linkpage_link_clicks( $linkpage_id, $id );
 	}
 }

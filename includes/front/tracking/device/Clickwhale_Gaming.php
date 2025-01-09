@@ -7,6 +7,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Gaming {
 
+    /**
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * @var array
+     */
+    public array $data;
+
 	public function __construct( $ua ) {
 		$this->detectNintendo( $ua );
 		$this->detectPlaystation( $ua );
@@ -121,8 +131,8 @@ class Clickwhale_Gaming {
 			);
 
 			if ( preg_match( '/VTE\//u', $ua ) ) {
-				$this->data->model   = 'PlayStation TV';
-				$this->data->subtype = 'console';
+				$this->data['model'] = 'PlayStation TV';
+				$this->data['subtype'] = 'console';
 			}
 		}
 

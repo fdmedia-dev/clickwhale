@@ -13,7 +13,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public $instance_plural;
+	public string $instance_plural;
 
 	/**
 	 * Instance type as single e.g. "link", "linkpage"
@@ -21,17 +21,17 @@ abstract class Clickwhale_Instance_Edit {
 	 * @var string
 	 * @since 1.6.0
 	 */
-	public $instance_single;
+	public string $instance_single;
 
     /**
      * @var string
      */
-	protected $page;
+	protected string $page;
 
     /**
      * @var string
      */
-	protected $filter_param;
+	protected string $filter_param;
 
 	public function __construct( string $instance_plural, string $instance_single ) {
 		$this->instance_plural = $instance_plural;
@@ -81,7 +81,8 @@ abstract class Clickwhale_Instance_Edit {
 
 		$item = call_user_func(
 			array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
-			$request['id'] );
+			intval( $request['id'] )
+        );
 
 		// if link with id doesn't exist
 		if ( ! $item ) {
@@ -125,7 +126,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	protected function set_transient( string $id, string $value ) {
-		set_transient( $this->instance_single . '-' . $id, $value, 15 ); // 15 seconds
+		set_transient( sanitize_key( $this->instance_single . '-' . $id ), esc_html( $value ), 15 ); // 15 seconds
 	}
 
 	/**

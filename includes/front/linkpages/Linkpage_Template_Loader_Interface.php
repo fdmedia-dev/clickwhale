@@ -11,7 +11,7 @@ interface Linkpage_Template_Loader_Interface {
 	 *
 	 * @param object $page matched virtual page
 	 */
-	public function init( $page );
+	public function init( object $page );
 
 	/**
 	 * Trigger core and custom hooks to filter templates,

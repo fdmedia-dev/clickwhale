@@ -6,6 +6,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Clickwhale_Appliance {
+
+    /**
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * @var string
+     */
+    public string $os;
+
+    /**
+     * @var array
+     */
+    public array $data;
+
 	public function __construct( $ua ) {
 		$this->detectIOpener( $ua );
 		$this->detectWebLight( $ua );

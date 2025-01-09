@@ -10,9 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Linkpage_Controller implements Linkpage_Controller_Interface {
 
-	private $pages;
-	private $loader;
-	private $matched;
+	private SplObjectStorage $pages;
+
+	private Linkpage_Template_Loader $loader;
+
+	private Linkpage $matched;
 
 	function __construct( $loader ) {
 		$this->pages  = new SplObjectStorage;
@@ -25,12 +27,11 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
 
 	function addPage( $page ) {
 		$this->pages->attach( $page );
-
 		return $page;
 	}
 
-	function dispatch( $bool, $wp ) {
-		if ( $this->checkRequest() && $this->matched instanceof Linkpage ) {
+	function dispatch( bool $bool, object $wp ): bool {
+		if ( $this->checkRequest() /*&& $this->matched instanceof Linkpage*/ ) {
 			$this->loader->init( $this->matched );
 			$wp->virtual_page = $this->matched;
 			do_action( 'parse_request', $wp );
@@ -43,27 +44,29 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
 		return $bool;
 	}
 
-	private function checkRequest() {
+	private function checkRequest(): bool {
 		$this->pages->rewind();
 		$path = trim( parse_url( $this->getPathInfo(), PHP_URL_PATH ), '/' );
 
 		while ( $this->pages->valid() ) {
-			// get current object
-			// @link https://www.php.net/manual/en/splobjectstorage.current.php
+			// Get current object
+			/** @link https://www.php.net/manual/en/splobjectstorage.current.php */
 			$current = trim( $this->pages->current()->getUrl(), '/' );
-			// check url
-			// 1. if virtual page url is matches to $path
-			// 2. if virtual page url has GET params and only contains part of the $path
+
+			// Check url
+			// 1. if virtual page url matches to `$path`
+			// 2. if virtual page url has GET params and only contains part of `$path`
 			if ( $current === $path ) {
 				$this->matched = $this->pages->current();
-
 				return true;
 			}
 			$this->pages->next();
 		}
+
+		return false;
 	}
 
-	private function getPathInfo() {
+	private function getPathInfo(): string {
 		$home_path = parse_url( home_url(), PHP_URL_PATH );
 
 		return preg_replace( "#^/?{$home_path}/#", '/', add_query_arg( array() ) );

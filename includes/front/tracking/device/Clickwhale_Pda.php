@@ -6,11 +6,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Clickwhale_Pda {
-	public function __construct( $ua ) {
-		$this->detectPDA( $ua );
+
+    /**
+     * @var string
+     */
+    public string $type;
+
+	public function __construct() {
+		$this->detectPDA();
 	}
 
-	private function detectPDA( $u ) {
+	private function detectPDA() {
 		$this->type = 'pda';
 	}
 }

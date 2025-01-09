@@ -17,7 +17,7 @@ class Clickwhale_Public_Tracking_Codes {
     /**
      * @var string
      */
-	public $path;
+	public string $path;
 
 	public function __construct( $path ) {
 		$this->path = $path;
@@ -44,16 +44,15 @@ class Clickwhale_Public_Tracking_Codes {
 	}
 
 	/**
-	 * Get current page type (LP/post_type/taxonomy) and id
+	 * Get current page type (LP/post_type/taxonomy) and ID
 	 *
 	 * @return array
 	 */
 	private function get_current_page_data(): array {
-		$page = [];
+		$page = array();
 
 		$current_page_path = $this->parse_current_page_path();
 		$linkpage          = Linkpages_Helper::get_by_slug( $current_page_path );
-		$post_type_page_id = url_to_postid( $this->parse_current_page_path( 'url' ) );
 
 		if ( $linkpage ) {
 			$page['type'] = 'cw_linkpage';
@@ -62,7 +61,9 @@ class Clickwhale_Public_Tracking_Codes {
 			return $page;
 		}
 
-		if ( $post_type_page_id ) {
+        $post_type_page_id = url_to_postid( $this->parse_current_page_path( 'url' ) );
+
+        if ( $post_type_page_id ) {
 			$page['type'] = get_post( $post_type_page_id )->post_type;
 			$page['id']   = $post_type_page_id;
 
@@ -138,13 +139,13 @@ class Clickwhale_Public_Tracking_Codes {
 	}
 
 	/**
-	 * @return false|void
+	 * @return void
 	 */
-	public function prepare_tracking_codes() {
+	public function prepare_tracking_codes(): void {
 		$tracking_codes = Tracking_Codes_Helper::get_active();
 
 		if ( ! $tracking_codes ) {
-			return false;
+			return;
 		}
 
 		$page = $this->get_current_page_data();

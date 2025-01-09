@@ -6,7 +6,7 @@ use clickwhale\includes\admin\categories\Clickwhale_Categories_List_Table;
 use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
 $categories_table = $wpdb->prefix . 'clickwhale_categories';
-$total_items      = $wpdb->get_var( "SELECT COUNT(id) FROM $categories_table" );
+$total_items      = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $categories_table" ) );
 $limit            = Categories_Helper::get_limit();
 
 $table = new Clickwhale_Categories_List_Table();
@@ -47,7 +47,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ) ?>"/>
+        <input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
 		<?php
 		$table->search_box( __( 'Search', CLICKWHALE_NAME ), 'search_id' );
 		$table->display();

@@ -20,20 +20,18 @@ do_action( 'clickwhale_admin_banner' );
 				$url    = '?page=' . CLICKWHALE_SLUG . '-settings&tab=' . $tab['url'];
 				$active = $active_tab === $tab['url'] ? 'nav-tab-active' : '';
 				?>
-                <a href="<?php echo $url ?>" class="nav-tab <?php echo $active ?>">
-					<?php echo $tab['name'] ?>
-                </a>
+                <a href="<?php echo esc_url( $url ); ?>"
+                   class="nav-tab <?php echo $active; ?>"
+                ><?php echo esc_html( $tab['name'] ); ?></a>
 			<?php } ?>
         </h2>
 
         <form method="post" action="options.php">
 			<?php
-
 			settings_fields( 'clickwhale_' . $active_tab );
 			do_settings_sections( 'clickwhale_' . $active_tab );
 
 			submit_button( __( 'Save changes', 'clikwhale' ) );
-
 			?>
         </form>
 

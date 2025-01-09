@@ -26,5 +26,5 @@ interface Linkpage_Controller_Interface {
 	 * @param boolean $bool The boolean flag value passed by 'do_parse_request'
 	 * @param object $wp The global wp object passed by 'do_parse_request'
 	 */
-	function dispatch( $bool, $wp );
+	function dispatch( bool $bool, object $wp ): bool;
 }

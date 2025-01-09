@@ -23,14 +23,14 @@ final class Clickwhale_Admin {
     /**
      * @var array
      */
-    public $menus;
+    public array $menus;
 
 	/**
 	 * @var Clickwhale_Admin
      *
      * @since    1.5.0
      */
-	private static $instance;
+	private static Clickwhale_Admin $instance;
 
 	/**
 	 * @return Clickwhale_Admin
@@ -167,7 +167,7 @@ final class Clickwhale_Admin {
                 continue;
             }
 
-            $page = $_REQUEST['page'];
+            $page = sanitize_text_field( $_REQUEST['page'] );
 
             if ( ! strpos( $page, $k ) ) {
                 continue;
@@ -357,7 +357,7 @@ final class Clickwhale_Admin {
      * @param string $template
      * @return string
      */
-    public function enqueue_fs_pricing_styles( $template ) {
+    public function enqueue_fs_pricing_styles( string $template ): string {
         $style = <<<'CSS'
 <style>
 #root .fs-app-header .fs-page-title,
@@ -483,47 +483,42 @@ CSS;
 
         <div class="clickwhale-banner">
             <div class="clickwhale-banner--logo">
-                <a href="<?php echo $link_logo ?>"
+                <a href="<?php echo $link_logo; ?>"
                    target="_blank"
-                   rel="noopener">
-                    <img src="<?php echo esc_attr( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/wordmark.svg' ) ?>"
-                         alt="<?php echo CLICKWHALE_NAME ?>">
-                </a>
+                   rel="noopener"
+                ><img src="<?php esc_attr_e( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/wordmark.svg' ); ?>"
+                      alt="<?php echo CLICKWHALE_NAME; ?>"
+                    ></a>
             </div>
             <div class="clickwhale-banner--links">
-				<?php if ( $link_review ) { ?>
-                    <div class="clickwhale-banner--link-review">
-						<?php printf(
-                            wp_kses(
-                                __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', CLICKWHALE_NAME ),
-                                array(
-                                    'a' => array(
-                                        'href' => array(),
-                                        'target' => array( '_blank' )
-                                    )
+                <div class="clickwhale-banner--link-review">
+                    <?php printf(
+                        wp_kses(
+                            __( 'You like ClickWhale? Then please <a href="%1$s" target="_blank">leave a review here</a>', CLICKWHALE_NAME ),
+                            array(
+                                'a' => array(
+                                    'href' => array(),
+                                    'target' => array( '_blank' )
                                 )
-                            ),
-                            esc_url( $link_review )
-                        ); ?>
-                        <span class="clickwhale-banner--link-review--raiting">
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                            <span class="dashicons dashicons-star-filled"></span>
-                        </span>
-                    </div>
-				<?php } ?>
-				<?php if ( $link_helpdesk ) { ?>
-                    <a href="<?php echo esc_attr( $link_helpdesk ) ?>"
-                       class="clickwhale-banner--button outlined dark"
-                       target="_blank"
-                       rel="noopener">
-						<?php _e( 'Need help?', CLICKWHALE_NAME ) ?>
-                    </a>
-				<?php } ?>
+                            )
+                        ),
+                        esc_url( $link_review )
+                    ); ?>
+                    <span class="clickwhale-banner--link-review--rating">
+                        <span class="dashicons dashicons-star-filled"></span>
+                        <span class="dashicons dashicons-star-filled"></span>
+                        <span class="dashicons dashicons-star-filled"></span>
+                        <span class="dashicons dashicons-star-filled"></span>
+                        <span class="dashicons dashicons-star-filled"></span>
+                    </span>
+                </div>
+                <a href="<?php echo esc_attr( $link_helpdesk ) ?>"
+                   class="clickwhale-banner--button outlined dark"
+                   target="_blank"
+                   rel="noopener"
+                ><?php _e( 'Need help?', CLICKWHALE_NAME ); ?></a>
 
-				<?php do_action( 'clickwhale_admin_banner_pro_button' ) ?>
+				<?php do_action( 'clickwhale_admin_banner_pro_button' ); ?>
             </div>
         </div>
 		<?php
@@ -673,6 +668,7 @@ CSS;
 			echo "Something went wrong: $error_message";
 		} else {
 			wp_redirect( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro&success=1#clickwhaleSubscribe' ) );
+            exit;
 		}
 	}
 
@@ -722,7 +718,7 @@ CSS;
 		}
 	}
 
-    public function plugin_meta_links( array $meta, string $file ) {
+    public function plugin_meta_links( array $meta, string $file ): array {
 
         if ( $file !== CLICKWHALE_ID ) {
             return $meta;

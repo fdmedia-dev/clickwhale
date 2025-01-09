@@ -54,7 +54,7 @@ class Clickwhale_Public_Linkpages {
 		add_action( 'init', array( $controller, 'init' ) );
 		add_filter( 'do_parse_request', array( $controller, 'dispatch' ), PHP_INT_MAX, 2 );
 		add_action( 'loop_end', function ( $query ) {
-			if ( isset( $query->virtual_page ) && ! empty( $query->virtual_page ) ) {
+			if ( ! empty( $query->virtual_page ) ) {
 				$query->virtual_page = null;
 			}
 		} );

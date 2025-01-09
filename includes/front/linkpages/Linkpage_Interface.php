@@ -1,28 +1,34 @@
 <?php
 namespace clickwhale\includes\front\linkpages;
 
+use WP_Post;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 interface Linkpage_Interface {
 
-	function getUrl();
+	function getUrl(): string;
 
-	function getTemplate();
+	function setUrl( string $url ): Linkpage;
 
-	function getTitle();
+	function getTitle(): string;
 
-	function setTitle( $title );
+	function setTitle( string $title ): Linkpage;
 
-	function setContent( $content );
+	function getTemplate(): string;
 
-	function setTemplate( $template );
+	function setTemplate( string $template ): Linkpage;
+
+	function setContent( string $content ): Linkpage;
+
+	function setLinkpage( array $linkpage ): Linkpage;
 
 	/**
 	 * Get a WP_Post build using virtual Page object
 	 *
 	 * @return WP_Post
 	 */
-	function asWpPost();
+	function asWpPost(): WP_Post;
 }

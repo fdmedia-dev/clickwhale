@@ -49,7 +49,7 @@ class Helper {
 	 *
 	 * @return string
 	 */
-	public static function render_control( array $args, bool $row = false, $row_classes = '' ): string {
+	public static function render_control( array $args, bool $row = false, string $row_classes = '' ): string {
 
 		$item     = '';
 		$id       = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
@@ -205,23 +205,23 @@ class Helper {
 	 * string 'link_to_view' - LP public link
 	 * bool 'is_limit' - if limit exists
 	 *
-	 * @return false|string
+	 * @return string
 	 */
-	public static function render_heading( array $data ) {
+	public static function render_heading( array $data ): string {
 		if ( ! $data ) {
-			return false;
+			return '';
 		}
 
 		$wpHeading = $linkToList = $linkToAdd = $linkToView = $linkCustom = '';
 
 		if ( isset( $data['is_edit'] ) ) {
 			if ( $data['is_edit'] ) {
-				$wpHeading = sprintf( __( 'Edit %s', CLICKWHALE_NAME ), $data['name'] );
+				$wpHeading = sprintf( __( 'Edit %s', CLICKWHALE_NAME ), esc_html( $data['name'] ) );
 			} else {
-				$wpHeading = sprintf( __( 'Add %s', CLICKWHALE_NAME ), $data['name'] );
+				$wpHeading = sprintf( __( 'Add %s', CLICKWHALE_NAME ), esc_html( $data['name'] ) );
 			}
 		} elseif ( ! empty( $data['is_list'] ) ) {
-			$wpHeading = $data['name'];
+			$wpHeading = esc_html( $data['name'] );
 		}
 
 		if ( ! empty( $data['link_to_list'] ) ) {
@@ -243,53 +243,50 @@ class Helper {
 				),
 				'title' => __( 'Add new', CLICKWHALE_NAME )
 			);
-			$linkToAdd     = '<a class="page-title-action" href="' . $linkToAddArgs['url'] . '">' . $linkToAddArgs['title'] . '</a>';
+			$linkToAdd = '<a class="page-title-action" href="' . $linkToAddArgs['url'] . '">' . $linkToAddArgs['title'] . '</a>';
 		}
 
 		if ( ! empty( $data['link_to_view'] ) ) {
 			$linkToViewArgs = array(
-				'url'   => $data['link_to_view'],
+				'url'   => esc_url( $data['link_to_view'] ),
 				'title' => __( 'View page', CLICKWHALE_NAME )
 			);
-			$linkToView     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkToViewArgs['url'] . '">' . $linkToViewArgs['title'] . '</a>';
+			$linkToView = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkToViewArgs['url'] . '">' . $linkToViewArgs['title'] . '</a>';
 		}
 
 		if ( ! empty( $data['link_custom'] ) ) {
 			$linkCustomArgs = array(
-				'url'   => $data['link_custom']['url'],
-				'title' => $data['link_custom']['title']
+				'url'   => esc_url( $data['link_custom']['url'] ),
+				'title' => esc_html( $data['link_custom']['title'] )
 			);
-			$linkCustom     = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkCustomArgs['url'] . '">' . $linkCustomArgs['title'] . '</a>';
+			$linkCustom = '<a class="page-title-action" target="_blank" rel="noopener" href="' . $linkCustomArgs['url'] . '">' . $linkCustomArgs['title'] . '</a>';
 		}
 
 		return '<h1 class="wp-heading-inline">' . $wpHeading . ' ' . $linkToList . $linkToAdd . $linkToView . $linkCustom . '</h1>';
-
 	}
 
-	public static function get_sort_params( $columns, $order, $orderby ): array {
-		$result = array(
-			'order'   => 'desc',
-			'orderby' => 'id',
-		);
+    /**
+     * @param array $columns
+     * @param string $order
+     * @param string $orderby
+     * @return array
+     */
+    public static function get_sort_params( array $columns, string $order = 'desc', string $orderby = 'id' ): array {
+        $defaults = array(
+            'order' => 'desc',
+            'orderby' => 'id'
+        );
 
-		if ( $order ) {
-			$orderArg        = htmlspecialchars( $order, ENT_QUOTES );
-			$result['order'] = in_array( $orderArg, array( 'asc', 'desc' ) ) ? $orderArg : $order;
-		}
-
-		if ( $orderby ) {
-			$orderByArg        = htmlspecialchars( $orderby, ENT_QUOTES );
-			$result['orderby'] = in_array( $orderByArg, array_keys( $columns ) ) ? $orderByArg : $orderby;
-		}
-
-		return $result;
-	}
+        return array(
+            'order'   => in_array( $order, array( 'asc', 'desc' ) ) ? $order : $defaults['order'],
+            'orderby' => in_array( $orderby, array_keys( $columns ) ) ? $orderby : $defaults['orderby']
+        );
+    }
 
 	/**
 	 * @return string
 	 * @since 1.4.0
 	 */
-
 	private static function pro_link(): string {
 		return 'https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_upgrade_to_pro_button';
 	}
@@ -361,7 +358,7 @@ class Helper {
      * @return array
      * @since 1.6.0
      */
-	public static function get_post_types( $label = 'singular_name' ): array {
+	public static function get_post_types( string $label = 'singular_name' ): array {
 		$posts      = [];
 		$args       = array(
 			'public' => true,
@@ -382,7 +379,7 @@ class Helper {
      * @param string $image_url
      * @return bool
      */
-    public static function get_media_file_path( $image_url ): bool {
+    public static function get_media_file_path( string $image_url ): bool {
         return file_exists( str_replace( home_url('/'), ABSPATH, $image_url ) );
     }
 }

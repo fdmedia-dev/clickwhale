@@ -7,40 +7,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abstract class Clickwhale_Migration_Abstract {
 
-	public function run_migration( $categories, $links ) {
-		$resutls = [];
+	public function run_migration( $categories, $links ): array {
+		$results = array();
 
 		if ( $categories ) {
-			$resutls[] = $this->process_categories_data();
+			$results[] = $this->process_categories_data();
 		}
 		if ( $links ) {
-			$resutls[] = $this->process_links_data();
+			$results[] = $this->process_links_data();
 		}
 
 		$this->process_migration_time();
 
-		return $resutls;
+		return $results;
 	}
 
-	public function process_links_data() {
-		return [
-			'links' => [],
-		];
+	public function process_links_data(): array {
+		return array(
+			'links' => array()
+		);
 	}
 
-	public function process_categories_data() {
-		return [
-			'categories' => [],
-		];
+	public function process_categories_data(): array {
+		return array(
+			'categories' => array()
+		);
 	}
 
-	public function process_author() {
+	public function process_author(): int {
 		return get_current_user_id();
 	}
 
-	public function process_migration_time() {
-		return false;
-	}
+	abstract public function process_migration_time();
 
 	public function set_migration_time( $option, $time ) {
 		$options            = get_option( 'clickwhale_tools_last_migration_options' );
@@ -48,80 +46,96 @@ abstract class Clickwhale_Migration_Abstract {
 		update_option( 'clickwhale_tools_last_migration_options', $options );
 	}
 
+    public function if_link_exists( $slug ): bool {
+        global $wpdb;
 
-	public function if_link_exists( $slug ) {
-		global $wpdb;
+        return (bool) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug=%s",
+                sanitize_text_field( $slug )
+            )
+        );
+    }
 
-		return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_links WHERE slug='{$slug}'" );
-	}
-
-	public function link_url_parse( $url ) {
-		$result        = [];
-		$result['url'] = $url;
-		$utms_params   = [ 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ];
+	public function link_url_parse( $url ): array {
+		$result = array(
+            'url' => $url,
+            'utms' => array()
+        );
+		$utm_params = [ 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ];
 
 		$url_array = parse_url( $url );
 		if ( isset( $url_array['query'] ) && $url_array['query'] !== '' ) {
 			parse_str( $url_array['query'], $params );
+            $result['url'] = str_replace( '?' . $url_array['query'], '', $url );
 
-			if ( $params ) {
-				$result['url'] = str_replace( '?' . $url_array['query'], '', $url );
+            foreach ( $utm_params as $utm ) {
+                if ( isset( $params[$utm] ) && $params[$utm] !== '' ) {
+                    $result['utms'][$utm] = $params[$utm];
+                    unset( $params[$utm] );
+                }
+            }
+            $result['params'] = $params;
 
-				foreach ( $utms_params as $utm ) {
-					if ( isset( $params[ $utm ] ) && $params[ $utm ] !== '' ) {
-						$utms[ $utm ] = $params[ $utm ];
-						unset( $params[ $utm ] );
-					}
-				}
-				$result['params'] = $params;
-				$result['utms']   = $utms;
-			}
-
-			if ( $result['params'] ) {
-				$result['url'] = $result['url'] . '?' . http_build_query( $result['params'] );
+			if ( ! empty( $params ) ) {
+				$result['url'] .= '?' . http_build_query( $params );
 			}
 		}
 
 		return $result;
 	}
 
-	public function link_item_import_success( $item ) {
+	public function link_item_import_success( $item ): string {
 		return sprintf( __( 'Link "%1$s" imported successfully.', CLICKWHALE_NAME ), $item );
 	}
 
-	public function link_item_import_error( $item ) {
+	public function link_item_import_error( $item ): string {
 		return sprintf( __( '<strong>Import failed!</strong> Link %1$s already exists', CLICKWHALE_NAME ), $item );
 	}
 
+    public function if_category_exists( $slug ): bool {
+        global $wpdb;
 
-	public function if_category_exists( $slug ) {
-		global $wpdb;
+        return (bool) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}clickwhale_categories WHERE slug=%s",
+                sanitize_text_field( $slug )
+            )
+        );
+    }
 
-		return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}clickwhale_categories WHERE slug='{$slug}'" );
-	}
+    public function get_custom_post_type_categories( int $id ): array {
+        global $wpdb;
 
-	public function get_custom_post_type_categories( $id ) {
-		global $wpdb;
+        return (array) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT {$wpdb->prefix}clickwhale_categories.id
+                FROM {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}terms, {$wpdb->prefix}term_relationships 
+                WHERE {$wpdb->prefix}terms.term_id={$wpdb->prefix}term_relationships.term_taxonomy_id 
+                AND {$wpdb->prefix}term_relationships.object_id=%d 
+                AND {$wpdb->prefix}terms.slug={$wpdb->prefix}clickwhale_categories.slug",
+                $id
+            ),
+            ARRAY_A
+        );
+    }
 
-		return $wpdb->get_results( $wpdb->prepare( "SELECT {$wpdb->prefix}clickwhale_categories.id 
-                    FROM {$wpdb->prefix}clickwhale_categories, {$wpdb->prefix}terms, {$wpdb->prefix}term_relationships 
-                    WHERE {$wpdb->prefix}terms.term_id={$wpdb->prefix}term_relationships.term_taxonomy_id 
-                    AND {$wpdb->prefix}term_relationships.object_id=%d 
-                    AND {$wpdb->prefix}terms.slug={$wpdb->prefix}clickwhale_categories.slug", $id ), ARRAY_A );
+    public function get_custom_term_taxonomy_ids( string $taxonomy ): array {
+        global $wpdb;
 
-	}
+        return (array) $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT {$wpdb->prefix}terms.term_id, {$wpdb->prefix}terms.name, {$wpdb->prefix}terms.slug
+                FROM {$wpdb->prefix}term_taxonomy, {$wpdb->prefix}terms
+                WHERE {$wpdb->prefix}terms.term_id={$wpdb->prefix}term_taxonomy.term_taxonomy_id
+                AND {$wpdb->prefix}term_taxonomy.taxonomy=%s",
+                sanitize_text_field( $taxonomy )
+            )
+        );
+    }
 
-	public function get_custom_term_taxonomy_ids( $taxonomy ) {
-		global $wpdb;
-
-		return $wpdb->get_results( $wpdb->prepare( "SELECT {$wpdb->prefix}terms.term_id, {$wpdb->prefix}terms.name, {$wpdb->prefix}terms.slug
-            FROM {$wpdb->prefix}term_taxonomy, {$wpdb->prefix}terms
-            WHERE {$wpdb->prefix}terms.term_id={$wpdb->prefix}term_taxonomy.term_taxonomy_id  
-            AND {$wpdb->prefix}term_taxonomy.taxonomy=%s", $taxonomy ) );
-	}
-
-	public function get_categories_string( $categories ) {
-		$category_id = [];
+	public function get_categories_string( array $categories ): string {
+		$category_id = array();
 
 		foreach ( $categories as $id ) {
 			$category_id[] = $id['id'];
@@ -130,13 +144,13 @@ abstract class Clickwhale_Migration_Abstract {
 		return implode( ',', $category_id );
 	}
 
-	public function prepare_categories_data( $data ) {
-		$message = [];
+	public function prepare_categories_data( array $data ): array {
+		$message = array();
 		foreach ( $data as $item ) {
-			if ( count( $this->if_category_exists( $item->slug ) ) === 0 ) {
+			if ( ! $this->if_category_exists( $item->slug ) ) {
 				$array = array(
 					'title' => $item->name,
-					'slug'  => $item->slug,
+					'slug'  => $item->slug
 				);
 
 				$this->run_categories_migration( $array );
@@ -150,15 +164,15 @@ abstract class Clickwhale_Migration_Abstract {
 		return $message;
 	}
 
-	public function category_item_import_success( $item ) {
+	public function category_item_import_success( $item ): string {
 		return sprintf( __( 'Category "%1$s" imported successfully.', CLICKWHALE_NAME ), $item );
 	}
 
-	public function category_item_import_error( $item ) {
+	public function category_item_import_error( $item ): string {
 		return sprintf( __( '<strong>Import failed!</strong> Category "%1$s" already exists', CLICKWHALE_NAME ), $item );
 	}
 
-	public function run_links_migration( $data ) {
+	public function run_links_migration( $data ): int {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'clickwhale_links';
@@ -167,7 +181,7 @@ abstract class Clickwhale_Migration_Abstract {
 		return $wpdb->insert_id;
 	}
 
-	public function run_categories_migration( $data ) {
+	public function run_categories_migration( $data ): int {
 		global $wpdb;
 
 		$table = $wpdb->prefix . 'clickwhale_categories';

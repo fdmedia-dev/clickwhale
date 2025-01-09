@@ -17,6 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Device {
 
+    /**
+     * @var
+     */
+    public $device;
+
 	public function __construct( $ua ) {
 		$this->load_dependencies();
 		$this->get_device_type( $ua );
@@ -53,7 +58,7 @@ class Clickwhale_Device {
 			$this->device = new Clickwhale_Mobile( $ua );
 		}
 		if ( preg_match( '/(CASIO|Palm|Psion|pdQ|COM|airboard|sharp|pda|POCKET-E|OASYS|NTT\/PI)/ui', $ua ) ) {
-			$this->device = new Clickwhale_Pda( $ua );
+			$this->device = new Clickwhale_Pda();
 		}
 		if ( preg_match( '/WeTab-Browser /ui', $ua ) ) {
 			$this->device = new Clickwhale_Tablet( $ua );

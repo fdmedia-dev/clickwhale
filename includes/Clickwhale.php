@@ -56,7 +56,7 @@ final class Clickwhale {
      *
 	 * @since 1.5.0
 	 */
-	private static $instance;
+	private static Clickwhale $instance;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,72 +66,72 @@ final class Clickwhale {
 	 * @access   protected
 	 * @var      Clickwhale_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
-	protected $loader;
+	protected Clickwhale_Loader $loader;
 
     /**
      * @var Clickwhale_i18n
      */
-	private $locale;
+	private Clickwhale_i18n $locale;
 
     /**
      * @var Clickwhale_WP_User
      */
-    public $user;
+    public Clickwhale_WP_User $user;
 
     /**
      * @var Clickwhale_Admin
      */
-	public $admin;
+	public Clickwhale_Admin $admin;
 
     /**
      * @var Clickwhale_Settings
      */
-    public $settings;
+    public Clickwhale_Settings $settings;
 
     /**
      * @var Clickwhale_Tools
      */
-    public $tools;
+    public Clickwhale_Tools $tools;
 
     /**
      * @var Clickwhale_Reset
      */
-    public $reset;
+    public Clickwhale_Reset $reset;
 
     /**
      * @var Clickwhale_Ajax
      */
-    public $ajax;
+    public Clickwhale_Ajax $ajax;
 
     /**
      * @var Clickwhale_Link_Edit
      */
-    public $link;
+    public Clickwhale_Link_Edit $link;
 
     /**
      * @var Clickwhale_Category_Edit
      */
-	public $category;
+	public Clickwhale_Category_Edit $category;
 
     /**
      * @var Clickwhale_Linkpage_Edit
      */
-	public $linkpage;
+	public Clickwhale_Linkpage_Edit $linkpage;
 
     /**
      * @var Clickwhale_Tracking_Code_Edit
      */
-	public $tracking_code;
+	public Clickwhale_Tracking_Code_Edit $tracking_code;
 
     /**
      * @var Clickwhale_Public
      */
-    public $public;
+    public Clickwhale_Public $public;
 
     /**
      * @var Clickwhale_Public_Ajax
      */
-	public $public_ajax;
+	public Clickwhale_Public_Ajax $public_ajax;
 
 	/**
 	 * Gets an instance of our plugin.

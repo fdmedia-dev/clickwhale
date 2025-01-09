@@ -13,7 +13,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     /**
      * @var string
      */
-    private $links_table;
+    private string $links_table;
 
     public function __construct() {
 		parent::__construct( 'links', 'link' );
@@ -47,7 +47,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         $tabs = array(
             'general' => array(
                 'name' => __( 'General', CLICKWHALE_NAME ),
-                'url'  => 'general',
+                'url'  => 'general'
             )
         );
 
@@ -58,56 +58,62 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         global $wpdb;
 
         $item = array_intersect_key( $_POST, $this->get_defaults() );
+        $item['categories'] = isset( $item['categories'] ) ? sanitize_text_field( implode( ',', $item['categories'] ) ) : '';
+        $item['nofollow']   = isset( $item['nofollow'] );
+        $item['sponsored']  = isset( $item['sponsored'] );
+        $item['author']     = get_current_user_id();
+        $id = intval( $item['id'] );
 
-		$item['categories'] = isset( $item['categories'] ) ? implode( ',', $item['categories'] ) : '';
-		$item['nofollow']   = isset( $item['nofollow'] );
-		$item['sponsored']  = isset( $item['sponsored'] );
-		$item['author']     = get_current_user_id();
-
-		// Check if item exists and then update or insert.
-		// In some cases default check (not false or 0) goes wrong
-		if ( Links_Helper::get_by_id( intval( $item['id'] ) ) ) {
-			$wpdb->update(
+        // Check if item exists and then update or insert.
+        // In some cases default check (not false or 0) goes wrong
+        if ( Links_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
                 $this->links_table,
-				$item,
-				array( 'id' => $item['id'] )
-			);
+                $item,
+                array( 'id' => $id )
+            );
+            do_action( 'clickwhale_link_updated', $id, $_POST );
+            $this->set_transient( $id, 'updated' );
 
-            do_action( 'clickwhale_link_updated', $item['id'], $_POST );
-			$this->set_transient( $item['id'], 'updated' );
-
-		} else {
+        } else {
             $wpdb->insert(
                 $this->links_table,
                 $item
             );
-
-            $item['id'] = $wpdb->insert_id;
-            do_action( 'clickwhale_link_inserted', $item['id'], $_POST );
-            $this->set_transient( $item['id'], 'added' );
+            $id = $wpdb->insert_id;
+            do_action( 'clickwhale_link_inserted', $id, $_POST );
+            $this->set_transient( $id, 'added' );
         }
 
-        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link' . '&id=' . $item['id'];
-        wp_redirect( admin_url( $url ) );
-	}
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
+    }
 
-	public function admin_scripts(): void {
-		$nonce = wp_create_nonce( 'slug_exists' );
+    public function admin_scripts(): void {
+        $nonce = wp_create_nonce( 'slug_exists' );
 
         if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) { ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
 
                     <?php if ( isset( $_GET['id'] ) ) { ?>
-                        const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                        const page_id = '<?php echo intval( $_GET['id'] ); ?>';
 
-                        if (localStorage.getItem('tab-' + page_id)) {
-                            jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                        if ('0' === page_id) {
+                            // Backward compatibility
+                            if (localStorage.getItem('tab-0')) {
+                                localStorage.removeItem('tab-0');
+                                jQuery('#clickwhale-tabs').tabs({active: 0});
+                            }
+                        } else {
+                            if (localStorage.getItem('tab-' + page_id)) {
+                                jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                            }
+                            jQuery('#clickwhale-tabs li').on('click', function() {
+                                localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                            });
                         }
-
-                        jQuery('#clickwhale-tabs li').on('click', function() {
-                            localStorage.setItem('tab-' + page_id, jQuery(this).index());
-                        });
                     <?php } ?>
                 });
             </script>
@@ -123,12 +129,11 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     url = jQuery('#url');
 
                 /* Slug */
-				<?php
-				/**
-				 * If checked "Disable random slug" option
-				 * use title as slug
-				 */
-				if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
+                <?php
+                /**
+                 * If "Disable random slug" option is checked: use title as slug
+                 */
+                if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
                     $slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
                         ? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
                         : '';
@@ -145,7 +150,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             slug.val(slugOptionsGeneral + title.val()).trigger("blur");
                         }
                     });
-				<?php } ?>
+                <?php } ?>
 
                 /**
                  * Submit action
@@ -161,7 +166,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         title.addClass('error')
-                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ); ?>');
                         return false;
                     } else {
                         title.removeClass('error').next().text('');
@@ -171,7 +176,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ); ?>');
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -181,7 +186,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ); ?>');
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -191,7 +196,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         url.addClass('error')
-                            .next().text('<?php _e( 'Please enter URL', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php _e( 'Please enter URL', CLICKWHALE_NAME ); ?>');
                         return false;
                     } else {
                         url.removeClass('error').next().text('');
@@ -216,7 +221,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'link',
                             'slug': slug.val(),
-                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
                         }, success: function(response) {
                             result = response.data;
                         }
@@ -233,6 +238,6 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                 }
             });
         </script>
-		<?php
+        <?php
     }
 }

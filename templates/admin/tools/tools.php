@@ -38,19 +38,19 @@ do_action( 'clickwhale_admin_banner' );
 		foreach ( $migration->available_migrations() as $item ) {
 			if ( $migration->check_active( $item['path'] ) ) {
 				$show_settings = true;
+                $slug = esc_attr( $item['slug'] );
 				?>
 
-                <div class="clickwhale-migration-section clickwhale-migration-section-<?php echo $item['slug'] ?>">
+                <div class="clickwhale-migration-section clickwhale-migration-section-<?php echo $slug; ?>">
 					<?php
-					settings_fields( 'clickwhale_tools_' . $item['slug'] . '_migration_options' );
-					do_settings_sections( 'clickwhale_tools_' . $item['slug'] . '_migration_options' );
+					settings_fields( 'clickwhale_tools_' . $slug . '_migration_options' );
+					do_settings_sections( 'clickwhale_tools_' . $slug . '_migration_options' );
 					?>
                     <div id="clickwhale-tools-migration-submit">
                         <button type="button"
                                 class="button button_start_migrate"
-                                data-migration="<?php echo esc_attr( $item['slug'] ) ?>">
-							<?php _e( 'Start migration', CLICKWHALE_NAME ) ?>
-                        </button>
+                                data-migration="<?php echo $slug; ?>"
+                        ><?php _e( 'Start migration', CLICKWHALE_NAME ); ?></button>
                         <span class="spinner"></span>
                     </div>
                     <div class="results"></div>
@@ -82,7 +82,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-settings" class="button button-primary"
-                        type="button"><?php _e( 'Restore default settings', CLICKWHALE_NAME ) ?></button>
+                        type="button"><?php _e( 'Restore default settings', CLICKWHALE_NAME ); ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -93,7 +93,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-db" class="button button-primary"
-                        type="button"><?php _e( 'Delete all plugin data now', CLICKWHALE_NAME ) ?></button>
+                        type="button"><?php _e( 'Delete all plugin data now', CLICKWHALE_NAME ); ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -104,7 +104,7 @@ do_action( 'clickwhale_admin_banner' );
 			?>
             <p class="submit">
                 <button id="button-reset-stats" class="button button-primary"
-                        type="button"><?php _e( 'Reset all tracking data now', CLICKWHALE_NAME ) ?></button>
+                        type="button"><?php _e( 'Reset all tracking data now', CLICKWHALE_NAME ); ?></button>
                 <span class="spinner"></span>
                 <span class="results"></span>
             </p>
@@ -121,16 +121,16 @@ do_action( 'clickwhale_admin_banner' );
                 <div class="import-progress--bar"></div>
                 <div class="import-progress--placeholder"></div>
                 <div id="point-01" class="import-progress--point active">
-                    01. <?php _e( 'Upload CSV file', CLICKWHALE_NAME ) ?>
+                    01. <?php _e( 'Upload CSV file', CLICKWHALE_NAME ); ?>
                 </div>
                 <div id="point-02" class="import-progress--point">
-                    02. <?php _e( 'Column mapping', CLICKWHALE_NAME ) ?>
+                    02. <?php _e( 'Column mapping', CLICKWHALE_NAME ); ?>
                 </div>
                 <div id="point-03" class="import-progress--point">
-                    03. <?php _e( 'Edit fields', CLICKWHALE_NAME ) ?>
+                    03. <?php _e( 'Edit fields', CLICKWHALE_NAME ); ?>
                 </div>
                 <div id="point-04" class="import-progress--point">
-                    04. <?php _e( 'Import', CLICKWHALE_NAME ) ?>
+                    04. <?php _e( 'Import', CLICKWHALE_NAME ); ?>
                 </div>
             </div>
 
@@ -145,16 +145,18 @@ do_action( 'clickwhale_admin_banner' );
 
             <div id="mapping_table">
                 <p class="submit">
-                    <button id="mapping_button" class="button button-primary" type="button">
-						<?php _e( 'Continue', CLICKWHALE_NAME ); ?>
-                    </button>
+                    <button id="mapping_button"
+                            class="button button-primary"
+                            type="button"
+                    ><?php _e( 'Continue', CLICKWHALE_NAME ); ?></button>
                 </p>
             </div>
             <div id="import_table">
                 <p class="submit">
-                    <button id="import_button" class="button button-primary" type="button">
-						<?php _e( 'Run Importer', CLICKWHALE_NAME ); ?>
-                    </button>
+                    <button id="import_button"
+                            class="button button-primary"
+                            type="button"
+                    ><?php _e( 'Run Importer', CLICKWHALE_NAME ); ?></button>
                     <span class="spinner" style="float: none;"></span>
                 </p>
             </div>
@@ -163,11 +165,9 @@ do_action( 'clickwhale_admin_banner' );
                    style="display: none;"
                    rel="noopener"
                    target="_blank"
-                   href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ) ?>">
-					<?php _e( 'Go to links', CLICKWHALE_NAME ) ?>
-                </a>
+                   href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ); ?>"
+                ><?php _e( 'Go to links', CLICKWHALE_NAME ); ?></a>
             </div>
-
         </div>
 		<?php
 	}
@@ -175,7 +175,6 @@ do_action( 'clickwhale_admin_banner' );
 	if ( $active_tab == 'export' ) {
 		?>
         <div id="clickwhale_tools_export">
-
             <form method="post" id="export_form" enctype="multipart/form-data">
 				<?php
 				settings_fields( 'clickwhale_tools_export_settings' );

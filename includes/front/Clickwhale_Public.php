@@ -28,24 +28,24 @@ final class Clickwhale_Public {
      * @since    1.0.0
      * @var Clickwhale_Public
      */
-    private static $instance;
+    private static Clickwhale_Public $instance;
 
     /**
      * @var string
      */
-	private $path;
+	private string $path;
 
 	/**
 	 * @var Clickwhale_Public_Linkpages
 	 * @since    1.0.0
 	 */
-	public $linkpages;
+	public Clickwhale_Public_Linkpages $linkpages;
 
 	/**
 	 * @var Clickwhale_Public_Tracking_Codes
 	 * @since    1.0.0
 	 */
-	public $tracking_codes;
+	public Clickwhale_Public_Tracking_Codes $tracking_codes;
 
 	/**
 	 * @return Clickwhale_Public
@@ -110,7 +110,6 @@ final class Clickwhale_Public {
 				CLICKWHALE_VERSION
 			);
 		}
-
 	}
 
 	/**
@@ -153,14 +152,14 @@ final class Clickwhale_Public {
 	 */
 	public function do_redirect_handler() {
         if ( ! is_admin() && $this->path ) {
-            $results = Links_Helper::get_by_slug( $this->path, 'OBJECT' );
+            $results = Links_Helper::get_by_slug( $this->path );
         }
 
         if ( empty( $results ) ) {
             return;
         }
 
-        $id = intval( $results->id );
+        $id = (int) $results['id'];
 
         // Track click on link
         new Clickwhale_Click_Track( $id );
@@ -170,28 +169,28 @@ final class Clickwhale_Public {
         $sponsored = '';
         $sep       = '';
 
-        if ( $results->nofollow ) {
+        if ( $results['nofollow'] ) {
             $nofollow = 'noindex, nofollow';
         }
 
-        if ( $results->sponsored ) {
+        if ( $results['sponsored'] ) {
             $sponsored = 'sponsored';
         }
 
-        if ( $results->nofollow && $results->sponsored ) {
+        if ( $results['nofollow'] && $results['sponsored'] ) {
             $sep = ', ';
         }
 
-        if ( $results->nofollow || $results->sponsored ) {
+        if ( $results['nofollow'] || $results['sponsored'] ) {
             header( 'X-Robots-Tag: ' . $nofollow . $sep . $sponsored );
         }
 
-		$link_url = apply_filters( 'clickwhale_url_params', $results->url, $id );
-		wp_redirect( $link_url, $results->redirection );
+		$link_url = apply_filters( 'clickwhale_url_params', $results['url'], $id );
+		wp_redirect( $link_url, $results['redirection'] );
         exit;
 	}
 
-	public function add_target_to_clickwhale_link( $content ) {
+	public function add_target_to_clickwhale_link( string $content ): string {
 
 		return preg_replace_callback( '/<a(.*?)?href=[\'"]?[\'"]?(.*?)?>/i', function ( $m ) {
 			$link = null;

@@ -12,17 +12,20 @@ class Clickwhale_Reset {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
+	 * @var      string The ID of this plugin.
 	 */
-	private $plugin_name;
+	private string $plugin_name = '';
 
     /**
      * @var Clickwhale_Reset
      */
-	private static $instance;
+	private static Clickwhale_Reset $instance;
 
+    /**
+     * @return Clickwhale_Reset
+     */
 	public static function get_instance(): Clickwhale_Reset {
-		if ( is_null( self::$instance ) ) {
+		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
 		}
 

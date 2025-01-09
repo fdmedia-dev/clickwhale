@@ -7,6 +7,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Media {
 
+    /**
+     * @var string
+     */
+    public string $type;
+
+    /**
+     * @var array
+     */
+    public array $data;
+
 	public function __construct( $ua ) {
 		$this->detectArchos( $ua );
 		$this->detectZune( $ua );
@@ -46,14 +56,14 @@ class Clickwhale_Media {
 
 			switch ( $match[1] ) {
 				case '3GP':
-					$this->data->model = '5 3G+';
+					$this->data['model'] = '5 3G+';
 					break;
 				case 'S':
 				case 'H':
-					$this->data->model = '5';
+					$this->data['model'] = '5';
 					break;
 				case 'L':
-					$this->data->model = '7';
+					$this->data['model'] = '7';
 					break;
 			}
 		}

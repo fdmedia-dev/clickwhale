@@ -10,17 +10,17 @@ class Categories_Helper extends Helper_Abstract {
     /**
      * @var string
      */
-	protected static $single = 'category';
+	protected static string $single = 'category';
 
     /**
      * @var string
      */
-	protected static $plural = 'categories';
+	protected static string $plural = 'categories';
 
     /**
      * @var int
      */
-	protected static $limit = 10;
+	protected static int $limit = 10;
 
 	/**
 	 * Return limitation notice string

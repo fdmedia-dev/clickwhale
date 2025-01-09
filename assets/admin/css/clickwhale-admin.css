@@ -259,7 +259,7 @@ ion-icon {
 	border-color: #1a1c1d;
 }
 
-.clickwhale-banner--link-review--raiting {
+.clickwhale-banner--link-review--rating {
 	display: inline-flex;
 	justify-content: flex-end;
 	align-items: baseline;
@@ -1914,7 +1914,7 @@ table.tracking-codes .column-is_active {
 		width: 100%;
 	}
 
-	.clickwhale-banner--link-review--raiting {
+	.clickwhale-banner--link-review--rating {
 		display: flex;
 		align-items: center;
 		justify-content: center;

@@ -134,7 +134,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 	 * @return array
 	 * @since 1.3.2
 	 */
-	public static function get_nav_menus() {
+	public static function get_nav_menus(): array {
 		$menus      = wp_get_nav_menus();
 		$result     = array();
 		$result[''] = __( 'No Menu', CLICKWHALE_NAME );
@@ -145,57 +145,64 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 		return $result;
 	}
 
-	public function get_link_meta( $id, $key ) {
-		global $wpdb;
-		$table_links_meta = $wpdb->prefix . 'clickwhale_meta';
+    public function get_link_meta( $id, $key ): array {
+        global $wpdb;
+        $table_links_meta = $wpdb->prefix . 'clickwhale_meta';
 
-		return $wpdb->get_row( "SELECT * FROM $table_links_meta WHERE linkpage_id='$id' AND meta_key='$key'", ARRAY_A );
-	}
+        return (array) $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM $table_links_meta
+                WHERE linkpage_id=%d
+                AND meta_key=%s",
+                intval( $id ),
+                sanitize_text_field( $key )
+            ),
+            ARRAY_A
+        );
+    }
 
-	private function save_linkpage_meta( $id, $key, $value, $action ) {
-		global $wpdb;
-		$links_meta_table = $wpdb->prefix . 'clickwhale_meta';
+    private function save_linkpage_meta( $id, $key, $value, $action ) {
+        global $wpdb;
+        $links_meta_table = $wpdb->prefix . 'clickwhale_meta';
 
-		switch ( $action ) {
-			case 'insert':
-				$result = $wpdb->insert(
-					$links_meta_table,
-					array(
-						'meta_key'    => $key,
-						'meta_value'  => $value,
-						'linkpage_id' => $id
-					)
-				);
-				break;
+        switch ( $action ) {
+            case 'insert':
+                $wpdb->insert(
+                    $links_meta_table,
+                    array(
+                        'meta_key'    => sanitize_text_field( $key ),
+                        'meta_value'  => sanitize_text_field( $value ),
+                        'linkpage_id' => intval( $id )
+                    )
+                );
+                break;
 
-			case 'update':
-				$result = $wpdb->update(
-					$links_meta_table,
-					array(
-						'meta_value' => $value
-					),
-					array(
-						'linkpage_id' => $id,
-						'meta_key'    => $key,
-					)
-				);
-				break;
-		}
+            case 'update':
+                $wpdb->update(
+                    $links_meta_table,
+                    array(
+                        'meta_value' => sanitize_text_field( $value )
+                    ),
+                    array(
+                        'linkpage_id' => intval( $id ),
+                        'meta_key'    => sanitize_text_field( $key ),
+                    )
+                );
+                break;
+        }
+    }
 
-		return $result;
-	}
+    public function save_update() {
+        global $wpdb;
 
-	public function save_update() {
-		global $wpdb;
+        $table = Helper::get_db_table_name( $this->instance_plural );
+        $item  = array_intersect_key(
+            $_POST,
+            apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
+        );
 
-		$table = Helper::get_db_table_name( $this->instance_plural );
-		$item  = array_intersect_key(
-			$_POST,
-			apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
-		);
-
-		$item['slug']  = sanitize_title( $item['slug'] );
-		$item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+        $item['slug']  = sanitize_title( $item['slug'] );
+        $item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
 
         if ( isset( $item['styles'] ) ) {
             $item['styles'] = maybe_serialize( $item['styles'] );
@@ -203,52 +210,51 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
             $item['styles'] = '';
         }
 
-		$item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
-		$item['author'] = get_current_user_id();
+        $item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
+        $item['author'] = get_current_user_id();
 
-		// Data fot meta table
-		$legals_menu_id = $item['meta__legals_menu_id'];
-		unset( $item['meta__legals_menu_id'] );
+        // Data fot meta table
+        $legals_menu_id = $item['meta__legals_menu_id'];
+        unset( $item['meta__legals_menu_id'] );
 
-		$item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
+        $item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
+        $id = intval( $item['id'] );
 
-		// Check if linkpage exists and then update or insert
-		// in some cases default check (not false and < 0) goes wrong
-		$linkpage = Linkpages_Helper::get_by_id( intval( $item['id'] ) );
+        // Check if linkpage exists and then update or insert
+        // in some cases default check (not false and < 0) goes wrong
+        if ( Linkpages_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                $table,
+                $item,
+                array( 'id' => $id )
+            );
+            $this->set_transient( $id, 'updated' );
 
-		if ( $linkpage ) {
-			$wpdb->update(
-				$table,
-				$item,
-				array( 'id' => $item['id'] )
-			);
-			$this->set_transient( $item['id'], 'updated' );
+        } else {
+            $wpdb->insert(
+                $table,
+                $item
+            );
+            $id = $wpdb->insert_id;
+            $this->set_transient( $id, 'added' );
+        }
 
-		} else {
-			$wpdb->insert(
-				$table,
-				$item
-			);
-			$item['id'] = $wpdb->insert_id;
-			$this->set_transient( $item['id'], 'added' );
-		}
+        if ( $this->get_link_meta( $id, 'legals_menu_id' ) ) {
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'update' );
+        } else {
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'insert' );
+        }
 
-		if ( $this->get_link_meta( $item['id'], 'legals_menu_id' ) ) {
-			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'update' );
-		} else {
-			$this->save_linkpage_meta( $item['id'], 'legals_menu_id', $legals_menu_id, 'insert' );
-		}
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
+    }
 
-		// Redirect to new record
-		$url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-' . $this->instance_single . '&id=' . $item['id'];
-		wp_redirect( admin_url( $url ) );
-	}
+    public function admin_scripts(): void {
+        $nonce = wp_create_nonce( 'slug_exists' );
+        $nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-	public function admin_scripts(): void {
-		$nonce = wp_create_nonce( 'slug_exists' );
-		$nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
-
-		if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) { ?>
+        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) { ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
                     jQuery('#clickwhale-tabs').tabs({
@@ -267,8 +273,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         }
                     });
 
-					<?php if (isset( $_GET['id'] )) { ?>
-                        const page_id = '<?php echo sanitize_text_field( intval( $_GET['id'] ) ); ?>';
+                    <?php if ( isset( $_GET['id'] ) ) { ?>
+                        const page_id = '<?php echo intval( $_GET['id'] ); ?>';
                         if (localStorage.getItem('tab-' + page_id)) {
                             jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
                         }
@@ -283,10 +289,10 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 jQuery('#poststuff > #post-body.metabox-holder').addClass('columns-2');
                             }
                         });
-					<?php } ?>
+                    <?php } ?>
                 });
             </script>
-		<?php } ?>
+        <?php } ?>
 
         <script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
@@ -298,7 +304,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     defaults = <?php echo json_encode( $this->get_defaults() ); ?>,
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
-                    limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit() ?>'),
+                    limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit(); ?>'),
                     linksType = jQuery('#add-links-type'),
                     tinymceOptions = {
                         wpautop: true,
@@ -860,7 +866,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'linkpage',
                             'slug': slug.val(),
-                            'id': <?php echo esc_attr( intval( $_GET['id'] ?? 0 ) ); ?>
+                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
                         }, success: function(response) {
                             result = response.data;
                         }

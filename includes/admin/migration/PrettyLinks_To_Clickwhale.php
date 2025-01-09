@@ -9,30 +9,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
-	public function process_links_data() {
+	public function process_links_data(): array {
 		global $wpdb;
 
-		$message = [];
-		$data    = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links" );
+		$message = array();
+		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links" );
+        if ( ! $data ) {
+            return array(
+                'links' => array()
+            );
+        }
 
 		foreach ( $data as $item ) {
+			if ( ! $this->if_link_exists( $item->slug ) ) {
+                $cpt_cats = $this->get_custom_post_type_categories( $item->link_cpt_id );
+                if ( ! $cpt_cats ) {
+                    $cpt_cats = array();
+                }
 
-			if ( count( $this->if_link_exists( $item->slug ) ) === 0 ) {
-
-				$category_id = $this->get_categories_string( $this->get_custom_post_type_categories( $item->link_cpt_id ) );
+                $category_id = $this->get_categories_string( $cpt_cats );
 				$link_data   = $this->link_url_parse( $item->url );
 				$array       = array(
 					'title'       => $item->name,
 					'url'         => $link_data['url'],
 					'slug'        => $item->slug,
 					'redirection' => $item->redirect_type,
-					'description' => isset( $item->description ) ? $item->description : '',
+					'description' => $item->description ?? '',
 					'nofollow'    => $item->nofollow,
 					'sponsored'   => $item->sponsored,
-					'categories'  => ! is_null( $category_id ) ? $category_id : '',
+					'categories'  => sanitize_text_field( $category_id ),
 					'author'      => $this->process_author(),
 					'created_at'  => $item->created_at,
-					'updated_at'  => $item->updated_at,
+					'updated_at'  => $item->updated_at
 				);
 
 				$insert_id = $this->run_links_migration( $array );
@@ -46,16 +54,17 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 			}
 		}
 
-		return [
-			'links' => $message,
-		];
-
+		return array(
+			'links' => $message
+		);
 	}
 
-	public function process_categories_data() {
-		return [
-			'categories' => $this->prepare_categories_data( $this->get_custom_term_taxonomy_ids( 'pretty-link-category' ) ),
-		];
+	public function process_categories_data(): array {
+        $taxonomy_ids = $this->get_custom_term_taxonomy_ids( 'pretty-link-category' );
+
+		return array(
+			'categories' => $this->prepare_categories_data( $taxonomy_ids )
+		);
 	}
 
 	public function process_migration_time() {
