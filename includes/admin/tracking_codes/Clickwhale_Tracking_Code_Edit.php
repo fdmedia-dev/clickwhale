@@ -70,7 +70,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                    type="radio"
                                    name="position[conversion]"
                                    value="standard"
-                                <?php checked( $item['position']['conversion'] ?? 'standard', 'standard' ); ?>
+                                <?php checked( $conversion_val ?? 'standard', 'standard' ); ?>
                             >
                             <label for="conversionStandard">
                                 <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"

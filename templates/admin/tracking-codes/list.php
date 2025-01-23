@@ -43,7 +43,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php esc_attr_e( $_REQUEST['page'] ); ?>" />
+        <input type="hidden" name="page" value="<?php echo esc_attr( $_GET['page'] ); ?>" />
 		<?php $table->display(); ?>
     </form>
 

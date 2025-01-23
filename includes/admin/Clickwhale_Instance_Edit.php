@@ -168,8 +168,7 @@ abstract class Clickwhale_Instance_Edit {
 	 * @since 1.6.0
 	 */
 	public function set_edit_page_title( string $admin_title, string $title ): string {
-
-        $item = $this->get_item( $_REQUEST );
+        $item = $this->get_item( $_GET );
 
 		return 'Edit &#8220;' . esc_attr( wp_unslash( $item['title'] ) ) . '&#8221; ' . str_replace( '_', ' ', $this->instance_single ) . ' ' . $admin_title;
 	}

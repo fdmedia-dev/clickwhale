@@ -71,7 +71,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      */
     public function column_title( $item ): string {
         $id = intval( $item['id'] );
-        // Links going to `/admin.php?page=[your_plugin_page][&other_params]`notice how we used `$_REQUEST['page']`,
+        // Links going to `/admin.php?page=[your_plugin_page][&other_params]` notice how we used `$_GET['page']`,
         // so action will be done on curren page.
         // Also notice how we use `$this->_args['singular']` so in this example it will be something `like &link=2`
         $title = sprintf(
@@ -87,7 +87,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             ),
             'delete' => sprintf(
                 '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_REQUEST['page'] ),
+                sanitize_text_field( $_GET['page'] ),
                 $id,
                 __( 'Delete', CLICKWHALE_NAME )
             )
@@ -205,12 +205,12 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( empty( $_REQUEST['id'] ) ) {
+        if ( empty( $_GET['id'] ) ) {
             return;
         }
 
-        if ( is_array( $_REQUEST['id'] ) ) {
-            foreach ( $_REQUEST['id'] as $id ) {
+        if ( is_array( $_GET['id'] ) ) {
+            foreach ( $_GET['id'] as $id ) {
                 $id = intval( $id );
                 $wpdb->query(
                     $wpdb->prepare(
@@ -222,7 +222,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 $this->update_link_categories( $id );
             }
         } else {
-            $id = intval( $_REQUEST['id'] );
+            $id = intval( $_GET['id'] );
             $wpdb->query(
                 $wpdb->prepare(
                     "DELETE FROM $categories_table WHERE id = %d",
@@ -297,12 +297,12 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : 'asc';
-        $orderby_arg = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'title';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
+        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'title';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];
-        $paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+        $paged = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
 
         // Will be used in pagination settings
         if ( isset( $_GET['page'] ) && ! empty( $_GET['s'] ) ) {

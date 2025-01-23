@@ -163,11 +163,11 @@ final class Clickwhale_Admin {
                 continue;
             }
 
-            if ( empty( $_REQUEST['page'] ) ) {
+            if ( empty( $_GET['page'] ) ) {
                 continue;
             }
 
-            $page = sanitize_text_field( $_REQUEST['page'] );
+            $page = sanitize_text_field( $_GET['page'] );
 
             if ( ! strpos( $page, $k ) ) {
                 continue;
@@ -182,7 +182,7 @@ final class Clickwhale_Admin {
             $instance_slug = substr( $page, $pos + strlen( '-edit-' ) );
             $parent = $this->menus['subpages']['edit-' . $instance_slug];
 
-            if ( ! empty( $_REQUEST['id'] ) ) {
+            if ( ! empty( $_GET['id'] ) ) {
                 $parent = 'Edit' . str_replace( 'Add New', '', $parent );
             }
 

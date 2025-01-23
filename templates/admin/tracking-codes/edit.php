@@ -7,7 +7,7 @@ Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
 
 $tracking_code = clickwhale()->tracking_code;
 
-$item = $tracking_code->get_item( $_REQUEST );
+$item = $tracking_code->get_item( $_GET );
 $item_id = intval( $item['id'] );
 $linkpages = $tracking_code->get_linkpages();
 $post_types = Tracking_Codes_Helper::get_default_post_types();
@@ -68,7 +68,7 @@ do_action( 'clickwhale_admin_banner' );
 						'control'     => 'textarea',
 						'id'          => 'code',
 						'name'        => 'code',
-						'value'       => wp_unslash( $item['code'] ),
+						'value'       => esc_textarea( wp_unslash( $item['code'] ) ),
 						'description' => __( 'Paste your code here.', CLICKWHALE_NAME )
 					),
 					true

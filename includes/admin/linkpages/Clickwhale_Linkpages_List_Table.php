@@ -57,7 +57,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             ),
             'delete' => sprintf(
                 '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_REQUEST['page'] ),
+                sanitize_text_field( $_GET['page'] ),
                 $id,
                 __( 'Delete', CLICKWHALE_NAME )
             ),
@@ -190,12 +190,12 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( ! isset( $_REQUEST['id'] ) ) {
+        if ( ! isset( $_GET['id'] ) ) {
             return;
         }
 
-        if ( is_array( $_REQUEST['id'] ) ) {
-            foreach ( $_REQUEST['id'] as $id ) {
+        if ( is_array( $_GET['id'] ) ) {
+            foreach ( $_GET['id'] as $id ) {
                 $id = intval( $id );
                 $wpdb->query(
                     $wpdb->prepare(
@@ -212,7 +212,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
                 );
             }
         } else {
-            $id = intval( $_REQUEST['id'] );
+            $id = intval( $_GET['id'] );
             $wpdb->query(
                 $wpdb->prepare(
                     "DELETE FROM $linkpages_table WHERE id = %d",
@@ -243,12 +243,12 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : '';
-        $orderby_arg = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : '';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : '';
+        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : '';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];
-        $paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+        $paged = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
 
         $where_clause = '';
         $prepare_args = array();

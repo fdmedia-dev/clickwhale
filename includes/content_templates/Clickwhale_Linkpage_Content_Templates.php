@@ -535,9 +535,9 @@ class Clickwhale_Linkpage_Content_Templates {
                 );
                 ?>
                 <hr>
-                <textarea id="cw_custom_content_<?php esc_attr_e( $data['id'] ); ?>"
-                          name="links[<?php esc_attr_e( $data['id'] ); ?>][content]"
-                ><?php esc_html_e( wp_unslash( $data['content'] ) ); ?></textarea>
+                <textarea id="cw_custom_content_<?php echo esc_attr( $data['id'] ); ?>"
+                          name="links[<?php echo esc_attr( $data['id'] ); ?>][content]"
+                ><?php echo esc_textarea( wp_unslash( $data['content'] ) ); ?></textarea>
             </div><!-- ./linkpage-row--bottom -->
         </div>
         <?php
@@ -639,9 +639,7 @@ class Clickwhale_Linkpage_Content_Templates {
         <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
              data-type="<?php echo esc_attr( $args['type'] ); ?>"
         >
-            <div class="linkpage-public-row--content">
-                <?php echo wpautop( wp_unslash( $args['data']['content'] ) ); ?>
-            </div>
+            <div class="linkpage-public-row--content"><?php echo nl2br( esc_textarea( wp_unslash( $args['data']['content'] ) ) ); ?></div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -740,7 +738,7 @@ class Clickwhale_Linkpage_Content_Templates {
 				$alt = $image_alt ?: get_the_title( $image_id );
 				$src = wp_get_attachment_image_url( $image_id );
                 if ( $src ) {
-                    $image = '<img alt="' . $alt . '" src="' . esc_url( $src ) . '" />';
+                    $image = '<img alt="' . esc_attr( $alt ) . '" src="' . esc_url( $src ) . '" />';
                 }
 				break;
 		}

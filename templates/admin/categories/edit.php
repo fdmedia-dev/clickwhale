@@ -6,7 +6,7 @@ use clickwhale\includes\helpers\{Helper, Categories_Helper};
 Categories_Helper::get_limitation_error( $_GET['id'] );
 
 $category = clickwhale()->category;
-$item = $category->get_item( $_REQUEST );
+$item = $category->get_item( $_GET );
 $item_id = intval( $item['id'] );
 $count = Categories_Helper::get_count();
 $limit = Categories_Helper::get_limit();

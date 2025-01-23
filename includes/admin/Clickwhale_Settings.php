@@ -204,7 +204,7 @@ final class Clickwhale_Settings {
 				'id'          => 'slug',
 				'name'        => 'clickwhale_general_options[slug]',
 				'type'        => 'text',
-				'value'       => $general_options['slug'],
+				'value'       => esc_attr( $general_options['slug'] ),
 				'placeholder' => '',
 				'description' => __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.', CLICKWHALE_NAME ),
 			)

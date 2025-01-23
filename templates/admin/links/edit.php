@@ -9,7 +9,7 @@ use clickwhale\includes\helpers\{
 Links_Helper::get_limitation_error( $_GET['id'] );
 
 $link = clickwhale()->link;
-$item = $link->get_item( $_REQUEST );
+$item = $link->get_item( $_GET );
 $item_id = intval( $item['id'] );
 $item_categories = Categories_Helper::get_all();
 $tabs = $link->render_tabs();
@@ -238,7 +238,7 @@ do_action( 'clickwhale_admin_banner' );
             </div>
 
             <input type="hidden" id="created_at" name="created_at"
-                   value="<?php esc_attr_e( $item['created_at'] ); ?>" />
+                   value="<?php echo esc_attr( $item['created_at'] ); ?>" />
             <input type="hidden" id="updated_at" name="updated_at" value="" />
 
             <input type="submit"

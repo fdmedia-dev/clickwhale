@@ -144,7 +144,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_title( $item ): string {
-        // Links going to `/admin.php?page=[your_plugin_page][&other_params]` notice how we used `$_REQUEST['page']`,
+        // Links going to `/admin.php?page=[your_plugin_page][&other_params]` notice how we used `$_GET['page']`,
         // so action will be done on current page.
         // Also notice how we use `$this->_args['singular']` so in this example it will be something like `&link=2`
         $id = intval( $item['id'] );
@@ -161,13 +161,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             ),
             'reset'  => sprintf(
                 '<a href="?page=%s&action=reset&id=%d">%s</a>',
-                sanitize_text_field( $_REQUEST['page'] ),
+                sanitize_text_field( $_GET['page'] ),
                 $id,
                 __( 'Reset Clicks', CLICKWHALE_NAME )
             ),
             'delete' => sprintf(
                 '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_REQUEST['page'] ),
+                sanitize_text_field( $_GET['page'] ),
                 $id,
                 __( 'Delete', CLICKWHALE_NAME )
             )
@@ -350,14 +350,14 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         $action = $this->current_action();
 
-        if ( ! $action || ! isset( $_REQUEST['id'] ) ) {
+        if ( ! $action || ! isset( $_GET['id'] ) ) {
             return;
         }
 
-        if ( is_array( $_REQUEST['id'] ) ) {
-            $ids = $_REQUEST['id'];
+        if ( is_array( $_GET['id'] ) ) {
+            $ids = $_GET['id'];
         } else {
-            $ids[] = $_REQUEST['id'];
+            $ids[] = $_GET['id'];
         }
 
         switch ( $action ) {
@@ -484,8 +484,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : '';
-        $orderby_arg = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : '';
+        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];
@@ -534,8 +534,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             </thead>
             <tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
 			<?php
-                if ( ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'edit' ) && ! empty( $_REQUEST['id'] ) ) {
-                    $quick_edit = new Clickwhale_Links_Bulk_Edit( $_REQUEST['id'], $this->get_column_count() );
+                if ( ( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) && ! empty( $_GET['id'] ) ) {
+                    $quick_edit = new Clickwhale_Links_Bulk_Edit( $_GET['id'], $this->get_column_count() );
                     echo $quick_edit->render_quick_edit();
                 }
                 $this->display_rows_or_placeholder();

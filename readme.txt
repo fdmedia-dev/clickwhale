@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,10 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.3 (27th January 2025) =
+* Fix: Fixed vulnerabilities to enhance code security
+* Info: Updated Freemius SDK to v2.11.0
+
 = Version 2.4.2 (8th January 2025) =
 * Fix: Fixed vulnerabilities to enhance code security
 * Fix: Fixed PHP "Deprecated" warnings in PHP8.2+

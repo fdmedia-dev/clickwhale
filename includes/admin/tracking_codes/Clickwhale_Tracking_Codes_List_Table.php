@@ -53,7 +53,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
             ),
             'delete' => sprintf(
                 '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_REQUEST['page'] ),
+                sanitize_text_field( $_GET['page'] ),
                 $id,
                 __( 'Delete', CLICKWHALE_NAME )
             )
@@ -194,12 +194,12 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 
         $table = Helper::get_db_table_name( 'tracking_codes' );
 
-        if ( 'delete' !== $this->current_action() && ! isset( $_REQUEST['id'] ) ) {
+        if ( 'delete' !== $this->current_action() && ! isset( $_GET['id'] ) ) {
             return;
         }
 
-        if ( is_array( $_REQUEST['id'] ) ) {
-            foreach ( $_REQUEST['id'] as $id ) {
+        if ( is_array( $_GET['id'] ) ) {
+            foreach ( $_GET['id'] as $id ) {
                 $wpdb->query(
                     $wpdb->prepare(
                         "DELETE FROM $table WHERE id IN(%d)",
@@ -211,7 +211,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
             $wpdb->query(
                 $wpdb->prepare(
                     "DELETE FROM $table WHERE id IN(%d)",
-                    intval( $_REQUEST['id'] )
+                    intval( $_GET['id'] )
                 )
             );
         }
@@ -229,12 +229,12 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : 'desc';
-        $orderby_arg = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'id';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
+        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];
-        $paged = isset( $_REQUEST['paged'] ) ? ( $per_page * max( 0, intval( $_REQUEST['paged'] ) - 1 ) ) : 0;
+        $paged = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
 
         $where_clause = '';
         $prepare_args = array();
