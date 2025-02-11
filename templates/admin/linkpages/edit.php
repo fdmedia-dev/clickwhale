@@ -343,8 +343,6 @@ do_action( 'clickwhale_admin_banner' );
                     </table>
 
                     <hr>
-                    <?php do_action( 'clickwhale_linkpage_before_links_styles', $item ); ?>
-
                     <?php do_action( 'clickwhale_linkpage_after_general_styles_table', $item ); ?>
 
                     <h2><?php _e( 'Links', CLICKWHALE_NAME ); ?></h2>

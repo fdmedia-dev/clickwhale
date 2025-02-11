@@ -1,8 +1,9 @@
 <?php
 namespace clickwhale\includes\admin\tracking_codes;
 
-use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
+use Exception;
 use WP_List_Table;
+use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -12,18 +13,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.2.0
  */
 class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
-	public function __construct() {
-		parent::__construct(
-			array(
-				'singular' => 'tracking-code',
-				'plural'   => 'tracking-codes',
-			)
-		);
-	}
+
+    public function __construct() {
+        parent::__construct(
+            array(
+                'singular' => 'tracking-code',
+                'plural'   => 'tracking-codes'
+            )
+        );
+    }
 
     /**
-     * [REQUIRED] this is a default column renderer
-     *
      * @param $item - row (key, value array)
      * @param $column_name - string (key)
      *
@@ -35,7 +35,6 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 
     /**
      * @param $item - row (key, value array)
-     *
      * @return string
      */
     public function column_title( $item ): string {
@@ -52,9 +51,13 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
                 __( 'Edit', CLICKWHALE_NAME )
             ),
             'delete' => sprintf(
-                '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_GET['page'] ),
-                $id,
+                '<a href="%s">%s</a>',
+                esc_url(
+                    wp_nonce_url(
+                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        'delete-' . $this->_args['singular']
+                    )
+                ),
                 __( 'Delete', CLICKWHALE_NAME )
             )
         );
@@ -154,9 +157,6 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] This method return columns to display in table
-     *  you can skip columns that you do not want to show
-     *
      * @return array
      */
     public function get_columns(): array {
@@ -181,6 +181,8 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
     }
 
     /**
+     * Return array of built-in actions if has any
+     *
      * @return array
      */
     public function get_bulk_actions(): array {
@@ -189,40 +191,68 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
         );
     }
 
+    /**
+     * This method processes bulk actions
+     * it can be outside of class
+     * it can not use wp_redirect coz there is output already
+     * in this example we are processing delete action
+     * message about successful deletion will be shown on page in next part
+     *
+     * @return void
+     * @throws Exception
+     */
     public function process_bulk_action() {
         global $wpdb;
 
-        $table = Helper::get_db_table_name( 'tracking_codes' );
-
-        if ( 'delete' !== $this->current_action() && ! isset( $_GET['id'] ) ) {
+        if ( 'delete' !== $this->current_action() ) {
             return;
         }
 
-        if ( is_array( $_GET['id'] ) ) {
-            foreach ( $_GET['id'] as $id ) {
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "DELETE FROM $table WHERE id IN(%d)",
-                        intval( $id )
-                    )
-                );
-            }
-        } else {
-            $wpdb->query(
-                $wpdb->prepare(
-                    "DELETE FROM $table WHERE id IN(%d)",
-                    intval( $_GET['id'] )
-                )
-            );
+        if ( empty( $_GET['id'] ) ) {
+            return;
         }
+
+        $page_slug = sanitize_text_field( $_GET['page'] );
+
+        if ( ! isset( $_GET['_wpnonce'] ) ) {
+            Helper::csrf_exception( $page_slug );
+        }
+
+        $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+
+        if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+            Helper::csrf_exception( $page_slug );
+        }
+
+        $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+
+        // Convert to integers, then remove zero values
+        $ids = array_filter( array_map( 'intval', $ids ) );
+
+        if ( empty( $ids ) ) {
+            return;
+        }
+
+        $table = Helper::get_db_table_name( 'tracking_codes' );
+        $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+
+        $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM $table WHERE id IN ($placeholders)",
+                ...$ids
+            )
+        );
     }
 
+    /**
+     * @throws Exception
+     */
     public function prepare_items() {
         global $wpdb;
         $table       = Helper::get_db_table_name( 'tracking_codes' );
         $per_page    = 20;
         $columns     = $this->get_columns();
-        $hidden      = [];
+        $hidden      = array();
         $sortable    = $this->get_sortable_columns();
         $total_items = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $table" ) );
 
@@ -273,21 +303,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
         ) );
     }
 
-	public function display_tablenav( $which ) {
-		?>
-        <div class="tablenav <?php echo esc_attr( $which ); ?>">
-            <div class="alignleft actions">
-				<?php $this->bulk_actions( $which ); ?>
-            </div>
-			<?php
-			$this->pagination( $which );
-			?>
-            <br class="clear"/>
-        </div>
-		<?php
-	}
-
-	public function no_items() {
-		_e( 'No Tracking Codes Found.', CLICKWHALE_NAME );
-	}
+    public function no_items() {
+        _e( 'No Tracking Codes Found', CLICKWHALE_NAME );
+    }
 }

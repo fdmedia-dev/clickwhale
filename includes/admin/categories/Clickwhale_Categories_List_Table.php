@@ -1,8 +1,9 @@
 <?php
 namespace clickwhale\includes\admin\categories;
 
-use clickwhale\includes\helpers\Helper;
+use Exception;
 use WP_List_Table;
+use clickwhale\includes\helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -14,14 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Clickwhale_Categories_List_Table extends WP_List_Table {
 
-	public function __construct() {
-		parent::__construct(
-			array(
-				'singular' => 'category',
-				'plural'   => 'categories',
-			)
-		);
-	}
+    public function __construct() {
+        parent::__construct(
+            array(
+                'singular' => 'category',
+                'plural'   => 'categories'
+            )
+        );
+    }
 
     private function get_current_data( string $search = '' ): array {
         global $wpdb;
@@ -32,7 +33,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         if ( ! empty( $search ) ) {
             $search = '%' . $wpdb->esc_like( $search ) . '%';
             $query .= " WHERE title LIKE %s OR description LIKE %s";
-            $params = [ $search, $search ];
+            $params = array( $search, $search );
         }
 
         return (array) $wpdb->get_results(
@@ -42,11 +43,8 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] this is a default column renderer
-     *
      * @param $item - row (key, value array)
      * @param $column_name - string (key)
-     *
      * @return string
      */
     public function column_default( $item, $column_name ): string {
@@ -54,26 +52,11 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     /**
-     * Render columns
-     * method name must be like this: "column_[column_name]"
-     *
-     * @param $item - row (key, value array)
-     *
-     * @return string
-     */
-
-    /**
-     * This is example, how to render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     *
      * @param $item - row (key, value array)
      * @return string
      */
     public function column_title( $item ): string {
         $id = intval( $item['id'] );
-        // Links going to `/admin.php?page=[your_plugin_page][&other_params]` notice how we used `$_GET['page']`,
-        // so action will be done on curren page.
-        // Also notice how we use `$this->_args['singular']` so in this example it will be something `like &link=2`
         $title = sprintf(
             '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
             $id,
@@ -86,9 +69,13 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 __( 'Edit', CLICKWHALE_NAME )
             ),
             'delete' => sprintf(
-                '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_GET['page'] ),
-                $id,
+                '<a href="%s">%s</a>',
+                esc_url(
+                    wp_nonce_url(
+                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        'delete-' . $this->_args['singular']
+                    )
+                ),
                 __( 'Delete', CLICKWHALE_NAME )
             )
         );
@@ -104,7 +91,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_description( $item ): string {
-        return esc_html( $item['description'] );
+        return esc_html( wp_unslash( $item['description'] ) );
     }
 
     public function column_count( $item ): string {
@@ -135,8 +122,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] this is how checkbox column renders
-     *
      * @param $item - row (key, value array)
      */
     public function column_cb( $item ) {
@@ -151,9 +136,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] This method return columns to display in table
-     * you can skip columns that you do not want to show
-     *
      * @return array
      */
     public function get_columns(): array {
@@ -195,11 +177,12 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * it can not use wp_redirect coz there is output already
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
+     *
+     * @return void
+     * @throws Exception
      */
     public function process_bulk_action() {
         global $wpdb;
-
-        $categories_table = Helper::get_db_table_name( 'categories' );
 
         if ( 'delete' !== $this->current_action() ) {
             return;
@@ -209,28 +192,41 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( is_array( $_GET['id'] ) ) {
-            foreach ( $_GET['id'] as $id ) {
-                $id = intval( $id );
-                $wpdb->query(
-                    $wpdb->prepare(
-                        "DELETE FROM $categories_table WHERE id = %d",
-                        $id
-                    )
-                );
+        $page_slug = sanitize_text_field( $_GET['page'] );
 
+        if ( ! isset( $_GET['_wpnonce'] ) ) {
+            Helper::csrf_exception( $page_slug );
+        }
+
+        $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+
+        if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+            Helper::csrf_exception( $page_slug );
+        }
+
+        $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+
+        // Convert to integers, then remove zero values
+        $ids = array_filter( array_map( 'intval', $ids ) );
+
+        if ( empty( $ids ) ) {
+            return;
+        }
+
+        $table = Helper::get_db_table_name( 'categories' );
+        $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM $table WHERE id IN ($placeholders)",
+                ...$ids
+            )
+        );
+
+        if ( false !== $result ) {
+            foreach ( $ids as $id ) {
                 $this->update_link_categories( $id );
             }
-        } else {
-            $id = intval( $_GET['id'] );
-            $wpdb->query(
-                $wpdb->prepare(
-                    "DELETE FROM $categories_table WHERE id = %d",
-                    $id
-                )
-            );
-
-            $this->update_link_categories( $id );
         }
     }
 
@@ -281,12 +277,10 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     /**
-     * This is the most important method.
-     * It will get rows from database and prepare them to be showed in table
+     * @throws Exception
      */
-    function prepare_items() {
+    public function prepare_items() {
         global $wpdb;
-
         $table        = Helper::get_db_table_name( 'categories' );
         $per_page     = 20;
         $current_page = $this->get_pagenum();
@@ -325,14 +319,18 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             if ( ! $current_data ) {
                 $current_data = array();
             }
+
             $this->items = $current_data;
         }
 
-        // [REQUIRED] configure pagination
         $this->set_pagination_args( array(
-            'total_items' => $total_items,                    // total items defined above
-            'per_page'    => $per_page,                       // per page constant defined at top of method
-            'total_pages' => ceil( $total_items / $per_page ) // calculate pages count
+            'per_page'    => $per_page,
+            'total_items' => $total_items,
+            'total_pages' => ceil( $total_items / $per_page )
         ) );
+    }
+
+    public function no_items() {
+        _e( 'No Categories Found', CLICKWHALE_NAME );
     }
 }

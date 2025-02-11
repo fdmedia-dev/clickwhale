@@ -10,140 +10,140 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
-	public function __construct() {
-		parent::__construct( 'linkpages', 'linkpage' );
-	}
+    public function __construct() {
+        parent::__construct( 'linkpages', 'linkpage' );
+    }
 
-	/**
-	 * Default values for new linkpage
-	 * Could be hooked by filter "clickwhale_linkpage_defaults"
-	 * @return array
-	 */
-	public function get_defaults(): array {
-		return array(
-			'id'                   => 0,
-			'created_at'           => '',
-			'title'                => '',
-			'slug'                 => '',
-			'description'          => '',
-			'links'                => '',
-			'logo'                 => '',
-			'styles'               => array(
-				'bg_color'            => '#fdd231',
-				'text_color'          => '#1a1c1d',
-				'link_bg_color'       => '#fee06f',
+    /**
+     * Default values for new linkpage
+     * Could be hooked by filter "clickwhale_linkpage_defaults"
+     * @return array
+     */
+    public function get_defaults(): array {
+        return array(
+            'id'                   => 0,
+            'created_at'           => '',
+            'title'                => '',
+            'slug'                 => '',
+            'description'          => '',
+            'links'                => '',
+            'logo'                 => '',
+            'styles'               => array(
+                'bg_color'            => '#fdd231',
+                'text_color'          => '#1a1c1d',
+                'link_bg_color'       => '#fee06f',
                 'link_bg_color_hover' => '#ffffff',
-				'link_color'          => '#1a1c1d',
-				'link_color_hover'    => '#397eff',
-			),
-			'social'               => array(
-				'networks' => array(),
-				'seo'      => array()
-			),
-			'meta__legals_menu_id' => 0
-		);
-	}
+                'link_color'          => '#1a1c1d',
+                'link_color_hover'    => '#397eff',
+            ),
+            'social'               => array(
+                'networks' => array(),
+                'seo'      => array()
+            ),
+            'meta__legals_menu_id' => 0
+        );
+    }
 
-	public function render_tabs() {
-		$tabs = array(
-			'settings' => array(
-				'name' => __( 'Settings', CLICKWHALE_NAME ),
-				'url'  => 'settings',
-			),
-			'contents' => array(
-				'name' => __( 'Contents', CLICKWHALE_NAME ),
-				'url'  => 'contents'
-			),
-			'styles'   => array(
-				'name' => __( 'Styles', CLICKWHALE_NAME ),
-				'url'  => 'styles'
-			),
-			'seo'      => array(
-				'name' => __( 'SEO', CLICKWHALE_NAME ),
-				'url'  => 'seo'
-			),
-		);
+    public function render_tabs() {
+        $tabs = array(
+            'settings' => array(
+                'name' => __( 'Settings', CLICKWHALE_NAME ),
+                'url'  => 'settings',
+            ),
+            'contents' => array(
+                'name' => __( 'Contents', CLICKWHALE_NAME ),
+                'url'  => 'contents'
+            ),
+            'styles'   => array(
+                'name' => __( 'Styles', CLICKWHALE_NAME ),
+                'url'  => 'styles'
+            ),
+            'seo'      => array(
+                'name' => __( 'SEO', CLICKWHALE_NAME ),
+                'url'  => 'seo'
+            ),
+        );
 
-		return apply_filters( 'clickwhale_linkpage_tabs', $tabs );
-	}
+        return apply_filters( 'clickwhale_linkpage_tabs', $tabs );
+    }
 
-	/**
-	 * @return array
-	 * @since 1.3.0
-	 */
-	public static function get_select_values(): array {
-		$values = [];
+    /**
+     * @return array
+     * @since 1.3.0
+     */
+    public static function get_select_values(): array {
+        $values = [];
 
-		// ClickWhale Content
+        // ClickWhale Content
 
-		$cw = array(
-			'label'   => __( 'ClickWhale Content', CLICKWHALE_NAME ),
-			'options' => array(
-				'cw_link'           => array(
-					'name' => __( 'ClickWhale Link', CLICKWHALE_NAME ),
-					'icon' => 'link'
-				),
-				'cw_custom_link'    => array(
-					'name' => __( 'Custom Link', CLICKWHALE_NAME ),
-					'icon' => 'link-2'
-				),
-				'cw_custom_content' => array(
-					'name' => __( 'Custom Content', CLICKWHALE_NAME ),
-					'icon' => 'edit'
-				)
-			),
-		);
+        $cw = array(
+            'label'   => __( 'ClickWhale Content', CLICKWHALE_NAME ),
+            'options' => array(
+                'cw_link'           => array(
+                    'name' => __( 'ClickWhale Link', CLICKWHALE_NAME ),
+                    'icon' => 'link'
+                ),
+                'cw_custom_link'    => array(
+                    'name' => __( 'Custom Link', CLICKWHALE_NAME ),
+                    'icon' => 'link-2'
+                ),
+                'cw_custom_content' => array(
+                    'name' => __( 'Custom Content', CLICKWHALE_NAME ),
+                    'icon' => 'edit'
+                )
+            ),
+        );
 
-		// Post Types
+        // Post Types
 
-		$post_types       = Helper::get_post_types();
-		$post_types_group = array(
-			'label'   => __( 'Post Types', CLICKWHALE_NAME ),
-			'options' => array()
-		);
+        $post_types       = Helper::get_post_types();
+        $post_types_group = array(
+            'label'   => __( 'Post Types', CLICKWHALE_NAME ),
+            'options' => array()
+        );
 
-		foreach ( $post_types as $name => $singular ) {
-			$post_types_group['options'][ $name ] ['name'] = $singular;
-			$post_types_group['options'][ $name ] ['icon'] = 'file';
-		}
+        foreach ( $post_types as $name => $singular ) {
+            $post_types_group['options'][ $name ] ['name'] = $singular;
+            $post_types_group['options'][ $name ] ['icon'] = 'file';
+        }
 
-		// Formatting
+        // Formatting
 
-		$formatting = array(
-			'label'   => __( 'Formatting', CLICKWHALE_NAME ),
-			'options' => array(
-				'cw_heading'   => array(
-					'name' => __( 'Heading', CLICKWHALE_NAME ),
-					'icon' => 'type'
-				),
-				'cw_separator' => array(
-					'name' => __( 'Separator', CLICKWHALE_NAME ),
-					'icon' => 'minus'
-				)
-			),
-		);
+        $formatting = array(
+            'label'   => __( 'Formatting', CLICKWHALE_NAME ),
+            'options' => array(
+                'cw_heading'   => array(
+                    'name' => __( 'Heading', CLICKWHALE_NAME ),
+                    'icon' => 'type'
+                ),
+                'cw_separator' => array(
+                    'name' => __( 'Separator', CLICKWHALE_NAME ),
+                    'icon' => 'minus'
+                )
+            ),
+        );
 
-		$values[] = $cw;
-		$values[] = $post_types_group;
-		$values[] = $formatting;
+        $values[] = $cw;
+        $values[] = $post_types_group;
+        $values[] = $formatting;
 
-		return apply_filters( 'clickwhale_linkpage_select', $values );
-	}
+        return apply_filters( 'clickwhale_linkpage_select', $values );
+    }
 
-	/**
-	 * @return array
-	 * @since 1.3.2
-	 */
-	public static function get_nav_menus(): array {
-		$menus      = wp_get_nav_menus();
-		$result     = array();
-		$result[''] = __( 'No Menu', CLICKWHALE_NAME );
-		foreach ( $menus as $menu ) {
-			$result[ $menu->term_id ] = $menu->name;
-		}
+    /**
+     * @return array
+     * @since 1.3.2
+     */
+    public static function get_nav_menus(): array {
+        $menus      = wp_get_nav_menus();
+        $result     = array();
+        $result[''] = __( 'No Menu', CLICKWHALE_NAME );
+        foreach ( $menus as $menu ) {
+            $result[ $menu->term_id ] = $menu->name;
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
     public function get_link_meta( $id, $key ): array {
         global $wpdb;
@@ -274,17 +274,24 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     });
 
                     <?php if ( isset( $_GET['id'] ) ) { ?>
-                        const page_id = '<?php echo intval( $_GET['id'] ); ?>';
-                        if (localStorage.getItem('tab-' + page_id)) {
-                            jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                        const pageID = '<?php echo intval( $_GET['id'] ); ?>';
+                        const tabID = 'clickwhale-linkpage-' + pageID;
+
+                        // Store the last viewed tab index for current (existing) CW Link Page
+                        if (pageID > 0) {
+                            let localTabID = localStorage.getItem(tabID);
+                            if (localTabID) {
+                                jQuery('#clickwhale-tabs').tabs({active: localTabID});
+                            }
+                            jQuery('#clickwhale-tabs li').on('click', function() {
+                                localStorage.setItem(tabID, jQuery(this).index());
+                            });
                         }
 
+                        // Handle `Widget Sidebar` view for all (new and existing) CW Link Pages
                         jQuery('#clickwhale-tabs li').on('click', function() {
-                            localStorage.setItem('tab-' + page_id, jQuery(this).index());
-
                             // If tab is not `Contents`
-                            if ('1' !== localStorage.getItem('tab-' + page_id)){
-                                // Show Clickwhale Widget Sidebar
+                            if (1 !== jQuery(this).index()){
                                 jQuery('#poststuff > #post-body.metabox-holder #postbox-container-1').show();
                                 jQuery('#poststuff > #post-body.metabox-holder').addClass('columns-2');
                             }
@@ -795,7 +802,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 jQuery('td > input, td > textarea').on('keyup change blur', function() {
                     disable_ogpreview_button();
                 })
-                jQuery('input[type="hidden"]').bind('change', function() {
+                jQuery('input[type="hidden"]').on('change', function() {
                     disable_ogpreview_button();
                 });
 

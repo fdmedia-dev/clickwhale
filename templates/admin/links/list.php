@@ -1,20 +1,29 @@
 <?php
 
-global $wpdb;
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\admin\links\Clickwhale_Links_List_Table;
 if ( !isset( $table ) || !$table instanceof WP_List_Table ) {
     $table = new Clickwhale_Links_List_Table();
 }
-$table->prepare_items();
-$message = '';
-if ( 'delete' === $table->current_action() ) {
-    $message = __( 'Items deleted', CLICKWHALE_NAME );
+$message = array();
+try {
+    $table->prepare_items();
+    if ( 'delete' === $table->current_action() ) {
+        $message = array(
+            'class' => 'updated',
+            'text'  => __( 'Items deleted', CLICKWHALE_NAME ),
+        );
+    }
+} catch ( Exception $e ) {
+    $message = array(
+        'class' => 'error',
+        'text'  => __( 'An error occurred', CLICKWHALE_NAME ) . ': ' . $e->getMessage(),
+    );
 }
 do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
-	<?php 
+    <?php 
 echo Helper::render_heading( array(
     'name'        => esc_html( get_admin_page_title() ),
     'is_list'     => true,
@@ -26,10 +35,12 @@ echo Helper::render_heading( array(
 ) );
 if ( !empty( $message ) ) {
     ?>
-        <div class="updated below-h2" id="message"><p><?php 
-    echo esc_html( $message );
+        <div class="<?php 
+    echo esc_attr( $message['class'] );
+    ?> below-h2" id="message"><p><?php 
+    echo esc_html( $message['text'] );
     ?></p></div>
-	<?php 
+    <?php 
 }
 ?>
 
@@ -43,7 +54,7 @@ do_action( 'clickwhale_admin_sidebar_begin' );
         <input type="hidden" name="page" value="<?php 
 echo esc_attr( $_GET['page'] );
 ?>" />
-		<?php 
+        <?php 
 $table->search_box( __( 'Search', CLICKWHALE_NAME ), 'search_id' );
 $table->display();
 ?>

@@ -16,32 +16,32 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     private string $links_table;
 
     public function __construct() {
-		parent::__construct( 'links', 'link' );
+        parent::__construct( 'links', 'link' );
 
         $this->links_table = Helper::get_db_table_name( $this->instance_plural );
-	}
+    }
 
-	/**
-	 * @return array
-	 */
-	public function get_defaults(): array {
-		$plugin_defaults = clickwhale()->settings->default_options();
+    /**
+     * @return array
+     */
+    public function get_defaults(): array {
+        $plugin_defaults = clickwhale()->settings->default_options();
 
-		return array(
-			'id'          => 0,
-			'title'       => '',
-			'url'         => '',
-			'slug'        => '',
-			'redirection' => $plugin_defaults['general']['options']['redirect_type'],
-			'nofollow'    => '',
-			'sponsored'   => '',
-			'description' => '',
-			'categories'  => '',
-			'author'      => 0,
-			'created_at'  => '',
-			'updated_at'  => '',
-		);
-	}
+        return array(
+            'id'          => 0,
+            'title'       => '',
+            'url'         => '',
+            'slug'        => '',
+            'redirection' => $plugin_defaults['general']['options']['redirect_type'],
+            'nofollow'    => '',
+            'sponsored'   => '',
+            'description' => '',
+            'categories'  => '',
+            'author'      => 0,
+            'created_at'  => '',
+            'updated_at'  => '',
+        );
+    }
 
     public function render_tabs() {
         $tabs = array(
@@ -96,22 +96,18 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) { ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
-
                     <?php if ( isset( $_GET['id'] ) ) { ?>
-                        const page_id = '<?php echo intval( $_GET['id'] ); ?>';
+                        const pageID = '<?php echo intval( $_GET['id'] ); ?>';
+                        const tabID = 'clickwhale-link-' + pageID;
 
-                        if ('0' === page_id) {
-                            // Backward compatibility
-                            if (localStorage.getItem('tab-0')) {
-                                localStorage.removeItem('tab-0');
-                                jQuery('#clickwhale-tabs').tabs({active: 0});
-                            }
-                        } else {
-                            if (localStorage.getItem('tab-' + page_id)) {
-                                jQuery('#clickwhale-tabs').tabs({active: localStorage.getItem('tab-' + page_id)});
+                        // Store the last viewed tab index for current (existing) CW Link
+                        if (pageID > 0) {
+                            let localTabID = localStorage.getItem(tabID);
+                            if (localTabID) {
+                                jQuery('#clickwhale-tabs').tabs({active: localTabID});
                             }
                             jQuery('#clickwhale-tabs li').on('click', function() {
-                                localStorage.setItem('tab-' + page_id, jQuery(this).index());
+                                localStorage.setItem(tabID, jQuery(this).index());
                             });
                         }
                     <?php } ?>

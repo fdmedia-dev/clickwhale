@@ -1,8 +1,9 @@
 <?php
 namespace clickwhale\includes\admin\links;
 
-use clickwhale\includes\helpers\{Helper, Categories_Helper};
+use Exception;
 use WP_List_Table;
+use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -14,16 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Clickwhale_Links_List_Table extends WP_List_Table {
 
-	public function __construct() {
-		global $status, $page;
-		parent::__construct(
-			array(
-				'singular' => 'link',
-				'plural'   => 'links',
-				'ajax'     => true
-			)
-		);
-	}
+    public function __construct() {
+        parent::__construct(
+            array(
+                'singular' => 'link',
+                'plural'   => 'links',
+                'ajax'     => true
+            )
+        );
+    }
 
     private function get_current_data( $order, $orderby, $params ): array {
         global $wpdb;
@@ -67,8 +67,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 $like_middle = $wpdb->esc_like( ",{$category}," );
                 $like_end = $wpdb->esc_like( ",{$category}" );
 
-                $sql .= "(links.categories = %s OR links.categories LIKE %s OR links.categories LIKE %s OR links.categories LIKE %s) ";
-                $prepared_args = array_merge( $prepared_args, array( intval( $category ), $like_start, $like_middle, $like_end ) );
+                $sql .= "(links.categories = %d OR links.categories LIKE %s OR links.categories LIKE %s OR links.categories LIKE %s) ";
+                $prepared_args = array_merge( $prepared_args, array( intval( $category ), "{$like_start}%", "%{$like_middle}%", "%{$like_end}" ) );
 
                 if ( $author ) {
                     $sql .= " AND ";
@@ -109,7 +109,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     $category_id = intval( $category->id );
                     $selected = isset( $_GET['category'] ) && $_GET['category'] == $category_id ? ' selected = "selected"' : '';
                     ?>
-                    <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php esc_html_e( $category->title ); ?></option>
+                    <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
                 <?php } ?>
             </select>
             <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_NAME ); ?>" />
@@ -118,8 +118,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] this is a default column renderer
-     *
      * @param $item - row (key, value array)
      * @param $column_name - string (key)
      * @return string
@@ -129,24 +127,10 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     /**
-     * Render columns
-     * method name must be like this: "column_[ column_name ]"
-     *
-     * @param $item - row (key, value array)
-     * @return string
-     */
-
-    /**
-     * Render column with actions,
-     * when you hover row "Edit | Delete" links showed
-     *
      * @param $item - row (key, value array)
      * @return string
      */
     public function column_title( $item ): string {
-        // Links going to `/admin.php?page=[your_plugin_page][&other_params]` notice how we used `$_GET['page']`,
-        // so action will be done on current page.
-        // Also notice how we use `$this->_args['singular']` so in this example it will be something like `&link=2`
         $id = intval( $item['id'] );
         $title = sprintf(
             '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
@@ -160,15 +144,23 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 __( 'Edit', CLICKWHALE_NAME )
             ),
             'reset'  => sprintf(
-                '<a href="?page=%s&action=reset&id=%d">%s</a>',
-                sanitize_text_field( $_GET['page'] ),
-                $id,
+                '<a href="%s">%s</a>',
+                esc_url(
+                    wp_nonce_url(
+                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=reset&id=' . $id ),
+                        'reset-' . $this->_args['singular']
+                    )
+                ),
                 __( 'Reset Clicks', CLICKWHALE_NAME )
             ),
             'delete' => sprintf(
-                '<a href="?page=%s&action=delete&id=%d">%s</a>',
-                sanitize_text_field( $_GET['page'] ),
-                $id,
+                '<a href="%s">%s</a>',
+                esc_url(
+                    wp_nonce_url(
+                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        'delete-' . $this->_args['singular']
+                    )
+                ),
                 __( 'Delete', CLICKWHALE_NAME )
             )
         );
@@ -273,8 +265,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] this is how checkbox column renders
-     *
      * @param $item - row (key, value array)
      * @return string
      */
@@ -286,9 +276,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     /**
-     * [REQUIRED] This method return columns to display in table
-     * you can skip columns that you do not want to show
-     *
      * @return array
      */
     public function get_columns(): array {
@@ -344,20 +331,20 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * it can not use wp_redirect coz there is output already
      * in this example we are processing delete action
      * message about successful deletion will be shown on page in next part
+     *
+     * @throws Exception
      */
     public function process_bulk_action() {
         global $wpdb;
 
         $action = $this->current_action();
 
-        if ( ! $action || ! isset( $_GET['id'] ) ) {
+        if ( ! $action ) {
             return;
         }
 
-        if ( is_array( $_GET['id'] ) ) {
-            $ids = $_GET['id'];
-        } else {
-            $ids[] = $_GET['id'];
+        if ( empty( $_GET['id'] ) ) {
+            return;
         }
 
         switch ( $action ) {
@@ -407,13 +394,21 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 }
 
                 if ( $data ) {
-                    foreach ( $ids as $id ) {
-                        $wpdb->update(
-                            Helper::get_db_table_name( 'links' ),
-                            $data,
-                            array( 'id' => intval( $id ) )
-                        );
+                    $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+
+                    // Convert to integers, then remove zero values
+                    $ids = array_filter( array_map( 'intval', $ids ) );
+
+                    if ( ! empty( $ids ) ) {
+                        foreach ( $ids as $id ) {
+                            $wpdb->update(
+                                Helper::get_db_table_name( 'links' ),
+                                $data,
+                                array( 'id' => $id )
+                            );
+                        }
                     }
+
                     $url = remove_query_arg( '_wp_http_referer' );
                     $url = remove_query_arg(
                         array(
@@ -437,42 +432,87 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 break;
 
             case 'delete':
-                $links_table = Helper::get_db_table_name( 'links' );
-                $meta_table  = Helper::get_db_table_name( 'meta' );
-                foreach ( $ids as $id ) {
-                    $wpdb->query(
-                        $wpdb->prepare(
-                            "DELETE FROM $links_table WHERE id=%d",
-                            intval( $id )
-                        )
-                    );
-                    $wpdb->query(
-                        $wpdb->prepare(
-                            "DELETE FROM $meta_table WHERE link_id=%d",
-                            intval( $id )
-                        )
-                    );
+                $page_slug = sanitize_text_field( $_GET['page'] );
+
+                if ( ! isset( $_GET['_wpnonce'] ) ) {
+                    Helper::csrf_exception( $page_slug );
                 }
-                do_action( 'clickwhale_link_deleted', $ids );
+
+                $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+
+                if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+                    Helper::csrf_exception( $page_slug );
+                }
+
+                $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+
+                // Convert to integers, then remove zero values
+                $ids = array_filter( array_map( 'intval', $ids ) );
+
+                if ( empty( $ids ) ) {
+                    break;
+                }
+
+                $links_table = Helper::get_db_table_name( 'links' );
+                $meta_table = Helper::get_db_table_name( 'meta' );
+                $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+
+                $result = $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE FROM $links_table WHERE id IN ($placeholders)",
+                        ...$ids
+                    )
+                );
+
+                if ( false !== $result ) {
+                    $wpdb->query(
+                        $wpdb->prepare(
+                            "DELETE FROM $meta_table WHERE link_id IN ($placeholders)",
+                            ...$ids
+                        )
+                    );
+
+                    do_action( 'clickwhale_link_deleted', $ids );
+                }
                 break;
 
             case 'reset':
-                $table = Helper::get_db_table_name( 'track' );
-                foreach ( $ids as $id ) {
-                    $wpdb->query(
-                        $wpdb->prepare(
-                            "DELETE FROM $table WHERE link_id=%d",
-                            intval( $id )
-                        )
-                    );
+                $page_slug = sanitize_text_field( $_GET['page'] );
+
+                if ( ! isset( $_GET['_wpnonce'] ) ) {
+                    Helper::csrf_exception( $page_slug );
                 }
+
+                $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'reset-' . $this->_args['singular'];
+
+                if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+                    Helper::csrf_exception( $page_slug );
+                }
+
+                $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+
+                // Convert to integers, then remove zero values
+                $ids = array_filter( array_map( 'intval', $ids ) );
+
+                if ( empty( $ids ) ) {
+                    break;
+                }
+
+                $table = Helper::get_db_table_name( 'track' );
+                $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+
+                $wpdb->query(
+                    $wpdb->prepare(
+                        "DELETE FROM $table WHERE link_id IN ($placeholders)",
+                        ...$ids
+                    )
+                );
                 break;
         }
     }
 
     /**
-     * This is the most important method.
-     * It will get rows from database and prepare them to be showed in table
+     * @throws Exception
      */
     public function prepare_items() {
         $per_page     = 20;
@@ -484,7 +524,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : '';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
         $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
@@ -510,30 +550,36 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         // [REQUIRED] Configure pagination
         $this->set_pagination_args( array(
-            'total_items' => $total_items,                     // total items defined above
-            'per_page'    => $per_page,                        // per page constant defined at top of method
-            'total_pages' => ceil( $total_items / $per_page )  // calculate pages count
+            'per_page'    => $per_page,
+            'total_items' => $total_items,
+            'total_pages' => ceil( $total_items / $per_page )
         ) );
     }
 
-	public function no_items() {
-		_e( 'No Links Found.', CLICKWHALE_NAME );
-	}
+    public function no_items() {
+        _e( 'No Links Found', CLICKWHALE_NAME );
+    }
 
-	public function display() {
-		$singular = $this->_args['singular'];
-		$this->display_tablenav( 'top' );
-		$this->screen->render_screen_reader_content( 'heading_list' );
-		?>
+    public function display() {
+        $singular = $this->_args['singular'];
+        $this->display_tablenav( 'top' );
+        $this->screen->render_screen_reader_content( 'heading_list' );
+        ?>
         <table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-			<?php $this->print_table_description(); ?>
+            <?php $this->print_table_description(); ?>
             <thead>
             <tr>
-				<?php $this->print_column_headers(); ?>
+                <?php $this->print_column_headers(); ?>
             </tr>
             </thead>
-            <tbody id="the-list"<?php echo $singular ? " data-wp-lists='list:$singular'" : ''; ?>>
-			<?php
+            <tbody id="the-list"
+                <?php
+                if ( $singular ) {
+                    echo " data-wp-lists='list:$singular'";
+                }
+                ?>
+            >
+            <?php
                 if ( ( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) && ! empty( $_GET['id'] ) ) {
                     $quick_edit = new Clickwhale_Links_Bulk_Edit( $_GET['id'], $this->get_column_count() );
                     echo $quick_edit->render_quick_edit();
@@ -543,26 +589,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             </tbody>
             <tfoot>
             <tr>
-				<?php $this->print_column_headers( false ); ?>
+                <?php $this->print_column_headers( false ); ?>
             </tr>
             </tfoot>
         </table>
-		<?php
-		$this->display_tablenav( 'bottom' );
-	}
-
-	public function display_tablenav( $which ) {
-		?>
-        <div class="tablenav <?php esc_attr_e( $which ); ?>">
-            <div class="alignleft actions">
-				<?php $this->bulk_actions( $which ); ?>
-            </div>
-			<?php
-			$this->extra_tablenav( $which );
-			$this->pagination( $which );
-			?>
-            <br class="clear"/>
-        </div>
-		<?php
-	}
+        <?php
+        $this->display_tablenav( 'bottom' );
+    }
 }

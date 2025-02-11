@@ -1,6 +1,8 @@
 <?php
 namespace clickwhale\includes\helpers;
 
+use Exception;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -272,14 +274,12 @@ class Helper {
      * @return array
      */
     public static function get_sort_params( array $columns, string $order = 'desc', string $orderby = 'id' ): array {
-        $defaults = array(
-            'order' => 'desc',
-            'orderby' => 'id'
-        );
+        $order = strtolower( $order );
+        $orderby = strtolower( $orderby );
 
         return array(
-            'order'   => in_array( $order, array( 'asc', 'desc' ) ) ? $order : $defaults['order'],
-            'orderby' => in_array( $orderby, array_keys( $columns ) ) ? $orderby : $defaults['orderby']
+            'order'   => in_array( $order, array( 'asc', 'desc' ) ) ? $order : 'desc',
+            'orderby' => in_array( $orderby, array_keys( $columns ) ) ? $orderby : 'id'
         );
     }
 
@@ -358,20 +358,20 @@ class Helper {
      * @return array
      * @since 1.6.0
      */
-	public static function get_post_types( string $label = 'singular_name' ): array {
-		$posts      = [];
-		$args       = array(
-			'public' => true,
-		);
-		$post_types = get_post_types( $args, 'objects' );
-		unset( $post_types['attachment'] );
+    public static function get_post_types( string $label = 'singular_name' ): array {
+        $posts      = array();
+        $args       = array(
+            'public' => true,
+        );
+        $post_types = get_post_types( $args, 'objects' );
+        unset( $post_types['attachment'] );
 
-		foreach ( $post_types as $post_type ) {
-			$posts[ $post_type->name ] = $post_type->labels->{$label};
-		}
+        foreach ( $post_types as $post_type ) {
+            $posts[ $post_type->name ] = $post_type->labels->{$label};
+        }
 
-		return $posts;
-	}
+        return $posts;
+    }
 
     /**
      * Check if media file exists in Wordpress Media library
@@ -381,5 +381,21 @@ class Helper {
      */
     public static function get_media_file_path( string $image_url ): bool {
         return file_exists( str_replace( home_url('/'), ABSPATH, $image_url ) );
+    }
+
+    /**
+     * @param string $page_slug
+     * @throws Exception
+     */
+    public static function csrf_exception( string $page_slug = '' ) {
+
+        $log_msg = __( 'Security check failed (possible CSRF) for user ID', CLICKWHALE_NAME ) . ': ' . get_current_user_id();
+
+        if ( $page_slug ) {
+            $log_msg .= __( ' on page', CLICKWHALE_NAME ) . ': ' . $page_slug;
+        }
+
+        error_log( $log_msg );
+        throw new Exception( __( 'Security check failed. Please contact the ClickWhale customer support.', CLICKWHALE_NAME ) );
     }
 }
