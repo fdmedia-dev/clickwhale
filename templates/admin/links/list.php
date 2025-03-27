@@ -11,13 +11,13 @@ try {
     if ( 'delete' === $table->current_action() ) {
         $message = array(
             'class' => 'updated',
-            'text'  => __( 'Items deleted', CLICKWHALE_NAME ),
+            'text'  => __( 'Items deleted', 'clickwhale' ),
         );
     }
 } catch ( Exception $e ) {
     $message = array(
         'class' => 'error',
-        'text'  => __( 'An error occurred', CLICKWHALE_NAME ) . ': ' . $e->getMessage(),
+        'text'  => __( 'An error occurred', 'clickwhale' ) . ': ' . $e->getMessage(),
     );
 }
 do_action( 'clickwhale_admin_banner' );
@@ -30,7 +30,7 @@ echo Helper::render_heading( array(
     'link_to_add' => CLICKWHALE_SLUG . '-edit-link',
     'link_custom' => array(
         'url'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=import' ) ),
-        'title' => __( 'Import', CLICKWHALE_NAME ),
+        'title' => __( 'Import', 'clickwhale' ),
     ),
 ) );
 if ( !empty( $message ) ) {
@@ -55,7 +55,7 @@ do_action( 'clickwhale_admin_sidebar_begin' );
 echo esc_attr( $_GET['page'] );
 ?>" />
         <?php 
-$table->search_box( __( 'Search', CLICKWHALE_NAME ), 'search_id' );
+$table->search_box( __( 'Search', 'clickwhale' ), 'search_id' );
 $table->display();
 ?>
     </form>

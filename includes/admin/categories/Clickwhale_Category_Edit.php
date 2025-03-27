@@ -10,18 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
 
-	public function __construct() {
-		parent::__construct( 'categories', 'category' );
-	}
+    public function __construct() {
+        parent::__construct( 'categories', 'category' );
+    }
 
-	public function get_defaults(): array {
-		return array(
-			'id'          => 0,
-			'title'       => '',
-			'slug'        => '',
-			'description' => ''
-		);
-	}
+    public function get_defaults(): array {
+        return array(
+            'id'          => 0,
+            'title'       => '',
+            'slug'        => '',
+            'description' => ''
+        );
+    }
 
     public function save_update() {
         global $wpdb;
@@ -75,7 +75,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                     if (!title.val()) {
                         e.preventDefault();
 
-                        title.addClass('error').next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                        title.addClass('error').next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
                     } else {
                         title.removeClass('error').next().text('');
                     }
@@ -84,13 +84,11 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
 
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ); ?>')
+                        jQuery('#cw-slug--description').text('<?php echo esc_js( __( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ); ?>');
                     }
                 });
 
-                /**
-                 * JS FUNCTIONS
-                 */
+                /** JS FUNCTIONS */
 
                 function slugExists() {
                     let result = null;
@@ -100,7 +98,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         dataType: 'json',
                         url: ajaxurl,
                         data: {
-                            'security': '<?php echo $nonce ?>',
+                            'security': '<?php echo $nonce; ?>',
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'category',
                             'slug': slug.val() ? slug.val() : title.val(),

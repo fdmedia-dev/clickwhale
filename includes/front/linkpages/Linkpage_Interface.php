@@ -9,26 +9,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 interface Linkpage_Interface {
 
-	function getUrl(): string;
+    function getUrl(): string;
 
-	function setUrl( string $url ): Linkpage;
+    function setUrl( string $url ): Linkpage;
 
-	function getTitle(): string;
+    function getTitle(): string;
 
-	function setTitle( string $title ): Linkpage;
+    function setTitle( string $title ): Linkpage;
 
-	function getTemplate(): string;
+    function getTemplate(): string;
 
-	function setTemplate( string $template ): Linkpage;
+    function setTemplate( string $template ): Linkpage;
 
-	function setContent( string $content ): Linkpage;
+    function setContent( string $content ): Linkpage;
 
-	function setLinkpage( array $linkpage ): Linkpage;
+    function setLinkpage( array $linkpage ): Linkpage;
 
-	/**
-	 * Get a WP_Post build using virtual Page object
-	 *
-	 * @return WP_Post
-	 */
-	function asWpPost(): WP_Post;
+    /**
+     * Get a WP_Post build using virtual Page object
+     *
+     * @return WP_Post
+     */
+    function asWpPost(): WP_Post;
 }

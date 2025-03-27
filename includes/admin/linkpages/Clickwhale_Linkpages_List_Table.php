@@ -26,7 +26,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[ $column_name ] );
+        return esc_html( $item[$column_name] );
     }
 
     /**
@@ -44,13 +44,13 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             'edit'   => sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=%d">%s</a>',
                 $id,
-                __( 'Edit', CLICKWHALE_NAME )
+                __( 'Edit', 'clickwhale' )
             ),
             'view'   => sprintf(
                 '<a href="%s/%s/" target="_blank">%s</a>',
                 get_bloginfo( 'url' ),
                 esc_attr( $item['slug'] ),
-                __( 'View', CLICKWHALE_NAME )
+                __( 'View', 'clickwhale' )
             ),
             'delete' => sprintf(
                 '<a href="%s">%s</a>',
@@ -60,7 +60,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
                         'delete-' . $this->_args['singular']
                     )
                 ),
-                __( 'Delete', CLICKWHALE_NAME )
+                __( 'Delete', 'clickwhale' )
             )
         );
 
@@ -77,7 +77,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_slug( $item ): string {
-        return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . esc_attr( $item['slug'] ) . '" readonly><a href="#" class="slug-input--btn" data-id="' . intval( $item['id'] ) . '" title="' . __( 'Copy Link', CLICKWHALE_NAME ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+        return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . esc_attr( $item['slug'] ) . '" readonly><a href="#" class="slug-input--btn" data-id="' . intval( $item['id'] ) . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
     }
 
     /**
@@ -140,12 +140,12 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $tracking_options = get_option( 'clickwhale_tracking_options' );
         $columns          = array(
             'cb'           => '<input type="checkbox" />',
-            'title'        => __( 'Title', CLICKWHALE_NAME ),
-            'slug'         => __( 'Link', CLICKWHALE_NAME ),
-            'links'        => __( 'Links', CLICKWHALE_NAME ),
-            'views_count'  => __( 'Views', CLICKWHALE_NAME ),
-            'clicks_count' => __( 'Clicks', CLICKWHALE_NAME ),
-            'author'       => __( 'Author', CLICKWHALE_NAME )
+            'title'        => __( 'Title', 'clickwhale' ),
+            'slug'         => __( 'Link', 'clickwhale' ),
+            'links'        => __( 'Links', 'clickwhale' ),
+            'views_count'  => __( 'Views', 'clickwhale' ),
+            'clicks_count' => __( 'Clicks', 'clickwhale' ),
+            'author'       => __( 'Author', 'clickwhale' )
         );
 
         if ( isset( $tracking_options['disable_tracking'] ) ) {
@@ -171,7 +171,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'delete' => __( 'Delete', CLICKWHALE_NAME )
+            'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
@@ -312,6 +312,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Link Pages Found', CLICKWHALE_NAME );
+        _e( 'No Link Pages Found', 'clickwhale' );
     }
 }

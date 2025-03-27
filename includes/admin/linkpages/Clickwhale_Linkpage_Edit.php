@@ -47,21 +47,21 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
     public function render_tabs() {
         $tabs = array(
             'settings' => array(
-                'name' => __( 'Settings', CLICKWHALE_NAME ),
-                'url'  => 'settings',
+                'name' => __( 'Settings', 'clickwhale' ),
+                'url'  => 'settings'
             ),
             'contents' => array(
-                'name' => __( 'Contents', CLICKWHALE_NAME ),
+                'name' => __( 'Contents', 'clickwhale' ),
                 'url'  => 'contents'
             ),
             'styles'   => array(
-                'name' => __( 'Styles', CLICKWHALE_NAME ),
+                'name' => __( 'Styles', 'clickwhale' ),
                 'url'  => 'styles'
             ),
             'seo'      => array(
-                'name' => __( 'SEO', CLICKWHALE_NAME ),
+                'name' => __( 'SEO', 'clickwhale' ),
                 'url'  => 'seo'
-            ),
+            )
         );
 
         return apply_filters( 'clickwhale_linkpage_tabs', $tabs );
@@ -72,55 +72,55 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
      * @since 1.3.0
      */
     public static function get_select_values(): array {
-        $values = [];
+        $values = array();
 
         // ClickWhale Content
 
         $cw = array(
-            'label'   => __( 'ClickWhale Content', CLICKWHALE_NAME ),
+            'label'   => __( 'ClickWhale Content', 'clickwhale' ),
             'options' => array(
                 'cw_link'           => array(
-                    'name' => __( 'ClickWhale Link', CLICKWHALE_NAME ),
+                    'name' => __( 'ClickWhale Link', 'clickwhale' ),
                     'icon' => 'link'
                 ),
                 'cw_custom_link'    => array(
-                    'name' => __( 'Custom Link', CLICKWHALE_NAME ),
+                    'name' => __( 'Custom Link', 'clickwhale' ),
                     'icon' => 'link-2'
                 ),
                 'cw_custom_content' => array(
-                    'name' => __( 'Custom Content', CLICKWHALE_NAME ),
+                    'name' => __( 'Custom Content', 'clickwhale' ),
                     'icon' => 'edit'
                 )
-            ),
+            )
         );
 
         // Post Types
 
         $post_types       = Helper::get_post_types();
         $post_types_group = array(
-            'label'   => __( 'Post Types', CLICKWHALE_NAME ),
+            'label'   => __( 'Post Types', 'clickwhale' ),
             'options' => array()
         );
 
         foreach ( $post_types as $name => $singular ) {
-            $post_types_group['options'][ $name ] ['name'] = $singular;
-            $post_types_group['options'][ $name ] ['icon'] = 'file';
+            $post_types_group['options'][$name]['name'] = $singular;
+            $post_types_group['options'][$name]['icon'] = 'file';
         }
 
         // Formatting
 
         $formatting = array(
-            'label'   => __( 'Formatting', CLICKWHALE_NAME ),
+            'label'   => __( 'Formatting', 'clickwhale' ),
             'options' => array(
                 'cw_heading'   => array(
-                    'name' => __( 'Heading', CLICKWHALE_NAME ),
+                    'name' => __( 'Heading', 'clickwhale' ),
                     'icon' => 'type'
                 ),
                 'cw_separator' => array(
-                    'name' => __( 'Separator', CLICKWHALE_NAME ),
+                    'name' => __( 'Separator', 'clickwhale' ),
                     'icon' => 'minus'
                 )
-            ),
+            )
         );
 
         $values[] = $cw;
@@ -137,9 +137,9 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
     public static function get_nav_menus(): array {
         $menus      = wp_get_nav_menus();
         $result     = array();
-        $result[''] = __( 'No Menu', CLICKWHALE_NAME );
+        $result[''] = __( 'No Menu', 'clickwhale' );
         foreach ( $menus as $menu ) {
-            $result[ $menu->term_id ] = $menu->name;
+            $result[$menu->term_id] = $menu->name;
         }
 
         return $result;
@@ -254,7 +254,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         $nonce = wp_create_nonce( 'slug_exists' );
         $nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) { ?>
+        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+            ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
                     jQuery('#clickwhale-tabs').tabs({
@@ -299,14 +300,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     <?php } ?>
                 });
             </script>
-        <?php } ?>
+            <?php
+        } ?>
 
         <script type='text/javascript'>
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function() {
 
-                /* Vars */
                 const
                     defaults = <?php echo json_encode( $this->get_defaults() ); ?>,
                     title = jQuery('#title'),
@@ -332,7 +333,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 /* Select2 init */
                 linksType.select2({
-                    placeholder: '<?php _e( 'Select Content Type', CLICKWHALE_NAME ) ?>',
+                    placeholder: '<?php echo esc_js( __( 'Select Content Type', 'clickwhale' ) ); ?>',
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
@@ -381,7 +382,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 type = el.data('content');
 
                             jQuery.post(ajaxurl, {
-                                'security': '<?php echo $nonce_add_link ?>',
+                                'security': '<?php echo $nonce_add_link; ?>',
                                 'action': 'clickwhale/admin/add_link_to_linkpage',
                                 'type': type,
                             }, function(response) {
@@ -392,7 +393,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                     replace_block(el, template);
 
                                     jQuery('.select-link').select2({
-                                        placeholder: '<?php _e( 'Select Item', CLICKWHALE_NAME ) ?>',
+                                        placeholder: '<?php echo esc_js( __( 'Select Item', 'clickwhale' ) ); ?>',
                                         width: '100%',
                                         minimumResultsForSearch: 10
                                     });
@@ -552,7 +553,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php _e( 'Select Image', CLICKWHALE_NAME ) ?>',
+                                    text: '<?php echo esc_js( __( 'Select Image', 'clickwhale' ) ); ?>',
                                 },
                                 multiple: false
                             }).on('select', function() {
@@ -572,7 +573,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         const button = jQuery(this);
 
                         button.next().val(''); // emptying the hidden field
-                        button.hide().prev().addClass('button').html('<?php _e( 'Upload image', CLICKWHALE_NAME ) ?>');
+                        button.hide().prev().addClass('button').html('<?php echo esc_js( __( 'Upload image', 'clickwhale' ) ); ?>');
 
                         disable_ogpreview_button();
                     })
@@ -818,7 +819,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (!title.val()) {
                         e.preventDefault();
                         title.addClass('error')
-                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
                     } else {
                         title.removeClass('error').next().text('');
                     }
@@ -826,7 +827,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (!slug.val()) {
                         e.preventDefault();
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ) ?>');
+                            .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
                     } else {
                         slug.removeClass('error').next().text('');
                     }
@@ -834,7 +835,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (slugExists() === true) {
                         e.preventDefault();
                         slug.addClass('error');
-                        jQuery('#cw-slug--description').text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ) ?>');
+                        jQuery('#cw-slug--description').text('<?php echo esc_js( __( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ); ?>');
                     }
                 });
 
@@ -846,7 +847,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                     let defaults;
 
-                    if (window.confirm('<?php _e( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', CLICKWHALE_NAME ) ?>')) {
+                    if (window.confirm('<?php echo esc_js( __( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', 'clickwhale' ) ); ?>')) {
                         defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
 
                         jQuery.each(defaults.styles, function(key, val) {
@@ -857,9 +858,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     }
                 });
 
-                /**
-                 * FUNCTIONS
-                 */
+                /** JS FUNCTIONS */
 
                 function slugExists() {
                     let result = null;
@@ -869,7 +868,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         dataType: 'json',
                         url: ajaxurl,
                         data: {
-                            'security': '<?php echo $nonce ?>',
+                            'security': '<?php echo $nonce; ?>',
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'linkpage',
                             'slug': slug.val(),
@@ -892,14 +891,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 function links_limit_warning() {
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message();  ?></div>').insertAfter('.links-list-wrap');
+                    jQuery('<div class="links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message(); ?></div>').insertAfter('.links-list-wrap');
                 }
 
                 function disable_ogpreview_button() {
                     jQuery('#opengraph-live-preview')
                         .addClass('disabled')
                         .next()
-                        .text('<?php _e( 'Save page to view Open Graph preview', CLICKWHALE_NAME ) ?>');
+                        .text('<?php echo esc_js( __( 'Save page to view Open Graph preview', 'clickwhale' ) ); ?>');
                 }
 
                 function change_row_image(element, image, active = true) {

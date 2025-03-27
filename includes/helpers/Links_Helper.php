@@ -36,7 +36,7 @@ class Links_Helper extends Helper_Abstract {
                 'Currently, a maximum of 1 link can be added.',
                 'Currently, a maximum of %d links can be added.',
                 self::get_limit(),
-                CLICKWHALE_NAME
+                'clickwhale'
             ),
             self::get_limit()
         );
@@ -71,6 +71,23 @@ class Links_Helper extends Helper_Abstract {
                 sanitize_text_field( $meta_key )
             ),
             ARRAY_A
+        );
+    }
+
+    public static function get_redirections(): array {
+        return array(
+            301 => __( '301: Moved permanently', 'clickwhale' ),
+            302 => __( '302: Found / Moved temporarily', 'clickwhale' ),
+            303 => __( '303: See other', 'clickwhale' ),
+            307 => __( '307: Temporarily redirect', 'clickwhale' ),
+            308 => __( '308: Permanent redirect', 'clickwhale' )
+        );
+    }
+
+    public static function get_link_targets(): array {
+        return array(
+            'blank' => __( 'New tab/window', 'clickwhale' ),
+            'self' => __( 'Same tab/window', 'clickwhale' )
         );
     }
 }

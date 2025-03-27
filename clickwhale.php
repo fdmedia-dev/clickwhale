@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.4.4
+ * Version:           2.4.5
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,8 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.4.4' );
-    define( 'CLICKWHALE_NAME', 'clickwhale' );
+    define( 'CLICKWHALE_VERSION', '2.4.5' );
     /**
      * @since 1.4.1
      */
@@ -88,7 +87,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         // Signal that SDK was initiated
         do_action( 'clickwhale_fs_loaded' );
         clickwhale_fs()->override_i18n( [
-            'account' => __( 'License', CLICKWHALE_NAME ),
+            'account' => __( 'License', 'clickwhale' ),
         ] );
     }
     function clickwhale_activate() {
@@ -111,7 +110,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      *  `true` if:
      *    `clickwhale_version` was not stored in DB at all. calls `add_option`
      *     OR
-     *    `clickwhale_version` is stored with old value less than `CLICKWHALE_VERSION`. calls `update_option`
+     *    `clickwhale_version` is stored with old value less than current `CLICKWHALE_VERSION`. calls `update_option`
      *
      *  `false` if:
      *    `clickwhale_version` value is equal to `CLICKWHALE_VERSION`
@@ -131,11 +130,10 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
     }
 
-    function clickwhale_maybe_add_or_update_url_column() {
+    function clickwhale_maybe_add_or_update_url_column() : void {
         if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '<=' ) ) {
             return;
         }
-        global $wpdb;
         $updated_url_column = get_option( CLICKWHALE_URL_COLUMN );
         if ( !$updated_url_column ) {
             $action = 'add';
@@ -145,12 +143,26 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             return;
         }
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        global $wpdb;
         $query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
         if ( !$query ) {
             return;
         }
         $function = $action . '_option';
         $function( CLICKWHALE_URL_COLUMN, CLICKWHALE_VERSION );
+    }
+
+    function clickwhale_maybe_add_link_target_column() : void {
+        if ( version_compare( CLICKWHALE_VERSION, '2.4.5', '<' ) ) {
+            return;
+        }
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        global $wpdb;
+        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$wpdb->prefix}clickwhale_links LIKE 'link_target'" );
+        if ( $column_exists ) {
+            return;
+        }
+        $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links ADD link_target varchar(10) DEFAULT '' NOT NULL AFTER redirection" );
     }
 
     register_activation_hook( __FILE__, 'clickwhale_activate' );
@@ -177,6 +189,8 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         $maybe_update_version = clickwhale_maybe_add_or_update_version();
         if ( $maybe_update_version ) {
             clickwhale_maybe_add_or_update_url_column();
+            /* @since 2.4.5 */
+            clickwhale_maybe_add_link_target_column();
         }
     }
 

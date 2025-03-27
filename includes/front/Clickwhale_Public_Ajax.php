@@ -32,18 +32,14 @@ class Clickwhale_Public_Ajax {
     public function track_custom_link() {
         check_ajax_referer( 'track_custom_link', 'security' );
 
-        if ( ! isset( $_POST['id'] ) ) {
-            wp_send_json_error( 'Track Error!' );
-        }
-
-        $id = (int) $_POST['id'];
-
-        if ( ! $id ) {
+        if ( empty( $_POST['id'] ) ) {
             wp_send_json_error( 'Track Error!' );
         }
 
         // Track click on link
-        new Clickwhale_Click_Track( $id, true );
+        $link_id = intval( $_POST['id'] );
+        $click_track = new Clickwhale_Click_Track( $link_id, true );
+        $click_track->proceed_click_track();
         wp_send_json_success();
     }
 }

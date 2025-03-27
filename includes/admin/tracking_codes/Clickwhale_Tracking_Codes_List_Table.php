@@ -30,7 +30,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[ $column_name ] );
+        return esc_html( $item[$column_name] );
     }
 
     /**
@@ -48,7 +48,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
             'edit'   => sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=%d">%s</a>',
                 $id,
-                __( 'Edit', CLICKWHALE_NAME )
+                __( 'Edit', 'clickwhale' )
             ),
             'delete' => sprintf(
                 '<a href="%s">%s</a>',
@@ -58,7 +58,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
                         'delete-' . $this->_args['singular']
                     )
                 ),
-                __( 'Delete', CLICKWHALE_NAME )
+                __( 'Delete', 'clickwhale' )
             )
         );
 
@@ -162,12 +162,12 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
     public function get_columns(): array {
         return array(
             'cb'          => '<input type="checkbox" />',
-            'is_active'   => __( 'Active',      CLICKWHALE_NAME ),
-            'title'       => __( 'Title',       CLICKWHALE_NAME ),
-            'description' => __( 'Description', CLICKWHALE_NAME ),
-            'position'    => __( 'Position',    CLICKWHALE_NAME ),
-            'author'      => __( 'Author',      CLICKWHALE_NAME ),
-            'created_at'  => __( 'Created',     CLICKWHALE_NAME ),
+            'is_active'   => __( 'Active', 'clickwhale' ),
+            'title'       => __( 'Title', 'clickwhale' ),
+            'description' => __( 'Description', 'clickwhale' ),
+            'position'    => __( 'Position', 'clickwhale' ),
+            'author'      => __( 'Author', 'clickwhale' ),
+            'created_at'  => __( 'Created', 'clickwhale' )
         );
     }
 
@@ -187,7 +187,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'delete' => __( 'Delete', CLICKWHALE_NAME )
+            'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
@@ -304,6 +304,6 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Tracking Codes Found', CLICKWHALE_NAME );
+        _e( 'No Tracking Codes Found', 'clickwhale' );
     }
 }

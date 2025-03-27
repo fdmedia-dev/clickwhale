@@ -17,19 +17,19 @@ class Clickwhale_Tablet {
      */
     public array $data;
 
-	public function __construct( $ua ) {
-		$this->detectWebTab( $ua );
-	}
+    public function __construct( $ua ) {
+        $this->detectWebTab( $ua );
+    }
 
-	/* WeTab */
+    /* WeTab */
 
-	private function detectWebTab( $ua ) {
-		if ( preg_match( '/WeTab-Browser /ui', $ua ) ) {
-			$this->type = 'tablet';
-			$this->data = array(
-				'manufacturer' => 'WeTab',
-				'model'        => 'WeTab'
-			);
-		}
-	}
+    private function detectWebTab( $ua ) {
+        if ( preg_match( '/WeTab-Browser /ui', $ua ) ) {
+            $this->type = 'tablet';
+            $this->data = array(
+                'manufacturer' => 'WeTab',
+                'model'        => 'WeTab'
+            );
+        }
+    }
 }

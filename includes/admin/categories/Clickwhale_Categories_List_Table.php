@@ -48,7 +48,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[ $column_name ] );
+        return esc_html( $item[$column_name] );
     }
 
     /**
@@ -66,7 +66,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             'edit'   => sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
                 $id,
-                __( 'Edit', CLICKWHALE_NAME )
+                __( 'Edit', 'clickwhale' )
             ),
             'delete' => sprintf(
                 '<a href="%s">%s</a>',
@@ -76,7 +76,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                         'delete-' . $this->_args['singular']
                     )
                 ),
-                __( 'Delete', CLICKWHALE_NAME )
+                __( 'Delete', 'clickwhale' )
             )
         );
 
@@ -141,9 +141,9 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     public function get_columns(): array {
         return array(
             'cb'          => '<input type="checkbox" />',
-            'title'       => __( 'Title', CLICKWHALE_NAME ),
-            'description' => __( 'Description', CLICKWHALE_NAME ),
-            'count'       => __( 'Links count', CLICKWHALE_NAME )
+            'title'       => __( 'Title', 'clickwhale' ),
+            'description' => __( 'Description', 'clickwhale' ),
+            'count'       => __( 'Links count', 'clickwhale' )
         );
     }
 
@@ -167,7 +167,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'delete' => __( 'Delete', CLICKWHALE_NAME )
+            'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
@@ -262,7 +262,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             $categories = explode( ',', $link['categories'] );
 
             while ( ( $i = array_search( $id, $categories ) ) !== false ) {
-                unset( $categories[ $i ] );
+                unset( $categories[$i] );
             }
 
             $categories = implode( ',', $categories );
@@ -331,6 +331,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Categories Found', CLICKWHALE_NAME );
+        _e( 'No Categories Found', 'clickwhale' );
     }
 }

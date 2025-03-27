@@ -1,8 +1,6 @@
 <?php
 namespace clickwhale\includes\admin\migration;
 
-//use clickwhale\includes\admin\migration\Clickwhale_Migration_Abstract;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -160,11 +158,11 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         );
     }
 
-	public function process_migration_time() {
-		$migration_options = get_option( 'clickwhale_tools_migration_options' );
+    public function process_migration_time() {
+        $migration_options = get_option( 'clickwhale_tools_migration_options' );
 
-		if ( isset( $migration_options['thirstyaffiliates_categories'] ) || isset( $migration_options['thirstyaffiliates_links'] ) ) {
-			$this->set_migration_time( 'thirstyaffiliates_last_migration', wp_date( 'Y-m-d H:i:s' ) );
-		}
-	}
+        if ( isset( $migration_options['thirstyaffiliates_categories'] ) || isset( $migration_options['thirstyaffiliates_links'] ) ) {
+            $this->set_migration_time( 'thirstyaffiliates_last_migration', wp_date( 'Y-m-d H:i:s' ) );
+        }
+    }
 }

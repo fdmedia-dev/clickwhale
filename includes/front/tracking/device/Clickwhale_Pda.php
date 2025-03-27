@@ -12,11 +12,11 @@ class Clickwhale_Pda {
      */
     public string $type;
 
-	public function __construct() {
-		$this->detectPDA();
-	}
+    public function __construct() {
+        $this->detectPDA();
+    }
 
-	private function detectPDA() {
-		$this->type = 'pda';
-	}
+    private function detectPDA() {
+        $this->type = 'pda';
+    }
 }

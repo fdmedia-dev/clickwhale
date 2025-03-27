@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.7
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,8 @@ With ClickWhale, you can **easily manage, shorten/cloak, analyze internal and af
 > [Check out our 1-click live demo with sample content](https://clickwhale.pro/link/live-demo/) 👈
 
 But that's not all. ClickWhale combines some useful marketing features in one plugin. Let's take a closer look:
+
+[youtube https://www.youtube.com/watch?v=PGsDweJwA94]
 
 ## ⭐️ Link Manager: A must-have for affiliate marketing
 Are you looking for a WordPress [link manager](https://clickwhale.pro/link-manager/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Manager) plugin to organize all your placed affiliate links? Then you've found it!
@@ -116,10 +118,22 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.5 (27th March 2025) =
+* New: Implemented collection of useful [code snippets](https://github.com/fdmedia-io/clickwhale-hooks) for third-party integration
+* New: Added link manager tab on settings page, optimized settings
+* New: Added link target options
+* Tweak: Added canonical URL for link pages
+* Tweak: Adjusted html "lang" attribute for link pages
+* Fix: Fixed spacing clashes on link pages in mobile view
+* Fix: Fixed the browser tab titles of the individual admin pages
+* Fix: Fixed link target for Gutenberg block
+* Fix: Fixed tracking code issues
+* Info: Added translations for the most popular languages
+
 = Version 2.4.4 (11th February 2025) =
+* Tweak: Optimized admin page tabs storage for links and link pages
 * Fix: Fixed vulnerabilities to enhance code security
 * Fix: Fixed JS "deprecated call" warning
-* Tweak: Optimized admin page tabs storage for Links and Link Pages
 * Info: WordPress v6.7.2 compatibility
 
 = Version 2.4.3 (27th January 2025) =
@@ -140,7 +154,6 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 * Fix: Adjusted use of image attachments for case when image was deleted from WP Media Library
 * Info: WordPress v6.7 compatibility
 * Info: Updated Freemius SDK to v2.9.0
-
 
 = Version 2.3.0 (2nd October 2024) =
 * Fix: Fixed "Deprecated: strip_tags()" issue occurred on admin pages

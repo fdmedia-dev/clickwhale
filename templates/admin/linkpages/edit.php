@@ -34,24 +34,24 @@ $seoTitle = esc_attr( $social['seo']['title'] ?? $item['title'] );
 $seoDescription = esc_attr( $social['seo']['description'] ?? get_bloginfo( 'description' ) );
 $robots = array(
     'noindex'      => array(
-        'title'       => __( "No Index", CLICKWHALE_NAME ),
-        'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.", CLICKWHALE_NAME )
+        'title'       => __( "No Index", 'clickwhale' ),
+        'description' => __( "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results.", 'clickwhale' )
     ),
     'nofollow'     => array(
-        'title'       => __( "No Follow", CLICKWHALE_NAME ),
-        'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages", CLICKWHALE_NAME )
+        'title'       => __( "No Follow", 'clickwhale' ),
+        'description' => __( "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages", 'clickwhale' )
     ),
     'noarchive'    => array(
-        'title'       => __( "No Archive", CLICKWHALE_NAME ),
-        'description' => __( "Do not show a cached link in search results.", CLICKWHALE_NAME ),
+        'title'       => __( "No Archive", 'clickwhale' ),
+        'description' => __( "Do not show a cached link in search results.", 'clickwhale' )
     ),
     'nosnippet'    => array(
-        'title'       => __( "No Snippet", CLICKWHALE_NAME ),
-        'description' => __( "Do not show a text snippet or video preview in the search results for this page.", CLICKWHALE_NAME ),
+        'title'       => __( "No Snippet", 'clickwhale' ),
+        'description' => __( "Do not show a text snippet or video preview in the search results for this page.", 'clickwhale' )
     ),
     'noimageindex' => array(
-        'title'       => __( "No Image Index", CLICKWHALE_NAME ),
-        'description' => __( "Do not index images on this page.", CLICKWHALE_NAME ),
+        'title'       => __( "No Image Index", 'clickwhale' ),
+        'description' => __( "Do not index images on this page.", 'clickwhale' )
     )
 );
 $seoOGTitle = esc_attr( $social['seo']['ogtitle'] ?? '' );
@@ -68,7 +68,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php
     echo Helper::render_heading(
         array(
-            'name' => __( 'Link Page', CLICKWHALE_NAME ),
+            'name' => __( 'Link Page', 'clickwhale' ),
             'is_edit' => $item_id !== 0,
             'link_to_list' => CLICKWHALE_SLUG . '-linkpages',
             'link_to_add' => CLICKWHALE_SLUG . '-edit-linkpage',
@@ -88,7 +88,7 @@ do_action( 'clickwhale_admin_banner' );
           action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $linkpage->instance_single ?>" />
-        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>" />
+        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
         <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
 
         <div id="post-body-content">
@@ -104,13 +104,13 @@ do_action( 'clickwhale_admin_banner' );
                 <?php } ?>
 
                 <div id="lp-tab-settings">
-                    <h2><?php _e( 'General', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'General', 'clickwhale' ); ?></h2>
                     <table style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Page Main Settings', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Page Main Settings', 'clickwhale' ); ?></caption>
                         <tbody>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="title"><?php _e( 'Title', CLICKWHALE_NAME ); ?></label>
+                                <label for="title"><?php _e( 'Title', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -121,7 +121,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'name'        => 'title',
                                         'type'        => 'text',
                                         'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                        'placeholder' => __( 'Link Page Title', CLICKWHALE_NAME ),
+                                        'placeholder' => __( 'Link Page Title', 'clickwhale' ),
                                         'required'    => true
                                     )
                                 );
@@ -133,12 +133,12 @@ do_action( 'clickwhale_admin_banner' );
                         <?php
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'Description', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'Description', 'clickwhale' ),
                                 'control'     => 'textarea',
                                 'id'          => 'description',
                                 'name'        => 'description',
                                 'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                                'placeholder' => __( 'Description', CLICKWHALE_NAME )
+                                'placeholder' => __( 'Description', 'clickwhale' )
                             ),
                             true
                         );
@@ -146,7 +146,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="slug"><?php _e( 'Slug', CLICKWHALE_NAME ); ?></label>
+                                <label for="slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -157,7 +157,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'name'        => 'slug',
                                         'type'        => 'text',
                                         'value'       => esc_attr( $item['slug'] ),
-                                        'placeholder' => __( 'Link Page Slug', CLICKWHALE_NAME ),
+                                        'placeholder' => __( 'Link Page Slug', 'clickwhale' ),
                                         'required'    => true
                                     )
                                 );
@@ -165,16 +165,16 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text"
                                    class="code"
-                                   title="<?php _e( 'Copy url', CLICKWHALE_NAME ); ?>"
+                                   title="<?php _e( 'Copy url', 'clickwhale' ); ?>"
                                 >
-                                    <?php echo __( 'URL Preview', CLICKWHALE_NAME ) . ': ' . get_bloginfo('url') . '/'; ?>
+                                    <?php echo __( 'URL Preview', 'clickwhale' ) . ': ' . get_bloginfo('url') . '/'; ?>
                                     <span><?php echo esc_html( $item['slug'] ); ?></span>/<em class="dashicons dashicons-clipboard"></em>
                                 </p>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="logo"><?php _e( 'Page Logo', CLICKWHALE_NAME ); ?></label>
+                                <label for="logo"><?php _e( 'Page Logo', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <div class="logo-field image-field">
@@ -187,33 +187,33 @@ do_action( 'clickwhale_admin_banner' );
                                         </a>
                                         <a href="#"
                                            class="button linkpage-image-remove"
-                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="logo" value="<?php echo $logo_id; ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="button linkpage-image-upload"
-                                        ><?php _e( 'Upload image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Upload image', 'clickwhale' ); ?></a>
                                         <a href="#"
                                            class="button linkpage-image-remove"
                                            style="display: none;"
-                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="logo" value="" />
                                     <?php } ?>
                                 </div>
-                                <p><?php _e( 'Max logo size 275px * 275px', CLICKWHALE_NAME ); ?></p>
+                                <p><?php echo __( 'Max logo size', 'clickwhale' ) . ' 275px * 275px'; ?></p>
                             </td>
                         </tr>
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="meta__legals_menu_id"><?php _e( 'Legals', CLICKWHALE_NAME ); ?></label>
+                                <label for="meta__legals_menu_id"><?php _e( 'Legals', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
                                 $legals = $linkpage->get_link_meta( $item_id, 'legals_menu_id' );
                                 echo Helper::render_control(
                                     array(
-                                        'row_label' => __( 'Legals', CLICKWHALE_NAME ),
+                                        'row_label' => __( 'Legals', 'clickwhale' ),
                                         'control'   => 'select',
                                         'id'        => 'cw-legals',
                                         'name'      => 'meta__legals_menu_id',
@@ -225,7 +225,7 @@ do_action( 'clickwhale_admin_banner' );
                                 <p class="description">
                                     <a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"
                                        target="_blank"
-                                       rel="noopener"><?php _e( 'Create a Legals Menu', CLICKWHALE_NAME ); ?></a>
+                                       rel="noopener"><?php _e( 'Create a Legals Menu', 'clickwhale' ); ?></a>
                                 </p>
                             </td>
                         </tr>
@@ -236,7 +236,7 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-contents">
-                    <h2><?php _e( 'Contents', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'Contents', 'clickwhale' ); ?></h2>
                     <div class="contents-wrap">
                         <div class="contents-aside">
                             <div class="contents-aside--inner">
@@ -252,14 +252,16 @@ do_action( 'clickwhale_admin_banner' );
                                                 <?php foreach ( $group['options'] as $value => $options ) { ?>
                                                     <div id="cw-content--<?php echo esc_attr( $value ); ?>"
                                                          class="cw-content--item <?php echo esc_attr( $disabled ); ?>"
-                                                         data-content="<?php echo esc_attr( $value ); ?>">
-                                                        <?php if ( isset( $options['icon'] ) && $options['icon'] ) { ?>
+                                                         data-content="<?php echo esc_attr( $value ); ?>"
+                                                    ><?php
+                                                        if ( isset( $options['icon'] ) && $options['icon'] ) {
+                                                            ?>
                                                             <svg class="feather">
-                                                                <use
-                                                                        href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#<?php echo $options['icon']; ?>"></use>
+                                                                <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#<?php echo $options['icon']; ?>"></use>
                                                             </svg>
-                                                        <?php } ?>
-                                                        <?php echo esc_html( $options['name'] ); ?>
+                                                            <?php
+                                                        }
+                                                        echo esc_html( $options['name'] ); ?>
                                                     </div>
                                                 <?php } ?>
                                             </div>
@@ -295,9 +297,9 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-styles">
-                    <h2><?php _e( 'Styles', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'Styles', 'clickwhale' ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Page Customization Options', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Page Customization Options', 'clickwhale' ); ?></caption>
                         <tbody>
 
                         <?php do_action( 'clickwhale_linkpage_before_general_styles', $item ); ?>
@@ -305,14 +307,14 @@ do_action( 'clickwhale_admin_banner' );
                         <?php // PAGE TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[text_color]"><?php _e( 'Page Text Color', CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[text_color]"><?php _e( 'Page Text Color', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[text_color]"
                                        class="cw-color-control"
                                        type="text"
-                                       value="<?php esc_attr_e( $styles['text_color'] ); ?>" />
-                                <p class="description"><?php _e( 'Set page text color', CLICKWHALE_NAME ); ?></p>
+                                       value="<?php echo esc_attr( $styles['text_color'] ); ?>" />
+                                <p class="description"><?php _e( 'Set page text color', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 
@@ -323,14 +325,14 @@ do_action( 'clickwhale_admin_banner' );
                             ?>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="styles[bg_color]"><?php _e( 'Page Background', CLICKWHALE_NAME ); ?></label>
+                                    <label for="styles[bg_color]"><?php _e( 'Page Background', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <input name="styles[bg_color]"
                                            class="cw-color-control"
                                            type="text"
-                                           value="<?php esc_attr_e( $styles['bg_color'] ); ?>" />
-                                    <p class="description"><?php _e( 'Set page background color', CLICKWHALE_NAME ); ?></p>
+                                           value="<?php echo esc_attr( $styles['bg_color'] ); ?>" />
+                                    <p class="description"><?php _e( 'Set page background color', 'clickwhale' ); ?></p>
                                 </td>
                             </tr>
 
@@ -345,68 +347,64 @@ do_action( 'clickwhale_admin_banner' );
                     <hr>
                     <?php do_action( 'clickwhale_linkpage_after_general_styles_table', $item ); ?>
 
-                    <h2><?php _e( 'Links', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'Links', 'clickwhale' ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Page Links Customization Options', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Page Links Customization Options', 'clickwhale' ); ?></caption>
                         <tbody>
 
                         <?php // LINK BACKGROUND ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color]"><?php _e( 'Background Color',  CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_bg_color]"><?php _e( 'Background Color', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color]"
                                        class="cw-color-control"
                                        type="text"
-                                       value="<?php esc_attr_e( $styles['link_bg_color'] ); ?>" />
-                                <p class="description"><?php _e( 'Set link background color (normal state)',  CLICKWHALE_NAME ); ?></p>
+                                       value="<?php echo esc_attr( $styles['link_bg_color'] ); ?>" />
+                                <p class="description"><?php _e( 'Set link background color (normal state)', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 
                         <?php // LINK BACKGROUND:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_bg_color_hover]"><?php _e( 'Background Color (hover/active)', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_bg_color_hover]"
                                        class="cw-color-control"
                                        type="text"
-                                       value="<?php esc_attr_e( $styles['link_bg_color_hover'] ); ?>" />
-                                <p class="description"><?php _e( 'Set link background color (hover/active)',
-                                        CLICKWHALE_NAME ); ?></p>
+                                       value="<?php echo esc_attr( $styles['link_bg_color_hover'] ); ?>" />
+                                <p class="description"><?php _e( 'Set link background color (hover/active)', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 
                         <?php // LINK TEXT COLOR ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color]"><?php _e( 'Text Color', CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_color]"><?php _e( 'Text Color', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color]"
                                        class="cw-color-control"
                                        type="text"
-                                       value="<?php esc_attr_e( $styles['link_color'] ); ?>" />
-                                <p class="description"><?php _e( 'Set link text color (normal state)',
-                                        CLICKWHALE_NAME ) ?></p>
+                                       value="<?php echo esc_attr( $styles['link_color'] ); ?>" />
+                                <p class="description"><?php _e( 'Set link text color (normal state)', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 
                         <?php // LINK TEXT COLOR:HOVER ?>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)',
-                                        CLICKWHALE_NAME ); ?></label>
+                                <label for="styles[link_color_hover]"><?php _e( 'Text Color (hover/active)', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <input name="styles[link_color_hover]"
                                        class="cw-color-control"
                                        type="text"
-                                       value="<?php esc_attr_e( $styles['link_color_hover'] ); ?>" />
-                                <p class="description"><?php _e( 'Set link text color (hover/active)',
-                                        CLICKWHALE_NAME ); ?></p>
+                                       value="<?php echo esc_attr( $styles['link_color_hover'] ); ?>" />
+                                <p class="description"><?php _e( 'Set link text color (hover/active)', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
                         </tbody>
@@ -416,34 +414,34 @@ do_action( 'clickwhale_admin_banner' );
                 </div>
 
                 <div id="lp-tab-seo">
-                    <h2><?php _e( 'SEO Options', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'SEO Options', 'clickwhale' ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Page SEO Options', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Page SEO Options', 'clickwhale' ); ?></caption>
                         <tbody>
                         <?php
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'SEO Title', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'SEO Title', 'clickwhale' ),
                                 'control'     => 'input',
                                 'id'          => 'socialSeoTitle',
                                 'name'        => 'social[seo][title]',
                                 'type'        => 'text',
                                 'value'       => wp_unslash( $seoTitle ),
                                 'placeholder' => '',
-                                'description' => __( 'Set page SEO title', CLICKWHALE_NAME )
+                                'description' => __( 'Set page SEO title', 'clickwhale' )
                             ),
                             true
                         );
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'SEO Description', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'SEO Description', 'clickwhale' ),
                                 'control'     => 'input',
                                 'id'          => 'socialSeoDescription',
                                 'name'        => 'social[seo][description]',
                                 'type'        => 'text',
                                 'value'       => wp_unslash( $seoDescription ),
                                 'placeholder' => '',
-                                'description' => __( 'Set page SEO description', CLICKWHALE_NAME )
+                                'description' => __( 'Set page SEO description', 'clickwhale' )
                             ),
                             true
                         );
@@ -451,16 +449,13 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label>
-                                    <?php _e( 'Robots Meta', CLICKWHALE_NAME ); ?>
-                                </label>
+                                <label><?php _e( 'Robots Meta', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php if ( ! get_option( 'blog_public' ) || get_option( 'blog_public' ) === '0' ) { ?>
                                     <div class="links-info">
                                         <?php printf(
-                                            __( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>',
-                                                CLICKWHALE_NAME ),
+                                            __( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>', 'clickwhale' ),
                                             esc_url( admin_url( 'options-reading.php' ) )
                                         ); ?>
                                     </div>
@@ -471,7 +466,7 @@ do_action( 'clickwhale_admin_banner' );
                                     $current_robots =
                                         isset( $social['seo']['robots'] )
                                             ? maybe_unserialize( $social['seo']['robots'] )
-                                            : [];
+                                            : array();
                                     foreach ( $robots as $robotKey => $robotVal ) {
                                         ?>
                                         <p>
@@ -504,36 +499,34 @@ do_action( 'clickwhale_admin_banner' );
 
                     <hr>
 
-                    <h2><?php _e( 'Open Graph Options', CLICKWHALE_NAME ); ?></h2>
+                    <h2><?php _e( 'Open Graph Options', 'clickwhale' ); ?></h2>
                     <table cellspacing="2" cellpadding="5" style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Page Open Graph Options', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Page Open Graph Options', 'clickwhale' ); ?></caption>
                         <tbody>
                         <?php
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'Open Graph Title (Optional)', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'Open Graph Title (Optional)', 'clickwhale' ),
                                 'control'     => 'input',
                                 'id'          => 'socialOGTitle',
                                 'name'        => 'social[seo][ogtitle]',
                                 'type'        => 'text',
                                 'value'       => wp_unslash( $seoOGTitle ),
                                 'placeholder' => wp_unslash( $seoTitle ),
-                                'description' => __( 'The title of your page for social network. By default this is Link Page title.',
-                                    CLICKWHALE_NAME )
+                                'description' => __( 'The title of your page for social network. By default this is Link Page title.', 'clickwhale' )
                             ),
                             true
                         );
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'Open Graph Description (Optional)', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'Open Graph Description (Optional)', 'clickwhale' ),
                                 'control'     => 'input',
                                 'id'          => 'socialOGDescription',
                                 'name'        => 'social[seo][ogdescription]',
                                 'type'        => 'text',
                                 'value'       => wp_unslash( $seoOGDescription ),
                                 'placeholder' => wp_unslash( $seoDescription ),
-                                'description' => __( 'The description of your page for social network. By default this is SEO description.',
-                                    CLICKWHALE_NAME )
+                                'description' => __( 'The description of your page for social network. By default this is SEO description.', 'clickwhale' )
                             ),
                             true
                         );
@@ -541,7 +534,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="ogimage"><?php _e( 'Open Graph Image', CLICKWHALE_NAME ); ?></label>
+                                <label for="ogimage"><?php _e( 'Open Graph Image', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <div class="og-image-field image-field">
@@ -554,25 +547,25 @@ do_action( 'clickwhale_admin_banner' );
                                         </a>
                                         <a href="#"
                                            class="linkpage-image-remove"
-                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="social[seo][ogimage]" value="<?php echo $seoOGImageId; ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="linkpage-image-upload"
-                                        ><?php _e( 'Upload image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Upload image', 'clickwhale' ); ?></a>
                                         <a href="#"
                                            class="linkpage-image-remove"
                                            style="display:none"
-                                        ><?php _e( 'Remove image', CLICKWHALE_NAME ); ?></a>
+                                        ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="social[seo][ogimage]" value="" />
                                     <?php } ?>
                                 </div>
-                                <p><?php _e( 'Recommended image size 1200px * 630px', CLICKWHALE_NAME ); ?></p>
+                                <p><?php _e( 'Recommended image size 1200px * 630px', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="ogimage"><?php _e( 'Open Graph Preview', CLICKWHALE_NAME ); ?></label>
+                                <label for="ogimage"><?php _e( 'Open Graph Preview', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <a class="button"
@@ -580,7 +573,7 @@ do_action( 'clickwhale_admin_banner' );
                                    href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL; ?>"
                                    target="_blank"
                                    rel="noopener">
-                                    <?php _e( 'View live preview', CLICKWHALE_NAME ); ?>
+                                    <?php _e( 'View live preview', 'clickwhale' ); ?>
                                 </a>
                                 <p class="description"></p>
                             </td>
@@ -601,14 +594,14 @@ do_action( 'clickwhale_admin_banner' );
             <input type="hidden" id="created_at" name="created_at"
                    value="<?php echo esc_attr( $item['created_at'] ); ?>">
 
-            <input type="submit" value="<?php _e( 'Save', CLICKWHALE_NAME ); ?>"
+            <input type="submit" value="<?php _e( 'Save', 'clickwhale' ); ?>"
                    id="submit"
                    class="button-primary"
                    name="submit"
             />
 
             <input type="button"
-                   value="<?php _e( 'Reset styles', CLICKWHALE_NAME ); ?>"
+                   value="<?php _e( 'Reset styles', 'clickwhale' ); ?>"
                    id="reset-styles"
                    class="button"
                    name="reset-styles"

@@ -14,18 +14,24 @@ $item_id = intval( $item['id'] );
 $item_categories = Categories_Helper::get_all();
 $tabs = $link->render_tabs();
 
-// SLUG
+// Slug
 if ( $item['slug'] ) {
-	$slug = $item['slug'];
+    $slug = $item['slug'];
 } else {
-	$randomSlug = ! Helper::get_clickwhale_option( 'general', 'random_slug' )
+	$random_slug = ! Helper::get_clickwhale_option( 'link_manager', 'random_slug' )
 		? Links_Helper::get_link_random_slug()
 		: '';
 
-	$slug = Helper::get_clickwhale_option( 'general', 'slug' ) ?
-		trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) ) . $randomSlug
-		: $randomSlug;
+	$slug = Helper::get_clickwhale_option( 'link_manager', 'slug' ) ?
+		trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) ) . $random_slug
+		: $random_slug;
 }
+
+// Link target
+$link_targets = array_merge(
+    array( '' => __( 'Default', 'clickwhale' ) ),
+    Links_Helper::get_link_targets()
+);
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -33,7 +39,7 @@ do_action( 'clickwhale_admin_banner' );
 	<?php
 	echo Helper::render_heading(
 		array(
-			'name'         => __( 'Link', CLICKWHALE_NAME ),
+			'name'         => __( 'Link', 'clickwhale' ),
 			'is_edit'      => $item_id !== 0,
 			'link_to_list' => CLICKWHALE_SLUG,
 			'link_to_add'  => CLICKWHALE_SLUG . '-edit-link'
@@ -48,7 +54,7 @@ do_action( 'clickwhale_admin_banner' );
     <form id="form_edit_<?php echo $link->instance_single; ?>"
           class="clickwhale_form_edit"
           method="POST"
-          action="<?php esc_attr_e( admin_url( 'admin-post.php' ) ); ?>"
+          action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $link->instance_single; ?>" />
         <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
@@ -67,12 +73,14 @@ do_action( 'clickwhale_admin_banner' );
                 <?php } ?>
 
                 <div id="link-tab-general">
+                    <?php do_action( 'clickwhale_link_before_general_tab_content', $item_id, esc_attr( $slug ) ); ?>
+
                     <table style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Main Settings', CLICKWHALE_NAME ); ?></caption>
+                        <caption hidden><?php _e( 'Link Main Settings', 'clickwhale' ); ?></caption>
                         <tbody>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="title"><?php _e( 'Title', CLICKWHALE_NAME ); ?></label>
+                                    <label for="title"><?php _e( 'Title', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -83,7 +91,7 @@ do_action( 'clickwhale_admin_banner' );
                                             'name'        => 'title',
                                             'type'        => 'text',
                                             'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                            'placeholder' => __( 'Link Title', CLICKWHALE_NAME ),
+                                            'placeholder' => __( 'Link Title', 'clickwhale' ),
                                             'required'    => false // we validate title in Clickwhale_Link_Edit::admin_scripts()
                                         )
                                     );
@@ -94,7 +102,7 @@ do_action( 'clickwhale_admin_banner' );
 
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="cw-slug"><?php _e( 'Slug', CLICKWHALE_NAME ); ?></label>
+                                    <label for="cw-slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -105,7 +113,7 @@ do_action( 'clickwhale_admin_banner' );
                                             'name'        => 'slug',
                                             'type'        => 'text',
                                             'value'       => esc_attr( $slug ),
-                                            'placeholder' => __( 'E.g. my-link', CLICKWHALE_NAME ),
+                                            'placeholder' => __( 'e.g. my-link', 'clickwhale' ),
                                             'required'    => false // we validate slug in Clickwhale_Link_Edit::admin_scripts()
                                         )
                                     );
@@ -113,9 +121,9 @@ do_action( 'clickwhale_admin_banner' );
                                     <p id="cw-slug--description"></p>
                                     <p id="cw-slug--text"
                                        class="code"
-                                       title="<?php _e( 'Copy url', CLICKWHALE_NAME ); ?>"
+                                       title="<?php _e( 'Copy url', 'clickwhale' ); ?>"
                                     ><?php
-                                        echo __( 'URL Preview', CLICKWHALE_NAME ) . ': ' .
+                                        echo __( 'URL Preview', 'clickwhale' ) . ': ' .
                                             trailingslashit( esc_html( get_bloginfo( 'url' ) ) ) .
                                             trailingslashit( esc_html( $slug ) );
                                         ?><svg class="feather"><use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#copy"></use></svg>
@@ -125,7 +133,7 @@ do_action( 'clickwhale_admin_banner' );
 
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="url"><?php _e( 'Target URL', CLICKWHALE_NAME ); ?></label>
+                                    <label for="url"><?php _e( 'Target URL', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -136,7 +144,7 @@ do_action( 'clickwhale_admin_banner' );
                                             'name'        => 'url',
                                             'type'        => 'url',
                                             'value'       => esc_url( $item['url'] ),
-                                            'placeholder' => __( 'Link Target URL', CLICKWHALE_NAME ),
+                                            'placeholder' => __( 'Link Target URL', 'clickwhale' ),
                                             'required'    => false // we validate url in Clickwhale_Link_Edit::admin_scripts()
                                         )
                                     );
@@ -148,17 +156,11 @@ do_action( 'clickwhale_admin_banner' );
                             <?php
                             echo Helper::render_control(
                                 array(
-                                    'row_label' => __( 'Redirection Type', CLICKWHALE_NAME ),
+                                    'row_label' => __( 'Redirection Type', 'clickwhale' ),
                                     'control'   => 'select',
                                     'id'        => 'redirection',
                                     'name'      => 'redirection',
-                                    'options'   => array(
-                                        301 => '301 Moved permanently',
-                                        302 => '302 Found / Moved temporarily',
-                                        303 => '303 See Other',
-                                        307 => '307 Temporarily Redirect',
-                                        308 => '308 Permanent Redirect'
-                                    ),
+                                    'options'   => Links_Helper::get_redirections(),
                                     'value'     => esc_attr( $item['redirection'] )
                                 ),
                                 true
@@ -166,59 +168,71 @@ do_action( 'clickwhale_admin_banner' );
 
                             echo Helper::render_control(
                                 array(
-                                    'row_label' => __( 'Nofollow', CLICKWHALE_NAME ),
+                                    'row_label' => __( 'Link Target', 'clickwhale' ),
+                                    'control'   => 'select',
+                                    'id'        => 'link_target',
+                                    'name'      => 'link_target',
+                                    'options'   => $link_targets,
+                                    'value'     => $item_id === 0 ? '' : esc_attr( $item['link_target'] )
+                                ),
+                                true
+                            );
+
+                            echo Helper::render_control(
+                                array(
+                                    'row_label' => __( 'Nofollow', 'clickwhale' ),
                                     'control'   => 'checkbox',
                                     'id'        => 'nofollow',
                                     'name'      => 'nofollow',
                                     'value'     => $item_id === 0
-                                                   && Helper::get_clickwhale_option( 'general', 'nofollow' )
+                                                   && Helper::get_clickwhale_option( 'link_manager', 'nofollow' )
                                         ? 1
                                         : intval( $item['nofollow'] ),
-                                    'label'     => __( 'Check to mark link as nofollow & noindex', CLICKWHALE_NAME )
+                                    'label'     => __( 'Check to mark link as nofollow & noindex', 'clickwhale' )
                                 ),
                                 true
                             );
 
                             echo Helper::render_control(
                                 array(
-                                    'row_label' => __( 'Sponsored', CLICKWHALE_NAME ),
+                                    'row_label' => __( 'Sponsored', 'clickwhale' ),
                                     'control'   => 'checkbox',
                                     'id'        => 'sponsored',
                                     'name'      => 'sponsored',
                                     'value'     => $item_id === 0
-                                                   && Helper::get_clickwhale_option( 'general', 'sponsored' )
+                                                   && Helper::get_clickwhale_option( 'link_manager', 'sponsored' )
                                         ? 1
                                         : intval( $item['sponsored'] ),
-                                    'label'     => __( 'Check to mark link as sponsored', CLICKWHALE_NAME )
+                                    'label'     => __( 'Check to mark link as sponsored', 'clickwhale' )
                                 ),
                                 true
                             );
 
                             echo Helper::render_control(
                                 array(
-                                    'row_label'   => __( 'Description', CLICKWHALE_NAME ),
+                                    'row_label'   => __( 'Description', 'clickwhale' ),
                                     'control'     => 'textarea',
                                     'id'          => 'description',
                                     'name'        => 'description',
                                     'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                                    'placeholder' => __( 'Description', CLICKWHALE_NAME )
+                                    'placeholder' => __( 'Description', 'clickwhale' )
                                 ),
                                 true
                             );
 
                             if ( $item_categories ) {
-                                $categories_for_options = [];
+                                $categories_for_options = array();
                                 $current_categories     = ! empty( $item['categories'] )
                                     ? explode( ',', sanitize_text_field( $item['categories'] ) )
-                                    : [];
+                                    : array();
 
                                 foreach ( $item_categories as $category ) {
-                                    $categories_for_options[ $category->id ] = $category->title;
+                                    $categories_for_options[$category->id] = $category->title;
                                 }
 
                                 echo Helper::render_control(
                                     array(
-                                        'row_label' => __( 'Category', CLICKWHALE_NAME ),
+                                        'row_label' => __( 'Category', 'clickwhale' ),
                                         'control'   => 'checkboxes',
                                         'id'        => 'category',
                                         'name'      => 'categories[]',
@@ -244,13 +258,13 @@ do_action( 'clickwhale_admin_banner' );
             <input type="submit"
                    id="submit"
                    name="submit"
-                   value="<?php _e( 'Save link', CLICKWHALE_NAME ); ?>"
+                   value="<?php _e( 'Save link', 'clickwhale' ); ?>"
                    class="button-primary"
             >
             <button id="copy-link-url"
                     type="button"
                     class="button">
-                <?php _e( 'Copy link', CLICKWHALE_NAME ); ?>
+                <?php _e( 'Copy link', 'clickwhale' ); ?>
             </button>
         </div>
     </form>

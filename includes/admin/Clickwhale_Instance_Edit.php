@@ -7,190 +7,178 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abstract class Clickwhale_Instance_Edit {
 
-	/**
-	 * Instance type as plural e.g. "links", "linkpages"
-	 *
-	 * @var string
-	 * @since 1.6.0
-	 */
-	public string $instance_plural;
+    /**
+     * Instance type as plural e.g. "links", "linkpages"
+     *
+     * @var string
+     * @since 1.6.0
+     */
+    public string $instance_plural;
 
-	/**
-	 * Instance type as single e.g. "link", "linkpage"
-	 *
-	 * @var string
-	 * @since 1.6.0
-	 */
-	public string $instance_single;
+    /**
+     * Instance type as single e.g. "link", "linkpage"
+     *
+     * @var string
+     * @since 1.6.0
+     */
+    public string $instance_single;
 
     /**
      * @var string
      */
-	protected string $page;
+    protected string $page;
+
+    public function __construct( string $instance_plural, string $instance_single ) {
+        $this->instance_plural = $instance_plural;
+        $this->instance_single = $instance_single;
+        $this->page            = CLICKWHALE_SLUG . '-edit-' . str_replace( '_', '-', $this->instance_single );
+
+        add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );
+
+        if ( ! empty( $_GET['page'] ) && sanitize_text_field( $_GET['page'] ) === $this->page ) {
+            add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
+
+            if ( ! empty ( intval( $_GET['id'] ) ) ) {
+                add_filter( 'admin_title', array( $this, 'set_edit_page_title' ), 10, 2 );
+            }
+        }
+    }
 
     /**
-     * @var string
+     * Default values for the instance
+     *
+     * @return array
+     * @since 1.6.0
      */
-	protected string $filter_param;
+    abstract public function get_defaults(): array;
 
-	public function __construct( string $instance_plural, string $instance_single ) {
-		$this->instance_plural = $instance_plural;
-		$this->instance_single = $instance_single;
-		$this->page            = CLICKWHALE_SLUG . '-edit-' . str_replace( '_', '-', $this->instance_single );
-		$this->filter_param    = ! empty ( $_GET['id'] ) ? 'edit' : 'add';
+    /**
+     * Get current instance
+     *
+     * @param $request
+     *
+     * @return mixed
+     * @since 1.6.0
+     */
+    public function get_item( $request ) {
+        if ( ! is_numeric( $request['id'] ) ) {
+            $this->no_item();
+        }
 
-		add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );
+        // get default values
+        $defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
 
-		if ( ! empty( $_GET['page'] ) && $_GET['page'] === $this->page ) {
-			add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
-			add_filter( 'admin_title', array( $this, "set_{$this->filter_param}_page_title" ), 10, 2 );
-		}
-	}
+        // if item id=0 or id doesn't set/exists than use $defaults
+        if ( empty( $request['id'] ) ) {
+            return $defaults;
+        }
 
-	/**
-	 * Default values for the instance
-	 *
-	 * @return array
-	 * @since 1.6.0
-	 */
-	abstract public function get_defaults(): array;
+        // get data by id
+        $helper = ucfirst( "{$this->instance_plural}_Helper" );
 
-	/**
-	 * Get current instance
-	 *
-	 * @param $request
-	 *
-	 * @return mixed
-	 * @since 1.6.0
-	 */
-	public function get_item( $request ) {
-		if ( ! is_numeric( $request['id'] ) ) {
-			$this->no_item();
-		}
-
-		// get default values
-		$defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
-
-		// if item id=0 or id doesn't set/exists than use $defaults
-		if ( empty( $request['id'] ) ) {
-			return $defaults;
-		}
-
-		// get data by id
-		$helper = ucfirst( "{$this->instance_plural}_Helper" );
-
-		$item = call_user_func(
-			array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
-			intval( $request['id'] )
+        $item = call_user_func(
+            array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
+            intval( $request['id'] )
         );
 
-		// if link with id doesn't exist
-		if ( ! $item ) {
-			$this->no_item();
-		}
+        // if link with id doesn't exist
+        if ( ! $item ) {
+            $this->no_item();
+        }
 
-		return $item;
-	}
+        return $item;
+    }
 
-	/**
-	 * Save or update instance
-	 *
-	 * @return mixed
-	 * @since 1.6.0
-	 */
-	abstract public function save_update();
+    /**
+     * Save or update instance
+     *
+     * @return mixed
+     * @since 1.6.0
+     */
+    abstract public function save_update();
 
-	/**
-	 * Message if id wasn't found
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 */
-	protected function no_item() {
-		wp_die(
-			__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', CLICKWHALE_NAME ),
-			__( 'Error', CLICKWHALE_NAME ),
-			array(
-				'link_text' => esc_html( __( "Back", CLICKWHALE_NAME ) ),
-			)
-		);
-	}
+    /**
+     * Message if id wasn't found
+     *
+     * @return void
+     * @since 1.6.0
+     */
+    protected function no_item() {
+        wp_die(
+            __( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', 'clickwhale' ),
+            __( 'Error', 'clickwhale' ),
+            array(
+                'link_text' => esc_html( __( 'Back', 'clickwhale' ) )
+            )
+        );
+    }
 
-	/**
-	 * Set transient for saved/updated item for the message
-	 *
-	 * @param string $id
-	 * @param string $value
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 */
-	protected function set_transient( string $id, string $value ) {
-		set_transient( sanitize_key( $this->instance_single . '-' . $id ), esc_html( $value ), 15 ); // 15 seconds
-	}
+    /**
+     * Set transient for saved/updated item for the message
+     *
+     * @param string $id
+     * @param string $value
+     *
+     * @return void
+     * @since 1.6.0
+     */
+    protected function set_transient( string $id, string $value ) {
+        set_transient( sanitize_key( $this->instance_single . '-' . $id ), esc_html( $value ), 15 ); // 15 seconds
+    }
 
-	/**
-	 * Show message after save or update item
-	 *
-	 * @param string $id
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 */
-	public function show_message( string $id ) {
+    /**
+     * Show message after save or update item
+     *
+     * @param string $id
+     *
+     * @return void
+     * @since 1.6.0
+     */
+    public function show_message( string $id ) {
         if ( empty( $id ) ) {
             return;
         }
 
         $transient = get_transient( "$this->instance_single-$id" );
 
-		if ( empty( $transient ) ) {
-			return;
-		}
+        if ( empty( $transient ) ) {
+            return;
+        }
 
-		if ( $transient === 'added' ) {
-			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully saved', CLICKWHALE_NAME ) . '</p></div>';
+        if ( $transient === 'added' ) {
+            echo '<div class="updated"><p>';
+            printf( __( '%s was successfully saved', 'clickwhale' ), ucwords( str_replace( '_', ' ', $this->instance_single ) ) );
+            echo '</p></div>';
 
-		} elseif ( $transient === 'updated' ) {
-			echo '<div class="updated"><p>' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . __( ' was successfully updated', CLICKWHALE_NAME ) . '</p></div>';
-		}
+        } elseif ( $transient === 'updated' ) {
+            echo '<div class="updated"><p>';
+            printf( __( '%s was successfully updated', 'clickwhale' ), ucwords( str_replace( '_', ' ', $this->instance_single ) ) );
+            echo '</p></div>';
+        }
 
         delete_transient( "$this->instance_single-$id" );
-	}
+    }
 
-	/**
-	 * Set admin page title (Edit instance)
-	 *
-	 * @param string $admin_title
-	 * @param string $title
-	 *
-	 * @return string
-	 * @since 1.6.0
-	 */
-	public function set_edit_page_title( string $admin_title, string $title ): string {
+    /**
+     * Set admin page title (Edit instance)
+     *
+     * @param string $admin_title
+     * @param string $title
+     *
+     * @return string
+     * @since 1.6.0
+     */
+    public function set_edit_page_title( string $admin_title, string $title ): string {
         $item = $this->get_item( $_GET );
 
-		return 'Edit &#8220;' . esc_attr( wp_unslash( $item['title'] ) ) . '&#8221; ' . str_replace( '_', ' ', $this->instance_single ) . ' ' . $admin_title;
-	}
+        return 'Edit &#8220;' . esc_attr( wp_unslash( $item['title'] ) ) . '&#8221; ' . str_replace( 'Add New ', '', $admin_title );
+    }
 
-	/**
-	 *  Set admin page title (Add instance)
-	 *
-	 * @param string $admin_title
-	 * @param string $title
-	 *
-	 * @return string
-	 * @since 1.6.0
-	 */
-	public function set_add_page_title( string $admin_title, string $title ): string {
-		return 'Add ' . ucwords( str_replace( '_', ' ', $this->instance_single ) ) . ' ' . $admin_title;
-	}
-
-	/**
-	 * JS for current page
-	 *
-	 * @return void
-	 * @since 1.6.0
-	 */
-	abstract public function admin_scripts(): void;
+    /**
+     * JS for current page
+     *
+     * @return void
+     * @since 1.6.0
+     */
+    abstract public function admin_scripts(): void;
 }

@@ -343,6 +343,9 @@ ion-icon {
 	cursor: pointer;
 	font-size: 12px;
 	line-height: 1em;
+	min-width: 0; /* Allows to shrink */
+	overflow-wrap: break-word; /* For long words e.g. German locale */
+	word-break: break-word; /* For long words e.g. German locale */
 }
 
 .cw-content--item svg {
@@ -893,6 +896,10 @@ ion-icon {
 	height: 100%
 }
 
+.linkpage-row--image-select--reset .reset-image {
+	cursor: pointer;
+}
+
 .linkpage-row--image-remove svg {
 	display: flex;
 	width: 16px;
@@ -1063,6 +1070,10 @@ td > .links-info {
 
 .clickwhale-tab {
 	padding: 1rem 0 0 0;
+}
+
+#link-tab-general {
+	position: relative;
 }
 
 .clickwhale-linkpage--message {

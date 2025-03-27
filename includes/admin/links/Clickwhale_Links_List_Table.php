@@ -104,7 +104,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         <div class="alignleft actions bulkactions">
             <select name="category" class="clickwhale-filter-categories">
-                <option value=""><?php _e( 'All Categories', CLICKWHALE_NAME ); ?></option>
+                <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
                 <?php foreach ( $categories as $category ) {
                     $category_id = intval( $category->id );
                     $selected = isset( $_GET['category'] ) && $_GET['category'] == $category_id ? ' selected = "selected"' : '';
@@ -112,7 +112,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
                 <?php } ?>
             </select>
-            <input type="submit" class="button" value="<?php _e( 'Filter', CLICKWHALE_NAME ); ?>" />
+            <input type="submit" class="button" value="<?php _e( 'Filter', 'clickwhale' ); ?>" />
         </div>
         <?php
     }
@@ -123,7 +123,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[ $column_name ] );
+        return esc_html( $item[$column_name] );
     }
 
     /**
@@ -141,7 +141,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             'edit'   => sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
                 $id,
-                __( 'Edit', CLICKWHALE_NAME )
+                __( 'Edit', 'clickwhale' )
             ),
             'reset'  => sprintf(
                 '<a href="%s">%s</a>',
@@ -151,7 +151,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                         'reset-' . $this->_args['singular']
                     )
                 ),
-                __( 'Reset Clicks', CLICKWHALE_NAME )
+                __( 'Reset Clicks', 'clickwhale' )
             ),
             'delete' => sprintf(
                 '<a href="%s">%s</a>',
@@ -161,7 +161,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                         'delete-' . $this->_args['singular']
                     )
                 ),
-                __( 'Delete', CLICKWHALE_NAME )
+                __( 'Delete', 'clickwhale' )
             )
         );
 
@@ -178,7 +178,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_slug( $item ): string {
-        return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . esc_attr( $item['slug'] ) . '" readonly><a href="#" class="slug-input--btn" data-id="' . intval( $item['id'] ) . '" title="' . __( 'Copy Link', CLICKWHALE_NAME ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+        return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . esc_attr( $item['slug'] ) . '" readonly><a href="#" class="slug-input--btn" data-id="' . intval( $item['id'] ) . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
     }
 
     /**
@@ -216,7 +216,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         foreach ( $link_categories as $v ) {
             $v = intval( $v );
-            $result = array_column( $categories, null, 'id' )[ $v ] ?? false;
+            $result = array_column( $categories, null, 'id' )[$v] ?? false;
 
             if ( empty( $result ) ) {
                 continue;
@@ -250,21 +250,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     /**
-     * @param $item
-     * @return string
-     */
-    public function column_author( $item ): string {
-        $user_info = get_userdata( $item['author'] );
-
-        return sprintf(
-            '<a href="%s&author=%d">%s</a>',
-            get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ),
-            $user_info->ID,
-            $user_info->display_name
-        );
-    }
-
-    /**
      * @param $item - row (key, value array)
      * @return string
      */
@@ -283,12 +268,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         $columns = array(
             'cb'           => '<input type="checkbox" />',
-            'title'        => __( 'Title', CLICKWHALE_NAME ),
-            'slug'         => __( 'Slug', CLICKWHALE_NAME ),
-            'url'          => __( 'Target URL', CLICKWHALE_NAME ),
-            'categories'   => __( 'Categories', CLICKWHALE_NAME ),
-            'clicks_count' => __( 'Clicks', CLICKWHALE_NAME ),
-            'author'       => __( 'Author', CLICKWHALE_NAME )
+            'title'        => __( 'Title', 'clickwhale' ),
+            'slug'         => __( 'Slug', 'clickwhale' ),
+            'url'          => __( 'Target URL', 'clickwhale' ),
+            'categories'   => __( 'Categories', 'clickwhale' ),
+            'clicks_count' => __( 'Clicks', 'clickwhale' )
         );
 
         if ( isset( $tracking_options['disable_tracking'] ) ) {
@@ -319,9 +303,9 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'edit' => __( 'Edit', CLICKWHALE_NAME ),
-            'reset' => __( 'Reset Clicks', CLICKWHALE_NAME ),
-            'delete' => __( 'Delete', CLICKWHALE_NAME )
+            'edit' => __( 'Edit', 'clickwhale' ),
+            'reset' => __( 'Reset Clicks', 'clickwhale' ),
+            'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
@@ -361,19 +345,19 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     }
                 }
 
-                if ( isset( $_GET['link_author'] ) ) {
-                    $link_author = sanitize_text_field( $_GET['link_author'] );
-
-                    if ( $link_author !== '-1' ) {
-                        $data['author'] = $link_author;
-                    }
-                }
-
                 if ( isset( $_GET['redirection_status'] ) ) {
                     $redirection = sanitize_text_field( $_GET['redirection_status'] );
 
                     if ( $redirection !== '-1' ) {
                         $data['redirection'] = $redirection;
+                    }
+                }
+
+                if ( isset( $_GET['link_target_status'] ) ) {
+                    $link_target = sanitize_text_field( $_GET['link_target_status'] );
+
+                    if ( $link_target !== '-1' ) {
+                        $data['link_target'] = $link_target;
                     }
                 }
 
@@ -413,8 +397,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     $url = remove_query_arg(
                         array(
                             'link_category',
-                            'link_author',
                             'redirection_status',
+                            'link_target_status',
                             'nofollow_status',
                             'sponsored_status'
                         ),
@@ -422,7 +406,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     );
                     $url = add_query_arg(
                         array(
-                            'action'  => '-1',
+                            'action' => '-1',
                             'action2' => '-1'
                         ),
                         $url
@@ -539,9 +523,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         if ( ! empty( $_GET['category'] ) ) {
             $params['category'] = intval( $_GET['category'] );
         }
-        if ( ! empty( $_GET['author'] ) ) {
-            $params['author'] = intval( $_GET['author'] );
-        }
 
         $current_data = $this->get_current_data( $order, $orderby, $params );
         $total_items = count( $current_data );
@@ -557,7 +538,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Links Found', CLICKWHALE_NAME );
+        _e( 'No Links Found', 'clickwhale' );
     }
 
     public function display() {

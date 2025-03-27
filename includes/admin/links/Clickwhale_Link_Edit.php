@@ -25,28 +25,30 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
      * @return array
      */
     public function get_defaults(): array {
-        $plugin_defaults = clickwhale()->settings->default_options();
+        $defaults = clickwhale()->settings->default_options();
+        $link_manager_options = get_option( 'clickwhale_link_manager_options' );
 
         return array(
             'id'          => 0,
             'title'       => '',
             'url'         => '',
             'slug'        => '',
-            'redirection' => $plugin_defaults['general']['options']['redirect_type'],
+            'redirection' => $link_manager_options['redirect_type'] ?? $defaults['link_manager']['options']['redirect_type'],
+            'link_target' => $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'],
             'nofollow'    => '',
             'sponsored'   => '',
             'description' => '',
             'categories'  => '',
             'author'      => 0,
             'created_at'  => '',
-            'updated_at'  => '',
+            'updated_at'  => ''
         );
     }
 
     public function render_tabs() {
         $tabs = array(
             'general' => array(
-                'name' => __( 'General', CLICKWHALE_NAME ),
+                'name' => __( 'General', 'clickwhale' ),
                 'url'  => 'general'
             )
         );
@@ -93,7 +95,8 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     public function admin_scripts(): void {
         $nonce = wp_create_nonce( 'slug_exists' );
 
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) { ?>
+        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) {
+            ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
                     <?php if ( isset( $_GET['id'] ) ) { ?>
@@ -113,7 +116,8 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     <?php } ?>
                 });
             </script>
-        <?php } ?>
+            <?php
+        } ?>
 
         <script type='text/javascript'>
             jQuery(document).ready(function() {
@@ -129,21 +133,21 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                 /**
                  * If "Disable random slug" option is checked: use title as slug
                  */
-                if ( Helper::get_clickwhale_option( 'general', 'random_slug' ) ) {
-                    $slugOptionsGeneral = Helper::get_clickwhale_option( 'general', 'slug' )
-                        ? trailingslashit( Helper::get_clickwhale_option( 'general', 'slug' ) )
+                if ( Helper::get_clickwhale_option( 'link_manager', 'random_slug' ) ) {
+                    $slug_options = Helper::get_clickwhale_option( 'link_manager', 'slug' )
+                        ? trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) )
                         : '';
                 ?>
-                    const slugOptionsGeneral = "<?php echo $slugOptionsGeneral; ?>";
+                    const slugOptions = "<?php echo esc_js( $slug_options ); ?>";
 
                     jQuery(title).on('blur', function() {
-                        if (!slug.val() || slug.val() === slugOptionsGeneral) {
-                            slug.val(slugOptionsGeneral + this.value).trigger("blur");
+                        if (!slug.val() || slug.val() === slugOptions) {
+                            slug.val(slugOptions + this.value).trigger("blur");
                         }
                     });
                     jQuery(slug).on('blur', function() {
-                        if (title.val() && (!this.value || this.value === slugOptionsGeneral)) {
-                            slug.val(slugOptionsGeneral + title.val()).trigger("blur");
+                        if (title.val() && (!this.value || this.value === slugOptions)) {
+                            slug.val(slugOptions + title.val()).trigger("blur");
                         }
                     });
                 <?php } ?>
@@ -162,7 +166,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         title.addClass('error')
-                            .next().text('<?php _e( 'Please enter title', CLICKWHALE_NAME ); ?>');
+                            .next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
                         return false;
                     } else {
                         title.removeClass('error').next().text('');
@@ -172,7 +176,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php _e( 'Please enter slug', CLICKWHALE_NAME ); ?>');
+                            .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -182,7 +186,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php _e( 'This slug is already in use! Please enter another slug', CLICKWHALE_NAME ); ?>');
+                            .next().text('<?php echo esc_js( __( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ); ?>');
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -192,7 +196,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         url.addClass('error')
-                            .next().text('<?php _e( 'Please enter URL', CLICKWHALE_NAME ); ?>');
+                            .next().text('<?php echo esc_js( __( 'Please enter URL', 'clickwhale' ) ); ?>');
                         return false;
                     } else {
                         url.removeClass('error').next().text('');
@@ -201,9 +205,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     submit.trigger('clickwhale.link.save', { formEvent: e });
                 });
 
-                /**
-                 * JS FUNCTIONS
-                 */
+                /** JS FUNCTIONS */
 
                 function slugExists() {
                     let result = null;
@@ -213,7 +215,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         dataType: 'json',
                         url: ajaxurl,
                         data: {
-                            'security': '<?php echo $nonce ?>',
+                            'security': '<?php echo $nonce; ?>',
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'link',
                             'slug': slug.val(),

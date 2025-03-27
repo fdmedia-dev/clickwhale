@@ -14,19 +14,19 @@ $limit = Categories_Helper::get_limit();
 do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
-	<?php
-	echo Helper::render_heading(
-		array(
-			'name'         => __( 'Category', CLICKWHALE_NAME ),
-			'is_edit'      => $item_id !== 0,
-			'link_to_list' => CLICKWHALE_SLUG . '-categories',
-			'link_to_add'  => CLICKWHALE_SLUG . '-edit-category',
-			'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
-		)
-	);
+    <?php
+    echo Helper::render_heading(
+        array(
+            'name'         => __( 'Category', 'clickwhale' ),
+            'is_edit'      => $item_id !== 0,
+            'link_to_list' => CLICKWHALE_SLUG . '-categories',
+            'link_to_add'  => CLICKWHALE_SLUG . '-edit-category',
+            'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
+        )
+    );
 
-	$category->show_message( $item_id );
-	?>
+    $category->show_message( $item_id );
+    ?>
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
@@ -36,7 +36,7 @@ do_action( 'clickwhale_admin_banner' );
           action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
 
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $category->instance_single; ?>" />
-        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ) ?>" />
+        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
         <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
 
         <div class="metabox-holder" id="poststuff">
@@ -47,7 +47,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="title"><?php _e( 'Title', CLICKWHALE_NAME ); ?></label>
+                                <label for="title"><?php _e( 'Title', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -58,7 +58,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'name'        => 'title',
                                         'type'        => 'text',
                                         'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                        'placeholder' => __( 'E.g. Affiliate links', CLICKWHALE_NAME ),
+                                        'placeholder' => __( 'e.g. Affiliate links', 'clickwhale' ),
                                         'required'    => true
                                     )
                                 );
@@ -69,7 +69,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="slug"><?php _e( 'Slug', CLICKWHALE_NAME ); ?></label>
+                                <label for="slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -80,7 +80,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'name'        => 'slug',
                                         'type'        => 'text',
                                         'value'       => esc_attr( $item['slug'] ),
-                                        'placeholder' => __( 'E.g. affiliate-links', CLICKWHALE_NAME ),
+                                        'placeholder' => __( 'e.g. affiliate-links', 'clickwhale' ),
                                         'required'    => false
                                     )
                                 );
@@ -92,13 +92,13 @@ do_action( 'clickwhale_admin_banner' );
                         <?php
                         echo Helper::render_control(
                             array(
-                                'row_label'   => __( 'Description', CLICKWHALE_NAME ),
+                                'row_label'   => __( 'Description', 'clickwhale' ),
                                 'control'     => 'textarea',
                                 'id'          => 'description',
                                 'name'        => 'description',
                                 'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                                'placeholder' => __( 'Your comment here', CLICKWHALE_NAME ),
-                                'description' => __( 'Optional comment for the category', CLICKWHALE_NAME )
+                                'placeholder' => __( 'Your comment here', 'clickwhale' ),
+                                'description' => __( 'Optional comment for the category', 'clickwhale' )
                             ),
                             true
                         );
@@ -108,7 +108,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <?php if ( $count < $limit ) { ?>
                         <input type="submit"
-                               value="<?php _e( 'Save category', CLICKWHALE_NAME ); ?>"
+                               value="<?php _e( 'Save category', 'clickwhale' ); ?>"
                                id="submit"
                                class="button-primary"
                                name="submit" />

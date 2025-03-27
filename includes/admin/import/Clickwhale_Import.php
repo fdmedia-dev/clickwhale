@@ -7,63 +7,62 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Import {
 
-	public function __construct() {
-		add_action( 'admin_init', array( $this, 'import_settings' ) );
-		add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
-	}
+    public function __construct() {
+        add_action( 'admin_init', array( $this, 'import_settings' ) );
+        add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
+    }
 
-	public function import_settings() {
+    public function import_settings() {
 
-		add_settings_section(
-			'clickwhale_tools_import_section',
-			__( 'Import links from a CSV file', CLICKWHALE_NAME ),
-			array( $this, 'settings_section_callback' ),
-			'clickwhale_tools_import_settings',
-			array(
+        add_settings_section(
+            'clickwhale_tools_import_section',
+            __( 'Import links from a CSV file', 'clickwhale' ),
+            array( $this, 'settings_section_callback' ),
+            'clickwhale_tools_import_settings',
+            array(
                 'text' => sprintf(
-                    __( 'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>', CLICKWHALE_NAME ),
-					CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
+                    __( 'This tool allows you to import links to your site from a CSV file. <a href="%s" rel="noopener">Download Example CSV</a>', 'clickwhale' ),
+                    CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv'
                 )
             )
-		);
+        );
 
-		add_settings_field(
-			'import_file',
-			__( 'Choose a CSV file from your computer', CLICKWHALE_NAME ),
-			array( $this, 'import_file_callback' ),
-			'clickwhale_tools_import_settings',
-			'clickwhale_tools_import_section'
-		);
+        add_settings_field(
+            'import_file',
+            __( 'Choose a CSV file from your computer', 'clickwhale' ),
+            array( $this, 'import_file_callback' ),
+            'clickwhale_tools_import_settings',
+            'clickwhale_tools_import_section'
+        );
 
-		register_setting(
-			'clickwhale_tools_import_settings',
-			'clickwhale_tools_import_settings'
-		);
-	}
+        register_setting(
+            'clickwhale_tools_import_settings',
+            'clickwhale_tools_import_settings'
+        );
+    }
 
-	public function import_file_callback() {
-		echo '<input type="file" id="import_file" name="import_file" accept=".csv">';
-	}
+    public function import_file_callback() {
+        echo '<input type="file" id="import_file" name="import_file" accept=".csv">';
+    }
 
-	public static function settings_section_callback( $args ) {
-		echo '<p>' . $args['text'] . '</p>';
-	}
+    public static function settings_section_callback( $args ) {
+        echo '<p>' . $args['text'] . '</p>';
+    }
 
-	public function admin_scripts() {
+    public function admin_scripts() {
         if ( empty( $_GET['page'] ) ) {
             return;
         }
 
         if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
-			return;
-		}
+            return;
+        }
 
-		$nonce_upload_csv = wp_create_nonce( 'upload_csv' );
-		$nonce_map_csv    = wp_create_nonce( 'map_csv' );
-		$nonce_import_csv = wp_create_nonce( 'import_csv' );
-		$nonce_check_slug = wp_create_nonce( 'check_slug' );
-		?>
-
+        $nonce_upload_csv = wp_create_nonce( 'upload_csv' );
+        $nonce_map_csv    = wp_create_nonce( 'map_csv' );
+        $nonce_import_csv = wp_create_nonce( 'import_csv' );
+        $nonce_check_slug = wp_create_nonce( 'check_slug' );
+        ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
                 const
@@ -79,20 +78,18 @@ class Clickwhale_Import {
 
                     if (uploadedFile.type !== 'text/csv') {
                         jQuery(this).val('');
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
+                        alert('<?php echo esc_js( __( 'Please, select .csv file', 'clickwhale' ) ); ?>');
                     }
-
                 });
 
                 uploadForm.on('submit', function(e) {
                     e.preventDefault();
-
                     file = jQuery('#import_file')[0].files[0];
 
                     if (file) {
                         const formData = new FormData();
                         formData.set('action', 'clickwhale/admin/upload_csv');
-                        formData.set('security', '<?php echo $nonce_upload_csv ?>');
+                        formData.set('security', '<?php echo $nonce_upload_csv; ?>');
                         formData.set('file', file);
 
                         jQuery.ajax({
@@ -119,7 +116,7 @@ class Clickwhale_Import {
                             }
                         });
                     } else {
-                        alert('<?php _e( 'Please, select .csv file', CLICKWHALE_NAME ) ?>');
+                        alert('<?php echo esc_js( __( 'Please, select .csv file', 'clickwhale' ) ); ?>');
                     }
                 });
 
@@ -145,7 +142,7 @@ class Clickwhale_Import {
                                 mapped.push(selected);
                             } else {
                                 error = true;
-                                message = '<?php echo __( 'Duplicated field', CLICKWHALE_NAME ) ?>';
+                                message = '<?php echo esc_js( __( 'Duplicated field', 'clickwhale' ) ); ?>';
                                 select.css('border-color', 'red');
                                 select.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                             }
@@ -155,7 +152,7 @@ class Clickwhale_Import {
                     });
 
                     formData.set('action', 'clickwhale/admin/map_csv');
-                    formData.set('security', '<?php echo $nonce_map_csv ?>');
+                    formData.set('security', '<?php echo $nonce_map_csv; ?>');
                     formData.set('file', file);
                     formData.set('mapped', mapped);
                     formData.set('excluded', excluded);
@@ -189,7 +186,6 @@ class Clickwhale_Import {
                     setTimeout(function() {
                         remove.closest('tr').remove();
                     }, 300);
-
                 });
 
                 jQuery(document).on('click', '#import_button', function(e) {
@@ -211,7 +207,7 @@ class Clickwhale_Import {
                     // get all current slugs
                     jQuery.post(ajaxurl, {
                         'action': 'clickwhale/admin/check_slug_for_import',
-                        'security': '<?php echo $nonce_check_slug ?>'
+                        'security': '<?php echo $nonce_check_slug; ?>'
                     }).done(function(data) {
                         if (data.data) {
                             // after we get all slugs we can proceed import
@@ -239,9 +235,8 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo esc_js( __( 'Required field', 'clickwhale' ) ); ?>'
                                                 );
-
                                                 break;
                                             }
 
@@ -250,7 +245,7 @@ class Clickwhale_Import {
                                                 error = true;
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug already exists', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo esc_js( __( 'Slug already exists', 'clickwhale' ) ); ?>'
                                                 );
                                             }
 
@@ -260,29 +255,29 @@ class Clickwhale_Import {
 
                                                 showErrorMessage(
                                                     slugInput,
-                                                    '<?php echo __( 'Slug is not unique', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo esc_js( __( 'Slug is not unique', 'clickwhale' ) ); ?>'
                                                 );
                                                 break;
                                             } else {
                                                 // if not, then add it
                                                 slugs.push(val);
                                             }
-
                                             break;
 
                                         case 'redirection':
-                                            const select = jQuery(this).find('select');
+                                            const selectRedirection = jQuery(this).find('select');
+                                            val = selectRedirection ? selectRedirection.val() : 301;
+                                            break;
 
-                                            val = select ? select.val() : 301;
-
+                                        case 'link_target':
+                                            const selectLinkTarget = jQuery(this).find('select');
+                                            val = selectLinkTarget ? selectLinkTarget.val() : 'blank';
                                             break;
 
                                         case 'nofollow':
                                         case 'sponsored':
                                             const checkbox = jQuery(this).find('input[type="checkbox"]');
-
-                                            val = checkbox ? checkbox.is(":checked") : 0;
-
+                                            val = ( checkbox && checkbox.is(':checked') ) ? 1 : 0;
                                             break;
 
                                         default:
@@ -293,28 +288,25 @@ class Clickwhale_Import {
                                             }
 
                                             val = input.val();
-
                                             input.attr('style', '');
                                             input.parent().find('p').remove();
 
                                             if (!val) {
                                                 error = true;
-
                                                 showErrorMessage(
                                                     input,
-                                                    '<?php echo __( 'Required field', CLICKWHALE_NAME ) ?>'
+                                                    '<?php echo esc_js( __( 'Required field', 'clickwhale' ) ); ?>'
                                                 );
-
                                                 break;
                                             }
                                     }
+
                                     if (key) {
                                         row[key] = val;
                                     }
                                 });
 
                                 importData.push(row);
-
                             });
 
                             setTimeout(function() {
@@ -325,7 +317,7 @@ class Clickwhale_Import {
                             if (!error) {
                                 jQuery.post(ajaxurl, {
                                     'action': 'clickwhale/admin/import_csv',
-                                    'security': '<?php echo $nonce_import_csv ?>',
+                                    'security': '<?php echo $nonce_import_csv; ?>',
                                     'data': importData,
                                 }, function(response) {
                                     if (response.data) {
@@ -347,7 +339,7 @@ class Clickwhale_Import {
                             }
                         } else {
                             error = true;
-                            alert('<?php echo __( 'No items', CLICKWHALE_NAME ) ?>');
+                            alert('<?php echo esc_js( __( 'No items', 'clickwhale' ) ); ?>');
                         }
                     }).fail(function(data) {
                         error = true;
@@ -363,9 +355,8 @@ class Clickwhale_Import {
                     field.css('border-color', 'red');
                     field.parent().append('<p style="margin: 3px 0 0; line-height: 1em; color: red;"><small>' + message + '</small></p>');
                 }
-
             });
         </script>
-		<?php
-	}
+        <?php
+    }
 }

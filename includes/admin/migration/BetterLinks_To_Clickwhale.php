@@ -63,43 +63,43 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
         );
     }
 
-	public function process_categories_data(): array {
-		global $wpdb;
+    public function process_categories_data(): array {
+        global $wpdb;
 
-		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
+        $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
 
-		if ( ! $data ) {
-			return array(
-				'categories' => array()
-			);
-		}
+        if ( ! $data ) {
+            return array(
+                'categories' => array()
+            );
+        }
 
-		$message = array();
-		foreach ( $data as $item ) {
-			if ( ! $this->if_category_exists( $item->term_slug ) ) {
-				$array = array(
-					'title' => $item->term_name,
-					'slug'  => $item->term_slug,
-				);
+        $message = array();
+        foreach ( $data as $item ) {
+            if ( ! $this->if_category_exists( $item->term_slug ) ) {
+                $array = array(
+                    'title' => $item->term_name,
+                    'slug'  => $item->term_slug,
+                );
 
-				$this->run_categories_migration( $array );
+                $this->run_categories_migration( $array );
 
-				$message[] = $this->category_item_import_success( $item->term_name );
-			} else {
-				$message[] = $this->category_item_import_error( $item->term_name );
-			}
-		}
+                $message[] = $this->category_item_import_success( $item->term_name );
+            } else {
+                $message[] = $this->category_item_import_error( $item->term_name );
+            }
+        }
 
-		return array(
-			'categories' => $message
-		);
-	}
+        return array(
+            'categories' => $message
+        );
+    }
 
-	public function process_migration_time() {
-		$migration_options = get_option( 'clickwhale_tools_migration_options' );
+    public function process_migration_time() {
+        $migration_options = get_option( 'clickwhale_tools_migration_options' );
 
-		if ( isset( $migration_options['betterlinks_categories'] ) || isset( $migration_options['betterlinks_links'] ) ) {
-			$this->set_migration_time( 'betterlinks_last_migration', wp_date( 'Y-m-d H:i:s' ) );
-		}
-	}
+        if ( isset( $migration_options['betterlinks_categories'] ) || isset( $migration_options['betterlinks_links'] ) ) {
+            $this->set_migration_time( 'betterlinks_last_migration', wp_date( 'Y-m-d H:i:s' ) );
+        }
+    }
 }

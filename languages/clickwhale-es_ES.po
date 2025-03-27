@@ -1,0 +1,2528 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ClickWhale\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/clickwhale/\n"
+"Last-Translator: gpt-po v1.2.3\n"
+"Language-Team: ClickWhale <mail@clickwhale.pro>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-03-26T09:14:11+00:00\n"
+"PO-Revision-Date: 2025-03-26 10:20+0100\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+"X-Domain: clickwhale\n"
+
+#. Plugin Name of the plugin
+#. Author of the plugin
+#: clickwhale.php
+#: includes/admin/Clickwhale_Admin.php:143
+msgid "ClickWhale"
+msgstr "ClickWhale"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: clickwhale.php
+msgid "https://clickwhale.pro"
+msgstr "https://clickwhale.pro"
+
+#. Description of the plugin
+#: clickwhale.php
+msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
+msgstr "Administrador de enlaces, acortador de enlaces y rastreador de clics para enlaces de afiliados y páginas de enlaces."
+
+#: clickwhale.php:105
+msgid "License"
+msgstr "Licencia"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:69
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:47
+#: includes/admin/links/Clickwhale_Links_List_Table.php:144
+#: includes/admin/links/Clickwhale_Links_List_Table.php:306
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:51
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:79
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:170
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:63
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:174
+#: includes/admin/links/Clickwhale_Links_List_Table.php:164
+#: includes/admin/links/Clickwhale_Links_List_Table.php:308
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:61
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:190
+msgid "Delete"
+msgstr "Eliminar"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:144
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:143
+#: includes/admin/links/Clickwhale_Links_List_Table.php:271
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:166
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:162
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:233
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:370
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:524
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1133
+#: templates/admin/categories/edit.php:50
+#: templates/admin/linkpages/edit.php:113
+#: templates/admin/links/edit.php:83
+#: templates/admin/tracking-codes/edit.php:50
+msgid "Title"
+msgstr "Título"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:145
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:167
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:440
+#: templates/admin/categories/edit.php:95
+#: templates/admin/linkpages/edit.php:136
+#: templates/admin/linkpages/edit.php:141
+#: templates/admin/links/edit.php:213
+#: templates/admin/links/edit.php:218
+#: templates/admin/tracking-codes/edit.php:407
+msgid "Description"
+msgstr "Descripción"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:146
+msgid "Links count"
+msgstr "Cantidad de enlaces"
+
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:334
+msgid "No Categories Found"
+msgstr "No se encontraron categorías"
+
+#: includes/admin/categories/Clickwhale_Category_Edit.php:78
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:822
+#: includes/admin/links/Clickwhale_Link_Edit.php:169
+msgid "Please enter title"
+msgstr "Por favor, ingrese un título"
+
+#: includes/admin/categories/Clickwhale_Category_Edit.php:87
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:838
+#: includes/admin/links/Clickwhale_Link_Edit.php:189
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:444
+msgid "This slug is already in use! Please enter another slug"
+msgstr "¡Este slug ya está en uso! Por favor, ingrese otro slug"
+
+#: includes/admin/Clickwhale_Admin.php:116
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:145
+#: includes/admin/migration/Clickwhale_Migration.php:223
+#: pro/templates/admin/statistics/statistics.php:22
+#: templates/admin/linkpages/edit.php:350
+msgid "Links"
+msgstr "Enlaces"
+
+#: includes/admin/Clickwhale_Admin.php:117
+#: includes/Clickwhale.php:496
+msgid "Add New Link"
+msgstr "Agregar nuevo enlace"
+
+#: includes/admin/Clickwhale_Admin.php:118
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:39
+#: includes/admin/links/Clickwhale_Links_List_Table.php:274
+#: includes/admin/migration/Clickwhale_Migration.php:208
+#: pro/templates/admin/statistics/statistics.php:23
+msgid "Categories"
+msgstr "Categorías"
+
+#: includes/admin/Clickwhale_Admin.php:119
+#: includes/Clickwhale.php:508
+msgid "Add New Category"
+msgstr "Agregar nueva categoría"
+
+#: includes/admin/Clickwhale_Admin.php:120
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:330
+#: pro/templates/admin/statistics/statistics.php:24
+#: templates/admin/settings/pro.php:25
+#: templates/admin/settings/pro.php:45
+#: templates/admin/settings/pro.php:50
+#: templates/admin/settings/pro.php:55
+#: templates/admin/settings/pro.php:60
+#: templates/admin/settings/pro.php:66
+#: templates/admin/settings/pro.php:72
+msgid "Link Pages"
+msgstr "Páginas de enlaces"
+
+#: includes/admin/Clickwhale_Admin.php:121
+#: includes/Clickwhale.php:520
+msgid "Add New Link Page"
+msgstr "Agregar nueva página de enlace"
+
+#: includes/admin/Clickwhale_Admin.php:122
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:334
+#: templates/admin/settings/pro.php:35
+#: templates/admin/settings/pro.php:66
+#: templates/admin/settings/pro.php:72
+msgid "Tracking Codes"
+msgstr "Códigos de seguimiento"
+
+#: includes/admin/Clickwhale_Admin.php:123
+#: includes/Clickwhale.php:532
+msgid "Add New Tracking Code"
+msgstr "Agregar nuevo código de seguimiento"
+
+#: includes/admin/Clickwhale_Admin.php:142
+msgid "ClickWhale Links"
+msgstr "Enlaces de ClickWhale"
+
+#: includes/admin/Clickwhale_Admin.php:190
+#: includes/admin/Clickwhale_Admin.php:191
+#: includes/admin/Clickwhale_Admin.php:676
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:50
+#: templates/admin/settings/settings.php:9
+msgid "Settings"
+msgstr "Configuraciones"
+
+#: includes/admin/Clickwhale_Admin.php:203
+#: includes/admin/Clickwhale_Admin.php:204
+#: templates/admin/tools/tools.php:8
+msgid "Tools"
+msgstr "Herramientas"
+
+#: includes/admin/Clickwhale_Admin.php:224
+#: includes/admin/Clickwhale_Admin.php:225
+#: includes/admin/Clickwhale_Admin.php:526
+#: includes/admin/Clickwhale_Admin.php:693
+msgid "Upgrade to PRO"
+msgstr "Actualizar a PRO"
+
+#: includes/admin/Clickwhale_Admin.php:487
+msgid "You like ClickWhale? Then please <a href=\"%1$s\" target=\"_blank\">leave a review here</a>"
+msgstr "¿Te gusta ClickWhale? Entonces, por favor <a href=\"%1$s\" target=\"_blank\">deja una reseña aquí</a>"
+
+#: includes/admin/Clickwhale_Admin.php:509
+msgid "Need help?"
+msgstr "¿Necesitas ayuda?"
+
+#: includes/admin/Clickwhale_Admin.php:534
+msgid "Available only in PRO version"
+msgstr "Disponible solo en la versión PRO"
+
+#: includes/admin/Clickwhale_Admin.php:567
+msgid "Upgrade to ClickWhale Pro"
+msgstr "Actualizar a ClickWhale Pro"
+
+#: includes/admin/Clickwhale_Admin.php:570
+#: templates/admin/settings/pro.php:24
+#: templates/admin/settings/pro.php:25
+msgid "Detailed Statistics"
+msgstr "Estadísticas detalladas"
+
+#: includes/admin/Clickwhale_Admin.php:571
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:326
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:37
+#: templates/admin/settings/pro.php:29
+#: templates/admin/settings/pro.php:30
+msgid "Keyword Auto Linker"
+msgstr "Vinculador automático de palabras clave"
+
+#: includes/admin/Clickwhale_Admin.php:572
+#: templates/admin/settings/pro.php:39
+#: templates/admin/settings/pro.php:40
+msgid "UTM Campaign Tracking"
+msgstr "Seguimiento de campañas UTM"
+
+#: includes/admin/Clickwhale_Admin.php:573
+msgid "E-Commerce Conversion Tracking"
+msgstr "Seguimiento de conversiones de comercio electrónico"
+
+#: includes/admin/Clickwhale_Admin.php:574
+msgid "Advanced Customization Options"
+msgstr "Opciones de personalización avanzadas"
+
+#: includes/admin/Clickwhale_Admin.php:575
+msgid "More Blocks for Link Pages"
+msgstr "Más bloques para páginas de enlaces"
+
+#: includes/admin/Clickwhale_Admin.php:576
+#: templates/admin/settings/pro.php:71
+#: templates/admin/settings/pro.php:72
+msgid "Remove Plugin Credits"
+msgstr "Eliminar créditos del plugin"
+
+#: includes/admin/Clickwhale_Admin.php:582
+msgid "Upgrade Now"
+msgstr "Actualizar ahora"
+
+#: includes/admin/Clickwhale_Admin.php:596
+msgid "Plugin Documentation"
+msgstr "Documentación del plugin"
+
+#: includes/admin/Clickwhale_Admin.php:603
+msgid "How-To Shorten Links & Create Redirects"
+msgstr "Cómo acortar enlaces y crear redirecciones"
+
+#: includes/admin/Clickwhale_Admin.php:609
+msgid "How-To Import Links"
+msgstr "Cómo importar enlaces"
+
+#: includes/admin/Clickwhale_Admin.php:615
+msgid "How-To Use the Keyword Auto Linker"
+msgstr "Cómo usar el vinculador automático de palabras clave"
+
+#: includes/admin/Clickwhale_Admin.php:621
+msgid "Creating Your First Link Page"
+msgstr "Creando tu primera página de enlace"
+
+#: includes/admin/Clickwhale_Admin.php:626
+msgid "How-To Add Google Tag Manager To WordPress with ClickWhale"
+msgstr "Cómo agregar Google Tag Manager a WordPress con ClickWhale"
+
+#: includes/admin/Clickwhale_Admin.php:633
+msgid "View all Articles"
+msgstr "Ver todos los artículos"
+
+#: includes/admin/Clickwhale_Admin.php:717
+msgid "Documentation"
+msgstr "Documentación"
+
+#: includes/admin/Clickwhale_Admin.php:718
+msgid "Rate ClickWhale on WordPress.org"
+msgstr "Califica ClickWhale en WordPress.org"
+
+#: includes/admin/Clickwhale_Admin.php:763
+#: includes/admin/Clickwhale_Admin.php:783
+msgid "Copied!"
+msgstr "¡Copiado!"
+
+#: includes/admin/Clickwhale_Ajax.php:122
+msgid "Nothing to migrate"
+msgstr "Nada que migrar"
+
+#: includes/admin/Clickwhale_Ajax.php:158
+msgid "Successfully deleted! Page will be reloaded..."
+msgstr "¡Eliminado con éxito! La página se recargará..."
+
+#: includes/admin/Clickwhale_Ajax.php:184
+msgid "All statistic has been reset"
+msgstr "Todas las estadísticas han sido restablecidas"
+
+#: includes/admin/Clickwhale_Ajax.php:191
+msgid "All plugin tables has been reset"
+msgstr "Todas las tablas del plugin han sido restablecidas"
+
+#: includes/admin/Clickwhale_Ajax.php:200
+msgid "All plugin settings has been restored"
+msgstr "Todas las configuraciones del plugin han sido restauradas"
+
+#: includes/admin/Clickwhale_Ajax.php:365
+#: includes/admin/Clickwhale_Ajax.php:453
+#: includes/admin/import/Clickwhale_Import.php:81
+#: includes/admin/import/Clickwhale_Import.php:119
+msgid "Please, select .csv file"
+msgstr "Por favor, selecciona un archivo .csv"
+
+#: includes/admin/Clickwhale_Ajax.php:415
+msgid "Column name"
+msgstr "Nombre de columna"
+
+#: includes/admin/Clickwhale_Ajax.php:416
+msgid "Map to field"
+msgstr "Mapear a campo"
+
+#: includes/admin/Clickwhale_Ajax.php:422
+msgid "Do not import"
+msgstr "No importar"
+
+#: includes/admin/Clickwhale_Ajax.php:433
+msgid "Example:"
+msgstr "Ejemplo:"
+
+#: includes/admin/Clickwhale_Ajax.php:463
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:80
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:99
+#: templates/admin/links/edit.php:32
+msgid "Default"
+msgstr "Predeterminado"
+
+#: includes/admin/Clickwhale_Ajax.php:476
+msgid "Error opening file!"
+msgstr "¡Error al abrir el archivo!"
+
+#: includes/admin/Clickwhale_Ajax.php:598
+msgid "Nothing to import!"
+msgstr "¡Nada que importar!"
+
+#: includes/admin/Clickwhale_Ajax.php:625
+msgid "Link <strong>&quot;"
+msgstr "Enlace <strong>&quot;"
+
+#: includes/admin/Clickwhale_Ajax.php:627
+msgid "<strong>Error!</strong> Link <strong>&quot;"
+msgstr "<strong>¡Error!</strong> Enlace <strong>&quot;"
+
+#: includes/admin/Clickwhale_Ajax.php:640
+msgid "Bad request"
+msgstr "Solicitud incorrecta"
+
+#: includes/admin/Clickwhale_Ajax.php:700
+#: includes/admin/Clickwhale_Ajax.php:710
+msgid "Nothing to export"
+msgstr "Nada que exportar"
+
+#: includes/admin/Clickwhale_Instance_Edit.php:108
+msgid "You attempted to edit an item that does not exist. Perhaps it was deleted?"
+msgstr "Intentaste editar un elemento que no existe. ¿Quizás fue eliminado?"
+
+#: includes/admin/Clickwhale_Instance_Edit.php:109
+msgid "Error"
+msgstr "Error"
+
+#: includes/admin/Clickwhale_Instance_Edit.php:111
+msgid "Back"
+msgstr "Atrás"
+
+#: includes/admin/Clickwhale_Instance_Edit.php:150
+msgid "%s was successfully saved"
+msgstr "%s se guardó con éxito"
+
+#: includes/admin/Clickwhale_Instance_Edit.php:155
+msgid "%s was successfully updated"
+msgstr "%s se actualizó con éxito"
+
+#: includes/admin/Clickwhale_Settings.php:118
+msgid "Access Level"
+msgstr "Nivel de acceso"
+
+#: includes/admin/Clickwhale_Settings.php:129
+msgid "Decide who can access critical admin pages and the plugin settings."
+msgstr "Decide quién puede acceder a páginas críticas de administración y a la configuración del plugin."
+
+#: includes/admin/Clickwhale_Settings.php:134
+msgid "Hide Admin Bar Menu"
+msgstr "Ocultar menú de la barra de administración"
+
+#: includes/admin/Clickwhale_Settings.php:143
+msgid "Check to hide Clickwhale quick menu from the admin bar."
+msgstr "Marcar para ocultar el menú rápido de Clickwhale de la barra de administración."
+
+#: includes/admin/Clickwhale_Settings.php:150
+msgid "Tracking Duration"
+msgstr "Duración del seguimiento"
+
+#: includes/admin/Clickwhale_Settings.php:160
+msgid "30 days"
+msgstr "30 días"
+
+#: includes/admin/Clickwhale_Settings.php:166
+msgid "Disable Tracking"
+msgstr "Deshabilitar seguimiento"
+
+#: includes/admin/Clickwhale_Settings.php:175
+msgid "Check to disable tracking of views and clicks."
+msgstr "Marcar para deshabilitar el seguimiento de vistas y clics."
+
+#: includes/admin/Clickwhale_Settings.php:180
+#: templates/admin/tracking-codes/edit.php:394
+msgid "Exclude User Roles"
+msgstr "Excluir roles de usuario"
+
+#: includes/admin/Clickwhale_Settings.php:190
+msgid "Check the user roles that should be excluded from tracking."
+msgstr "Marcar los roles de usuario que deben ser excluidos del seguimiento."
+
+#: includes/admin/Clickwhale_Settings.php:197
+#: templates/admin/links/edit.php:159
+msgid "Redirection Type"
+msgstr "Tipo de redirección"
+
+#: includes/admin/Clickwhale_Settings.php:207
+msgid "Set default redirection type which will be used for new links."
+msgstr "Establecer el tipo de redirección predeterminado que se utilizará para nuevos enlaces."
+
+#: includes/admin/Clickwhale_Settings.php:212
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:85
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:96
+#: templates/admin/links/edit.php:171
+msgid "Link Target"
+msgstr "Destino del enlace"
+
+#: includes/admin/Clickwhale_Settings.php:222
+msgid "Set default target which will be used for all links."
+msgstr "Establecer el destino predeterminado que se utilizará para todos los enlaces."
+
+#: includes/admin/Clickwhale_Settings.php:227
+msgid "Nofollow Links"
+msgstr "Enlaces nofollow"
+
+#: includes/admin/Clickwhale_Settings.php:236
+msgid "Check to mark links as nofollow & noindex by default."
+msgstr "Marcar para marcar enlaces como nofollow y noindex por defecto."
+
+#: includes/admin/Clickwhale_Settings.php:241
+msgid "Sponsored Links"
+msgstr "Enlaces patrocinados"
+
+#: includes/admin/Clickwhale_Settings.php:250
+msgid "Check to mark links as sponsored by default."
+msgstr "Marque para marcar los enlaces como patrocinados por defecto."
+
+#: includes/admin/Clickwhale_Settings.php:251
+msgid "Recommended for affiliate links."
+msgstr "Recomendado para enlaces de afiliados."
+
+#: includes/admin/Clickwhale_Settings.php:256
+msgid "Link Prefix"
+msgstr "Prefijo de enlace"
+
+#: includes/admin/Clickwhale_Settings.php:267
+msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
+msgstr "Aquí, puede ingresar un prefijo que se añadirá al crear un nuevo enlace. Por ejemplo: <em>enlace</em>.<br><strong>Importante:</strong> Si cambia el prefijo, <u>no</u> afectará a los enlaces ya existentes."
+
+#: includes/admin/Clickwhale_Settings.php:272
+msgid "Random Slug"
+msgstr "Slug aleatorio"
+
+#: includes/admin/Clickwhale_Settings.php:281
+msgid "Check to <u>not</u> suggest a random link slug when creating a new link."
+msgstr "Marque para <u>no</u> sugerir un slug de enlace aleatorio al crear un nuevo enlace."
+
+#: includes/admin/Clickwhale_Settings.php:306
+#: includes/admin/links/Clickwhale_Link_Edit.php:51
+#: templates/admin/linkpages/edit.php:107
+msgid "General"
+msgstr "General"
+
+#: includes/admin/Clickwhale_Settings.php:310
+msgid "Tracking"
+msgstr "Seguimiento"
+
+#: includes/admin/Clickwhale_Settings.php:314
+#: templates/admin/settings/pro.php:25
+#: templates/admin/settings/pro.php:30
+#: templates/admin/settings/pro.php:40
+#: templates/admin/settings/pro.php:66
+msgid "Link Manager"
+msgstr "Administrador de enlaces"
+
+#: includes/admin/export/Clickwhale_Export.php:20
+msgid "Export links to a CSV file"
+msgstr "Exportar enlaces a un archivo CSV"
+
+#: includes/admin/export/Clickwhale_Export.php:24
+msgid "This tool allows you to generate and download a CSV file containing a list of all links."
+msgstr "Esta herramienta le permite generar y descargar un archivo CSV que contiene una lista de todos los enlaces."
+
+#: includes/admin/export/Clickwhale_Export.php:31
+msgid "Filter columns"
+msgstr "Filtrar columnas"
+
+#: includes/admin/export/Clickwhale_Export.php:39
+msgid "Filter categories"
+msgstr "Filtrar categorías"
+
+#: includes/admin/export/Clickwhale_Export.php:53
+msgid "Export all columns"
+msgstr "Exportar todas las columnas"
+
+#: includes/admin/export/Clickwhale_Export.php:67
+msgid "Export all categories"
+msgstr "Exportar todas las categorías"
+
+#: includes/admin/export/Clickwhale_Export.php:75
+msgid "No categories"
+msgstr "Sin categorías"
+
+#: includes/admin/export/Clickwhale_Export.php:101
+msgid "Select columns you want to export"
+msgstr "Seleccione las columnas que desea exportar"
+
+#: includes/admin/export/Clickwhale_Export.php:105
+msgid "Select categories you want to export"
+msgstr "Seleccione las categorías que desea exportar"
+
+#: includes/admin/export/Clickwhale_Export.php:173
+msgid "An error occurred, try changing the request"
+msgstr "Ocurrió un error, intente cambiar la solicitud"
+
+#: includes/admin/import/Clickwhale_Import.php:19
+msgid "Import links from a CSV file"
+msgstr "Importar enlaces desde un archivo CSV"
+
+#: includes/admin/import/Clickwhale_Import.php:24
+msgid "This tool allows you to import links to your site from a CSV file. <a href=\"%s\" rel=\"noopener\">Download Example CSV</a>"
+msgstr "Esta herramienta le permite importar enlaces a su sitio desde un archivo CSV. <a href=\"%s\" rel=\"noopener\">Descargar CSV de ejemplo</a>"
+
+#: includes/admin/import/Clickwhale_Import.php:32
+msgid "Choose a CSV file from your computer"
+msgstr "Elija un archivo CSV de su computadora"
+
+#: includes/admin/import/Clickwhale_Import.php:145
+msgid "Duplicated field"
+msgstr "Campo duplicado"
+
+#: includes/admin/import/Clickwhale_Import.php:238
+#: includes/admin/import/Clickwhale_Import.php:298
+msgid "Required field"
+msgstr "Campo requerido"
+
+#: includes/admin/import/Clickwhale_Import.php:248
+msgid "Slug already exists"
+msgstr "El slug ya existe"
+
+#: includes/admin/import/Clickwhale_Import.php:258
+msgid "Slug is not unique"
+msgstr "El slug no es único"
+
+#: includes/admin/import/Clickwhale_Import.php:342
+msgid "No items"
+msgstr "Sin elementos"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:53
+msgid "View"
+msgstr "Ver"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:80
+#: includes/admin/links/Clickwhale_Links_List_Table.php:181
+msgid "Copy Link"
+msgstr "Copiar enlace"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:144
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:138
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1482
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:78
+#: templates/admin/links/edit.php:42
+msgid "Link"
+msgstr "Enlace"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:146
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:78
+msgid "Views"
+msgstr "Vistas"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:147
+#: includes/admin/links/Clickwhale_Links_List_Table.php:275
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:88
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:80
+msgid "Clicks"
+msgstr "Clics"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:148
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:169
+msgid "Author"
+msgstr "Autor"
+
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:315
+msgid "No Link Pages Found"
+msgstr "No se encontraron páginas de enlace"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:54
+#: templates/admin/linkpages/edit.php:239
+msgid "Contents"
+msgstr "Contenidos"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:58
+#: templates/admin/linkpages/edit.php:300
+msgid "Styles"
+msgstr "Estilos"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:62
+msgid "SEO"
+msgstr "SEO"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:80
+msgid "ClickWhale Content"
+msgstr "Contenido de ClickWhale"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:83
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:119
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1602
+msgid "ClickWhale Link"
+msgstr "Enlace de ClickWhale"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:87
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:214
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1631
+msgid "Custom Link"
+msgstr "Enlace personalizado"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:91
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:513
+msgid "Custom Content"
+msgstr "Contenido personalizado"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:101
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:308
+msgid "Post Types"
+msgstr "Tipos de publicaciones"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:113
+msgid "Formatting"
+msgstr "Formato"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:116
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:419
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:433
+msgid "Heading"
+msgstr "Encabezado"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:120
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:474
+msgid "Separator"
+msgstr "Separador"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:140
+msgid "No Menu"
+msgstr "Sin menú"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:336
+msgid "Select Content Type"
+msgstr "Seleccione tipo de contenido"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:396
+msgid "Select Item"
+msgstr "Seleccione elemento"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:556
+msgid "Select Image"
+msgstr "Seleccione imagen"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:576
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:874
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:430
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:752
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1678
+#: templates/admin/linkpages/edit.php:195
+#: templates/admin/linkpages/edit.php:555
+msgid "Upload image"
+msgstr "Subir imagen"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:830
+#: includes/admin/links/Clickwhale_Link_Edit.php:179
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:439
+msgid "Please enter slug"
+msgstr "Por favor, ingrese el slug"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:850
+msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
+msgstr "¿Está seguro? Esta acción restablecerá los estilos CSS a los valores predeterminados. ¡Este proceso no se puede deshacer!"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:901
+msgid "Save page to view Open Graph preview"
+msgstr "Guarde la página para ver la vista previa de Open Graph"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:64
+msgid "Redirection"
+msgstr "Redirección"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:66
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:87
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:108
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:129
+msgid "No Change"
+msgstr "Sin cambios"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:106
+#: templates/admin/links/edit.php:183
+msgid "Nofollow"
+msgstr "Nofollow"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:127
+#: templates/admin/links/edit.php:198
+msgid "Sponsored"
+msgstr "Patrocinado"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:151
+msgid "Bulk Edit"
+msgstr "Edición masiva"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:179
+msgid "Options"
+msgstr "Opciones"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:193
+msgid "Update"
+msgstr "Actualizar"
+
+#: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:196
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:107
+msgid "All Categories"
+msgstr "Todas las categorías"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:115
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:139
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:130
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:129
+msgid "Filter"
+msgstr "Filtrar"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:154
+#: includes/admin/links/Clickwhale_Links_List_Table.php:307
+msgid "Reset Clicks"
+msgstr "Restablecer clics"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:272
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:87
+#: templates/admin/categories/edit.php:72
+#: templates/admin/linkpages/edit.php:149
+#: templates/admin/links/edit.php:105
+msgid "Slug"
+msgstr "Slug"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:273
+#: templates/admin/links/edit.php:136
+msgid "Target URL"
+msgstr "URL de destino"
+
+#: includes/admin/links/Clickwhale_Links_List_Table.php:541
+msgid "No Links Found"
+msgstr "No se encontraron enlaces"
+
+#: includes/admin/links/Clickwhale_Link_Edit.php:199
+msgid "Please enter URL"
+msgstr "Por favor, ingrese la URL"
+
+#: includes/admin/migration/Clickwhale_Migration.php:217
+msgid "Migrate categories"
+msgstr "Migrar categorías"
+
+#: includes/admin/migration/Clickwhale_Migration.php:232
+msgid "Migrate links"
+msgstr "Migrar enlaces"
+
+#: includes/admin/migration/Clickwhale_Migration.php:252
+msgid "links"
+msgstr "enlaces"
+
+#: includes/admin/migration/Clickwhale_Migration.php:252
+msgid "link"
+msgstr "enlace"
+
+#: includes/admin/migration/Clickwhale_Migration.php:254
+msgid "categories"
+msgstr "categorías"
+
+#: includes/admin/migration/Clickwhale_Migration.php:254
+msgid "category"
+msgstr "categoría"
+
+#: includes/admin/migration/Clickwhale_Migration.php:257
+msgid "Found %1$s %2$s and %3$s %4$s."
+msgstr "Encontrado %1$s %2$s y %3$s %4$s."
+
+#: includes/admin/migration/Clickwhale_Migration.php:261
+msgid "Last migration at %1$s"
+msgstr "Última migración en %1$s"
+
+#: includes/admin/migration/Clickwhale_Migration.php:264
+msgid "Set what you want to migrate from %s to CLickWhale"
+msgstr "Establezca lo que desea migrar de %s a ClickWhale"
+
+#: includes/admin/migration/Clickwhale_Migration.php:365
+msgid "Get started with ClickWhale now"
+msgstr "Comience con ClickWhale ahora"
+
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:101
+msgid "Link \"%1$s\" imported successfully."
+msgstr "Enlace \"%1$s\" importado con éxito."
+
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:105
+msgid "<strong>Import failed!</strong> Link %1$s already exists"
+msgstr "<strong>¡Importación fallida!</strong> El enlace %1$s ya existe"
+
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:190
+msgid "Category \"%1$s\" imported successfully."
+msgstr "Categoría \"%1$s\" importada con éxito."
+
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:194
+msgid "<strong>Import failed!</strong> Category \"%1$s\" already exists"
+msgstr "<strong>¡Importación fallida!</strong> La categoría \"%1$s\" ya existe"
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:87
+msgid "You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here."
+msgstr "Ya está utilizando %1$s en su sitio web. Para migrar sus datos de %1$s a ClickWhale, haga clic aquí."
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:89
+msgid "Start Migration"
+msgstr "Iniciar migración"
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:90
+msgid "Not now"
+msgstr "No ahora"
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:104
+msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
+msgstr "Todos los datos de %1$s se han migrado con éxito a ClickWhale. Ahora puede desactivar %1$s de forma segura en su sitio web."
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:106
+msgid "Deactivate %1$s"
+msgstr "Desactivar %1$s"
+
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:107
+msgid "Leave it active"
+msgstr "Déjalo activo"
+
+#: includes/admin/reset/Clickwhale_Reset.php:42
+msgid "Reset plugin options"
+msgstr "Restablecer opciones del plugin"
+
+#: includes/admin/reset/Clickwhale_Reset.php:56
+msgid "Delete all plugin data"
+msgstr "Eliminar todos los datos del plugin"
+
+#: includes/admin/reset/Clickwhale_Reset.php:70
+msgid "Reset all statistics"
+msgstr "Restablecer todas las estadísticas"
+
+#: includes/admin/reset/Clickwhale_Reset.php:82
+msgid "At this point you can reset plugin settings to default values."
+msgstr "En este punto, puedes restablecer la configuración del plugin a los valores predeterminados."
+
+#: includes/admin/reset/Clickwhale_Reset.php:86
+msgid "At this point you can delete all entries (links, categories and stats) from the database tables of our plugin."
+msgstr "En este punto, puedes eliminar todas las entradas (enlaces, categorías y estadísticas) de las tablas de la base de datos de nuestro plugin."
+
+#: includes/admin/reset/Clickwhale_Reset.php:90
+msgid "In case you want to clean up your stats, you can remove all previously counted clicks from the database here."
+msgstr "En caso de que quieras limpiar tus estadísticas, puedes eliminar todos los clics contados previamente de la base de datos aquí."
+
+#: includes/admin/reset/Clickwhale_Reset.php:123
+msgid "Are you sure? This action restore all plugin settings to default. This process cannot be undone!"
+msgstr "¿Estás seguro? Esta acción restaurará todas las configuraciones del plugin a los valores predeterminados. ¡Este proceso no se puede deshacer!"
+
+#: includes/admin/reset/Clickwhale_Reset.php:127
+msgid "Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!"
+msgstr "¿Estás seguro? Esta acción restablecerá las tablas del plugin y eliminará todos los datos existentes. ¡Este proceso no se puede deshacer!"
+
+#: includes/admin/reset/Clickwhale_Reset.php:131
+msgid "Are you sure? This action will reset all statistic. This process cannot be undone!"
+msgstr "¿Estás seguro? Esta acción restablecerá todas las estadísticas. ¡Este proceso no se puede deshacer!"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:165
+#: templates/admin/tracking-codes/edit.php:420
+msgid "Active"
+msgstr "Activo"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:168
+msgid "Position"
+msgstr "Posición"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:170
+msgid "Created"
+msgstr "Creado"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:307
+msgid "No Tracking Codes Found"
+msgstr "No se encontraron códigos de seguimiento"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:55
+msgid "Where do you want to add this code?"
+msgstr "¿Dónde quieres agregar este código?"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:77
+msgid "Standard code tracking"
+msgstr "Código de seguimiento estándar"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:103
+msgid "WooCommerce conversion"
+msgstr "Conversión de WooCommerce"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:130
+msgid "EDD conversion"
+msgstr "Conversión de EDD"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:177
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:198
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:215
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:945
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:40
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:38
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:36
+#: pro/includes/admin/statistics/Statistics.php:610
+#: pro/includes/admin/statistics/Statistics.php:1058
+msgid "All"
+msgstr "Todo"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:340
+msgid "Select Code position"
+msgstr "Seleccionar posición del código"
+
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:346
+msgid "Select"
+msgstr "Seleccionar"
+
+#: includes/Clickwhale.php:443
+msgid "General Options"
+msgstr "Opciones generales"
+
+#: includes/Clickwhale.php:444
+msgid "Set up ClickWhale plugin global options."
+msgstr "Configura las opciones globales del plugin ClickWhale."
+
+#: includes/Clickwhale.php:451
+msgid "Tracking Options"
+msgstr "Opciones de seguimiento"
+
+#: includes/Clickwhale.php:452
+msgid "Set up ClickWhale plugin global link tracking options."
+msgstr "Configura las opciones de seguimiento de enlaces globales del plugin ClickWhale."
+
+#: includes/Clickwhale.php:459
+msgid "Link Manager Options"
+msgstr "Opciones del gestor de enlaces"
+
+#: includes/Clickwhale.php:460
+msgid "Global settings for ClickWhale Links."
+msgstr "Configuraciones globales para los enlaces de ClickWhale."
+
+#: includes/Clickwhale.php:491
+msgid "New Link"
+msgstr "Nuevo enlace"
+
+#: includes/Clickwhale.php:503
+msgid "New Category"
+msgstr "Nueva categoría"
+
+#: includes/Clickwhale.php:515
+msgid "New Link Page"
+msgstr "Nueva página de enlace"
+
+#: includes/Clickwhale.php:527
+msgid "New Tracking Code"
+msgstr "Nuevo código de seguimiento"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:155
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1617
+msgid "Nothing found"
+msgstr "Nada encontrado"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:165
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:373
+msgid "Custom Title"
+msgstr "Título personalizado"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:169
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:241
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:377
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:530
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1138
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:172
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:244
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:380
+msgid "e.g. Read more about something"
+msgstr "p. ej. Lee más sobre algo"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:236
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:527
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:533
+msgid "e.g. My link"
+msgstr "p. ej. Mi enlace"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:248
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:79
+msgid "URL"
+msgstr "URL"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:251
+msgid "e.g. https://mysite.com"
+msgstr "p. ej. https://misitio.com"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
+msgid "Original"
+msgstr "Original"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:436
+msgid "e.g. My Links Heading"
+msgstr "p. ej. Encabezado de mis enlaces"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:443
+msgid "e.g. My Links Description"
+msgstr "p. ej. Descripción de mis enlaces"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:769
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:114
+msgid "Change Order"
+msgstr "Cambiar orden"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:848
+msgid "Icon"
+msgstr "Ícono"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:851
+msgid "You can select either an image, an icon or an emoji. You cannot have more than one active at the same time."
+msgstr "Puedes seleccionar una imagen, un ícono o un emoji. No puedes tener más de uno activo al mismo tiempo."
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:878
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:425
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:434
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:755
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1680
+#: templates/admin/linkpages/edit.php:190
+#: templates/admin/linkpages/edit.php:199
+#: templates/admin/linkpages/edit.php:550
+#: templates/admin/linkpages/edit.php:559
+msgid "Remove image"
+msgstr "Eliminar imagen"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:900
+msgid "Select Icon"
+msgstr "Seleccionar ícono"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:916
+msgid "Select Emoji"
+msgstr "Seleccionar emoji"
+
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:920
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1683
+#: templates/admin/tools/tools.php:21
+msgid "Reset"
+msgstr "Restablecer"
+
+#: includes/front/Clickwhale_Public_Linkpage.php:410
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Preview.php:67
+msgid "Powered by"
+msgstr "Desarrollado por"
+
+#: includes/front/Clickwhale_Public_Linkpage.php:426
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:61
+msgid "Edit Link Page"
+msgstr "Editar página de enlace"
+
+#: includes/helpers/Categories_Helper.php:33
+msgid "Currently, a maximum of %d categories can be added."
+msgstr "Actualmente, se puede agregar un máximo de %d categorías."
+
+#: includes/helpers/Helper.php:225
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: includes/helpers/Helper.php:227
+msgid "Add %s"
+msgstr "Agregar %s"
+
+#: includes/helpers/Helper.php:236
+msgid "Back to list"
+msgstr "Volver a la lista"
+
+#: includes/helpers/Helper.php:250
+msgid "Add new"
+msgstr "Agregar nuevo"
+
+#: includes/helpers/Helper.php:258
+msgid "View page"
+msgstr "Ver página"
+
+#: includes/helpers/Helper.php:316
+msgid "Unlimited with"
+msgstr "Ilimitado con"
+
+#: includes/helpers/Helper.php:322
+msgid "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
+msgstr "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
+
+#: includes/helpers/Helper.php:396
+msgid "Security check failed (possible CSRF) for user ID %d"
+msgstr "Falló la verificación de seguridad (posible CSRF) para el ID de usuario %d"
+
+#: includes/helpers/Helper.php:399
+msgid "on page: %s"
+msgstr "en la página: %s"
+
+#: includes/helpers/Helper.php:403
+msgid "Security check failed. Please contact the ClickWhale customer support."
+msgstr "Falló la verificación de seguridad. Por favor, contacta al soporte al cliente de ClickWhale."
+
+#: includes/helpers/Linkpages_Helper.php:32
+msgid "Currently, a maximum of %d link page can be added."
+msgstr "Actualmente, se puede agregar un máximo de %d páginas de enlace."
+
+#: includes/helpers/Linkpages_Helper.php:44
+msgid "Currently, a maximum of %d links can be added."
+msgstr "Actualmente, se puede agregar un máximo de %d enlaces."
+
+#: includes/helpers/Links_Helper.php:35
+msgid "Currently, a maximum of 1 link can be added."
+msgid_plural "Currently, a maximum of %d links can be added."
+msgstr[0] "Actualmente, se puede agregar un máximo de 1 enlace."
+msgstr[1] ""
+
+#: includes/helpers/Links_Helper.php:79
+msgid "301: Moved permanently"
+msgstr "301: Movido permanentemente"
+
+#: includes/helpers/Links_Helper.php:80
+msgid "302: Found / Moved temporarily"
+msgstr "302: Encontrado / Movido temporalmente"
+
+#: includes/helpers/Links_Helper.php:81
+msgid "303: See other"
+msgstr "303: Ver otro"
+
+#: includes/helpers/Links_Helper.php:82
+msgid "307: Temporarily redirect"
+msgstr "307: Redirección temporal"
+
+#: includes/helpers/Links_Helper.php:83
+msgid "308: Permanent redirect"
+msgstr "308: Redirección permanente"
+
+#: includes/helpers/Links_Helper.php:89
+msgid "New tab/window"
+msgstr "Nueva pestaña/ventana"
+
+#: includes/helpers/Links_Helper.php:90
+msgid "Same tab/window"
+msgstr "Misma pestaña/ventana"
+
+#: includes/helpers/Tracking_Codes_Helper.php:64
+msgid "Currently, a maximum of %d %s can be active at the same time."
+msgstr "Actualmente, se puede tener un máximo de %d %s activos al mismo tiempo."
+
+#: includes/helpers/Tracking_Codes_Helper.php:66
+msgid "tracking code"
+msgstr "código de seguimiento"
+
+#: includes/helpers/Tracking_Codes_Helper.php:66
+msgid "tracking codes"
+msgstr "códigos de seguimiento"
+
+#: includes/helpers/traits/Singleton_Clone.php:22
+#: includes/helpers/traits/Singleton_Wakeup.php:19
+msgid "Cheatin&#8217; huh?"
+msgstr "¿Tramposo, eh?"
+
+#: pro/includes/admin/Clickwhale_Pro_Admin.php:167
+#: pro/includes/admin/Clickwhale_Pro_Admin.php:168
+#: pro/templates/admin/statistics/statistics.php:16
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#: pro/includes/admin/Clickwhale_Pro_Admin.php:265
+msgid "Keywords Linked"
+msgstr "Palabras clave vinculadas"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:47
+msgid "Keyword Auto Linker Options"
+msgstr "Opciones del enlazador automático de palabras clave"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:48
+msgid "Global settings for the Keyword Auto Linker."
+msgstr "Configuraciones globales para el enlazador automático de palabras clave."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:56
+msgid "Link Pages Options"
+msgstr "Opciones de páginas de enlace"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:57
+msgid "Global settings for the Link Pages."
+msgstr "Configuraciones globales para las páginas de enlace."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:61
+msgid "Tracking Codes Options"
+msgstr "Opciones de códigos de seguimiento"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:62
+msgid "Global settings for the Tracking Codes."
+msgstr "Configuraciones globales para los códigos de seguimiento."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:86
+msgid "QR Code Color"
+msgstr "Color del código QR"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:97
+msgid "Set QR code color"
+msgstr "Establecer color del código QR"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:103
+msgid "QR Code Background Color"
+msgstr "Color de fondo del código QR"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:114
+msgid "Set QR code background color"
+msgstr "Establecer color de fondo del código QR"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:120
+msgid "Affiliate Link"
+msgstr "Enlace de afiliado"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:130
+msgid "e.g. %s"
+msgstr "p. ej. %s"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:133
+msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
+msgstr "Por favor, ingresa tu enlace de afiliado personal si eres miembro de nuestro <a href=\"%s\" target=\"_blank\">Programa de Afiliados</a>.<br>Se utilizará automáticamente en el pie de tus páginas de enlace."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:151
+msgid "Credits"
+msgstr "Créditos"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:160
+msgid "Check to hide Link Page credits."
+msgstr "Marcar para ocultar los créditos de la página de enlace."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:163
+msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
+msgstr "Como miembro de nuestro <a href=\"%1$s\" target=\"_blank\">programa de afiliados</a>, puedes ingresar tu enlace de afiliado en la configuración <a href=\"%2$s\">aquí</a>,<br>que se utilizará cuando se muestren los créditos."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:181
+msgid "Tracking Codes Credits"
+msgstr "Créditos de códigos de seguimiento"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:190
+msgid "Hide plugin HTML credits for active tracking codes."
+msgstr "Ocultar créditos HTML del plugin para códigos de seguimiento activos."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:197
+msgid "Disable Auto Linker"
+msgstr "Deshabilitar enlazador automático"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:206
+msgid "Check to disable the automatic linking of keywords."
+msgstr "Marcar para deshabilitar el enlace automático de palabras clave."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:212
+msgid "Replacement Limit"
+msgstr "Límite de reemplazo"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:226
+msgid "Define how many links per keyword should be automatically replaced on a single post/page."
+msgstr "Definir cuántos enlaces por palabra clave deben ser reemplazados automáticamente en una sola publicación/página."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:232
+msgid "Default Link Target"
+msgstr "Objetivo de enlace predeterminado"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:242
+msgid "Set default link target attribute which will be used for the replaced keywords."
+msgstr "Establecer el atributo de objetivo de enlace predeterminado que se utilizará para las palabras clave reemplazadas."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:248
+msgid "Replace Keywords in HTML Headings"
+msgstr "Reemplazar palabras clave en encabezados HTML"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:257
+msgid "Check to replace keywords inside headings (such as h1, h2, etc.)."
+msgstr "Marcar para reemplazar palabras clave dentro de los encabezados (como h1, h2, etc.)."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:263
+msgid "Replace Keywords on Archive Pages"
+msgstr "Reemplazar palabras clave en páginas de archivo"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:272
+msgid "Check to replace keywords on archive pages."
+msgstr "Marcar para reemplazar palabras clave en páginas de archivo."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:278
+msgid "Replace Keywords on Front Page"
+msgstr "Reemplazar palabras clave en la página principal"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:287
+msgid "Check to replace keywords on the front page."
+msgstr "Marcar para reemplazar palabras clave en la página principal."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:293
+msgid "Replace Keywords on Blog Page"
+msgstr "Reemplazar palabras clave en la página del blog"
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:302
+msgid "Check to replace keywords on the blog page."
+msgstr "Marcar para reemplazar palabras clave en la página del blog."
+
+#: pro/includes/admin/Clickwhale_Pro_Settings.php:318
+msgid "Check the post types in which keywords should be linked automatically."
+msgstr "Marcar los tipos de publicaciones en los que las palabras clave deben ser vinculadas automáticamente."
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:45
+msgid "Please enter a keyword below"
+msgstr "Por favor, ingresa una palabra clave a continuación"
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:72
+msgid "Keyword"
+msgstr "Palabra clave"
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:78
+msgid "e.g. My keyword"
+msgstr "p. ej. Mi palabra clave"
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:158
+msgid "Add Keyword"
+msgstr "Agregar palabra clave"
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:162
+msgid "Add More"
+msgstr "Agregar más"
+
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:188
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:189
+msgid "Generate QR code"
+msgstr "Generar código QR"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:55
+msgid "Pro Blocks"
+msgstr "Bloques Pro"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:58
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:927
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:931
+#: templates/admin/settings/pro.php:49
+#: templates/admin/settings/pro.php:50
+msgid "Blog Posts Feed"
+msgstr "Feed de publicaciones del blog"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:62
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:146
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:224
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1124
+#: templates/admin/settings/pro.php:44
+#: templates/admin/settings/pro.php:45
+msgid "Social Profiles"
+msgstr "Perfiles sociales"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:66
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1263
+msgid "Forms"
+msgstr "Formularios"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:70
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:264
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:587
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1470
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1658
+msgid "Image"
+msgstr "Imagen"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:84
+msgid "Logo Style"
+msgstr "Estilo de logo"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:90
+msgid "Square (Default)"
+msgstr "Cuadrado (Predeterminado)"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:91
+msgid "Rounded"
+msgstr "Redondeado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:92
+msgid "Circle"
+msgstr "Círculo"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:95
+msgid "Set Link Page logo style"
+msgstr "Establecer estilo de logo de la página de enlace"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:101
+msgid "Logo Shadow"
+msgstr "Sombra del logo"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:106
+msgid "Add logo box shadow"
+msgstr "Agregar sombra de caja al logo"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:177
+msgid "Number in the international format (with + and country code)"
+msgstr "Número en formato internacional (con + y código de país)"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:180
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1634
+msgid "e.g."
+msgstr "p. ej."
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:180
+msgid "or"
+msgstr "o"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:226
+msgid "Link Page Social Options"
+msgstr "Opciones sociales de la página de enlace"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:255
+msgid "Site Background"
+msgstr "Fondo del sitio"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:261
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:584
+msgid "Solid Color"
+msgstr "Color sólido"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:262
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:585
+msgid "Gradient"
+msgstr "Degradado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:263
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:586
+msgid "Pattern"
+msgstr "Patrón"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:267
+msgid "Choose page background style"
+msgstr "Elegir estilo de fondo de página"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:280
+#: templates/admin/linkpages/edit.php:335
+msgid "Set page background color"
+msgstr "Establecer color de fondo de página"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:325
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:648
+msgid "Start Color"
+msgstr "Color de inicio"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:333
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:656
+msgid "End Color"
+msgstr "Color final"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:341
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:664
+msgid "Gradient Style"
+msgstr "Estilo de degradado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:350
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:673
+msgid "Linear"
+msgstr "Lineal"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:351
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:674
+msgid "Radial"
+msgstr "Radial"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:352
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:675
+msgid "Conic"
+msgstr "Cónico"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:360
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:683
+msgid "Gradient Direction"
+msgstr "Dirección del degradado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:369
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:468
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:692
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:789
+msgid "Top"
+msgstr "Superior"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:370
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:451
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:693
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:772
+msgid "Right"
+msgstr "Derecha"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:371
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:450
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:469
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:694
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:771
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:790
+msgid "Center"
+msgstr "Centro"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:372
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:470
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:695
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:791
+msgid "Bottom"
+msgstr "Inferior"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:373
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:449
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:696
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:770
+msgid "Left"
+msgstr "Izquierda"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:440
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:761
+msgid "Horizontal position"
+msgstr "Posición horizontal"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:459
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:780
+msgid "Vertical position"
+msgstr "Posición vertical"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:478
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:488
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:799
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:809
+msgid "Repeat"
+msgstr "Repetir"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:487
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:808
+msgid "No repeat"
+msgstr "No repetir"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:496
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:817
+msgid "Size"
+msgstr "Tamaño"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:505
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:826
+msgid "Cover"
+msgstr "Cubrir"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:506
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:827
+msgid "Contain"
+msgstr "Contener"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:507
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:828
+msgid "Auto"
+msgstr "Automático"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:524
+msgid "Header"
+msgstr "Encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:526
+msgid "Link Page Header Customization Options"
+msgstr "Opciones de personalización del encabezado de la página de enlace"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:532
+msgid "Title Font Size"
+msgstr "Tamaño de fuente del título"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:546
+msgid "Description Font Size"
+msgstr "Tamaño de fuente de la descripción"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:562
+msgid "Header Text Color"
+msgstr "Color del texto del encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:570
+msgid "Set header text color"
+msgstr "Establecer color del texto del encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:578
+msgid "Header Background"
+msgstr "Fondo del encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:590
+msgid "Choose header background style"
+msgstr "Elegir estilo de fondo del encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:603
+msgid "Set header background color"
+msgstr "Establecer color de fondo del encabezado"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:911
+msgid "List with large thumbnail"
+msgstr "Lista con miniatura grande"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:912
+msgid "List with small thumbnail"
+msgstr "Lista con miniatura pequeña"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:913
+msgid "Grid (2 columns)"
+msgstr "Cuadrícula (2 columnas)"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:914
+msgid "Grid (3 columns)"
+msgstr "Cuadrícula (3 columnas)"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:915
+msgid "Buttons"
+msgstr "Botones"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:929
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:974
+msgid "Layout"
+msgstr "Diseño"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:941
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:86
+#: templates/admin/categories/edit.php:20
+#: templates/admin/links/edit.php:235
+msgid "Category"
+msgstr "Categoría"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:960
+msgid "Number of Posts"
+msgstr "Número de publicaciones"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:987
+msgid "Hide Title"
+msgstr "Ocultar título"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:996
+msgid "Check to hide title on the frontend"
+msgstr "Marque para ocultar el título en el frontend"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1268
+msgid "Please select a form"
+msgstr "Por favor, seleccione un formulario"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1295
+msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
+msgstr "No pudimos encontrar un <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">plugin de formulario compatible</a>. ¿Falta su plugin favorito? Entonces, por favor <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">háganoslo saber</a>."
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1314
+msgid "Plugin"
+msgstr "Plugin"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1336
+msgid "Form"
+msgstr "Formulario"
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1491
+msgid "Check to add a link of your choice to the image"
+msgstr "Marque para agregar un enlace de su elección a la imagen"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:41
+msgid "UTM Parameters"
+msgstr "Parámetros UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:55
+msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
+msgstr "Aquí puede definir palabras clave que se vinculan automáticamente en sus publicaciones y páginas. Puede encontrar más opciones de configuración <a href=\"%s\" target=\"_blank\">aquí</a>."
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:66
+msgid "Link Keywords"
+msgstr "Vincular palabras clave"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:96
+msgid "You can create a maximum of %d keywords."
+msgstr "Puede crear un máximo de %d palabras clave."
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:107
+msgid "UTM Campaign"
+msgstr "Campaña UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:111
+msgid "UTM Medium"
+msgstr "Medio UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:115
+msgid "UTM Source"
+msgstr "Fuente UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:119
+msgid "UTM Term"
+msgstr "Término UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:123
+msgid "UTM Content"
+msgstr "Contenido UTM"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:174
+msgid "Link UTM Parameters Settings"
+msgstr "Configuración de parámetros UTM vinculados"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:43
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:61
+msgid "Unknown Category"
+msgstr "Categoría desconocida"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:69
+msgid "Edit category"
+msgstr "Editar categoría"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:70
+msgid "Select category for the statistics"
+msgstr "Seleccionar categoría para las estadísticas"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:71
+msgid "Remove category from the statistics"
+msgstr "Eliminar categoría de las estadísticas"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:97
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:88
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:89
+msgid "Nothing to display"
+msgstr "Nada que mostrar"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:110
+msgid "Select Category"
+msgstr "Seleccionar categoría"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:115
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:106
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:105
+msgid "Period"
+msgstr "Período"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:134
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:125
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:124
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:138
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:129
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:128
+msgid "End Date"
+msgstr "Fecha de finalización"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:146
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:136
+msgid "Clicks for today"
+msgstr "Clics de hoy"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:149
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:140
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:139
+msgid "from yesterday"
+msgstr "de ayer"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:153
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:143
+msgid "Clicks for this week"
+msgstr "Clics de esta semana"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:156
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:147
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:146
+msgid "from last week"
+msgstr "de la semana pasada"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:160
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:150
+msgid "Clicks for this month"
+msgstr "Clics de este mes"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:163
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:154
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:153
+msgid "from last month"
+msgstr "del mes pasado"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:171
+msgid "Category Clicks Overview"
+msgstr "Resumen de clics por categoría"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:180
+msgid "Most Clicked Categories"
+msgstr "Categorías más clicadas"
+
+#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:190
+msgid "Total Categories Clicks"
+msgstr "Total de clics por categorías"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:41
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:59
+msgid "Unknown Link Page"
+msgstr "Página de enlace desconocida"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:62
+msgid "Select Link Page for the statistics"
+msgstr "Seleccionar página de enlace para las estadísticas"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:63
+msgid "Remove Link Page from the statistics"
+msgstr "Eliminar página de enlace de las estadísticas"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:77
+#: templates/admin/linkpages/edit.php:71
+msgid "Link Page"
+msgstr "Página de enlace"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:101
+msgid "Select Link Page"
+msgstr "Seleccionar página de enlace"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:137
+msgid "Views for today"
+msgstr "Vistas de hoy"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:144
+msgid "Views for this week"
+msgstr "Vistas de esta semana"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:151
+msgid "Views for this month"
+msgstr "Vistas de este mes"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:162
+msgid "Link Pages Views Overview"
+msgstr "Resumen de vistas de páginas de enlace"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:171
+msgid "Most Viewed Link Pages"
+msgstr "Páginas de enlace más vistas"
+
+#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:181
+msgid "Total Link Pages Views"
+msgstr "Total de vistas de páginas de enlace"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:39
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:56
+msgid "Unknown Link"
+msgstr "Enlace desconocido"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:61
+msgid "Edit link"
+msgstr "Editar enlace"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:62
+msgid "Select link for the statistics"
+msgstr "Seleccionar enlace para las estadísticas"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:63
+msgid "Remove link from the statistics"
+msgstr "Eliminar enlace de las estadísticas"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:100
+msgid "Select Link"
+msgstr "Seleccionar enlace"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:161
+msgid "Link Clicks Overview"
+msgstr "Resumen de clics de enlace"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:170
+msgid "Most Clicked Links"
+msgstr "Enlaces más clicados"
+
+#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:180
+msgid "Total Links Clicks"
+msgstr "Total de clics de enlaces"
+
+#: pro/includes/admin/statistics/Statistics.php:46
+msgid "Today"
+msgstr "Hoy"
+
+#: pro/includes/admin/statistics/Statistics.php:51
+msgid "Yesterday"
+msgstr "Ayer"
+
+#: pro/includes/admin/statistics/Statistics.php:56
+msgid "Last 7 Days"
+msgstr "Últimos 7 días"
+
+#: pro/includes/admin/statistics/Statistics.php:62
+msgid "Last 30 Days"
+msgstr "Últimos 30 días"
+
+#: pro/includes/admin/statistics/Statistics.php:67
+msgid "This Month"
+msgstr "Este mes"
+
+#: pro/includes/admin/statistics/Statistics.php:72
+msgid "Last Month"
+msgstr "El mes pasado"
+
+#: pro/includes/admin/statistics/Statistics.php:77
+msgid "This Year"
+msgstr "Este año"
+
+#: pro/includes/admin/statistics/Statistics.php:82
+msgid "Last Year"
+msgstr "El año pasado"
+
+#: pro/includes/admin/statistics/Statistics.php:85
+msgid "All Time"
+msgstr "Todo el tiempo"
+
+#: pro/includes/admin/statistics/Statistics.php:88
+msgid "Custom"
+msgstr "Personalizado"
+
+#: pro/includes/admin/statistics/Statistics.php:198
+msgid "No data to display"
+msgstr "No hay datos para mostrar"
+
+#: pro/includes/admin/statistics/Statistics.php:762
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: pro/includes/admin/statistics/Statistics.php:766
+msgid "Total"
+msgstr "Total"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:21
+msgid "See Dynamic conversion values tags below:"
+msgstr "Vea las etiquetas de valores de conversión dinámicos a continuación:"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:23
+msgid "return the order id"
+msgstr "devolver el id del pedido"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:24
+msgid "return the order currency"
+msgstr "devolver la moneda del pedido"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:25
+msgid "return the user's full name"
+msgstr "devolver el nombre completo del usuario"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:26
+msgid "return the user's email"
+msgstr "devolver el correo electrónico del usuario"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:27
+msgid "return the name of the purchased products separated by a comma"
+msgstr "devolver el nombre de los productos comprados separados por una coma"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:28
+msgid "return the amount of the cart payment"
+msgstr "devuelve el monto del pago del carrito"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:28
+msgid "tax and shipping excluded"
+msgstr "impuestos y envío excluidos"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:29
+msgid "return the amount of the tax in the purchase"
+msgstr "devuelve el monto del impuesto en la compra"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:30
+msgid "return the total amount of the purchase"
+msgstr "devuelve el monto total de la compra"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:30
+msgid "tax included"
+msgstr "impuesto incluido"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:44
+msgid "WooCommerce Products for tracking"
+msgstr "Productos de WooCommerce para seguimiento"
+
+#: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:63
+msgid "Easy Digital Downloads Products for tracking"
+msgstr "Productos de Easy Digital Downloads para seguimiento"
+
+#: pro/includes/helpers/Linkpage_Styles_Helper.php:187
+msgid "Large"
+msgstr "Grande"
+
+#: pro/includes/helpers/Linkpage_Styles_Helper.php:188
+msgid "Standard"
+msgstr "Estándar"
+
+#: pro/includes/helpers/Linkpage_Styles_Helper.php:189
+msgid "Small"
+msgstr "Pequeño"
+
+#: pro/includes/helpers/Links_Helper.php:268
+msgid "The keyword you entered: <b>%s</b> has already been added to this link."
+msgstr "La palabra clave que ingresaste: <b>%s</b> ya ha sido añadida a este enlace."
+
+#: pro/includes/helpers/Links_Helper.php:314
+msgid "The keyword you entered: <b>%s</b> has already been assigned to another link."
+msgstr "La palabra clave que ingresaste: <b>%s</b> ya ha sido asignada a otro enlace."
+
+#: pro/includes/helpers/Links_Helper.php:324
+msgid "You can edit the link <a href=\"%s\" target=\"_blank\">here</a>."
+msgstr "Puedes editar el enlace <a href=\"%s\" target=\"_blank\">aquí</a>."
+
+#: templates/admin/categories/edit.php:61
+msgid "e.g. Affiliate links"
+msgstr "p. ej. Enlaces de afiliados"
+
+#: templates/admin/categories/edit.php:83
+msgid "e.g. affiliate-links"
+msgstr "p. ej. enlaces-de-afiliados"
+
+#: templates/admin/categories/edit.php:100
+#: templates/admin/tracking-codes/edit.php:412
+msgid "Your comment here"
+msgstr "Tu comentario aquí"
+
+#: templates/admin/categories/edit.php:101
+msgid "Optional comment for the category"
+msgstr "Comentario opcional para la categoría"
+
+#: templates/admin/categories/edit.php:111
+msgid "Save category"
+msgstr "Guardar categoría"
+
+#: templates/admin/categories/list.php:15
+#: templates/admin/linkpages/list.php:15
+#: templates/admin/links/list.php:23
+#: templates/admin/tracking-codes/list.php:14
+msgid "Items deleted"
+msgstr "Elementos eliminados"
+
+#: templates/admin/categories/list.php:22
+#: templates/admin/linkpages/list.php:22
+#: templates/admin/links/list.php:30
+#: templates/admin/tracking-codes/list.php:21
+msgid "An error occurred"
+msgstr "Ocurrió un error"
+
+#: templates/admin/categories/list.php:58
+#: templates/admin/links/list.php:61
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/admin/linkpages/edit.php:37
+msgid "No Index"
+msgstr "Sin índice"
+
+#: templates/admin/linkpages/edit.php:38
+msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
+msgstr "No mostrar esta página en los resultados de búsqueda. Si no especificas esta regla, la página puede ser indexada y mostrada en los resultados de búsqueda."
+
+#: templates/admin/linkpages/edit.php:41
+msgid "No Follow"
+msgstr "No seguir"
+
+#: templates/admin/linkpages/edit.php:42
+msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
+msgstr "No seguir los enlaces en esta página. Si no especificas esta regla, el motor de búsqueda puede usar los enlaces en la página para descubrir esas páginas enlazadas"
+
+#: templates/admin/linkpages/edit.php:45
+msgid "No Archive"
+msgstr "No archivar"
+
+#: templates/admin/linkpages/edit.php:46
+msgid "Do not show a cached link in search results."
+msgstr "No mostrar un enlace en caché en los resultados de búsqueda."
+
+#: templates/admin/linkpages/edit.php:49
+msgid "No Snippet"
+msgstr "Sin fragmento"
+
+#: templates/admin/linkpages/edit.php:50
+msgid "Do not show a text snippet or video preview in the search results for this page."
+msgstr "No mostrar un fragmento de texto o vista previa de video en los resultados de búsqueda para esta página."
+
+#: templates/admin/linkpages/edit.php:53
+msgid "No Image Index"
+msgstr "Sin índice de imágenes"
+
+#: templates/admin/linkpages/edit.php:54
+msgid "Do not index images on this page."
+msgstr "No indexar imágenes en esta página."
+
+#: templates/admin/linkpages/edit.php:109
+msgid "Link Page Main Settings"
+msgstr "Configuraciones principales de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:124
+msgid "Link Page Title"
+msgstr "Título de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:160
+msgid "Link Page Slug"
+msgstr "Slug de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:168
+#: templates/admin/links/edit.php:124
+msgid "Copy url"
+msgstr "Copiar URL"
+
+#: templates/admin/linkpages/edit.php:170
+#: templates/admin/links/edit.php:126
+msgid "URL Preview"
+msgstr "Vista previa de URL"
+
+#: templates/admin/linkpages/edit.php:177
+msgid "Page Logo"
+msgstr "Logo de la página"
+
+#: templates/admin/linkpages/edit.php:203
+msgid "Max logo size"
+msgstr "Tamaño máximo del logo"
+
+#: templates/admin/linkpages/edit.php:209
+#: templates/admin/linkpages/edit.php:216
+msgid "Legals"
+msgstr "Legales"
+
+#: templates/admin/linkpages/edit.php:228
+msgid "Create a Legals Menu"
+msgstr "Crear un menú de legales"
+
+#: templates/admin/linkpages/edit.php:302
+msgid "Link Page Customization Options"
+msgstr "Opciones de personalización de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:310
+msgid "Page Text Color"
+msgstr "Color del texto de la página"
+
+#: templates/admin/linkpages/edit.php:317
+msgid "Set page text color"
+msgstr "Establecer el color del texto de la página"
+
+#: templates/admin/linkpages/edit.php:328
+msgid "Page Background"
+msgstr "Fondo de la página"
+
+#: templates/admin/linkpages/edit.php:352
+msgid "Link Page Links Customization Options"
+msgstr "Opciones de personalización de enlaces de la página"
+
+#: templates/admin/linkpages/edit.php:358
+msgid "Background Color"
+msgstr "Color de fondo"
+
+#: templates/admin/linkpages/edit.php:365
+msgid "Set link background color (normal state)"
+msgstr "Establecer el color de fondo del enlace (estado normal)"
+
+#: templates/admin/linkpages/edit.php:372
+msgid "Background Color (hover/active)"
+msgstr "Color de fondo (hover/activo)"
+
+#: templates/admin/linkpages/edit.php:379
+msgid "Set link background color (hover/active)"
+msgstr "Establecer el color de fondo del enlace (hover/activo)"
+
+#: templates/admin/linkpages/edit.php:386
+msgid "Text Color"
+msgstr "Color del texto"
+
+#: templates/admin/linkpages/edit.php:393
+msgid "Set link text color (normal state)"
+msgstr "Establecer el color del texto del enlace (estado normal)"
+
+#: templates/admin/linkpages/edit.php:400
+msgid "Text Color (hover/active)"
+msgstr "Color del texto (hover/activo)"
+
+#: templates/admin/linkpages/edit.php:407
+msgid "Set link text color (hover/active)"
+msgstr "Establecer el color del texto del enlace (hover/activo)"
+
+#: templates/admin/linkpages/edit.php:417
+msgid "SEO Options"
+msgstr "Opciones de SEO"
+
+#: templates/admin/linkpages/edit.php:419
+msgid "Link Page SEO Options"
+msgstr "Opciones de SEO de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:424
+msgid "SEO Title"
+msgstr "Título SEO"
+
+#: templates/admin/linkpages/edit.php:431
+msgid "Set page SEO title"
+msgstr "Establecer el título SEO de la página"
+
+#: templates/admin/linkpages/edit.php:437
+msgid "SEO Description"
+msgstr "Descripción SEO"
+
+#: templates/admin/linkpages/edit.php:444
+msgid "Set page SEO description"
+msgstr "Establecer la descripción SEO de la página"
+
+#: templates/admin/linkpages/edit.php:452
+msgid "Robots Meta"
+msgstr "Meta de robots"
+
+#: templates/admin/linkpages/edit.php:458
+msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
+msgstr "Los motores de búsqueda no tienen permiso para indexar este sitio. Consulta la opción \"Visibilidad del motor de búsqueda\" en <a href=\"%1$s\" target=\"_blank\">configuración de lectura!</a>"
+
+#: templates/admin/linkpages/edit.php:502
+msgid "Open Graph Options"
+msgstr "Opciones de Open Graph"
+
+#: templates/admin/linkpages/edit.php:504
+msgid "Link Page Open Graph Options"
+msgstr "Opciones de Open Graph de la página de enlaces"
+
+#: templates/admin/linkpages/edit.php:509
+msgid "Open Graph Title (Optional)"
+msgstr "Título de Open Graph (opcional)"
+
+#: templates/admin/linkpages/edit.php:516
+msgid "The title of your page for social network. By default this is Link Page title."
+msgstr "El título de tu página para la red social. Por defecto, este es el título de la página de enlaces."
+
+#: templates/admin/linkpages/edit.php:522
+msgid "Open Graph Description (Optional)"
+msgstr "Descripción de Open Graph (opcional)"
+
+#: templates/admin/linkpages/edit.php:529
+msgid "The description of your page for social network. By default this is SEO description."
+msgstr "La descripción de tu página para la red social. Por defecto, esta es la descripción SEO."
+
+#: templates/admin/linkpages/edit.php:537
+msgid "Open Graph Image"
+msgstr "Abrir imagen de gráfico"
+
+#: templates/admin/linkpages/edit.php:563
+msgid "Recommended image size 1200px * 630px"
+msgstr "Tamaño de imagen recomendado 1200px * 630px"
+
+#: templates/admin/linkpages/edit.php:568
+msgid "Open Graph Preview"
+msgstr "Vista previa de gráfico"
+
+#: templates/admin/linkpages/edit.php:576
+msgid "View live preview"
+msgstr "Ver vista previa en vivo"
+
+#: templates/admin/linkpages/edit.php:597
+#: templates/admin/tracking-codes/edit.php:443
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/admin/linkpages/edit.php:604
+msgid "Reset styles"
+msgstr "Restablecer estilos"
+
+#: templates/admin/links/edit.php:79
+msgid "Link Main Settings"
+msgstr "Vincular configuraciones principales"
+
+#: templates/admin/links/edit.php:94
+msgid "Link Title"
+msgstr "Título del enlace"
+
+#: templates/admin/links/edit.php:116
+msgid "e.g. my-link"
+msgstr "p. ej. mi-enlace"
+
+#: templates/admin/links/edit.php:147
+msgid "Link Target URL"
+msgstr "URL de destino del enlace"
+
+#: templates/admin/links/edit.php:191
+msgid "Check to mark link as nofollow & noindex"
+msgstr "Marcar para indicar que el enlace es nofollow y noindex"
+
+#: templates/admin/links/edit.php:206
+msgid "Check to mark link as sponsored"
+msgstr "Marcar para indicar que el enlace es patrocinado"
+
+#: templates/admin/links/edit.php:261
+msgid "Save link"
+msgstr "Guardar enlace"
+
+#: templates/admin/links/edit.php:267
+msgid "Copy link"
+msgstr "Copiar enlace"
+
+#: templates/admin/links/list.php:45
+#: templates/admin/tools/tools.php:24
+#: templates/admin/tools/tools.php:127
+msgid "Import"
+msgstr "Importar"
+
+#: templates/admin/settings/pro.php:7
+msgid "Swim past your competition with ClickWhale"
+msgstr "Supera a tu competencia con ClickWhale"
+
+#: templates/admin/settings/pro.php:7
+msgid "PRO"
+msgstr "PRO"
+
+#: templates/admin/settings/pro.php:8
+msgid "Take your website to the next level with great additions to our plugin!"
+msgstr "¡Lleva tu sitio web al siguiente nivel con grandes adiciones a nuestro plugin!"
+
+#: templates/admin/settings/pro.php:13
+#: templates/admin/settings/pro.php:14
+msgid "Upgrade to ClickWhale (PRO) Now!"
+msgstr "¡Actualiza a ClickWhale (PRO) ahora!"
+
+#: templates/admin/settings/pro.php:20
+msgid "Things that await you:"
+msgstr "Cosas que te esperan:"
+
+#: templates/admin/settings/pro.php:26
+msgid "Detailed statistics which allow you to filter and analyze link clicks and link page views."
+msgstr "Estadísticas detalladas que te permiten filtrar y analizar clics en enlaces y vistas de páginas de enlaces."
+
+#: templates/admin/settings/pro.php:31
+msgid "Define keywords that will be automatically replaced with links throughout your posts, pages and custom post types."
+msgstr "Define palabras clave que se reemplazarán automáticamente con enlaces en tus publicaciones, páginas y tipos de publicaciones personalizadas."
+
+#: templates/admin/settings/pro.php:34
+#: templates/admin/settings/pro.php:35
+msgid "Conversion Tracking"
+msgstr "Seguimiento de conversiones"
+
+#: templates/admin/settings/pro.php:36
+msgid "Easily place conversion tracking codes to track the performance of your WooCommerce or Easy Digital Downloads store."
+msgstr "Coloca fácilmente códigos de seguimiento de conversiones para rastrear el rendimiento de tu tienda WooCommerce o Easy Digital Downloads."
+
+#: templates/admin/settings/pro.php:41
+msgid "Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to ClickWhale PRO."
+msgstr "Obtén la capacidad de rastrear campañas UTM con mejores parámetros para una eficacia excepcional de la campaña al actualizar a ClickWhale PRO."
+
+#: templates/admin/settings/pro.php:46
+msgid "Add your social profiles to your existing link page in order to gain more followers on your favorite social networks."
+msgstr "Agrega tus perfiles sociales a tu página de enlaces existente para ganar más seguidores en tus redes sociales favoritas."
+
+#: templates/admin/settings/pro.php:51
+msgid "Automatically show the latest blog posts directly on your link pages for further reach."
+msgstr "Muestra automáticamente las últimas publicaciones del blog directamente en tus páginas de enlaces para mayor alcance."
+
+#: templates/admin/settings/pro.php:54
+#: templates/admin/settings/pro.php:55
+msgid "Forms Block"
+msgstr "Bloque de formularios"
+
+#: templates/admin/settings/pro.php:56
+msgid "Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers."
+msgstr "Agrega fácilmente formularios de populares plugins de formularios de WordPress a tu página de enlaces y recopila leads o comentarios de tus seguidores en redes sociales."
+
+#: templates/admin/settings/pro.php:59
+#: templates/admin/settings/pro.php:60
+msgid "More Customization Options"
+msgstr "Más opciones de personalización"
+
+#: templates/admin/settings/pro.php:61
+msgid "Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more."
+msgstr "Las características adicionales del plugin para personalizar páginas de enlaces incluyen opciones para agregar fondos de marca, imágenes y más."
+
+#: templates/admin/settings/pro.php:65
+#: templates/admin/settings/pro.php:66
+msgid "No Limitations"
+msgstr "Sin limitaciones"
+
+#: templates/admin/settings/pro.php:67
+msgid "Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading to ClickWhale PRO."
+msgstr "¡Las limitaciones se han ido! Crea y publica tantos códigos de seguimiento, páginas de enlaces y enlaces de marca como necesites al actualizar a ClickWhale PRO."
+
+#: templates/admin/settings/pro.php:73
+msgid "Keep the branding personal with the ability to remove ClickWhale credits like the logo from footers and more."
+msgstr "Mantén la marca personal con la capacidad de eliminar los créditos de ClickWhale, como el logo de los pies de página y más."
+
+#: templates/admin/settings/pro.php:81
+#: templates/admin/settings/pro.php:82
+msgid "Upgrade to ClickWhale (PRO)"
+msgstr "Actualizar a ClickWhale (PRO)"
+
+#: templates/admin/settings/settings.php:33
+msgid "Save changes"
+msgstr "Guardar cambios"
+
+#: templates/admin/tools/tools.php:18
+msgid "Migration"
+msgstr "Migración"
+
+#: templates/admin/tools/tools.php:27
+msgid "Export"
+msgstr "Exportar"
+
+#: templates/admin/tools/tools.php:48
+msgid "Start migration"
+msgstr "Iniciar migración"
+
+#: templates/admin/tools/tools.php:61
+msgid "Set default options and clear cache"
+msgstr "Establecer opciones predeterminadas y borrar caché"
+
+#: templates/admin/tools/tools.php:66
+msgid "No data to migrate! "
+msgstr "¡No hay datos para migrar!"
+
+#: templates/admin/tools/tools.php:67
+msgid "You do not have active plugins from which we can transfer data."
+msgstr "No tienes plugins activos desde los cuales podamos transferir datos."
+
+#: templates/admin/tools/tools.php:80
+msgid "Restore default settings"
+msgstr "Restaurar configuraciones predeterminadas"
+
+#: templates/admin/tools/tools.php:91
+msgid "Delete all plugin data now"
+msgstr "Eliminar todos los datos del plugin ahora"
+
+#: templates/admin/tools/tools.php:102
+msgid "Reset all tracking data now"
+msgstr "Restablecer todos los datos de seguimiento ahora"
+
+#: templates/admin/tools/tools.php:118
+msgid "Upload CSV file"
+msgstr "Subir archivo CSV"
+
+#: templates/admin/tools/tools.php:121
+msgid "Column mapping"
+msgstr "Mapeo de columnas"
+
+#: templates/admin/tools/tools.php:124
+msgid "Edit fields"
+msgstr "Editar campos"
+
+#: templates/admin/tools/tools.php:135
+msgid "Upload import file"
+msgstr "Subir archivo de importación"
+
+#: templates/admin/tools/tools.php:144
+msgid "Continue"
+msgstr "Continuar"
+
+#: templates/admin/tools/tools.php:152
+msgid "Run Importer"
+msgstr "Ejecutar importador"
+
+#: templates/admin/tools/tools.php:162
+msgid "Go to links"
+msgstr "Ir a enlaces"
+
+#: templates/admin/tools/tools.php:175
+msgid "Generate CSV"
+msgstr "Generar CSV"
+
+#: templates/admin/tracking-codes/edit.php:22
+msgid "Tracking Code"
+msgstr "Código de seguimiento"
+
+#: templates/admin/tracking-codes/edit.php:45
+msgid "Tracking Code Edit Table"
+msgstr "Tabla de edición de código de seguimiento"
+
+#: templates/admin/tracking-codes/edit.php:56
+msgid "e.g. Google Tag Manager Code"
+msgstr "p. ej. Código de Google Tag Manager"
+
+#: templates/admin/tracking-codes/edit.php:65
+msgid "Code"
+msgstr "Código"
+
+#: templates/admin/tracking-codes/edit.php:70
+msgid "Paste your code here."
+msgstr "Pega tu código aquí."
+
+#: templates/admin/tracking-codes/edit.php:79
+msgid "Code Position"
+msgstr "Posición del código"
+
+#: templates/admin/tracking-codes/edit.php:97
+msgid "In which page do you want to insert this code?"
+msgstr "¿En qué página deseas insertar este código?"
+
+#: templates/admin/tracking-codes/edit.php:108
+msgid "Whole website"
+msgstr "Todo el sitio web"
+
+#: templates/admin/tracking-codes/edit.php:109
+msgid "Specific page"
+msgstr "Página específica"
+
+#: templates/admin/tracking-codes/edit.php:128
+msgid "Include <strong>ClickWhale Link Pages</strong>"
+msgstr "Incluir <strong>Páginas de enlaces de ClickWhale</strong>"
+
+#: templates/admin/tracking-codes/edit.php:168
+msgid "Exclude <strong>ClickWhale Link Pages</strong>"
+msgstr "Excluir <strong>Páginas de enlaces de ClickWhale</strong>"
+
+#: templates/admin/tracking-codes/edit.php:212
+#: templates/admin/tracking-codes/edit.php:304
+msgid "Include <strong>%s</strong>"
+msgstr "Incluir <strong>%s</strong>"
+
+#: templates/admin/tracking-codes/edit.php:255
+#: templates/admin/tracking-codes/edit.php:347
+msgid "Exclude <strong>%s</strong>"
+msgstr "Excluir <strong>%s</strong>"
+
+#: templates/admin/tracking-codes/edit.php:400
+msgid "Check the user roles for which the script should not be executed."
+msgstr "Verifica los roles de usuario para los cuales el script no debe ejecutarse."
+
+#: templates/admin/tracking-codes/edit.php:413
+msgid "Optional comment to the tracking code."
+msgstr "Comentario opcional al código de seguimiento."
+
+#: templates/admin/tracking-codes/edit.php:426
+msgid "Enable Tracking Code"
+msgstr "Habilitar código de seguimiento"

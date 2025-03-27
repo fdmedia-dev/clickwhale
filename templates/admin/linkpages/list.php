@@ -12,14 +12,14 @@ try {
     if ( 'delete' === $table->current_action() ) {
         $message = array(
             'class' => 'updated',
-            'text' => __( 'Items deleted', CLICKWHALE_NAME )
+            'text' => __( 'Items deleted', 'clickwhale' )
         );
     }
 
 } catch ( Exception $e ) {
     $message = array(
         'class' => 'error',
-        'text' => __( 'An error occurred', CLICKWHALE_NAME ) . ': ' . $e->getMessage()
+        'text' => __( 'An error occurred', 'clickwhale' ) . ': ' . $e->getMessage()
     );
 }
 

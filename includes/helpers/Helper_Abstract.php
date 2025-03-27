@@ -1,8 +1,6 @@
 <?php
 namespace clickwhale\includes\helpers;
 
-use stdClass;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -96,10 +94,7 @@ abstract class Helper_Abstract {
         $orderby = sanitize_text_field( $orderby );
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
-        return (array) $wpdb->get_results(
-            "SELECT * FROM $table order by $orderby $order",
-            $output
-        );
+        return (array) $wpdb->get_results( "SELECT * FROM $table order by $orderby $order", $output );
     }
 
     /**
@@ -148,18 +143,23 @@ abstract class Helper_Abstract {
      * Get item by slug
      *
      * @param string $slug
-     *
      * @return array
      * @since 1.6.0
      */
     public static function get_by_slug( string $slug ): array {
+        $slug = Helper::sanitize_slug( $slug );
+
+        if ( empty( $slug ) ) {
+            return array();
+        }
+
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM $table WHERE slug=%s",
-                sanitize_text_field( $slug )
+                $slug
             ),
             ARRAY_A
         );

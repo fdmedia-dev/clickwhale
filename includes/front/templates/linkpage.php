@@ -14,14 +14,15 @@ $view = new Clickwhale_View_Track( $post->linkpage['id'] );
 $user_id = get_current_user_id();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php bloginfo( 'language' ); ?>">
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-	<?php wp_head(); ?>
-	<?php echo $linkpage->get_styles(); ?>
-	<?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
+    <link rel="canonical" href="<?php echo $linkpage->get_url(); ?>">
+    <?php wp_head(); ?>
+    <?php echo $linkpage->get_styles(); ?>
+    <?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
@@ -38,12 +39,12 @@ $user_id = get_current_user_id();
 
     </div>
     <div class="linkpage-public--bottom">
-		<?php
-		if ( $linkpage->get_legals_menu() ) {
-			echo $linkpage->get_legals_menu();
-		}
-		echo $linkpage->get_credits_link();
-		?>
+        <?php
+        if ( $linkpage->get_legals_menu() ) {
+            echo $linkpage->get_legals_menu();
+        }
+        echo $linkpage->get_credits_link();
+        ?>
     </div>
 </div>
 <?php wp_footer(); ?>

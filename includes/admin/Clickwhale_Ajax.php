@@ -87,19 +87,19 @@ class Clickwhale_Ajax {
         $options = get_option( 'clickwhale_tools_migration_options' );
         $migrant = ( isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '' );
         $item = $available[$migrant];
-        $result = [];
+        $result = array();
         if ( !$item ) {
             wp_send_json_error();
         }
         if ( clickwhale()->tools->migration->check_active( $item['path'] ) ) {
             $result['title'] = $item['name'];
             if ( isset( $options[$item['slug'] . '_categories'] ) && $options[$item['slug'] . '_categories'] !== false || isset( $options[$item['slug'] . '_links'] ) && $options[$item['slug'] . '_links'] !== false ) {
-                //$migrator       = new $item['class']();
+                //$migrator = new $item['class']();
                 $migratorClass = '\\clickwhale\\includes\\admin\\migration\\' . $item['class'];
                 $migrator = new $migratorClass();
                 $result['data'] = $migrator->run_migration( $options[$item['slug'] . '_categories'], $options[$item['slug'] . '_links'] );
             } else {
-                $result['data'] = __( 'Nothing to migrate', CLICKWHALE_NAME );
+                $result['data'] = __( 'Nothing to migrate', 'clickwhale' );
             }
         }
         $options_migrate = get_option( 'clickwhale_hide_notice_migrate' );
@@ -128,14 +128,14 @@ class Clickwhale_Ajax {
         update_option( 'clickwhale_tools_last_migration_options', $last_migration_options );
         update_option( 'clickwhale_hide_notice_migrate', $notice_migrate_options );
         update_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
-        $result = __( 'Successfully deleted! Page will be reloaded...', CLICKWHALE_NAME );
+        $result = __( 'Successfully deleted! Page will be reloaded...', 'clickwhale' );
         wp_send_json_success( $result );
     }
 
     public function clickwhale_reset() {
         check_ajax_referer( 'clickwhale_reset', 'security' );
         global $wpdb;
-        $result = [];
+        $result = array();
         $text = '';
         if ( !isset( $_POST['reset'] ) ) {
             wp_send_json_error();
@@ -149,18 +149,18 @@ class Clickwhale_Ajax {
         $table_visitors = Helper::get_db_table_name( 'visitors' );
         switch ( $_POST['reset'] ) {
             case 'stats':
-                $text = __( 'All statistic has been reset', CLICKWHALE_NAME );
+                $text = __( 'All statistic has been reset', 'clickwhale' );
                 // Drop tables
                 $result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$table_track}, {$table_visitors}" );
                 break;
             case 'db':
-                $text = __( 'All plugin tables has been reset', CLICKWHALE_NAME );
+                $text = __( 'All plugin tables has been reset', 'clickwhale' );
                 $tables = apply_filters( 'clickwhale_reset_tables', "{$table_categories}, {$table_linkpages}, {$table_links}, {$table_meta}, {$table_track}, {$table_tracking_codes}, {$table_visitors}" );
                 // Drop all tables
                 $result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$tables}" );
                 break;
             case 'settings':
-                $text = __( 'All plugin settings has been restored', CLICKWHALE_NAME );
+                $text = __( 'All plugin settings has been restored', 'clickwhale' );
                 // Delete plugin options
                 $defaults = clickwhale()->settings->default_options();
                 foreach ( $defaults as $k => $v ) {
@@ -182,10 +182,12 @@ class Clickwhale_Ajax {
         if ( empty( $_POST['slug'] ) ) {
             wp_send_json_error();
         }
+        $slug = Helper::sanitize_slug( $_POST['slug'] );
+        if ( empty( $slug ) ) {
+            wp_send_json_error();
+        }
         $result = false;
         $post_id = intval( $_POST['id'] );
-        $slug = sanitize_text_field( $_POST['slug'] );
-        $slug = str_replace( ' ', '-', $slug );
         switch ( $_POST['type'] ) {
             case 'link':
                 $item = Links_Helper::get_by_slug( $slug );
@@ -213,7 +215,7 @@ class Clickwhale_Ajax {
         if ( !isset( $_POST['post_type'] ) || !$_POST['post_type'] ) {
             wp_send_json_error( 'Post Type Error!' );
         }
-        $result = [];
+        $result = array();
         $args = array(
             'numberposts' => -1,
             'post_type'   => sanitize_text_field( $_POST['post_type'] ),
@@ -258,7 +260,7 @@ class Clickwhale_Ajax {
     public function tracking_code_toggle_active() {
         global $wpdb;
         check_ajax_referer( 'clickwhale_toggle_tracking_code', 'security' );
-        $result = [];
+        $result = array();
         $table = Helper::get_db_table_name( 'tracking_codes' );
         $data = array(
             'is_active' => sanitize_text_field( $_POST['status'] ),
@@ -291,7 +293,7 @@ class Clickwhale_Ajax {
         $file = $_FILES['file'];
         // Check file &type
         if ( !$file || $file['type'] !== 'text/csv' ) {
-            $error = new WP_Error('001', __( 'Please, select .csv file', CLICKWHALE_NAME ), $file['type']);
+            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $file['type']);
             wp_send_json_error( $error );
         }
         $col_delimiter = ",";
@@ -329,13 +331,13 @@ class Clickwhale_Ajax {
             $headings[$k] = $v;
         }
         $html .= '<table class="wp-list-table widefat striped table-view-list"><thead><tr>';
-        $html .= '<th>' . __( 'Column name', CLICKWHALE_NAME ) . '</th>';
-        $html .= '<th>' . __( 'Map to field', CLICKWHALE_NAME ) . '</th>';
+        $html .= '<th>' . __( 'Column name', 'clickwhale' ) . '</th>';
+        $html .= '<th>' . __( 'Map to field', 'clickwhale' ) . '</th>';
         $html .= '</tr></thead><tbody>';
         $i = 0;
         foreach ( $headings as $heading ) {
             $select = '<select>';
-            $select .= '<option value="0">' . __( 'Do not import', CLICKWHALE_NAME ) . '</option>';
+            $select .= '<option value="0">' . __( 'Do not import', 'clickwhale' ) . '</option>';
             $select .= '<option value="" disabled>---------------------</option>';
             foreach ( $default_columns as $option ) {
                 $selected = ( in_array( $option, $headings ) && $option === $headings[$i] ? 'selected="selected"' : '' );
@@ -343,12 +345,12 @@ class Clickwhale_Ajax {
             }
             $select .= '</select>';
             $html .= '<tr><td><strong>' . esc_html( $heading ) . '</strong><br>';
-            $html .= '<small>' . __( 'Example:', CLICKWHALE_NAME ) . ' ' . esc_html( $first_line[$i] ) . '</small></td>';
+            $html .= '<small>' . __( 'Example:', 'clickwhale' ) . ' ' . esc_html( $first_line[$i] ) . '</small></td>';
             $html .= '<td>' . $select . '</td></tr>';
             $i++;
         }
         $html .= '</tbody></table>';
-        $result = [];
+        $result = array();
         $result['delimiter'] = $col_delimiter;
         $result['table'] = $html;
         wp_send_json_success( $result );
@@ -357,25 +359,22 @@ class Clickwhale_Ajax {
     public function map_csv() {
         check_ajax_referer( 'map_csv', 'security' );
         if ( !$_FILES['file'] || $_FILES['file']['type'] !== 'text/csv' ) {
-            $error = new WP_Error('001', __( 'Please, select .csv file', CLICKWHALE_NAME ), $_FILES['file']['type']);
+            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $_FILES['file']['type']);
             wp_send_json_error( $error );
         }
         $html = '';
         $delimiter = sanitize_text_field( $_POST['delimiter'] );
-        $redirections = array(
-            301 => '301 redirect: Moved permanently',
-            302 => '302 redirect: Found / Moved temporarily',
-            303 => '303 redirect: See Other',
-            307 => '307 redirect: Temporarily Redirect',
-            308 => '308 redirect: Permanent Redirect',
-        );
+        $redirections = Links_Helper::get_redirections();
+        $link_targets = array_merge( array(
+            '' => __( 'Default', 'clickwhale' ),
+        ), Links_Helper::get_link_targets() );
         $default_columns = Helper::get_import_default_columns();
         $mapped_columns = ( !empty( $_POST['mapped'] ) ? explode( ',', sanitize_text_field( $_POST['mapped'] ) ) : array() );
         $excluded_columns = ( !empty( $_POST['excluded'] ) ? explode( ',', sanitize_text_field( $_POST['excluded'] ) ) : array() );
         $filtered = array();
         $file_data = fopen( $_FILES['file']['tmp_name'], 'r' );
         if ( $file_data === false ) {
-            $error = new WP_Error('002', __( 'Error opening file!', CLICKWHALE_NAME ));
+            $error = new WP_Error('002', __( 'Error opening file!', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         // get headings
@@ -389,7 +388,7 @@ class Clickwhale_Ajax {
         // filter csv row and exclude not mapped columns
         $headings_num = count( $file_headings );
         while ( ($data = fgetcsv( $file_data, 4096, $delimiter )) !== false ) {
-            $row = [];
+            $row = array();
             for ($c = 0; $c < $headings_num; $c++) {
                 if ( in_array( $c, $excluded_columns ) ) {
                     continue;
@@ -434,6 +433,15 @@ class Clickwhale_Ajax {
                         }
                         $input = '<select name="' . $mapped_columns[$c] . '">' . $options . '</select>';
                         break;
+                    case 'link_target':
+                        $options = '';
+                        $value = ( isset( $data[$c] ) ? esc_attr( $data[$c] ) : 'blank' );
+                        foreach ( $link_targets as $k => $v ) {
+                            $selected = selected( $k, $value, false );
+                            $options .= '<option value="' . $k . '"' . $selected . '>' . $v . '</option>';
+                        }
+                        $input = '<select name="' . $mapped_columns[$c] . '">' . $options . '</select>';
+                        break;
                     case 'nofollow':
                     case 'sponsored':
                         $value = ( isset( $data[$c] ) ? intval( $data[$c] ) : 0 );
@@ -465,7 +473,7 @@ class Clickwhale_Ajax {
         global $wpdb;
         $data = $_POST['data'];
         if ( !$data ) {
-            $error = new WP_Error('004', __( 'Nothing to import!', CLICKWHALE_NAME ));
+            $error = new WP_Error('004', __( 'Nothing to import!', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         $links_table = $wpdb->prefix . 'clickwhale_links';
@@ -483,9 +491,9 @@ class Clickwhale_Ajax {
             }
             $insert = $wpdb->insert( $links_table, $v );
             if ( $insert ) {
-                $result[] = __( 'Link <strong>&quot;' . $v['title'] . '&quot;</strong> successfully imported!', CLICKWHALE_NAME );
+                $result[] = __( 'Link <strong>&quot;' . $v['title'] . '&quot;</strong> successfully imported!', 'clickwhale' );
             } else {
-                $result[] = __( '<strong>Error!</strong> Link <strong>&quot;' . $v['title'] . '&quot;</strong> not imported!', CLICKWHALE_NAME );
+                $result[] = __( '<strong>Error!</strong> Link <strong>&quot;' . $v['title'] . '&quot;</strong> not imported!', 'clickwhale' );
             }
         }
         wp_send_json_success( $result );
@@ -494,7 +502,7 @@ class Clickwhale_Ajax {
     public function export_csv() {
         check_ajax_referer( 'export_csv', 'security' );
         if ( empty( $_POST['categories'] ) || empty( $_POST['columns'] ) ) {
-            $error = new WP_Error('003', __( 'Bad request', CLICKWHALE_NAME ));
+            $error = new WP_Error('003', __( 'Bad request', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         global $wpdb;
@@ -537,12 +545,12 @@ class Clickwhale_Ajax {
         }
         $rows = $wpdb->get_results( $query, ARRAY_A );
         if ( !$rows ) {
-            $error = new WP_Error('004', __( 'Nothing to export', CLICKWHALE_NAME ));
+            $error = new WP_Error('004', __( 'Nothing to export', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         $merged = array_merge( array($headers), $rows );
         if ( empty( $merged ) ) {
-            $error = new WP_Error('004', __( 'Nothing to export', CLICKWHALE_NAME ));
+            $error = new WP_Error('004', __( 'Nothing to export', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         ob_start();
