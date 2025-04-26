@@ -324,21 +324,29 @@ final class Clickwhale_Settings {
         echo Helper::render_control( $args );
     }
 
+    public function filter_settings_tabs_capability() {
+        $tabs = self::render_tabs();
+        foreach ( $tabs as $tab ) {
+            add_filter( 'option_page_capability_clickwhale_' . $tab['url'], array( self::$instance, 'add_capability' ) );
+            add_filter( 'sanitize_option_clickwhale_' . $tab['url'], array( self::$instance, 'remove_capability' ) );
+        }
+    }
+
     public function add_capability( $capability ) {
-
-        $general_options = get_option( 'clickwhale_general_options' );
-        $access_roles = $general_options['access_level'] ?? ['administrator'];
-
         $current_user = Clickwhale::get_instance()->user;
+
+        if ( $current_user->get_user()->has_cap( 'manage_options' ) ) {
+            return $capability;
+        }
+
         $current_user_roles = $current_user::get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
             return $capability;
         }
 
-        if ( $current_user->get_user()->has_cap( 'manage_options' ) ) {
-            return $capability;
-        }
+        $general_options = get_option( 'clickwhale_general_options' );
+        $access_roles = $general_options['access_level'] ?? ['administrator'];
 
         if ( array_intersect( $access_roles, $current_user_roles ) ) {
 

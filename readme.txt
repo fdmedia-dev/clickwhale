@@ -4,8 +4,8 @@ Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
-Tested up to: 6.7
-Stable tag: 2.4.5
+Tested up to: 6.8
+Stable tag: 2.4.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,14 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.6 (26th April 2025) =
+* Fix: Fixed "links not working" issue in Custom Content block on link pages
+* Fix: Fixed link slug issue for some cases of migration
+* Fix: Fixed trailing slash applied to mailto link on link pages
+* Fix: Fixed access to settings for Admins and Super Admins on multisite
+* Fix: Fixed "textdomain" issue after updating to WP 6.7 version
+* Info: WordPress v6.8 compatibility
+
 = Version 2.4.5 (27th March 2025) =
 * New: Implemented collection of useful [code snippets](https://github.com/fdmedia-io/clickwhale-hooks) for third-party integration
 * New: Added link manager tab on settings page, optimized settings

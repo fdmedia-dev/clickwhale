@@ -18,13 +18,13 @@ $tabs = $link->render_tabs();
 if ( $item['slug'] ) {
     $slug = $item['slug'];
 } else {
-	$random_slug = ! Helper::get_clickwhale_option( 'link_manager', 'random_slug' )
-		? Links_Helper::get_link_random_slug()
-		: '';
+    $random_slug = ! Helper::get_clickwhale_option( 'link_manager', 'random_slug' )
+        ? Links_Helper::generate_random_slug()
+        : '';
 
-	$slug = Helper::get_clickwhale_option( 'link_manager', 'slug' ) ?
-		trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) ) . $random_slug
-		: $random_slug;
+    $slug = Helper::get_clickwhale_option( 'link_manager', 'slug' ) ?
+        trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) ) . $random_slug
+        : $random_slug;
 }
 
 // Link target
@@ -36,18 +36,18 @@ $link_targets = array_merge(
 do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
-	<?php
-	echo Helper::render_heading(
-		array(
-			'name'         => __( 'Link', 'clickwhale' ),
-			'is_edit'      => $item_id !== 0,
-			'link_to_list' => CLICKWHALE_SLUG,
-			'link_to_add'  => CLICKWHALE_SLUG . '-edit-link'
-		)
-	);
+    <?php
+    echo Helper::render_heading(
+        array(
+            'name'         => __( 'Link', 'clickwhale' ),
+            'is_edit'      => $item_id !== 0,
+            'link_to_list' => CLICKWHALE_SLUG,
+            'link_to_add'  => CLICKWHALE_SLUG . '-edit-link'
+        )
+    );
 
-	$link->show_message( $item_id );
-	?>
+    $link->show_message( $item_id );
+    ?>
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
@@ -62,7 +62,8 @@ do_action( 'clickwhale_admin_banner' );
 
         <div id="post-body-content">
             <div id="clickwhale-tabs" class="clickwhale-tabs">
-                <?php if ( $tabs ) { ?>
+                <?php if ( $tabs ) {
+                    ?>
                     <ul>
                         <?php foreach ( $tabs as $tab ) { ?>
                             <li>
@@ -99,7 +100,6 @@ do_action( 'clickwhale_admin_banner' );
                                     <p id="cw-title--description"></p>
                                 </td>
                             </tr>
-
                             <tr class="form-field">
                                 <th scope="row">
                                     <label for="cw-slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
@@ -130,7 +130,6 @@ do_action( 'clickwhale_admin_banner' );
                                     </p>
                                 </td>
                             </tr>
-
                             <tr class="form-field">
                                 <th scope="row">
                                     <label for="url"><?php _e( 'Target URL', 'clickwhale' ); ?></label>
@@ -152,7 +151,6 @@ do_action( 'clickwhale_admin_banner' );
                                     <p id="cw-url--description"></p>
                                 </td>
                             </tr>
-
                             <?php
                             echo Helper::render_control(
                                 array(
@@ -246,15 +244,11 @@ do_action( 'clickwhale_admin_banner' );
                         </tbody>
                     </table>
                 </div>
-
                 <?php do_action( 'clickwhale_link_after_tabs_content', $item ); ?>
-
             </div>
-
             <input type="hidden" id="created_at" name="created_at"
                    value="<?php echo esc_attr( $item['created_at'] ); ?>" />
             <input type="hidden" id="updated_at" name="updated_at" value="" />
-
             <input type="submit"
                    id="submit"
                    name="submit"
@@ -268,7 +262,5 @@ do_action( 'clickwhale_admin_banner' );
             </button>
         </div>
     </form>
-
     <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
-
 </div>

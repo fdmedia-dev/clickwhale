@@ -35,7 +35,7 @@ abstract class Clickwhale_Instance_Edit {
 
         add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );
 
-        if ( ! empty( $_GET['page'] ) && sanitize_text_field( $_GET['page'] ) === $this->page ) {
+        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === $this->page ) {
             add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
 
             if ( ! empty ( intval( $_GET['id'] ) ) ) {

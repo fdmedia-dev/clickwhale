@@ -59,20 +59,28 @@ class Clickwhale_Migration_Notice {
      * @since    1.0.0
      */
     public function init() {
+        $show_admin_scripts = false;
         $options_hide_migrate = get_option( 'clickwhale_hide_notice_migrate' );
         $options_hide_deactive = get_option( 'clickwhale_hide_notice_deactive' );
-        //$options_last_migration = get_option( 'clickwhale_tools_last_migration_options' );
 
-        $is_tools_page = isset( $_GET['page'] ) && $_GET['page'] == CLICKWHALE_SLUG . '-tools';
+        $is_tools_page = isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) == CLICKWHALE_SLUG . '-tools';
 
-        if ( ! $options_hide_migrate[$this->migrant] && ! $is_tools_page ) {
-            add_action( 'admin_notices', [ $this, 'migration_notice' ] );
-            add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+        if ( $is_tools_page ) {
+            return;
         }
 
-        if ( ! $options_hide_deactive[$this->migrant] && ! $is_tools_page ) {
-            add_action( 'admin_notices', [ $this, 'deactive_notice' ] );
-            add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+        if ( empty( $options_hide_migrate[$this->migrant] ) ) {
+            add_action( 'admin_notices', array( $this, 'migration_notice' ) );
+            $show_admin_scripts = true;
+        }
+
+        if ( empty( $options_hide_deactive[$this->migrant] ) ) {
+            add_action( 'admin_notices', array( $this, 'deactive_notice' ) );
+            $show_admin_scripts = true;
+        }
+
+        if ( $show_admin_scripts ) {
+            add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
         }
     }
 

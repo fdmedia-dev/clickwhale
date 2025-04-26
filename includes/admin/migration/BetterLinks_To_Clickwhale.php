@@ -20,7 +20,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
         $message = array();
         foreach ( $data as $item ) {
-            if ( ! $this->if_link_exists( $item->link_slug ) ) {
+            if ( ! $this->link_exists( $item->link_slug ) ) {
                 $category_id = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT {$wpdb->prefix}clickwhale_categories.id
@@ -76,7 +76,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
         $message = array();
         foreach ( $data as $item ) {
-            if ( ! $this->if_category_exists( $item->term_slug ) ) {
+            if ( ! $this->category_exists( $item->term_slug ) ) {
                 $array = array(
                     'title' => $item->term_name,
                     'slug'  => $item->term_slug,

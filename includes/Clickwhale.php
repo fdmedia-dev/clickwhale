@@ -287,7 +287,7 @@ final class Clickwhale {
         $this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
         $this->loader->add_action( 'admin_head', $this->admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
 
-        if ( isset( $_GET['page'] ) && strpos( $_GET['page'], CLICKWHALE_SLUG ) === 0 ) {
+        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) === 0 ) {
             $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
             $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
         }
@@ -301,7 +301,7 @@ final class Clickwhale {
         $this->loader->add_action( 'clickwhale_admin_sidebar_area', $this->admin, 'admin_widget_docs' );
         $this->loader->add_action( 'clickwhale_admin_sidebar_area', $this->admin, 'admin_widget_upgrade' );
 
-        // Clickwhale menu in the admin bar in the admin
+        // Clickwhale menu in the admin bar
         if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
             $this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );
         }
@@ -335,11 +335,10 @@ final class Clickwhale {
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
         $this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
 
-        $tabs = Clickwhale_Settings::render_tabs();
-
-        foreach ( $tabs as $tab ) {
-            $this->loader->add_filter( 'option_page_capability_clickwhale_' . $tab['url'], $this->settings, 'add_capability' );
-            $this->loader->add_filter( 'sanitize_option_clickwhale_' . $tab['url'], $this->settings, 'remove_capability' );
+        // Hooked on `init` due to WordPress v6.7 translation logic updates
+        // https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
+        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG . '-settings' ) === 0 ) {
+            $this->loader->add_action( 'init', $this->settings, 'filter_settings_tabs_capability' );
         }
     }
 

@@ -188,7 +188,7 @@ class Clickwhale_Ajax {
         }
         $result = false;
         $post_id = intval( $_POST['id'] );
-        switch ( $_POST['type'] ) {
+        switch ( sanitize_key( $_POST['type'] ) ) {
             case 'link':
                 $item = Links_Helper::get_by_slug( $slug );
                 $result = $item && (int) $item['id'] !== $post_id;

@@ -9,14 +9,13 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
     public function process_links_data(): array {
         global $wpdb;
-
-        $table_ta_posts              = $wpdb->prefix . 'posts';
-        //$table_ta_postmeta           = $wpdb->prefix . 'postmeta';
-        $table_ta_terms              = $wpdb->prefix . 'terms';
-        $table_ta_relationships      = $wpdb->prefix . 'term_relationships';
-        $table_clickwhale_categories = $wpdb->prefix . 'clickwhale_categories';
+        $table_ta_posts         = $wpdb->prefix . 'posts';
+        $table_ta_terms         = $wpdb->prefix . 'terms';
+        $table_ta_relationships = $wpdb->prefix . 'term_relationships';
+        $table_cw_categories    = $wpdb->prefix . 'clickwhale_categories';
 
         $data = $wpdb->get_results( "SELECT * FROM $table_ta_posts WHERE post_type='thirstylink' AND post_status='publish'" );
+
         if ( ! $data ) {
             return array(
                 'links' => array()
@@ -42,78 +41,87 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         }
 
         foreach ( $data as $item ) {
-            if ( ! $this->if_link_exists( $item->post_name ) ) {
-                $nofollow = true;
-                $redirection = get_post_meta( $item->ID, '_ta_redirect_type', true ) !== 'global'
-                    ? get_post_meta( $item->ID, '_ta_redirect_type', true )
-                    : $global_redirect_type;
+            $item_id = $item->ID;
+            $item_title = $item->post_title;
+            $permalink = get_permalink( $item_id );
 
-                if ( get_post_meta( $item->ID, '_ta_no_follow', true ) === 'global' ) {
-                    if ( $global_nofollow === 'category' ) {
-                        $categories_for_nofollow = $wpdb->get_results(
-                            $wpdb->prepare(
-                                "SELECT term_taxonomy_id FROM $table_ta_relationships WHERE object_id=%d",
-                                intval( $item->ID )
-                            ),
-                            ARRAY_A
-                        );
-                        if ( ! $categories_for_nofollow ) {
-                            $categories_for_nofollow = array();
-                        }
-
-                        $category_nofollow = false;
-                        foreach ( $categories_for_nofollow as $v ) {
-                            if ( array_intersect( $global_nofollow_categories, $v ) ) {
-                                $category_nofollow = true;
-                                break;
-                            }
-                        }
-                        $nofollow = $category_nofollow;
-                    }
-                } else {
-                    $nofollow = ( 'yes' === get_post_meta( $item->ID, '_ta_no_follow', true ) ); // bool
-                }
-
-                $categories_for_id = $wpdb->get_results(
-                    $wpdb->prepare(
-                        "SELECT $table_clickwhale_categories.id
-                        FROM $table_clickwhale_categories, $table_ta_terms, $table_ta_relationships 
-                        WHERE $table_ta_terms.term_id=$table_ta_relationships.term_taxonomy_id 
-                        AND $table_ta_relationships.object_id=%d 
-                        AND $table_ta_terms.slug=$table_clickwhale_categories.slug",
-                        intval( $item->ID )
-                    ),
-                    ARRAY_A
-                );
-                if ( ! $categories_for_id ) {
-                    $categories_for_id = array();
-                }
-
-                $category_id = array();
-                foreach ( $categories_for_id as $id ) {
-                    $category_id[] = $id['id'];
-                }
-                $category_id = implode( ',', $category_id );
-
-                $array = array(
-                    'title'       => $item->post_title,
-                    'url'         => get_post_meta( $item->ID, '_ta_destination_url', true ),
-                    'slug'        => $item->post_name,
-                    'redirection' => $redirection,
-                    'nofollow'    => $nofollow,
-                    'sponsored'   => '',
-                    'categories'  => sanitize_text_field( $category_id ),
-                    'author'      => $this->process_author(),
-                    'created_at'  => $item->post_date,
-                    'updated_at'  => $item->post_modified,
-                );
-
-                $this->run_links_migration( $array );
-
-                $message[] = $this->link_item_import_success( $item->post_title );
-            } else {
-                $message[] = $this->link_item_import_error( $item->post_title );
+            if ( false === $permalink ) {
+                $message[] = $this->link_item_import_error( $item_title );
+                continue;
             }
+
+            $slug = trim( substr( $permalink, strlen( home_url() ) ), '/' );
+
+            if ( $this->link_exists( $slug ) ) {
+                $message[] = $this->link_item_import_error( $item_title );
+                continue;
+            }
+
+            $redirect_post_meta = get_post_meta( $item_id, '_ta_redirect_type', true );
+            $redirection = ( $redirect_post_meta !== 'global' ) ? $redirect_post_meta : $global_redirect_type;
+
+            $nofollow = true;
+            $nofollow_post_meta = get_post_meta( $item_id, '_ta_no_follow', true );
+
+            if ( $nofollow_post_meta === 'global' ) {
+                if ( $global_nofollow === 'category' ) {
+                    $categories_for_nofollow = $wpdb->get_results(
+                        $wpdb->prepare(
+                            "SELECT term_taxonomy_id FROM $table_ta_relationships WHERE object_id=%d",
+                            intval( $item_id )
+                        ),
+                        ARRAY_A
+                    );
+                    if ( ! $categories_for_nofollow ) {
+                        $categories_for_nofollow = array();
+                    }
+
+                    $category_nofollow = false;
+                    foreach ( $categories_for_nofollow as $v ) {
+                        if ( array_intersect( $global_nofollow_categories, $v ) ) {
+                            $category_nofollow = true;
+                            break;
+                        }
+                    }
+                    $nofollow = $category_nofollow;
+                }
+            } else {
+                $nofollow = ( 'yes' === $nofollow_post_meta ); // bool
+            }
+
+            $categories_for_id = (array) $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT $table_cw_categories.id
+                    FROM $table_cw_categories, $table_ta_terms, $table_ta_relationships 
+                    WHERE $table_ta_terms.term_id=$table_ta_relationships.term_taxonomy_id 
+                    AND $table_ta_relationships.object_id=%d 
+                    AND $table_ta_terms.slug=$table_cw_categories.slug",
+                    intval( $item_id )
+                ),
+                ARRAY_A
+            );
+
+            $category_id = array();
+
+            foreach ( $categories_for_id as $id ) {
+                $category_id[] = $id['id'];
+            }
+
+            $link = array(
+                'title'       => $item_title,
+                'url'         => get_post_meta( $item_id, '_ta_destination_url', true ),
+                'slug'        => $slug,
+                'redirection' => $redirection,
+                'nofollow'    => $nofollow,
+                'sponsored'   => '',
+                'categories'  => sanitize_text_field( implode( ',', $category_id ) ),
+                'author'      => $this->process_author(),
+                'created_at'  => $item->post_date,
+                'updated_at'  => $item->post_modified,
+            );
+
+            $this->run_links_migration( $link );
+            $message[] = $this->link_item_import_success( $item_title );
         }
 
         return array(
@@ -138,19 +146,20 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         }
 
         $message = array();
+
         foreach ( $data as $item ) {
-            if ( ! $this->if_category_exists( $item->slug ) ) {
-                $array = array(
-                    'title' => $item->name,
-                    'slug'  => $item->slug,
-                );
-
-                $this->run_categories_migration( $array );
-
-                $message[] = $this->category_item_import_success( $item->name );
-            } else {
+            if ( $this->category_exists( $item->slug ) ) {
                 $message[] = $this->category_item_import_error( $item->name );
+                continue;
             }
+
+            $category = array(
+                'title' => $item->name,
+                'slug'  => $item->slug,
+            );
+
+            $this->run_categories_migration( $category );
+            $message[] = $this->category_item_import_success( $item->name );
         }
 
         return array(

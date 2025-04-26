@@ -95,7 +95,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     public function admin_scripts(): void {
         $nonce = wp_create_nonce( 'slug_exists' );
 
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) {
+        if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-link' ) {
             ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {

@@ -24,13 +24,13 @@ class Clickwhale_Migration {
         $this->last_migration = 'clickwhale_tools_last_migration_options';
 
         $this->load_dependencies();
-        $this->dispath_actions();
 
         // Actions
         add_action( 'admin_init', [ $this, 'add_migration_options' ] );
         add_action( 'admin_init', [ $this, 'add_migration_settings' ] );
         add_action( 'admin_init', [ $this, 'add_notice_migrate_options' ] );
         add_action( 'admin_init', [ $this, 'add_notice_deactive_options' ] );
+        add_action( 'admin_init', [ $this, 'dispath_actions' ] );
 
         // add js
         add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
@@ -170,7 +170,6 @@ class Clickwhale_Migration {
         return $data;
     }
 
-
     public function dispath_actions() {
         $available_migrations = $this->available_migrations();
 
@@ -281,7 +280,7 @@ class Clickwhale_Migration {
             return;
         }
 
-        if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
+        if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
 

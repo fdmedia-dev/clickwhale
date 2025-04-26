@@ -573,15 +573,20 @@ class Clickwhale_Linkpage_Content_Templates {
     }
 
     public function template_public_cw_custom_link( $args ): string {
-
         $url = $args['data']['url'];
-        $url_array = parse_url( $url );
+        $parsed = parse_url( $url );
+        $is_mailto = isset( $parsed['scheme'] ) && $parsed['scheme'] === 'mailto';
+        $has_query = isset( $parsed['query'] );
+
+        if ( ! $is_mailto && ! $has_query ) {
+            $url = trailingslashit( $url );
+        }
 
         return $this->get_public_link_template(
             array(
                 'title'    => $args['data']['title'],
                 'subtitle' => $args['data']['subtitle'] ?? '',
-                'url'      => ( isset( $url_array['query'] ) ) ? $url : trailingslashit( $url ),
+                'url'      => $url
             ),
             $args );
     }
@@ -647,7 +652,7 @@ class Clickwhale_Linkpage_Content_Templates {
         <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
              data-type="<?php echo esc_attr( $args['type'] ); ?>"
         >
-            <div class="linkpage-public-row--content"><?php echo nl2br( esc_textarea( wp_unslash( $args['data']['content'] ) ) ); ?></div>
+            <div class="linkpage-public-row--content"><?php echo nl2br( wp_kses_post( $args['data']['content'] ) ); ?></div>
         </div>
         <?php
         $result = ob_get_contents();

@@ -254,7 +254,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         $nonce = wp_create_nonce( 'slug_exists' );
         $nonce_add_link = wp_create_nonce( 'clickwhale_add_link_to_linkpage' );
 
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+        if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {

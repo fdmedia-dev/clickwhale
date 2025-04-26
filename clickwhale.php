@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.4.5
+ * Version:           2.4.6
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,7 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.4.5' );
+    define( 'CLICKWHALE_VERSION', '2.4.6' );
     /**
      * @since 1.4.1
      */
@@ -86,9 +86,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         clickwhale_fs();
         // Signal that SDK was initiated
         do_action( 'clickwhale_fs_loaded' );
-        clickwhale_fs()->override_i18n( [
-            'account' => __( 'License', 'clickwhale' ),
-        ] );
+        // Hooked on `init` due to WordPress v6.7 translation logic updates
+        // https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
+        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) === 0 ) {
+            add_action( 'init', function () {
+                clickwhale_fs()->override_i18n( [
+                    'account' => __( 'License', 'clickwhale' ),
+                ] );
+            } );
+        }
     }
     function clickwhale_activate() {
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Activator.php';

@@ -284,7 +284,7 @@ final class Clickwhale_Admin {
 
         wp_enqueue_script( 'jquery-ui-tabs' );
 
-        if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             wp_enqueue_script( 'jquery-ui-droppable' );
             wp_enqueue_script( 'jquery-ui-draggable' );
             wp_enqueue_script( 'jquery-ui-sortable' );
@@ -312,11 +312,11 @@ final class Clickwhale_Admin {
             );
         }
 
-        if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' ) {
+        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-link' ) {
             wp_enqueue_script( 'jquery-ui-sortable' );
         }
 
-        if ( ! empty( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
+        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
             wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
         }
 
@@ -702,7 +702,7 @@ CSS;
      * @since 1.4.1
      */
     public function hide_notice_on_upgrade_to_pro_page() {
-        if ( isset( $_GET['page'] ) && $_GET['page'] === CLICKWHALE_SLUG . '-pro' ) {
+        if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-pro' ) {
             remove_all_actions( 'user_admin_notices' );
             remove_all_actions( 'admin_notices' );
         }
@@ -726,7 +726,10 @@ CSS;
         if ( empty( $_GET['page'] ) ) {
             return;
         }
-        if ( $_GET['page'] === CLICKWHALE_SLUG || $_GET['page'] === CLICKWHALE_SLUG . '-linkpages' ) {
+
+        $page = sanitize_key( $_GET['page'] );
+
+        if ( $page === CLICKWHALE_SLUG || $page === CLICKWHALE_SLUG . '-linkpages' ) {
             ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
@@ -746,7 +749,8 @@ CSS;
             </script>
             <?php
         }
-        if ( $_GET['page'] === CLICKWHALE_SLUG . '-edit-link' || $_GET['page'] === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+
+        if ( $page === CLICKWHALE_SLUG . '-edit-link' || $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function() {
@@ -802,7 +806,8 @@ CSS;
             </script>
             <?php
         }
-        if ( $_GET['page'] === CLICKWHALE_SLUG . '-tracking-codes' ) {
+
+        if ( $page === CLICKWHALE_SLUG . '-tracking-codes' ) {
             $nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
             ?>
             <script type='text/javascript'>

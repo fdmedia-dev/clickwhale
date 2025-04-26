@@ -107,7 +107,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
                 <?php foreach ( $categories as $category ) {
                     $category_id = intval( $category->id );
-                    $selected = isset( $_GET['category'] ) && $_GET['category'] == $category_id ? ' selected = "selected"' : '';
+                    $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected = "selected"' : '';
                     ?>
                     <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
                 <?php } ?>

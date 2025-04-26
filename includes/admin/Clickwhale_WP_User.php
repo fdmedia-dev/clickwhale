@@ -77,6 +77,10 @@ class Clickwhale_WP_User {
      * @return bool
      */
     static public function is_current_user_role_access_granted(): bool {
+        if ( wp_get_current_user()->has_cap( 'manage_options' ) ) {
+            return true;
+        }
+
         $current_user_roles = self::get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {

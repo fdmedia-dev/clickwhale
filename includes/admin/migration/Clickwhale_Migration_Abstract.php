@@ -43,7 +43,7 @@ abstract class Clickwhale_Migration_Abstract {
     abstract public function process_migration_time();
 
     public function set_migration_time( $option, $time ) {
-        $options            = get_option( 'clickwhale_tools_last_migration_options' );
+        $options = get_option( 'clickwhale_tools_last_migration_options', array() );
         $options[$option] = $time;
         update_option( 'clickwhale_tools_last_migration_options', $options );
     }
@@ -52,7 +52,7 @@ abstract class Clickwhale_Migration_Abstract {
      * @param string $slug
      * @return bool
      */
-    public function if_link_exists( string $slug ): bool {
+    public function link_exists( string $slug ): bool {
         $slug = Helper::sanitize_slug( $slug );
 
         if ( empty( $slug ) ) {
@@ -109,7 +109,7 @@ abstract class Clickwhale_Migration_Abstract {
      * @param string $slug
      * @return bool
      */
-    public function if_category_exists( string $slug ): bool {
+    public function category_exists( string $slug ): bool {
         $slug = Helper::sanitize_slug( $slug );
 
         if ( empty( $slug ) ) {
@@ -169,7 +169,7 @@ abstract class Clickwhale_Migration_Abstract {
     public function prepare_categories_data( array $data ): array {
         $message = array();
         foreach ( $data as $item ) {
-            if ( ! $this->if_category_exists( $item->slug ) ) {
+            if ( ! $this->category_exists( $item->slug ) ) {
                 $array = array(
                     'title' => $item->name,
                     'slug'  => $item->slug

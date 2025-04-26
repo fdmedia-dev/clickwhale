@@ -35,7 +35,7 @@ msgstr "https://clickwhale.pro"
 msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
 msgstr "Gerenciador de links, encurtador de links e rastreador de cliques para links de afiliados e páginas de links."
 
-#: clickwhale.php:105
+#: clickwhale.php:109
 msgid "License"
 msgstr "Licença"
 
@@ -69,7 +69,7 @@ msgstr "Apagar"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1133
 #: templates/admin/categories/edit.php:50
 #: templates/admin/linkpages/edit.php:113
-#: templates/admin/links/edit.php:83
+#: templates/admin/links/edit.php:84
 #: templates/admin/tracking-codes/edit.php:50
 msgid "Title"
 msgstr "Título"
@@ -80,8 +80,8 @@ msgstr "Título"
 #: templates/admin/categories/edit.php:95
 #: templates/admin/linkpages/edit.php:136
 #: templates/admin/linkpages/edit.php:141
-#: templates/admin/links/edit.php:213
-#: templates/admin/links/edit.php:218
+#: templates/admin/links/edit.php:211
+#: templates/admin/links/edit.php:216
 #: templates/admin/tracking-codes/edit.php:407
 msgid "Description"
 msgstr "Descrição"
@@ -112,27 +112,27 @@ msgstr "Este slug já está a ser utilizado! Introduz outro slug"
 
 #: includes/admin/Clickwhale_Admin.php:116
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:145
-#: includes/admin/migration/Clickwhale_Migration.php:223
+#: includes/admin/migration/Clickwhale_Migration.php:222
 #: pro/templates/admin/statistics/statistics.php:22
 #: templates/admin/linkpages/edit.php:350
 msgid "Links"
 msgstr "Links"
 
 #: includes/admin/Clickwhale_Admin.php:117
-#: includes/Clickwhale.php:496
+#: includes/Clickwhale.php:495
 msgid "Add New Link"
 msgstr "Adicionar Novo Link"
 
 #: includes/admin/Clickwhale_Admin.php:118
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:39
 #: includes/admin/links/Clickwhale_Links_List_Table.php:274
-#: includes/admin/migration/Clickwhale_Migration.php:208
+#: includes/admin/migration/Clickwhale_Migration.php:207
 #: pro/templates/admin/statistics/statistics.php:23
 msgid "Categories"
 msgstr "Categorias"
 
 #: includes/admin/Clickwhale_Admin.php:119
-#: includes/Clickwhale.php:508
+#: includes/Clickwhale.php:507
 msgid "Add New Category"
 msgstr "Adicionar nova categoria"
 
@@ -151,7 +151,7 @@ msgid "Link Pages"
 msgstr "Páginas de ligação"
 
 #: includes/admin/Clickwhale_Admin.php:121
-#: includes/Clickwhale.php:520
+#: includes/Clickwhale.php:519
 #, fuzzy
 msgid "Add New Link Page"
 msgstr "Adicionar nova página de ligação"
@@ -166,7 +166,7 @@ msgid "Tracking Codes"
 msgstr "Códigos de rastreio"
 
 #: includes/admin/Clickwhale_Admin.php:123
-#: includes/Clickwhale.php:532
+#: includes/Clickwhale.php:531
 #, fuzzy
 msgid "Add New Tracking Code"
 msgstr "Adiciona um novo código de rastreio"
@@ -308,8 +308,8 @@ msgstr "Documentação"
 msgid "Rate ClickWhale on WordPress.org"
 msgstr "Avalia o ClickWhale em WordPress.org"
 
-#: includes/admin/Clickwhale_Admin.php:763
-#: includes/admin/Clickwhale_Admin.php:783
+#: includes/admin/Clickwhale_Admin.php:767
+#: includes/admin/Clickwhale_Admin.php:787
 msgid "Copied!"
 msgstr "Copiado!"
 
@@ -472,7 +472,7 @@ msgid "Check the user roles that should be excluded from tracking."
 msgstr "Verifica as funções de utilizador que devem ser excluídas do seguimento."
 
 #: includes/admin/Clickwhale_Settings.php:197
-#: templates/admin/links/edit.php:159
+#: templates/admin/links/edit.php:157
 #, fuzzy
 msgid "Redirection Type"
 msgstr "Tipo de redireccionamento"
@@ -485,7 +485,7 @@ msgstr "Define o tipo de redireccionamento predefinido que será utilizado para 
 #: includes/admin/Clickwhale_Settings.php:212
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:85
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:96
-#: templates/admin/links/edit.php:171
+#: templates/admin/links/edit.php:169
 msgid "Link Target"
 msgstr "Link alvo"
 
@@ -758,7 +758,7 @@ msgid "Select Image"
 msgstr "Seleccionar imagem"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:576
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:874
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:879
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:430
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:752
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1678
@@ -796,12 +796,12 @@ msgid "No Change"
 msgstr "Nenhuma alteração"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:106
-#: templates/admin/links/edit.php:183
+#: templates/admin/links/edit.php:181
 msgid "Nofollow"
 msgstr "Nofollow"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:127
-#: templates/admin/links/edit.php:198
+#: templates/admin/links/edit.php:196
 msgid "Sponsored"
 msgstr "Patrocínio"
 
@@ -847,7 +847,7 @@ msgid "Slug"
 msgstr "Slug"
 
 #: includes/admin/links/Clickwhale_Links_List_Table.php:273
-#: templates/admin/links/edit.php:136
+#: templates/admin/links/edit.php:135
 msgid "Target URL"
 msgstr "URL do destino"
 
@@ -860,48 +860,48 @@ msgstr "Não encontraste ligações"
 msgid "Please enter URL"
 msgstr "Introduza o URL"
 
-#: includes/admin/migration/Clickwhale_Migration.php:217
+#: includes/admin/migration/Clickwhale_Migration.php:216
 #, fuzzy
 msgid "Migrate categories"
 msgstr "Migra categorias"
 
-#: includes/admin/migration/Clickwhale_Migration.php:232
+#: includes/admin/migration/Clickwhale_Migration.php:231
 #, fuzzy
 msgid "Migrate links"
 msgstr "Migrar ligações"
 
-#: includes/admin/migration/Clickwhale_Migration.php:252
+#: includes/admin/migration/Clickwhale_Migration.php:251
 msgid "links"
 msgstr "ligações"
 
-#: includes/admin/migration/Clickwhale_Migration.php:252
+#: includes/admin/migration/Clickwhale_Migration.php:251
 msgid "link"
 msgstr "ligação"
 
-#: includes/admin/migration/Clickwhale_Migration.php:254
+#: includes/admin/migration/Clickwhale_Migration.php:253
 msgid "categories"
 msgstr "&Secções"
 
-#: includes/admin/migration/Clickwhale_Migration.php:254
+#: includes/admin/migration/Clickwhale_Migration.php:253
 msgid "category"
 msgstr "categoria"
 
-#: includes/admin/migration/Clickwhale_Migration.php:257
+#: includes/admin/migration/Clickwhale_Migration.php:256
 #, fuzzy
 msgid "Found %1$s %2$s and %3$s %4$s."
 msgstr "Encontraste %1$s %2$s e %3$s %4$s."
 
-#: includes/admin/migration/Clickwhale_Migration.php:261
+#: includes/admin/migration/Clickwhale_Migration.php:260
 #, fuzzy
 msgid "Last migration at %1$s"
 msgstr "Última migração em %1$s"
 
-#: includes/admin/migration/Clickwhale_Migration.php:264
+#: includes/admin/migration/Clickwhale_Migration.php:263
 #, fuzzy
 msgid "Set what you want to migrate from %s to CLickWhale"
 msgstr "Define o que pretendes migrar de %s para CLickWhale"
 
-#: includes/admin/migration/Clickwhale_Migration.php:365
+#: includes/admin/migration/Clickwhale_Migration.php:364
 #, fuzzy
 msgid "Get started with ClickWhale now"
 msgstr "Começa a usar o ClickWhale agora"
@@ -926,31 +926,31 @@ msgstr "Importaste a categoria \"%1$s\" com sucesso."
 msgid "<strong>Import failed!</strong> Category \"%1$s\" already exists"
 msgstr "<strong>A importação falhou!</strong> A categoria \"%1$s\" já existe"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:87
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:95
 #, fuzzy
 msgid "You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here."
 msgstr "Já estás a usar %1$s no teu site. Para migrar os teus dados %1$s para o Clickwhale, clica aqui."
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:89
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:97
 #, fuzzy
 msgid "Start Migration"
 msgstr "Iniciar a migração"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:90
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:98
 msgid "Not now"
 msgstr "Ainda não"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:104
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:112
 #, fuzzy
 msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
 msgstr "Todos os dados do %1$s foram migrados com sucesso para o Clickwhale. Podes agora desativar com segurança %1$s no teu site."
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:106
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:114
 #, fuzzy
 msgid "Deactivate %1$s"
 msgstr "Desativar %1$s"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:107
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:115
 #, fuzzy
 msgid "Leave it active"
 msgstr "Deixa-o ativo"
@@ -1059,48 +1059,48 @@ msgstr "Seleciona a posição do código"
 msgid "Select"
 msgstr "Selecionar"
 
-#: includes/Clickwhale.php:443
+#: includes/Clickwhale.php:442
 msgid "General Options"
 msgstr "Opções gerais"
 
-#: includes/Clickwhale.php:444
+#: includes/Clickwhale.php:443
 #, fuzzy
 msgid "Set up ClickWhale plugin global options."
 msgstr "Configura as opções globais do plugin ClickWhale."
 
-#: includes/Clickwhale.php:451
+#: includes/Clickwhale.php:450
 msgid "Tracking Options"
 msgstr "Opções de rastreamento"
 
-#: includes/Clickwhale.php:452
+#: includes/Clickwhale.php:451
 #, fuzzy
 msgid "Set up ClickWhale plugin global link tracking options."
 msgstr "Configura as opções globais de seguimento de ligações do plugin ClickWhale."
 
-#: includes/Clickwhale.php:459
+#: includes/Clickwhale.php:458
 #, fuzzy
 msgid "Link Manager Options"
 msgstr "Opções do Link Manager"
 
-#: includes/Clickwhale.php:460
+#: includes/Clickwhale.php:459
 #, fuzzy
 msgid "Global settings for ClickWhale Links."
 msgstr "Definições globais para as ligações ClickWhale."
 
-#: includes/Clickwhale.php:491
+#: includes/Clickwhale.php:490
 msgid "New Link"
 msgstr "Novo LInk"
 
-#: includes/Clickwhale.php:503
+#: includes/Clickwhale.php:502
 msgid "New Category"
 msgstr "Adicionar Nova Categoria"
 
-#: includes/Clickwhale.php:515
+#: includes/Clickwhale.php:514
 #, fuzzy
 msgid "New Link Page"
 msgstr "Nova página de ligação"
 
-#: includes/Clickwhale.php:527
+#: includes/Clickwhale.php:526
 #, fuzzy
 msgid "New Tracking Code"
 msgstr "Novo código de rastreio"
@@ -1161,21 +1161,21 @@ msgstr "por exemplo, o título As minhas ligações"
 msgid "e.g. My Links Description"
 msgstr "por exemplo, Descrição das minhas ligações"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:769
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:774
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:114
 msgid "Change Order"
 msgstr "Trabalho a Mais"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:848
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:853
 msgid "Icon"
 msgstr "Ícone"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:851
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:856
 #, fuzzy
 msgid "You can select either an image, an icon or an emoji. You cannot have more than one active at the same time."
 msgstr "Podes selecionar uma imagem, um ícone ou um emoji. Não podes ter mais do que um ativo ao mesmo tempo."
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:878
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:883
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:425
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:434
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
@@ -1188,16 +1188,16 @@ msgstr "Podes selecionar uma imagem, um ícone ou um emoji. Não podes ter mais 
 msgid "Remove image"
 msgstr "Remover imagem"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:900
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:905
 msgid "Select Icon"
 msgstr "Selecione Ícone"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:916
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:921
 #, fuzzy
 msgid "Select Emoji"
 msgstr "Selecionar Emoji"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:920
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:925
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1683
 #: templates/admin/tools/tools.php:21
 msgid "Reset"
@@ -1846,7 +1846,7 @@ msgstr "Layout"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:941
 #: pro/includes/admin/statistics/Category_Clicks_Statistics.php:86
 #: templates/admin/categories/edit.php:20
-#: templates/admin/links/edit.php:235
+#: templates/admin/links/edit.php:233
 msgid "Category"
 msgstr "Categoria"
 
@@ -2578,12 +2578,12 @@ msgstr "Guardar"
 msgid "Reset styles"
 msgstr "Redefinir estilos"
 
-#: templates/admin/links/edit.php:79
+#: templates/admin/links/edit.php:80
 #, fuzzy
 msgid "Link Main Settings"
 msgstr "Liga as definições principais"
 
-#: templates/admin/links/edit.php:94
+#: templates/admin/links/edit.php:95
 msgid "Link Title"
 msgstr "Titulo do link"
 
@@ -2592,27 +2592,27 @@ msgstr "Titulo do link"
 msgid "e.g. my-link"
 msgstr "por exemplo, a minha ligação"
 
-#: templates/admin/links/edit.php:147
+#: templates/admin/links/edit.php:146
 #, fuzzy
 msgid "Link Target URL"
 msgstr "URL de destino da ligação"
 
-#: templates/admin/links/edit.php:191
+#: templates/admin/links/edit.php:189
 #, fuzzy
 msgid "Check to mark link as nofollow & noindex"
 msgstr "Verifica para marcar a ligação como nofollow e noindex"
 
-#: templates/admin/links/edit.php:206
+#: templates/admin/links/edit.php:204
 #, fuzzy
 msgid "Check to mark link as sponsored"
 msgstr "Verifica para marcar a ligação como patrocinada"
 
-#: templates/admin/links/edit.php:261
+#: templates/admin/links/edit.php:255
 #, fuzzy
 msgid "Save link"
 msgstr "Guardar ligação"
 
-#: templates/admin/links/edit.php:267
+#: templates/admin/links/edit.php:261
 msgid "Copy link"
 msgstr "Copiar link"
 

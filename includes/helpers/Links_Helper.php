@@ -42,7 +42,7 @@ class Links_Helper extends Helper_Abstract {
         );
     }
 
-    public static function get_link_random_slug( int $length = 6 ): string {
+    public static function generate_random_slug( int $length = 6 ): string {
         $characters = 'abcdefghijklmnopqrstuvwxyz';
         $string     = '';
 

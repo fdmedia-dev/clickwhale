@@ -19,7 +19,7 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
         }
 
         foreach ( $data as $item ) {
-            if ( ! $this->if_link_exists( $item->slug ) ) {
+            if ( ! $this->link_exists( $item->slug ) ) {
                 $cpt_cats = $this->get_custom_post_type_categories( $item->link_cpt_id );
                 if ( ! $cpt_cats ) {
                     $cpt_cats = array();

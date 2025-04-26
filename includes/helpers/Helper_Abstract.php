@@ -88,7 +88,7 @@ abstract class Helper_Abstract {
      * @return array
      * @since 1.6.0
      */
-    public static function get_all( string $orderby = 'title', string $order = "asc", string $output = "OBJECT" ): array {
+    public static function get_all( string $orderby = 'title', string $order = 'asc', string $output = 'OBJECT' ): array {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
         $orderby = sanitize_text_field( $orderby );

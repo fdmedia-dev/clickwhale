@@ -254,8 +254,8 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
-        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
+        $order_arg = isset( $_GET['order'] ) ? sanitize_key( $_GET['order'] ) : 'desc';
+        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_key( $_GET['orderby'] ) : 'id';
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];

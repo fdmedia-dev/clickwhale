@@ -95,7 +95,7 @@ class Clickwhale_Reset {
             return;
         }
 
-        if ( $_GET['page'] !== CLICKWHALE_SLUG . '-tools' ) {
+        if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
 

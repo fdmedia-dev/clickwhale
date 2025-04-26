@@ -77,7 +77,7 @@ class Helper {
                 $class = $class ? $class . ' regular-text' : $class;
                 $type  = esc_attr( $args['type'] );
                 $width = ( 'number' !== $type ) ? '300' : '60';
-                $placeholder  = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
+                $placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
                 $item  .= '<input ' . $id . $class . $name . ' type="' . $type . '" value="' . esc_attr( $value ) . '"' . $placeholder . $disabled . $required . ' style="width: ' . $width . 'px;"';
                 if ( 'number' === $type ) {
                     if ( isset( $args['min'] ) ) {
