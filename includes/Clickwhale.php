@@ -142,18 +142,13 @@ final class Clickwhale {
      * @since 1.5.0
      */
     public static function get_instance(): Clickwhale {
-
         if ( empty( self::$instance ) ) {
             self::$instance = new self();
-
             self::$instance->load_dependencies();
-
             self::$instance->loader = new Clickwhale_Loader();
             self::$instance->locale = new Clickwhale_i18n();
             self::$instance->user   = new Clickwhale_WP_User();
-
             self::$instance->set_locale();
-
             self::$instance->admin         = Clickwhale_Admin::get_instance();
             self::$instance->settings      = Clickwhale_Settings::get_instance();
             self::$instance->tools         = new Clickwhale_Tools();
@@ -165,7 +160,6 @@ final class Clickwhale {
             self::$instance->tracking_code = new Clickwhale_Tracking_Code_Edit();
             self::$instance->public        = Clickwhale_Public::get_instance();
             self::$instance->public_ajax   = Clickwhale_Public_Ajax::get_instance();
-
             self::$instance->define_admin_hooks();
             self::$instance->define_public_hooks();
         }
@@ -277,7 +271,6 @@ final class Clickwhale {
      * @access   private
      */
     private function define_admin_hooks() {
-
         /**
          * ACTIONS
          */
@@ -285,13 +278,10 @@ final class Clickwhale {
         $this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
         $this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
         $this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
+        $this->loader->add_action( 'admin_init', $this->settings, 'filter_settings_tabs_capability' );
         $this->loader->add_action( 'admin_head', $this->admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
-
-        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) === 0 ) {
-            $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
-            $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
-        }
-
+        $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
+        $this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_print_footer_scripts', $this->admin, 'admin_scripts' );
         $this->loader->add_action( 'clickwhale_admin_banner', $this->admin, 'admin_banner' );
         $this->loader->add_action( 'clickwhale_admin_banner_pro_button', $this->admin, 'admin_banner_pro_button' );
@@ -300,11 +290,7 @@ final class Clickwhale {
         $this->loader->add_action( 'clickwhale_admin_sidebar_end', $this->admin, 'admin_sidebar_end' );
         $this->loader->add_action( 'clickwhale_admin_sidebar_area', $this->admin, 'admin_widget_docs' );
         $this->loader->add_action( 'clickwhale_admin_sidebar_area', $this->admin, 'admin_widget_upgrade' );
-
-        // Clickwhale menu in the admin bar
-        if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
-            $this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );
-        }
+        $this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );
         $this->loader->add_action( 'admin_post_clickwhale_pro_subscription_action', $this->admin, 'pro_subscription_action' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_notice_hide', $this->ajax, 'migration_notice_hide' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_deactive', $this->ajax, 'migration_deactive' );
@@ -330,16 +316,10 @@ final class Clickwhale {
         /**
          * FILTERS
          */
-        clickwhale_fs()->add_filter( 'templates/pricing.php', [ $this->admin, 'enqueue_fs_pricing_styles' ] );
+        clickwhale_fs()->add_filter( 'templates/pricing.php', array( $this->admin, 'enqueue_fs_pricing_styles' ) );
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
         $this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
-
-        // Hooked on `init` due to WordPress v6.7 translation logic updates
-        // https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
-        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG . '-settings' ) === 0 ) {
-            $this->loader->add_action( 'init', $this->settings, 'filter_settings_tabs_capability' );
-        }
     }
 
     /**
@@ -350,58 +330,20 @@ final class Clickwhale {
      * @access   private
      */
     private function define_public_hooks() {
-
         /**
          * ACTIONS
          */
-        // Clickwhale menu in the admin bar
-        if ( ! Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
-            $this->loader->add_action(
-                'admin_bar_menu',
-                $this,
-                'admin_bar_render',
-                999
-            );
-        }
-
-        $this->loader->add_action(
-            'wp_enqueue_scripts',
-            $this->public,
-            'enqueue_styles'
-        );
-
-        $this->loader->add_action(
-            'wp_enqueue_scripts',
-            $this->public,
-            'enqueue_scripts'
-        );
-
-        $this->loader->add_action(
-            'init',
-            $this->public,
-            'do_redirect_handler'
-        );
-
-        $this->loader->add_action(
-            'wp_ajax_clickwhale/public/track_custom_link',
-            $this->public_ajax,
-            'track_custom_link'
-        );
-
-        $this->loader->add_action(
-            'wp_ajax_nopriv_clickwhale/public/track_custom_link',
-            $this->public_ajax,
-            'track_custom_link'
-        );
+        $this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_render', 999 );
+        $this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $this->public, 'enqueue_scripts' );
+        $this->loader->add_action( 'init', $this->public, 'do_redirect_handler' );
+        $this->loader->add_action( 'wp_ajax_clickwhale/public/track_custom_link', $this->public_ajax, 'track_custom_link' );
+        $this->loader->add_action( 'wp_ajax_nopriv_clickwhale/public/track_custom_link', $this->public_ajax, 'track_custom_link' );
 
         /**
          * FILTERS
          */
-        $this->loader->add_filter(
-            'the_content',
-            $this->public,
-            'add_target_to_clickwhale_link'
-        );
+        $this->loader->add_filter( 'the_content', $this->public, 'add_target_to_clickwhale_link' );
     }
 
     /**
@@ -474,10 +416,18 @@ final class Clickwhale {
      * @since 1.3.0
      */
     public function admin_bar_render( $wp_admin_bar ) {
+        if ( Helper::get_clickwhale_option( 'general', 'hide_admin_bar_menu' ) ) {
+            return;
+        }
+
+        if ( ! self::$instance->user->is_current_user_role_access_granted() ) {
+            return;
+        }
+
         $wp_admin_bar->add_node( array(
                 'id'    => CLICKWHALE_SLUG,
                 'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
-                'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ),
+                'href'  => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ),
                 'meta'  => array(
                     'class' => CLICKWHALE_SLUG,
                     'title' => 'ClickWhale'
@@ -488,7 +438,7 @@ final class Clickwhale {
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-link',
                 'title'  => __( 'New Link', 'clickwhale' ),
-                'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ),
+                'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-link',
@@ -500,7 +450,7 @@ final class Clickwhale {
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-category',
                 'title'  => __( 'New Category', 'clickwhale' ),
-                'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ),
+                'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-category',
@@ -512,7 +462,7 @@ final class Clickwhale {
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-linkpage',
                 'title'  => __( 'New Link Page', 'clickwhale' ),
-                'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ),
+                'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-linkpage',
@@ -524,7 +474,7 @@ final class Clickwhale {
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-tracking-code',
                 'title'  => __( 'New Tracking Code', 'clickwhale' ),
-                'href'   => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ),
+                'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-tracking-code',

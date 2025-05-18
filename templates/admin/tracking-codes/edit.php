@@ -1,6 +1,5 @@
 <?php
 
-use clickwhale\includes\admin\Clickwhale_WP_User;
 use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
 Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
@@ -198,23 +197,24 @@ do_action( 'clickwhale_admin_banner' );
                                 </div>
                             <?php }
 
-                            foreach ( $post_types as $post_type => $post_label ) { ?>
+                            foreach ( $post_types as $post_type => $post_label ) {
+                                ?>
                                 <div class="cw-posts-row cw-posts-row--included">
                                     <?php
                                     echo Helper::render_control(
                                         array(
                                             'control' => 'checkbox',
-                                            'id'      => 'position_include_' . $post_type,
-                                            'name'    => 'position[items_included][' . $post_type . '][active]',
+                                            'id'      => 'position_include_' . esc_attr( $post_type ),
+                                            'name'    => 'position[items_included][' . esc_attr( $post_type ) . '][active]',
                                             'value'   => esc_attr( $item['position']['items_included'][$post_type]['active'] ?? '0' ),
-                                            'label'   => sprintf(
-                                                wp_kses(
+                                            'label'   =>  wp_kses(
+                                                sprintf(
                                                     __( 'Include <strong>%s</strong>', 'clickwhale' ),
-                                                    array(
-                                                        'strong' => array()
-                                                    )
+                                                    esc_html( $post_label )
                                                 ),
-                                                $post_label
+                                                array(
+                                                    'strong' => array()
+                                                )
                                             )
                                         )
                                     );
@@ -230,9 +230,9 @@ do_action( 'clickwhale_admin_banner' );
                                         echo Helper::render_control(
                                             array(
                                                 'control'  => 'select',
-                                                'id'       => 'position_include_' . $post_type . '_ids',
+                                                'id'       => 'position_include_' . esc_attr( $post_type ) . '_ids',
                                                 'class'    => 'with-select2',
-                                                'name'     => 'position[items_included][' . $post_type . '][ids][]',
+                                                'name'     => 'position[items_included][' . esc_attr( $post_type ) . '][ids][]',
                                                 'value'    => $ids,
                                                 'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
                                                 'default'  => 'all',
@@ -247,17 +247,17 @@ do_action( 'clickwhale_admin_banner' );
                                     echo Helper::render_control(
                                         array(
                                             'control' => 'checkbox',
-                                            'id'      => 'position_exclude_' . $post_type,
-                                            'name'    => 'position[items_excluded][' . $post_type . '][active]',
+                                            'id'      => 'position_exclude_' . esc_attr( $post_type ),
+                                            'name'    => 'position[items_excluded][' . esc_attr( $post_type ) . '][active]',
                                             'value'   => esc_attr( $item['position']['items_excluded'][$post_type]['active'] ?? '0' ),
-                                            'label'   => sprintf(
-                                                wp_kses(
+                                            'label'   => wp_kses(
+                                                sprintf(
                                                     __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
-                                                    array(
-                                                        'strong' => array()
-                                                    )
+                                                    esc_html( $post_label )
                                                 ),
-                                                $post_label
+                                                array(
+                                                    'strong' => array()
+                                                )
                                             )
                                         )
                                     );
@@ -273,9 +273,9 @@ do_action( 'clickwhale_admin_banner' );
                                         echo Helper::render_control(
                                             array(
                                                 'control'  => 'select',
-                                                'id'       => 'position_exclude_' . $post_type . '_ids',
+                                                'id'       => 'position_exclude_' . esc_attr( $post_type ) . '_ids',
                                                 'class'    => 'with-select2',
-                                                'name'     => 'position[items_excluded][' . $post_type . '][ids][]',
+                                                'name'     => 'position[items_excluded][' . esc_attr( $post_type ) . '][ids][]',
                                                 'value'    => $ids,
                                                 'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
                                                 'default'  => 'all',
@@ -296,17 +296,17 @@ do_action( 'clickwhale_admin_banner' );
                                         echo Helper::render_control(
                                             array(
                                                 'control' => 'checkbox',
-                                                'id'      => 'position_include_' . $taxonomy,
-                                                'name'    => 'position[items_included][' . $taxonomy . '][active]',
+                                                'id'      => 'position_include_' . esc_attr( $taxonomy ),
+                                                'name'    => 'position[items_included][' . esc_attr( $taxonomy ) . '][active]',
                                                 'value'   => esc_attr( $item['position']['items_included'][$taxonomy]['active'] ?? '0' ),
-                                                'label'   => sprintf(
-                                                    wp_kses(
+                                                'label'   => wp_kses(
+                                                    sprintf(
                                                         __( 'Include <strong>%s</strong>', 'clickwhale' ),
-                                                        array(
-                                                            'strong' => array()
-                                                        )
+                                                        esc_html( $taxonomy_object->label )
                                                     ),
-                                                    $taxonomy_object->label
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
                                         );
@@ -322,9 +322,9 @@ do_action( 'clickwhale_admin_banner' );
                                             echo Helper::render_control(
                                                 array(
                                                     'control'  => 'select',
-                                                    'id'       => 'position_include_' . $taxonomy . '_ids',
+                                                    'id'       => 'position_include_' . esc_attr( $taxonomy ) . '_ids',
                                                     'class'    => 'with-select2',
-                                                    'name'     => 'position[items_included][' . $taxonomy . '][ids][]',
+                                                    'name'     => 'position[items_included][' . esc_attr( $taxonomy ) . '][ids][]',
                                                     'value'    => $ids,
                                                     'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
                                                     'default'  => 'all',
@@ -339,17 +339,17 @@ do_action( 'clickwhale_admin_banner' );
                                         echo Helper::render_control(
                                             array(
                                                 'control' => 'checkbox',
-                                                'id'      => 'position_exclude_' . $taxonomy,
-                                                'name'    => 'position[items_excluded][' . $taxonomy . '][active]',
+                                                'id'      => 'position_exclude_' . esc_attr( $taxonomy ),
+                                                'name'    => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][active]',
                                                 'value'   => esc_attr( $item['position']['items_excluded'][$taxonomy]['active'] ?? '0' ),
-                                                'label'   => sprintf(
-                                                    wp_kses(
+                                                'label'   => wp_kses(
+                                                    sprintf(
                                                         __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
-                                                        array(
-                                                            'strong' => array()
-                                                        )
+                                                        esc_html( $taxonomy_object->label )
                                                     ),
-                                                    $taxonomy_object->label
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
                                         );
@@ -365,9 +365,9 @@ do_action( 'clickwhale_admin_banner' );
                                             echo Helper::render_control(
                                                 array(
                                                     'control'  => 'select',
-                                                    'id'       => 'position_exclude_' . $taxonomy . '_ids',
+                                                    'id'       => 'position_exclude_' . esc_attr( $taxonomy ) . '_ids',
                                                     'class'    => 'with-select2',
-                                                    'name'     => 'position[items_excluded][' . $taxonomy . '][ids][]',
+                                                    'name'     => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][ids][]',
                                                     'value'    => $ids,
                                                     'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
                                                     'default'  => 'all',
@@ -396,7 +396,7 @@ do_action( 'clickwhale_admin_banner' );
                             'id'          => 'position_exclude_user_by_role',
                             'name'        => 'position[exclude_user_by_role][]',
                             'value'       => $ids,
-                            'options'     => Clickwhale_WP_User::get_all_roles(),
+                            'options'     => clickwhale()->user->get_all_roles(),
                             'description' => __( 'Check the user roles for which the script should not be executed.', 'clickwhale' )
                         ),
                         true

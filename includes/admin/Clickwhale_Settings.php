@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\admin;
 
-use clickwhale\includes\Clickwhale;
 use clickwhale\includes\helpers\{Helper, Links_Helper};
 use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
 
@@ -27,6 +26,11 @@ final class Clickwhale_Settings {
     private static Clickwhale_Settings $instance;
 
     /**
+     * @var Clickwhale_WP_User
+     */
+    private Clickwhale_WP_User $user;
+
+    /**
      * @return Clickwhale_Settings
      */
     public static function get_instance(): Clickwhale_Settings {
@@ -42,7 +46,9 @@ final class Clickwhale_Settings {
      *
      * @since    1.0.0
      */
-    private function __construct() {}
+    private function __construct() {
+        $this->user = clickwhale()->user;
+    }
 
     use Singleton_Clone;
     use Singleton_Wakeup;
@@ -81,8 +87,7 @@ final class Clickwhale_Settings {
         $tracking_options     = get_option( 'clickwhale_tracking_options' );
         $link_manager_options = get_option( 'clickwhale_link_manager_options' );
 
-        $current_user = Clickwhale::get_instance()->user;
-        $current_user_roles = $current_user::get_current_user_roles();
+        $current_user_roles = $this->user->get_current_user_roles();
         $always_checked_roles = array( 'administrator' );
 
         if ( ! in_array( 'administrator', $current_user_roles ) ) {
@@ -113,22 +118,24 @@ final class Clickwhale_Settings {
         // Add fields
 
         // General options
-        add_settings_field(
-            'access_level',
-            __( 'Access Level', 'clickwhale' ),
-            array( $this, 'render_controls' ),
-            'clickwhale_general_options',
-            'general_settings_section',
-            array(
-                'control'        => 'checkboxes',
-                'id'             => 'access_level',
-                'name'           => 'clickwhale_general_options[access_level][]',
-                'value'          => $general_options['access_level'] ?? $defaults['general']['options']['access_level'],
-                'options'        => Clickwhale_WP_User::get_all_roles(),
-                'always_checked' => $always_checked_roles,
-                'description'    => __( 'Decide who can access critical admin pages and the plugin settings.', 'clickwhale' )
-            )
-        );
+        if ( in_array( 'administrator', $current_user_roles ) ) {
+            add_settings_field(
+                'access_level',
+                __( 'Access Level', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_general_options',
+                'general_settings_section',
+                array(
+                    'control'        => 'checkboxes',
+                    'id'             => 'access_level',
+                    'name'           => 'clickwhale_general_options[access_level][]',
+                    'value'          => $general_options['access_level'] ?? $defaults['general']['options']['access_level'],
+                    'options'        => $this->user->get_all_roles(),
+                    'always_checked' => $always_checked_roles,
+                    'description'    => __( 'Decide who can access plugin admin pages.', 'clickwhale' )
+                )
+            );
+        }
         add_settings_field(
             'hide_admin_bar_menu',
             __( 'Hide Admin Bar Menu', 'clickwhale' ),
@@ -186,7 +193,7 @@ final class Clickwhale_Settings {
                 'id'          => 'exclude_user_by_role',
                 'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
                 'value'       => $tracking_options['exclude_user_by_role'] ?? '',
-                'options'     => Clickwhale_WP_User::get_all_roles(),
+                'options'     => $this->user->get_all_roles(),
                 'description' => __( 'Check the user roles that should be excluded from tracking.', 'clickwhale' )
             )
         );
@@ -304,7 +311,7 @@ final class Clickwhale_Settings {
         return apply_filters( 'clickwhale_settings_tabs', array(
             'general'      => array(
                 'name' => __( 'General', 'clickwhale' ),
-                'url'  => 'general_options',
+                'url'  => 'general_options'
             ),
             'tracking'     => array(
                 'name' => __( 'Tracking', 'clickwhale' ),
@@ -325,21 +332,36 @@ final class Clickwhale_Settings {
     }
 
     public function filter_settings_tabs_capability() {
+
+        if ( ! isset( $_POST['option_page'] ) ) {
+            return;
+        }
+
         $tabs = self::render_tabs();
+
         foreach ( $tabs as $tab ) {
-            add_filter( 'option_page_capability_clickwhale_' . $tab['url'], array( self::$instance, 'add_capability' ) );
-            add_filter( 'sanitize_option_clickwhale_' . $tab['url'], array( self::$instance, 'remove_capability' ) );
+            $option_page = 'clickwhale_' . $tab['url'];
+
+            if ( $option_page === sanitize_key( $_POST['option_page'] ) ) {
+                add_filter( 'option_page_capability_' . $option_page, array( self::$instance, 'extend_capability' ) );
+                add_filter( 'sanitize_option_' . $option_page, array( self::$instance, 'sanitize_option_capability' ) );
+                break;
+            }
         }
     }
 
-    public function add_capability( $capability ) {
-        $current_user = Clickwhale::get_instance()->user;
+    public function extend_capability( $capability ) {
+        $current_user = $this->user->get_user();
 
-        if ( $current_user->get_user()->has_cap( 'manage_options' ) ) {
+        if ( ! $current_user->exists() ) {
             return $capability;
         }
 
-        $current_user_roles = $current_user::get_current_user_roles();
+        if ( $current_user->has_cap( 'manage_options' ) ) {
+            return $capability;
+        }
+
+        $current_user_roles = $this->user->get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
             return $capability;
@@ -349,38 +371,48 @@ final class Clickwhale_Settings {
         $access_roles = $general_options['access_level'] ?? ['administrator'];
 
         if ( array_intersect( $access_roles, $current_user_roles ) ) {
-
-            // Cache current user role caps for a few seconds
-            set_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps', $current_user->get_user()->get_role_caps(), 10 ); // 10 seconds
-
-            // Add higher capability to permitted roles
-            $current_user->get_user()->add_cap( 'manage_options' );
+            set_transient( 'clickwhale_user_' . $current_user->ID . '_role_caps', $current_user->get_role_caps(), 10 ); // 10 seconds
+            $current_user->add_cap( 'manage_options' );
         }
 
         return $capability;
     }
 
-    public function remove_capability( $options ) {
-        $current_user = Clickwhale::get_instance()->user;
-        $current_user_roles = $current_user::get_current_user_roles();
-
-        if ( in_array( 'administrator', $current_user_roles ) ) {
+    public function sanitize_option_capability( $options ) {
+        if ( in_array( 'administrator', $this->user->get_current_user_roles() ) ) {
             return $options;
         }
 
-        $cached_role_caps = get_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+        $current_user = $this->user->get_user();
+
+        if ( ! $current_user->exists() ) {
+            return $options;
+        }
+
+        $cached_role_caps = get_transient( 'clickwhale_user_' . $current_user->ID . '_role_caps' );
 
         if ( ! $cached_role_caps ) {
             return $options;
         }
 
         if ( ! isset( $cached_role_caps['manage_options'] ) ) {
+            $current_user->remove_cap( 'manage_options' );
+        }
 
-            // Remove higher capability to permitted roles
-            $current_user->get_user()->remove_cap( 'manage_options' );
+        delete_transient( 'clickwhale_user_' . $current_user->ID . '_role_caps' );
 
-            // Delete from cache
-            delete_transient( 'clickwhale_user_' . $current_user->get_user()->ID . '_role_caps' );
+        if ( 'sanitize_option_clickwhale_general_options' !== current_filter() ) {
+            return $options;
+        }
+
+        // `access_level` from General tab is missing for non-admin roles.
+        // To avoid saving the default option value we explicitly restore current `access_level`
+        if ( ! isset( $options['access_level'] ) ) {
+            $general_options = get_option( 'clickwhale_general_options' );
+
+            if ( isset( $general_options['access_level'] ) ) {
+                $options['access_level'] = $general_options['access_level'];
+            }
         }
 
         return $options;

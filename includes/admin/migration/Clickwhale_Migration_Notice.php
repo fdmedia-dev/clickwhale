@@ -59,15 +59,13 @@ class Clickwhale_Migration_Notice {
      * @since    1.0.0
      */
     public function init() {
+        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-tools' ) {
+            return;
+        }
+
         $show_admin_scripts = false;
         $options_hide_migrate = get_option( 'clickwhale_hide_notice_migrate' );
         $options_hide_deactive = get_option( 'clickwhale_hide_notice_deactive' );
-
-        $is_tools_page = isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) == CLICKWHALE_SLUG . '-tools';
-
-        if ( $is_tools_page ) {
-            return;
-        }
 
         if ( empty( $options_hide_migrate[$this->migrant] ) ) {
             add_action( 'admin_notices', array( $this, 'migration_notice' ) );

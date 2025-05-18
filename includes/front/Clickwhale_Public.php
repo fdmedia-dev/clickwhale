@@ -81,7 +81,6 @@ final class Clickwhale_Public {
      */
     private function load_dependencies() {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Ajax.php';
-
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_View_Track.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Parser.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Visitor_Track.php';
@@ -96,7 +95,6 @@ final class Clickwhale_Public {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-
         if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
             wp_enqueue_style(
                 'clickwhale',
@@ -112,7 +110,6 @@ final class Clickwhale_Public {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-
         if ( ! is_admin() && $this->path && Linkpages_Helper::is_linkpage( $this->path ) ) {
             wp_enqueue_script(
                 'clickwhale_ionicons',

@@ -26,14 +26,14 @@ class Clickwhale_Migration {
         $this->load_dependencies();
 
         // Actions
-        add_action( 'admin_init', [ $this, 'add_migration_options' ] );
-        add_action( 'admin_init', [ $this, 'add_migration_settings' ] );
-        add_action( 'admin_init', [ $this, 'add_notice_migrate_options' ] );
-        add_action( 'admin_init', [ $this, 'add_notice_deactive_options' ] );
-        add_action( 'admin_init', [ $this, 'dispath_actions' ] );
+        add_action( 'admin_init', array( $this, 'add_migration_options' ) );
+        add_action( 'admin_init', array( $this, 'add_migration_settings' ) );
+        add_action( 'admin_init', array( $this, 'add_notice_migrate_options' ) );
+        add_action( 'admin_init', array( $this, 'add_notice_deactive_options' ) );
+        add_action( 'admin_init', array( $this, 'dispath_actions' ) );
 
         // add js
-        add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+        add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
     }
 
     private function load_dependencies() {
@@ -171,6 +171,14 @@ class Clickwhale_Migration {
     }
 
     public function dispath_actions() {
+        if ( clickwhale_fs()->is_activation_mode() ) {
+            return;
+        }
+
+        if ( ! clickwhale()->user->is_current_user_role_access_granted() ) {
+            return;
+        }
+
         $available_migrations = $this->available_migrations();
 
         foreach ( $available_migrations as $item ) {
@@ -246,12 +254,10 @@ class Clickwhale_Migration {
         $data         = $this->get_plugin_data( $item['slug'] );
         $options      = get_option( $this->last_migration );
         $allowed_html = wp_kses_allowed_html( 'post' );
-
         $links           = $data['links'] ? intval( $data['links'] ) : 0;
         $links_text      = $data['links'] > 1 ? __( 'links', 'clickwhale' ) : __( 'link', 'clickwhale' );
         $categories      = $data['categories'] ? intval( $data['categories'] ) : 0;
         $categories_text = $data['categories'] > 1 ? __( 'categories', 'clickwhale' ) : __( 'category', 'clickwhale' );
-
         $result = $data['links'] || $data['categories']
             ? sprintf( __( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
                 $categories, $categories_text, $links, $links_text ) . '<br>'

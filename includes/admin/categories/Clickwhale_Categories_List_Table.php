@@ -72,7 +72,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
                         'delete-' . $this->_args['singular']
                     )
                 ),
@@ -112,7 +112,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         if ( $total ) {
             return sprintf(
                 '<a href="%s&category=%d">%d</a>',
-                get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ),
+                esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
                 $cat_id,
                 intval( $total )
             );
@@ -182,8 +182,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * @throws Exception
      */
     public function process_bulk_action() {
-        global $wpdb;
-
         if ( 'delete' !== $this->current_action() ) {
             return;
         }
@@ -192,7 +190,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             return;
         }
 
-        $page_slug = sanitize_text_field( $_GET['page'] );
+        $page_slug = sanitize_key( $_GET['page'] );
 
         if ( ! isset( $_GET['_wpnonce'] ) ) {
             Helper::csrf_exception( $page_slug );
@@ -213,6 +211,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             return;
         }
 
+        global $wpdb;
         $table = Helper::get_db_table_name( 'categories' );
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 

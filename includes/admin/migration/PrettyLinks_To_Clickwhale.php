@@ -9,14 +9,15 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
     public function process_links_data(): array {
         global $wpdb;
-
-        $message = array();
         $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links" );
+
         if ( ! $data ) {
             return array(
                 'links' => array()
             );
         }
+
+        $message = array();
 
         foreach ( $data as $item ) {
             if ( ! $this->link_exists( $item->slug ) ) {
@@ -26,8 +27,8 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 }
 
                 $category_id = $this->get_categories_string( $cpt_cats );
-                $link_data   = $this->link_url_parse( $item->url );
-                $array       = array(
+                $link_data = $this->link_url_parse( $item->url );
+                $array = array(
                     'title'       => $item->name,
                     'url'         => $link_data['url'],
                     'slug'        => $item->slug,
@@ -42,7 +43,8 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 );
 
                 $insert_id = $this->run_links_migration( $array );
-                if ( isset( $link_data['utms'] ) ) {
+
+                if ( ! empty( $link_data['utms'] ) ) {
                     do_action( 'clickwhale_link_updated', $insert_id, $link_data['utms'] );
                 }
 

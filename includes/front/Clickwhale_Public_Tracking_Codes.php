@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\front;
 
-use clickwhale\includes\admin\Clickwhale_WP_User;
 use clickwhale\includes\helpers\{Linkpages_Helper, Tracking_Codes_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +21,7 @@ class Clickwhale_Public_Tracking_Codes {
     public function __construct( $path ) {
         $this->path = $path;
 
-        add_action( 'init', [ $this, 'prepare_tracking_codes' ], 20 );
+        add_action( 'init', array( $this, 'prepare_tracking_codes' ), 20 );
     }
 
     /**
@@ -84,7 +83,7 @@ class Clickwhale_Public_Tracking_Codes {
     }
 
     private function is_user_untracked( array $position ): bool {
-        $current_user_roles = Clickwhale_WP_User::get_current_user_roles();
+        $current_user_roles = clickwhale()->user->get_current_user_roles();
 
         if ( isset( $position['exclude_user_by_role'] ) && ! empty( $current_user_roles ) ) {
             return count( array_intersect( $current_user_roles, $position['exclude_user_by_role'] ) ) > 0;

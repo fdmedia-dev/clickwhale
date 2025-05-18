@@ -43,9 +43,6 @@ class Clickwhale_Ajax {
         $type = ( isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '' );
         $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( $_POST['plugin'] ) : '' );
         check_ajax_referer( 'clickwhale_' . $plugin . '_admin_nonce', 'security' );
-        if ( !current_user_can( 'manage_options' ) ) {
-            wp_die();
-        }
         if ( $type === 'migrate' ) {
             $options_migrate = get_option( 'clickwhale_hide_notice_migrate' );
             $options_migrate[$plugin] = true;
@@ -62,9 +59,6 @@ class Clickwhale_Ajax {
         $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( $_POST['plugin'] ) : '' );
         $target = ( isset( $_POST['target'] ) ? sanitize_text_field( $_POST['target'] ) : '' );
         check_ajax_referer( 'clickwhale_' . $plugin . '_admin_nonce', 'security' );
-        if ( !current_user_can( 'manage_options' ) ) {
-            wp_die();
-        }
         deactivate_plugins( $target );
         wp_send_json_success();
     }
@@ -118,8 +112,8 @@ class Clickwhale_Ajax {
         $notice_deactive_options = array();
         $last_migration_options = array();
         foreach ( clickwhale()->tools->migration->available_migrations() as $item ) {
-            $migration_options[$item['slug'] . '_categories'] = (bool) $item['data']['categories'];
-            $migration_options[$item['slug'] . '_links'] = (bool) $item['data']['links'];
+            $migration_options[$item['slug'] . '_categories'] = false;
+            $migration_options[$item['slug'] . '_links'] = false;
             $notice_migrate_options[$item['slug']] = false;
             $notice_deactive_options[$item['slug']] = true;
             $last_migration_options[$item['slug'] . '_last_migration'] = '';
@@ -161,13 +155,25 @@ class Clickwhale_Ajax {
                 break;
             case 'settings':
                 $text = __( 'All plugin settings has been restored', 'clickwhale' );
+                $general_options = get_option( 'clickwhale_general_options' );
+                $access_level = $general_options['access_level'] ?? array();
                 // Delete plugin options
                 $defaults = clickwhale()->settings->default_options();
                 foreach ( $defaults as $k => $v ) {
                     delete_option( 'clickwhale_' . $k . '_options' );
                 }
                 // Initiate default settings
-                Clickwhale_Settings::get_instance()->add_default_options();
+                clickwhale()->settings->add_default_options();
+                // Restore previously saved 'access_level' value to keep an access
+                // for non-admin roles after clicking `Tools -> Restore default settings`
+                if ( !in_array( 'administrator', clickwhale()->user->get_current_user_roles() ) ) {
+                    $default_general_options = get_option( 'clickwhale_general_options' );
+                    $default_access_level = $default_general_options['access_level'] ?? array();
+                    if ( $access_level !== $default_access_level ) {
+                        $default_general_options['access_level'] = $access_level;
+                        update_option( 'clickwhale_general_options', $default_general_options );
+                    }
+                }
                 $result['status'] = true;
                 break;
         }

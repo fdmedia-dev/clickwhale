@@ -23,7 +23,7 @@ class Clickwhale_Links_Bulk_Edit {
         $this->posts = $posts;
         $this->columns = $columns;
 
-        add_action( 'admin_print_footer_scripts', [ $this, 'admin_scripts' ] );
+        add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
     }
 
     private function get_categories(): string {

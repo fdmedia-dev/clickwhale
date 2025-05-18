@@ -147,7 +147,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=reset&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=reset&id=' . $id ),
                         'reset-' . $this->_args['singular']
                     )
                 ),
@@ -157,7 +157,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
                         'delete-' . $this->_args['singular']
                     )
                 ),
@@ -224,7 +224,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
             $current_categories .= sprintf(
                 '<a href="%s&category=%d">%s</a>',
-                get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ),
+                esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
                 intval( $result['id'] ),
                 esc_html( wp_unslash( $result['title'] ) )
             );
@@ -416,7 +416,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 break;
 
             case 'delete':
-                $page_slug = sanitize_text_field( $_GET['page'] );
+                $page_slug = sanitize_key( $_GET['page'] );
 
                 if ( ! isset( $_GET['_wpnonce'] ) ) {
                     Helper::csrf_exception( $page_slug );
@@ -461,7 +461,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 break;
 
             case 'reset':
-                $page_slug = sanitize_text_field( $_GET['page'] );
+                $page_slug = sanitize_key( $_GET['page'] );
 
                 if ( ! isset( $_GET['_wpnonce'] ) ) {
                     Helper::csrf_exception( $page_slug );

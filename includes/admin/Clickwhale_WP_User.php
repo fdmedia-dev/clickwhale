@@ -9,66 +9,55 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * class Clickwhale_WP_User
+ *
  * WP User information and is user able to be tracked
  *
- * @link       #
- * @since      1.0.0
+ * @since 1.0.0
  *
  * @package    Clickwhale
  * @subpackage Clickwhale/public
- */
-
-/**
- * class Clickwhale_WP_User
- *
  */
 class Clickwhale_WP_User {
 
     /**
      * @var WP_User|null
      */
-    protected ?WP_User $user;
+    private ?WP_User $user;
 
     public function __construct() {
         $this->user = wp_get_current_user();
     }
 
-    public function get_user(): WP_User {
+    public function get_user(): ?WP_User {
         return $this->user;
     }
 
-    public static function get_all_roles(): array {
+    public function get_all_roles(): array {
         global $wp_roles;
-
         $roles = array();
 
-        foreach ( $wp_roles->roles as $k => $v ) {
-            $roles[$k] = $v['name'];
+        if ( ! empty( $wp_roles->roles ) ) {
+            foreach ( $wp_roles->roles as $k => $v ) {
+                $roles[$k] = $v['name'];
+            }
         }
 
         return $roles;
     }
 
     /**
-     * Get ID of about logged-in user
-     *
-     * @return      string
-     * @since       1.0.0
-     */
-    public static function get_logged_in_user_id(): string {
-        return is_user_logged_in() ? get_current_user_id() : '';
-    }
-
-    /**
      * Get current user roles array
      *
-     * @return      array
-     * @since       1.0.0
+     * @return array
+     * @since  1.0.0
      */
-    public static function get_current_user_roles(): array {
-        $id = self::get_logged_in_user_id();
+    public function get_current_user_roles(): array {
+        if ( ! $this->user->exists() ) {
+            return array();
+        }
 
-        return $id ? get_userdata( $id )->roles : array();
+        return $this->user->roles;
     }
 
     /**
@@ -76,12 +65,16 @@ class Clickwhale_WP_User {
      *
      * @return bool
      */
-    static public function is_current_user_role_access_granted(): bool {
-        if ( wp_get_current_user()->has_cap( 'manage_options' ) ) {
+    public function is_current_user_role_access_granted(): bool {
+        if ( ! $this->user->exists() ) {
+            return false;
+        }
+
+        if ( $this->user->has_cap( 'manage_options' ) ) {
             return true;
         }
 
-        $current_user_roles = self::get_current_user_roles();
+        $current_user_roles = $this->get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
             return true;
@@ -96,69 +89,27 @@ class Clickwhale_WP_User {
     }
 
     /**
-     * Get track options from options table
-     *
-     * @return      array
-     * @since       1.0.0
-     */
-    public function get_track_options(): array {
-        return get_option( 'clickwhale_tracking_options' );
-    }
-
-    /**
-     * Get disallowed user roles from get_track_options() function
-     *
-     * @return      array
-     * @since       1.0.0
-     */
-    public function get_disallowed_user_roles(): array {
-        $tracking_options = $this->get_track_options();
-
-        if ( isset( $tracking_options['exclude_user_by_role'] ) ) {
-            return $tracking_options['exclude_user_by_role'];
-        }
-
-        return array();
-    }
-
-    /**
-     * Check current user for tracking by roles
-     *
-     * @return      bool
-     * @since       1.0.0
-     */
-    public function is_user_untracked(): bool {
-        $current_user_roles = $this->get_current_user_roles();
-        $disallowed_roles   = $this->get_disallowed_user_roles();
-
-        if ( ! empty( $current_user_roles ) && ! empty( $disallowed_roles ) ) {
-            // if current user role in array of disallowed roles
-            return count( array_intersect( $current_user_roles, $disallowed_roles ) ) > 0;
-        } else {
-            // user can be tracked
-            return false;
-        }
-    }
-
-    /**
-     * Check track ability by plugin settings page
-     *
-     * @return      bool
-     * @since       1.0.0
-     */
-    public function is_track_disabled(): bool {
-        $tracking_options = $this->get_track_options();
-
-        return $tracking_options['disable_tracking'] ?? false;
-    }
-
-    /**
      * Check track ability
      *
-     * @return      bool
-     * @since       1.0.0
+     * @return bool
      */
-    public function disallow_track(): bool {
-        return $this->is_track_disabled() || $this->is_user_untracked();
+    public function is_tracking_disabled(): bool {
+        $tracking_options = get_option( 'clickwhale_tracking_options' );
+
+        if ( ! empty( $tracking_options['disable_tracking'] ) ) {
+            return true;
+        }
+
+        if ( empty( $tracking_options['exclude_user_by_role'] ) ) {
+            return false;
+        }
+
+        $current_user_roles = $this->get_current_user_roles();
+
+        if ( empty( $current_user_roles ) ) {
+            return false;
+        }
+
+        return count( array_intersect( $current_user_roles, $tracking_options['exclude_user_by_role'] ) ) > 0;
     }
 }

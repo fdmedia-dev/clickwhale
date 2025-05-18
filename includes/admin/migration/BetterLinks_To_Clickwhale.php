@@ -9,7 +9,6 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
     public function process_links_data(): array {
         global $wpdb;
-
         $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks" );
 
         if ( ! $data ) {
@@ -19,6 +18,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
         }
 
         $message = array();
+
         foreach ( $data as $item ) {
             if ( ! $this->link_exists( $item->link_slug ) ) {
                 $category_id = $wpdb->get_var(
@@ -48,7 +48,8 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 );
 
                 $insert_id = $this->run_links_migration( $array );
-                if ( isset( $link_data['utms'] ) ) {
+
+                if ( ! empty( $link_data['utms'] ) ) {
                     do_action( 'clickwhale_link_updated', $insert_id, $link_data['utms'] );
                 }
 

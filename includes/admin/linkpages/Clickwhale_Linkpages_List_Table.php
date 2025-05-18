@@ -48,7 +48,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             ),
             'view'   => sprintf(
                 '<a href="%s/%s/" target="_blank">%s</a>',
-                get_bloginfo( 'url' ),
+                esc_url( get_bloginfo( 'url' ) ),
                 esc_attr( $item['slug'] ),
                 __( 'View', 'clickwhale' )
             ),
@@ -56,7 +56,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_text_field( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
                         'delete-' . $this->_args['singular']
                     )
                 ),
@@ -105,7 +105,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
         return sprintf(
             '<a href="%s&author=%d">%s</a>',
-            get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG . '-linkpages' ),
+            esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG . '-linkpages' ) ),
             $user_info->ID,
             $user_info->display_name
         );
@@ -196,7 +196,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             return;
         }
 
-        $page_slug = sanitize_text_field( $_GET['page'] );
+        $page_slug = sanitize_key( $_GET['page'] );
 
         if ( ! isset( $_GET['_wpnonce'] ) ) {
             Helper::csrf_exception( $page_slug );

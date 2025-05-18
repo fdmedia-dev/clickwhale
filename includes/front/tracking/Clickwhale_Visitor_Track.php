@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\front\tracking;
 
-use clickwhale\includes\admin\Clickwhale_WP_User;
 use clickwhale\includes\helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,11 +13,6 @@ class Clickwhale_Visitor_Track {
      * @var Clickwhale_Parser
      */
     protected Clickwhale_Parser $parser;
-
-    /**
-     * @var Clickwhale_WP_User
-     */
-    protected Clickwhale_WP_User $user;
 
     /**
      * @var string
@@ -52,7 +46,6 @@ class Clickwhale_Visitor_Track {
 
     public function __construct() {
         $this->parser     = new Clickwhale_Parser( $_SERVER['HTTP_USER_AGENT'] );
-        $this->user       = new Clickwhale_WP_User();
         $this->ua         = $this->parser->ua;
         $this->os         = $this->parser->os;
         $this->device     = $this->parser->type;
@@ -86,7 +79,7 @@ class Clickwhale_Visitor_Track {
     public function proceed_visitor(): int {
         $id = 0;
 
-        if ( ! $this->user->disallow_track() && ! $this->parser->bot ) {
+        if ( ! clickwhale()->user->is_tracking_disabled() && ! $this->parser->bot ) {
             $visitor_arr      = $this->get_visitor_by_hash();
             $visitor          = end( $visitor_arr );
             $tracking_options = get_option( 'clickwhale_tracking_options' );

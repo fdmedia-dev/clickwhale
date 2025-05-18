@@ -52,21 +52,21 @@ class Clickwhale_Public_Linkpage {
         $this->social = isset( $this->data['social'] ) ? maybe_unserialize( $this->data['social'] ) : false;
         $this->logo = trailingslashit( CLICKWHALE_PUBLIC_ASSETS_DIR ) . 'images/whale.svg';
 
-        add_action( 'wp_before_admin_bar_render', [ $this, 'admin_bar_render' ], 25 );
-        add_action( 'print_footer_scripts', [ $this, 'admin_scripts' ] );
+        add_action( 'wp_before_admin_bar_render', array( $this, 'admin_bar_render' ), 25 );
+        add_action( 'print_footer_scripts', array( $this, 'admin_scripts' ) );
 
         // Change Robots Tag
         if ( ( get_option( 'blog_public' ) || get_option( 'blog_public' ) === '1' ) ) {
-            add_filter( 'wp_robots', [ $this, 'robots_tag' ], PHP_INT_MAX );
+            add_filter( 'wp_robots', array( $this, 'robots_tag' ), PHP_INT_MAX );
         }
 
         // Meta tag manipulation
-        add_action( 'wp_head', [ $this, 'start_wp_head_buffer' ], 0 );
-        add_action( 'wp_head', [ $this, 'end_wp_head_buffer' ], PHP_INT_MAX );
+        add_action( 'wp_head', array( $this, 'start_wp_head_buffer' ), 0 );
+        add_action( 'wp_head', array( $this, 'end_wp_head_buffer' ), PHP_INT_MAX );
 
         // Remove Yoast SEO Data
         add_filter( 'wpseo_json_ld_output', '__return_false' );
-        add_filter( 'body_class', [ $this, 'linkpage_classes' ] );
+        add_filter( 'body_class', array( $this, 'linkpage_classes' ) );
     }
 
     /**
@@ -406,7 +406,7 @@ class Clickwhale_Public_Linkpage {
 
         $output = sprintf(
             '<a class="linkpage-public--copyright" target="_blank" href="%1$s">%2$s %3$s</a>',
-            apply_filters( 'clickwhale_linkpage_credits_link', $link, $utm ),
+            esc_url( apply_filters( 'clickwhale_linkpage_credits_link', $link, $utm ) ),
             __( 'Powered by', 'clickwhale' ),
             $img
         );
@@ -419,12 +419,15 @@ class Clickwhale_Public_Linkpage {
      * @since 1.3.0
      */
     public function admin_bar_render() {
-        global $wp_admin_bar;
+        if ( ! clickwhale()->user->is_current_user_role_access_granted() ) {
+            return;
+        }
 
+        global $wp_admin_bar;
         $wp_admin_bar->add_node( array(
                 'id'    => 'edit',
                 'title' => __( 'Edit Link Page', 'clickwhale' ),
-                'href'  => admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $this->post->linkpage['id'] ),
+                'href'  => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $this->post->linkpage['id'] ) ),
             )
         );
     }

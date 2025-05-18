@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.8
-Stable tag: 2.4.6
+Stable tag: 2.4.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,6 +103,10 @@ Yes! ClickWhale can be used on multisite installations.
 
 Yes, ClickWhale has full translation and localization support via the `clickwhale` textdomain. Based on your site language, required `.mo` and `.po` translation files will be downloaded and placed into the default WordPress languages directory.
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/53a6f715-b43a-4cc3-ab77-604864fc65d2)
+
 = Do you offer support? =
 Of course! We offer support in the [support forum](https://WordPress.org/support/plugin/clickwhale/) here on WordPress.org
 
@@ -118,6 +122,14 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.7 (18th May 2025) =
+* Tweak: Extended access control for user roles
+* Fix: Fixed migration UTM fields issue
+* Fix: Fixed PHP warning for migration reset action
+* Fix: Fixed "Start Migration" button showing during plugin activation
+* Info: WordPress v6.8.1 compatibility
+* Info: Updated Freemius SDK to v2.12.0
+
 = Version 2.4.6 (26th April 2025) =
 * Fix: Fixed "links not working" issue in Custom Content block on link pages
 * Fix: Fixed link slug issue for some cases of migration

@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ClickWhale\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/clickwhale/\n"
-"Last-Translator: flowdee <hello@flowdee.dev>\n"
+"Last-Translator: gpt-po v1.2.3\n"
 "Language-Team: ClickWhale <mail@clickwhale.pro>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2025-03-26T09:20:56+00:00\n"
 "PO-Revision-Date: 2025-03-26 10:42+0100\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:143
+#: includes/admin/Clickwhale_Admin.php:150
 #, fuzzy
 msgid "ClickWhale"
 msgstr "点击鲸鱼"
@@ -71,7 +71,7 @@ msgstr "删除"
 #: templates/admin/categories/edit.php:50
 #: templates/admin/linkpages/edit.php:113
 #: templates/admin/links/edit.php:84
-#: templates/admin/tracking-codes/edit.php:50
+#: templates/admin/tracking-codes/edit.php:49
 msgid "Title"
 msgstr "标题"
 
@@ -92,7 +92,7 @@ msgstr "描述"
 msgid "Links count"
 msgstr "链接计数"
 
-#: includes/admin/categories/Clickwhale_Categories_List_Table.php:334
+#: includes/admin/categories/Clickwhale_Categories_List_Table.php:333
 msgid "No Categories Found"
 msgstr "找不到类别"
 
@@ -105,38 +105,38 @@ msgstr "请输入标题！"
 #: includes/admin/categories/Clickwhale_Category_Edit.php:87
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:838
 #: includes/admin/links/Clickwhale_Link_Edit.php:189
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:444
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:447
 #, fuzzy
 msgid "This slug is already in use! Please enter another slug"
 msgstr "此标题已被使用！请输入另一个标题"
 
-#: includes/admin/Clickwhale_Admin.php:116
+#: includes/admin/Clickwhale_Admin.php:123
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:145
-#: includes/admin/migration/Clickwhale_Migration.php:222
+#: includes/admin/migration/Clickwhale_Migration.php:230
 #: pro/templates/admin/statistics/statistics.php:22
 #: templates/admin/linkpages/edit.php:350
 msgid "Links"
 msgstr "链接"
 
-#: includes/admin/Clickwhale_Admin.php:117
-#: includes/Clickwhale.php:495
+#: includes/admin/Clickwhale_Admin.php:124
+#: includes/Clickwhale.php:445
 msgid "Add New Link"
 msgstr "添加新链接"
 
-#: includes/admin/Clickwhale_Admin.php:118
+#: includes/admin/Clickwhale_Admin.php:125
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:39
 #: includes/admin/links/Clickwhale_Links_List_Table.php:274
-#: includes/admin/migration/Clickwhale_Migration.php:207
+#: includes/admin/migration/Clickwhale_Migration.php:215
 #: pro/templates/admin/statistics/statistics.php:23
 msgid "Categories"
 msgstr "类别"
 
-#: includes/admin/Clickwhale_Admin.php:119
-#: includes/Clickwhale.php:507
+#: includes/admin/Clickwhale_Admin.php:126
+#: includes/Clickwhale.php:457
 msgid "Add New Category"
 msgstr "添加新类别"
 
-#: includes/admin/Clickwhale_Admin.php:120
+#: includes/admin/Clickwhale_Admin.php:127
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:330
 #: pro/templates/admin/statistics/statistics.php:24
 #: templates/admin/settings/pro.php:25
@@ -150,13 +150,13 @@ msgstr "添加新类别"
 msgid "Link Pages"
 msgstr "链接页面"
 
-#: includes/admin/Clickwhale_Admin.php:121
-#: includes/Clickwhale.php:519
+#: includes/admin/Clickwhale_Admin.php:128
+#: includes/Clickwhale.php:469
 #, fuzzy
 msgid "Add New Link Page"
 msgstr "添加新链接页面"
 
-#: includes/admin/Clickwhale_Admin.php:122
+#: includes/admin/Clickwhale_Admin.php:129
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:334
 #: templates/admin/settings/pro.php:35
 #: templates/admin/settings/pro.php:66
@@ -164,65 +164,60 @@ msgstr "添加新链接页面"
 msgid "Tracking Codes"
 msgstr "跟踪代码"
 
-#: includes/admin/Clickwhale_Admin.php:123
-#: includes/Clickwhale.php:531
+#: includes/admin/Clickwhale_Admin.php:130
+#: includes/Clickwhale.php:481
 #, fuzzy
 msgid "Add New Tracking Code"
 msgstr "添加新跟踪代码"
 
-#: includes/admin/Clickwhale_Admin.php:142
+#: includes/admin/Clickwhale_Admin.php:149
 #, fuzzy
 msgid "ClickWhale Links"
 msgstr "点击鲸链接"
 
-#: includes/admin/Clickwhale_Admin.php:190
-#: includes/admin/Clickwhale_Admin.php:191
-#: includes/admin/Clickwhale_Admin.php:676
+#: includes/admin/Clickwhale_Admin.php:196
+#: includes/admin/Clickwhale_Admin.php:197
+#: includes/admin/Clickwhale_Admin.php:694
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:50
 #: templates/admin/settings/settings.php:9
 msgid "Settings"
 msgstr "设置"
 
-#: includes/admin/Clickwhale_Admin.php:203
-#: includes/admin/Clickwhale_Admin.php:204
+#: includes/admin/Clickwhale_Admin.php:207
+#: includes/admin/Clickwhale_Admin.php:208
 #: templates/admin/tools/tools.php:8
 msgid "Tools"
 msgstr "工具"
 
 #: includes/admin/Clickwhale_Admin.php:224
 #: includes/admin/Clickwhale_Admin.php:225
-#: includes/admin/Clickwhale_Admin.php:526
-#: includes/admin/Clickwhale_Admin.php:693
+#: includes/admin/Clickwhale_Admin.php:545
+#: includes/admin/Clickwhale_Admin.php:710
 msgid "Upgrade to PRO"
 msgstr "升级到专业版"
 
-#: includes/admin/Clickwhale_Admin.php:487
-#, fuzzy
-msgid "You like ClickWhale? Then please <a href=\"%1$s\" target=\"_blank\">leave a review here</a>"
-msgstr "您喜欢 ClickWhale 吗？请<a href=\"%1$s\" target=\"_blank\">在此处留下评论</a>"
-
-#: includes/admin/Clickwhale_Admin.php:509
+#: includes/admin/Clickwhale_Admin.php:529
 msgid "Need help?"
 msgstr "需要帮助？"
 
-#: includes/admin/Clickwhale_Admin.php:534
+#: includes/admin/Clickwhale_Admin.php:553
 #, fuzzy
 msgid "Available only in PRO version"
 msgstr "仅适用于专业版"
 
-#: includes/admin/Clickwhale_Admin.php:567
+#: includes/admin/Clickwhale_Admin.php:586
 #, fuzzy
 msgid "Upgrade to ClickWhale Pro"
 msgstr "升级到 ClickWhale Pro"
 
-#: includes/admin/Clickwhale_Admin.php:570
+#: includes/admin/Clickwhale_Admin.php:589
 #: templates/admin/settings/pro.php:24
 #: templates/admin/settings/pro.php:25
 #, fuzzy
 msgid "Detailed Statistics"
 msgstr "详细统计数据"
 
-#: includes/admin/Clickwhale_Admin.php:571
+#: includes/admin/Clickwhale_Admin.php:590
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:326
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:37
 #: templates/admin/settings/pro.php:29
@@ -231,167 +226,167 @@ msgstr "详细统计数据"
 msgid "Keyword Auto Linker"
 msgstr "关键词自动链接器"
 
-#: includes/admin/Clickwhale_Admin.php:572
+#: includes/admin/Clickwhale_Admin.php:591
 #: templates/admin/settings/pro.php:39
 #: templates/admin/settings/pro.php:40
 #, fuzzy
 msgid "UTM Campaign Tracking"
 msgstr "UTM 活动跟踪"
 
-#: includes/admin/Clickwhale_Admin.php:573
+#: includes/admin/Clickwhale_Admin.php:592
 #, fuzzy
 msgid "E-Commerce Conversion Tracking"
 msgstr "电子商务转化跟踪"
 
-#: includes/admin/Clickwhale_Admin.php:574
+#: includes/admin/Clickwhale_Admin.php:593
 #, fuzzy
 msgid "Advanced Customization Options"
 msgstr "高级定制选项"
 
-#: includes/admin/Clickwhale_Admin.php:575
+#: includes/admin/Clickwhale_Admin.php:594
 #, fuzzy
 msgid "More Blocks for Link Pages"
 msgstr "链接页面的更多区块"
 
-#: includes/admin/Clickwhale_Admin.php:576
+#: includes/admin/Clickwhale_Admin.php:595
 #: templates/admin/settings/pro.php:71
 #: templates/admin/settings/pro.php:72
 #, fuzzy
 msgid "Remove Plugin Credits"
 msgstr "删除插件积分"
 
-#: includes/admin/Clickwhale_Admin.php:582
+#: includes/admin/Clickwhale_Admin.php:601
 msgid "Upgrade Now"
 msgstr "现在升级"
 
-#: includes/admin/Clickwhale_Admin.php:596
+#: includes/admin/Clickwhale_Admin.php:615
 msgid "Plugin Documentation"
 msgstr "插件文档"
 
-#: includes/admin/Clickwhale_Admin.php:603
+#: includes/admin/Clickwhale_Admin.php:622
 #, fuzzy
 msgid "How-To Shorten Links & Create Redirects"
 msgstr "如何缩短链接和创建重定向"
 
-#: includes/admin/Clickwhale_Admin.php:609
+#: includes/admin/Clickwhale_Admin.php:628
 #, fuzzy
 msgid "How-To Import Links"
 msgstr "如何导入链接"
 
-#: includes/admin/Clickwhale_Admin.php:615
+#: includes/admin/Clickwhale_Admin.php:634
 #, fuzzy
 msgid "How-To Use the Keyword Auto Linker"
 msgstr "如何使用关键字自动链接器"
 
-#: includes/admin/Clickwhale_Admin.php:621
+#: includes/admin/Clickwhale_Admin.php:640
 #, fuzzy
 msgid "Creating Your First Link Page"
 msgstr "创建第一个链接页面"
 
-#: includes/admin/Clickwhale_Admin.php:626
+#: includes/admin/Clickwhale_Admin.php:645
 #, fuzzy
 msgid "How-To Add Google Tag Manager To WordPress with ClickWhale"
 msgstr "如何使用 ClickWhale 在 WordPress 中添加 Google 标签管理器"
 
-#: includes/admin/Clickwhale_Admin.php:633
+#: includes/admin/Clickwhale_Admin.php:652
 msgid "View all Articles"
 msgstr "查看所有文章"
 
-#: includes/admin/Clickwhale_Admin.php:717
+#: includes/admin/Clickwhale_Admin.php:733
 msgid "Documentation"
 msgstr "文档"
 
-#: includes/admin/Clickwhale_Admin.php:718
+#: includes/admin/Clickwhale_Admin.php:734
 #, fuzzy
 msgid "Rate ClickWhale on WordPress.org"
 msgstr "在 WordPress.org 上评价 ClickWhale"
 
-#: includes/admin/Clickwhale_Admin.php:767
-#: includes/admin/Clickwhale_Admin.php:787
+#: includes/admin/Clickwhale_Admin.php:783
+#: includes/admin/Clickwhale_Admin.php:803
 msgid "Copied!"
 msgstr "复制！"
 
-#: includes/admin/Clickwhale_Ajax.php:122
+#: includes/admin/Clickwhale_Ajax.php:113
 #, fuzzy
 msgid "Nothing to migrate"
 msgstr "无须迁移"
 
-#: includes/admin/Clickwhale_Ajax.php:158
+#: includes/admin/Clickwhale_Ajax.php:149
 #, fuzzy
 msgid "Successfully deleted! Page will be reloaded..."
 msgstr "成功删除！页面将重新加载..."
 
-#: includes/admin/Clickwhale_Ajax.php:184
+#: includes/admin/Clickwhale_Ajax.php:175
 #, fuzzy
 msgid "All statistic has been reset"
 msgstr "所有统计数据已重置"
 
-#: includes/admin/Clickwhale_Ajax.php:191
+#: includes/admin/Clickwhale_Ajax.php:182
 #, fuzzy
 msgid "All plugin tables has been reset"
 msgstr "已重置所有插件表"
 
-#: includes/admin/Clickwhale_Ajax.php:200
+#: includes/admin/Clickwhale_Ajax.php:191
 #, fuzzy
 msgid "All plugin settings has been restored"
 msgstr "已恢复所有插件设置"
 
-#: includes/admin/Clickwhale_Ajax.php:365
-#: includes/admin/Clickwhale_Ajax.php:453
+#: includes/admin/Clickwhale_Ajax.php:372
+#: includes/admin/Clickwhale_Ajax.php:460
 #: includes/admin/import/Clickwhale_Import.php:81
 #: includes/admin/import/Clickwhale_Import.php:119
 #, fuzzy
 msgid "Please, select .csv file"
 msgstr "请选择 .csv 文件"
 
-#: includes/admin/Clickwhale_Ajax.php:415
+#: includes/admin/Clickwhale_Ajax.php:422
 msgid "Column name"
 msgstr "列名称"
 
-#: includes/admin/Clickwhale_Ajax.php:416
+#: includes/admin/Clickwhale_Ajax.php:423
 msgid "Map to field"
 msgstr "映射到字段"
 
-#: includes/admin/Clickwhale_Ajax.php:422
+#: includes/admin/Clickwhale_Ajax.php:429
 msgid "Do not import"
 msgstr "不导入"
 
-#: includes/admin/Clickwhale_Ajax.php:433
+#: includes/admin/Clickwhale_Ajax.php:440
 msgid "Example:"
 msgstr "例如："
 
-#: includes/admin/Clickwhale_Ajax.php:463
+#: includes/admin/Clickwhale_Ajax.php:470
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:80
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:99
 #: templates/admin/links/edit.php:32
 msgid "Default"
 msgstr "默认"
 
-#: includes/admin/Clickwhale_Ajax.php:476
+#: includes/admin/Clickwhale_Ajax.php:483
 #, fuzzy
 msgid "Error opening file!"
 msgstr "打开文件出错！"
 
-#: includes/admin/Clickwhale_Ajax.php:598
+#: includes/admin/Clickwhale_Ajax.php:605
 msgid "Nothing to import!"
 msgstr "没什么可导入的！"
 
-#: includes/admin/Clickwhale_Ajax.php:625
+#: includes/admin/Clickwhale_Ajax.php:632
 #, fuzzy
 msgid "Link <strong>&quot;"
 msgstr "链接<strong>&quot;"
 
-#: includes/admin/Clickwhale_Ajax.php:627
+#: includes/admin/Clickwhale_Ajax.php:634
 #, fuzzy
 msgid "<strong>Error!</strong> Link <strong>&quot;"
 msgstr "<strong>错误！</strong>链接<strong>&quot;"
 
-#: includes/admin/Clickwhale_Ajax.php:640
+#: includes/admin/Clickwhale_Ajax.php:647
 msgid "Bad request"
 msgstr "错误的请求"
 
-#: includes/admin/Clickwhale_Ajax.php:700
-#: includes/admin/Clickwhale_Ajax.php:710
+#: includes/admin/Clickwhale_Ajax.php:707
+#: includes/admin/Clickwhale_Ajax.php:717
 msgid "Nothing to export"
 msgstr "没有可以输出的文件"
 
@@ -409,137 +404,132 @@ msgid "Back"
 msgstr "返回"
 
 #: includes/admin/Clickwhale_Instance_Edit.php:150
-#, fuzzy
+#, fuzzy,php-format
 msgid "%s was successfully saved"
 msgstr "已成功保存 [0］"
 
 #: includes/admin/Clickwhale_Instance_Edit.php:155
-#, fuzzy
+#, fuzzy,php-format
 msgid "%s was successfully updated"
 msgstr "%s 已成功更新"
 
-#: includes/admin/Clickwhale_Settings.php:118
+#: includes/admin/Clickwhale_Settings.php:124
 msgid "Access Level"
 msgstr "访问级别"
 
-#: includes/admin/Clickwhale_Settings.php:129
-#, fuzzy
-msgid "Decide who can access critical admin pages and the plugin settings."
-msgstr "决定谁可以访问重要的管理页面和插件设置。"
-
-#: includes/admin/Clickwhale_Settings.php:134
+#: includes/admin/Clickwhale_Settings.php:141
 msgid "Hide Admin Bar Menu"
 msgstr "隐藏管理栏菜单"
 
-#: includes/admin/Clickwhale_Settings.php:143
+#: includes/admin/Clickwhale_Settings.php:150
 #, fuzzy
 msgid "Check to hide Clickwhale quick menu from the admin bar."
 msgstr "勾选从管理栏中隐藏 Clickwhale 快速菜单。"
 
-#: includes/admin/Clickwhale_Settings.php:150
+#: includes/admin/Clickwhale_Settings.php:157
 #, fuzzy
 msgid "Tracking Duration"
 msgstr "跟踪时间"
 
-#: includes/admin/Clickwhale_Settings.php:160
+#: includes/admin/Clickwhale_Settings.php:167
 msgid "30 days"
 msgstr "30天"
 
-#: includes/admin/Clickwhale_Settings.php:166
+#: includes/admin/Clickwhale_Settings.php:173
 msgid "Disable Tracking"
 msgstr "禁用跟踪"
 
-#: includes/admin/Clickwhale_Settings.php:175
+#: includes/admin/Clickwhale_Settings.php:182
 #, fuzzy
 msgid "Check to disable tracking of views and clicks."
 msgstr "选中以禁用浏览和点击跟踪。"
 
-#: includes/admin/Clickwhale_Settings.php:180
+#: includes/admin/Clickwhale_Settings.php:187
 #: templates/admin/tracking-codes/edit.php:394
 msgid "Exclude User Roles"
 msgstr "排除用户角色"
 
-#: includes/admin/Clickwhale_Settings.php:190
+#: includes/admin/Clickwhale_Settings.php:197
 #, fuzzy
 msgid "Check the user roles that should be excluded from tracking."
 msgstr "选中应从跟踪中排除的用户角色。"
 
-#: includes/admin/Clickwhale_Settings.php:197
+#: includes/admin/Clickwhale_Settings.php:204
 #: templates/admin/links/edit.php:157
 msgid "Redirection Type"
 msgstr "重定向类型"
 
-#: includes/admin/Clickwhale_Settings.php:207
+#: includes/admin/Clickwhale_Settings.php:214
 #, fuzzy
 msgid "Set default redirection type which will be used for new links."
 msgstr "设置用于新链接的默认重定向类型。"
 
-#: includes/admin/Clickwhale_Settings.php:212
+#: includes/admin/Clickwhale_Settings.php:219
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:85
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:96
 #: templates/admin/links/edit.php:169
 msgid "Link Target"
 msgstr "链接目标"
 
-#: includes/admin/Clickwhale_Settings.php:222
+#: includes/admin/Clickwhale_Settings.php:229
 #, fuzzy
 msgid "Set default target which will be used for all links."
 msgstr "设置默认目标，所有链接都将使用该目标。"
 
-#: includes/admin/Clickwhale_Settings.php:227
+#: includes/admin/Clickwhale_Settings.php:234
 msgid "Nofollow Links"
 msgstr "Nofollow Links"
 
-#: includes/admin/Clickwhale_Settings.php:236
+#: includes/admin/Clickwhale_Settings.php:243
 #, fuzzy
 msgid "Check to mark links as nofollow & noindex by default."
 msgstr "勾选默认将链接标记为 nofollow 和 noindex。"
 
-#: includes/admin/Clickwhale_Settings.php:241
+#: includes/admin/Clickwhale_Settings.php:248
 #, fuzzy
 msgid "Sponsored Links"
 msgstr "赞助商链接"
 
-#: includes/admin/Clickwhale_Settings.php:250
+#: includes/admin/Clickwhale_Settings.php:257
 #, fuzzy
 msgid "Check to mark links as sponsored by default."
 msgstr "勾选默认将链接标记为赞助商链接。"
 
-#: includes/admin/Clickwhale_Settings.php:251
+#: includes/admin/Clickwhale_Settings.php:258
 #, fuzzy
 msgid "Recommended for affiliate links."
 msgstr "推荐使用联盟链接。"
 
-#: includes/admin/Clickwhale_Settings.php:256
+#: includes/admin/Clickwhale_Settings.php:263
 msgid "Link Prefix"
 msgstr "链接前缀"
 
-#: includes/admin/Clickwhale_Settings.php:267
+#: includes/admin/Clickwhale_Settings.php:274
 #, fuzzy
 msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "在这里，您可以输入一个前缀，创建新链接时会预输入该前缀。例如：<em>link</em>.<br><strong>重要提示：</strong>如果更改前缀，将<u>不会</u>影响已存在的链接。"
 
-#: includes/admin/Clickwhale_Settings.php:272
+#: includes/admin/Clickwhale_Settings.php:279
 #, fuzzy
 msgid "Random Slug"
 msgstr "随机鼻涕虫"
 
-#: includes/admin/Clickwhale_Settings.php:281
+#: includes/admin/Clickwhale_Settings.php:288
 #, fuzzy
 msgid "Check to <u>not</u> suggest a random link slug when creating a new link."
 msgstr "勾选在创建新链接时<u>不</u>建议使用随机链接标题。"
 
-#: includes/admin/Clickwhale_Settings.php:306
+#: includes/admin/Clickwhale_Settings.php:313
 #: includes/admin/links/Clickwhale_Link_Edit.php:51
 #: templates/admin/linkpages/edit.php:107
 msgid "General"
 msgstr "常规"
 
-#: includes/admin/Clickwhale_Settings.php:310
+#: includes/admin/Clickwhale_Settings.php:317
 msgid "Tracking"
 msgstr "跟踪"
 
-#: includes/admin/Clickwhale_Settings.php:314
+#: includes/admin/Clickwhale_Settings.php:321
 #: templates/admin/settings/pro.php:25
 #: templates/admin/settings/pro.php:30
 #: templates/admin/settings/pro.php:40
@@ -598,7 +588,7 @@ msgid "Import links from a CSV file"
 msgstr "从 CSV 文件导入链接"
 
 #: includes/admin/import/Clickwhale_Import.php:24
-#, fuzzy
+#, fuzzy,php-format
 msgid "This tool allows you to import links to your site from a CSV file. <a href=\"%s\" rel=\"noopener\">Download Example CSV</a>"
 msgstr "该工具可让您从 CSV 文件中导入链接到您的网站。<a href=\"%s\" rel=\"noopener\">下载 CSV 示例</a>"
 
@@ -641,7 +631,7 @@ msgstr "复制链接"
 
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:144
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:138
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1482
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1483
 #: pro/includes/admin/statistics/Link_Clicks_Statistics.php:78
 #: templates/admin/links/edit.php:42
 msgid "Link"
@@ -690,14 +680,14 @@ msgstr "点击鲸内容"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:83
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:119
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1602
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1603
 #, fuzzy
 msgid "ClickWhale Link"
 msgstr "ClickWhale 链接"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:87
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:214
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1631
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1632
 msgid "Custom Link"
 msgstr "自定义链接"
 
@@ -746,7 +736,7 @@ msgstr "选择图像"
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:879
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:430
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:752
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1678
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1679
 #: templates/admin/linkpages/edit.php:195
 #: templates/admin/linkpages/edit.php:555
 msgid "Upload image"
@@ -754,7 +744,7 @@ msgstr "上传图片"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:830
 #: includes/admin/links/Clickwhale_Link_Edit.php:179
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:439
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:442
 #, fuzzy
 msgid "Please enter slug"
 msgstr "请输入标题"
@@ -845,96 +835,96 @@ msgstr "未找到链接"
 msgid "Please enter URL"
 msgstr "请输入网址"
 
-#: includes/admin/migration/Clickwhale_Migration.php:216
+#: includes/admin/migration/Clickwhale_Migration.php:224
 #, fuzzy
 msgid "Migrate categories"
 msgstr "迁移类别"
 
-#: includes/admin/migration/Clickwhale_Migration.php:231
+#: includes/admin/migration/Clickwhale_Migration.php:239
 #, fuzzy
 msgid "Migrate links"
 msgstr "迁移链接"
 
-#: includes/admin/migration/Clickwhale_Migration.php:251
+#: includes/admin/migration/Clickwhale_Migration.php:258
 msgid "links"
 msgstr "链接"
 
-#: includes/admin/migration/Clickwhale_Migration.php:251
+#: includes/admin/migration/Clickwhale_Migration.php:258
 msgid "link"
 msgstr "链接"
 
-#: includes/admin/migration/Clickwhale_Migration.php:253
+#: includes/admin/migration/Clickwhale_Migration.php:260
 msgid "categories"
 msgstr "类别"
 
-#: includes/admin/migration/Clickwhale_Migration.php:253
+#: includes/admin/migration/Clickwhale_Migration.php:260
 msgid "category"
 msgstr "类别"
 
-#: includes/admin/migration/Clickwhale_Migration.php:256
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration.php:262
+#, fuzzy,php-format
 msgid "Found %1$s %2$s and %3$s %4$s."
 msgstr "找到 %1$s %2$s 和 %3$s %4$s。"
 
-#: includes/admin/migration/Clickwhale_Migration.php:260
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration.php:266
+#, fuzzy,php-format
 msgid "Last migration at %1$s"
 msgstr "最后一次迁移在 %1$s"
 
-#: includes/admin/migration/Clickwhale_Migration.php:263
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration.php:269
+#, fuzzy,php-format
 msgid "Set what you want to migrate from %s to CLickWhale"
 msgstr "设置要从 %s 迁移到 CLickWhale 的内容"
 
-#: includes/admin/migration/Clickwhale_Migration.php:364
+#: includes/admin/migration/Clickwhale_Migration.php:370
 #, fuzzy
 msgid "Get started with ClickWhale now"
 msgstr "立即开始使用 ClickWhale"
 
 #: includes/admin/migration/Clickwhale_Migration_Abstract.php:101
-#, fuzzy
+#, fuzzy,php-format
 msgid "Link \"%1$s\" imported successfully."
 msgstr "成功导入链接\"%1$s\"。"
 
 #: includes/admin/migration/Clickwhale_Migration_Abstract.php:105
-#, fuzzy
+#, fuzzy,php-format
 msgid "<strong>Import failed!</strong> Link %1$s already exists"
 msgstr "<strong>导入失败！</strong>链接%1$s 已经存在"
 
 #: includes/admin/migration/Clickwhale_Migration_Abstract.php:190
-#, fuzzy
+#, fuzzy,php-format
 msgid "Category \"%1$s\" imported successfully."
 msgstr "成功导入类别\"%1$s\"。"
 
 #: includes/admin/migration/Clickwhale_Migration_Abstract.php:194
-#, fuzzy
+#, fuzzy,php-format
 msgid "<strong>Import failed!</strong> Category \"%1$s\" already exists"
 msgstr "<strong>导入失败！</strong>类别 \"%1$s\" 已经存在"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:95
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:93
+#, fuzzy,php-format
 msgid "You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here."
 msgstr "您已在网站上使用 %1$s。要将 %1$s 数据迁移到 Clickwhale，请点击此处。"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:97
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:95
 msgid "Start Migration"
 msgstr "开始迁移"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:98
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:96
 msgid "Not now"
 msgstr "不是现在"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:112
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:110
+#, fuzzy,php-format
 msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
 msgstr "所有 %1$s 数据已成功迁移到 Clickwhale。现在您可以安全地停用网站上的 %1$s。"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:114
-#, fuzzy
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:112
+#, fuzzy,php-format
 msgid "Deactivate %1$s"
 msgstr "停用 %1$s"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:115
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:113
 #, fuzzy
 msgid "Leave it active"
 msgstr "保持激活状态"
@@ -999,7 +989,7 @@ msgstr "位置"
 msgid "Created"
 msgstr "创建"
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:307
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:306
 #, fuzzy
 msgid "No Tracking Codes Found"
 msgstr "未找到跟踪代码"
@@ -1046,54 +1036,54 @@ msgstr "选择代码位置"
 msgid "Select"
 msgstr "选择"
 
-#: includes/Clickwhale.php:442
+#: includes/Clickwhale.php:384
 msgid "General Options"
 msgstr "常规选项"
 
-#: includes/Clickwhale.php:443
+#: includes/Clickwhale.php:385
 #, fuzzy
 msgid "Set up ClickWhale plugin global options."
 msgstr "设置 ClickWhale 插件的全局选项。"
 
-#: includes/Clickwhale.php:450
+#: includes/Clickwhale.php:392
 msgid "Tracking Options"
 msgstr "跟踪选项"
 
-#: includes/Clickwhale.php:451
+#: includes/Clickwhale.php:393
 #, fuzzy
 msgid "Set up ClickWhale plugin global link tracking options."
 msgstr "设置 ClickWhale 插件的全局链接跟踪选项。"
 
-#: includes/Clickwhale.php:458
+#: includes/Clickwhale.php:400
 #, fuzzy
 msgid "Link Manager Options"
 msgstr "链接管理器选项"
 
-#: includes/Clickwhale.php:459
+#: includes/Clickwhale.php:401
 #, fuzzy
 msgid "Global settings for ClickWhale Links."
 msgstr "ClickWhale 链接的全局设置。"
 
-#: includes/Clickwhale.php:490
+#: includes/Clickwhale.php:440
 msgid "New Link"
 msgstr "新链接"
 
-#: includes/Clickwhale.php:502
+#: includes/Clickwhale.php:452
 msgid "New Category"
 msgstr "新分类"
 
-#: includes/Clickwhale.php:514
+#: includes/Clickwhale.php:464
 #, fuzzy
 msgid "New Link Page"
 msgstr "新链接页面"
 
-#: includes/Clickwhale.php:526
+#: includes/Clickwhale.php:476
 #, fuzzy
 msgid "New Tracking Code"
 msgstr "新跟踪代码"
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:155
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1617
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1618
 msgid "Nothing found"
 msgstr "什么都没找到"
 
@@ -1167,7 +1157,7 @@ msgstr "您可以选择图像、图标或表情符号。不能同时激活多个
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:434
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:755
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1680
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1681
 #: templates/admin/linkpages/edit.php:190
 #: templates/admin/linkpages/edit.php:199
 #: templates/admin/linkpages/edit.php:550
@@ -1185,7 +1175,7 @@ msgid "Select Emoji"
 msgstr "选择表情符号"
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:925
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1683
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1684
 #: templates/admin/tools/tools.php:21
 msgid "Reset"
 msgstr "重置"
@@ -1195,22 +1185,24 @@ msgstr "重置"
 msgid "Powered by"
 msgstr "技术支持"
 
-#: includes/front/Clickwhale_Public_Linkpage.php:426
+#: includes/front/Clickwhale_Public_Linkpage.php:429
 #: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:61
 #, fuzzy
 msgid "Edit Link Page"
 msgstr "编辑链接页面"
 
 #: includes/helpers/Categories_Helper.php:33
-#, fuzzy
+#, fuzzy,php-format
 msgid "Currently, a maximum of %d categories can be added."
 msgstr "目前，最多可添加 %d 个类别。"
 
 #: includes/helpers/Helper.php:225
+#, php-format
 msgid "Edit %s"
 msgstr "编辑 %s"
 
 #: includes/helpers/Helper.php:227
+#, php-format
 msgid "Add %s"
 msgstr "添加 %s"
 
@@ -1232,17 +1224,17 @@ msgid "Unlimited with"
 msgstr "无限制"
 
 #: includes/helpers/Helper.php:322
-#, fuzzy
+#, fuzzy,php-format
 msgid "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
 msgstr "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
 
 #: includes/helpers/Helper.php:396
-#, fuzzy
+#, fuzzy,php-format
 msgid "Security check failed (possible CSRF) for user ID %d"
 msgstr "用户 ID %d 的安全检查失败（可能是 CSRF］"
 
 #: includes/helpers/Helper.php:399
-#, fuzzy
+#, fuzzy,php-format
 msgid "on page: %s"
 msgstr "页上：%s"
 
@@ -1252,12 +1244,12 @@ msgid "Security check failed. Please contact the ClickWhale customer support."
 msgstr "安全检查失败。请联系 ClickWhale 客户支持。"
 
 #: includes/helpers/Linkpages_Helper.php:32
-#, fuzzy
+#, fuzzy,php-format
 msgid "Currently, a maximum of %d link page can be added."
 msgstr "目前，最多可添加 %d 个链接页面。"
 
 #: includes/helpers/Linkpages_Helper.php:44
-#, fuzzy
+#, fuzzy,php-format
 msgid "Currently, a maximum of %d links can be added."
 msgstr "目前，最多可添加 %d 个链接。"
 
@@ -1302,7 +1294,7 @@ msgid "Same tab/window"
 msgstr "同一选项卡/窗口"
 
 #: includes/helpers/Tracking_Codes_Helper.php:64
-#, fuzzy
+#, fuzzy,php-format
 msgid "Currently, a maximum of %d %s can be active at the same time."
 msgstr "目前，最多可同时激活 %d %s。"
 
@@ -1327,7 +1319,7 @@ msgstr "开玩笑，呵？"
 msgid "Statistics"
 msgstr "统计"
 
-#: pro/includes/admin/Clickwhale_Pro_Admin.php:265
+#: pro/includes/admin/Clickwhale_Pro_Admin.php:280
 #, fuzzy
 msgid "Keywords Linked"
 msgstr "关键词 链接"
@@ -1386,11 +1378,12 @@ msgid "Affiliate Link"
 msgstr "会员链接"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:130
+#, php-format
 msgid "e.g. %s"
 msgstr "例如 %s"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:133
-#, fuzzy
+#, fuzzy,php-format
 msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
 msgstr "如果您是我们<a href=\"%s\" target=\"_blank\">联盟计划</a>的会员，请输入您的个人联盟链接。<br>，它将自动用于您链接页面的页脚。"
 
@@ -1404,7 +1397,7 @@ msgid "Check to hide Link Page credits."
 msgstr "选中以隐藏链接页面信用。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:163
-#, fuzzy
+#, fuzzy,php-format
 msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
 msgstr "作为我们<a href=\"%1$s\" target=\"_blank\">联盟计划</a>的成员，您可以在<a href=\"%2$s\">这里的</a>设置中输入您的联盟链接，<br>，然后在显示积分时使用该链接。"
 
@@ -1552,8 +1545,8 @@ msgstr "表单"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:70
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:264
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:587
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1470
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1658
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1471
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1659
 #, fuzzy
 msgid "Image"
 msgstr "图片"
@@ -1596,7 +1589,7 @@ msgid "Number in the international format (with + and country code)"
 msgstr "国际格式号码（带 + 和国家代码）"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:180
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1634
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1635
 msgid "e.g."
 msgstr "例如"
 
@@ -1850,20 +1843,20 @@ msgid "Please select a form"
 msgstr "请选择一个表单"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1295
-#, fuzzy
+#, fuzzy,php-format
 msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
 msgstr "我们找不到<a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">支持的表单插件</a>。是否缺少您最喜欢的插件？请<a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">告诉我们</a>。"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1314
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1315
 msgid "Plugin"
 msgstr "插件"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1336
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1337
 #, fuzzy
 msgid "Form"
 msgstr "表单"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1491
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1492
 #, fuzzy
 msgid "Check to add a link of your choice to the image"
 msgstr "选中可在图片上添加您选择的链接"
@@ -1872,41 +1865,41 @@ msgstr "选中可在图片上添加您选择的链接"
 msgid "UTM Parameters"
 msgstr "UTM 参数"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:55
-#, fuzzy
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:56
+#, fuzzy,php-format
 msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr "在这里，您可以定义帖子和页面中自动链接的关键词。您可以<a href=\"%s\" target=\"_blank\">在这里</a>找到更多设置选项。"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:66
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:69
 msgid "Link Keywords"
 msgstr "链接关键字"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:96
-#, fuzzy
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:99
+#, fuzzy,php-format
 msgid "You can create a maximum of %d keywords."
 msgstr "您最多可以创建 %d 个关键字。"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:107
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:110
 msgid "UTM Campaign"
 msgstr "UTM 活动"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:111
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:114
 msgid "UTM Medium"
 msgstr "UTM 中等"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:115
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:118
 msgid "UTM Source"
 msgstr "UTM 源"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:119
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:122
 msgid "UTM Term"
 msgstr "UTM的术语"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:123
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:126
 msgid "UTM Content"
 msgstr "UTM 内容"
 
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:174
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:177
 #, fuzzy
 msgid "Link UTM Parameters Settings"
 msgstr "链接 UTM 参数设置"
@@ -2236,18 +2229,18 @@ msgstr "标准"
 msgid "Small"
 msgstr "小"
 
-#: pro/includes/helpers/Links_Helper.php:268
-#, fuzzy
+#: pro/includes/helpers/Links_Helper.php:266
+#, fuzzy,php-format
 msgid "The keyword you entered: <b>%s</b> has already been added to this link."
 msgstr "您输入的关键词 <b>%s</b>已被添加到此链接。"
 
-#: pro/includes/helpers/Links_Helper.php:314
-#, fuzzy
+#: pro/includes/helpers/Links_Helper.php:312
+#, fuzzy,php-format
 msgid "The keyword you entered: <b>%s</b> has already been assigned to another link."
 msgstr "您输入的关键字 <b>%s</b>已分配给另一个链接。"
 
-#: pro/includes/helpers/Links_Helper.php:324
-#, fuzzy
+#: pro/includes/helpers/Links_Helper.php:322
+#, fuzzy,php-format
 msgid "You can edit the link <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr "您可以<a href=\"%s\" target=\"_blank\">在此处</a>编辑链接。"
 
@@ -2478,7 +2471,7 @@ msgid "Robots Meta"
 msgstr "Robots Meta"
 
 #: templates/admin/linkpages/edit.php:458
-#, fuzzy
+#, fuzzy,php-format
 msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
 msgstr "不允许搜索引擎索引本网站。请参阅<a href=\"%1$s\" target=\"_blank\">阅读设置</a>中的 \"搜索引擎可见性 \"选项<a href=\"%1$s\" target=\"_blank\">！</a>"
 
@@ -2766,66 +2759,66 @@ msgstr "转到链接"
 msgid "Generate CSV"
 msgstr "生成CSV"
 
-#: templates/admin/tracking-codes/edit.php:22
+#: templates/admin/tracking-codes/edit.php:21
 msgid "Tracking Code"
 msgstr "跟踪代码"
 
-#: templates/admin/tracking-codes/edit.php:45
+#: templates/admin/tracking-codes/edit.php:44
 #, fuzzy
 msgid "Tracking Code Edit Table"
 msgstr "跟踪代码编辑表"
 
-#: templates/admin/tracking-codes/edit.php:56
+#: templates/admin/tracking-codes/edit.php:55
 #, fuzzy
 msgid "e.g. Google Tag Manager Code"
 msgstr "例如：谷歌标签管理器代码"
 
-#: templates/admin/tracking-codes/edit.php:65
+#: templates/admin/tracking-codes/edit.php:64
 msgid "Code"
 msgstr "代码"
 
-#: templates/admin/tracking-codes/edit.php:70
+#: templates/admin/tracking-codes/edit.php:69
 #, fuzzy
 msgid "Paste your code here."
 msgstr "在此粘贴您的代码。"
 
-#: templates/admin/tracking-codes/edit.php:79
+#: templates/admin/tracking-codes/edit.php:78
 msgid "Code Position"
 msgstr "代码位置"
 
-#: templates/admin/tracking-codes/edit.php:97
+#: templates/admin/tracking-codes/edit.php:96
 #, fuzzy
 msgid "In which page do you want to insert this code?"
 msgstr "您想在哪个页面插入这段代码？"
 
-#: templates/admin/tracking-codes/edit.php:108
+#: templates/admin/tracking-codes/edit.php:107
 #, fuzzy
 msgid "Whole website"
 msgstr "整个网站"
 
-#: templates/admin/tracking-codes/edit.php:109
+#: templates/admin/tracking-codes/edit.php:108
 msgid "Specific page"
 msgstr "特定的页面"
 
-#: templates/admin/tracking-codes/edit.php:128
+#: templates/admin/tracking-codes/edit.php:127
 #, fuzzy
 msgid "Include <strong>ClickWhale Link Pages</strong>"
 msgstr "包含<strong>ClickWhale 链接页面</strong>"
 
-#: templates/admin/tracking-codes/edit.php:168
+#: templates/admin/tracking-codes/edit.php:167
 #, fuzzy
 msgid "Exclude <strong>ClickWhale Link Pages</strong>"
 msgstr "排除<strong>ClickWhale 链接页面</strong>"
 
 #: templates/admin/tracking-codes/edit.php:212
 #: templates/admin/tracking-codes/edit.php:304
-#, fuzzy
+#, fuzzy,php-format
 msgid "Include <strong>%s</strong>"
 msgstr "包括 <strong>%s</strong>"
 
 #: templates/admin/tracking-codes/edit.php:255
 #: templates/admin/tracking-codes/edit.php:347
-#, fuzzy
+#, fuzzy,php-format
 msgid "Exclude <strong>%s</strong>"
 msgstr "不包括 <strong>%s</strong>"
 
@@ -2842,3 +2835,12 @@ msgstr "跟踪代码的可选注释。"
 #: templates/admin/tracking-codes/edit.php:426
 msgid "Enable Tracking Code"
 msgstr "启用跟踪代码"
+
+#: includes/admin/Clickwhale_Settings.php:135
+msgid "Decide who can access plugin admin pages."
+msgstr "决定谁可以访问插件管理页面。"
+
+#: includes/admin/Clickwhale_Admin.php:506
+#, php-format
+msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
+msgstr "你喜欢 ClickWhale 吗？那么请 <a href=\"%s\" target=\"_blank\">在这里留下评论</a>"
