@@ -1,7 +1,7 @@
 <?php
 namespace clickwhale\includes\admin\migration;
 
-use clickwhale\includes\helpers\Helper;
+use clickwhale\includes\helpers\Links_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -53,9 +53,9 @@ abstract class Clickwhale_Migration_Abstract {
      * @return bool
      */
     public function link_exists( string $slug ): bool {
-        $slug = Helper::sanitize_slug( $slug );
+        $slug = Links_Helper::sanitize_slug( $slug );
 
-        if ( empty( $slug ) ) {
+        if ( '' === $slug ) {
             return false;
         }
 
@@ -69,15 +69,18 @@ abstract class Clickwhale_Migration_Abstract {
         );
     }
 
-    public function link_url_parse( $url ): array {
+    public function parse_link_url( $url ): array {
+        $url = esc_url_raw( $url );
+
         $result = array(
             'url' => $url,
             'utms' => array()
         );
-        $utm_params = [ 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ];
 
-        $url_array = parse_url( $url );
-        if ( isset( $url_array['query'] ) && $url_array['query'] !== '' ) {
+        $utm_params = array( 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' );
+        $url_array = wp_parse_url( $url );
+
+        if ( isset( $url_array['query'] ) && '' !== $url_array['query'] ) {
             parse_str( $url_array['query'], $params );
             $result['url'] = str_replace( '?' . $url_array['query'], '', $url );
 
@@ -87,6 +90,7 @@ abstract class Clickwhale_Migration_Abstract {
                     unset( $params[$utm] );
                 }
             }
+
             $result['params'] = $params;
 
             if ( ! empty( $params ) ) {
@@ -110,7 +114,7 @@ abstract class Clickwhale_Migration_Abstract {
      * @return bool
      */
     public function category_exists( string $slug ): bool {
-        $slug = Helper::sanitize_slug( $slug );
+        $slug = sanitize_title( $slug );
 
         if ( empty( $slug ) ) {
             return false;

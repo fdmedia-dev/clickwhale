@@ -38,8 +38,25 @@ class Clickwhale_WP_User {
         $roles = array();
 
         if ( ! empty( $wp_roles->roles ) ) {
-            foreach ( $wp_roles->roles as $k => $v ) {
-                $roles[$k] = $v['name'];
+            foreach ( $wp_roles->roles as $key => $data ) {
+                $roles[$key] = $data['name'];
+            }
+        }
+
+        return $roles;
+    }
+
+    public function get_roles_with_upload_cap(): array {
+        $roles = array();
+        $all_roles = $this->get_all_roles();
+
+        if ( ! empty( $all_roles ) ) {
+            foreach ( $all_roles as $key => $name ) {
+                $role = get_role( $key );
+
+                if ( $role && $role->has_cap( 'upload_files' ) ) {
+                    $roles[$key] = $name;
+                }
             }
         }
 

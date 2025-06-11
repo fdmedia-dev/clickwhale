@@ -90,4 +90,21 @@ class Links_Helper extends Helper_Abstract {
             'self' => __( 'Same tab/window', 'clickwhale' )
         );
     }
+
+    /**
+     * Sanitize Link slug.
+     * Allowed: `-`, `_`, `/`, a-z, A-Z, 0-9
+     *
+     * @param string $slug
+     * @return string
+     */
+    public static function sanitize_slug( string $slug ): string {
+        $slug = trim( $slug );
+        $slug = sanitize_text_field( $slug );
+        $slug = str_replace( ' ', '-', $slug ); // replace inner `spaces` with `-`
+        $slug = preg_replace( '#[^a-zA-Z0-9_/-]#', '', $slug );
+        $slug = preg_replace( '#/{2,}#', '/', $slug ); // replace repeated slashes with a single one
+        $slug = trim( $slug, '/' ); // trim leading and lagging `slashes`
+        return $slug;
+    }
 }

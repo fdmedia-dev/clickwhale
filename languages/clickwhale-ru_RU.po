@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:150
+#: includes/admin/Clickwhale_Admin.php:156
 #, fuzzy
 msgid "ClickWhale"
 msgstr "ClickWhale"
@@ -49,8 +49,8 @@ msgstr "Редактировать"
 
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:79
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:170
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:63
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:174
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:62
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:173
 #: includes/admin/links/Clickwhale_Links_List_Table.php:164
 #: includes/admin/links/Clickwhale_Links_List_Table.php:308
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:61
@@ -59,16 +59,16 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:144
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:143
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:142
 #: includes/admin/links/Clickwhale_Links_List_Table.php:271
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:166
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:162
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:233
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:370
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:524
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1133
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1134
 #: templates/admin/categories/edit.php:50
-#: templates/admin/linkpages/edit.php:113
+#: templates/admin/linkpages/edit.php:115
 #: templates/admin/links/edit.php:84
 #: templates/admin/tracking-codes/edit.php:49
 msgid "Title"
@@ -78,10 +78,10 @@ msgstr "Заголовок"
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:167
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:440
 #: templates/admin/categories/edit.php:95
-#: templates/admin/linkpages/edit.php:136
-#: templates/admin/linkpages/edit.php:141
-#: templates/admin/links/edit.php:211
-#: templates/admin/links/edit.php:216
+#: templates/admin/linkpages/edit.php:138
+#: templates/admin/linkpages/edit.php:143
+#: templates/admin/links/edit.php:209
+#: templates/admin/links/edit.php:214
 #: templates/admin/tracking-codes/edit.php:407
 #, fuzzy
 msgid "Description"
@@ -96,30 +96,22 @@ msgstr "Количество ссылок"
 msgid "No Categories Found"
 msgstr "Категории не найдены"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:78
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:822
-#: includes/admin/links/Clickwhale_Link_Edit.php:169
+#: includes/admin/categories/Clickwhale_Category_Edit.php:74
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:874
+#: includes/admin/links/Clickwhale_Link_Edit.php:239
 msgid "Please enter title"
 msgstr "Пожалуйста, введите название"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:87
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:838
-#: includes/admin/links/Clickwhale_Link_Edit.php:189
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:447
-#, fuzzy
-msgid "This slug is already in use! Please enter another slug"
-msgstr "Этот слизень уже используется! Пожалуйста, введите другой слизень"
-
 #: includes/admin/Clickwhale_Admin.php:123
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:145
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:144
 #: includes/admin/migration/Clickwhale_Migration.php:230
 #: pro/templates/admin/statistics/statistics.php:22
-#: templates/admin/linkpages/edit.php:350
+#: templates/admin/linkpages/edit.php:355
 msgid "Links"
 msgstr "Ссылки"
 
 #: includes/admin/Clickwhale_Admin.php:124
-#: includes/Clickwhale.php:445
+#: includes/Clickwhale.php:448
 msgid "Add New Link"
 msgstr "Добавить новую ссылку"
 
@@ -132,7 +124,7 @@ msgid "Categories"
 msgstr "Категории"
 
 #: includes/admin/Clickwhale_Admin.php:126
-#: includes/Clickwhale.php:457
+#: includes/Clickwhale.php:460
 msgid "Add New Category"
 msgstr "Добавить новую категорию"
 
@@ -151,7 +143,7 @@ msgid "Link Pages"
 msgstr "Страницы ссылок"
 
 #: includes/admin/Clickwhale_Admin.php:128
-#: includes/Clickwhale.php:469
+#: includes/Clickwhale.php:472
 #, fuzzy
 msgid "Add New Link Page"
 msgstr "Добавить новую страницу ссылок"
@@ -165,59 +157,59 @@ msgid "Tracking Codes"
 msgstr "Коды отслеживания"
 
 #: includes/admin/Clickwhale_Admin.php:130
-#: includes/Clickwhale.php:481
+#: includes/Clickwhale.php:484
 #, fuzzy
 msgid "Add New Tracking Code"
 msgstr "Добавь новый код отслеживания"
 
-#: includes/admin/Clickwhale_Admin.php:149
+#: includes/admin/Clickwhale_Admin.php:155
 #, fuzzy
 msgid "ClickWhale Links"
 msgstr "Ссылки на ClickWhale"
 
-#: includes/admin/Clickwhale_Admin.php:196
-#: includes/admin/Clickwhale_Admin.php:197
-#: includes/admin/Clickwhale_Admin.php:694
+#: includes/admin/Clickwhale_Admin.php:203
+#: includes/admin/Clickwhale_Admin.php:204
+#: includes/admin/Clickwhale_Admin.php:705
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:50
 #: templates/admin/settings/settings.php:9
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/admin/Clickwhale_Admin.php:207
-#: includes/admin/Clickwhale_Admin.php:208
+#: includes/admin/Clickwhale_Admin.php:214
+#: includes/admin/Clickwhale_Admin.php:215
 #: templates/admin/tools/tools.php:8
 msgid "Tools"
 msgstr "Инструменты"
 
-#: includes/admin/Clickwhale_Admin.php:224
-#: includes/admin/Clickwhale_Admin.php:225
-#: includes/admin/Clickwhale_Admin.php:545
-#: includes/admin/Clickwhale_Admin.php:710
+#: includes/admin/Clickwhale_Admin.php:231
+#: includes/admin/Clickwhale_Admin.php:232
+#: includes/admin/Clickwhale_Admin.php:556
+#: includes/admin/Clickwhale_Admin.php:721
 msgid "Upgrade to PRO"
 msgstr "Обновить до PRO"
 
-#: includes/admin/Clickwhale_Admin.php:529
+#: includes/admin/Clickwhale_Admin.php:540
 msgid "Need help?"
 msgstr "Нужна помощь?"
 
-#: includes/admin/Clickwhale_Admin.php:553
+#: includes/admin/Clickwhale_Admin.php:564
 #, fuzzy
 msgid "Available only in PRO version"
 msgstr "Доступно только в PRO-версии"
 
-#: includes/admin/Clickwhale_Admin.php:586
+#: includes/admin/Clickwhale_Admin.php:597
 #, fuzzy
 msgid "Upgrade to ClickWhale Pro"
 msgstr "Обновись до ClickWhale Pro"
 
-#: includes/admin/Clickwhale_Admin.php:589
+#: includes/admin/Clickwhale_Admin.php:600
 #: templates/admin/settings/pro.php:24
 #: templates/admin/settings/pro.php:25
 #, fuzzy
 msgid "Detailed Statistics"
 msgstr "Подробная статистика"
 
-#: includes/admin/Clickwhale_Admin.php:590
+#: includes/admin/Clickwhale_Admin.php:601
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:326
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:37
 #: templates/admin/settings/pro.php:29
@@ -226,83 +218,83 @@ msgstr "Подробная статистика"
 msgid "Keyword Auto Linker"
 msgstr "Автоматический линкер ключевых слов"
 
-#: includes/admin/Clickwhale_Admin.php:591
+#: includes/admin/Clickwhale_Admin.php:602
 #: templates/admin/settings/pro.php:39
 #: templates/admin/settings/pro.php:40
 #, fuzzy
 msgid "UTM Campaign Tracking"
 msgstr "Отслеживание UTM-кампаний"
 
-#: includes/admin/Clickwhale_Admin.php:592
+#: includes/admin/Clickwhale_Admin.php:603
 #, fuzzy
 msgid "E-Commerce Conversion Tracking"
 msgstr "Отслеживание конверсии в электронной коммерции"
 
-#: includes/admin/Clickwhale_Admin.php:593
+#: includes/admin/Clickwhale_Admin.php:604
 msgid "Advanced Customization Options"
 msgstr "Расширенные возможности настройки"
 
-#: includes/admin/Clickwhale_Admin.php:594
+#: includes/admin/Clickwhale_Admin.php:605
 #, fuzzy
 msgid "More Blocks for Link Pages"
 msgstr "Больше блоков для страниц со ссылками"
 
-#: includes/admin/Clickwhale_Admin.php:595
+#: includes/admin/Clickwhale_Admin.php:606
 #: templates/admin/settings/pro.php:71
 #: templates/admin/settings/pro.php:72
 #, fuzzy
 msgid "Remove Plugin Credits"
 msgstr "Удалить кредиты плагинов"
 
-#: includes/admin/Clickwhale_Admin.php:601
+#: includes/admin/Clickwhale_Admin.php:612
 msgid "Upgrade Now"
 msgstr "Обновить сейчас"
 
-#: includes/admin/Clickwhale_Admin.php:615
+#: includes/admin/Clickwhale_Admin.php:626
 msgid "Plugin Documentation"
 msgstr "Документация плагина"
 
-#: includes/admin/Clickwhale_Admin.php:622
+#: includes/admin/Clickwhale_Admin.php:633
 #, fuzzy
 msgid "How-To Shorten Links & Create Redirects"
 msgstr "Как сократить ссылки и создать редиректы"
 
-#: includes/admin/Clickwhale_Admin.php:628
+#: includes/admin/Clickwhale_Admin.php:639
 #, fuzzy
 msgid "How-To Import Links"
 msgstr "Как импортировать ссылки"
 
-#: includes/admin/Clickwhale_Admin.php:634
+#: includes/admin/Clickwhale_Admin.php:645
 #, fuzzy
 msgid "How-To Use the Keyword Auto Linker"
 msgstr "Как использовать авторазметчик ключевых слов"
 
-#: includes/admin/Clickwhale_Admin.php:640
+#: includes/admin/Clickwhale_Admin.php:651
 #, fuzzy
 msgid "Creating Your First Link Page"
 msgstr "Создай свою первую страницу ссылок"
 
-#: includes/admin/Clickwhale_Admin.php:645
+#: includes/admin/Clickwhale_Admin.php:656
 #, fuzzy
 msgid "How-To Add Google Tag Manager To WordPress with ClickWhale"
 msgstr "Как добавить менеджер тегов Google в WordPress с помощью ClickWhale"
 
-#: includes/admin/Clickwhale_Admin.php:652
+#: includes/admin/Clickwhale_Admin.php:663
 #, fuzzy
 msgid "View all Articles"
 msgstr "Посмотреть все статьи"
 
-#: includes/admin/Clickwhale_Admin.php:733
+#: includes/admin/Clickwhale_Admin.php:744
 msgid "Documentation"
 msgstr "Документация"
 
-#: includes/admin/Clickwhale_Admin.php:734
+#: includes/admin/Clickwhale_Admin.php:745
 #, fuzzy
 msgid "Rate ClickWhale on WordPress.org"
 msgstr "Оцените ClickWhale на WordPress.org"
 
-#: includes/admin/Clickwhale_Admin.php:783
-#: includes/admin/Clickwhale_Admin.php:803
+#: includes/admin/Clickwhale_Admin.php:794
+#: includes/admin/Clickwhale_Admin.php:814
 msgid "Copied!"
 msgstr "Скопировано!"
 
@@ -316,220 +308,220 @@ msgstr "Нечего мигрировать"
 msgid "Successfully deleted! Page will be reloaded..."
 msgstr "Успешно удалено! Страница будет перезагружена..."
 
-#: includes/admin/Clickwhale_Ajax.php:175
+#: includes/admin/Clickwhale_Ajax.php:167
 #, fuzzy
 msgid "All statistic has been reset"
 msgstr "Вся статистика была сброшена"
 
-#: includes/admin/Clickwhale_Ajax.php:182
+#: includes/admin/Clickwhale_Ajax.php:179
 #, fuzzy
 msgid "All plugin tables has been reset"
 msgstr "Все таблицы плагинов были сброшены"
 
-#: includes/admin/Clickwhale_Ajax.php:191
+#: includes/admin/Clickwhale_Ajax.php:196
 #, fuzzy
 msgid "All plugin settings has been restored"
 msgstr "Все настройки плагина восстановлены"
 
-#: includes/admin/Clickwhale_Ajax.php:372
-#: includes/admin/Clickwhale_Ajax.php:460
-#: includes/admin/import/Clickwhale_Import.php:81
-#: includes/admin/import/Clickwhale_Import.php:119
+#: includes/admin/Clickwhale_Ajax.php:473
+#: includes/admin/Clickwhale_Ajax.php:561
+#: includes/admin/import/Clickwhale_Import.php:74
+#: includes/admin/import/Clickwhale_Import.php:112
 #, fuzzy
 msgid "Please, select .csv file"
 msgstr "Пожалуйста, выберите файл .csv"
 
-#: includes/admin/Clickwhale_Ajax.php:422
+#: includes/admin/Clickwhale_Ajax.php:523
 msgid "Column name"
 msgstr "Название колонки"
 
-#: includes/admin/Clickwhale_Ajax.php:423
+#: includes/admin/Clickwhale_Ajax.php:524
 msgid "Map to field"
 msgstr "Карта для поля"
 
-#: includes/admin/Clickwhale_Ajax.php:429
+#: includes/admin/Clickwhale_Ajax.php:530
 msgid "Do not import"
 msgstr "Не импортировать"
 
-#: includes/admin/Clickwhale_Ajax.php:440
+#: includes/admin/Clickwhale_Ajax.php:541
 msgid "Example:"
 msgstr "Пример:"
 
-#: includes/admin/Clickwhale_Ajax.php:470
+#: includes/admin/Clickwhale_Ajax.php:571
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:80
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:99
 #: templates/admin/links/edit.php:32
 msgid "Default"
 msgstr "По умолчанию"
 
-#: includes/admin/Clickwhale_Ajax.php:483
+#: includes/admin/Clickwhale_Ajax.php:584
 #, fuzzy
 msgid "Error opening file!"
 msgstr "Ошибка при открытии файла!"
 
-#: includes/admin/Clickwhale_Ajax.php:605
+#: includes/admin/Clickwhale_Ajax.php:706
 #, fuzzy
 msgid "Nothing to import!"
 msgstr "Нечего импортировать!"
 
-#: includes/admin/Clickwhale_Ajax.php:632
+#: includes/admin/Clickwhale_Ajax.php:733
 #, fuzzy
 msgid "Link <strong>&quot;"
 msgstr "Ссылка <strong>&quot;"
 
-#: includes/admin/Clickwhale_Ajax.php:634
+#: includes/admin/Clickwhale_Ajax.php:735
 #, fuzzy
 msgid "<strong>Error!</strong> Link <strong>&quot;"
 msgstr "<strong>Ошибка!</strong> Ссылка <strong>&quot;"
 
-#: includes/admin/Clickwhale_Ajax.php:647
+#: includes/admin/Clickwhale_Ajax.php:748
 msgid "Bad request"
 msgstr "Ошибочный запрос"
 
-#: includes/admin/Clickwhale_Ajax.php:707
-#: includes/admin/Clickwhale_Ajax.php:717
+#: includes/admin/Clickwhale_Ajax.php:808
+#: includes/admin/Clickwhale_Ajax.php:818
 msgid "Nothing to export"
 msgstr "Нет данных для экспорта"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:108
+#: includes/admin/Clickwhale_Instance_Edit.php:114
 #, fuzzy
 msgid "You attempted to edit an item that does not exist. Perhaps it was deleted?"
 msgstr "Ты попытался отредактировать несуществующий элемент. Возможно, он был удален?"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:109
+#: includes/admin/Clickwhale_Instance_Edit.php:115
 msgid "Error"
 msgstr "Ошибка"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:111
+#: includes/admin/Clickwhale_Instance_Edit.php:117
 msgid "Back"
 msgstr "Назад"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:150
+#: includes/admin/Clickwhale_Instance_Edit.php:156
 #, fuzzy,php-format
 msgid "%s was successfully saved"
 msgstr "%s был успешно сохранен"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:155
+#: includes/admin/Clickwhale_Instance_Edit.php:161
 #, fuzzy,php-format
 msgid "%s was successfully updated"
 msgstr "%s был успешно обновлен"
 
-#: includes/admin/Clickwhale_Settings.php:124
+#: includes/admin/Clickwhale_Settings.php:118
 msgid "Access Level"
 msgstr "Уровень доступа"
 
-#: includes/admin/Clickwhale_Settings.php:141
+#: includes/admin/Clickwhale_Settings.php:135
 msgid "Hide Admin Bar Menu"
 msgstr "Скрыть меню в админ-панеле"
 
-#: includes/admin/Clickwhale_Settings.php:150
+#: includes/admin/Clickwhale_Settings.php:144
 #, fuzzy
 msgid "Check to hide Clickwhale quick menu from the admin bar."
 msgstr "Поставьте галочку, чтобы скрыть быстрое меню Clickwhale из админбара."
 
-#: includes/admin/Clickwhale_Settings.php:157
+#: includes/admin/Clickwhale_Settings.php:151
 #, fuzzy
 msgid "Tracking Duration"
 msgstr "Продолжительность отслеживания"
 
-#: includes/admin/Clickwhale_Settings.php:167
+#: includes/admin/Clickwhale_Settings.php:161
 msgid "30 days"
 msgstr "30 дней"
 
-#: includes/admin/Clickwhale_Settings.php:173
+#: includes/admin/Clickwhale_Settings.php:167
 msgid "Disable Tracking"
 msgstr "Отключить отслеживание"
 
-#: includes/admin/Clickwhale_Settings.php:182
+#: includes/admin/Clickwhale_Settings.php:176
 #, fuzzy
 msgid "Check to disable tracking of views and clicks."
 msgstr "Поставьте галочку, чтобы отключить отслеживание просмотров и кликов."
 
-#: includes/admin/Clickwhale_Settings.php:187
+#: includes/admin/Clickwhale_Settings.php:181
 #: templates/admin/tracking-codes/edit.php:394
 msgid "Exclude User Roles"
 msgstr "Исключить роли пользователей"
 
-#: includes/admin/Clickwhale_Settings.php:197
+#: includes/admin/Clickwhale_Settings.php:191
 #, fuzzy
 msgid "Check the user roles that should be excluded from tracking."
 msgstr "Отметь роли пользователей, которые должны быть исключены из отслеживания."
 
-#: includes/admin/Clickwhale_Settings.php:204
-#: templates/admin/links/edit.php:157
+#: includes/admin/Clickwhale_Settings.php:198
+#: templates/admin/links/edit.php:155
 msgid "Redirection Type"
 msgstr "Тип перенаправления"
 
-#: includes/admin/Clickwhale_Settings.php:214
+#: includes/admin/Clickwhale_Settings.php:208
 #, fuzzy
 msgid "Set default redirection type which will be used for new links."
 msgstr "Установи тип перенаправления по умолчанию, который будет использоваться для новых ссылок."
 
-#: includes/admin/Clickwhale_Settings.php:219
+#: includes/admin/Clickwhale_Settings.php:213
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:85
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:96
-#: templates/admin/links/edit.php:169
+#: templates/admin/links/edit.php:167
 msgid "Link Target"
 msgstr "Целевая ссылка"
 
-#: includes/admin/Clickwhale_Settings.php:229
+#: includes/admin/Clickwhale_Settings.php:223
 #, fuzzy
 msgid "Set default target which will be used for all links."
 msgstr "Установи цель по умолчанию, которая будет использоваться для всех ссылок."
 
-#: includes/admin/Clickwhale_Settings.php:234
+#: includes/admin/Clickwhale_Settings.php:228
 msgid "Nofollow Links"
 msgstr "Nofollow Ссылки"
 
-#: includes/admin/Clickwhale_Settings.php:243
+#: includes/admin/Clickwhale_Settings.php:237
 #, fuzzy
 msgid "Check to mark links as nofollow & noindex by default."
 msgstr "Поставьте галочку, чтобы пометить ссылки как nofollow & noindex по умолчанию."
 
-#: includes/admin/Clickwhale_Settings.php:248
+#: includes/admin/Clickwhale_Settings.php:242
 msgid "Sponsored Links"
 msgstr "Рекламные ссылки"
 
-#: includes/admin/Clickwhale_Settings.php:257
+#: includes/admin/Clickwhale_Settings.php:251
 #, fuzzy
 msgid "Check to mark links as sponsored by default."
 msgstr "Поставьте галочку, чтобы пометить ссылки как спонсируемые по умолчанию."
 
-#: includes/admin/Clickwhale_Settings.php:258
+#: includes/admin/Clickwhale_Settings.php:252
 #, fuzzy
 msgid "Recommended for affiliate links."
 msgstr "Рекомендуется по партнерским ссылкам."
 
-#: includes/admin/Clickwhale_Settings.php:263
+#: includes/admin/Clickwhale_Settings.php:257
 msgid "Link Prefix"
 msgstr "Префикс ссылки"
 
-#: includes/admin/Clickwhale_Settings.php:274
+#: includes/admin/Clickwhale_Settings.php:268
 #, fuzzy
 msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "Здесь ты можешь ввести префикс, который будет добавляться при создании новой ссылки. Например: <em>link</em>.<br><strong>Важно:</strong> если ты изменишь префикс, это <u>не</u> повлияет на уже существующие ссылки."
 
-#: includes/admin/Clickwhale_Settings.php:279
+#: includes/admin/Clickwhale_Settings.php:273
 #, fuzzy
 msgid "Random Slug"
 msgstr "Случайный слизняк"
 
-#: includes/admin/Clickwhale_Settings.php:288
+#: includes/admin/Clickwhale_Settings.php:282
 #, fuzzy
 msgid "Check to <u>not</u> suggest a random link slug when creating a new link."
 msgstr "Проверь, чтобы при создании новой ссылки <u>не</u> предлагался случайный слизень ссылки."
 
-#: includes/admin/Clickwhale_Settings.php:313
+#: includes/admin/Clickwhale_Settings.php:307
 #: includes/admin/links/Clickwhale_Link_Edit.php:51
-#: templates/admin/linkpages/edit.php:107
+#: templates/admin/linkpages/edit.php:109
 msgid "General"
 msgstr "Общие"
 
-#: includes/admin/Clickwhale_Settings.php:317
+#: includes/admin/Clickwhale_Settings.php:311
 msgid "Tracking"
 msgstr "Отслеживание"
 
-#: includes/admin/Clickwhale_Settings.php:321
+#: includes/admin/Clickwhale_Settings.php:315
 #: templates/admin/settings/pro.php:25
 #: templates/admin/settings/pro.php:30
 #: templates/admin/settings/pro.php:40
@@ -569,17 +561,17 @@ msgstr "Экспортируй все категории"
 msgid "No categories"
 msgstr "Нет категорий"
 
-#: includes/admin/export/Clickwhale_Export.php:101
+#: includes/admin/export/Clickwhale_Export.php:99
 #, fuzzy
 msgid "Select columns you want to export"
 msgstr "Выберите колонки, которые вы хотите экспортировать"
 
-#: includes/admin/export/Clickwhale_Export.php:105
+#: includes/admin/export/Clickwhale_Export.php:103
 #, fuzzy
 msgid "Select categories you want to export"
 msgstr "Выберите категории, которые вы хотите экспортировать"
 
-#: includes/admin/export/Clickwhale_Export.php:173
+#: includes/admin/export/Clickwhale_Export.php:171
 #, fuzzy
 msgid "An error occurred, try changing the request"
 msgstr "Произошла ошибка, попробуй изменить запрос"
@@ -599,75 +591,75 @@ msgstr "Этот инструмент позволяет импортирова�
 msgid "Choose a CSV file from your computer"
 msgstr "Выберите CSV-файл с вашего компьютера"
 
-#: includes/admin/import/Clickwhale_Import.php:145
+#: includes/admin/import/Clickwhale_Import.php:138
 #, fuzzy
 msgid "Duplicated field"
 msgstr "Дублированное поле"
 
-#: includes/admin/import/Clickwhale_Import.php:238
-#: includes/admin/import/Clickwhale_Import.php:298
+#: includes/admin/import/Clickwhale_Import.php:231
+#: includes/admin/import/Clickwhale_Import.php:291
 msgid "Required field"
 msgstr "Обязательное поле"
 
-#: includes/admin/import/Clickwhale_Import.php:248
+#: includes/admin/import/Clickwhale_Import.php:241
 msgid "Slug already exists"
 msgstr "Slug уже существует"
 
-#: includes/admin/import/Clickwhale_Import.php:258
+#: includes/admin/import/Clickwhale_Import.php:251
 #, fuzzy
 msgid "Slug is not unique"
 msgstr "Слизняк не уникален"
 
-#: includes/admin/import/Clickwhale_Import.php:342
+#: includes/admin/import/Clickwhale_Import.php:335
 msgid "No items"
 msgstr "Нет элементов"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:53
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:52
 msgid "View"
 msgstr "Просмотр"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:80
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:79
 #: includes/admin/links/Clickwhale_Links_List_Table.php:181
 msgid "Copy Link"
 msgstr "Копировать ссылку"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:144
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:143
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:138
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1483
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1484
 #: pro/includes/admin/statistics/Link_Clicks_Statistics.php:78
 #: templates/admin/links/edit.php:42
 msgid "Link"
 msgstr "Ссылка"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:146
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:145
 #: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:78
 msgid "Views"
 msgstr "Просмотры"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:147
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:146
 #: includes/admin/links/Clickwhale_Links_List_Table.php:275
 #: pro/includes/admin/statistics/Category_Clicks_Statistics.php:88
 #: pro/includes/admin/statistics/Link_Clicks_Statistics.php:80
 msgid "Clicks"
 msgstr "Клики"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:148
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:147
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:169
 msgid "Author"
 msgstr "Автор"
 
-#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:315
+#: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:314
 #, fuzzy
 msgid "No Link Pages Found"
 msgstr "Не найдено ни одной страницы со ссылками"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:54
-#: templates/admin/linkpages/edit.php:239
+#: templates/admin/linkpages/edit.php:246
 msgid "Contents"
 msgstr "Содержание"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:58
-#: templates/admin/linkpages/edit.php:300
+#: templates/admin/linkpages/edit.php:305
 msgid "Styles"
 msgstr "Стили"
 
@@ -682,14 +674,14 @@ msgstr "Содержание ClickWhale"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:83
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:119
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1603
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1604
 #, fuzzy
 msgid "ClickWhale Link"
 msgstr "Ссылка на ClickWhale"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:87
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:214
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1632
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1633
 msgid "Custom Link"
 msgstr "Пользовательская ссылка"
 
@@ -723,11 +715,11 @@ msgstr "Разделитель"
 msgid "No Menu"
 msgstr "Без меню"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:336
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:333
 msgid "Select Content Type"
 msgstr "Выбрать тип контента"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:396
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:393
 msgid "Select Item"
 msgstr "Выбрать пункт"
 
@@ -735,32 +727,33 @@ msgstr "Выбрать пункт"
 msgid "Select Image"
 msgstr "Выбрать изображение"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:576
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:575
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:879
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:430
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:752
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1679
-#: templates/admin/linkpages/edit.php:195
-#: templates/admin/linkpages/edit.php:555
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1680
+#: templates/admin/linkpages/edit.php:197
+#: templates/admin/linkpages/edit.php:560
 msgid "Upload image"
 msgstr "Загрузить изображение"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:830
-#: includes/admin/links/Clickwhale_Link_Edit.php:179
-#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:442
+#: includes/admin/categories/Clickwhale_Category_Edit.php:90
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:851
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:883
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:895
+#: includes/admin/links/Clickwhale_Link_Edit.php:210
+#: includes/admin/links/Clickwhale_Link_Edit.php:249
+#: includes/admin/links/Clickwhale_Link_Edit.php:265
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:385
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:399
 #, fuzzy
 msgid "Please enter slug"
 msgstr "Пожалуйста, введите slug"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:850
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:932
 #, fuzzy
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
 msgstr "Ты уверен? Это действие установит стили CSS по умолчанию. Этот процесс нельзя отменить!"
-
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:901
-#, fuzzy
-msgid "Save page to view Open Graph preview"
-msgstr "Сохрани страницу для просмотра превью Open Graph"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:64
 msgid "Redirection"
@@ -774,12 +767,12 @@ msgid "No Change"
 msgstr "Без изменений"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:106
-#: templates/admin/links/edit.php:181
+#: templates/admin/links/edit.php:179
 msgid "Nofollow"
 msgstr "Nofollow"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:127
-#: templates/admin/links/edit.php:196
+#: templates/admin/links/edit.php:194
 msgid "Sponsored"
 msgstr "Спонсируемый"
 
@@ -819,22 +812,22 @@ msgstr "Сброс кликов"
 #: includes/admin/links/Clickwhale_Links_List_Table.php:272
 #: pro/includes/admin/statistics/Category_Clicks_Statistics.php:87
 #: templates/admin/categories/edit.php:72
-#: templates/admin/linkpages/edit.php:149
+#: templates/admin/linkpages/edit.php:151
 #: templates/admin/links/edit.php:105
 msgid "Slug"
 msgstr "Ярлык"
 
 #: includes/admin/links/Clickwhale_Links_List_Table.php:273
-#: templates/admin/links/edit.php:135
+#: templates/admin/links/edit.php:133
 msgid "Target URL"
 msgstr "Целевой URL"
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:541
+#: includes/admin/links/Clickwhale_Links_List_Table.php:543
 #, fuzzy
 msgid "No Links Found"
 msgstr "Ссылки не найдены"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:199
+#: includes/admin/links/Clickwhale_Link_Edit.php:308
 msgid "Please enter URL"
 msgstr "Введите URL-адрес"
 
@@ -879,27 +872,27 @@ msgstr "Последняя миграция на %1$s"
 msgid "Set what you want to migrate from %s to CLickWhale"
 msgstr "Установи, что ты хочешь перенести из %s в CLickWhale"
 
-#: includes/admin/migration/Clickwhale_Migration.php:370
+#: includes/admin/migration/Clickwhale_Migration.php:365
 #, fuzzy
 msgid "Get started with ClickWhale now"
 msgstr "Начни работать с ClickWhale прямо сейчас"
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:101
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:105
 #, fuzzy,php-format
 msgid "Link \"%1$s\" imported successfully."
 msgstr "Ссылка \"%1$s\" успешно импортирована."
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:105
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:109
 #, fuzzy,php-format
 msgid "<strong>Import failed!</strong> Link %1$s already exists"
 msgstr "<strong>Импорт не удался!</strong> Ссылка %1$s уже существует"
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:190
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:194
 #, fuzzy,php-format
 msgid "Category \"%1$s\" imported successfully."
 msgstr "Категория \"%1$s\" успешно импортирована."
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:194
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:198
 #, fuzzy,php-format
 msgid "<strong>Import failed!</strong> Category \"%1$s\" already exists"
 msgstr "<strong>Импорт не удался!</strong> Категория \"%1$s\" уже существует"
@@ -962,17 +955,17 @@ msgstr "На этом этапе ты можешь удалить все зап�
 msgid "In case you want to clean up your stats, you can remove all previously counted clicks from the database here."
 msgstr "В случае если ты хочешь почистить свою статистику, ты можешь удалить из базы данных все ранее учтенные клики здесь."
 
-#: includes/admin/reset/Clickwhale_Reset.php:123
+#: includes/admin/reset/Clickwhale_Reset.php:121
 #, fuzzy
 msgid "Are you sure? This action restore all plugin settings to default. This process cannot be undone!"
 msgstr "Ты уверен? Это действие восстанавливает все настройки плагина по умолчанию. Этот процесс нельзя отменить!"
 
-#: includes/admin/reset/Clickwhale_Reset.php:127
+#: includes/admin/reset/Clickwhale_Reset.php:125
 #, fuzzy
 msgid "Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!"
 msgstr "Ты уверен? Это действие сбросит таблицы плагинов и удалит все существующие данные. Этот процесс нельзя отменить!"
 
-#: includes/admin/reset/Clickwhale_Reset.php:131
+#: includes/admin/reset/Clickwhale_Reset.php:129
 #, fuzzy
 msgid "Are you sure? This action will reset all statistic. This process cannot be undone!"
 msgstr "Ты уверен? Это действие обнулит всю статистику. Этот процесс нельзя отменить!"
@@ -1018,12 +1011,12 @@ msgstr "Преобразование EDD"
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:177
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:198
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:215
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:945
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:946
 #: pro/includes/admin/statistics/Category_Clicks_Statistics.php:40
 #: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:38
 #: pro/includes/admin/statistics/Link_Clicks_Statistics.php:36
-#: pro/includes/admin/statistics/Statistics.php:610
-#: pro/includes/admin/statistics/Statistics.php:1058
+#: pro/includes/admin/statistics/Statistics.php:602
+#: pro/includes/admin/statistics/Statistics.php:1050
 msgid "All"
 msgstr "Все"
 
@@ -1036,55 +1029,55 @@ msgstr "Выберите позицию кода"
 msgid "Select"
 msgstr "Выбрать"
 
-#: includes/Clickwhale.php:384
+#: includes/Clickwhale.php:387
 msgid "General Options"
 msgstr "Общие настройки"
 
-#: includes/Clickwhale.php:385
+#: includes/Clickwhale.php:388
 #, fuzzy
 msgid "Set up ClickWhale plugin global options."
 msgstr "Настрой глобальные опции плагина ClickWhale."
 
-#: includes/Clickwhale.php:392
+#: includes/Clickwhale.php:395
 #, fuzzy
 msgid "Tracking Options"
 msgstr "Варианты отслеживания"
 
-#: includes/Clickwhale.php:393
+#: includes/Clickwhale.php:396
 #, fuzzy
 msgid "Set up ClickWhale plugin global link tracking options."
 msgstr "Настрой параметры глобального отслеживания ссылок плагина ClickWhale."
 
-#: includes/Clickwhale.php:400
+#: includes/Clickwhale.php:403
 #, fuzzy
 msgid "Link Manager Options"
 msgstr "Параметры менеджера ссылок"
 
-#: includes/Clickwhale.php:401
+#: includes/Clickwhale.php:404
 #, fuzzy
 msgid "Global settings for ClickWhale Links."
 msgstr "Глобальные настройки для ClickWhale Links."
 
-#: includes/Clickwhale.php:440
+#: includes/Clickwhale.php:443
 msgid "New Link"
 msgstr "Новая ссылка"
 
-#: includes/Clickwhale.php:452
+#: includes/Clickwhale.php:455
 msgid "New Category"
 msgstr "Новая категория"
 
-#: includes/Clickwhale.php:464
+#: includes/Clickwhale.php:467
 #, fuzzy
 msgid "New Link Page"
 msgstr "Новая страница ссылок"
 
-#: includes/Clickwhale.php:476
+#: includes/Clickwhale.php:479
 #, fuzzy
 msgid "New Tracking Code"
 msgstr "Новый код отслеживания"
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:155
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1618
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1619
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
@@ -1097,7 +1090,7 @@ msgstr "Пользовательский заголовок"
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:241
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:377
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:530
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1138
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1139
 msgid "Subtitle"
 msgstr "Подзаголовок"
 
@@ -1156,13 +1149,13 @@ msgstr "Ты можешь выбрать либо изображение, либ
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:883
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:425
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:434
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:755
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1681
-#: templates/admin/linkpages/edit.php:190
-#: templates/admin/linkpages/edit.php:199
-#: templates/admin/linkpages/edit.php:550
-#: templates/admin/linkpages/edit.php:559
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:747
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:756
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1682
+#: templates/admin/linkpages/edit.php:192
+#: templates/admin/linkpages/edit.php:201
+#: templates/admin/linkpages/edit.php:555
+#: templates/admin/linkpages/edit.php:564
 msgid "Remove image"
 msgstr "Удалить изображение"
 
@@ -1176,7 +1169,7 @@ msgid "Select Emoji"
 msgstr "Выберите эмодзи"
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:925
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1684
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1685
 #: templates/admin/tools/tools.php:21
 msgid "Reset"
 msgstr "Сброс"
@@ -1186,6 +1179,7 @@ msgstr "Сброс"
 msgid "Powered by"
 msgstr "Работает на"
 
+#: includes/admin/Clickwhale_Admin.php:135
 #: includes/front/Clickwhale_Public_Linkpage.php:429
 #: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:61
 #, fuzzy
@@ -1197,49 +1191,49 @@ msgstr "Страница редактирования ссылок"
 msgid "Currently, a maximum of %d categories can be added."
 msgstr "В настоящее время можно добавить не более %d категорий."
 
-#: includes/helpers/Helper.php:225
+#: includes/helpers/Helper.php:233
 #, php-format
 msgid "Edit %s"
 msgstr "Редактировать %s"
 
-#: includes/helpers/Helper.php:227
+#: includes/helpers/Helper.php:235
 #, php-format
 msgid "Add %s"
 msgstr "Добавить %s"
 
-#: includes/helpers/Helper.php:236
+#: includes/helpers/Helper.php:244
 msgid "Back to list"
 msgstr "Обратно к списку"
 
-#: includes/helpers/Helper.php:250
+#: includes/helpers/Helper.php:258
 msgid "Add new"
 msgstr "Добавить новый"
 
-#: includes/helpers/Helper.php:258
+#: includes/helpers/Helper.php:266
 msgid "View page"
 msgstr "Просмотр страницы"
 
-#: includes/helpers/Helper.php:316
+#: includes/helpers/Helper.php:324
 #, fuzzy
 msgid "Unlimited with"
 msgstr "Неограниченно с"
 
-#: includes/helpers/Helper.php:322
+#: includes/helpers/Helper.php:330
 #, fuzzy,php-format
 msgid "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
 msgstr "<a href=\"%s\" rel=\"noopener\" target=\"_blank\">ClickWhale PRO</a>"
 
-#: includes/helpers/Helper.php:396
+#: includes/helpers/Helper.php:471
 #, fuzzy,php-format
 msgid "Security check failed (possible CSRF) for user ID %d"
 msgstr "Проверка безопасности не удалась (возможен CSRF) для идентификатора пользователя %d"
 
-#: includes/helpers/Helper.php:399
+#: includes/helpers/Helper.php:474
 #, fuzzy,php-format
 msgid "on page: %s"
 msgstr "на стр: %s"
 
-#: includes/helpers/Helper.php:403
+#: includes/helpers/Helper.php:478
 #, fuzzy
 msgid "Security check failed. Please contact the ClickWhale customer support."
 msgstr "Проверка безопасности не удалась. Обратись в службу поддержки ClickWhale."
@@ -1322,7 +1316,7 @@ msgstr "Хакер&#8217; что ли?"
 msgid "Statistics"
 msgstr "Статистика"
 
-#: pro/includes/admin/Clickwhale_Pro_Admin.php:280
+#: pro/includes/admin/Clickwhale_Pro_Admin.php:279
 #, fuzzy
 msgid "Keywords Linked"
 msgstr "Ключевые слова Связанные"
@@ -1512,8 +1506,8 @@ msgstr "Добавить ключевое слово"
 msgid "Add More"
 msgstr "Добавить еще"
 
-#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:188
-#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:189
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:190
+#: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:191
 msgid "Generate QR code"
 msgstr "Генерация QR-кода"
 
@@ -1523,8 +1517,8 @@ msgid "Pro Blocks"
 msgstr "Профессиональные блоки"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:58
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:927
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:931
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:928
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:932
 #: templates/admin/settings/pro.php:49
 #: templates/admin/settings/pro.php:50
 #, fuzzy
@@ -1534,22 +1528,22 @@ msgstr "Лента сообщений блога"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:62
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:146
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:224
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1124
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1125
 #: templates/admin/settings/pro.php:44
 #: templates/admin/settings/pro.php:45
 msgid "Social Profiles"
 msgstr "Социальные профили"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:66
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1263
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1264
 msgid "Forms"
 msgstr "Формы"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:70
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:264
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:587
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1471
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1659
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1472
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1660
 msgid "Image"
 msgstr "Изображение"
 
@@ -1590,7 +1584,7 @@ msgid "Number in the international format (with + and country code)"
 msgstr "Номер в международном формате (с + и кодом страны)"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:180
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1635
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1636
 msgid "e.g."
 msgstr "например."
 
@@ -1628,7 +1622,7 @@ msgid "Choose page background style"
 msgstr "Выберите стиль фона страницы"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:280
-#: templates/admin/linkpages/edit.php:335
+#: templates/admin/linkpages/edit.php:340
 #, fuzzy
 msgid "Set page background color"
 msgstr "Установи цвет фона страницы"
@@ -1672,14 +1666,14 @@ msgstr "Направление градиента"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:369
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:468
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:692
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:789
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:790
 msgid "Top"
 msgstr "Сверху"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:370
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:451
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:693
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:772
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:773
 msgid "Right"
 msgstr "Справа"
 
@@ -1687,64 +1681,64 @@ msgstr "Справа"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:450
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:469
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:694
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:771
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:790
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:772
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:791
 msgid "Center"
 msgstr "Центр"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:372
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:470
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:695
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:791
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:792
 msgid "Bottom"
 msgstr "Низ"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:373
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:449
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:696
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:770
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:771
 msgid "Left"
 msgstr "Слева"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:440
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:761
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:762
 msgid "Horizontal position"
 msgstr "Горизонтальное положение"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:459
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:780
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:781
 msgid "Vertical position"
 msgstr "Вертикальное расположение"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:478
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:488
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:799
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:809
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:800
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:810
 msgid "Repeat"
 msgstr "Повторять"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:487
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:808
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:809
 msgid "No repeat"
 msgstr "Не повторять"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:496
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:817
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:818
 msgid "Size"
 msgstr "Размер"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:505
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:826
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:827
 msgid "Cover"
 msgstr "Обложка"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:506
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:827
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:828
 msgid "Contain"
 msgstr "Содержать"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:507
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:828
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:829
 msgid "Auto"
 msgstr "Авто"
 
@@ -1787,74 +1781,74 @@ msgstr "Выберите стиль фона заголовка"
 msgid "Set header background color"
 msgstr "Установить цвет фона заголовка"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:911
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:912
 #, fuzzy
 msgid "List with large thumbnail"
 msgstr "Список с большой миниатюрой"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:912
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:913
 #, fuzzy
 msgid "List with small thumbnail"
 msgstr "Список с маленькой миниатюрой"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:913
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:914
 #, fuzzy
 msgid "Grid (2 columns)"
 msgstr "Сетка (2 колонки)"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:914
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:915
 #, fuzzy
 msgid "Grid (3 columns)"
 msgstr "Сетка (3 колонки)"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:915
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:916
 msgid "Buttons"
 msgstr "Кнопки"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:929
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:974
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:930
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:975
 msgid "Layout"
 msgstr "Макет"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:941
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:942
 #: pro/includes/admin/statistics/Category_Clicks_Statistics.php:86
 #: templates/admin/categories/edit.php:20
-#: templates/admin/links/edit.php:233
+#: templates/admin/links/edit.php:231
 msgid "Category"
 msgstr "Категория"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:960
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:961
 #, fuzzy
 msgid "Number of Posts"
 msgstr "Количество записей"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:987
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:988
 msgid "Hide Title"
 msgstr "Скрыть заголовок"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:996
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:997
 #, fuzzy
 msgid "Check to hide title on the frontend"
 msgstr "Установите флажок, чтобы скрыть заголовок на фронтенде"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1268
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1269
 msgid "Please select a form"
 msgstr "Пожалуйста, выберите форму"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1295
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1296
 #, fuzzy,php-format
 msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
 msgstr "Мы не смогли найти <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">поддерживаемый плагин для форм</a>. Твой любимый плагин отсутствует? Тогда, пожалуйста, <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">сообщи нам об этом</a>."
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1315
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1316
 msgid "Plugin"
 msgstr "Плагин"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1337
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1338
 msgid "Form"
 msgstr "Форма"
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1492
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1493
 #, fuzzy
 msgid "Check to add a link of your choice to the image"
 msgstr "Поставьте галочку, чтобы добавить к изображению ссылку по вашему выбору"
@@ -2028,7 +2022,7 @@ msgid "Remove Link Page from the statistics"
 msgstr "Удалите страницу ссылок из статистики"
 
 #: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:77
-#: templates/admin/linkpages/edit.php:71
+#: templates/admin/linkpages/edit.php:73
 #, fuzzy
 msgid "Link Page"
 msgstr "Ссылка на страницу"
@@ -2147,15 +2141,15 @@ msgstr "За все время"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: pro/includes/admin/statistics/Statistics.php:198
+#: pro/includes/admin/statistics/Statistics.php:190
 msgid "No data to display"
 msgstr "Нет данных для отображения"
 
-#: pro/includes/admin/statistics/Statistics.php:762
+#: pro/includes/admin/statistics/Statistics.php:754
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: pro/includes/admin/statistics/Statistics.php:766
+#: pro/includes/admin/statistics/Statistics.php:758
 msgid "Total"
 msgstr "Всего"
 
@@ -2294,251 +2288,251 @@ msgstr "Произошла ошибка"
 msgid "Search"
 msgstr "Поиск"
 
-#: templates/admin/linkpages/edit.php:37
+#: templates/admin/linkpages/edit.php:39
 msgid "No Index"
 msgstr "Не индексировать"
 
-#: templates/admin/linkpages/edit.php:38
+#: templates/admin/linkpages/edit.php:40
 #, fuzzy
 msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
 msgstr "Не показывай эту страницу в результатах поиска. Если ты не укажешь это правило, страница может быть проиндексирована и показана в результатах поиска."
 
-#: templates/admin/linkpages/edit.php:41
+#: templates/admin/linkpages/edit.php:43
 msgid "No Follow"
 msgstr "Не Следовать"
 
-#: templates/admin/linkpages/edit.php:42
+#: templates/admin/linkpages/edit.php:44
 #, fuzzy
 msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
 msgstr "Не переходи по ссылкам на этой странице. Если ты не укажешь это правило, поисковая система может использовать ссылки на странице, чтобы обнаружить те страницы, на которые она ссылается"
 
-#: templates/admin/linkpages/edit.php:45
+#: templates/admin/linkpages/edit.php:47
 msgid "No Archive"
 msgstr "Нет архива"
 
-#: templates/admin/linkpages/edit.php:46
+#: templates/admin/linkpages/edit.php:48
 #, fuzzy
 msgid "Do not show a cached link in search results."
 msgstr "Не показывай кэшированную ссылку в результатах поиска."
 
-#: templates/admin/linkpages/edit.php:49
+#: templates/admin/linkpages/edit.php:51
 msgid "No Snippet"
 msgstr "Без фрагмента"
 
-#: templates/admin/linkpages/edit.php:50
+#: templates/admin/linkpages/edit.php:52
 #, fuzzy
 msgid "Do not show a text snippet or video preview in the search results for this page."
 msgstr "Не показывай текстовый сниппет или превью видео в результатах поиска для этой страницы."
 
-#: templates/admin/linkpages/edit.php:53
+#: templates/admin/linkpages/edit.php:55
 msgid "No Image Index"
 msgstr "Без индекса картинок"
 
-#: templates/admin/linkpages/edit.php:54
+#: templates/admin/linkpages/edit.php:56
 #, fuzzy
 msgid "Do not index images on this page."
 msgstr "Не индексируй изображения на этой странице."
 
-#: templates/admin/linkpages/edit.php:109
+#: templates/admin/linkpages/edit.php:111
 #, fuzzy
 msgid "Link Page Main Settings"
 msgstr "Основные настройки страницы ссылок"
 
-#: templates/admin/linkpages/edit.php:124
+#: templates/admin/linkpages/edit.php:126
 #, fuzzy
 msgid "Link Page Title"
 msgstr "Название страницы ссылок"
 
-#: templates/admin/linkpages/edit.php:160
+#: templates/admin/linkpages/edit.php:162
 #, fuzzy
 msgid "Link Page Slug"
 msgstr "Ссылка на страницу"
 
-#: templates/admin/linkpages/edit.php:168
+#: templates/admin/linkpages/edit.php:170
 #: templates/admin/links/edit.php:124
 #, fuzzy
 msgid "Copy url"
 msgstr "Скопируй url"
 
-#: templates/admin/linkpages/edit.php:170
+#: templates/admin/linkpages/edit.php:172
 #: templates/admin/links/edit.php:126
 #, fuzzy
 msgid "URL Preview"
 msgstr "Предварительный просмотр URL"
 
-#: templates/admin/linkpages/edit.php:177
+#: templates/admin/linkpages/edit.php:179
 msgid "Page Logo"
 msgstr "Лого на страницы"
 
-#: templates/admin/linkpages/edit.php:203
+#: templates/admin/linkpages/edit.php:205
 #, fuzzy
 msgid "Max logo size"
 msgstr "Максимальный размер логотипа"
 
-#: templates/admin/linkpages/edit.php:209
-#: templates/admin/linkpages/edit.php:216
+#: templates/admin/linkpages/edit.php:211
+#: templates/admin/linkpages/edit.php:218
 #, fuzzy
 msgid "Legals"
 msgstr "Legals"
 
-#: templates/admin/linkpages/edit.php:228
+#: templates/admin/linkpages/edit.php:230
 #, fuzzy
 msgid "Create a Legals Menu"
 msgstr "Создай легальное меню"
 
-#: templates/admin/linkpages/edit.php:302
+#: templates/admin/linkpages/edit.php:307
 #, fuzzy
 msgid "Link Page Customization Options"
 msgstr "Параметры настройки страницы ссылок"
 
-#: templates/admin/linkpages/edit.php:310
+#: templates/admin/linkpages/edit.php:315
 msgid "Page Text Color"
 msgstr "Цвет текста на странице"
 
-#: templates/admin/linkpages/edit.php:317
+#: templates/admin/linkpages/edit.php:322
 #, fuzzy
 msgid "Set page text color"
 msgstr "Установи цвет текста страницы"
 
-#: templates/admin/linkpages/edit.php:328
+#: templates/admin/linkpages/edit.php:333
 msgid "Page Background"
 msgstr "Фон страницы"
 
-#: templates/admin/linkpages/edit.php:352
+#: templates/admin/linkpages/edit.php:357
 #, fuzzy
 msgid "Link Page Links Customization Options"
 msgstr "Параметры настройки ссылок на странице ссылок"
 
-#: templates/admin/linkpages/edit.php:358
+#: templates/admin/linkpages/edit.php:363
 msgid "Background Color"
 msgstr "Цвет фона"
 
-#: templates/admin/linkpages/edit.php:365
+#: templates/admin/linkpages/edit.php:370
 #, fuzzy
 msgid "Set link background color (normal state)"
 msgstr "Установи цвет фона ссылки (нормальное состояние)"
 
-#: templates/admin/linkpages/edit.php:372
+#: templates/admin/linkpages/edit.php:377
 #, fuzzy
 msgid "Background Color (hover/active)"
 msgstr "Цвет фона (hover/active)"
 
-#: templates/admin/linkpages/edit.php:379
+#: templates/admin/linkpages/edit.php:384
 #, fuzzy
 msgid "Set link background color (hover/active)"
 msgstr "Установи цвет фона ссылки (hover/active)"
 
-#: templates/admin/linkpages/edit.php:386
+#: templates/admin/linkpages/edit.php:391
 msgid "Text Color"
 msgstr "Цвет текста"
 
-#: templates/admin/linkpages/edit.php:393
+#: templates/admin/linkpages/edit.php:398
 #, fuzzy
 msgid "Set link text color (normal state)"
 msgstr "Установи цвет текста ссылки (нормальное состояние)"
 
-#: templates/admin/linkpages/edit.php:400
+#: templates/admin/linkpages/edit.php:405
 #, fuzzy
 msgid "Text Color (hover/active)"
 msgstr "Цвет текста (наведенный/активный)"
 
-#: templates/admin/linkpages/edit.php:407
+#: templates/admin/linkpages/edit.php:412
 #, fuzzy
 msgid "Set link text color (hover/active)"
 msgstr "Установи цвет текста ссылки (hover/active)"
 
-#: templates/admin/linkpages/edit.php:417
+#: templates/admin/linkpages/edit.php:422
 msgid "SEO Options"
 msgstr "Опции SEO"
 
-#: templates/admin/linkpages/edit.php:419
+#: templates/admin/linkpages/edit.php:424
 #, fuzzy
 msgid "Link Page SEO Options"
 msgstr "Параметры SEO страницы ссылок"
 
-#: templates/admin/linkpages/edit.php:424
+#: templates/admin/linkpages/edit.php:429
 msgid "SEO Title"
 msgstr "SEO заголовок"
 
-#: templates/admin/linkpages/edit.php:431
+#: templates/admin/linkpages/edit.php:436
 #, fuzzy
 msgid "Set page SEO title"
 msgstr "Установи SEO-заголовок страницы"
 
-#: templates/admin/linkpages/edit.php:437
+#: templates/admin/linkpages/edit.php:442
 msgid "SEO Description"
 msgstr "SEO описание"
 
-#: templates/admin/linkpages/edit.php:444
+#: templates/admin/linkpages/edit.php:449
 #, fuzzy
 msgid "Set page SEO description"
 msgstr "Установи SEO-описание страницы"
 
-#: templates/admin/linkpages/edit.php:452
+#: templates/admin/linkpages/edit.php:457
 msgid "Robots Meta"
 msgstr "Метатег robots"
 
-#: templates/admin/linkpages/edit.php:458
+#: templates/admin/linkpages/edit.php:463
 #, fuzzy,php-format
 msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
 msgstr "Поисковым системам запрещено индексировать этот сайт. Смотри опцию \"Видимость для поисковых систем\" в <a href=\"%1$s\" target=\"_blank\">настройках чтения!</a>"
 
-#: templates/admin/linkpages/edit.php:502
+#: templates/admin/linkpages/edit.php:507
 #, fuzzy
 msgid "Open Graph Options"
 msgstr "Опции открытого графика"
 
-#: templates/admin/linkpages/edit.php:504
+#: templates/admin/linkpages/edit.php:509
 #, fuzzy
 msgid "Link Page Open Graph Options"
 msgstr "Опции открытого графика страницы ссылок"
 
-#: templates/admin/linkpages/edit.php:509
+#: templates/admin/linkpages/edit.php:514
 #, fuzzy
 msgid "Open Graph Title (Optional)"
 msgstr "Заголовок Open Graph (необязательно)"
 
-#: templates/admin/linkpages/edit.php:516
+#: templates/admin/linkpages/edit.php:521
 #, fuzzy
 msgid "The title of your page for social network. By default this is Link Page title."
 msgstr "Название твоей страницы для социальной сети. По умолчанию это название Link Page."
 
-#: templates/admin/linkpages/edit.php:522
+#: templates/admin/linkpages/edit.php:527
 #, fuzzy
 msgid "Open Graph Description (Optional)"
 msgstr "Описание открытого графика (необязательно)"
 
-#: templates/admin/linkpages/edit.php:529
+#: templates/admin/linkpages/edit.php:534
 #, fuzzy
 msgid "The description of your page for social network. By default this is SEO description."
 msgstr "Описание твоей страницы для социальной сети. По умолчанию это SEO-описание."
 
-#: templates/admin/linkpages/edit.php:537
+#: templates/admin/linkpages/edit.php:542
 #, fuzzy
 msgid "Open Graph Image"
 msgstr "Open Graph Image"
 
-#: templates/admin/linkpages/edit.php:563
+#: templates/admin/linkpages/edit.php:568
 #, fuzzy
 msgid "Recommended image size 1200px * 630px"
 msgstr "Рекомендуемый размер изображения 1200px * 630px"
 
-#: templates/admin/linkpages/edit.php:568
+#: templates/admin/linkpages/edit.php:573
 #, fuzzy
 msgid "Open Graph Preview"
 msgstr "Предварительный просмотр Open Graph"
 
-#: templates/admin/linkpages/edit.php:576
+#: templates/admin/linkpages/edit.php:581
 #, fuzzy
 msgid "View live preview"
 msgstr "Просматривай предварительный просмотр в реальном времени"
 
-#: templates/admin/linkpages/edit.php:597
+#: templates/admin/linkpages/edit.php:601
 #: templates/admin/tracking-codes/edit.php:443
 msgid "Save"
 msgstr "Сохранить"
 
-#: templates/admin/linkpages/edit.php:604
+#: templates/admin/linkpages/edit.php:608
 #, fuzzy
 msgid "Reset styles"
 msgstr "Сбросьте стили"
@@ -2557,27 +2551,27 @@ msgstr "Название ссылки"
 msgid "e.g. my-link"
 msgstr "например, my-link"
 
-#: templates/admin/links/edit.php:146
+#: templates/admin/links/edit.php:144
 #, fuzzy
 msgid "Link Target URL"
 msgstr "Целевой URL-адрес ссылки"
 
-#: templates/admin/links/edit.php:189
+#: templates/admin/links/edit.php:187
 #, fuzzy
 msgid "Check to mark link as nofollow & noindex"
 msgstr "Проверьте, чтобы пометить ссылку как nofollow и noindex"
 
-#: templates/admin/links/edit.php:204
+#: templates/admin/links/edit.php:202
 #, fuzzy
 msgid "Check to mark link as sponsored"
 msgstr "Отметьте ссылку как спонсируемую"
 
-#: templates/admin/links/edit.php:255
+#: templates/admin/links/edit.php:253
 #, fuzzy
 msgid "Save link"
 msgstr "Сохранить ссылку"
 
-#: templates/admin/links/edit.php:261
+#: templates/admin/links/edit.php:259
 msgid "Copy link"
 msgstr "Скопировать ссылку"
 
@@ -2847,11 +2841,74 @@ msgstr "Необязательный комментарий к коду отсл
 msgid "Enable Tracking Code"
 msgstr "Вкл. Tracking Code"
 
-#: includes/admin/Clickwhale_Settings.php:135
+#: includes/admin/Clickwhale_Settings.php:129
 msgid "Decide who can access plugin admin pages."
 msgstr "Решите, кто может получить доступ к страницам администрирования плагина."
 
-#: includes/admin/Clickwhale_Admin.php:506
+#: includes/admin/Clickwhale_Admin.php:517
 #, php-format
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "Вам нравится ClickWhale? Тогда, пожалуйста, <a href=\"%s\" target=\"_blank\">оставьте отзыв здесь</a>"
+
+#: includes/admin/categories/Clickwhale_Category_Edit.php:92
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:853
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:897
+msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)"
+msgstr "Разрешенные алфавитно-цифровые символы (a...z, A...Z, 0...9), подчеркивание (_) и дефис (-)"
+
+#: includes/admin/categories/Clickwhale_Category_Edit.php:106
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:911
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:414
+#, php-format
+msgid "This slug is already used in %1$s (%2$s ID: %d)"
+msgstr "Этот слаг уже используется в %1$s (ID %2$s: %d)"
+
+#: includes/admin/categories/Clickwhale_Category_Edit.php:107
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:912
+#: includes/admin/links/Clickwhale_Link_Edit.php:292
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:415
+msgid "Please enter another slug"
+msgstr "Пожалуйста, введите другой слаг"
+
+#: includes/admin/Clickwhale_Admin.php:133
+msgid "Edit Link"
+msgstr "Редактировать ссылку"
+
+#: includes/admin/Clickwhale_Admin.php:134
+msgid "Edit Category"
+msgstr "Редактировать категорию"
+
+#: includes/admin/Clickwhale_Admin.php:136
+msgid "Edit Tracking Code"
+msgstr "Редактировать код отслеживания"
+
+#. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
+#: includes/admin/Clickwhale_Instance_Edit.php:194
+#, php-format
+msgid "Edit \"%1$s\" %2$s"
+msgstr "Редактировать \"%1$s\" %2$s"
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1002
+msgid "Please save the page to view Open Graph preview"
+msgstr "Пожалуйста, сохраните страницу, чтобы просмотреть предварительный просмотр Open Graph"
+
+#: includes/admin/links/Clickwhale_Link_Edit.php:212
+#: includes/admin/links/Clickwhale_Link_Edit.php:267
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:401
+msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator"
+msgstr "Разрешенные алфавитно-цифровые символы (a...z, A...Z, 0...9), подчеркивание (_) и дефис (-), с необязательным слэшем (/) в качестве разделителя"
+
+#: includes/admin/links/Clickwhale_Link_Edit.php:288
+#, php-format
+msgid "This slug is already used in %1$s"
+msgstr "Этот слаг уже используется в %1$s"
+
+#: includes/admin/links/Clickwhale_Link_Edit.php:290
+#, php-format
+msgid "Type: %2$s%3$s"
+msgstr "Тип: %2$s%3$s"
+
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:350
+#: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:369
+msgid "Please save changes to enable QR code"
+msgstr "Пожалуйста, сохраните изменения, чтобы включить QR-код"

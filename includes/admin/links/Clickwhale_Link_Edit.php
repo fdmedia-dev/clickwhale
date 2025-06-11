@@ -16,7 +16,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     private string $links_table;
 
     public function __construct() {
-        parent::__construct( 'links', 'link' );
+        parent::__construct( 'links', 'link', 'Link' );
 
         $this->links_table = Helper::get_db_table_name( $this->instance_plural );
     }
@@ -58,7 +58,6 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
     public function save_update(): void {
         global $wpdb;
-
         $item = array_intersect_key( $_POST, $this->get_defaults() );
         $item['categories'] = isset( $item['categories'] ) ? sanitize_text_field( implode( ',', $item['categories'] ) ) : '';
         $item['nofollow']   = isset( $item['nofollow'] );
@@ -93,76 +92,147 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     }
 
     public function admin_scripts(): void {
-        $nonce = wp_create_nonce( 'slug_exists' );
+        $page_id = intval( $_GET['id'] ?? 0 );
 
         if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-link' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function() {
-                    <?php if ( isset( $_GET['id'] ) ) { ?>
-                        const pageID = '<?php echo intval( $_GET['id'] ); ?>';
-                        const tabID = 'clickwhale-link-' + pageID;
+                jQuery(document).ready(function(){
+                    const pageID = +'<?php echo $page_id; ?>'; // `string` to `integer`
 
                         // Store the last viewed tab index for current (existing) CW Link
-                        if (pageID > 0) {
-                            let localTabID = localStorage.getItem(tabID);
-                            if (localTabID) {
+                        if (pageID > 0){
+                            const
+                                tabID = 'clickwhale-link-' + pageID,
+                                localTabID = localStorage.getItem(tabID);
+
+                            if (localTabID){
                                 jQuery('#clickwhale-tabs').tabs({active: localTabID});
                             }
-                            jQuery('#clickwhale-tabs li').on('click', function() {
+                            jQuery('#clickwhale-tabs li').on('click', function(){
                                 localStorage.setItem(tabID, jQuery(this).index());
                             });
                         }
-                    <?php } ?>
                 });
             </script>
             <?php
-        } ?>
+        }
+        ?>
 
         <script type='text/javascript'>
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function(){
+                const pageID = +'<?php echo $page_id; ?>'; // `string` to `integer`
+
                 let
                     submit = jQuery('#submit'),
                     form = submit.closest('form'),
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
-                    url = jQuery('#url');
+                    url = jQuery('#url'),
+                    slugPrefix = '';
 
-                /* Slug */
-                <?php
+                <?php $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' ); ?>
+
+                if (0 === pageID){
+                    slugPrefix = "<?php echo ( $slug_prefix ) ? esc_js( untrailingslashit( $slug_prefix ) ) : ''; ?>";
+                }
+
                 /**
-                 * If "Disable random slug" option is checked: use title as slug
+                 * Title blur action
                  */
-                if ( Helper::get_clickwhale_option( 'link_manager', 'random_slug' ) ) {
-                    $slug_options = Helper::get_clickwhale_option( 'link_manager', 'slug' )
-                        ? trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) )
-                        : '';
-                ?>
-                    const slugOptions = "<?php echo esc_js( $slug_options ); ?>";
+                title
+                    .on('blur', function(){
+                        const
+                            $this = jQuery(this),
+                            original = $this.val();
 
-                    jQuery(title).on('blur', function() {
-                        if (!slug.val() || slug.val() === slugOptions) {
-                            slug.val(slugOptions + this.value).trigger("blur");
+                        if (!original){
+                            return false;
                         }
-                    });
-                    jQuery(slug).on('blur', function() {
-                        if (title.val() && (!this.value || this.value === slugOptions)) {
-                            slug.val(slugOptions + title.val()).trigger("blur");
+
+                        $this.removeClass('error').next().text('');
+
+                        if (!slug.val()
+                            || (slugPrefix && sanitizeSlug(slug.val()) === slugPrefix)
+                        ){
+
+                            const newSlug = slugPrefix ? slugPrefix + '/' + original : original;
+                            slug.val(newSlug)
+                                .removeClass('error')
+                                .next().text('')
+                                .end()
+                                .trigger('blur');
                         }
+                    })
+                    .on('input', function(){
+                        jQuery(this).removeClass('error').next().text('');
                     });
-                <?php } ?>
+
+                /**
+                 * Slug blur action.
+                 * Sanitize slug and paste link page slug into `URL Preview`
+                 */
+                slug
+                    .on('blur', function(){
+                        const
+                            $this = jQuery(this),
+                            $previewContainer = jQuery('#cw-slug--text');
+
+                        let original = $this.val();
+
+                        if (!original
+                            || (slugPrefix && sanitizeSlug(original) === slugPrefix)
+                        ){
+                            if (!title.val()){
+                                $previewContainer.find('span').html('');
+                                return false;
+                            }
+
+                            $this.removeClass('error').next().text('');
+
+                            original = slugPrefix ? slugPrefix + '/' + title.val() : title.val();
+                            $this.val(original);
+                        }
+
+                        const sanitized = sanitizeSlug(original);
+
+                        if (slugPrefix && sanitized === slugPrefix){
+                            $this.val(sanitized + '/');
+                        } else {
+                            $this.val(sanitized);
+                        }
+
+                        $previewContainer.find('span').html(sanitized + '/');
+
+                        if (!sanitized){
+                            $this.addClass('error')
+                                .next().html(`
+                                    <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
+                                    <br>
+                                    <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator', 'clickwhale' ) ); ?>
+                                    `.trim()
+                            );
+                        }
+                    })
+                    .on('input', function(){
+                        jQuery(this).removeClass('error').next().text('');
+                    });
 
                 /**
                  * Submit action
                  * 1. Check title (not null)
                  * 2. Check slug (not null)
-                 * 3. Check slug (exists as post/page slug)
+                 * 3. Check if slug is already used by CW links, CW link pages, WP posts/pages/taxonomies
                  * 4. Check url (not null)
                  */
-                form.on('submit', function(e) {
+                form.on('submit', function(e){
+                    const $previewContainer = jQuery('#cw-slug--text');
+
+                    let slugOriginal = slug.val();
+
                     jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
 
-                    if (!title.val()) {
+                    if (!title.val()){
                         e.preventDefault();
                         generalTabNotValid();
                         title.addClass('error')
@@ -172,27 +242,66 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         title.removeClass('error').next().text('');
                     }
 
-                    if (!slug.val()) {
+                    if (!slugOriginal){
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
                             .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
+                        $previewContainer.find('span').html('');
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
                     }
 
-                    if (slugExists() === true) {
+                    const sanitized = sanitizeSlug(slugOriginal);
+                    slug.val(sanitized);
+                    $previewContainer.find('span').html(sanitized + '/');
+
+                    if (!sanitized){
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'This slug is already in use! Please enter another slug', 'clickwhale' ) ); ?>');
+                            .next().html(`
+                                <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
+                                <br>
+                                <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator', 'clickwhale' ) ); ?>
+                                `.trim()
+                            );
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
                     }
 
-                    if (!url.val()) {
+                    let slugMatch = slugExists();
+
+                    if (undefined !== slugMatch.id){
+                        e.preventDefault();
+                        generalTabNotValid();
+
+                        const
+                            slugUrl = '<?php echo esc_js( esc_url( home_url( '/' ) ) ); ?>' + slug.val(),
+                            idPart = (slugMatch.id > 0) ? `, ID: ${slugMatch.id}` : '';
+
+                        slug.addClass('error')
+                            .next().html(`
+                                <?php
+                                    echo esc_js( esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) ) .
+                                    '<br/ >' .
+                                    esc_js( esc_html__( 'Type: %2$s%3$s', 'clickwhale' ) ) .
+                                    '. ' .
+                                    esc_js( esc_html__( 'Please enter another slug', 'clickwhale' ) );
+                                ?>
+                                `.trim()
+                                .replace('%1$s', `<b><a href="${slugUrl}" target="_blank">${slugUrl}</a></b>`)
+                                .replace('%2$s', `<b>${slugMatch.type}</b>`)
+                                .replace('%3$s', idPart)
+                            );
+                        return false;
+                    } else {
+                        slug.removeClass('error').next().text('');
+                    }
+
+                    if (!url.val()){
                         e.preventDefault();
                         generalTabNotValid();
                         url.addClass('error')
@@ -207,7 +316,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                 /** JS FUNCTIONS */
 
-                function slugExists() {
+                function sanitizeSlug(){
                     let result = null;
                     jQuery.ajax({
                         async: false,
@@ -215,24 +324,43 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         dataType: 'json',
                         url: ajaxurl,
                         data: {
-                            'security': '<?php echo $nonce; ?>',
-                            'action': 'clickwhale/admin/slug_exists',
+                            'security': <?php echo wp_json_encode( wp_create_nonce( 'sanitize_slug' ) ); ?>,
+                            'action': 'clickwhale/admin/sanitize_slug',
                             'type': 'link',
-                            'slug': slug.val(),
-                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
-                        }, success: function(response) {
+                            'slug': slug.val()
+                        }, success: function(response){
                             result = response.data;
                         }
                     });
                     return result;
                 }
 
-                function generalTabNotValid() {
+                function slugExists(){
+                    let result = null;
+                    jQuery.ajax({
+                        async: false,
+                        type: 'post',
+                        dataType: 'json',
+                        url: ajaxurl,
+                        data: {
+                            'security': <?php echo wp_json_encode( wp_create_nonce( 'slug_exists' ) ); ?>,
+                            'action': 'clickwhale/admin/slug_exists',
+                            'type': 'link',
+                            'slug': slug.val(),
+                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
+                        }, success: function(response){
+                            result = response.data;
+                        }
+                    });
+                    return result;
+                }
+
+                function generalTabNotValid(){
                     // Delete previous `success` notice
                     jQuery('.updated').remove();
 
                     // Scroll page to top
-                    jQuery('html, body').animate({ scrollTop: 0 }, 'fast');
+                    jQuery('html, body').animate({scrollTop: 0}, 'fast');
                 }
             });
         </script>

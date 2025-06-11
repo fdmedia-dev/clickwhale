@@ -119,7 +119,7 @@ final class Clickwhale_Admin {
         }
 
         $this->menus = apply_filters( 'clickwhale_menus', array(
-            'subpages'  => array(
+            'subpages' => array(
                 'links'              => __( 'Links', 'clickwhale' ),
                 'edit-link'          => __( 'Add New Link', 'clickwhale' ),
                 'categories'         => __( 'Categories', 'clickwhale' ),
@@ -128,6 +128,12 @@ final class Clickwhale_Admin {
                 'edit-linkpage'      => __( 'Add New Link Page', 'clickwhale' ),
                 'tracking-codes'     => __( 'Tracking Codes', 'clickwhale' ),
                 'edit-tracking-code' => __( 'Add New Tracking Code', 'clickwhale' )
+            ),
+            'edit_titles' => array(
+                'edit-link'          => __( 'Edit Link', 'clickwhale' ),
+                'edit-category'      => __( 'Edit Category', 'clickwhale' ),
+                'edit-linkpage'      => __( 'Edit Link Page', 'clickwhale' ),
+                'edit-tracking-code' => __( 'Edit Tracking Code', 'clickwhale' )
             ),
             'templates' => array(
                 'toplevel_page_' . CLICKWHALE_SLUG                       => 'links/list',
@@ -139,7 +145,7 @@ final class Clickwhale_Admin {
                 'clickwhale_page_' . CLICKWHALE_SLUG . '-tracking-codes' => 'tracking-codes/list',
                 'admin_page_' . CLICKWHALE_SLUG . '-edit-tracking-code'  => 'tracking-codes/edit'
             ),
-            'toplevel'  => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
+            'toplevel' => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
         ) );
 
         // Add menu pages
@@ -180,10 +186,11 @@ final class Clickwhale_Admin {
             }
 
             $instance_slug = substr( $page, $pos + strlen( '-edit-' ) );
-            $parent = $this->menus['subpages']['edit-' . $instance_slug];
 
-            if ( ! empty( $_GET['id'] ) ) {
-                $parent = 'Edit' . str_replace( 'Add New', '', $parent );
+            if ( isset( $_GET['id'] ) && intval( $_GET['id'] ) > 0 ) {
+                $parent = $this->menus['edit_titles']['edit-' . $instance_slug];
+            } else {
+                $parent = $this->menus['subpages']['edit-' . $instance_slug];
             }
 
             $this->add_submenu_page( $parent, $k, $v );
@@ -484,6 +491,10 @@ CSS;
         return $template . $style;
     }
 
+    public function override_fs_plugin_icon() {
+        return CLICKWHALE_DIR . 'assets/admin/images/clickwhale.jpg';
+    }
+
     public function admin_banner() {
         $link_logo     = 'https://clickwhale.pro/?utm_source=users&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
         $link_helpdesk = 'https://clickwhale.pro/docs/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_need_help';
@@ -748,8 +759,8 @@ CSS;
         if ( $page === CLICKWHALE_SLUG || $page === CLICKWHALE_SLUG . '-linkpages' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function() {
-                    jQuery('.slug-input--btn').on('click', function(e) {
+                jQuery(document).ready(function(){
+                    jQuery('.slug-input--btn').on('click', function(e){
                         e.preventDefault();
                         let
                             $temp = jQuery('<input>'),
@@ -769,8 +780,8 @@ CSS;
         if ( $page === CLICKWHALE_SLUG . '-edit-link' || $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function() {
-                    jQuery('#copy-link-url').on('click', function(e) {
+                jQuery(document).ready(function(){
+                    jQuery('#copy-link-url').on('click', function(e){
                         e.preventDefault();
 
                         // Remove appended message
@@ -784,12 +795,12 @@ CSS;
                             .insertAfter(jQuery(this));
 
                         // Hide appended message
-                        setTimeout(function() {
+                        setTimeout(function(){
                             jQuery('.copied').remove();
                         }, 2000);
                     });
 
-                    jQuery('#cw-slug--text').on('click', function(e) {
+                    jQuery('#cw-slug--text').on('click', function(e){
                         e.preventDefault();
 
                         // Remove appended message
@@ -803,12 +814,12 @@ CSS;
                             .append('<span class="copied"><?php echo esc_js( __( 'Copied!', 'clickwhale' ) ); ?></span>');
 
                         // Hide appended message
-                        setTimeout(function() {
+                        setTimeout(function(){
                             jQuery('.copied').remove();
                         }, 2000);
                     });
 
-                    function copySlug() {
+                    function copySlug(){
                         const temp = jQuery('<input>');
                         let textToCopy = jQuery('#cw-slug').val();
 
@@ -824,29 +835,28 @@ CSS;
         }
 
         if ( $page === CLICKWHALE_SLUG . '-tracking-codes' ) {
-            $nonce = wp_create_nonce( 'clickwhale_toggle_tracking_code' );
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function() {
-                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function() {
+                jQuery(document).ready(function(){
+                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function(){
                         let
                             active = this.checked,
                             id = this.dataset.id;
 
                         jQuery.post(ajaxurl, {
-                            'security': '<?php echo $nonce; ?>',
+                            'security': <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_toggle_tracking_code' ) ); ?>,
                             'action': 'clickwhale/admin/tracking_code_toggle_active',
                             'status': active ? 1 : 0,
                             'id': id
-                        }, function(response) {
-                            if (response.data.action_disable_all) {
+                        }, function(response){
+                            if (response.data.action_disable_all){
                                 jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
                                 jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
                             } else {
                                 jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', false);
                                 jQuery('#clickwhale_tracking_codes_list_limit_notice').hide()
                             }
-                        })
+                        });
                     });
                 });
             </script>

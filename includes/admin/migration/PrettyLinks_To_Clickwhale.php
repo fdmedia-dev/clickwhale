@@ -27,7 +27,7 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 }
 
                 $category_id = $this->get_categories_string( $cpt_cats );
-                $link_data = $this->link_url_parse( $item->url );
+                $link_data = $this->parse_link_url( $item->url );
                 $array = array(
                     'title'       => $item->name,
                     'url'         => $link_data['url'],

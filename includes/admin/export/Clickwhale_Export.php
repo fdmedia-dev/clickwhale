@@ -88,11 +88,9 @@ class Clickwhale_Export {
         if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
-
-        $nonce_export_csv = wp_create_nonce( 'export_csv' );
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function(){
                 const
                     selectColumns = jQuery('#select_columns'),
                     selectCategories = jQuery('#select_categories');
@@ -111,7 +109,7 @@ class Clickwhale_Export {
                         data = e.params.data,
                         selected = select.val();
 
-                    if (data.id !== '0') {
+                    if (data.id !== '0'){
                         selected.splice(selected.indexOf('0'), 1);
                         selected.push(data.id);
 
@@ -123,7 +121,7 @@ class Clickwhale_Export {
                     }
                 });
 
-                jQuery('#export_form').on('submit', function(e) {
+                jQuery('#export_form').on('submit', function(e){
                     e.preventDefault();
 
                     const
@@ -134,21 +132,21 @@ class Clickwhale_Export {
                         columns = 'all',
                         categories = 'all';
 
-                    if (selectedColumns.length > 0 && selectedColumns.indexOf('0') === -1) {
+                    if (selectedColumns.length > 0 && selectedColumns.indexOf('0') === -1){
                         columns = selectedColumns;
                     }
 
-                    if (selectCategories.length > 0 && selectedCategories.indexOf('0') === -1) {
+                    if (selectCategories.length > 0 && selectedCategories.indexOf('0') === -1){
                         categories = selectedCategories;
                     }
 
                     jQuery.post(ajaxurl, {
-                        'security': '<?php echo $nonce_export_csv; ?>',
+                        'security': <?php echo wp_json_encode( wp_create_nonce( 'export_csv' ) ); ?>,
                         'action': 'clickwhale/admin/export_csv',
                         'columns': columns,
                         'categories': categories
-                    }, function(response) {
-                        if (response.success) {
+                    }, function(response){
+                        if (response.success){
                             const
                                 file = response.data.file,
                                 filename = response.data.filename
@@ -169,10 +167,10 @@ class Clickwhale_Export {
                         } else {
                             alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
                         }
-                    }).fail(function(xhr, textStatus, errorThrown) {
+                    }).fail(function(xhr, textStatus, errorThrown){
                         alert('<?php echo esc_js( __( 'An error occurred, try changing the request', 'clickwhale' ) ); ?>');
                     });
-                })
+                });
             });
         </script>
         <?php

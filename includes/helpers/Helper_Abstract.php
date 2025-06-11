@@ -147,12 +147,6 @@ abstract class Helper_Abstract {
      * @since 1.6.0
      */
     public static function get_by_slug( string $slug ): array {
-        $slug = Helper::sanitize_slug( $slug );
-
-        if ( empty( $slug ) ) {
-            return array();
-        }
-
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 

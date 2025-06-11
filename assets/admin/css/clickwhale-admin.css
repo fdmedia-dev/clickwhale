@@ -272,7 +272,8 @@ ion-icon {
 	top: 2px;
 }
 
-.logo-field {
+.logo-field,
+.og-image-field {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -280,17 +281,23 @@ ion-icon {
 	gap: 5px;
 }
 
-.logo-field a {
+.logo-field a,
+.og-image-field a {
 	display: inline-block;
 }
 
-.logo-field img {
+.logo-field img,
+.og-image-field img {
 	padding: 5px;
 	border: 1px solid #dcdcde;
 	border-radius: 5px;
 	display: block;
 	width: 150px;
 	height: auto;
+}
+
+#opengraph-live-preview.disabled {
+	pointer-events: none;
 }
 
 .contents-wrap {

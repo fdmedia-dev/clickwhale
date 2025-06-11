@@ -72,13 +72,19 @@ class Linkpages_Helper extends Helper_Abstract {
             return array();
         }
 
-        if ( ! str_contains( $url, get_bloginfo( 'url' ) ) ) {
+        $home_url = home_url();
+
+        if ( ! str_contains( $url, $home_url ) ) {
             return array();
         }
 
         $url = strtok( $url, '?' );
-        $url = str_replace( get_bloginfo( 'url' ), '', $url );
-        $url = str_replace( '/', '', $url );
+        $url = str_replace( $home_url, '', $url );
+        $url = sanitize_title( $url );
+
+        if ( empty( $url ) ) {
+            return array();
+        }
 
         return self::get_by_slug( $url );
     }
@@ -91,7 +97,7 @@ class Linkpages_Helper extends Helper_Abstract {
      * @since 1.2.0
      */
     public static function is_linkpage( string $slug ): int {
-        $slug = Helper::sanitize_slug( $slug );
+        $slug = sanitize_title( $slug );
 
         if ( empty( $slug ) ) {
             return 0;
@@ -123,27 +129,5 @@ class Linkpages_Helper extends Helper_Abstract {
                 sanitize_text_field( $link_id )
             )
         ) );
-    }
-
-    /**
-     * Check if Link page slug already exists
-     *
-     * @param string $slug
-     * @return bool
-     */
-    public static function check_slug( string $slug ): bool {
-        global $wpdb;
-        $slug = sanitize_text_field( $slug );
-
-        if ( ! $slug ) {
-            return false;
-        }
-
-        return (bool) $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT post_name FROM {$wpdb->prefix}posts WHERE post_name=%s",
-                $slug
-            )
-        );
     }
 }

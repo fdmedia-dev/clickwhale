@@ -32,7 +32,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
                     )
                 );
 
-                $link_data = $this->link_url_parse( $item->target_url );
+                $link_data = $this->parse_link_url( $item->target_url );
                 $array = array(
                     'title'       => $item->link_title,
                     'url'         => $link_data['url'],

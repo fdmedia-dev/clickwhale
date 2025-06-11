@@ -123,14 +123,14 @@ class Clickwhale_Migration_Notice {
     public function admin_scripts() {
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function(){
                 const
-                    nonce = '<?php echo esc_js( wp_create_nonce( 'clickwhale_' . $this->migrant . '_admin_nonce' ) ); ?>',
+                    nonce = <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_' . $this->migrant . '_admin_nonce' ) ); ?>,
                     migrant = '<?php echo esc_js( __( $this->migrant ) ); ?>',
                     migrant_file = '<?php echo esc_js( __( $this->migrant_file ) ); ?>';
 
                 jQuery('.clickwhale-notice-' + migrant + '-deactive')
-                    .on('click', '.deactive', function(e) {
+                    .on('click', '.deactive', function(e){
                         e.preventDefault();
                         jQuery(this).closest('.clickwhale-notice').remove();
                         jQuery.post(ajaxurl, {
@@ -138,15 +138,15 @@ class Clickwhale_Migration_Notice {
                             'security': nonce,
                             'plugin': migrant,
                             'target': migrant_file
-                        }, function(response) {
-                            if (response.success) {
+                        }, function(response){
+                            if (response.success){
                                 location.reload();
                             } else {
                                 console.log('migration_deactive action error');
                             }
                         });
                     })
-                    .on('click', '.button-dismiss', function(e) {
+                    .on('click', '.button-dismiss', function(e){
                         e.preventDefault();
                         jQuery(this).closest('.clickwhale-notice').remove();
                         jQuery.post(ajaxurl, {
@@ -154,10 +154,10 @@ class Clickwhale_Migration_Notice {
                             'security': nonce,
                             'plugin': migrant,
                             'type': 'deactive'
-                        }, function(response) {});
+                        }, function(response){});
                     });
 
-                jQuery('.clickwhale-notice-' + migrant + '-migrate').on('click', '.button-dismiss', function(e) {
+                jQuery('.clickwhale-notice-' + migrant + '-migrate').on('click', '.button-dismiss', function(e){
                     e.preventDefault();
                     jQuery(this).closest('.clickwhale-notice').remove();
                     jQuery.post(ajaxurl, {
@@ -165,7 +165,7 @@ class Clickwhale_Migration_Notice {
                         'security': nonce,
                         'plugin': migrant,
                         'type': 'migrate'
-                    }, function(response) {});
+                    }, function(response){});
                 });
             });
         </script>

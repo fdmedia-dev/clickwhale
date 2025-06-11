@@ -46,7 +46,7 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
 
     private function checkRequest(): bool {
         $this->pages->rewind();
-        $path = trim( parse_url( $this->getPathInfo(), PHP_URL_PATH ), '/' );
+        $path = trim( wp_parse_url( $this->getPathInfo(), PHP_URL_PATH ), '/' );
 
         while ( $this->pages->valid() ) {
             // Get current object
@@ -67,7 +67,7 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
     }
 
     private function getPathInfo(): string {
-        $home_path = parse_url( home_url(), PHP_URL_PATH );
+        $home_path = wp_parse_url( home_url(), PHP_URL_PATH );
 
         return preg_replace( "#^/?{$home_path}/#", '/', add_query_arg( array() ) );
     }

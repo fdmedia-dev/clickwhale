@@ -47,9 +47,8 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
                 __( 'Edit', 'clickwhale' )
             ),
             'view'   => sprintf(
-                '<a href="%s/%s/" target="_blank">%s</a>',
-                esc_url( get_bloginfo( 'url' ) ),
-                esc_attr( $item['slug'] ),
+                '<a href="%s" target="_blank">%s</a>',
+                esc_url( trailingslashit( home_url( $item['slug'] ) ) ),
                 __( 'View', 'clickwhale' )
             ),
             'delete' => sprintf(

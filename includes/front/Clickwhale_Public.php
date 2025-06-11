@@ -66,8 +66,8 @@ final class Clickwhale_Public {
     public function __construct() {
         $this->load_dependencies();
 
-        $this->path           = Helper::get_public_path( true );
-        $this->linkpages      = new Clickwhale_Public_Linkpages();
+        $this->path = Helper::get_public_path();
+        $this->linkpages = new Clickwhale_Public_Linkpages();
         $this->tracking_codes = new Clickwhale_Public_Tracking_Codes( $this->path );
     }
 
@@ -142,9 +142,20 @@ final class Clickwhale_Public {
      * @since 1.0.0
      */
     public function do_redirect_handler() {
-        if ( ! is_admin() && $this->path ) {
-            $link = Links_Helper::get_by_slug( $this->path );
+        if ( is_admin()
+            || '' === $this->path
+            || substr( $this->path, -4 ) === '.php' // pages like `wp-cron.php`, `wp-login.php`
+        ){
+            return;
         }
+
+        $slug = Links_Helper::sanitize_slug( $this->path );
+
+        if ( '' === $slug ) {
+            return;
+        }
+
+        $link = Links_Helper::get_by_slug( $slug );
 
         if ( empty( $link ) ) {
             return;
@@ -204,14 +215,13 @@ final class Clickwhale_Public {
         }
 
         $link_url = apply_filters( 'clickwhale_url_params', $link['url'], $link_id );
-        wp_redirect( $link_url, $link['redirection'] );
+        wp_redirect( esc_url_raw( $link_url ), $link['redirection'] );
         exit;
     }
 
     public function add_target_to_clickwhale_link( string $content ): string {
 
         return preg_replace_callback( '/<a(.*?)?href=[\'"]?[\'"]?(.*?)?>/i', function ( $m ) {
-            $link = null;
             $tpl  = array_shift( $m );
             $hrf  = $m[1] ?? null;
 
@@ -230,32 +240,43 @@ final class Clickwhale_Public {
                 return $tpl;
             }
 
+            $link = array();
+
             // Get `href` attr
             if ( preg_match( '/href=["\']?([^"\'>]+)["\']?/', $tpl, $matches ) ) {
+                $home_url = home_url();
+
                 // Remove extra from `href`
                 $href_search = array(
-                    'href="' . get_bloginfo( 'url' )       => '',
-                    'href="' . get_bloginfo( 'url' ) . '/' => '',
-                    'href="/'                              => '',
-                    '/"'                                   => '',
-                    '"'                                    => '',
-                    "href='" . get_bloginfo( 'url' )       => '',
-                    "href='" . get_bloginfo( 'url' ) . "/" => '',
-                    "href='/"                              => '',
-                    "/'"                                   => '',
-                    "'"                                    => ''
+                    'href="' . $home_url . '/' => '',
+                    'href="' . $home_url       => '',
+                    'href="/'                  => '',
+                    '/"'                       => '',
+                    '"'                        => '',
+                    "href='" . $home_url . "/" => '',
+                    "href='" . $home_url       => '',
+                    "href='/"                  => '',
+                    "/'"                       => '',
+                    "'"                        => ''
                 );
 
-                $link = Links_Helper::get_by_slug( strtr( $matches[0], $href_search ) );
+                $slug = strtr( $matches[0], $href_search );
+                $slug = Links_Helper::sanitize_slug( $slug );
+
+                if ( '' === $slug ) {
+                    return $tpl;
+                }
+
+                $link = Links_Helper::get_by_slug( $slug );
 
                 // If link is not Clickwhale Link
-                if ( ! $link ) {
+                if ( empty( $link ) ) {
                     return $tpl;
                 }
             }
 
             // Get `target` attr
-            if ( $link['link_target'] ) {
+            if ( isset( $link['link_target'] ) ) {
                 $target_arg = $link['link_target'];
             } else {
                 $link_manager_options = get_option( 'clickwhale_link_manager_options' );
@@ -266,6 +287,7 @@ final class Clickwhale_Public {
             $target_arg = esc_attr( $target_arg );
 
             $target = '';
+
             if ( in_array( $target_arg, array( 'blank', 'self' ), true ) ) {
                 $target = 'target="_' . $target_arg . '"';
             }
@@ -278,7 +300,7 @@ final class Clickwhale_Public {
                 );
             }, $tpl );
 
-            if ( $link['sponsored'] ) {
+            if ( isset( $link['sponsored'] ) ) {
                 if ( preg_match( '/rel=["\']?([^"\'>]+)["\']?/', $tpl, $matches ) ) {
                     $tpl = str_replace( 'rel="', 'rel="sponsored ', $tpl );
                 } else {

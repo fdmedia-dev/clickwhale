@@ -90,12 +90,6 @@ final class Clickwhale_Settings {
         $current_user_roles = $this->user->get_current_user_roles();
         $always_checked_roles = array( 'administrator' );
 
-        if ( ! in_array( 'administrator', $current_user_roles ) ) {
-            foreach ( $current_user_roles as $user_role ) {
-                $always_checked_roles[] = $user_role;
-            }
-        }
-
         $slug = ( ! empty( $link_manager_options['slug'] ) ) ? esc_attr( wp_unslash( $link_manager_options['slug'] ) ) : $defaults['link_manager']['options']['slug'];
 
         if ( $defaults ) {
@@ -130,7 +124,7 @@ final class Clickwhale_Settings {
                     'id'             => 'access_level',
                     'name'           => 'clickwhale_general_options[access_level][]',
                     'value'          => $general_options['access_level'] ?? $defaults['general']['options']['access_level'],
-                    'options'        => $this->user->get_all_roles(),
+                    'options'        => $this->user->get_roles_with_upload_cap(),
                     'always_checked' => $always_checked_roles,
                     'description'    => __( 'Decide who can access plugin admin pages.', 'clickwhale' )
                 )
@@ -405,8 +399,8 @@ final class Clickwhale_Settings {
             return $options;
         }
 
-        // `access_level` from General tab is missing for non-admin roles.
-        // To avoid saving the default option value we explicitly restore current `access_level`
+        // `access_level` at General tab is hidden from non-admin roles.
+        // To avoid saving the default option value we restore `access_level` that was set for current user
         if ( ! isset( $options['access_level'] ) ) {
             $general_options = get_option( 'clickwhale_general_options' );
 
@@ -415,6 +409,13 @@ final class Clickwhale_Settings {
             }
         }
 
+        return $options;
+    }
+
+    public function sanitize_link_manager_options( $options ) {
+        if ( ! empty( $options['slug'] ) ) {
+            $options['slug'] = Links_Helper::sanitize_slug( $options['slug'] );
+        }
         return $options;
     }
 }

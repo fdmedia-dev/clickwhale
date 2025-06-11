@@ -98,12 +98,10 @@ class Clickwhale_Reset {
         if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
-
-        $nonce = wp_create_nonce( 'clickwhale_reset' );
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function() {
-                jQuery('#clickwhale-tools-reset').on('click', 'button', function(e) {
+            jQuery(document).ready(function(){
+                jQuery('#clickwhale-tools-reset').on('click', 'button', function(e){
                     e.preventDefault();
 
                     let
@@ -118,7 +116,7 @@ class Clickwhale_Reset {
                     jQuery(resetSpinner).addClass("is-active");
                     jQuery(resetResult).html('');
 
-                    switch (resetButton.attr('id')) {
+                    switch (resetButton.attr('id')){
                         case 'button-reset-settings':
                             resetConfirm = '<?php echo esc_js( __( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', 'clickwhale' ) ); ?>';
                             resetType = 'settings';
@@ -133,13 +131,13 @@ class Clickwhale_Reset {
                             break;
                     }
 
-                    if (window.confirm(resetConfirm)) {
+                    if (window.confirm(resetConfirm)){
                         jQuery.post(ajaxurl, {
-                            'security': '<?php echo $nonce; ?>',
+                            'security': <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_reset' ) ); ?>,
                             'action': 'clickwhale/admin/clickwhale_reset',
                             'reset': resetType,
-                        }, function(response) {
-                            if (response.success) {
+                        }, function(response){
+                            if (response.success){
                                 let
                                     itemClass = response.data.status ? 'success' : 'error',
                                     itemText = response.data.text;

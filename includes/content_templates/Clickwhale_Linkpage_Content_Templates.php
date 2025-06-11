@@ -567,14 +567,14 @@ class Clickwhale_Linkpage_Content_Templates {
             array(
                 'title'    => $args['data']['title'] ?: $link['title'],
                 'subtitle' => $args['data']['subtitle'] ?? '',
-                'url'      => trailingslashit( get_bloginfo( 'url' ) . '/' . $link['slug'] ),
+                'url'      => trailingslashit( home_url( $link['slug'] ) ),
             ),
             $args );
     }
 
     public function template_public_cw_custom_link( $args ): string {
         $url = $args['data']['url'];
-        $parsed = parse_url( $url );
+        $parsed = wp_parse_url( $url );
         $is_mailto = isset( $parsed['scheme'] ) && $parsed['scheme'] === 'mailto';
         $has_query = isset( $parsed['query'] );
 

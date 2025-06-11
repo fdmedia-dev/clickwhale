@@ -241,7 +241,7 @@ class Clickwhale_Public_Linkpage {
      * @return string
      */
     public function get_url(): string {
-        return esc_url( home_url( '/' . $this->data['slug'] . '/' ) );
+        return esc_url( trailingslashit( home_url( $this->data['slug'] ) ) );
     }
 
     /**
@@ -471,15 +471,14 @@ class Clickwhale_Public_Linkpage {
     }
 
     public function admin_scripts() {
-        $nonce = wp_create_nonce( 'track_custom_link' );
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
-                jQuery('.linkpage-public--links').on('click', '.cw-track', function(e) {
+                jQuery('.linkpage-public--links').on('click', '.cw-track', function(e){
                     let link = jQuery(this);
 
                     jQuery.post(clickwhale_public.ajaxurl, {
-                        'security': '<?php echo $nonce; ?>',
+                        'security': <?php echo wp_json_encode( wp_create_nonce( 'track_custom_link' ) ); ?>,
                         'action': 'clickwhale/public/track_custom_link',
                         'id': link.data('id'),
                     }, function(response) {});

@@ -57,7 +57,7 @@ do_action( 'clickwhale_admin_banner' );
           action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $link->instance_single; ?>" />
-        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
+        <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
         <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
 
         <div id="post-body-content">
@@ -74,7 +74,7 @@ do_action( 'clickwhale_admin_banner' );
                 <?php } ?>
 
                 <div id="link-tab-general">
-                    <?php do_action( 'clickwhale_link_before_general_tab_content', $item_id, esc_attr( $slug ) ); ?>
+                    <?php do_action( 'clickwhale_link_before_general_tab_content', $item_id, $slug ); ?>
 
                     <table style="width: 100%;" class="form-table">
                         <caption hidden><?php _e( 'Link Main Settings', 'clickwhale' ); ?></caption>
@@ -121,12 +121,10 @@ do_action( 'clickwhale_admin_banner' );
                                     <p id="cw-slug--description"></p>
                                     <p id="cw-slug--text"
                                        class="code"
-                                       title="<?php _e( 'Copy url', 'clickwhale' ); ?>"
+                                       title="<?php esc_attr_e( 'Copy url', 'clickwhale' ); ?>"
                                     ><?php
-                                        echo __( 'URL Preview', 'clickwhale' ) . ': ' .
-                                            trailingslashit( esc_html( get_bloginfo( 'url' ) ) ) .
-                                            trailingslashit( esc_html( $slug ) );
-                                        ?><svg class="feather"><use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#copy"></use></svg>
+                                        echo esc_html__( 'URL Preview', 'clickwhale' ) . ': ' . esc_html( trailingslashit( home_url() ) );
+                                        ?><span><?php echo ( $slug ) ? esc_html( trailingslashit( $slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#copy"></use></svg>
                                     </p>
                                 </td>
                             </tr>

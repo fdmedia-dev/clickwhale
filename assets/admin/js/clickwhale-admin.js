@@ -84,11 +84,6 @@
                     localStorage.removeItem(arr[i]);
                 }
             })
-            .on('blur', '#cw-slug', function() {
-                let slug = wpCWSanitizeTitle($(this).val());
-                $(this).val(slug);
-                $('#cw-slug--text').find('span').html(slug);
-            })
             .on('submit', '.clickwhale_form_edit', function() {
                 if ($('#created_at').val() === '') {
                     $('#created_at').val(formatDate(new Date()));

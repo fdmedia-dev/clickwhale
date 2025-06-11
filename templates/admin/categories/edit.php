@@ -36,7 +36,7 @@ do_action( 'clickwhale_admin_banner' );
           action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
 
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $category->instance_single; ?>" />
-        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
+        <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
         <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
 
         <div class="metabox-holder" id="poststuff">

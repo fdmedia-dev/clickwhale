@@ -411,7 +411,9 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                         ),
                         $url
                     );
-                    echo( "<script>window.location.href = '" . esc_js( $url ) . "'</script>" );
+                    ?>
+                    <script>window.location.href=<?php echo wp_json_encode( $url ); ?></script>
+                    <?php
                 }
                 break;
 

@@ -213,19 +213,19 @@ class Clickwhale_Links_Bulk_Edit {
     public function admin_scripts() {
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function(){
                 jQuery('#bulk-action-selector-top, #bulk-action-selector-bottom').val('edit');
 
-                jQuery('#bulk-titles-list li').each(function() {
+                jQuery('#bulk-titles-list li').each(function(){
                     const link_id = (jQuery(this).find('button').attr('id'));
                     jQuery('.check-column input[type="checkbox"][value="' + link_id + '"]').prop('checked', true);
                 });
 
-                jQuery('#bulk-titles-list .button-link').on('click', function(e) {
+                jQuery('#bulk-titles-list .button-link').on('click', function(e){
                     e.preventDefault();
                     const selected_links = jQuery('#bulk-titles-list li').length;
 
-                    if (selected_links - 1 > 0) {
+                    if (selected_links - 1 > 0){
                         jQuery(this).parent().remove();
                         jQuery('.check-column input[type="checkbox"][value="' + jQuery(this).attr('id') + '"]').prop('checked', false);
                     } else {
@@ -233,16 +233,16 @@ class Clickwhale_Links_Bulk_Edit {
                     }
                 });
 
-                jQuery('.inline-edit-save .cancel').on('click', function(e) {
+                jQuery('.inline-edit-save .cancel').on('click', function(e){
                     e.preventDefault();
                     jQuery('#bulk-edit').remove();
                     jQuery('.check-column input[type="checkbox"]').prop('checked', false);
 
-                    window.location.href = "<?php echo esc_js( add_query_arg( array(
+                    window.location.href = <?php echo wp_json_encode( add_query_arg( array(
                         'action' => '-1',  // replace `action`
                         'action2' => '-1', // replace `action2`
                         'id' => false      // remove `id`
-                    ) ) ); ?>";
+                    ) ) ); ?>;
                 });
             });
         </script>

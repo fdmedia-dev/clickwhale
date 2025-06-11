@@ -298,6 +298,7 @@ final class Clickwhale {
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/save_migration_option', $this->ajax, 'save_migration_option' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/migration_reset', $this->ajax, 'migration_reset' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $this->ajax, 'clickwhale_reset' );
+        $this->loader->add_action( 'wp_ajax_clickwhale/admin/sanitize_slug', $this->ajax, 'sanitize_slug' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/slug_exists', $this->ajax, 'slug_exists' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $this->ajax, 'get_posts_by_post_type' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $this->ajax, 'get_cw_links' );
@@ -317,9 +318,11 @@ final class Clickwhale {
          * FILTERS
          */
         clickwhale_fs()->add_filter( 'templates/pricing.php', array( $this->admin, 'enqueue_fs_pricing_styles' ) );
+        clickwhale_fs()->add_filter( 'plugin_icon', array( $this->admin, 'override_fs_plugin_icon' ) );
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
         $this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
+        $this->loader->add_filter( 'sanitize_option_clickwhale_link_manager_options', $this->settings, 'sanitize_link_manager_options' );
     }
 
     /**
@@ -380,7 +383,7 @@ final class Clickwhale {
      */
     public function default_options(): array {
         return array(
-            'general'        => array(
+            'general'      => array(
                 'name'    => __( 'General Options', 'clickwhale' ),
                 'text'    => __( 'Set up ClickWhale plugin global options.', 'clickwhale' ),
                 'options' => array(
@@ -388,7 +391,7 @@ final class Clickwhale {
                     'hide_admin_bar_menu' => 0
                 )
             ),
-            'tracking'       => array(
+            'tracking'     => array(
                 'name'    => __( 'Tracking Options', 'clickwhale' ),
                 'text'    => __( 'Set up ClickWhale plugin global link tracking options.', 'clickwhale' ),
                 'options' => array(
@@ -396,7 +399,7 @@ final class Clickwhale {
                     'exclude_user_by_role' => array( 'administrator' )
                 )
             ),
-            'link_manager'   => array(
+            'link_manager' => array(
                 'name'    => __( 'Link Manager Options', 'clickwhale' ),
                 'text'    => __( 'Global settings for ClickWhale Links.', 'clickwhale' ),
                 'options' => array(

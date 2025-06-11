@@ -13,14 +13,22 @@ class Helper {
      * Return BD table name with prefix
      *
      * @param string $name
-     *
      * @return string
      * @since 1.5.0
      */
     public static function get_db_table_name( string $name ): string {
         global $wpdb;
-
         return "{$wpdb->prefix}clickwhale_$name";
+    }
+
+    /**
+     * Return BD table names with prefixes
+     *
+     * @param array $names
+     * @return array
+     */
+    public static function get_db_table_names( array $names ): array {
+        return array_map( array( self::class, 'get_db_table_name' ), $names );
     }
 
     /**
@@ -332,25 +340,18 @@ class Helper {
         return 'https://clickwhale.pro/affiliates/?utm_source=users&utm_medium=link&utm_campaign=plugin_admin&utm_content=settings_affiliate_program';
     }
 
-    private static function public_path( bool $trimmed = false ): string {
+    public static function get_public_path(): string {
+
         if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
             $_SERVER['HTTP_HOST'] = 'localhost';
         }
 
         $actual_link = ( empty( $_SERVER['HTTPS'] ) ? 'http' : 'https' ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-        $actual_link = str_replace( get_bloginfo( 'url' ), '', $actual_link );
-        $result      = untrailingslashit( parse_url( $actual_link, PHP_URL_PATH ) );
+        $actual_link = str_replace( home_url(), '', $actual_link );
+        $result = untrailingslashit( wp_parse_url( $actual_link, PHP_URL_PATH ) );
 
-        if ( $trimmed ) {
-            return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
-        } else {
-            return $result;
-        }
-    }
-
-    public static function get_public_path( bool $is_trimmed = false ): string {
-        return self::public_path( $is_trimmed );
+        return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
     }
 
     public static function get_import_default_columns(): array {
@@ -378,6 +379,80 @@ class Helper {
     }
 
     /**
+     * Check if slug exists in WP posts table
+     *
+     * @param string $slug
+     * @return array
+     */
+    public static function get_post_by_slug( string $slug ): array {
+        $post_id = url_to_postid( trailingslashit( home_url( $slug ) ) );
+
+        if ( empty( $post_id ) ) {
+            return array();
+        }
+
+        $post = get_post( $post_id );
+
+        return array(
+            'id'    => $post_id,
+            'title' => esc_html( wp_unslash( $post->post_title ) ),
+            'type'  => esc_html( $post->post_type )
+        );
+    }
+
+    /**
+     * Check if slug exists in WP taxonomies
+     *
+     * @param string $slug
+     * @return array
+     */
+    public static function get_taxonomy_by_slug( string $slug ): array {
+        if ( false === strpos( $slug, '/' ) ) {
+            return array();
+        }
+
+        $parts = explode( '/', $slug );
+        $slug_part = array_pop( $parts );
+        $base_part = implode( '/', $parts );
+        $taxonomies = get_taxonomies(['public' => true], 'objects');
+
+        foreach ( $taxonomies as $taxonomy ) {
+            // May be either `array` or `false`
+            $rewrite = ( property_exists( $taxonomy, 'rewrite' ) ) ? $taxonomy->rewrite : true;
+
+            if ( $rewrite === false ) {
+                continue;
+            }
+
+            if ( is_array( $rewrite ) && isset( $rewrite['slug'] ) ) {
+                if ( '' === $rewrite['slug'] ) {
+                    continue;
+                }
+
+                $term_base = trim( $rewrite['slug'], '/' );
+            } else {
+                $term_base = $taxonomy->name;
+            }
+
+            if ( $term_base !== $base_part ) {
+                continue;
+            }
+
+            $term = get_term_by( 'slug', $slug_part, $taxonomy->name );
+
+            if ( $term && ! is_wp_error( $term ) ) {
+                return array(
+                    'id'    => $term->term_id,
+                    'title' => esc_html( wp_unslash( $term->name ) ),
+                    'type'  => esc_html( $term->taxonomy )
+                );
+            }
+        }
+
+        return array();
+    }
+
+    /**
      * Check if media file exists in Wordpress Media library
      *
      * @param string $image_url
@@ -401,17 +476,6 @@ class Helper {
 
         error_log( $log_msg );
         throw new Exception( __( 'Security check failed. Please contact the ClickWhale customer support.', 'clickwhale' ) );
-    }
-
-    /**
-     * @param string $slug
-     * @return string
-     */
-    public static function sanitize_slug( string $slug ): string {
-        $slug = trim( $slug );
-        $slug = sanitize_text_field( $slug );
-        $slug = str_replace( ' ', '-', $slug );
-        return $slug;
     }
 
     /**

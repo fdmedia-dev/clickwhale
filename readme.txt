@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.8
-Stable tag: 2.4.7
+Stable tag: 2.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,16 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+= Version 2.4.8 (11th June 2025) =
+* Tweak: Improved slug existence check for links, link pages and categories
+* Tweak: Adjusted slug validation
+* Tweak: Adjusted QR Code feature for links
+* Tweak: Optimized current page path check for tracking codes
+* Tweak: Reduced access control user roles to those that can manage WP media
+* Tweak: Adjusted titles on content edit pages
+* Fix: Fixed theme support issue for "Create a Legals Menu" on link pages
+* Fix: Fixed invalid URL issue for "Open Graph Preview" on link pages
+
 = Version 2.4.7 (18th May 2025) =
 * Tweak: Extended access control for user roles
 * Fix: Fixed migration UTM fields issue

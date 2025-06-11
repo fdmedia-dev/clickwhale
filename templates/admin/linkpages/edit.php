@@ -8,6 +8,8 @@ Linkpages_Helper::get_limitation_error( $_GET['id'] );
 $linkpage = clickwhale()->linkpage;
 $item = $linkpage->get_item( $_GET );
 $item_id = intval( $item['id'] );
+$slug = $item['slug'];
+$linkpage_url = esc_url( trailingslashit( home_url( $slug ) ) );
 
 // ITEM
 $defaults = $linkpage->get_defaults();
@@ -59,7 +61,7 @@ $seoOGDescription = esc_attr( $social['seo']['ogdescription'] ?? '' );
 $seoOGImageId = esc_attr( $social['seo']['ogimage'] ?? '' );
 
 $seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
-$seoOGLPURL = get_bloginfo( 'url' ) . '/' . esc_attr( $item['slug'] ) . '/';
+$seoOGLPURL = $linkpage_url;
 
 // BANNER
 do_action( 'clickwhale_admin_banner' );
@@ -72,7 +74,7 @@ do_action( 'clickwhale_admin_banner' );
             'is_edit' => $item_id !== 0,
             'link_to_list' => CLICKWHALE_SLUG . '-linkpages',
             'link_to_add' => CLICKWHALE_SLUG . '-edit-linkpage',
-            'link_to_view' => esc_url( trailingslashit( get_bloginfo( 'url' ) ) . $item['slug'] ) . '/',
+            'link_to_view' => $linkpage_url,
             'is_limit' => Linkpages_Helper::get_count() >= Linkpages_Helper::get_limit()
         )
     );
@@ -88,7 +90,7 @@ do_action( 'clickwhale_admin_banner' );
           action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $linkpage->instance_single ?>" />
-        <input type="hidden" name="nonce" value="<?php echo wp_create_nonce( basename( __FILE__ ) ); ?>" />
+        <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
         <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
 
         <div id="post-body-content">
@@ -156,7 +158,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'id'          => 'cw-slug',
                                         'name'        => 'slug',
                                         'type'        => 'text',
-                                        'value'       => esc_attr( $item['slug'] ),
+                                        'value'       => esc_attr( $slug ),
                                         'placeholder' => __( 'Link Page Slug', 'clickwhale' ),
                                         'required'    => true
                                     )
@@ -165,10 +167,10 @@ do_action( 'clickwhale_admin_banner' );
                                 <p id="cw-slug--description"></p>
                                 <p id="cw-slug--text"
                                    class="code"
-                                   title="<?php _e( 'Copy url', 'clickwhale' ); ?>"
-                                >
-                                    <?php echo __( 'URL Preview', 'clickwhale' ) . ': ' . get_bloginfo('url') . '/'; ?>
-                                    <span><?php echo esc_html( $item['slug'] ); ?></span>/<em class="dashicons dashicons-clipboard"></em>
+                                   title="<?php esc_attr_e( 'Copy url', 'clickwhale' ); ?>"
+                                ><?php
+                                    echo esc_html__( 'URL Preview', 'clickwhale' ) . ': ' . esc_html( trailingslashit( home_url() ) );
+                                    ?><span><?php echo ( $slug ) ? esc_html( trailingslashit( $slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#copy"></use></svg>
                                 </p>
                             </td>
                         </tr>
@@ -182,9 +184,9 @@ do_action( 'clickwhale_admin_banner' );
                                     $src = wp_get_attachment_image_url( $logo_id );
 
                                     if ( $logo_id && $src ) { ?>
-                                        <a href="#" class="linkpage-image-upload">
-                                            <img alt="linkpage-logo" src="<?php echo esc_url( $src ); ?>" />
-                                        </a>
+                                        <a href="#"
+                                           class="linkpage-image-upload"
+                                        ><img alt="linkpage-logo" src="<?php echo esc_url( $src ); ?>" /></a>
                                         <a href="#"
                                            class="button linkpage-image-remove"
                                         ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
@@ -209,24 +211,29 @@ do_action( 'clickwhale_admin_banner' );
                                 <label for="meta__legals_menu_id"><?php _e( 'Legals', 'clickwhale' ); ?></label>
                             </th>
                             <td>
-                                <?php
-                                $legals = $linkpage->get_link_meta( $item_id, 'legals_menu_id' );
-                                echo Helper::render_control(
-                                    array(
-                                        'row_label' => __( 'Legals', 'clickwhale' ),
-                                        'control'   => 'select',
-                                        'id'        => 'cw-legals',
-                                        'name'      => 'meta__legals_menu_id',
-                                        'value'     => $legals['meta_value'] ?? 0,
-                                        'options'   => $linkpage->get_nav_menus()
-                                    )
-                                );
+                                <?php if ( current_theme_supports( 'menus' ) ) {
+                                    $legals = $linkpage->get_link_meta( $item_id, 'legals_menu_id' );
+                                    echo Helper::render_control(
+                                        array(
+                                            'row_label' => __( 'Legals', 'clickwhale' ),
+                                            'control'   => 'select',
+                                            'id'        => 'cw-legals',
+                                            'name'      => 'meta__legals_menu_id',
+                                            'value'     => $legals['meta_value'] ?? 0,
+                                            'options'   => $linkpage->get_nav_menus()
+                                        )
+                                    );
+                                    ?>
+                                    <p class="description">
+                                        <a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"
+                                           target="_blank"
+                                           rel="noopener"><?php _e( 'Create a Legals Menu', 'clickwhale' ); ?></a>
+                                    </p>
+                                    <?php
+                                } else {
+                                    _e( 'Your theme does not support navigation menus or widgets.' );
+                                }
                                 ?>
-                                <p class="description">
-                                    <a href="<?php echo esc_url( admin_url( 'nav-menus.php' ) ); ?>"
-                                       target="_blank"
-                                       rel="noopener"><?php _e( 'Create a Legals Menu', 'clickwhale' ); ?></a>
-                                </p>
                             </td>
                         </tr>
 
@@ -256,9 +263,7 @@ do_action( 'clickwhale_admin_banner' );
                                                     ><?php
                                                         if ( isset( $options['icon'] ) && $options['icon'] ) {
                                                             ?>
-                                                            <svg class="feather">
-                                                                <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#<?php echo $options['icon']; ?>"></use>
-                                                            </svg>
+                                                            <svg class="feather"><use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/feather-sprite.svg#' . $options['icon'] ); ?>"></use></svg>
                                                             <?php
                                                         }
                                                         echo esc_html( $options['name'] ); ?>
@@ -542,19 +547,19 @@ do_action( 'clickwhale_admin_banner' );
                                     $ogImage = wp_get_attachment_image_url( $seoOGImageId );
 
                                     if ( $seoOGImageId && $ogImage ) { ?>
-                                        <a href="#" class="linkpage-image-upload">
-                                            <img alt="linkpage-logo" src="<?php echo esc_url( $ogImage ); ?>" />
-                                        </a>
                                         <a href="#"
-                                           class="linkpage-image-remove"
+                                           class="linkpage-image-upload"
+                                        ><img alt="linkpage-logo" src="<?php echo esc_url( $ogImage ); ?>" /></a>
+                                        <a href="#"
+                                           class="button linkpage-image-remove"
                                         ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="social[seo][ogimage]" value="<?php echo $seoOGImageId; ?>" />
                                     <?php } else { ?>
                                         <a href="#"
-                                           class="linkpage-image-upload"
+                                           class="button linkpage-image-upload"
                                         ><?php _e( 'Upload image', 'clickwhale' ); ?></a>
                                         <a href="#"
-                                           class="linkpage-image-remove"
+                                           class="button linkpage-image-remove"
                                            style="display:none"
                                         ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
                                         <input type="hidden" name="social[seo][ogimage]" value="" />
@@ -570,11 +575,10 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <a class="button"
                                    id="opengraph-live-preview"
-                                   href="<?php echo $seoOGPreviewVendorURL . $seoOGLPURL; ?>"
+                                   href="<?php echo esc_url( $seoOGPreviewVendorURL . rawurlencode( $seoOGLPURL ) ); ?>"
                                    target="_blank"
-                                   rel="noopener">
-                                    <?php _e( 'View live preview', 'clickwhale' ); ?>
-                                </a>
+                                   rel="noopener"
+                                ><?php _e( 'View live preview', 'clickwhale' ); ?></a>
                                 <p class="description"></p>
                             </td>
                         </tr>
