@@ -1,5 +1,5 @@
 === ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
-Contributors: flowdee, krapan88, webdj, liquiemm, freemius
+Contributors: flowdee, krapan88, webdj, liquiemm, freemius, clickwhale
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
