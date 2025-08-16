@@ -29,39 +29,47 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         global $wpdb;
         $table_links = Helper::get_db_table_name( 'links' );
         $table_track = Helper::get_db_table_name( 'track' );
+        $non_api_condition = '(links.created_by_api IS NULL OR links.created_by_api = 0)';
         $orderby = sanitize_text_field( $orderby );
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
         if ( empty( $params ) ) {
             return (array) $wpdb->get_results(
-                "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.author, COALESCE(track.clicks,0) AS clicks_count 
+                "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
                 FROM $table_links links
-                LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id ) track ON links.id = track.link_id
+                LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id
+                WHERE $non_api_condition
                 ORDER BY $orderby $order",
                 ARRAY_A
             );
         }
 
-        $search   = sanitize_text_field( $params['search'] ?? '' );
+        $search = sanitize_text_field( $params['search'] ?? '' );
         $category = sanitize_text_field( $params['category'] ?? '' );
-        $author   = sanitize_text_field( $params['author'] ?? '' );
+        $created_by = sanitize_text_field( $params['created_by'] ?? 'admin' );
         $prepared_args = array();
 
-        $sql = "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.author, COALESCE(track.clicks,0) AS clicks_count ";
-        $sql .= "FROM $table_links links ";
-        $sql .= "LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id ) track ON links.id = track.link_id ";
+        $sql = "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
+        FROM $table_links links
+        LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id ";
 
-        if ( $search || $category || $author ) {
+        $is_filtered_created_by = ( 'all' !== $created_by );
+
+        if ( $search || $category || $is_filtered_created_by ) {
             $sql .= "WHERE ";
+
+            // Search
             if ( $search ) {
                 $search = '%' . $wpdb->esc_like( $search ) . '%';
                 $sql .= "(links.title LIKE %s OR links.url LIKE %s OR links.slug LIKE %s OR links.description LIKE %s) ";
                 $prepared_args = array_fill( 0, 4, $search );
 
-                if ( $category || $author ) {
-                    $sql .= " AND ";
+                if ( $category || $is_filtered_created_by ) {
+                    $sql .= "AND ";
                 }
             }
+
+            // Category
             if ( $category ) {
                 $like_start = $wpdb->esc_like( "{$category}," );
                 $like_middle = $wpdb->esc_like( ",{$category}," );
@@ -70,12 +78,18 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 $sql .= "(links.categories = %d OR links.categories LIKE %s OR links.categories LIKE %s OR links.categories LIKE %s) ";
                 $prepared_args = array_merge( $prepared_args, array( intval( $category ), "{$like_start}%", "%{$like_middle}%", "%{$like_end}" ) );
 
-                if ( $author ) {
-                    $sql .= " AND ";
+                if ( $is_filtered_created_by ) {
+                    $sql .= "AND ";
                 }
             }
-            if ( $author ) {
-                $sql .= "links.author = " . intval( $author ) . " ";
+
+            // Created by API
+            if ( $is_filtered_created_by ) {
+                if ( 'api' === $created_by ) {
+                    $sql .= "links.created_by_api = 1 ";
+                } else {
+                    $sql .= $non_api_condition . " ";
+                }
             }
         }
 
@@ -91,7 +105,6 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     public function extra_tablenav( $which ) {
-
         $categories = Categories_Helper::get_all();
 
         if ( ! $categories ) {
@@ -100,17 +113,35 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         if ( $which != "top" ) {
             return;
-        } ?>
-
+        }
+        ?>
         <div class="alignleft actions bulkactions">
             <select name="category" class="clickwhale-filter-categories">
                 <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
                 <?php foreach ( $categories as $category ) {
                     $category_id = intval( $category->id );
-                    $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected = "selected"' : '';
+                    $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
                     ?>
                     <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
                 <?php } ?>
+            </select>
+            <select name="created_by" class="clickwhale-filter-created_by">
+                <?php
+                    $options = array(
+                        'all'   => __( 'All Links', 'clickwhale' ),
+                        'admin' => __( 'Non-API Links', 'clickwhale' ),
+                        'api'   => __( 'Created by API Links', 'clickwhale' )
+                    );
+                    $selected = isset( $_GET['created_by'] ) && in_array( $_GET['created_by'], array_keys( $options ), true ) ? $_GET['created_by'] : 'admin';
+                ?>
+                <?php foreach ( $options as $value => $label ) {
+                    ?>
+                    <option value="<?php echo esc_attr( $value ); ?>"
+                            <?php selected( $selected, $value ); ?>
+                    ><?php echo esc_html( $label ); ?></option>
+                    <?php
+                }
+                ?>
             </select>
             <input type="submit" class="button" value="<?php _e( 'Filter', 'clickwhale' ); ?>" />
         </div>
@@ -142,6 +173,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
                 $id,
                 __( 'Edit', 'clickwhale' )
+            ),
+            'scan'   => sprintf(
+                '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d&tab=link_scanner">%s</a>',
+                $id,
+                __( 'Scan', 'clickwhale' )
             ),
             'reset'  => sprintf(
                 '<a href="%s">%s</a>',
@@ -522,8 +558,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         if ( ! empty( $_GET['s'] ) ) {
             $params['search'] = sanitize_text_field( $_GET['s'] );
         }
+
         if ( ! empty( $_GET['category'] ) ) {
             $params['category'] = intval( $_GET['category'] );
+        }
+
+        if ( ! empty( $_GET['created_by'] ) ) {
+            $params['created_by'] = sanitize_text_field( $_GET['created_by'] );
         }
 
         $current_data = $this->get_current_data( $order, $orderby, $params );

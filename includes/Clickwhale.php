@@ -23,7 +23,8 @@ use clickwhale\includes\admin\{
     Clickwhale_Ajax,
     Clickwhale_Settings,
     Clickwhale_Tools,
-    Clickwhale_WP_User
+    Clickwhale_WP_User,
+    Clickwhale_Rest_Controller
 };
 
 use clickwhale\includes\admin\reset\Clickwhale_Reset;
@@ -135,6 +136,11 @@ final class Clickwhale {
     public Clickwhale_Public_Ajax $public_ajax;
 
     /**
+     * @var Clickwhale_Rest_Controller
+     */
+    public Clickwhale_Rest_Controller $rest_api;
+
+    /**
      * Gets an instance of our plugin.
      *
      * @return Clickwhale
@@ -160,6 +166,8 @@ final class Clickwhale {
             self::$instance->tracking_code = new Clickwhale_Tracking_Code_Edit();
             self::$instance->public        = Clickwhale_Public::get_instance();
             self::$instance->public_ajax   = Clickwhale_Public_Ajax::get_instance();
+            self::$instance->rest_api      = new Clickwhale_Rest_Controller();
+
             self::$instance->define_admin_hooks();
             self::$instance->define_public_hooks();
         }
@@ -300,6 +308,7 @@ final class Clickwhale {
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/clickwhale_reset', $this->ajax, 'clickwhale_reset' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/sanitize_slug', $this->ajax, 'sanitize_slug' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/slug_exists', $this->ajax, 'slug_exists' );
+        $this->loader->add_action( 'wp_ajax_clickwhale/admin/scan_links', $this->ajax, 'scan_links' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/get_posts_by_post_type', $this->ajax, 'get_posts_by_post_type' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/get_cw_links', $this->ajax, 'get_cw_links' );
         $this->loader->add_action( 'wp_ajax_clickwhale/admin/tracking_code_toggle_active', $this->ajax, 'tracking_code_toggle_active' );
@@ -313,6 +322,9 @@ final class Clickwhale {
         $this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_db_options' );
         $this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_stats_options' );
         $this->loader->add_action( 'admin_print_footer_scripts', $this->reset, 'admin_scripts' );
+        $this->loader->add_filter( 'clickwhale_link_tabs', $this->link, 'link_tabs', 20 );
+        $this->loader->add_action( 'clickwhale_link_after_tabs_content', $this->link, 'after_tabs_content', 25 );
+        $this->loader->add_action( 'rest_api_init', $this->rest_api, 'register_routes' );
 
         /**
          * FILTERS

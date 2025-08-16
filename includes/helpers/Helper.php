@@ -341,17 +341,24 @@ class Helper {
     }
 
     public static function get_public_path(): string {
-
-        if ( ! isset( $_SERVER['HTTP_HOST'] ) ) {
-            $_SERVER['HTTP_HOST'] = 'localhost';
+        if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+            $http_host = strtolower( sanitize_text_field( $_SERVER['HTTP_HOST'] ) );
+        } else {
+            $http_host = 'localhost';
         }
 
-        $actual_link = ( empty( $_SERVER['HTTPS'] ) ? 'http' : 'https' ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-
+        $request_uri = $_SERVER['REQUEST_URI'] ?? '/';
+        $request_uri = esc_url_raw( wp_unslash( $request_uri ) );
+        $scheme = ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) ? 'https' : 'http';
+        $actual_link = $scheme . '://' . $http_host . $request_uri;
         $actual_link = str_replace( home_url(), '', $actual_link );
-        $result = untrailingslashit( wp_parse_url( $actual_link, PHP_URL_PATH ) );
+        $path = wp_parse_url( $actual_link, PHP_URL_PATH );
 
-        return ltrim( str_replace( $_SERVER['HTTP_HOST'], '', $result ), '/' );
+        if ( ! is_string( $path ) ) {
+            return '';
+        }
+
+        return ltrim( str_replace( $http_host, '', untrailingslashit( $path ) ), '/' );
     }
 
     public static function get_import_default_columns(): array {
@@ -364,8 +371,8 @@ class Helper {
      * @since 1.6.0
      */
     public static function get_post_types( string $label = 'singular_name' ): array {
-        $posts      = array();
-        $args       = array(
+        $posts = array();
+        $args = array(
             'public' => true
         );
         $post_types = get_post_types( $args, 'objects' );

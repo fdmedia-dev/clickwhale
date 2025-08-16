@@ -16,22 +16,22 @@ $defaults = $linkpage->get_defaults();
 $post_type_links = Helper::get_post_types();
 $tabs = $linkpage->render_tabs();
 
-// LINKS
+// LP Image
+$logo_id = esc_attr( $item['logo'] ?? '' );
+
+// Contents Tab
 $item['links'] = maybe_unserialize( $item['links'] );
 $links = $item['links'];
 $links_limit = $links && count( $links ) >= Linkpages_Helper::get_linkpage_links_limit();
 $select = $linkpage->get_select_values();
 
-// STYLES
+// Styles Tab
 $item['styles'] = isset( $item['styles'] ) && $item['styles'] !== '' ? maybe_unserialize( $item['styles'] ) : $defaults['styles'];
-$item['social'] = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['social'];
 $styles = $item['styles'];
+
+// SEO and Social Tabs
+$item['social'] = isset( $item['social'] ) && $item['social'] !== '' ? maybe_unserialize( $item['social'] ) : $defaults['social'];
 $social = $item['social'];
-
-// LP IMAGE
-$logo_id = esc_attr( $item['logo'] ?? '' );
-
-// LP SEO ROBOTS
 $seoTitle = esc_attr( $social['seo']['title'] ?? $item['title'] );
 $seoDescription = esc_attr( $social['seo']['description'] ?? get_bloginfo( 'description' ) );
 $robots = array(
@@ -63,7 +63,7 @@ $seoOGImageId = esc_attr( $social['seo']['ogimage'] ?? '' );
 $seoOGPreviewVendorURL = 'https://www.opengraph.xyz/url/';
 $seoOGLPURL = $linkpage_url;
 
-// BANNER
+// Banner
 do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
@@ -202,7 +202,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <input type="hidden" name="logo" value="" />
                                     <?php } ?>
                                 </div>
-                                <p><?php echo __( 'Max logo size', 'clickwhale' ) . ' 275px * 275px'; ?></p>
+                                <p><?php echo __( 'Max logo size', 'clickwhale' ) . ' 275px * 275px. ' . __( 'Please use a ratio of 1:1', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 

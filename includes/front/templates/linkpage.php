@@ -8,9 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post;
-
 $linkpage = new Clickwhale_Public_Linkpage( $post );
-$view = new Clickwhale_View_Track( $post->linkpage['id'] );
+$view = new Clickwhale_View_Track();
+$view->maybe_update_track_database( $post->linkpage['id'] );
 $user_id = get_current_user_id();
 ?>
 <!DOCTYPE html>

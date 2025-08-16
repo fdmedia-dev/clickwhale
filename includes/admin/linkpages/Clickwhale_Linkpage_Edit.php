@@ -198,17 +198,11 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         $table = Helper::get_db_table_name( $this->instance_plural );
         $item  = array_intersect_key(
             $_POST,
-            apply_filters( "clickwhale_linkpage_defaults", $this->get_defaults() )
+            apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() )
         );
 
         $item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
-
-        if ( isset( $item['styles'] ) ) {
-            $item['styles'] = maybe_serialize( $item['styles'] );
-        } else {
-            $item['styles'] = '';
-        }
-
+        $item['styles'] = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
         $item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
         $item['author'] = get_current_user_id();
 
@@ -261,39 +255,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             } else {
                                 jQuery('#reset-styles').hide();
                             }
-
-                            if (jQuery(ui.newPanel[0]).attr('id') === 'lp-tab-contents'){ // If tab is `Contents`
-                                // Hide Clickwhale Widget Sidebar
-                                jQuery('#poststuff > #post-body.metabox-holder.columns-2 #postbox-container-1').hide();
-                                jQuery('#poststuff > #post-body.metabox-holder.columns-2').removeClass('columns-2');
-                            }
                         }
                     });
-
-                    <?php if ( isset( $_GET['id'] ) ) { ?>
-                        const pageID = '<?php echo intval( $_GET['id'] ); ?>';
-                        const tabID = 'clickwhale-linkpage-' + pageID;
-
-                        // Store the last viewed tab index for current (existing) CW Link Page
-                        if (pageID > 0){
-                            let localTabID = localStorage.getItem(tabID);
-                            if (localTabID){
-                                jQuery('#clickwhale-tabs').tabs({active: localTabID});
-                            }
-                            jQuery('#clickwhale-tabs li').on('click', function(){
-                                localStorage.setItem(tabID, jQuery(this).index());
-                            });
-                        }
-
-                        // Handle `Widget Sidebar` view for all (new and existing) CW Link Pages
-                        jQuery('#clickwhale-tabs li').on('click', function(){
-                            // If tab is not `Contents`
-                            if (1 !== jQuery(this).index()){
-                                jQuery('#poststuff > #post-body.metabox-holder #postbox-container-1').show();
-                                jQuery('#poststuff > #post-body.metabox-holder').addClass('columns-2');
-                            }
-                        });
-                    <?php } ?>
                 });
             </script>
             <?php
@@ -306,6 +269,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 const
                     pageID = '<?php echo intval( $_GET['id'] ); ?>',
                     defaults = <?php echo json_encode( $this->get_defaults() ); ?>,
+                    postTypes = <?php echo wp_json_encode( array_keys( Helper::get_post_types() ) ); ?>,
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
                     limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit(); ?>'),
@@ -344,7 +308,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 /* Init wp.editor */
-                jQuery('.row--cw_custom_content').each(function(){
+                jQuery('.linkpage-row.row--cw_custom_content').each(function(){
                     const editorTextareaID = jQuery(this).find('textarea').attr('id');
 
                     wp.editor.initialize(editorTextareaID, {
@@ -352,6 +316,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         tinymce: tinymceOptions,
                         quicktags: quicktagsOptions
                     });
+
+                    bindEditorEvents(jQuery(this));
                 });
 
                 /* Draggable, Droppable, Sortable */
@@ -402,7 +368,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 }
                             });
                         },
-                    }).disableSelection();
+                    })
+                    .disableSelection();
 
                 if (pageID < 1){
                     disable_ogpreview_button();
@@ -421,37 +388,57 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         e.stopPropagation();
                     })
 
-                    // Init tinymce (wp.editor) on custom content block drag
+                    // Init TinyMCE (wp.editor) on custom content block drag
                     .on('clickwhale.content.template.replace', '.links-list-wrap', function(e, template){
-                        const
-                            templateRowID = jQuery(template).attr('id'),
-                            templateID = templateRowID.replace('row-', '');
+                        const $row = jQuery(template);
 
-                        if (jQuery(template).hasClass('row--cw_custom_content')){
-                            wp.editor.initialize('cw_custom_content_' + templateID, {
+                        if ($row.hasClass('row--cw_custom_content')){
+                           const
+                               rowID = $row.attr('id'),
+                               templateID = rowID.replace(/^row-/, ''),
+                               editorID = 'cw_custom_content_' + templateID;
+
+                            wp.editor.initialize(editorID, {
                                 mediaButtons: true,
                                 tinymce: tinymceOptions,
                                 quicktags: quicktagsOptions
                             });
+
+                            const tryBind = () => {
+                                const
+                                    editor = tinymce.get(editorID),
+                                    $newRow = jQuery(`#${rowID}`);
+
+                                if (editor){
+                                    bindEditorEvents($newRow);
+                                } else {
+                                    // Wait for TinyMCE to initialize before binding events
+                                    setTimeout(tryBind, 100);
+                                }
+                            };
+
+                            tryBind();
                         }
                     })
 
-                    // Change hidden fields value on CW link select
+                    // `Clickwhale Link`
                     .on('change', '.row--cw_link .select-link', function(){
                         const
-                            parent = jQuery(this).closest('.linkpage-row'),
+                            $row = jQuery(this).closest('.linkpage-row'),
                             title = jQuery(this).find('option:selected').data('title'),
                             url = jQuery(this).find('option:selected').data('url'),
                             value = jQuery(this).val();
 
-                        parent.find('[name^="links[0]"]').each(function(){
+                        $row.removeClass('invalid');
+                        $row.find('.linkpage-row--bottom .select2-selection').removeClass('invalid');
+                        $row.find('[name^="links[0]"]').each(function(){
                             let name = jQuery(this).attr('name');
                             name = name.replace('links[0]', 'links[' + value + ']');
                             jQuery(this).attr('name', name);
                         });
-                        parent.find('[name$="[post_id]"]').val(value);
-                        parent.find('.linkpage-row--link strong').text(title);
-                        parent.find('.linkpage-row--link span').text(url);
+                        $row.find('[name$="[post_id]"]').val(value);
+                        $row.find('.linkpage-row--link strong').text(title);
+                        $row.find('.linkpage-row--link span').text(url);
                     })
 
                     // Show Edit section
@@ -516,6 +503,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             })
                         });
                     })
+
                     .on('click', '#icon-picker--wrap button', function(e){
                         e.preventDefault();
 
@@ -566,6 +554,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 mediaInput.val(attachment.id).trigger("change");
                             }).open();
                     })
+
                     .on('click', '.linkpage-image-remove', function(e){
                         e.preventDefault();
 
@@ -609,6 +598,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 mediaRemove.show();
                             }).open();
                     })
+
                     .on('click', '.linkpage-row--image-remove', function(e){
                         e.preventDefault();
 
@@ -633,12 +623,37 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         change_row_image(jQuery(this), imageItemValue);
                         change_row_image_type(jQuery(this), jQuery(this).data('type'));
                     })
+
                     .on('click', '.reset-image', function(){
-                        jQuery(this).closest('.linkpage-row').find('.linkpage-row--image').removeClass('with-image').html('');
-                        jQuery(this).closest('.linkpage-row').find('.image-item').find('label').html('');
-                        jQuery(this).closest('.linkpage-row').find('[name$="[image][image_id]"]').prop('checked', false);
-                        jQuery(this).closest('.linkpage-row').find('[name$="[image][type]"]').val('');
+                        const $row = jQuery(this).closest('.linkpage-row');
+
+                        $row.find('.linkpage-row--image').removeClass('with-image').html('');
+                        $row.find('.image-item').find('label').html('');
+                        $row.find('[name$="[image][image_id]"]').prop('checked', false);
+                        $row.find('[name$="[image][type]"]').val('');
+                    })
+
+                    // `Custom Link`
+                    .on('input', '.linkpage-row.row--cw_custom_link .linkpage-row--bottom input[name^="links["][name$="[url]"]', function(){
+                        jQuery(this).closest('.linkpage-row').removeClass('invalid');
+                        jQuery(this).removeClass('invalid');
+                    })
+
+                    // `Heading`
+                    .on('input', '.linkpage-row.row--cw_heading .linkpage-row--bottom input[name^="links["][name$="[title]"]', function(){
+                        jQuery(this).closest('.linkpage-row').removeClass('invalid');
+                        jQuery(this).removeClass('invalid');
                     });
+
+                // WP `post`, `page` and custom post types from `wp_posts` table
+                for (const type of postTypes){
+                    jQuery(document).on('change', `.linkpage-row.row--${type} .select-link`, function(){
+                        const $row = jQuery(this).closest('.linkpage-row');
+
+                        $row.removeClass('invalid');
+                        $row.find('.linkpage-row--bottom .select2-selection').removeClass('invalid');
+                    });
+                }
 
                 /* Page text color */
 
@@ -804,6 +819,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 jQuery('#lp-tab-seo td > input, #lp-tab-seo td > textarea').on('keyup change blur', function(){
                     disable_ogpreview_button();
                 });
+
                 jQuery('#lp-tab-seo .og-image-field input[type="hidden"]').on('change', function(){
                     disable_ogpreview_button();
                 });
@@ -821,6 +837,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             return false;
                         }
                     })
+
                     .on('input', function(){
                         jQuery(this).removeClass('error').next().text('');
                     });
@@ -855,21 +872,21 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                             );
                         }
                     })
+
                     .on('input', function(){
                         jQuery(this).removeClass('error').next().text('');
                     });
 
                 /**
                  * Submit action
-                 * 1. Check title (not null)
-                 * 2. Check slug (not null)
-                 * 3. Check if slug is already used by CW links, CW link pages, WP posts/pages/taxonomies
+                 * 1. Check if title is not empty
+                 * 2. Check if slug is not empty
+                 * 3. Check if slug is not already used by CW links, CW link pages, WP posts/pages/taxonomies
+                 * 4. Check if required fields of content blocks are not empty
                  */
                 jQuery('#submit').on('click', function(e){
-                    jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
-
                     if (!title.val()){
-                        e.preventDefault();
+                        tabNotValid(e);
                         title.addClass('error')
                             .next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
                         return false;
@@ -878,7 +895,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     }
 
                     if (!slug.val()){
-                        e.preventDefault();
+                        tabNotValid(e);
                         slug.addClass('error')
                             .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
                         return false;
@@ -889,7 +906,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     slug.val(sanitizeSlug(slug.val()));
 
                     if (!slug.val()){
-                        e.preventDefault();
+                        tabNotValid(e);
                         slug.addClass('error')
                             .next().html(`
                                 <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
@@ -905,7 +922,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     let slug_obj = slugExists();
 
                     if (undefined !== slug_obj.id){
-                        e.preventDefault();
+                        tabNotValid(e);
                         slug.addClass('error')
                             .next().html(`
                                 <?php echo esc_js( esc_html__( 'This slug is already used in %1$s (%2$s ID: %d)', 'clickwhale' ) ) . '.'; ?>
@@ -918,6 +935,61 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
+                    }
+
+                    // Content blocks
+                    const blocks = validateBlocks();
+
+                    if (blocks.length > 0){
+                        const contentsTabIndex = jQuery('#clickwhale-tabs li a[href="#lp-tab-contents"]').closest('li').index();
+
+                        tabNotValid(e, contentsTabIndex);
+                        jQuery('#post-body-content .error.linkpage-blocks').remove();
+                        jQuery('#post-body-content').prepend('<div class="error linkpage-blocks"><p><?php echo esc_js( __( 'Some content block fields are not valid. Please correct them or remove the blocks.', 'clickwhale' ) ); ?></p></div>');
+                        jQuery('.linkpage-row').removeClass('invalid');
+                        jQuery('.linkpage-row .linkpage-row--bottom').removeClass('active');
+
+                        blocks.forEach(block => {
+                            const
+                                $row = jQuery(`#row-${block.id}`),
+                                $bottom = $row.find('.linkpage-row--bottom');
+
+                            $row.addClass('invalid');
+                            $bottom.addClass('active');
+
+                            /** ClickWhale Content group */
+
+                            // `ClickWhale Link`
+                            if ($row.hasClass('row--cw_link')){
+                                $bottom.find('.select2-selection').addClass('invalid');
+                            }
+
+                            // `Custom Link`
+                            else if ($row.hasClass('row--cw_custom_link')){
+                                $bottom.find(`input[name="links[${block.id}][url]"]`).addClass('invalid');
+                            }
+
+                            // `Custom Content`
+                            else if ($row.hasClass('row--cw_custom_content')){
+                                $bottom.find('.wp-editor-container').addClass('invalid');
+                            }
+
+                            /** Post Types group */
+
+                            // WP `post`, `page` and custom post types from `wp_posts` table
+                            else if (postTypes.some(type => $row.hasClass(`row--${type}`))){
+                                $bottom.find('.select2-selection').addClass('invalid');
+                            }
+
+                            /** Formatting group */
+
+                            // `Heading`
+                            else if ($row.hasClass('row--cw_heading')){
+                                $bottom.find(`input[name="links[${block.id}][title]"]`).addClass('invalid');
+                            }
+
+                            <?php do_action( 'clickwhale_linkpage_invalid_blocks' ); ?>
+                        });
                     }
                 });
 
@@ -941,6 +1013,113 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 });
 
                 /** JS FUNCTIONS */
+
+                // `Custom Content`
+                function bindEditorEvents($row){
+                    const
+                        rowID = $row.attr('id').replace(/^row-/, ''),
+                        $bottom = $row.find('.linkpage-row--bottom'),
+                        textareaID = $row.find(`textarea[name="links[${rowID}][content]"]`).attr('id'),
+                        $textarea = jQuery(`#${textareaID}`),
+                        editor = tinymce.get(textareaID),
+                        $editorContainer = $bottom.find('.wp-editor-container');
+
+                    // `Code` mode
+                    $textarea.on('change input', function(){
+                        if ('' !== jQuery(this).val()){
+                            $row.removeClass('invalid');
+                            $editorContainer.removeClass('invalid');
+                        }
+                    });
+
+                    // `Visual` mode (TinyMCE)
+                    if (editor){
+                        editor.on('input', () => {
+                            editor.save();
+
+                            if ('' !== $textarea.val()){
+                                $row.removeClass('invalid');
+                                $editorContainer.removeClass('invalid');
+                            }
+                        });
+                    }
+                }
+
+                function validateBlocks(){
+                    const
+                        results = [],
+                        $rows = jQuery('.linkpage-row');
+
+                    for (let i = 0; i < $rows.length; i++){
+                        const
+                            $row = jQuery($rows[i]),
+                            rowID = $row.attr('id').replace(/^row-/, '');
+
+                        /** ClickWhale Content group */
+
+                        // `ClickWhale Link`
+                        if ($row.hasClass('row--cw_link')){
+                            if (!$row.find('.linkpage-row--link span').text()){
+                                results.push({'id': rowID});
+                            }
+                        }
+
+                        // `Custom Link`
+                        else if ($row.hasClass('row--cw_custom_link')){
+                            if (!$row.find(`input[name="links[${rowID}][url]"]`).val()){
+                                results.push({'id': rowID});
+                            }
+                        }
+
+                        // `Custom Content`
+                        else if ($row.hasClass('row--cw_custom_content')){
+                            const
+                                textareaID = $row.find(`textarea[name="links[${rowID}][content]"]`).attr('id'),
+                                editor = tinymce.get(textareaID);
+
+                            let textValue;
+
+                            if (editor && !editor.isHidden()){
+                                // Ensure `Visual` (TinyMCE) and `Code` editor modes are synchronized
+                                editor.save();
+                                textValue = editor.getContent();
+                            } else {
+                                textValue = jQuery(`#${textareaID}`).val();
+                            }
+
+                            if (!textValue){
+                                results.push({'id': rowID});
+                            }
+                        }
+
+                        /** Post Types group */
+
+                        // WP `post`, `page` and custom post types from `wp_posts` table
+                        else if (postTypes.some(type => $row.hasClass(`row--${type}`))){
+                            if (!$row.find('.linkpage-row--link span').text()
+                             && !$row.find('.select-link').val()
+                            ){
+                                results.push({'id': rowID});
+                            }
+                        }
+
+                        /** Formatting group */
+
+                        // Ignore `Separator`
+                        else if ($row.hasClass('row--cw_separator')){}
+
+                        // `Heading`
+                        else if ($row.hasClass('row--cw_heading')){
+                            if (!$row.find(`input[name="links[${rowID}][title]"]`).val()){
+                                results.push({'id': rowID});
+                            }
+                        }
+
+                        <?php do_action( 'clickwhale_linkpage_validate_blocks' ); ?>
+                    }
+
+                    return results;
+                }
 
                 function sanitizeSlug(){
                     let result = null;
@@ -1032,6 +1211,13 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 // Validate hex color
                 function validateHexColor(val){
                     return /^#([0-9A-F]{3}){1,2}$/i.test(val);
+                }
+
+                function tabNotValid(e, tab = 0){
+                    e.preventDefault();
+                    jQuery('.updated').remove();
+                    jQuery('#clickwhale-tabs').tabs('option', 'active', tab);
+                    jQuery('html, body').animate({scrollTop: 0}, 'fast');
                 }
             });
         </script>

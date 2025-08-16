@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.4.8
+ * Version:           2.5.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,7 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.4.8' );
+    define( 'CLICKWHALE_VERSION', '2.5.0' );
     /**
      * @since 1.4.1
      */
@@ -171,6 +171,19 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links ADD link_target varchar(10) DEFAULT '' NOT NULL AFTER redirection" );
     }
 
+    function clickwhale_maybe_add_created_by_api_column() : void {
+        if ( version_compare( CLICKWHALE_VERSION, '2.5.0', '<' ) ) {
+            return;
+        }
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        global $wpdb;
+        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$wpdb->prefix}clickwhale_links LIKE 'created_by_api'" );
+        if ( $column_exists ) {
+            return;
+        }
+        $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links ADD created_by_api TINYINT(1) AFTER categories" );
+    }
+
     register_activation_hook( __FILE__, 'clickwhale_activate' );
     register_deactivation_hook( __FILE__, 'clickwhale_deactivate' );
     // Uninstall action
@@ -197,6 +210,8 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             clickwhale_maybe_add_or_update_url_column();
             /* @since 2.4.5 */
             clickwhale_maybe_add_link_target_column();
+            /* @since 2.5.0 */
+            clickwhale_maybe_add_created_by_api_column();
         }
     }
 

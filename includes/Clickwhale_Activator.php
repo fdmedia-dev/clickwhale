@@ -204,6 +204,9 @@ PRIMARY KEY  (id)
 
         /* @since 2.4.5 */
         clickwhale_maybe_add_link_target_column();
+
+        /* @since 2.5.0 */
+        clickwhale_maybe_add_created_by_api_column();
     }
 
     /**

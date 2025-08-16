@@ -1,11 +1,11 @@
 === ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
-Contributors: flowdee, krapan88, webdj, liquiemm, freemius, clickwhale
+Contributors: clickwhale, flowdee, krapan88, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.8
-Stable tag: 2.4.8
+Stable tag: 2.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,7 @@ Are you looking for a WordPress [link manager](https://clickwhale.pro/link-manag
 - **Easily create and manage links** - Create your links to track and organize them into categories.
 - **Apply SEO settings to links** - Flag your links with SEO attributes like “no follow” or “sponsored”.
 - **Place and share links** - Place your created links anywhere in your website content or share them on social media.
+- **Link scanner** - Check which posts and pages a link is placed on so that it can be replaced or removed if necessary.
 - **Click statistics** - Analyze the clicks of your links with our click statistics.
 
 ***Practical example***: Turn a long URL into, e.g. `domain.com/link/product` 🤩
@@ -53,6 +54,14 @@ ClickWhale also offers you the possibility to embed any [tracking codes](https:/
 - **Exclude User Roles** - The code snippet should not be executed for certain user roles of your website? No problem! Set that yourself!
 
 From now on, you don't need a third-party service, you save on monthly subscriptions and have full control. All this, on your own domain. Brilliant, isn't it?
+
+## 👨‍💻 Developer friendly: Hooks and WP REST API
+In line with the philosophy “by developers for developers,” we have made it possible for developers and experienced users to customize our plugin to their needs:
+
+- **Filter and action hooks** - Ready-to-use filters and actions to apply dynamic adjustments according to your needs.
+- **WP REST API routes** - Ready-to-use API routes to connect our plugin to third-party tools.
+
+The above-mentioned functions are available to everyone, and you can find more information in our [developer documentation](https://github.com/fdmedia-io/clickwhale-developers/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Developers).
 
 ## 🌟 ClickWhale PRO brings even more features 🌟
 Do you want to get even more out of your affiliate marketing game and take it to the **next level**?
@@ -122,6 +131,17 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.0 (18th August 2025) =
+* New: Implemented [REST API](https://github.com/fdmedia-io/clickwhale-developers/blob/master/README.md#available-api-routes) for third-party integration
+* New: Added link scanner for placed links on site posts and pages
+* Tweak: Adjusted slug validation during link import
+* Fix: Fixed issue with Content blocks validation on link pages
+* Fix: Added author existence check on link pages and tracking codes
+* Fix: Fixed issue when HTTP_USER_AGENT header is missing for links and link pages
+* Info: WordPress v6.8.2 compatibility
+* Info: Updated Freemius SDK to v2.12.1
+
 = Version 2.4.8 (11th June 2025) =
 * Tweak: Improved slug existence check for links, link pages and categories
 * Tweak: Adjusted slug validation

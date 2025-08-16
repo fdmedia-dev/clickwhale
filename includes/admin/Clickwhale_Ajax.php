@@ -270,17 +270,18 @@ class Clickwhale_Ajax {
                     );
                     break;
                 }
-                //                // HTTP request to URL: see if slug is handled by custom endpoints, rewrite rules, .htaccess rules, etc.
-                //                $response = wp_remote_get( home_url( $slug ), [ 'timeout' => 2 ] );
-                //
-                //                if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
-                //                    $result = array(
-                //                        'id'    => 0,
-                //                        'title' => esc_html($slug),
-                //                        'type'  => 'custom endpoint'
-                //                    );
-                //                    break;
-                //                }
+                // HTTP request to URL: check if slug is handled by custom endpoints, rewrite rules, .htaccess rules, etc.
+                $response = wp_remote_get( home_url( $slug ), [
+                    'timeout' => 2,
+                ] );
+                if ( !is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+                    $result = array(
+                        'id'    => 0,
+                        'title' => esc_html( $slug ),
+                        'type'  => 'custom endpoint',
+                    );
+                    break;
+                }
                 break;
             case 'category':
                 $category = Categories_Helper::get_by_slug( $slug );
@@ -296,6 +297,61 @@ class Clickwhale_Ajax {
                 break;
             default:
                 wp_send_json_error();
+        }
+        wp_send_json_success( $result );
+    }
+
+    public function scan_links() {
+        check_ajax_referer( 'clickwhale_link_scanner', 'security' );
+        $slug = Links_Helper::sanitize_slug( $_POST['slug'] );
+        if ( '' === $slug ) {
+            wp_send_json_error();
+        }
+        $id = intval( $_POST['id'] );
+        if ( 0 === $id ) {
+            wp_send_json_error();
+        }
+        delete_transient( 'clickwhale_scanned_link_' . $id );
+        global $wpdb;
+        $target_url = home_url( $slug );
+        $post_types = array('post', 'page');
+        $placeholders = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
+        $params = array_merge( $post_types, array('%' . $wpdb->esc_like( $target_url ) . '%') );
+        $posts = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_type, post_title, post_content\n                FROM {$wpdb->prefix}posts\n                WHERE post_status = 'publish'\n                AND post_type IN ({$placeholders})\n                AND post_content LIKE %s\n                ORDER BY ID ASC, post_type ASC, post_title ASC", ...$params ) );
+        $result = array();
+        if ( $posts ) {
+            // 1. Match slug URL as `href` value in <a> element
+            // 2. Collect link titles
+            $pattern = '/<a\\s[^>]*href=(["\'])' . preg_quote( $target_url, '/' ) . '\\/?\\1[^>]*>(.*?)<\\/a>/is';
+            $rows = array();
+            foreach ( $posts as $post ) {
+                if ( !preg_match_all( $pattern, $post->post_content, $matches ) ) {
+                    continue;
+                }
+                // Count number of link occurrences that start with `$target_url`
+                $total = count( $matches[0] );
+                $titles = $matches[2];
+                $rows[] = array(
+                    'ID'         => $post->ID,
+                    'post_type'  => $post->post_type,
+                    'post_title' => $post->post_title,
+                    'total'      => $total,
+                    'titles'     => $titles,
+                );
+            }
+            if ( $rows ) {
+                $html = Links_Helper::render_link_rows( $rows );
+                $timestamp = time();
+                $data = array(
+                    'html'      => $html,
+                    'timestamp' => $timestamp,
+                );
+                set_transient( 'clickwhale_scanned_link_' . $id, $data, DAY_IN_SECONDS );
+                $result = array(
+                    'html'      => $html,
+                    'last_time' => wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp ),
+                );
+            }
         }
         wp_send_json_success( $result );
     }
@@ -574,7 +630,7 @@ class Clickwhale_Ajax {
         $result = array();
         foreach ( $data as $v ) {
             $v['title'] = sanitize_text_field( $v['title'] );
-            $v['slug'] = esc_html( $v['slug'] );
+            $v['slug'] = Links_Helper::sanitize_slug( $v['slug'] );
             $v['url'] = esc_url_raw( $v['url'] );
             $v['description'] = '';
             $v['author'] = get_current_user_id();

@@ -129,9 +129,13 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
     public function column_author( $item ): string {
         $user_info = get_userdata( $item['author'] );
 
+        if ( ! $user_info ) {
+            return '&mdash;';
+        }
+
         return sprintf(
             '<a href="%s&author=%d">%s</a>',
-            esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
+            esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG . '-tracking-codes' ) ),
             $user_info->ID,
             $user_info->display_name
         );

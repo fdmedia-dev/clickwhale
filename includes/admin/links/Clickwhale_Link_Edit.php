@@ -29,19 +29,20 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         $link_manager_options = get_option( 'clickwhale_link_manager_options' );
 
         return array(
-            'id'          => 0,
-            'title'       => '',
-            'url'         => '',
-            'slug'        => '',
-            'redirection' => $link_manager_options['redirect_type'] ?? $defaults['link_manager']['options']['redirect_type'],
-            'link_target' => $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'],
-            'nofollow'    => '',
-            'sponsored'   => '',
-            'description' => '',
-            'categories'  => '',
-            'author'      => 0,
-            'created_at'  => '',
-            'updated_at'  => ''
+            'id'             => 0,
+            'title'          => '',
+            'url'            => '',
+            'slug'           => '',
+            'redirection'    => $link_manager_options['redirect_type'] ?? $defaults['link_manager']['options']['redirect_type'],
+            'link_target'    => $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'],
+            'nofollow'       => '',
+            'sponsored'      => '',
+            'description'    => '',
+            'categories'     => '',
+            'created_by_api' => 0,
+            'author'         => 0,
+            'created_at'     => '',
+            'updated_at'     => ''
         );
     }
 
@@ -54,6 +55,69 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         );
 
         return apply_filters( 'clickwhale_link_tabs', $tabs );
+    }
+
+    /**
+     * Adds `Link Scanner` tab after `General` tab.
+     * If Pro version is active, this runs after Pro tabs as well.
+     *
+     * @see Clickwhale_Link_Edit::render_tabs()
+     * @param $tabs
+     * @return array
+     */
+    public function link_tabs( $tabs ): array {
+        return array_merge( $tabs, array(
+            'link_scanner' => array(
+                'name' => __( 'Link Scanner', 'clickwhale' ),
+                'url'  => 'link_scanner'
+            )
+        ) );
+    }
+
+    public function link_scanner_html( $item ) {
+        $id = intval( $item['id'] );
+        $cached = ( $id ) ? get_transient( 'clickwhale_scanned_link_' . $id ) : array();
+        $timestamp = $cached['timestamp'] ?? '';
+        $last_time = ( $timestamp ) ? wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp ) : '';
+        $html = $cached['html'] ?? '';
+        ?>
+        <div id="link-tab-link_scanner">
+            <p><?php esc_html_e( 'Here you can check the posts and pages to see if this link has been placed on any of them.', 'clickwhale' ); ?></p>
+            <div>
+                <button type="button"
+                        class="button"
+                        id="scan-button"
+                ><?php esc_html_e( 'Scan Now', 'clickwhale' ); ?></button>
+                <span class="spinner"></span>
+                <p class="scan-button-description"><?php esc_html_e( 'Please save changes to enable link scanner', 'clickwhale' ); ?></p>
+            </div>
+            <div class="link-tab-link_scanner-table-wrapper <?php echo ( $timestamp ) ? 'is-visible' : ''; ?>">
+                <p class="table-description <?php echo ( $timestamp ) ? 'is-visible' : ''; ?>">
+                    <?php esc_html_e( 'Last scan:', 'clickwhale' ); ?>
+                    <span class="last-time"><?php echo esc_html( $last_time ); ?></span>
+                    <span>(<?php esc_html_e( 'result is cached for 1 day', 'clickwhale' ); ?>)</span>
+                </p>
+                <table class="wp-list-table">
+                    <caption hidden><?php esc_html_e( 'Scanned links', 'clickwhale' ); ?></caption>
+                    <thead class="<?php echo ( $timestamp ) ? 'is-visible' : ''; ?>">
+                        <tr>
+                            <th scope="col"><?php esc_html_e( 'Post ID', 'clickwhale' ); ?></th>
+                            <th scope="col"><?php esc_html_e( 'Post Type', 'clickwhale' ); ?></th>
+                            <th scope="col"><?php esc_html_e( 'Post Title', 'clickwhale' ); ?></th>
+                            <th scope="col"><?php esc_html_e( 'Keywords Linked', 'clickwhale' ); ?></th>
+                            <th scope="col"><?php esc_html_e( 'Actions', 'clickwhale' ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody><?php echo $html; ?></tbody>
+                    <tfoot><tr><th colspan="5"><?php esc_html_e( 'This link could not be found on any posts or pages.', 'clickwhale' ); ?></th></tr></tfoot>
+                </table>
+            </div>
+        </div>
+        <?php
+    }
+
+    public function after_tabs_content( $item ) {
+        $this->link_scanner_html( $item );
     }
 
     public function save_update(): void {
@@ -93,48 +157,51 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
     public function admin_scripts(): void {
         $page_id = intval( $_GET['id'] ?? 0 );
-
-        if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-edit-link' ) {
-            ?>
-            <script type='text/javascript'>
-                jQuery(document).ready(function(){
-                    const pageID = +'<?php echo $page_id; ?>'; // `string` to `integer`
-
-                        // Store the last viewed tab index for current (existing) CW Link
-                        if (pageID > 0){
-                            const
-                                tabID = 'clickwhale-link-' + pageID,
-                                localTabID = localStorage.getItem(tabID);
-
-                            if (localTabID){
-                                jQuery('#clickwhale-tabs').tabs({active: localTabID});
-                            }
-                            jQuery('#clickwhale-tabs li').on('click', function(){
-                                localStorage.setItem(tabID, jQuery(this).index());
-                            });
-                        }
-                });
-            </script>
-            <?php
-        }
+        $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' );
         ?>
 
         <script type='text/javascript'>
             jQuery(document).ready(function(){
-                const pageID = +'<?php echo $page_id; ?>'; // `string` to `integer`
+                const
+                    pageID = +'<?php echo $page_id; ?>', // `string` to `integer`
+                    activeTab = '<?php echo sanitize_key( $_GET['tab'] ?? '' ); ?>',
+                    urlSearchParams = new URLSearchParams(window.location.search);
 
                 let
+                    $tabs = jQuery('#clickwhale-tabs'),
                     submit = jQuery('#submit'),
                     form = submit.closest('form'),
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
                     url = jQuery('#url'),
-                    slugPrefix = '';
+                    slugPrefix = '',
+                    $scanWrapper = jQuery('#link-tab-link_scanner'),
+                    scanBtn = $scanWrapper.find( '#scan-button'),
+                    scanBtnDesc = $scanWrapper.find( '.scan-button-description'),
+                    scanSpinner = $scanWrapper.find( '.spinner'),
+                    $scanTableWrapper = $scanWrapper.find( '.link-tab-link_scanner-table-wrapper'),
+                    scanTableDesc = $scanTableWrapper.find('.table-description'),
+                    scanTable = $scanWrapper.find( 'table'),
+                    scanThead = scanTable.find('thead'),
+                    scanTbody = scanTable.find('tbody'),
+                    scanTfoot = scanTable.find('tfoot');
 
-                <?php $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' ); ?>
+                if (activeTab && 'link_scanner' === activeTab){
+                    urlSearchParams.delete('tab');
+
+                    const
+                        linkScannerTabIndex = $tabs.find('a[href="#link-tab-link_scanner"]').closest('li').index(),
+                        query = urlSearchParams.toString(),
+                        newUrl = window.location.pathname + (query ? '?' + query : '');
+
+                    $tabs.tabs('option', 'active', linkScannerTabIndex);
+                    window.history.replaceState({}, '', newUrl);
+                }
 
                 if (0 === pageID){
                     slugPrefix = "<?php echo ( $slug_prefix ) ? esc_js( untrailingslashit( $slug_prefix ) ) : ''; ?>";
+                    scanBtn.addClass('disabled');
+                    scanBtnDesc.addClass('is-visible');
                 }
 
                 /**
@@ -230,7 +297,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                     let slugOriginal = slug.val();
 
-                    jQuery('#clickwhale-tabs').tabs('option', 'active', 0);
+                    $tabs.tabs('option', 'active', 0);
 
                     if (!title.val()){
                         e.preventDefault();
@@ -280,21 +347,25 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                         const
                             slugUrl = '<?php echo esc_js( esc_url( home_url( '/' ) ) ); ?>' + slug.val(),
-                            idPart = (slugMatch.id > 0) ? `, ID: ${slugMatch.id}` : '';
+
+                            idTemplate = (slugMatch.id > 0)
+                                ? '<?php echo esc_js( sprintf( esc_html__( 'ID: %s, ', 'clickwhale' ), '__slug_id__' ) ); ?>'.replace('__slug_id__', `<b>${slugMatch.id}</b>`)
+                                : '',
+
+                            slugType = (slugMatch.id > 0)
+                                ? '<?php echo esc_js( sprintf( esc_html__( 'type: %s.', 'clickwhale' ), '__slug_type__' ) ); ?>'.replace('__slug_type__', `<b>${slugMatch.type}</b>`)
+                                : '<?php echo esc_js( esc_html__( 'by WordPress (core, theme, plugin or rewrite rules).', 'clickwhale' ) ); ?>';
 
                         slug.addClass('error')
-                            .next().html(`
-                                <?php
-                                    echo esc_js( esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) ) .
-                                    '<br/ >' .
-                                    esc_js( esc_html__( 'Type: %2$s%3$s', 'clickwhale' ) ) .
-                                    '. ' .
-                                    esc_js( esc_html__( 'Please enter another slug', 'clickwhale' ) );
-                                ?>
-                                `.trim()
+                            .next().html(
+                                `<?php echo esc_js( esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) ); ?>
+                                <br/ >
+                                %2$s
+                                <br/ >
+                                <?php echo esc_js( esc_html__( 'Please enter another slug.', 'clickwhale' ) ); ?>
+                                `
                                 .replace('%1$s', `<b><a href="${slugUrl}" target="_blank">${slugUrl}</a></b>`)
-                                .replace('%2$s', `<b>${slugMatch.type}</b>`)
-                                .replace('%3$s', idPart)
+                                .replace('%2$s', `${idTemplate}${slugType}`)
                             );
                         return false;
                     } else {
@@ -312,6 +383,68 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     }
 
                     submit.trigger('clickwhale.link.save', { formEvent: e });
+                });
+
+                /**
+                 * Link Scanner
+                 */
+                scanBtn.on('click', () => {
+                    scanBtn.addClass('disabled');
+
+                    if (0 === pageID) {
+                        return false;
+                    }
+
+                    scanSpinner.addClass('is-active');
+
+                    jQuery
+                        .post(ajaxurl,{
+                            security: <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_link_scanner' ) ); ?>,
+                            action: 'clickwhale/admin/scan_links',
+                            id: pageID,
+                            slug: slug.val()
+                        })
+                        .done(function(response){
+                            if (response.success && response.data?.html){
+                                scanTbody.html(response.data.html);
+                                scanTfoot.removeClass('is-visible');
+                                scanThead.addClass('is-visible');
+                                scanTableDesc
+                                    .addClass('is-visible')
+                                    .find('span.last-time').text(response.data.last_time);
+                            } else {
+                                scanTfoot.addClass('is-visible');
+                                scanThead.removeClass('is-visible');
+                                scanTableDesc.removeClass('is-visible');
+                            }
+                        })
+                        .fail(function(jqXHR, textStatus, errorThrown){
+                            scanTfoot.addClass('is-visible');
+                            scanThead.removeClass('is-visible');
+                            scanTableDesc.removeClass('is-visible');
+                        })
+                        .always(function(){
+                            $scanTableWrapper.addClass('is-visible');
+                            scanBtn.removeClass('disabled');
+                            scanSpinner.removeClass('is-active');
+                        });
+                });
+
+                scanTbody.on('click', '.link_scanner-toggle-titles', function(e){
+                    e.preventDefault();
+
+                    const
+                        $this = jQuery(this),
+                        $td = $this.closest('td'),
+                        $hiddenItems = $td.find('li.limited');
+
+                    if ($this.text() === $this.data('show-all')) {
+                        $hiddenItems.removeClass('hidden');
+                        $this.text($this.data('show-less'));
+                    } else {
+                        $hiddenItems.addClass('hidden');
+                        $this.text($this.data('show-all'));
+                    }
                 });
 
                 /** JS FUNCTIONS */
@@ -347,7 +480,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'link',
                             'slug': slug.val(),
-                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
+                            'id': pageID
                         }, success: function(response){
                             result = response.data;
                         }

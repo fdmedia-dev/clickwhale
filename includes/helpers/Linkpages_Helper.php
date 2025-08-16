@@ -56,22 +56,20 @@ class Linkpages_Helper extends Helper_Abstract {
     }
 
     /**
-     * @return string
-     */
-    public static function get_link_referer(): string {
-        return $_SERVER['HTTP_REFERER'] ?? '';
-    }
-
-    /**
      * @return array
      */
     public static function get_current_linkpage(): array {
-        $url = strtolower( self::get_link_referer() );
+        if ( empty( $_SERVER['HTTP_REFERER'] ) ) {
+            return array();
+        }
+
+        $url = esc_url_raw( $_SERVER['HTTP_REFERER'] );
 
         if ( ! $url ) {
             return array();
         }
 
+        $url = strtolower( $url );
         $home_url = home_url();
 
         if ( ! str_contains( $url, $home_url ) ) {

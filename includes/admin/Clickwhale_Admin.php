@@ -95,6 +95,9 @@ final class Clickwhale_Admin {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/links/Clickwhale_Link_Edit.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php';
+
+        // ClickWhale REST API
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Rest_Controller.php';
     }
 
     private function add_submenu_page( $parent, $k, $v ): void {

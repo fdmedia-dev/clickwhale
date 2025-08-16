@@ -44,7 +44,7 @@ class Clickwhale_Click_Track {
             'custom_link_id' => $this->is_custom ? $this->link_id : '',
             'linkpage_id'    => $linkpage['id'] ?? 0,
             'visitor_id'     => $visitor->visitor_id,
-            'referer'        => Linkpages_Helper::get_link_referer(),
+            'referer'        => esc_url_raw( $_SERVER['HTTP_REFERER'] ?? '' ),
             'created_at'     => gmdate( 'Y-m-d H:i:s' )
         );
 

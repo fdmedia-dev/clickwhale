@@ -42,7 +42,7 @@ class Clickwhale_Linkpage_Content_Templates {
                 'is_active' => '1',
                 'title'     => '',
                 'image'     => array()
-            ),
+            )
         );
     }
 
@@ -131,7 +131,7 @@ class Clickwhale_Linkpage_Content_Templates {
                 ); ?>
             </div><!-- ./linkpage-row--top -->
 
-            <div class="linkpage-row--bottom <?php echo $active ? 'active' : ''; ?>">
+            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
                 <?php echo $this->get_template_hidden_field( $data ); ?>
                 <?php if ( ! $data['id'] ) { ?>
                     <div class="linkpage-row--bottom--control-wrap">
@@ -140,7 +140,6 @@ class Clickwhale_Linkpage_Content_Templates {
                             <div>
                                 <select name="links[<?php echo esc_attr( $data['id'] ); ?>][id]"
                                         class="select-link"
-                                        required
                                 ><option></option>
                                     <?php foreach ( $links as $cw_link ) { ?>
                                         <option value="<?php echo esc_attr( $cw_link['id'] ); ?>"
@@ -233,8 +232,7 @@ class Clickwhale_Linkpage_Content_Templates {
                     __( 'Title', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
-                    __( 'e.g. My link', 'clickwhale' ),
-                    true
+                    __( 'e.g. My link', 'clickwhale' )
                 );
 
                 echo $this->get_template_input_field(
@@ -248,8 +246,7 @@ class Clickwhale_Linkpage_Content_Templates {
                     __( 'URL', 'clickwhale' ),
                     'links[' . $data['id'] . '][url]',
                     $data['url'] ?? '',
-                    __( 'e.g. https://mysite.com', 'clickwhale' ),
-                    true
+                    __( 'e.g. https://mysite.com', 'clickwhale' )
                 );
 
                 $this->get_template_row_images( $data );
@@ -344,12 +341,11 @@ class Clickwhale_Linkpage_Content_Templates {
                 <?php if ( ! isset( $data['post_id'] ) ) { ?>
                     <div class="linkpage-row--bottom--control-wrap">
                         <label for="links[<?php echo esc_attr( $data['id'] ); ?>][post_id]">
-                            <?php echo $post_type_singular ?>
+                            <?php echo $post_type_singular; ?>
                         </label>
                         <div>
                             <select name="links[<?php echo esc_attr( $data['id'] ); ?>][post_id]"
                                     class="select-link"
-                                    required
                             ><option></option>
                                 <?php if ( $pt_posts ) {
                                     foreach ( $pt_posts as $pt_post ) { ?>
@@ -1247,7 +1243,7 @@ class Clickwhale_Linkpage_Content_Templates {
             'logo-tumblr',
             'logo-tux',
             'logo-twitch',
-            'logo-twitter',
+            'logo-x',
             'logo-usd',
             'logo-venmo',
             'logo-vercel',
