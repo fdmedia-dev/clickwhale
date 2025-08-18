@@ -105,26 +105,28 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     public function extra_tablenav( $which ) {
-        $categories = Categories_Helper::get_all();
-
-        if ( ! $categories ) {
-            return;
-        }
-
         if ( $which != "top" ) {
             return;
         }
+
+        $categories = Categories_Helper::get_all();
         ?>
         <div class="alignleft actions bulkactions">
-            <select name="category" class="clickwhale-filter-categories">
-                <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
-                <?php foreach ( $categories as $category ) {
-                    $category_id = intval( $category->id );
-                    $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
-                    ?>
-                    <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
-                <?php } ?>
-            </select>
+            <?php
+            if ( ! empty( $categories ) ) {
+                ?>
+                <select name="category" class="clickwhale-filter-categories">
+                    <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
+                    <?php foreach ( $categories as $category ) {
+                        $category_id = intval( $category->id );
+                        $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
+                        ?>
+                        <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
+                    <?php } ?>
+                </select>
+                <?php
+            }
+            ?>
             <select name="created_by" class="clickwhale-filter-created_by">
                 <?php
                     $options = array(
