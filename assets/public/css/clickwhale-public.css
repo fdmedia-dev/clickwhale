@@ -12,6 +12,12 @@
 	--admin-bar-height: 32px;
 }
 
+::selection,
+::-webkit-selection {
+	background-color: var(--clickwhale-link-bg-color) !important;
+	color: var(--clickwhale-link-color) !important;
+}
+
 body.clickwhale-linkpage {
 	min-height: 100vh;
 }
@@ -51,6 +57,16 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 .linkpage-public--wrap * {
 	box-sizing: border-box;
+}
+
+.linkpage-public--wrap h1,
+.linkpage-public--wrap h2,
+.linkpage-public--wrap h3,
+.linkpage-public--wrap h4,
+.linkpage-public--wrap h5,
+.linkpage-public--wrap h6,
+.linkpage-public--wrap p {
+	color: var(--clickwhale-text-color) !important;
 }
 
 .linkpage-public--wrap .feather {

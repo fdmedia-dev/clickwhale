@@ -19,6 +19,9 @@ $tabs = $linkpage->render_tabs();
 // LP Image
 $logo_id = esc_attr( $item['logo'] ?? '' );
 
+// LP Favicon
+$favicon_id = esc_attr( $item['favicon'] ?? '' );
+
 // Contents Tab
 $item['links'] = maybe_unserialize( $item['links'] );
 $links = $item['links'];
@@ -181,12 +184,11 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <div class="logo-field image-field">
                                     <?php
-                                    $src = wp_get_attachment_image_url( $logo_id );
-
-                                    if ( $logo_id && $src ) { ?>
+                                    $logo_src = wp_get_attachment_image_url( $logo_id );
+                                    if ( $logo_id && $logo_src ) { ?>
                                         <a href="#"
                                            class="linkpage-image-upload"
-                                        ><img alt="linkpage-logo" src="<?php echo esc_url( $src ); ?>" /></a>
+                                        ><img alt="linkpage-logo" src="<?php echo esc_url( $logo_src ); ?>" /></a>
                                         <a href="#"
                                            class="button linkpage-image-remove"
                                         ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
@@ -202,7 +204,39 @@ do_action( 'clickwhale_admin_banner' );
                                         <input type="hidden" name="logo" value="" />
                                     <?php } ?>
                                 </div>
-                                <p><?php echo __( 'Max logo size', 'clickwhale' ) . ' 275px * 275px. ' . __( 'Please use a ratio of 1:1', 'clickwhale' ); ?></p>
+                                <p><?php echo __( 'Max logo size 275 × 275 pixels is recommended. Please use a ratio of 1:1', 'clickwhale' ); ?></p>
+                            </td>
+                        </tr>
+
+                        <tr class="form-field">
+                            <th scope="row">
+                                <label for="logo"><?php _e( 'Site Icon', 'clickwhale' ); ?></label>
+                            </th>
+                            <td>
+                                <div class="favicon-field image-field">
+                                    <?php
+                                    $favicon_src = $favicon_id ? wp_get_attachment_image_url( $favicon_id ) : '';
+                                    if ( $favicon_id && $favicon_src ) { ?>
+                                        <a href="#"
+                                           class="linkpage-image-upload"
+                                        ><img alt="linkpage-favicon" src="<?php echo esc_url( $favicon_src ); ?>" /></a>
+                                        <a href="#"
+                                           class="button linkpage-image-remove"
+                                        ><?php _e( 'Remove Site Icon', 'clickwhale' ); ?></a>
+                                        <input type="hidden" name="favicon" value="<?php echo $favicon_id; ?>" />
+                                    <?php } else { ?>
+                                        <a href="#"
+                                           class="button linkpage-image-upload"
+                                        ><?php _e( 'Upload Site Icon', 'clickwhale' ); ?></a>
+                                        <a href="#"
+                                           class="button linkpage-image-remove"
+                                           style="display: none;"
+                                        ><?php _e( 'Remove Site Icon', 'clickwhale' ); ?></a>
+                                        <input type="hidden" name="favicon" value="" />
+                                    <?php } ?>
+                                </div>
+                                <p><?php echo __( 'Add custom Site Icon for the current Link Page. It replaces default one only on this page.', 'clickwhale' ); ?></p>
+                                <p><?php echo __( 'Site Icon should be square and at least 512 by 512 pixels.', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
 
@@ -549,7 +583,7 @@ do_action( 'clickwhale_admin_banner' );
                                     if ( $seoOGImageId && $ogImage ) { ?>
                                         <a href="#"
                                            class="linkpage-image-upload"
-                                        ><img alt="linkpage-logo" src="<?php echo esc_url( $ogImage ); ?>" /></a>
+                                        ><img alt="linkpage-og-image" src="<?php echo esc_url( $ogImage ); ?>" /></a>
                                         <a href="#"
                                            class="button linkpage-image-remove"
                                         ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
@@ -565,7 +599,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <input type="hidden" name="social[seo][ogimage]" value="" />
                                     <?php } ?>
                                 </div>
-                                <p><?php _e( 'Recommended image size 1200px * 630px', 'clickwhale' ); ?></p>
+                                <p><?php _e( 'Recommended image size 1200 × 630 pixels.', 'clickwhale' ); ?></p>
                             </td>
                         </tr>
                         <tr class="form-field">

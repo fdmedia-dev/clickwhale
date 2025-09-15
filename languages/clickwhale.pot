@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-13T19:13:13+00:00\n"
+"POT-Creation-Date: 2025-09-15T13:35:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clickwhale\n"
@@ -38,8 +38,8 @@ msgstr ""
 
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:69
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:47
-#: includes/admin/links/Clickwhale_Links_List_Table.php:175
-#: includes/admin/links/Clickwhale_Links_List_Table.php:342
+#: includes/admin/links/Clickwhale_Links_List_Table.php:177
+#: includes/admin/links/Clickwhale_Links_List_Table.php:344
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:51
 msgid "Edit"
 msgstr ""
@@ -48,8 +48,8 @@ msgstr ""
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:170
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:62
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:177
-#: includes/admin/links/Clickwhale_Links_List_Table.php:200
-#: includes/admin/links/Clickwhale_Links_List_Table.php:344
+#: includes/admin/links/Clickwhale_Links_List_Table.php:202
+#: includes/admin/links/Clickwhale_Links_List_Table.php:346
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:61
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:194
 msgid "Delete"
@@ -57,15 +57,15 @@ msgstr ""
 
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:144
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:146
-#: includes/admin/links/Clickwhale_Links_List_Table.php:307
+#: includes/admin/links/Clickwhale_Links_List_Table.php:309
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:170
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:161
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:232
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:366
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:520
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1245
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:371
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:525
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1244
 #: templates/admin/categories/edit.php:50
-#: templates/admin/linkpages/edit.php:115
+#: templates/admin/linkpages/edit.php:118
 #: templates/admin/links/edit.php:84
 #: templates/admin/tracking-codes/edit.php:49
 msgid "Title"
@@ -73,10 +73,10 @@ msgstr ""
 
 #: includes/admin/categories/Clickwhale_Categories_List_Table.php:145
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php:171
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:436
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:441
 #: templates/admin/categories/edit.php:95
-#: templates/admin/linkpages/edit.php:138
-#: templates/admin/linkpages/edit.php:143
+#: templates/admin/linkpages/edit.php:141
+#: templates/admin/linkpages/edit.php:146
 #: templates/admin/links/edit.php:209
 #: templates/admin/links/edit.php:214
 #: templates/admin/tracking-codes/edit.php:407
@@ -92,15 +92,15 @@ msgid "No Categories Found"
 msgstr ""
 
 #: includes/admin/categories/Clickwhale_Category_Edit.php:74
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:891
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1006
 #: includes/admin/links/Clickwhale_Link_Edit.php:306
 msgid "Please enter title"
 msgstr ""
 
 #: includes/admin/categories/Clickwhale_Category_Edit.php:90
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:868
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:900
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:912
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:983
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1015
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1027
 #: includes/admin/links/Clickwhale_Link_Edit.php:277
 #: includes/admin/links/Clickwhale_Link_Edit.php:316
 #: includes/admin/links/Clickwhale_Link_Edit.php:332
@@ -110,20 +110,20 @@ msgid "Please enter slug"
 msgstr ""
 
 #: includes/admin/categories/Clickwhale_Category_Edit.php:92
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:870
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:914
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:985
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1029
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)"
 msgstr ""
 
 #: includes/admin/categories/Clickwhale_Category_Edit.php:106
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:928
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1043
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:408
 #, php-format
 msgid "This slug is already used in %1$s (%2$s ID: %d)"
 msgstr ""
 
 #: includes/admin/categories/Clickwhale_Category_Edit.php:107
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:929
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:409
 msgid "Please enter another slug"
 msgstr ""
@@ -131,8 +131,9 @@ msgstr ""
 #: includes/admin/Clickwhale_Admin.php:126
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:148
 #: includes/admin/migration/Clickwhale_Migration.php:230
-#: pro/templates/admin/statistics/statistics.php:22
-#: templates/admin/linkpages/edit.php:355
+#: pro/includes/admin/statistics/Links.php:33
+#: pro/templates/admin/statistics/statistics.php:19
+#: templates/admin/linkpages/edit.php:389
 msgid "Links"
 msgstr ""
 
@@ -143,9 +144,10 @@ msgstr ""
 
 #: includes/admin/Clickwhale_Admin.php:128
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:39
-#: includes/admin/links/Clickwhale_Links_List_Table.php:310
+#: includes/admin/links/Clickwhale_Links_List_Table.php:312
 #: includes/admin/migration/Clickwhale_Migration.php:215
-#: pro/templates/admin/statistics/statistics.php:23
+#: pro/includes/admin/statistics/Categories.php:33
+#: pro/templates/admin/statistics/statistics.php:20
 msgid "Categories"
 msgstr ""
 
@@ -156,7 +158,8 @@ msgstr ""
 
 #: includes/admin/Clickwhale_Admin.php:130
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:330
-#: pro/templates/admin/statistics/statistics.php:24
+#: pro/includes/admin/statistics/Linkpages.php:28
+#: pro/templates/admin/statistics/statistics.php:21
 #: templates/admin/settings/pro.php:25
 #: templates/admin/settings/pro.php:45
 #: templates/admin/settings/pro.php:50
@@ -194,8 +197,7 @@ msgid "Edit Category"
 msgstr ""
 
 #: includes/admin/Clickwhale_Admin.php:138
-#: includes/front/Clickwhale_Public_Linkpage.php:402
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:61
+#: includes/front/Clickwhale_Public_Linkpage.php:404
 msgid "Edit Link Page"
 msgstr ""
 
@@ -210,7 +212,7 @@ msgstr ""
 #: includes/admin/Clickwhale_Admin.php:206
 #: includes/admin/Clickwhale_Admin.php:207
 #: includes/admin/Clickwhale_Admin.php:708
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:50
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:51
 #: templates/admin/settings/settings.php:9
 msgid "Settings"
 msgstr ""
@@ -386,20 +388,28 @@ msgstr ""
 msgid "Nothing to import!"
 msgstr ""
 
-#: includes/admin/Clickwhale_Ajax.php:813
-msgid "Link <strong>&quot;"
-msgstr ""
-
+#. translators: %s: link title
 #: includes/admin/Clickwhale_Ajax.php:815
-msgid "<strong>Error!</strong> Link <strong>&quot;"
+#, php-format
+msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr ""
 
-#: includes/admin/Clickwhale_Ajax.php:828
+#. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:821
+#, php-format
+msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
+msgstr ""
+
+#: includes/admin/Clickwhale_Ajax.php:838
 msgid "Bad request"
 msgstr ""
 
-#: includes/admin/Clickwhale_Ajax.php:888
-#: includes/admin/Clickwhale_Ajax.php:898
+#: includes/admin/Clickwhale_Ajax.php:872
+msgid "No valid columns selected"
+msgstr ""
+
+#: includes/admin/Clickwhale_Ajax.php:904
+#: includes/admin/Clickwhale_Ajax.php:914
 msgid "Nothing to export"
 msgstr ""
 
@@ -479,7 +489,7 @@ msgid "Unique slug of ClickWhale link"
 msgstr ""
 
 #: includes/admin/Clickwhale_Rest_Controller.php:366
-#: includes/admin/links/Clickwhale_Links_List_Table.php:309
+#: includes/admin/links/Clickwhale_Links_List_Table.php:311
 #: templates/admin/links/edit.php:133
 msgid "Target URL"
 msgstr ""
@@ -611,7 +621,7 @@ msgstr ""
 
 #: includes/admin/Clickwhale_Settings.php:307
 #: includes/admin/links/Clickwhale_Link_Edit.php:52
-#: templates/admin/linkpages/edit.php:109
+#: templates/admin/linkpages/edit.php:112
 msgid "General"
 msgstr ""
 
@@ -706,27 +716,26 @@ msgid "View"
 msgstr ""
 
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:79
-#: includes/admin/links/Clickwhale_Links_List_Table.php:217
+#: includes/admin/links/Clickwhale_Links_List_Table.php:219
 msgid "Copy Link"
 msgstr ""
 
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:147
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:138
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1604
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:78
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1602
+#: pro/includes/admin/statistics/Links.php:26
 #: templates/admin/links/edit.php:42
 msgid "Link"
 msgstr ""
 
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:149
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:78
+#: pro/includes/admin/statistics/Statistics_Abstract.php:304
 msgid "Views"
 msgstr ""
 
 #: includes/admin/linkpages/Clickwhale_Linkpages_List_Table.php:150
-#: includes/admin/links/Clickwhale_Links_List_Table.php:311
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:88
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:80
+#: includes/admin/links/Clickwhale_Links_List_Table.php:313
+#: pro/includes/admin/statistics/Statistics_Abstract.php:305
 msgid "Clicks"
 msgstr ""
 
@@ -739,96 +748,112 @@ msgstr ""
 msgid "No Link Pages Found"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:54
-#: templates/admin/linkpages/edit.php:246
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:55
+#: templates/admin/linkpages/edit.php:280
 msgid "Contents"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:58
-#: templates/admin/linkpages/edit.php:305
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:59
+#: templates/admin/linkpages/edit.php:339
 msgid "Styles"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:62
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:63
 msgid "SEO"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:80
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:81
 msgid "ClickWhale Content"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:83
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:84
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:119
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1724
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1722
 msgid "ClickWhale Link"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:87
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:88
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:213
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1753
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1751
 msgid "Custom Link"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:91
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:509
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:92
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:514
 msgid "Custom Content"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:101
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:102
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:308
 msgid "Post Types"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:113
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:114
 msgid "Formatting"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:116
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:415
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:429
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:117
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:420
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:434
 msgid "Heading"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:120
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:470
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:121
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:475
 msgid "Separator"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:140
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:141
 msgid "No Menu"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:297
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:300
 msgid "Select Content Type"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:359
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:362
 msgid "Select Item"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:544
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:550
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:597
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:683
+msgid "Insert Image"
+msgstr ""
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:555
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:590
 msgid "Select Image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:564
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:875
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:481
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:803
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1800
-#: templates/admin/linkpages/edit.php:197
-#: templates/admin/linkpages/edit.php:560
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:658
+#: templates/admin/linkpages/edit.php:230
+msgid "Upload Site Icon"
+msgstr ""
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:880
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:480
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:802
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1798
+#: templates/admin/linkpages/edit.php:199
+#: templates/admin/linkpages/edit.php:594
 msgid "Upload image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:948
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:689
+msgid "Use this image"
+msgstr ""
+
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1063
 msgid "Some content block fields are not valid. Please correct them or remove the blocks."
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1004
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1119
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1181
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1296
 msgid "Please save the page to view Open Graph preview"
 msgstr ""
 
@@ -869,47 +894,44 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:120
+#: includes/admin/links/Clickwhale_Links_List_Table.php:119
 msgid "All Categories"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:131
+#: includes/admin/links/Clickwhale_Links_List_Table.php:133
 msgid "All Links"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:132
+#: includes/admin/links/Clickwhale_Links_List_Table.php:134
 msgid "Non-API Links"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:133
+#: includes/admin/links/Clickwhale_Links_List_Table.php:135
 msgid "Created by API Links"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:146
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:139
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:130
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:129
+#: includes/admin/links/Clickwhale_Links_List_Table.php:148
+#: pro/includes/admin/statistics/Statistics_Abstract.php:204
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:180
+#: includes/admin/links/Clickwhale_Links_List_Table.php:182
 msgid "Scan"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:190
-#: includes/admin/links/Clickwhale_Links_List_Table.php:343
+#: includes/admin/links/Clickwhale_Links_List_Table.php:192
+#: includes/admin/links/Clickwhale_Links_List_Table.php:345
 msgid "Reset Clicks"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:308
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:87
+#: includes/admin/links/Clickwhale_Links_List_Table.php:310
 #: templates/admin/categories/edit.php:72
-#: templates/admin/linkpages/edit.php:151
+#: templates/admin/linkpages/edit.php:154
 #: templates/admin/links/edit.php:105
 msgid "Slug"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Links_List_Table.php:584
+#: includes/admin/links/Clickwhale_Links_List_Table.php:586
 msgid "No Links Found"
 msgstr ""
 
@@ -1161,12 +1183,10 @@ msgstr ""
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:177
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:198
 #: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:215
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1036
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:40
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:38
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:36
-#: pro/includes/admin/statistics/Statistics.php:602
-#: pro/includes/admin/statistics/Statistics.php:1050
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1035
+#: pro/includes/admin/statistics/Statistics.php:678
+#: pro/includes/admin/statistics/Statistics.php:1146
+#: pro/includes/admin/statistics/Statistics_Abstract.php:161
 msgid "All"
 msgstr ""
 
@@ -1219,37 +1239,36 @@ msgid "New Tracking Code"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:154
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1739
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1737
 msgid "Nothing found"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:164
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:369
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:374
 msgid "Custom Title"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:168
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:239
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:373
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:526
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1250
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:378
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:531
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1249
 msgid "Subtitle"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:171
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:242
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:376
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:381
 msgid "e.g. Read more about something"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:235
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:523
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:529
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:528
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:534
 msgid "e.g. My link"
 msgstr ""
 
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:246
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:79
 msgid "URL"
 msgstr ""
 
@@ -1257,59 +1276,61 @@ msgstr ""
 msgid "e.g. https://mysite.com"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:323
-msgid "Original"
+#. translators: %s: singular post type
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
+#, php-format
+msgid "Original %1$s: "
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:432
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:437
 msgid "e.g. My Links Heading"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:439
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:444
 msgid "e.g. My Links Description"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:770
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:775
 #: pro/includes/admin/content_templates/Clickwhale_Pro_Link_Content_Templates.php:115
 msgid "Change Order"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:849
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:854
 msgid "Icon"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:852
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:857
 msgid "You can select either an image, an icon or an emoji. You cannot have more than one active at the same time."
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:879
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:476
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:485
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:798
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:807
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1802
-#: templates/admin/linkpages/edit.php:192
-#: templates/admin/linkpages/edit.php:201
-#: templates/admin/linkpages/edit.php:555
-#: templates/admin/linkpages/edit.php:564
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:884
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:475
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:484
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:797
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:806
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1800
+#: templates/admin/linkpages/edit.php:194
+#: templates/admin/linkpages/edit.php:203
+#: templates/admin/linkpages/edit.php:589
+#: templates/admin/linkpages/edit.php:598
 msgid "Remove image"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:901
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:906
 msgid "Select Icon"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:917
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:922
 msgid "Select Emoji"
 msgstr ""
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:921
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1805
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:926
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1803
 #: templates/admin/tools/tools.php:21
 msgid "Reset"
 msgstr ""
 
-#: includes/front/Clickwhale_Public_Linkpage.php:383
+#: includes/front/Clickwhale_Public_Linkpage.php:385
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Preview.php:67
 msgid "Powered by"
 msgstr ""
@@ -1320,6 +1341,7 @@ msgid "Currently, a maximum of %d categories can be added."
 msgstr ""
 
 #: includes/helpers/Helper.php:233
+#: pro/includes/admin/statistics/Statistics_Abstract.php:337
 #, php-format
 msgid "Edit %s"
 msgstr ""
@@ -1444,7 +1466,7 @@ msgstr ""
 
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:167
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:168
-#: pro/templates/admin/statistics/statistics.php:16
+#: pro/templates/admin/statistics/statistics.php:14
 msgid "Statistics"
 msgstr ""
 
@@ -1619,8 +1641,8 @@ msgid "Pro Blocks"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:58
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1018
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1022
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1017
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1021
 #: templates/admin/settings/pro.php:49
 #: templates/admin/settings/pro.php:50
 msgid "Blog Posts Feed"
@@ -1629,22 +1651,22 @@ msgstr ""
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:62
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:146
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:280
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1236
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1235
 #: templates/admin/settings/pro.php:44
 #: templates/admin/settings/pro.php:45
 msgid "Social Profiles"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:66
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1384
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1382
 msgid "Forms"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:70
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:314
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:638
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1592
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1780
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:637
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1590
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1778
 msgid "Image"
 msgstr ""
 
@@ -1694,17 +1716,17 @@ msgid "Site Background"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:311
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:635
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:634
 msgid "Solid Color"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:312
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:636
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:635
 msgid "Gradient"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:313
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:637
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:636
 msgid "Pattern"
 msgstr ""
 
@@ -1713,230 +1735,230 @@ msgid "Choose page background style"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:330
-#: templates/admin/linkpages/edit.php:340
+#: templates/admin/linkpages/edit.php:374
 msgid "Set page background color"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:376
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:699
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:698
 msgid "Start Color"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:384
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:707
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:706
 msgid "End Color"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:392
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:715
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:714
 msgid "Gradient Style"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:401
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:724
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:723
 msgid "Linear"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:402
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:725
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:724
 msgid "Radial"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:403
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:726
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:725
 msgid "Conic"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:411
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:734
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:733
 msgid "Gradient Direction"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:420
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:519
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:743
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:841
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:518
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:742
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:840
 msgid "Top"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:421
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:502
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:744
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:824
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:501
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:743
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:823
 msgid "Right"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:422
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:501
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:520
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:745
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:823
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:842
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:500
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:519
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:744
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:822
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:841
 msgid "Center"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:423
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:521
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:843
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:520
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:745
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:842
 msgid "Bottom"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:424
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:500
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:747
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:822
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:499
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:746
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:821
 msgid "Left"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:491
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:813
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:490
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:812
 msgid "Horizontal position"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:510
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:832
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:509
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:831
 msgid "Vertical position"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:529
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:539
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:851
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:861
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:528
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:538
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:850
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:860
 msgid "Repeat"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:538
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:860
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:537
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:859
 msgid "No repeat"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:547
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:869
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:546
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:868
 msgid "Size"
+msgstr ""
+
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:555
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:877
+msgid "Cover"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:556
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:878
-msgid "Cover"
+msgid "Contain"
 msgstr ""
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:557
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:879
-msgid "Contain"
-msgstr ""
-
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:558
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:880
 msgid "Auto"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:575
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:574
 msgid "Header"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:577
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:576
 msgid "Link Page Header Customization Options"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:583
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:582
 msgid "Title Font Size"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:597
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:596
 msgid "Description Font Size"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:613
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:612
 msgid "Header Text Color"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:621
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:620
 msgid "Set header text color"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:629
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:628
 msgid "Header Background"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:641
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:640
 msgid "Choose header background style"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:654
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:653
 msgid "Set header background color"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1002
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1001
 msgid "List with large thumbnail"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1003
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1002
 msgid "List with small thumbnail"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1004
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1003
 msgid "Grid (2 columns)"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1005
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1004
 msgid "Grid (3 columns)"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1006
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1005
 msgid "Buttons"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1020
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1065
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1019
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1064
 msgid "Layout"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1032
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:86
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1031
+#: pro/includes/admin/statistics/Categories.php:26
 #: templates/admin/categories/edit.php:20
 #: templates/admin/links/edit.php:231
 msgid "Category"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1051
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1050
 msgid "Number of Posts"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1078
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1077
 msgid "Hide Title"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1087
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1086
 msgid "Check to hide title on the frontend"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1389
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1387
 msgid "Please select a form"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1416
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1414
 #, php-format
 msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1436
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1434
 msgid "Plugin"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1458
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1456
 msgid "Form"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1613
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1611
 msgid "Check to add a link of your choice to the image"
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1756
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1754
 msgid "e.g."
 msgstr ""
 
-#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1987
+#: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1985
 msgid "Some social profile fields are not valid. Please correct them."
 msgstr ""
 
@@ -1982,225 +2004,164 @@ msgstr ""
 msgid "Link UTM Parameters Settings"
 msgstr ""
 
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:43
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:61
-msgid "Unknown Category"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:69
-msgid "Edit category"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:70
-msgid "Select category for the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:71
-msgid "Remove category from the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:97
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:88
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:89
-msgid "Nothing to display"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:110
-msgid "Select Category"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:115
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:106
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:105
-msgid "Period"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:134
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:125
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:124
-msgid "Start Date"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:138
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:129
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:128
-msgid "End Date"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:146
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:136
-msgid "Clicks for today"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:149
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:140
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:139
-msgid "from yesterday"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:153
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:143
-msgid "Clicks for this week"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:156
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:147
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:146
-msgid "from last week"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:160
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:150
-msgid "Clicks for this month"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:163
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:154
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:153
-msgid "from last month"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:171
-msgid "Category Clicks Overview"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:180
-msgid "Most Clicked Categories"
-msgstr ""
-
-#: pro/includes/admin/statistics/Category_Clicks_Statistics.php:190
-msgid "Total Categories Clicks"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:41
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:59
-msgid "Unknown Link Page"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:62
-msgid "Select Link Page for the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:63
-msgid "Remove Link Page from the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:77
-#: templates/admin/linkpages/edit.php:73
+#: pro/includes/admin/statistics/Linkpages.php:21
+#: templates/admin/linkpages/edit.php:76
 msgid "Link Page"
 msgstr ""
 
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:101
-msgid "Select Link Page"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:137
-msgid "Views for today"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:144
-msgid "Views for this week"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:151
-msgid "Views for this month"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:162
-msgid "Link Pages Views Overview"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:171
-msgid "Most Viewed Link Pages"
-msgstr ""
-
-#: pro/includes/admin/statistics/Linkpage_Views_Statistics.php:181
-msgid "Total Link Pages Views"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:39
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:56
-msgid "Unknown Link"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:61
-msgid "Edit link"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:62
-msgid "Select link for the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:63
-msgid "Remove link from the statistics"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:100
-msgid "Select Link"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:161
-msgid "Link Clicks Overview"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:170
-msgid "Most Clicked Links"
-msgstr ""
-
-#: pro/includes/admin/statistics/Link_Clicks_Statistics.php:180
-msgid "Total Links Clicks"
-msgstr ""
-
-#: pro/includes/admin/statistics/Statistics.php:46
+#: pro/includes/admin/statistics/Statistics.php:47
 msgid "Today"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:51
+#: pro/includes/admin/statistics/Statistics.php:52
 msgid "Yesterday"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:56
+#: pro/includes/admin/statistics/Statistics.php:57
 msgid "Last 7 Days"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:62
+#: pro/includes/admin/statistics/Statistics.php:63
 msgid "Last 30 Days"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:67
+#: pro/includes/admin/statistics/Statistics.php:68
 msgid "This Month"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:72
+#: pro/includes/admin/statistics/Statistics.php:73
 msgid "Last Month"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:77
+#: pro/includes/admin/statistics/Statistics.php:78
 msgid "This Year"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:82
+#: pro/includes/admin/statistics/Statistics.php:83
 msgid "Last Year"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:85
+#: pro/includes/admin/statistics/Statistics.php:86
 msgid "All Time"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:88
+#: pro/includes/admin/statistics/Statistics.php:89
 msgid "Custom"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:190
+#: pro/includes/admin/statistics/Statistics.php:195
 msgid "No data to display"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:754
+#: pro/includes/admin/statistics/Statistics.php:844
 msgid "Unknown"
 msgstr ""
 
-#: pro/includes/admin/statistics/Statistics.php:758
+#: pro/includes/admin/statistics/Statistics.php:848
 msgid "Total"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:159
+#, php-format
+msgid "Select %s"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:167
+#: pro/includes/admin/statistics/Statistics_Abstract.php:323
+#, php-format
+msgid "Unknown %s"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:178
+msgid "Period"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:197
+msgid "Start Date"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:202
+msgid "End Date"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:212
+msgid "Views for today"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:213
+msgid "Clicks for today"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:218
+msgid "from yesterday"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:224
+msgid "Views for this week"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:225
+msgid "Clicks for this week"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:230
+msgid "from last week"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:236
+msgid "Views for this month"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:237
+msgid "Clicks for this month"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:242
+msgid "from last month"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:251
+#, php-format
+msgid "%s Views Overview"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:252
+#, php-format
+msgid "%s Clicks Overview"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:263
+#, php-format
+msgid "Most Viewed %s"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:264
+#, php-format
+msgid "Most Clicked %s"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:275
+#, php-format
+msgid "Total %s Views"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:276
+#, php-format
+msgid "Total %s Clicks"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:345
+#, php-format
+msgid "Select %s for the statistics"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:351
+#, php-format
+msgid "Remove %s from the statistics"
+msgstr ""
+
+#: pro/includes/admin/statistics/Statistics_Abstract.php:361
+msgid "Nothing to display"
 msgstr ""
 
 #: pro/includes/admin/tracking_codes/Clickwhale_Pro_Tracking_Code_Edit.php:21
@@ -2322,220 +2283,233 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:39
+#: templates/admin/linkpages/edit.php:42
 msgid "No Index"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:40
+#: templates/admin/linkpages/edit.php:43
 msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:43
+#: templates/admin/linkpages/edit.php:46
 msgid "No Follow"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:44
+#: templates/admin/linkpages/edit.php:47
 msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:47
+#: templates/admin/linkpages/edit.php:50
 msgid "No Archive"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:48
+#: templates/admin/linkpages/edit.php:51
 msgid "Do not show a cached link in search results."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:51
+#: templates/admin/linkpages/edit.php:54
 msgid "No Snippet"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:52
+#: templates/admin/linkpages/edit.php:55
 msgid "Do not show a text snippet or video preview in the search results for this page."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:55
+#: templates/admin/linkpages/edit.php:58
 msgid "No Image Index"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:56
+#: templates/admin/linkpages/edit.php:59
 msgid "Do not index images on this page."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:111
+#: templates/admin/linkpages/edit.php:114
 msgid "Link Page Main Settings"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:126
+#: templates/admin/linkpages/edit.php:129
 msgid "Link Page Title"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:162
+#: templates/admin/linkpages/edit.php:165
 msgid "Link Page Slug"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:170
+#: templates/admin/linkpages/edit.php:173
 #: templates/admin/links/edit.php:124
 msgid "Copy url"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:172
+#: templates/admin/linkpages/edit.php:175
 #: templates/admin/links/edit.php:126
 msgid "URL Preview"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:179
+#: templates/admin/linkpages/edit.php:182
 msgid "Page Logo"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:205
-msgid "Max logo size"
+#: templates/admin/linkpages/edit.php:207
+msgid "Max logo size 275 × 275 pixels is recommended. Please use a ratio of 1:1"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:205
-msgid "Please use a ratio of 1:1"
+#: templates/admin/linkpages/edit.php:213
+msgid "Site Icon"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:211
-#: templates/admin/linkpages/edit.php:218
+#: templates/admin/linkpages/edit.php:225
+#: templates/admin/linkpages/edit.php:234
+msgid "Remove Site Icon"
+msgstr ""
+
+#: templates/admin/linkpages/edit.php:238
+msgid "Add custom Site Icon for the current Link Page. It replaces default one only on this page."
+msgstr ""
+
+#: templates/admin/linkpages/edit.php:239
+msgid "Site Icon should be square and at least 512 by 512 pixels."
+msgstr ""
+
+#: templates/admin/linkpages/edit.php:245
+#: templates/admin/linkpages/edit.php:252
 msgid "Legals"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:230
+#: templates/admin/linkpages/edit.php:264
 msgid "Create a Legals Menu"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:307
+#: templates/admin/linkpages/edit.php:341
 msgid "Link Page Customization Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:315
+#: templates/admin/linkpages/edit.php:349
 msgid "Page Text Color"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:322
+#: templates/admin/linkpages/edit.php:356
 msgid "Set page text color"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:333
+#: templates/admin/linkpages/edit.php:367
 msgid "Page Background"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:357
+#: templates/admin/linkpages/edit.php:391
 msgid "Link Page Links Customization Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:363
+#: templates/admin/linkpages/edit.php:397
 msgid "Background Color"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:370
+#: templates/admin/linkpages/edit.php:404
 msgid "Set link background color (normal state)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:377
+#: templates/admin/linkpages/edit.php:411
 msgid "Background Color (hover/active)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:384
+#: templates/admin/linkpages/edit.php:418
 msgid "Set link background color (hover/active)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:391
+#: templates/admin/linkpages/edit.php:425
 msgid "Text Color"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:398
+#: templates/admin/linkpages/edit.php:432
 msgid "Set link text color (normal state)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:405
+#: templates/admin/linkpages/edit.php:439
 msgid "Text Color (hover/active)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:412
+#: templates/admin/linkpages/edit.php:446
 msgid "Set link text color (hover/active)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:422
+#: templates/admin/linkpages/edit.php:456
 msgid "SEO Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:424
+#: templates/admin/linkpages/edit.php:458
 msgid "Link Page SEO Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:429
+#: templates/admin/linkpages/edit.php:463
 msgid "SEO Title"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:436
+#: templates/admin/linkpages/edit.php:470
 msgid "Set page SEO title"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:442
+#: templates/admin/linkpages/edit.php:476
 msgid "SEO Description"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:449
+#: templates/admin/linkpages/edit.php:483
 msgid "Set page SEO description"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:457
+#: templates/admin/linkpages/edit.php:491
 msgid "Robots Meta"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:463
+#: templates/admin/linkpages/edit.php:497
 #, php-format
 msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:507
+#: templates/admin/linkpages/edit.php:541
 msgid "Open Graph Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:509
+#: templates/admin/linkpages/edit.php:543
 msgid "Link Page Open Graph Options"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:514
+#: templates/admin/linkpages/edit.php:548
 msgid "Open Graph Title (Optional)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:521
+#: templates/admin/linkpages/edit.php:555
 msgid "The title of your page for social network. By default this is Link Page title."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:527
+#: templates/admin/linkpages/edit.php:561
 msgid "Open Graph Description (Optional)"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:534
+#: templates/admin/linkpages/edit.php:568
 msgid "The description of your page for social network. By default this is SEO description."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:542
+#: templates/admin/linkpages/edit.php:576
 msgid "Open Graph Image"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:568
-msgid "Recommended image size 1200px * 630px"
+#: templates/admin/linkpages/edit.php:602
+msgid "Recommended image size 1200 × 630 pixels."
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:573
+#: templates/admin/linkpages/edit.php:607
 msgid "Open Graph Preview"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:581
+#: templates/admin/linkpages/edit.php:615
 msgid "View live preview"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:601
+#: templates/admin/linkpages/edit.php:635
 #: templates/admin/tracking-codes/edit.php:443
 msgid "Save"
 msgstr ""
 
-#: templates/admin/linkpages/edit.php:608
+#: templates/admin/linkpages/edit.php:642
 msgid "Reset styles"
 msgstr ""
 

@@ -413,8 +413,9 @@ ion-icon {
 	top: 2px;
 }
 
-.logo-field,
-.og-image-field {
+#lp-tab-settings .logo-field,
+#lp-tab-settings .favicon-field,
+#lp-tab-settings .og-image-field {
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -422,13 +423,15 @@ ion-icon {
 	gap: 5px;
 }
 
-.logo-field a,
-.og-image-field a {
+#lp-tab-settings .logo-field a,
+#lp-tab-settings .favicon-field a,
+#lp-tab-settings .og-image-field a {
 	display: inline-block;
 }
 
-.logo-field img,
-.og-image-field img {
+#lp-tab-settings .logo-field img,
+#lp-tab-settings .favicon-field img,
+#lp-tab-settings .og-image-field img {
 	padding: 5px;
 	border: 1px solid #dcdcde;
 	border-radius: 5px;
@@ -859,6 +862,7 @@ ion-icon {
 .linkpage-row--bottom--control-wrap > div,
 .link-row--bottom--control-wrap > div {
 	width: 100%;
+	min-width: 0;
 }
 
 .linkpage-row--bottom--control-wrap input[type="text"],
@@ -1128,6 +1132,10 @@ ion-icon {
 	border-radius: 5px;
 }
 
+.select2-container {
+	max-width: 25rem;
+}
+
 .select2-container .select2-selection--single {
 	height: 30px;
 }
@@ -1255,6 +1263,23 @@ td > .links-info {
 	color: #41464b;
 }
 
+.clickwhale_form_edit .linkpage-image-remove {
+	color: #dc3232;
+	border-color: transparent;
+	background-color: transparent;
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+.clickwhale_form_edit .linkpage-image-remove:hover {
+	color: #ffebee;
+	border-color: #dc3232;
+	background-color: #dc3232;
+}
+
 .clickwhale_form_edit .error {
 	border-color: #dc3232;
 	background: #ffebee;
@@ -1375,7 +1400,7 @@ table.tracking-codes .column-is_active {
 	padding: 1rem 0 0 0;
 }
 
-.form-field input:disabled + span {
+#lp-tab-settings .form-field input:disabled + span {
 	opacity: .7;
 }
 

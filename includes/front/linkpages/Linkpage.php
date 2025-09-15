@@ -39,7 +39,7 @@ class Linkpage implements Linkpage_Interface {
      */
     private ?WP_Post $wp_post = null;
 
-    public function __construct( string $url, string $title = 'Untitled', string $template = 'page.php', $linkpage = array() ) {
+    public function __construct( string $url = '', string $title = 'Untitled', string $template = 'page.php', $linkpage = array() ) {
         $this->setUrl( $url );
         $this->setTitle( $title );
         $this->setTemplate( $template );

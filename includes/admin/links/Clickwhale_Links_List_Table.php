@@ -105,7 +105,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     public function extra_tablenav( $which ) {
-        if ( $which != "top" ) {
+        if ( $which !== "top" ) {
             return;
         }
 

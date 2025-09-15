@@ -641,10 +641,21 @@ class Clickwhale_Ajax {
             }
             $insert = $wpdb->insert( $links_table, $v );
             if ( $insert ) {
-                $result[] = __( 'Link <strong>&quot;' . $v['title'] . '&quot;</strong> successfully imported!', 'clickwhale' );
+                $message = sprintf( 
+                    /* translators: %s: link title */
+                    __( 'Link <strong>&quot;%s&quot;</strong> successfully imported!', 'clickwhale' ),
+                    $v['title']
+                 );
             } else {
-                $result[] = __( '<strong>Error!</strong> Link <strong>&quot;' . $v['title'] . '&quot;</strong> not imported!', 'clickwhale' );
+                $message = sprintf( 
+                    /* translators: %s: link title */
+                    __( '<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!', 'clickwhale' ),
+                    $v['title']
+                 );
             }
+            $result[] = wp_kses( $message, array(
+                'strong' => array(),
+            ) );
         }
         wp_send_json_success( $result );
     }
@@ -669,11 +680,15 @@ class Clickwhale_Ajax {
         // Disposition / encoding on response body
         header( "Content-Disposition: attachment;filename=clickwhale-links-export-{$date}.csv" );
         header( "Content-Transfer-Encoding: binary" );
+        $allowed_columns = Helper::get_import_default_columns();
         if ( $_POST['columns'] === 'all' ) {
-            $headers = Helper::get_import_default_columns();
+            $headers = $allowed_columns;
         } else {
             $post_columns = (array) $_POST['columns'];
-            $headers = array_map( 'sanitize_text_field', $post_columns );
+            $headers = array_values( array_intersect( $post_columns, $allowed_columns ) );
+        }
+        if ( empty( $headers ) ) {
+            wp_send_json_error( new WP_Error('005', __( 'No valid columns selected', 'clickwhale' )) );
         }
         $cats = '';
         $prepared_categories = array();

@@ -67,6 +67,9 @@ class Clickwhale_Public_Linkpage {
         // Remove Yoast SEO Data
         add_filter( 'wpseo_json_ld_output', '__return_false' );
         add_filter( 'body_class', array( $this, 'linkpage_classes' ) );
+
+        // Replace site icon for link page
+        add_action( 'wp_head', array( $this, 'replace_wp_site_icon' ), 1 );
     }
 
     /**
@@ -217,8 +220,8 @@ class Clickwhale_Public_Linkpage {
         // Image
         $image = esc_url( $this->logo );
 
-        if ( ! empty( $this->post->linkpage['logo'] ) ) {
-            $img_data = wp_get_attachment_image_src( $this->post->linkpage['logo'], 'full' );
+        if ( ! empty( $this->data['logo'] ) ) {
+            $img_data = wp_get_attachment_image_src( $this->data['logo'], 'full' );
 
             if ( is_array( $img_data ) ) {
                 $img_url = esc_url( $img_data[0] );
@@ -237,7 +240,7 @@ class Clickwhale_Public_Linkpage {
     }
 
     /**
-     * Get link Page URL
+     * Get link page URL
      * @return string
      */
     public function get_url(): string {
@@ -245,7 +248,7 @@ class Clickwhale_Public_Linkpage {
     }
 
     /**
-     * Get link Page Title from DB
+     * Get link page Title
      * @return string
      */
     public function get_title(): string {
@@ -253,24 +256,24 @@ class Clickwhale_Public_Linkpage {
     }
 
     /**
-     * Get Link Page Description from DB
+     * Get link page Description
      * @return string
      */
     public function get_desc(): string {
-        return isset( $this->post->linkpage['description'] ) ? wp_kses( wp_unslash( $this->post->linkpage['description'] ),
+        return isset( $this->data['description'] ) ? wp_kses( wp_unslash( $this->data['description'] ),
             wp_kses_allowed_html( 'post' ) ) : '';
     }
 
     /**
+     * Get link page Logo
      * @return string
      */
     public function get_logo(): string {
-
-        if ( empty( $this->post->linkpage['logo'] ) ) {
+        if ( empty( $this->data['logo'] ) ) {
             return '';
         }
 
-        $image_url = wp_get_attachment_image_url( $this->post->linkpage['logo'] );
+        $image_url = wp_get_attachment_image_url( $this->data['logo'] );
 
         if ( ! $image_url ) {
             return '';
@@ -282,7 +285,7 @@ class Clickwhale_Public_Linkpage {
             return '';
         }
 
-        $srcset = wp_get_attachment_image_srcset( $this->post->linkpage['logo'] );
+        $srcset = wp_get_attachment_image_srcset( $this->data['logo'] );
 
         if ( empty( $srcset ) ) {
             $srcset = '';
@@ -341,7 +344,6 @@ class Clickwhale_Public_Linkpage {
         $style = '';
 
         if ( $this->styles ) {
-
             $default_styles = clickwhale()->linkpage->get_defaults()['styles'];
 
             // Validate colors
@@ -400,7 +402,7 @@ class Clickwhale_Public_Linkpage {
         $wp_admin_bar->add_node( array(
                 'id'    => 'edit',
                 'title' => __( 'Edit Link Page', 'clickwhale' ),
-                'href'  => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $this->post->linkpage['id'] ) ),
+                'href'  => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $this->data['id'] ) ),
             )
         );
     }
@@ -441,6 +443,71 @@ class Clickwhale_Public_Linkpage {
             'fallback_cb'     => false,
             'depth'           => 0
         ) );
+    }
+
+    /**
+     * Get link page Site Icon
+     *
+     * @param int $size
+     * @return string
+     */
+    private function get_favicon( int $size = 512 ): string {
+        if ( empty( $this->data['favicon'] ) ) {
+            return '';
+        }
+
+        $url = wp_get_attachment_image_url( $this->data['favicon'], array( $size, $size ) );
+
+        if ( ! $url ) {
+            return '';
+        }
+
+        $url = esc_url( $url );
+
+        if ( '' === $url ) {
+            return '';
+        }
+
+        if ( ! Helper::get_media_file_path( $url ) ) {
+            return '';
+        }
+
+        return $url;
+    }
+
+    /**
+     * Replaces wp site icon with the custom icon at Link page
+     *
+     * @return void
+     */
+    public function replace_wp_site_icon(): void {
+        $default_icon = $this->get_favicon();
+
+        if ( ! $default_icon ) {
+            return;
+        }
+
+        /** @see \WP_Site_Icon()::site_icon_sizes in 'wp-admin/includes/class-wp-site-icon.php' */
+        $sizes = array(
+            32  => '<link rel="icon" href="%s" sizes="32x32" />',
+            192 => '<link rel="icon" href="%s" sizes="192x192" />',
+            180 => '<link rel="apple-touch-icon" href="%s" />',
+            270 => '<meta name="msapplication-TileImage" content="%s" />'
+        );
+        $meta_tags = array();
+
+        foreach ( $sizes as $size => $template ) {
+            $meta_tags[] = sprintf(
+                $template,
+                $this->get_favicon( $size ) ?: $default_icon
+            );
+        }
+
+        remove_action( 'wp_head', 'wp_site_icon', 99 );
+
+        foreach ( $meta_tags as $meta_tag ) {
+            echo "$meta_tag\n";
+        }
     }
 
     public function admin_scripts() {

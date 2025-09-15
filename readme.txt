@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.8
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,13 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.1 (15th September 2025) =
+
+* New: Added option to override default WP favicon on link page
+* Tweak: Use button background and text colors for page text highlighting on link pages
+* Tweak: Improved font sizes for link page headlines
+* Fix: Fixed and optimized data escaping in link export feature
 
 = Version 2.5.0 (18th August 2025) =
 * New: Implemented [REST API](https://github.com/fdmedia-io/clickwhale-developers/blob/master/README.md#available-api-routes) for third-party integration

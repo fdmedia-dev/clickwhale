@@ -28,6 +28,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
             'description'          => '',
             'links'                => '',
             'logo'                 => '',
+            'favicon'              => '',
             'styles'               => array(
                 'bg_color'            => '#fdd231',
                 'text_color'          => '#1a1c1d',
@@ -263,6 +264,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         } ?>
 
         <script type='text/javascript'>
+            /* global wp */
+
             const {createPopup} = window.picmoPopup;
 
             jQuery(document).ready(function(){
@@ -529,80 +532,191 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         }
                     })
 
-                    // LP Logo / OG Image
+                    // `Upload image` button click
                     .on('click', '.linkpage-image-upload', function(e){
                         e.preventDefault();
 
                         const
-                            button = jQuery(this),
-                            custom_uploader = wp.media({
-                                title: 'Insert image',
+                            button = jQuery(this);
+
+                        // Bail if this is `Upload Site Icon` button
+                        if (button.parent('.favicon-field').length){
+                            return;
+                        }
+
+                        const
+                            mediaInput = button.parent().find('input'),
+                            uploader = wp.media({
+                                title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
                                 library: {
                                     type: 'image'
                                 },
                                 button: {
                                     text: '<?php echo esc_js( __( 'Select Image', 'clickwhale' ) ); ?>'
-                                },
-                                multiple: false
-                            }).on('select', function(){
-                                const
-                                    attachment = custom_uploader.state().get('selection').first().toJSON(),
-                                    mediaInput = button.parent().find('input'),
-                                    url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
+                                }
+                            });
 
-                                button.removeClass('button').html('<img src="' + url + '">').next().show();
-                                mediaInput.val(attachment.id).trigger("change");
-                            }).open();
+                        uploader.on('select', function(){
+                            const
+                                attachment = uploader.state().get('selection').first().toJSON(),
+                                url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
+
+                            button
+                                .removeClass('button')
+                                .html('<img src="' + url + '" />')
+                                .next().show();
+
+                            mediaInput
+                                .val(attachment.id)
+                                .trigger('change');
+                        });
+
+                        uploader.open();
                     })
 
+                    /**
+                     * `Upload image` button for LP Site Icon.
+                     * `Initializes media frame for image selecting or cropping
+                     */
+                    .on('click', '.favicon-field .linkpage-image-upload', function(e){
+                        e.preventDefault();
+
+                        const
+                            button = jQuery(this),
+                            mediaInput = button.parent().find('input');
+
+                        let uploader = wp.media({
+                            button: {
+                                text: '<?php echo esc_js( __( 'Select Image', 'clickwhale' ) ); ?>',
+
+                                // Don't close, we might need to crop
+                                close: false
+                            },
+                            states: [
+                                new wp.media.controller.Library({
+                                    title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
+                                    library: wp.media.query({
+                                        type: 'image'
+                                    }),
+                                    date: false,
+                                    suggestedWidth: '512',
+                                    suggestedHeight: '512'
+                                }),
+                                new wp.media.controller.SiteIconCropper({
+                                    control: {
+                                        params: {
+                                            width: '512',
+                                            height: '512'
+                                        }
+                                    },
+                                    imgSelectOptions: calculateImageSelectOptions
+                                })
+                            ]
+                        });
+
+                        uploader
+                            .on('cropped', function(attachment){
+                                button
+                                    .removeClass('button')
+                                    .html('<img src="' + attachment.url + '" />')
+                                    .next().show();
+
+                                mediaInput.val(attachment.id);
+                                uploader.close();
+
+                                // Start over with a fresh frame
+                                uploader = null;
+                            })
+                            .on('select', function(){
+                                const attachment = uploader.state().get('selection').first();
+
+                                if (attachment.attributes.height === 512 &&
+                                    512 === attachment.attributes.width
+                                ){
+                                    button
+                                        .removeClass('button')
+                                        .html('<img src="' + attachment.attributes.url + '" />')
+                                        .next().show();
+
+                                    mediaInput.val(attachment.id);
+                                    uploader.close();
+                                } else {
+                                    uploader.setState('cropper');
+                                }
+                            });
+
+                        uploader.open();
+                    })
+
+                    // `Remove image` button click
                     .on('click', '.linkpage-image-remove', function(e){
                         e.preventDefault();
 
-                        const button = jQuery(this);
+                        const
+                            button = jQuery(this),
+                            uploadBtnText = (button.parent('.favicon-field').length) ?
+                                '<?php echo esc_js( __( 'Upload Site Icon', 'clickwhale' ) ); ?>' :
+                                '<?php echo esc_js( __( 'Upload image', 'clickwhale' ) ); ?>';
 
-                        button.next().val(''); // emptying the hidden field
-                        button.hide().prev().addClass('button').html('<?php echo esc_js( __( 'Upload image', 'clickwhale' ) ); ?>');
+                        button
+                            .next()
+                            .val(''); // emptying the hidden field
 
-                        // OG Remove Image
-                        if (button.closest('#lp-tab-seo').length){
+                        button
+                            .hide()
+                            .prev()
+                                .addClass('button')
+                                .html(uploadBtnText);
+
+                        if (button.parent('.og-image-field').length){
                             disable_ogpreview_button();
                         }
                     })
 
-                    // Row Image
+                    // `Upload image` button for Row Image
                     .on('click', '.linkpage-row--image-upload', function(e){
                         e.preventDefault();
 
                         const
                             button = jQuery(this),
-                            custom_uploader = wp.media({
-                                title: 'Insert image',
+                            uploader = wp.media({
+                                title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
                                 library: {
                                     // uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
                                     type: 'image',
                                 },
                                 button: {
-                                    text: 'Use this image' // button label text
+                                    text: '<?php echo esc_js( __( 'Use this image', 'clickwhale' ) ); ?>'
                                 },
                                 multiple: false
-                            }).on('select', function(){ // it also has "open" and "close" events
-                                const
-                                    attachment = custom_uploader.state().get('selection').first().toJSON(),
-                                    mediaInput = button.parent().find('input'),
-                                    mediaLabel = button.parent().find('label'),
-                                    mediaRemove = button.parent().find('.linkpage-row--image-remove'),
-                                    url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
+                            });
 
-                                mediaLabel.html('<img src="' + url + '" />');
-                                mediaInput.val(attachment.id).trigger("change").prop("checked", true);
-                                mediaRemove.show();
-                            }).open();
+                        uploader.on('select', function(){
+                            const
+                                attachment = uploader.state().get('selection').first().toJSON(),
+                                mediaInput = button.parent().find('input'),
+                                mediaLabel = button.parent().find('label'),
+                                mediaRemove = button.parent().find('.linkpage-row--image-remove'),
+                                url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
+
+                            mediaLabel.html('<img src="' + url + '" />');
+
+                            mediaInput
+                                .val(attachment.id)
+                                .trigger('change')
+                                .prop('checked', true);
+
+                            mediaRemove.show();
+                        });
+
+                        uploader.open();
                     })
 
+                    // `Remove image` button for Row Image
                     .on('click', '.linkpage-row--image-remove', function(e){
                         e.preventDefault();
 
-                        jQuery(this).parent().find('input').val('').prop("checked", false);
+                        jQuery(this).parent().find('input').val('').prop('checked', false);
                         jQuery(this).parent().find('label').html('');
                         jQuery(this).hide();
 
@@ -624,6 +738,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         change_row_image_type(jQuery(this), jQuery(this).data('type'));
                     })
 
+                    // `Reset` button for Row Image
                     .on('click', '.reset-image', function(){
                         const $row = jQuery(this).closest('.linkpage-row');
 
@@ -1218,6 +1333,57 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery('.updated').remove();
                     jQuery('#clickwhale-tabs').tabs('option', 'active', tab);
                     jQuery('html, body').animate({scrollTop: 0}, 'fast');
+                }
+
+                /**
+                 * Calculate image selection options based on the attachment dimensions
+                 *
+                 * @param {Object} attachment Attachment object representing the image
+                 * @return {Object} Image selection options
+                 */
+                function calculateImageSelectOptions(attachment){
+                    const
+                        realWidth = attachment.get('width'),
+                        realHeight = attachment.get('height');
+
+                    let
+                        xInit = 512,
+                        yInit = 512,
+                        ratio = xInit / yInit,
+                        xImg = xInit,
+                        yImg = yInit,
+                        x1,
+                        y1,
+                        imgSelectOptions;
+
+                    if (realWidth / realHeight > ratio) {
+                        yInit = realHeight;
+                        xInit = yInit * ratio;
+                    } else {
+                        xInit = realWidth;
+                        yInit = xInit / ratio;
+                    }
+
+                    x1 = (realWidth - xInit) / 2;
+                    y1 = (realHeight - yInit) / 2;
+
+                    imgSelectOptions = {
+                        aspectRatio: xInit + ':' + yInit,
+                        handles: true,
+                        keys: true,
+                        instance: true,
+                        persistent: true,
+                        imageWidth: realWidth,
+                        imageHeight: realHeight,
+                        minWidth: xImg > xInit ? xInit : xImg,
+                        minHeight: yImg > yInit ? yInit : yImg,
+                        x1: x1,
+                        y1: y1,
+                        x2: xInit + x1,
+                        y2: yInit + y1,
+                    };
+
+                    return imgSelectOptions;
                 }
             });
         </script>

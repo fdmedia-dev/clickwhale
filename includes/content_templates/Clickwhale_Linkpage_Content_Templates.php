@@ -320,10 +320,15 @@ class Clickwhale_Linkpage_Content_Templates {
                                 <?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : get_the_title( $data['post_id'] ); ?>
                                 <?php echo ( $post_status != 'publish' ) ? '(' . $post_status . ')' : ''; ?>
                             </strong>
-                            <span><?php echo __( 'Original', 'clickwhale' ) . ' ' . $post_type_singular . ': '; ?>
-                                <a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ); ?>"
-                                   target="_blank"
-                                   rel="noopener"
+                            <span><?php
+                                printf(
+                                /* translators: %s: singular post type */
+                                    __( 'Original %1$s: ', 'clickwhale' ),
+                                    $post_type_singular
+                                );
+                                ?><a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ); ?>"
+                                     target="_blank"
+                                     rel="noopener"
                                 ><?php echo get_the_title( $data['post_id'] ); ?></a>
                             </span>
                         <?php } ?>
@@ -638,10 +643,10 @@ class Clickwhale_Linkpage_Content_Templates {
             ?>
             <div class="linkpage-public-row linkpage-public-row--cw_heading">
                 <?php if ( ! empty( $args['data']['title'] ) ) { ?>
-                    <h2><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
+                    <h2 class="linkpage-row--title"><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
                 <?php } ?>
                 <?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
-                    <p><?php echo esc_html( wp_unslash( $args['data']['subtitle'] ) ); ?></p>
+                    <p class="linkpage-row--subtitle"><?php echo esc_html( wp_unslash( $args['data']['subtitle'] ) ); ?></p>
                 <?php } ?>
             </div>
         <?php } ?>

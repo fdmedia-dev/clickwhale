@@ -31,7 +31,7 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
     }
 
     function dispatch( bool $bool, object $wp ): bool {
-        if ( $this->checkRequest() /*&& $this->matched instanceof Linkpage*/ ) {
+        if ( $this->checkRequest() && $this->matched instanceof Linkpage ) {
             $this->loader->init( $this->matched );
             $wp->virtual_page = $this->matched;
             do_action( 'parse_request', $wp );
