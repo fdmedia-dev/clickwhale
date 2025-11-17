@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
 Tested up to: 6.8
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,11 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.2 (17th November 2025) =
+
+* Fix: Resolved entity insert failure under certain SQL mode configurations
+* Info: WordPress v6.8.3 compatibility
 
 = Version 2.5.1 (15th September 2025) =
 

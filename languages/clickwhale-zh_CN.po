@@ -96,9 +96,9 @@ msgstr "链接计数"
 msgid "No Categories Found"
 msgstr "找不到类别"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:74
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1006
-#: includes/admin/links/Clickwhale_Link_Edit.php:306
+#: includes/admin/categories/Clickwhale_Category_Edit.php:75
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1007
+#: includes/admin/links/Clickwhale_Link_Edit.php:307
 msgid "Please enter title"
 msgstr "请输入标题！"
 
@@ -709,20 +709,20 @@ msgstr "分隔符"
 msgid "No Menu"
 msgstr "无菜单"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:300
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:301
 msgid "Select Content Type"
 msgstr "选择内容类型"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:362
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:363
 msgid "Select Item"
 msgstr "选择项目"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:555
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:590
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:556
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:591
 msgid "Select Image"
 msgstr "选择图像"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:660
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:880
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:480
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:802
@@ -732,20 +732,20 @@ msgstr "选择图像"
 msgid "Upload image"
 msgstr "上传图片"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:90
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:983
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1015
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1027
-#: includes/admin/links/Clickwhale_Link_Edit.php:277
-#: includes/admin/links/Clickwhale_Link_Edit.php:316
-#: includes/admin/links/Clickwhale_Link_Edit.php:332
+#: includes/admin/categories/Clickwhale_Category_Edit.php:91
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:984
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1016
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1028
+#: includes/admin/links/Clickwhale_Link_Edit.php:278
+#: includes/admin/links/Clickwhale_Link_Edit.php:317
+#: includes/admin/links/Clickwhale_Link_Edit.php:333
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:379
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:393
 #, fuzzy
 msgid "Please enter slug"
 msgstr "请输入标题"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1119
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1120
 #, fuzzy
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
 msgstr "你确定吗？此操作将把 CSS 样式设置为默认。此过程无法撤销！"
@@ -820,7 +820,7 @@ msgstr "目标网址"
 msgid "No Links Found"
 msgstr "未找到链接"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:379
+#: includes/admin/links/Clickwhale_Link_Edit.php:380
 msgid "Please enter URL"
 msgstr "请输入网址"
 
@@ -1013,12 +1013,12 @@ msgstr "EDD 转换"
 msgid "All"
 msgstr "所有"
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:340
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:341
 #, fuzzy
 msgid "Select Code position"
 msgstr "选择代码位置"
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:346
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:347
 #, fuzzy
 msgid "Select"
 msgstr "选择"
@@ -2699,21 +2699,21 @@ msgstr "决定谁可以访问插件管理页面。"
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "你喜欢 ClickWhale 吗？那么请 <a href=\"%s\" target=\"_blank\">在这里留下评论</a>"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:92
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:985
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1029
+#: includes/admin/categories/Clickwhale_Category_Edit.php:93
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:986
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1030
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)"
 msgstr "允许的字母数字字符（a...z, A...Z, 0...9），下划线 (_) 和破折号 (-)"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:106
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1043
+#: includes/admin/categories/Clickwhale_Category_Edit.php:107
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:408
 #, php-format
 msgid "This slug is already used in %1$s (%2$s ID: %d)"
 msgstr "此别名已在 %1$s 中使用（%2$s ID: %d）"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:107
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
+#: includes/admin/categories/Clickwhale_Category_Edit.php:108
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1045
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:409
 msgid "Please enter another slug"
 msgstr "请输入另一个别名"
@@ -2736,17 +2736,17 @@ msgstr "编辑跟踪代码"
 msgid "Edit \"%1$s\" %2$s"
 msgstr "编辑 \"%1$s\" %2$s"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1296
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1297
 msgid "Please save the page to view Open Graph preview"
 msgstr "请保存页面以查看 Open Graph 预览"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:279
-#: includes/admin/links/Clickwhale_Link_Edit.php:334
+#: includes/admin/links/Clickwhale_Link_Edit.php:280
+#: includes/admin/links/Clickwhale_Link_Edit.php:335
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:395
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator"
 msgstr "允许的字母数字字符（a...z, A...Z, 0...9），下划线 (_) 和破折号 (-)，可选的斜杠 (/) 作为分隔符"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:361
+#: includes/admin/links/Clickwhale_Link_Edit.php:362
 #, php-format
 msgid "This slug is already used in %1$s"
 msgstr "此别名已在 %1$s 中使用"
@@ -2831,7 +2831,7 @@ msgstr "链接描述"
 msgid "Link categories"
 msgstr "链接类别"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1063
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1064
 msgid "Some content block fields are not valid. Please correct them or remove the blocks."
 msgstr "某些内容块字段无效。请更正或删除这些块。"
 
@@ -2899,21 +2899,21 @@ msgstr "操作"
 msgid "This link could not be found on any posts or pages."
 msgstr "在任何帖子或页面上找不到此链接。"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:352
+#: includes/admin/links/Clickwhale_Link_Edit.php:353
 #, php-format
 msgid "ID: %s, "
 msgstr "ID: %s,"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:356
+#: includes/admin/links/Clickwhale_Link_Edit.php:357
 #, php-format
 msgid "type: %s."
 msgstr "类型: %s。"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:357
+#: includes/admin/links/Clickwhale_Link_Edit.php:358
 msgid "by WordPress (core, theme, plugin or rewrite rules)."
 msgstr "由WordPress（核心、主题、插件或重写规则）提供。"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:365
+#: includes/admin/links/Clickwhale_Link_Edit.php:366
 msgid "Please enter another slug."
 msgstr "请输入另一个标识符。"
 
@@ -2968,18 +2968,18 @@ msgstr "<strong>错误！</strong> 链接 <strong>&quot;%s&quot;</strong> 未导
 msgid "No valid columns selected"
 msgstr "未选择有效的列"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:550
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:597
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:683
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:551
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:598
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:684
 msgid "Insert Image"
 msgstr "插入图片"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:658
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
 #: templates/admin/linkpages/edit.php:230
 msgid "Upload Site Icon"
 msgstr "上传网站图标"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:689
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:690
 msgid "Use this image"
 msgstr "使用此图片"
 
@@ -2987,7 +2987,7 @@ msgstr "使用此图片"
 #. translators: %s: singular post type
 #, php-format
 msgid "Original %1$s: "
-msgstr "原始 %1$s: "
+msgstr "原始 %1$s:"
 
 #: pro/includes/admin/statistics/Statistics_Abstract.php:159
 #, php-format

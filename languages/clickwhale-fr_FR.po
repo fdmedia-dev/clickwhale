@@ -95,9 +95,9 @@ msgstr "Nombre de liens"
 msgid "No Categories Found"
 msgstr "Pas de catégories trouvées"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:74
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1006
-#: includes/admin/links/Clickwhale_Link_Edit.php:306
+#: includes/admin/categories/Clickwhale_Category_Edit.php:75
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1007
+#: includes/admin/links/Clickwhale_Link_Edit.php:307
 msgid "Please enter title"
 msgstr "Renseigner un titre"
 
@@ -713,20 +713,20 @@ msgstr "Séparateur"
 msgid "No Menu"
 msgstr "Pas de menu"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:300
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:301
 msgid "Select Content Type"
 msgstr "Sélectionner le type de contenu"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:362
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:363
 msgid "Select Item"
 msgstr "Sélectionnez l'Article"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:555
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:590
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:556
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:591
 msgid "Select Image"
 msgstr "Sélectionner une image"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:660
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:880
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:480
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:802
@@ -736,20 +736,20 @@ msgstr "Sélectionner une image"
 msgid "Upload image"
 msgstr "Télécharger une image"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:90
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:983
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1015
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1027
-#: includes/admin/links/Clickwhale_Link_Edit.php:277
-#: includes/admin/links/Clickwhale_Link_Edit.php:316
-#: includes/admin/links/Clickwhale_Link_Edit.php:332
+#: includes/admin/categories/Clickwhale_Category_Edit.php:91
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:984
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1016
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1028
+#: includes/admin/links/Clickwhale_Link_Edit.php:278
+#: includes/admin/links/Clickwhale_Link_Edit.php:317
+#: includes/admin/links/Clickwhale_Link_Edit.php:333
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:379
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:393
 #, fuzzy
 msgid "Please enter slug"
 msgstr "Saisis ton nom de domaine (slug)"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1119
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1120
 #, fuzzy
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
 msgstr "Es-tu sûr ? Cette action va définir les styles CSS par défaut. Ce processus ne peut pas être annulé !"
@@ -824,7 +824,7 @@ msgstr "URL cible"
 msgid "No Links Found"
 msgstr "Aucun lien trouvé"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:379
+#: includes/admin/links/Clickwhale_Link_Edit.php:380
 msgid "Please enter URL"
 msgstr "Merci de saisir l'URL"
 
@@ -1023,12 +1023,12 @@ msgstr "Conversion EDD"
 msgid "All"
 msgstr "Tout"
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:340
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:341
 #, fuzzy
 msgid "Select Code position"
 msgstr "Sélectionne la position du code"
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:346
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:347
 msgid "Select"
 msgstr "Sélectionner"
 
@@ -2730,21 +2730,21 @@ msgstr "Décidez qui peut accéder aux pages d'administration des plugins."
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "Vous aimez ClickWhale ? Alors veuillez <a href=\"%s\" target=\"_blank\">laisser un avis ici</a>"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:92
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:985
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1029
+#: includes/admin/categories/Clickwhale_Category_Edit.php:93
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:986
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1030
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)"
 msgstr "Caractères alphanumériques autorisés (a...z, A...Z, 0...9), tiret bas (_) et tiret (-)"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:106
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1043
+#: includes/admin/categories/Clickwhale_Category_Edit.php:107
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:408
 #, php-format
 msgid "This slug is already used in %1$s (%2$s ID: %d)"
 msgstr "Ce slug est déjà utilisé dans %1$s (ID %2$s : %d)"
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:107
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
+#: includes/admin/categories/Clickwhale_Category_Edit.php:108
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1045
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:409
 msgid "Please enter another slug"
 msgstr "Veuillez entrer un autre slug"
@@ -2767,19 +2767,19 @@ msgstr "Modifier le code de suivi"
 msgid "Edit \"%1$s\" %2$s"
 msgstr "Modifier \"%1$s\" %2$s"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1296
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1297
 msgid "Please save the page to view Open Graph preview"
 msgstr "Veuillez enregistrer la page pour voir l'aperçu Open Graph"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:279
-#: includes/admin/links/Clickwhale_Link_Edit.php:334
+#: includes/admin/links/Clickwhale_Link_Edit.php:280
+#: includes/admin/links/Clickwhale_Link_Edit.php:335
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:395
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator"
 msgstr ""
 "Caractères alphanumériques autorisés (a...z, A...Z, 0...9), tiret bas (_) et tiret (-), avec une barre oblique (/) "
 "optionnelle comme séparateur"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:361
+#: includes/admin/links/Clickwhale_Link_Edit.php:362
 #, php-format
 msgid "This slug is already used in %1$s"
 msgstr "Ce slug est déjà utilisé dans %1$s"
@@ -2864,7 +2864,7 @@ msgstr "Description du lien"
 msgid "Link categories"
 msgstr "Catégories de lien"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1063
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1064
 msgid "Some content block fields are not valid. Please correct them or remove the blocks."
 msgstr "Certains champs de bloc de contenu ne sont pas valides. Veuillez les corriger ou supprimer les blocs."
 
@@ -2932,21 +2932,21 @@ msgstr "Actions"
 msgid "This link could not be found on any posts or pages."
 msgstr "Ce lien n'a pu être trouvé sur aucun article ou page."
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:352
+#: includes/admin/links/Clickwhale_Link_Edit.php:353
 #, php-format
 msgid "ID: %s, "
 msgstr "ID : %s,"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:356
+#: includes/admin/links/Clickwhale_Link_Edit.php:357
 #, php-format
 msgid "type: %s."
 msgstr "type : %s."
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:357
+#: includes/admin/links/Clickwhale_Link_Edit.php:358
 msgid "by WordPress (core, theme, plugin or rewrite rules)."
 msgstr "par WordPress (noyau, thème, plugin ou règles de réécriture)."
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:365
+#: includes/admin/links/Clickwhale_Link_Edit.php:366
 msgid "Please enter another slug."
 msgstr "Veuillez entrer un autre slug."
 
@@ -3003,18 +3003,18 @@ msgstr "<strong>Erreur !</strong> Le lien <strong>&quot;%s&quot;</strong> n'a pa
 msgid "No valid columns selected"
 msgstr "Aucune colonne valide sélectionnée"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:550
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:597
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:683
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:551
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:598
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:684
 msgid "Insert Image"
 msgstr "Insérer une image"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:658
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
 #: templates/admin/linkpages/edit.php:230
 msgid "Upload Site Icon"
 msgstr "Télécharger l'icône du site"
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:689
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:690
 msgid "Use this image"
 msgstr "Utiliser cette image"
 
@@ -3022,7 +3022,7 @@ msgstr "Utiliser cette image"
 #. translators: %s: singular post type
 #, php-format
 msgid "Original %1$s: "
-msgstr "Original %1$s : "
+msgstr "Original %1$s :"
 
 #: pro/includes/admin/statistics/Statistics_Abstract.php:159
 #, php-format

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-15T13:35:31+00:00\n"
+"POT-Creation-Date: 2025-11-17T18:01:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clickwhale\n"
@@ -91,39 +91,39 @@ msgstr ""
 msgid "No Categories Found"
 msgstr ""
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:74
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1006
-#: includes/admin/links/Clickwhale_Link_Edit.php:306
+#: includes/admin/categories/Clickwhale_Category_Edit.php:75
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1007
+#: includes/admin/links/Clickwhale_Link_Edit.php:307
 msgid "Please enter title"
 msgstr ""
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:90
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:983
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1015
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1027
-#: includes/admin/links/Clickwhale_Link_Edit.php:277
-#: includes/admin/links/Clickwhale_Link_Edit.php:316
-#: includes/admin/links/Clickwhale_Link_Edit.php:332
+#: includes/admin/categories/Clickwhale_Category_Edit.php:91
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:984
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1016
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1028
+#: includes/admin/links/Clickwhale_Link_Edit.php:278
+#: includes/admin/links/Clickwhale_Link_Edit.php:317
+#: includes/admin/links/Clickwhale_Link_Edit.php:333
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:379
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:393
 msgid "Please enter slug"
 msgstr ""
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:92
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:985
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1029
+#: includes/admin/categories/Clickwhale_Category_Edit.php:93
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:986
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1030
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)"
 msgstr ""
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:106
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1043
+#: includes/admin/categories/Clickwhale_Category_Edit.php:107
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:408
 #, php-format
 msgid "This slug is already used in %1$s (%2$s ID: %d)"
 msgstr ""
 
-#: includes/admin/categories/Clickwhale_Category_Edit.php:107
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1044
+#: includes/admin/categories/Clickwhale_Category_Edit.php:108
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1045
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:409
 msgid "Please enter another slug"
 msgstr ""
@@ -807,31 +807,31 @@ msgstr ""
 msgid "No Menu"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:300
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:301
 msgid "Select Content Type"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:362
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:363
 msgid "Select Item"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:550
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:597
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:683
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:551
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:598
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:684
 msgid "Insert Image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:555
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:590
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:556
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:591
 msgid "Select Image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:658
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
 #: templates/admin/linkpages/edit.php:230
 msgid "Upload Site Icon"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:659
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:660
 #: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:880
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:480
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:802
@@ -841,19 +841,19 @@ msgstr ""
 msgid "Upload image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:689
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:690
 msgid "Use this image"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1063
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1064
 msgid "Some content block fields are not valid. Please correct them or remove the blocks."
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1119
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1120
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
 msgstr ""
 
-#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1296
+#: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1297
 msgid "Please save the page to view Open Graph preview"
 msgstr ""
 
@@ -988,36 +988,36 @@ msgstr ""
 msgid "This link could not be found on any posts or pages."
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:279
-#: includes/admin/links/Clickwhale_Link_Edit.php:334
+#: includes/admin/links/Clickwhale_Link_Edit.php:280
+#: includes/admin/links/Clickwhale_Link_Edit.php:335
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:395
 msgid "Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:352
+#: includes/admin/links/Clickwhale_Link_Edit.php:353
 #, php-format
 msgid "ID: %s, "
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:356
+#: includes/admin/links/Clickwhale_Link_Edit.php:357
 #, php-format
 msgid "type: %s."
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:357
+#: includes/admin/links/Clickwhale_Link_Edit.php:358
 msgid "by WordPress (core, theme, plugin or rewrite rules)."
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:361
+#: includes/admin/links/Clickwhale_Link_Edit.php:362
 #, php-format
 msgid "This slug is already used in %1$s"
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:365
+#: includes/admin/links/Clickwhale_Link_Edit.php:366
 msgid "Please enter another slug."
 msgstr ""
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:379
+#: includes/admin/links/Clickwhale_Link_Edit.php:380
 msgid "Please enter URL"
 msgstr ""
 
@@ -1190,11 +1190,11 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:340
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:341
 msgid "Select Code position"
 msgstr ""
 
-#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:346
+#: includes/admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php:347
 msgid "Select"
 msgstr ""
 

@@ -141,6 +141,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
             $this->set_transient( $id, 'updated' );
 
         } else {
+            unset( $item['id'] );
             $wpdb->insert(
                 $this->links_table,
                 $item

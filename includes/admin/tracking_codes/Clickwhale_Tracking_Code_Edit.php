@@ -319,6 +319,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
             $this->set_transient( $id, 'updated' );
 
         } else {
+            unset( $item['id'] );
             $wpdb->insert(
                 $tracking_codes_table,
                 $item
