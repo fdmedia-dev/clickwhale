@@ -17,18 +17,17 @@ class Clickwhale_Export {
     public function export_settings() {
         add_settings_section(
             'clickwhale_tools_export_section',
-            __( 'Export links to a CSV file', 'clickwhale' ),
+            esc_html__( 'Export links to a CSV file', 'clickwhale' ),
             array( $this, 'settings_section_callback' ),
             'clickwhale_tools_export_settings',
             array(
-                'text' => __(
-                    'This tool allows you to generate and download a CSV file containing a list of all links.', 'clickwhale' ),
+                'text' => esc_html__( 'This tool allows you to generate and download a CSV file containing a list of all links.', 'clickwhale' )
             )
         );
 
         add_settings_field(
             'export_columns',
-            __( 'Filter columns', 'clickwhale' ),
+            esc_html__( 'Filter columns', 'clickwhale' ),
             array( $this, 'export_columns_callback' ),
             'clickwhale_tools_export_settings',
             'clickwhale_tools_export_section'
@@ -36,7 +35,7 @@ class Clickwhale_Export {
 
         add_settings_field(
             'export_categories',
-            __( 'Filter categories', 'clickwhale' ),
+            esc_html__( 'Filter categories', 'clickwhale' ),
             array( $this, 'export_categories_callback' ),
             'clickwhale_tools_export_settings',
             'clickwhale_tools_export_section'
@@ -44,15 +43,26 @@ class Clickwhale_Export {
 
         register_setting(
             'clickwhale_tools_export_settings',
-            'clickwhale_tools_export_settings'
+            'clickwhale_tools_export_settings',
+            array( 'sanitize_callback' => '__return_empty_string' )
         );
+    }
+
+    public static function settings_section_callback( $args ) {
+        ?>
+        <p><?php echo esc_html( $args['text'] ); ?></p>
+        <?php
     }
 
     public function export_columns_callback() {
         $select = '<select id="select_columns" class="clickwhale-select" multiple>';
-        $select .= '<option selected value="0">' . __( 'Export all columns', 'clickwhale' ) . '</option>';
+        $select .= '<option selected value="0">' . esc_html__( 'Export all columns', 'clickwhale' ) . '</option>';
         foreach ( Helper::get_import_default_columns() as $option ) {
-            $select .= '<option value="' . esc_attr( $option ) . '">' . esc_html( $option ) . '</option>';
+            $select .= sprintf(
+                '<option value="%1$s">%2$s</option>',
+                esc_attr( $option ),
+                esc_html( $option )
+            );
         }
         $select .= '</select>';
 
@@ -64,20 +74,20 @@ class Clickwhale_Export {
 
         if ( $categories ) {
             $select = '<select id="select_categories" class="clickwhale-select" multiple>';
-            $select .= '<option selected value="0">' . __( 'Export all categories', 'clickwhale' ) . '</option>';
+            $select .= '<option selected value="0">' . esc_html__( 'Export all categories', 'clickwhale' ) . '</option>';
             foreach ( $categories as $category ) {
-                $select .= '<option value="' . esc_attr( $category['id'] ) . '">' . esc_html( $category['title'] ) . '</option>';
+                $select .= sprintf(
+                    '<option value="%1$s">%2$s</option>',
+                    esc_attr( $category['id'] ),
+                    esc_html( $category['title'] )
+                );
             }
             $select .= '</select>';
 
             echo $select;
         } else {
-            _e( 'No categories', 'clickwhale' );
+            esc_html_e( 'No categories', 'clickwhale' );
         }
-    }
-
-    public static function settings_section_callback( $args ) {
-        echo '<p>' . $args['text'] . '</p>';
     }
 
     public function admin_scripts() {
@@ -96,11 +106,11 @@ class Clickwhale_Export {
                     selectCategories = jQuery('#select_categories');
 
                 selectColumns.select2({
-                    placeholder: "<?php _e( 'Select columns you want to export', 'clickwhale' ); ?>"
+                    placeholder: <?php echo wp_json_encode( __( 'Select columns you want to export', 'clickwhale' ) ); ?>
                 });
 
                 selectCategories.select2({
-                    placeholder: "<?php _e( 'Select categories you want to export', 'clickwhale' ); ?>"
+                    placeholder: <?php echo wp_json_encode( __( 'Select categories you want to export', 'clickwhale' ) ); ?>
                 });
 
                 jQuery('#clickwhale_tools_export select').on('select2:select', function(e) {
@@ -168,7 +178,7 @@ class Clickwhale_Export {
                             alert('Error code: ' + response.data[0].code + '. ' + response.data[0].message);
                         }
                     }).fail(function(xhr, textStatus, errorThrown){
-                        alert('<?php echo esc_js( __( 'An error occurred, try changing the request', 'clickwhale' ) ); ?>');
+                        alert(<?php echo wp_json_encode( __( 'An error occurred, try changing the request', 'clickwhale' ) ); ?>);
                     });
                 });
             });

@@ -199,50 +199,52 @@ class Clickwhale_Migration {
                 continue;
             }
 
+            $slug = $item['slug'];
             $options = get_option( $this->options );
 
             add_settings_section(
-                'clickwhale_tools_migration_' . $item['slug'] . '_section',
+                'clickwhale_tools_migration_' . $slug . '_section',
                 $item['name'],
                 function () use ( $item ) {
                     $this->migration_settings_section_callback( $item );
                 },
-                'clickwhale_tools_' . $item['slug'] . '_migration_options'
+                'clickwhale_tools_' . $slug . '_migration_options'
             );
 
             add_settings_field(
-                "{$item['slug']}_categories",
-                __( 'Categories', 'clickwhale' ),
+                "{$slug}_categories",
+                esc_html__( 'Categories', 'clickwhale' ),
                 array( $this, 'render_controls' ),
-                "clickwhale_tools_{$item['slug']}_migration_options",
-                "clickwhale_tools_migration_{$item['slug']}_section",
+                "clickwhale_tools_{$slug}_migration_options",
+                "clickwhale_tools_migration_{$slug}_section",
                 array(
                     'control' => 'checkbox',
-                    'id'      => "{$item['slug']}_categories",
-                    'name'    => "$this->options[{$item['slug']}_categories]",
-                    'value'   => ! empty( $options[$item['slug'] . '_categories'] ) ? 1 : 0,
-                    'label'   => __( 'Migrate categories', 'clickwhale' ),
+                    'id'      => "{$slug}_categories",
+                    'name'    => "$this->options[{$slug}_categories]",
+                    'value'   => ! empty( $options[$slug . '_categories'] ) ? 1 : 0,
+                    'label'   => esc_html__( 'Migrate categories', 'clickwhale' )
                 )
             );
 
             add_settings_field(
-                "{$item['slug']}_links",
-                __( 'Links', 'clickwhale' ),
+                "{$slug}_links",
+                esc_html__( 'Links', 'clickwhale' ),
                 array( $this, 'render_controls' ),
-                "clickwhale_tools_{$item['slug']}_migration_options",
-                "clickwhale_tools_migration_{$item['slug']}_section",
+                "clickwhale_tools_{$slug}_migration_options",
+                "clickwhale_tools_migration_{$slug}_section",
                 array(
                     'control' => 'checkbox',
-                    'id'      => "{$item['slug']}_links",
-                    'name'    => "$this->options[{$item['slug']}_links]",
-                    'value'   => ! empty( $options[$item['slug'] . '_links'] ) ? 1 : 0,
-                    'label'   => __( 'Migrate links', 'clickwhale' ),
+                    'id'      => "{$slug}_links",
+                    'name'    => "$this->options[{$slug}_links]",
+                    'value'   => ! empty( $options[$slug . '_links'] ) ? 1 : 0,
+                    'label'   => esc_html__( 'Migrate links', 'clickwhale' )
                 )
             );
 
             register_setting(
-                'clickwhale_tools_' . $item['slug'] . '_migration_options',
-                'clickwhale_tools_' . $item['slug'] . '_migration_options'
+                'clickwhale_tools_' . $slug . '_migration_options',
+                'clickwhale_tools_' . $slug . '_migration_options',
+                array( 'sanitize_callback' => '__return_empty_string' )
             );
         }
     }
@@ -251,24 +253,50 @@ class Clickwhale_Migration {
      * This function provides a simple description for the Options section
      */
     public function migration_settings_section_callback( $item ) {
-        $data         = $this->get_plugin_data( $item['slug'] );
-        $options      = get_option( $this->last_migration );
-        $allowed_html = wp_kses_allowed_html( 'post' );
+        $data            = $this->get_plugin_data( $item['slug'] );
+        $options         = get_option( $this->last_migration );
         $links           = $data['links'] ? intval( $data['links'] ) : 0;
-        $links_text      = $data['links'] > 1 ? __( 'links', 'clickwhale' ) : __( 'link', 'clickwhale' );
+        $links_text      = $links === 1 ? __( 'link', 'clickwhale' ) : __( 'links', 'clickwhale' );
         $categories      = $data['categories'] ? intval( $data['categories'] ) : 0;
-        $categories_text = $data['categories'] > 1 ? __( 'categories', 'clickwhale' ) : __( 'category', 'clickwhale' );
-        $result = $data['links'] || $data['categories']
-            ? sprintf( __( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
-                $categories, $categories_text, $links, $links_text ) . '<br>'
-            : '';
-        $result .= ! empty( $options[$item['slug'] . '_last_migration'] )
-            ? sprintf( __( 'Last migration at %1$s', 'clickwhale' ),
-                $options[$item['slug'] . '_last_migration'] ) . '<br>'
-            : '';
-        $result .= sprintf( __( 'Set what you want to migrate from %s to CLickWhale', 'clickwhale' ), $item['name'] );
+        $categories_text = $categories === 1 ? __( 'category', 'clickwhale' ) : __( 'categories', 'clickwhale' );
+
+        if ( $links || $categories ) {
+            ?>
+            <p>
+                <?php
+                printf(
+                    esc_html__( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
+                    esc_html( $categories ),
+                    esc_html( $categories_text ),
+                    esc_html( $links ),
+                    esc_html( $links_text )
+                );
+                ?>
+            </p>
+            <?php
+        }
+
+        if ( ! empty( $options[$item['slug'] . '_last_migration'] ) ) {
+            ?>
+            <p>
+                <?php
+                printf(
+                    esc_html__( 'Last migration at %s', 'clickwhale' ),
+                    esc_html( $options[ $item['slug'] . '_last_migration' ] )
+                );
+                ?>
+            </p>
+            <?php
+        }
         ?>
-        <p><?php echo wp_kses( $result, $allowed_html ); ?></p>
+        <p>
+            <?php
+            printf(
+                esc_html__( 'Set what you want to migrate from %s to CLickWhale', 'clickwhale' ),
+                esc_html( $item['name'] )
+            );
+            ?>
+        </p>
         <?php
     }
 
@@ -360,10 +388,15 @@ class Clickwhale_Migration {
                             jQuery(migrationSpinner).removeClass("is-active");
 
                             if ('object' === typeof result.data){
-                                jQuery(migrationResult).append('<br>' +
-                                    '<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ); ?>" class="button-primary"> ' +
-                                    '<?php echo esc_js( __( 'Get started with ClickWhale now', 'clickwhale' ) ); ?>' +
-                                    '</a>');
+                                jQuery(migrationResult).append(
+                                    <?php echo wp_json_encode(
+                                        sprintf(
+                                            '<br><a href="%1$s" class="button-primary">%2$s</a>',
+                                            esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ),
+                                            esc_html__( 'Get started with ClickWhale now', 'clickwhale' )
+                                        )
+                                    ); ?>
+                                );
                             }
                         }
                     });

@@ -39,10 +39,10 @@ abstract class Helper_Abstract {
      * Filter function
      * return number of available items
      *
-     * @return mixed|void
+     * @return int
      * @since 1.6.0
      */
-    public static function get_limit() {
+    public static function get_limit(): int {
         return apply_filters( 'clickwhale_' . static::$plural . '_limit', static::$limit );
     }
 

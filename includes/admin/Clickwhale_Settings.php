@@ -86,8 +86,7 @@ final class Clickwhale_Settings {
         $general_options      = get_option( 'clickwhale_general_options' );
         $tracking_options     = get_option( 'clickwhale_tracking_options' );
         $link_manager_options = get_option( 'clickwhale_link_manager_options' );
-
-        $current_user_roles = $this->user->get_current_user_roles();
+        $current_user_roles   = $this->user->get_current_user_roles();
         $always_checked_roles = array( 'administrator' );
 
         $slug = ( ! empty( $link_manager_options['slug'] ) ) ? esc_attr( wp_unslash( $link_manager_options['slug'] ) ) : $defaults['link_manager']['options']['slug'];
@@ -95,23 +94,35 @@ final class Clickwhale_Settings {
         if ( $defaults ) {
             // Register settings sections
             foreach ( $defaults as $k => $v ) {
+                $option_name = 'clickwhale_' . $k . '_options';
+                $callback = 'sanitize_' . $k . '_options';
+
+                if ( ! method_exists( $this, $callback ) ) {
+                    $callback = 'sanitize_passthrough_options';
+                }
+
                 add_settings_section(
                     $k . '_settings_section',
                     $v['name'],
                     array( $this, 'settings_section_callback' ),
-                    'clickwhale_' . $k . '_options',
+                    $option_name,
                     array( 'text' => $v['text'] )
                 );
+
                 register_setting(
-                    'clickwhale_' . $k . '_options',
-                    'clickwhale_' . $k . '_options'
+                    $option_name,
+                    $option_name,
+                    array(
+                        'sanitize_callback' => array( $this, $callback )
+                    )
                 );
             }
         }
 
-        // Add fields
+        /** Add fields */
 
-        // General options
+        /** General options */
+
         if ( in_array( 'administrator', $current_user_roles ) ) {
             add_settings_field(
                 'access_level',
@@ -126,7 +137,7 @@ final class Clickwhale_Settings {
                     'value'          => $general_options['access_level'] ?? $defaults['general']['options']['access_level'],
                     'options'        => $this->user->get_roles_with_upload_cap(),
                     'always_checked' => $always_checked_roles,
-                    'description'    => __( 'Decide who can access plugin admin pages.', 'clickwhale' )
+                    'description'    => esc_html__( 'Decide who can access plugin admin pages.', 'clickwhale' )
                 )
             );
         }
@@ -141,11 +152,12 @@ final class Clickwhale_Settings {
                 'id'      => 'hide_admin_bar_menu',
                 'name'    => 'clickwhale_general_options[hide_admin_bar_menu]',
                 'value'   => ! empty( $general_options['hide_admin_bar_menu'] ) ? 1 : 0,
-                'label'   => __( 'Check to hide Clickwhale quick menu from the admin bar.', 'clickwhale' )
+                'label'   => esc_html__( 'Check to hide Clickwhale quick menu from the admin bar.', 'clickwhale' )
             )
         );
 
-        // Tracking options
+        /** Tracking options */
+
         add_settings_field(
             'tracking_duration',
             __( 'Tracking Duration', 'clickwhale' ),
@@ -157,9 +169,7 @@ final class Clickwhale_Settings {
                 'id'      => 'tracking_duration',
                 'name'    => 'clickwhale_tracking_options[tracking_duration]',
                 'value'   => $tracking_options['tracking_duration'] ?? $defaults['tracking']['options']['tracking_duration'],
-                'options' => apply_filters( 'clickwhale_tracking_duration', array(
-                    30 => __( '30 days', 'clickwhale' )
-                ) )
+                'options' => Helper::get_tracking_durations()
             )
         );
         add_settings_field(
@@ -173,7 +183,7 @@ final class Clickwhale_Settings {
                 'id'      => 'disable_tracking',
                 'name'    => 'clickwhale_tracking_options[disable_tracking]',
                 'value'   => ! empty( $tracking_options['disable_tracking'] ) ? 1 : 0,
-                'label'   => __( 'Check to disable tracking of views and clicks.', 'clickwhale' )
+                'label'   => esc_html__( 'Check to disable tracking of views and clicks.', 'clickwhale' )
             )
         );
         add_settings_field(
@@ -188,11 +198,12 @@ final class Clickwhale_Settings {
                 'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
                 'value'       => $tracking_options['exclude_user_by_role'] ?? '',
                 'options'     => $this->user->get_all_roles(),
-                'description' => __( 'Check the user roles that should be excluded from tracking.', 'clickwhale' )
+                'description' => esc_html__( 'Check the user roles that should be excluded from tracking.', 'clickwhale' )
             )
         );
 
-        // Link Manager options
+        /** Link Manager options */
+
         add_settings_field(
             'redirection',
             __( 'Redirection Type', 'clickwhale' ),
@@ -205,7 +216,7 @@ final class Clickwhale_Settings {
                 'name'        => 'clickwhale_link_manager_options[redirect_type]',
                 'value'       => $link_manager_options['redirect_type'] ?? $defaults['link_manager']['options']['redirect_type'],
                 'options'     => Links_Helper::get_redirections(),
-                'description' => __( 'Set default redirection type which will be used for new links.', 'clickwhale' )
+                'description' => esc_html__( 'Set default redirection type which will be used for new links.', 'clickwhale' )
             )
         );
         add_settings_field(
@@ -220,7 +231,7 @@ final class Clickwhale_Settings {
                 'name'        => 'clickwhale_link_manager_options[link_target]',
                 'value'       => $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'],
                 'options'     => Links_Helper::get_link_targets(),
-                'description' => __( 'Set default target which will be used for all links.', 'clickwhale' )
+                'description' => esc_html__( 'Set default target which will be used for all links.', 'clickwhale' )
             )
         );
         add_settings_field(
@@ -234,7 +245,7 @@ final class Clickwhale_Settings {
                 'id'      => 'nofollow',
                 'name'    => 'clickwhale_link_manager_options[nofollow]',
                 'value'   => ! empty( $link_manager_options['nofollow'] ) ? 1 : 0,
-                'label'   => __( 'Check to mark links as nofollow & noindex by default.', 'clickwhale' )
+                'label'   => esc_html__( 'Check to mark links as nofollow & noindex by default.', 'clickwhale' )
             )
         );
         add_settings_field(
@@ -248,8 +259,8 @@ final class Clickwhale_Settings {
                 'id'          => 'sponsored',
                 'name'        => 'clickwhale_link_manager_options[sponsored]',
                 'value'       => ! empty( $link_manager_options['sponsored'] ) ? 1 : 0,
-                'label'       => __( 'Check to mark links as sponsored by default.', 'clickwhale' ),
-                'description' => __( 'Recommended for affiliate links.', 'clickwhale' )
+                'label'       => esc_html__( 'Check to mark links as sponsored by default.', 'clickwhale' ),
+                'description' => esc_html__( 'Recommended for affiliate links.', 'clickwhale' )
             )
         );
         add_settings_field(
@@ -265,7 +276,15 @@ final class Clickwhale_Settings {
                 'type'        => 'text',
                 'value'       => $slug,
                 'placeholder' => '',
-                'description' => __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.', 'clickwhale' )
+                'description' => wp_kses(
+                    __( 'Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links.', 'clickwhale' ),
+                    array(
+                        'em'     => array(),
+                        'strong' => array(),
+                        'u'      => array(),
+                        'br'     => array()
+                    )
+                )
             )
         );
         add_settings_field(
@@ -279,7 +298,12 @@ final class Clickwhale_Settings {
                 'id'      => 'random_slug',
                 'name'    => 'clickwhale_link_manager_options[random_slug]',
                 'value'   => ! empty( $link_manager_options['random_slug'] ) ? 1 : 0,
-                'label'   => __( 'Check to <u>not</u> suggest a random link slug when creating a new link.', 'clickwhale' )
+                'label'   => wp_kses(
+                    __( 'Check to <u>not</u> suggest a random link slug when creating a new link.', 'clickwhale' ),
+                    array(
+                        'u' => array()
+                    )
+                )
             )
         );
 
@@ -291,7 +315,7 @@ final class Clickwhale_Settings {
      * @since 1.0.0
      */
     public static function settings_section_callback( $args ) {
-        echo '<p>' . $args['text'] . '</p>';
+        echo '<p>' . esc_html( $args['text'] ) . '</p>';
     }
 
     /**
@@ -326,7 +350,6 @@ final class Clickwhale_Settings {
     }
 
     public function filter_settings_tabs_capability() {
-
         if ( ! isset( $_POST['option_page'] ) ) {
             return;
         }
@@ -412,10 +435,114 @@ final class Clickwhale_Settings {
         return $options;
     }
 
-    public function sanitize_link_manager_options( $options ) {
+    /** Setting sanitize callbacks */
+
+    /**
+     * Fallback sanitize callback for Pro version compatibility.
+     *
+     * This fallback allows option groups defined by the Pro version to be
+     * correctly stored by WordPress when registered via `register_setting()`,
+     * even though the Free version does not define a dedicated
+     * `sanitize_*_options()` method for them.
+     *
+     * It intentionally performs no sanitization and simply returns
+     * the provided options array unchanged.
+     *
+     * Its primary purpose is to ensure that Pro options are persisted
+     * together with Free options when saving settings.
+     *
+     * Sanitization for Pro-defined option groups is applied via the
+     * `sanitize_option_clickwhale_*_options()` filter.
+     *
+     * @param mixed $options May be either raw options array or null in some cases
+     * @return array Unmodified options array
+     */
+    public function sanitize_passthrough_options( $options ): array {
+        if ( ! is_array( $options ) ) {
+            return array();
+        }
+
+        return $options;
+    }
+
+    public function sanitize_general_options( array $options ): array {
+        // Access Level
+        if ( isset( $options['access_level'] ) && is_array( $options['access_level'] ) ) {
+            $options['access_level'] = array_map( 'sanitize_key', $options['access_level'] );
+        }
+
+        // Hide Admin Bar Menu
+        $options['hide_admin_bar_menu'] = ! empty( $options['hide_admin_bar_menu'] ) ? 1 : 0;
+        return $options;
+    }
+
+    public function sanitize_tracking_options( array $options ): array {
+        $defaults = self::default_options();
+
+        // Tracking Duration
+        if ( isset( $options['tracking_duration'] ) ) {
+            $value = intval( $options['tracking_duration'] );
+            $allowed_tracking_durations = array_keys( Helper::get_tracking_durations() );
+
+            if ( in_array( $value, $allowed_tracking_durations, true ) ) {
+                $options['tracking_duration'] = $value;
+            } else {
+                $options['tracking_duration'] = $defaults['tracking']['options']['tracking_duration'];
+            }
+        }
+
+        // Disable Tracking
+        $options['disable_tracking'] = ! empty( $options['disable_tracking'] ) ? 1 : 0;
+
+        // Exclude User Roles
+        if ( isset( $options['exclude_user_by_role'] ) && is_array( $options['exclude_user_by_role'] ) ) {
+            $options['exclude_user_by_role'] = array_map( 'sanitize_key', $options['exclude_user_by_role'] );
+        }
+
+        return $options;
+    }
+
+    public function sanitize_link_manager_options( array $options ): array {
+        $defaults = self::default_options();
+
+        // Redirection Type
+        if ( isset( $options['redirect_type'] ) ) {
+            $value = intval( $options['redirect_type'] );
+            $allowed_redirect_types = array_keys( Links_Helper::get_redirections() );
+
+            if ( in_array( $value, $allowed_redirect_types, true ) ) {
+                $options['redirect_type'] = $value;
+            } else {
+                $options['redirect_type'] = $defaults['link_manager']['options']['redirect_type'];
+            }
+        }
+
+        // Link Target
+        if ( isset( $options['link_target'] ) ) {
+            $value = sanitize_key( $options['link_target'] );
+            $allowed = array_keys( Links_Helper::get_link_targets() );
+
+            if ( in_array( $value, $allowed, true ) ) {
+                $options['link_target'] = $value;
+            } else {
+                $options['link_target'] = $defaults['link_manager']['options']['link_target'];
+            }
+        }
+
+        // Nofollow Links
+        $options['nofollow'] = ! empty( $options['nofollow'] ) ? 1 : 0;
+
+        // Sponsored Links
+        $options['sponsored'] = ! empty( $options['sponsored'] ) ? 1 : 0;
+
+        // Link Prefix
         if ( ! empty( $options['slug'] ) ) {
             $options['slug'] = Links_Helper::sanitize_slug( $options['slug'] );
         }
+
+        // Random Slug
+        $options['random_slug'] = ! empty( $options['random_slug'] ) ? 1 : 0;
+
         return $options;
     }
 }

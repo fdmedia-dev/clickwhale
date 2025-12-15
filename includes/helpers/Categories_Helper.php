@@ -30,8 +30,9 @@ class Categories_Helper extends Helper_Abstract {
      */
     public static function get_limitation_notice(): string {
         return sprintf(
-            __( 'Currently, a maximum of %d categories can be added.', 'clickwhale' ),
-            self::get_limit()
+            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
+            self::get_limit(),
+            ( self::get_limit() === 1 ) ? esc_html__( 'category', 'clickwhale' ) : esc_html__( 'categories', 'clickwhale' )
         );
     }
 }

@@ -109,14 +109,14 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $row_id ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $row_id ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
+                <div class="cw-linkpage-row--content">
                     <?php echo $this->get_template_row_image( $data ); ?>
-                    <div class="linkpage-row--link">
+                    <div class="cw-linkpage-row--link">
                         <?php if ( ! $data['id'] ) { ?>
-                            <strong><?php _e( 'ClickWhale Link', 'clickwhale' ); ?></strong>
+                            <strong><?php esc_html_e( 'ClickWhale Link', 'clickwhale' ); ?></strong>
                             <span></span>
                         <?php } else { ?>
                             <strong><?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : esc_html( $link['title'] ); ?></strong>
@@ -129,13 +129,13 @@ class Clickwhale_Linkpage_Content_Templates {
                     true,
                     $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
                 ); ?>
-            </div><!-- ./linkpage-row--top -->
+            </div>
 
-            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+            <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
                 <?php echo $this->get_template_hidden_field( $data ); ?>
                 <?php if ( ! $data['id'] ) { ?>
-                    <div class="linkpage-row--bottom--control-wrap">
-                        <label><?php _e( 'Link', 'clickwhale' ); ?></label>
+                    <div class="cw-linkpage-row--bottom--control-wrap">
+                        <label><?php esc_html_e( 'Link', 'clickwhale' ); ?></label>
                         <?php if ( $links ) { ?>
                             <div>
                                 <select name="links[<?php echo esc_attr( $data['id'] ); ?>][id]"
@@ -151,7 +151,7 @@ class Clickwhale_Linkpage_Content_Templates {
                             </div>
                             <?php
                         } else {
-                            _e( 'Nothing found', 'clickwhale' );
+                            esc_html_e( 'Nothing found', 'clickwhale' );
                         }
                         ?>
                     </div>
@@ -173,7 +173,7 @@ class Clickwhale_Linkpage_Content_Templates {
 
                 $this->get_template_row_images( $data );
                 ?>
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -200,28 +200,28 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $data['id'] ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $data['id'] ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
+                <div class="cw-linkpage-row--content">
                     <?php echo $this->get_template_row_image( $data ); ?>
-                    <div class="linkpage-row--link">
+                    <div class="cw-linkpage-row--link">
                         <?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo esc_html( wp_unslash( $data['title'] ) ); ?></strong>
                             <span><?php echo esc_url( $data['url'] ); ?></span>
                         <?php } else { ?>
-                            <strong><?php _e( 'Custom Link', 'clickwhale' ); ?></strong>
+                            <strong><?php esc_html_e( 'Custom Link', 'clickwhale' ); ?></strong>
                         <?php } ?>
-                    </div><!-- ./linkpage-link -->
+                    </div>
                 </div>
                 <?php $this->get_template_row_end(
                     $data['type'],
                     true,
                     $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
                 ); ?>
-            </div><!-- ./linkpage-row--top -->
+            </div>
 
-            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+            <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
                 <?php
                 // hidden fields
@@ -252,7 +252,7 @@ class Clickwhale_Linkpage_Content_Templates {
                 $this->get_template_row_images( $data );
                 ?>
 
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -307,12 +307,12 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $data['id'] ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?>" id="row-<?php echo esc_attr( $data['id'] ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
+                <div class="cw-linkpage-row--content">
                     <?php echo $this->get_template_row_image( $data ); ?>
-                    <div class="linkpage-row--link">
+                    <div class="cw-linkpage-row--link">
                         <?php if ( ! isset( $data['post_id'] ) ) { ?>
                             <strong><?php echo $post_type_singular; ?></strong>
                         <?php } else { ?>
@@ -332,19 +332,19 @@ class Clickwhale_Linkpage_Content_Templates {
                                 ><?php echo get_the_title( $data['post_id'] ); ?></a>
                             </span>
                         <?php } ?>
-                    </div><!-- ./linkpage-link -->
+                    </div>
                 </div>
                 <?php $this->get_template_row_end(
                     $data['type'],
                     true,
                     $this->get_clicks( $args['linkpage_id'] ?? 0, $data['id'] )
                 ); ?>
-            </div><!-- ./linkpage-row--top -->
+            </div>
 
-            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+            <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
                 <?php echo $this->get_template_hidden_field( $data, array( 'post_id' ) ); ?>
                 <?php if ( ! isset( $data['post_id'] ) ) { ?>
-                    <div class="linkpage-row--bottom--control-wrap">
+                    <div class="cw-linkpage-row--bottom--control-wrap">
                         <label for="links[<?php echo esc_attr( $data['id'] ); ?>][post_id]">
                             <?php echo $post_type_singular; ?>
                         </label>
@@ -384,7 +384,7 @@ class Clickwhale_Linkpage_Content_Templates {
                 $this->get_template_row_images( $data );
                 ?>
 
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -409,21 +409,21 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
-                    <div class="linkpage-row--link">
+                <div class="cw-linkpage-row--content">
+                    <div class="cw-linkpage-row--link">
                         <?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo esc_html( wp_unslash( $data['title'] ) ); ?></strong>
                         <?php } else { ?>
-                            <strong><?php _e( 'Heading', 'clickwhale' ); ?></strong>
+                            <strong><?php esc_html_e( 'Heading', 'clickwhale' ); ?></strong>
                         <?php } ?>
-                    </div><!-- ./linkpage-row--link -->
+                    </div>
                 </div>
                 <?php $this->get_template_row_end( $data['type'] ); ?>
-            </div><!-- ./linkpage-row--top -->
-            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+            </div>
+            <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
                 <?php
                 // hidden fields
@@ -444,7 +444,7 @@ class Clickwhale_Linkpage_Content_Templates {
                     __( 'e.g. My Links Description', 'clickwhale' )
                 );
                 ?>
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -467,19 +467,19 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
-                    <div class="linkpage-row--link">
-                        <strong><?php _e( 'Separator', 'clickwhale' ); ?></strong>
+                <div class="cw-linkpage-row--content">
+                    <div class="cw-linkpage-row--link">
+                        <strong><?php esc_html_e( 'Separator', 'clickwhale' ); ?></strong>
                     </div>
                 </div>
                 <?php $this->get_template_row_end( $data['type'], false ); ?>
-            </div><!-- ./linkpage-row--top -->
-            <div class="linkpage-row--bottom">
+            </div>
+            <div class="cw-linkpage-row--bottom">
                 <?php echo $this->get_template_hidden_field( $data ); ?>
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -506,17 +506,17 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
-            <div class="linkpage-row--top">
+        <div class="cw-linkpage-row row--<?php echo esc_attr( $data['type'] ); ?> no-image" id="row-<?php echo esc_attr( $data['id'] ); ?>">
+            <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
-                <div class="linkpage-row--content">
-                    <div class="linkpage-row--link">
-                        <strong><?php _e( 'Custom Content', 'clickwhale' ); ?></strong>
-                    </div><!-- ./linkpage-link -->
+                <div class="cw-linkpage-row--content">
+                    <div class="cw-linkpage-row--link">
+                        <strong><?php esc_html_e( 'Custom Content', 'clickwhale' ); ?></strong>
+                    </div>
                 </div>
                 <?php $this->get_template_row_end( $data['type'] ); ?>
-            </div><!-- ./linkpage-row--top -->
-            <div class="linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
+            </div>
+            <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
                 <?php
                 echo $this->get_template_hidden_field( $data );
@@ -538,7 +538,7 @@ class Clickwhale_Linkpage_Content_Templates {
                 <textarea id="cw_custom_content_<?php echo esc_attr( $data['id'] ); ?>"
                           name="links[<?php echo esc_attr( $data['id'] ); ?>][content]"
                 ><?php echo esc_textarea( wp_unslash( $data['content'] ) ); ?></textarea>
-            </div><!-- ./linkpage-row--bottom -->
+            </div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -611,7 +611,7 @@ class Clickwhale_Linkpage_Content_Templates {
     public function template_public_cw_heading( $args ): string {
         ob_start();
         ?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+        <div class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
              data-type="<?php echo esc_attr( $args['type'] ); ?>">
             <h2><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
             <?php if ( isset( $args['data']['description'] ) && $args['data']['description'] ) { ?>
@@ -628,7 +628,7 @@ class Clickwhale_Linkpage_Content_Templates {
     public function template_public_cw_separator( $args ): string {
         ob_start();
         ?>
-        <hr class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+        <hr class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
             data-type="<?php echo esc_attr( $args['type'] ); ?>" />
         <?php
         $result = ob_get_contents();
@@ -641,19 +641,19 @@ class Clickwhale_Linkpage_Content_Templates {
         ob_start();
         if ( ! empty( $args['data']['title'] ) || ! empty( $args['data']['subtitle'] ) ) {
             ?>
-            <div class="linkpage-public-row linkpage-public-row--cw_heading">
+            <div class="cw-linkpage-public-row cw-linkpage-public-row--cw_heading">
                 <?php if ( ! empty( $args['data']['title'] ) ) { ?>
-                    <h2 class="linkpage-row--title"><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
+                    <h2 class="cw-linkpage-row--title"><?php echo esc_html( wp_unslash( $args['data']['title'] ) ); ?></h2>
                 <?php } ?>
                 <?php if ( ! empty( $args['data']['subtitle'] ) ) { ?>
-                    <p class="linkpage-row--subtitle"><?php echo esc_html( wp_unslash( $args['data']['subtitle'] ) ); ?></p>
+                    <p class="cw-linkpage-row--subtitle"><?php echo esc_html( wp_unslash( $args['data']['subtitle'] ) ); ?></p>
                 <?php } ?>
             </div>
         <?php } ?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
+        <div class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
              data-type="<?php echo esc_attr( $args['type'] ); ?>"
         >
-            <div class="linkpage-public-row--content"><?php echo nl2br( wp_kses_post( $args['data']['content'] ) ); ?></div>
+            <div class="cw-linkpage-public-row--content"><?php echo nl2br( wp_kses_post( $args['data']['content'] ) ); ?></div>
         </div>
         <?php
         $result = ob_get_contents();
@@ -681,21 +681,21 @@ class Clickwhale_Linkpage_Content_Templates {
 
         ob_start();
         ?>
-        <div class="linkpage-public-row linkpage-public-row--<?php echo $type; ?>" data-type="<?php echo $type; ?>">
-            <a class="linkpage-public-row-link cw-track"
+        <div class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo $type; ?>" data-type="<?php echo $type; ?>">
+            <a class="cw-linkpage-public-row-link cw-track"
                href="<?php echo $url; ?>"
                <?php echo $target; ?>
             ><?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
                     echo $this->get_template_row_image( $args['data'] );
                 } ?>
-                <div class="linkpage-row--title--wrap">
-                    <div class="linkpage-row--title"><?php echo $title; ?></div>
+                <div class="cw-linkpage-row--title--wrap">
+                    <div class="cw-linkpage-row--title"><?php echo $title; ?></div>
                     <?php if ( $subtitle ) { ?>
-                        <p class="linkpage-row--subtitle"><?php echo $subtitle; ?></p>
+                        <p class="cw-linkpage-row--subtitle"><?php echo $subtitle; ?></p>
                     <?php } ?>
                 </div>
                 <?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
-                    <div class="linkpage-row--end"></div>
+                    <div class="cw-linkpage-row--end"></div>
                 <?php } ?>
             </a>
         </div>
@@ -735,12 +735,12 @@ class Clickwhale_Linkpage_Content_Templates {
         $required    = $required ? 'required' : '';
         $input       = "<div><input $type $name $value $placeholder $required /></div>";
 
-        return '<div class="linkpage-row--bottom--control-wrap">' . $label . $input . '</div>';
+        return '<div class="cw-linkpage-row--bottom--control-wrap">' . $label . $input . '</div>';
     }
 
     public function get_template_row_image( array $data ): string {
         if ( empty( $data['image']['type'] ) && empty( $data['image']['image_id'] ) ) {
-            return '<div class="linkpage-row--image"></div>';
+            return '<div class="cw-linkpage-row--image"></div>';
         }
 
         $image_id = $data['image']['image_id'];
@@ -766,13 +766,13 @@ class Clickwhale_Linkpage_Content_Templates {
                 break;
         }
 
-        return '<div class="linkpage-row--image ' . $class . '">' . $image . '</div>';
+        return '<div class="cw-linkpage-row--image ' . $class . '">' . $image . '</div>';
     }
 
     public function get_template_row_start( $id, $is_active = '' ) {
         ?>
-        <div class="linkpage-row--start">
-            <div class="linkpage-row--drag" title="<?php _e( 'Change Order', 'clickwhale' ); ?>">
+        <div class="cw-linkpage-row--start">
+            <div class="cw-linkpage-row--drag" title="<?php esc_attr_e( 'Change Order', 'clickwhale' ); ?>">
                 <svg class="feather">
                     <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#drag-2"></use>
                 </svg>
@@ -801,40 +801,39 @@ class Clickwhale_Linkpage_Content_Templates {
             }
         }
 
-        return '<div class="linkpage-row--badge"><span>' . $badge . '</span></div>';
+        return '<div class="cw-linkpage-row--badge"><span>' . esc_html( $badge ) . '</span></div>';
     }
 
     public function get_template_row_end( string $type, bool $edit = true, string $stats = '' ) {
         $row_edit_class  = $edit ? '' : 'no-edit';
         $row_stats_class = $edit ? '' : 'no-stats';
         ?>
-
-        <div class="linkpage-row--end <?php echo $row_stats_class ?>">
+        <div class="cw-linkpage-row--end <?php echo $row_stats_class ?>">
             <?php if ( $stats ) { ?>
-                <div class="linkpage-row--statistics">
-                    <span class="linkpage-row--clicks">
+                <div class="cw-linkpage-row--statistics">
+                    <span class="cw-linkpage-row--clicks">
                         <svg class="feather">
                             <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#bar-chart-2"></use>
                         </svg>
                         Clicks: <?php echo intval( $stats ); ?>
                     </span>
-                </div><!-- ./linkpage-row--statistics -->
+                </div>
             <?php } ?>
             <?php echo $this->get_template_row_badge( $type ); ?>
-            <div class="linkpage-row--actions <?php echo $row_edit_class ?>">
+            <div class="cw-linkpage-row--actions <?php echo $row_edit_class ?>">
                 <?php if ( $edit ) { ?>
-                    <button type="button" class="linkpage-row--actions--button-edit">
+                    <button type="button" class="cw-linkpage-row--actions--button-edit">
                         <svg class="feather">
                             <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#chevron-down"></use>
                         </svg>
                     </button>
                 <?php } ?>
-                <button type="button" class="linkpage-row--actions--button-remove">
+                <button type="button" class="cw-linkpage-row--actions--button-remove">
                     <svg class="feather">
                         <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#trash-2"></use>
                     </svg>
                 </button>
-            </div><!-- ./linkpage-row--actions -->
+            </div>
         </div>
         <?php
     }
@@ -847,17 +846,17 @@ class Clickwhale_Linkpage_Content_Templates {
         $emoji_class = $image_id && $image_type == 'emoji' ? 'with-image' : '';
         $icon_class  = $image_id && $image_type == 'icon' ? 'with-image' : '';
         ?>
-        <div class="linkpage-row--bottom--control-wrap linkpage-row--image-select--wrap">
+        <div class="cw-linkpage-row--bottom--control-wrap cw-linkpage-row--image-select--wrap">
             <input type="hidden"
                    name="links[<?php echo $id; ?>][image][type]"
                    value="<?php echo esc_attr( $data['image']['type'] ?? '' ); ?>">
-            <label><?php _e( 'Icon', 'clickwhale' ); ?></label>
+            <label><?php esc_html_e( 'Icon', 'clickwhale' ); ?></label>
 
-            <div class="linkpage-row--image-select">
-                <p class="description"><?php _e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', 'clickwhale' ); ?></p>
-                <div class="linkpage-row--image-select--tab">
-                    <div class="linkpage-row--image-select--tab-inner tab-multiple">
-                        <div class="linkpage-row--image-select--item item-image">
+            <div class="cw-linkpage-row--image-select">
+                <p class="description"><?php esc_html_e( 'You can select either an image, an icon or an emoji. You cannot have more than one active at the same time.', 'clickwhale' ); ?></p>
+                <div class="cw-linkpage-row--image-select--tab">
+                    <div class="cw-linkpage-row--image-select--tab-inner tab-multiple">
+                        <div class="cw-linkpage-row--image-select--item item-image">
                             <div class="image-item">
                                 <input type="radio"
                                        data-type="image"
@@ -876,15 +875,15 @@ class Clickwhale_Linkpage_Content_Templates {
                                 </label>
                             </div>
                             <a href="#"
-                               class="linkpage-row--image-upload"
-                            ><?php _e( 'Upload image', 'clickwhale' ); ?></a>
+                               class="cw-linkpage-row--image-upload"
+                            ><?php esc_html_e( 'Upload image', 'clickwhale' ); ?></a>
                             <a href="#"
-                               class="linkpage-row--image-remove"
+                               class="cw-linkpage-row--image-remove"
                                style="display: none;"
-                            ><?php _e( 'Remove image', 'clickwhale' ); ?></a>
+                            ><?php esc_html_e( 'Remove image', 'clickwhale' ); ?></a>
                         </div>
 
-                        <div class="linkpage-row--image-select--item item--icon">
+                        <div class="cw-linkpage-row--image-select--item item--icon">
                             <div class="image-item <?php echo $icon_class; ?>">
                                 <input type="radio"
                                        data-type="icon"
@@ -903,10 +902,10 @@ class Clickwhale_Linkpage_Content_Templates {
                             </div>
                             <a id="icon-picker-<?php echo $id; ?>"
                                class="icon-picker" href="#"
-                            ><?php _e( 'Select Icon', 'clickwhale' ); ?></a>
+                            ><?php esc_html_e( 'Select Icon', 'clickwhale' ); ?></a>
                         </div>
 
-                        <div class="linkpage-row--image-select--item item--emoji">
+                        <div class="cw-linkpage-row--image-select--item item--emoji">
                             <div class="image-item <?php echo $emoji_class; ?>">
                                 <input type="radio"
                                        data-type="emoji"
@@ -919,16 +918,16 @@ class Clickwhale_Linkpage_Content_Templates {
                                     <?php echo $image_id && $image_type == 'emoji' ? $image_id : ''; ?>
                                 </label>
                             </div>
-                            <a class="emoji-picker" href="#"><?php _e( 'Select Emoji', 'clickwhale' ); ?></a>
+                            <a class="emoji-picker" href="#"><?php esc_attr_e( 'Select Emoji', 'clickwhale' ); ?></a>
                         </div>
 
-                        <div class="linkpage-row--image-select--reset">
-                            <button type="button" class="reset-image"><?php _e( 'Reset', 'clickwhale' ); ?></button>
+                        <div class="cw-linkpage-row--image-select--reset">
+                            <button type="button" class="reset-image"><?php esc_html_e( 'Reset', 'clickwhale' ); ?></button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div><!-- ./linkpage-row--image-select-wrap -->
+        </div>
         <?php
     }
 

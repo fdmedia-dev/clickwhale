@@ -37,7 +37,7 @@ body.clickwhale-linkpage.admin-bar {
 	opacity: .6;
 }
 
-.linkpage-public--wrap {
+.cw-linkpage-public--wrap {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -50,26 +50,26 @@ body.clickwhale-linkpage.admin-bar {
 	color: var(--clickwhale-text-color);
 }
 
-body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
+body.clickwhale-linkpage.admin-bar .cw-linkpage-public--wrap {
 	min-height: calc(100vh - var(--admin-bar-height));
 	justify-content: space-between;
 }
 
-.linkpage-public--wrap * {
+.cw-linkpage-public--wrap * {
 	box-sizing: border-box;
 }
 
-.linkpage-public--wrap h1,
-.linkpage-public--wrap h2,
-.linkpage-public--wrap h3,
-.linkpage-public--wrap h4,
-.linkpage-public--wrap h5,
-.linkpage-public--wrap h6,
-.linkpage-public--wrap p {
+.cw-linkpage-public--wrap h1,
+.cw-linkpage-public--wrap h2,
+.cw-linkpage-public--wrap h3,
+.cw-linkpage-public--wrap h4,
+.cw-linkpage-public--wrap h5,
+.cw-linkpage-public--wrap h6,
+.cw-linkpage-public--wrap p {
 	color: var(--clickwhale-text-color) !important;
 }
 
-.linkpage-public--wrap .feather {
+.cw-linkpage-public--wrap .feather {
 	width: 24px;
 	height: 24px;
 	stroke: currentColor;
@@ -79,17 +79,16 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	fill: none;
 }
 
-.linkpage-public--wrap ion-icon {
+.cw-linkpage-public--wrap ion-icon {
 	font-size: 48px;
-	transition: all .3s ease-in-out;
 }
 
-.linkpage-public--top {
+.cw-linkpage-public--top {
 	margin: 0 auto;
 	width: 100%;
 }
 
-.linkpage-public--header {
+.cw-linkpage-public--header {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -99,9 +98,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	margin-bottom: 2rem;
 }
 
-.linkpage-public--logo {}
-
-.linkpage-public--logo img {
+.cw-linkpage-public--logo img {
 	position: relative;
 	width: 100%;
 	max-width: 150px;
@@ -109,27 +106,27 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	object-fit: cover;
 }
 
-.linkpage-public--logo img.rounded {
+.cw-linkpage-public--logo img.rounded {
 	border-radius: 10px;
 }
 
-.linkpage-public--logo img.circle {
+.cw-linkpage-public--logo img.circle {
 	border-radius: 50%;
 }
 
-.linkpage-public--logo img.with-shadow {
+.cw-linkpage-public--logo img.with-shadow {
 	box-shadow: 0 10px 15px rgba(0, 0, 0, .1);
 }
 
-.linkpage-public--title,
-.linkpage-public--description,
-.linkpage-public--links {
+.cw-linkpage-public--title,
+.cw-linkpage-public--description,
+.cw-linkpage-public--links {
 	max-width: 700px;
 	width: 100%;
 	text-align: center;
 }
 
-.linkpage-public--title {
+.cw-linkpage-public--title {
 	font-size: 3.5rem;
 	line-height: 1em;
 	color: var(--clickwhale-text-color);
@@ -137,7 +134,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	margin-top: 1.5rem;
 }
 
-.linkpage-public--description {
+.cw-linkpage-public--description {
 	font-size: 1.5rem;
 	line-height: 1.2em;
 	color: var(--clickwhale-text-color);
@@ -145,7 +142,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	margin-top: .5rem;
 }
 
-.linkpage-public--links {
+.cw-linkpage-public--links {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -154,15 +151,15 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	margin: 0 auto;
 }
 
-.linkpage-public--links > *:first-child {
+.cw-linkpage-public--links > *:first-child {
 	margin: 0;
 }
 
-.linkpage-public-row {
+.cw-linkpage-public-row {
 	width: 100%;
 }
 
-.linkpage-public-row > a.linkpage-public-row-link {
+.cw-linkpage-public-row > a.cw-linkpage-public-row-link {
 	display: flex;
 	width: 100%;
 	align-items: center;
@@ -181,21 +178,21 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	text-align: center;
 }
 
-.linkpage-public-row > a.linkpage-public-row-link ion-icon {
+.cw-linkpage-public-row > a.cw-linkpage-public-row-link ion-icon {
 	color: var(--clickwhale-link-color);
 }
 
-.linkpage-public-row > a.linkpage-public-row-link:hover {
+.cw-linkpage-public-row > a.cw-linkpage-public-row-link:hover {
 	background-color: var(--clickwhale-link-bg-hover);
 	box-shadow: 0 15px 25px rgba(0, 0, 0, .05);
 	color: var(--clickwhale-link-hover);
 }
 
-.linkpage-public-row > a.linkpage-public-row-link:hover ion-icon {
+.cw-linkpage-public-row > a.cw-linkpage-public-row-link:hover ion-icon {
 	color: var(--clickwhale-link-hover);
 }
 
-.linkpage-public-row .linkpage-row--image {
+.cw-linkpage-public-row .cw-linkpage-row--image {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -208,19 +205,19 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	font-size: 36px;
 }
 
-.linkpage-public-row .linkpage-row--image img {
+.cw-linkpage-public-row .cw-linkpage-row--image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	border-radius: 50%;
 }
 
-.linkpage-public-row .linkpage-row--image svg {
+.cw-linkpage-public-row .cw-linkpage-row--image svg {
 	width: 48px;
 	height: 48px;
 }
 
-.linkpage-row--title--wrap {
+.cw-linkpage-row--title--wrap {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -230,32 +227,32 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	text-align: center;
 }
 
-.linkpage-row--title {
+.cw-linkpage-row--title {
 	font-weight: 700;
 }
 
-.linkpage-row--subtitle {
+.cw-linkpage-row--subtitle {
 	font-size: .875rem;
 	line-height: 1em;
 	opacity: .7;
 	margin: .25rem 0 0 0;
 }
 
-.linkpage-row--end {
+.cw-linkpage-row--end {
 	max-width: 36px;
 	flex: 1;;
 }
 
 /*---------- CW HEADING BLOCK ----------*/
 
-.linkpage-public-row.linkpage-public-row--cw_heading {
+.cw-linkpage-public-row.cw-linkpage-public-row--cw_heading {
 	display: block;
 	width: 100%;
 	text-align: center;
 	margin: 1.5rem 0 0 0;
 }
 
-.linkpage-public-row.linkpage-public-row--cw_heading h2 {
+.cw-linkpage-public-row.cw-linkpage-public-row--cw_heading h2 {
 	font-size: 1.7rem;
 	line-height: 1.3em;
 	font-weight: 700;
@@ -263,7 +260,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	color: var(--clickwhale-text-color);
 }
 
-.linkpage-public-row.linkpage-public-row--cw_heading p {
+.cw-linkpage-public-row.cw-linkpage-public-row--cw_heading p {
 	font-size: 1.25rem;
 	line-height: 1.3em;
 	margin: 0;
@@ -273,7 +270,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 /*---------- CW SEPARATOR BLOCK ----------*/
 
-.linkpage-public-row.linkpage-public-row--cw_separator {
+.cw-linkpage-public-row.cw-linkpage-public-row--cw_separator {
 	margin: .5rem 0;
 	border: none;
 	border-top: 1px solid var(--clickwhale-text-color);
@@ -282,7 +279,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 
 /*---------- CW CUSTOM CONTENT BLOCK ----------*/
 
-.linkpage-public-row .linkpage-public-row--content {
+.cw-linkpage-public-row .cw-linkpage-public-row--content {
 	position: relative;
 	display: inline-block;
 	width: 100%;
@@ -295,66 +292,66 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	border-radius: 10px;
 }
 
-.linkpage-public-row .linkpage-public-row--content h1,
-.linkpage-public-row .linkpage-public-row--content h2,
-.linkpage-public-row .linkpage-public-row--content h3,
-.linkpage-public-row .linkpage-public-row--content h4,
-.linkpage-public-row .linkpage-public-row--content h5,
-.linkpage-public-row .linkpage-public-row--content h6 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h1,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h2,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h3,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h4,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h5,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h6 {
 	line-height: 1.3em;
 	font-weight: 700;
 	margin: 1.5rem 0 0 0;
 	color: var(--clickwhale-text-color);
 }
 
-.linkpage-public-row .linkpage-public-row--content h1,
-.linkpage-public-row .linkpage-public-row--content h2 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h1,
+.cw-linkpage-public-row .cw-linkpage-public-row--content h2 {
 	font-size: 1.7rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content h3 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h3 {
 	font-size: 1.5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content h4 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h4 {
 	font-size: 1.5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content h5 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h5 {
 	font-size: 1.3rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content h6 {
+.cw-linkpage-public-row .cw-linkpage-public-row--content h6 {
 	font-size: 1.2rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content p,
-.linkpage-public-row .linkpage-public-row--content ul,
-.linkpage-public-row .linkpage-public-row--content ol {
+.cw-linkpage-public-row .cw-linkpage-public-row--content p,
+.cw-linkpage-public-row .cw-linkpage-public-row--content ul,
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol {
 	margin: .5rem 0 0;
 }
 
-.linkpage-public-row .linkpage-public-row--content ul,
-.linkpage-public-row .linkpage-public-row--content ol {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ul,
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol {
 	padding: 0;
 	list-style: none;
 }
 
-.linkpage-public-row .linkpage-public-row--content ol {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol {
 	counter-reset: cw-cc-list-counter
 }
 
-.linkpage-public-row .linkpage-public-row--content ul li,
-.linkpage-public-row .linkpage-public-row--content ol li {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ul li,
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol li {
 	position: relative;
 	padding-left: 30px;
 }
 
-.linkpage-public-row .linkpage-public-row--content ol li {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol li {
 	counter-increment: cw-cc-list-counter;
 }
 
-.linkpage-public-row .linkpage-public-row--content ul li::before {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ul li::before {
 	position: absolute;
 	display: block;
 	content: '';
@@ -366,7 +363,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .5;
 }
 
-.linkpage-public-row .linkpage-public-row--content ol li::before {
+.cw-linkpage-public-row .cw-linkpage-public-row--content ol li::before {
 	position: absolute;
 	display: block;
 	content: counter(cw-cc-list-counter) ". ";
@@ -375,73 +372,73 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .5;
 }
 
-.linkpage-public-row .linkpage-public-row--content img {
+.cw-linkpage-public-row .cw-linkpage-public-row--content img {
 	display: block;
 	max-width: 100%;
 }
 
-.linkpage-public-row .linkpage-public-row--content img.alignnone {
+.cw-linkpage-public-row .cw-linkpage-public-row--content img.alignnone {
 	margin: 0 0 1.5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content img.alignleft {
+.cw-linkpage-public-row .cw-linkpage-public-row--content img.alignleft {
 	margin: 0 1.5rem 1.5rem 0;
 }
 
-.linkpage-public-row .linkpage-public-row--content img.alignright {
+.cw-linkpage-public-row .cw-linkpage-public-row--content img.alignright {
 	margin: 0 0 1.5rem 1.5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content img.aligncenter {
+.cw-linkpage-public-row .cw-linkpage-public-row--content img.aligncenter {
 	margin: 0 auto 1.5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content * + img,
-.linkpage-public-row .linkpage-public-row--content * + img.alignnone,
-.linkpage-public-row .linkpage-public-row--content * + img.alignleft,
-.linkpage-public-row .linkpage-public-row--content * + img.alignright,
-.linkpage-public-row .linkpage-public-row--content * + img.aligncenter {
+.cw-linkpage-public-row .cw-linkpage-public-row--content * + img,
+.cw-linkpage-public-row .cw-linkpage-public-row--content * + img.alignnone,
+.cw-linkpage-public-row .cw-linkpage-public-row--content * + img.alignleft,
+.cw-linkpage-public-row .cw-linkpage-public-row--content * + img.alignright,
+.cw-linkpage-public-row .cw-linkpage-public-row--content * + img.aligncenter {
 	margin-top: .5rem;
 }
 
-.linkpage-public-row .linkpage-public-row--content a {
+.cw-linkpage-public-row .cw-linkpage-public-row--content a {
 	display: inline;
 	color: var(--clickwhale-text-color);
 	text-decoration: underline;
 }
 
-.linkpage-public-row .linkpage-public-row--content a:hover {
+.cw-linkpage-public-row .cw-linkpage-public-row--content a:hover {
 	color: var(--clickwhale-text-color);
 	text-decoration: none;
 	opacity: .7;
 }
 
-.linkpage-public-row .linkpage-public-row--content iframe {
+.cw-linkpage-public-row .cw-linkpage-public-row--content iframe {
 	aspect-ratio: 16 / 9;
 	height: 100%;
 	width: 100%;
 }
 
-.linkpage-public-row .linkpage-public-row--content iframe.iframe-vertical {
+.cw-linkpage-public-row .cw-linkpage-public-row--content iframe.iframe-vertical {
 	aspect-ratio: 9 / 16;
 }
 
-.linkpage-public-row .linkpage-public-row--content blockquote.tiktok-embed {
+.cw-linkpage-public-row .cw-linkpage-public-row--content blockquote.tiktok-embed {
 	padding: 0;
 	border-radius: 8px;
 }
 
-.linkpage-public-row .linkpage-public-row--content > *:first-child {
+.cw-linkpage-public-row .cw-linkpage-public-row--content > *:first-child {
 	margin-top: 0;
 }
 
-.linkpage-public-row .linkpage-public-row--content > *:last-child {
+.cw-linkpage-public-row .cw-linkpage-public-row--content > *:last-child {
 	margin-bottom: 0 !important;
 }
 
 /* ---------- */
 
-.linkpage-public--bottom {
+.cw-linkpage-public--bottom {
 	margin: 3rem 0 1.25rem;
 }
 
@@ -476,7 +473,7 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	opacity: .7;
 }
 
-.linkpage-public--bottom a.linkpage-public--copyright {
+.cw-linkpage-public--bottom a.cw-linkpage-public--copyright {
 	display: flex;
 	align-items: inherit;
 	justify-content: center;
@@ -488,27 +485,27 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 	white-space: nowrap;
 }
 
-.linkpage-public--bottom a.linkpage-public--copyright img,
-.linkpage-public--bottom a.linkpage-public--copyright svg {
+.cw-linkpage-public--bottom a.cw-linkpage-public--copyright img,
+.cw-linkpage-public--bottom a.cw-linkpage-public--copyright svg {
 	display: block;
 	width: 120px;
 	height: auto;
 	margin-top: -15px;
 }
 
-.linkpage-public--bottom a.linkpage-public--copyright:hover {
+.cw-linkpage-public--bottom a.cw-linkpage-public--copyright:hover {
 	opacity: .7;
 	color: var(--clickwhale-text-color);
 }
 
 @media (min-width: 1600px) {
-	.linkpage-public--title,
-	.linkpage-public--description,
-	.linkpage-public--links {
+	.cw-linkpage-public--title,
+	.cw-linkpage-public--description,
+	.cw-linkpage-public--links {
 		max-width: 900px;
 	}
 
-	.linkpage-public--logo img {
+	.cw-linkpage-public--logo img {
 		position: relative;
 		max-width: 275px;
 		max-height: 275px;
@@ -516,9 +513,9 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 }
 
 @media (min-width: 1300px) and (max-width: 1600px) {
-	.linkpage-public--title,
-	.linkpage-public--description,
-	.linkpage-public--links {
+	.cw-linkpage-public--title,
+	.cw-linkpage-public--description,
+	.cw-linkpage-public--links {
 		max-width: 800px;
 	}
 }
@@ -528,87 +525,85 @@ body.clickwhale-linkpage.admin-bar .linkpage-public--wrap {
 		--admin-bar-height: 46px;
 	}
 
-	.linkpage-public--header {
+	.cw-linkpage-public--header {
 		padding-bottom: 2rem;
 	}
 
-	.linkpage-public--logo {}
-
-	.linkpage-public--logo img {
+	.cw-linkpage-public--logo img {
 		max-width: 75px;
 		max-height: 75px;
 	}
 
-	.linkpage-public--title {
+	.cw-linkpage-public--title {
 		font-size: 2rem;
 		margin-top: 1rem;
 	}
 
-	.linkpage-public--description {
+	.cw-linkpage-public--description {
 		font-size: 1.125rem;
 	}
 
-	.linkpage-public--links {
+	.cw-linkpage-public--links {
 		gap: .5rem;
 		padding: 0 1rem;
 	}
 
-	.linkpage-public-row a.linkpage-public-row-link {
+	.cw-linkpage-public-row a.cw-linkpage-public-row-link {
 		padding: .75rem .75rem;
 	}
 
-	.linkpage-row--image {
+	.cw-linkpage-row--image {
 		height: 32px;
 		max-width: 32px;
 		font-size: 32px;
 	}
 
-	.linkpage-row--title--wrap {
+	.cw-linkpage-row--title--wrap {
 		min-height: 32px;
 	}
 
-	.linkpage-row--end {
+	.cw-linkpage-row--end {
 		max-width: 32px;
 	}
 
-	.linkpage-public-row.linkpage-public-row--cw_heading h2 {
+	.cw-linkpage-public-row.cw-linkpage-public-row--cw_heading h2 {
 		font-size: 1.25rem;
 	}
 
-	.linkpage-public-row.linkpage-public-row--cw_heading p {
+	.cw-linkpage-public-row.cw-linkpage-public-row--cw_heading p {
 		font-size: 1rem;
 	}
 
-	.linkpage-public-row .linkpage-public-row--content {
+	.cw-linkpage-public-row .cw-linkpage-public-row--content {
 		padding: 1rem .75rem;
 	}
 
-	.linkpage-public-row .linkpage-public-row--content h1,
-	.linkpage-public-row .linkpage-public-row--content h2 {
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h1,
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h2 {
 		font-size: 1.375rem;
 	}
 
-	.linkpage-public-row .linkpage-public-row--content h3,
-	.linkpage-public-row .linkpage-public-row--content h4 {
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h3,
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h4 {
 		font-size: 1.25rem;
 	}
 
-	.linkpage-public-row .linkpage-public-row--content h5,
-	.linkpage-public-row .linkpage-public-row--content h6 {
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h5,
+	.cw-linkpage-public-row .cw-linkpage-public-row--content h6 {
 		font-size: 1.125rem;
 	}
 
-	.linkpage-public--bottom {
+	.cw-linkpage-public--bottom {
 		margin-top: 3rem;
 	}
 
-	.linkpage-public--copyright {
+	.cw-linkpage-public--copyright {
 		margin-top: 2rem;
 		font-size: .75rem;
 	}
 
-	.linkpage-public--copyright img,
-	.linkpage-public--copyright svg {
+	.cw-linkpage-public--copyright img,
+	.cw-linkpage-public--copyright svg {
 		display: block;
 		width: 100px;
 		height: auto;

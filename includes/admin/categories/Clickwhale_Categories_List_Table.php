@@ -330,6 +330,6 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Categories Found', 'clickwhale' );
+        esc_html_e( 'No Categories Found', 'clickwhale' );
     }
 }

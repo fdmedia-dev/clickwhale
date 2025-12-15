@@ -20,9 +20,16 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
     public bool $conversion;
 
     public function __construct() {
-        parent::__construct( 'tracking_codes', 'tracking_code', 'Tracking Code' );
+        $this->instance_plural = 'tracking_codes';
+        $this->instance_single = 'tracking_code';
+        $this->instance_helper = Tracking_Codes_Helper::class;
+        parent::__construct();
 
         $this->conversion = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
+    }
+
+    protected function get_title_i18n(): string {
+        return __( 'Tracking Code', 'clickwhale' );
     }
 
     /**
@@ -52,7 +59,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         <tr class="form-field">
             <th scope="row">
                 <label for="position">
-                    <?php _e( 'Where do you want to add this code?', 'clickwhale' ); ?>
+                    <?php esc_html_e( 'Where do you want to add this code?', 'clickwhale' ); ?>
                 </label>
             </th>
             <td>
@@ -74,7 +81,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             <label for="conversionStandard">
                                 <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"
                                      alt="WordPress">
-                                <span><?php _e( 'Standard code tracking', 'clickwhale' ); ?></span>
+                                <span><?php esc_html_e( 'Standard code tracking', 'clickwhale' ); ?></span>
                             </label>
                         </div>
 
@@ -100,7 +107,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                 <label for="conversionProduct">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
                                          alt="WooCommerce">
-                                    <span><?php _e( 'WooCommerce conversion', 'clickwhale' ); ?></span>
+                                    <span><?php esc_html_e( 'WooCommerce conversion', 'clickwhale' ); ?></span>
                                 </label>
                             </div>
                         <?php } ?>
@@ -127,7 +134,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                 <label for="conversionDownload">
                                     <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-edd-short-dark.svg'; ?>"
                                          alt="Easy Digital Downloads">
-                                    <span><?php _e( 'EDD conversion', 'clickwhale' ); ?></span>
+                                    <span><?php esc_html_e( 'EDD conversion', 'clickwhale' ); ?></span>
                                 </label>
                             </div>
                         <?php } ?>
@@ -139,34 +146,8 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         do_action( 'clickwhale_tracking_code_conversion_fields', $item );
     }
 
-    public function get_item( $request ) {
-        if ( ! is_numeric( $request['id'] ) ) {
-            $this->no_item();
-        }
-
-        // Get default values
-        $defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
-
-        // If item id=0 or id doesn't set/exists than use $defaults
-        if ( empty( $request['id'] ) ) {
-            return $defaults;
-        }
-
-        // Get data by id
-        $helper = ucfirst( "{$this->instance_plural}_Helper" );
-
-        $item = call_user_func(
-            array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
-            intval( $request['id'] )
-        );
-
+    protected function normalize_loaded_item( array $item ): array {
         $item['position'] = maybe_unserialize( $item['position'] );
-
-        // If link with id doesn't exist
-        if ( ! $item ) {
-            $this->no_item();
-        }
-
         return $item;
     }
 
@@ -221,13 +202,9 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         return $result;
     }
 
-    public function save_update() {
-        global $wpdb;
-
-        $tracking_codes_table = Helper::get_db_table_name( $this->instance_plural );
-        $item                 = array_intersect_key( $_POST, $this->get_defaults() );
-        $item['description']  = esc_html( $item['description'] );
-        $item['author']       = get_current_user_id();
+    protected function process_item_before_save( array $item ): array {
+        $item['description'] = esc_html( $item['description'] );
+        $item['author']      = get_current_user_id();
 
         if ( isset( $item['position']['conversion'] ) && $item['position']['conversion'] !== 'standard' ) {
             unset( $item['position']['items_included'] );
@@ -307,30 +284,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
         $item['position'] = maybe_serialize( $item['position'] );
         $item['is_active'] = ! empty( $item['is_active'] ) ? 1 : 0;
-        $item = apply_filters( 'clickwhale_tracking_code_data_before_save', $item );
-        $id = intval( $item['id'] );
-
-        if ( Tracking_Codes_Helper::get_by_id( $id ) ) {
-            $wpdb->update(
-                $tracking_codes_table,
-                $item,
-                array( 'id' => $id )
-            );
-            $this->set_transient( $id, 'updated' );
-
-        } else {
-            unset( $item['id'] );
-            $wpdb->insert(
-                $tracking_codes_table,
-                $item
-            );
-            $id = $wpdb->insert_id;
-            $this->set_transient( $id, 'added' );
-        }
-
-        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code' . '&id=' . $id;
-        wp_redirect( esc_url_raw( admin_url( $url ) ) );
-        exit;
+        return $item;
     }
 
     public function admin_scripts(): void {
@@ -338,13 +292,13 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         <script type='text/javascript'>
             jQuery(document).ready(function(){
                 jQuery('#position_code').select2({
-                    placeholder: '<?php echo esc_js( __( 'Select Code position', 'clickwhale' ) ); ?>',
+                    placeholder: <?php echo wp_json_encode( __( 'Select Code position', 'clickwhale' ) ); ?>,
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
 
                 jQuery('.with-select2').select2({
-                        placeholder: '<?php echo esc_js( __( 'Select', 'clickwhale' ) ); ?>',
+                        placeholder: <?php echo wp_json_encode( __( 'Select', 'clickwhale' ) ); ?>,
                         width: '100%',
                         multiple: true,
                         minimumResultsForSearch: 10

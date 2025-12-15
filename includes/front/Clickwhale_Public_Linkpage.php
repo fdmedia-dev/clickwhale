@@ -301,7 +301,7 @@ class Clickwhale_Public_Linkpage {
             $classes[] = 'with-shadow';
         }
 
-        return '<div class="linkpage-public--logo"><img class="' . implode( ' ', $classes ) . '" src="' . $image_url . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '" /></div>';
+        return '<div class="cw-linkpage-public--logo"><img class="' . implode( ' ', $classes ) . '" src="' . $image_url . '" srcset="' . $srcset . '" alt="' . esc_attr( $this->get_title() ) . '" /></div>';
     }
 
     /**
@@ -380,7 +380,7 @@ class Clickwhale_Public_Linkpage {
         $utm = '?utm_source=users&utm_medium=link_page&utm_campaign=ClickWhale+Users+Link+Pages&utm_content=copyright_link';
 
         $output = sprintf(
-            '<a class="linkpage-public--copyright" target="_blank" href="%1$s">%2$s %3$s</a>',
+            '<a class="cw-linkpage-public--copyright" target="_blank" href="%1$s">%2$s %3$s</a>',
             esc_url( apply_filters( 'clickwhale_linkpage_credits_link', $link, $utm ) ),
             __( 'Powered by', 'clickwhale' ),
             $img
@@ -514,7 +514,7 @@ class Clickwhale_Public_Linkpage {
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function() {
-                jQuery('.linkpage-public--links').on('click', '.cw-track', function(e){
+                jQuery('.cw-linkpage-public--links').on('click', '.cw-track', function(e){
                     let link = jQuery(this);
 
                     jQuery.post(clickwhale_public.ajaxurl, {

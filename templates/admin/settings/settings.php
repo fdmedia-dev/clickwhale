@@ -6,7 +6,7 @@ $tabs = Clickwhale_Settings::render_tabs();
 do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap clickwhale-settings-wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'Settings', 'clickwhale' ); ?></h1>
+    <h1 class="wp-heading-inline"><?php esc_html_e( 'Settings', 'clickwhale' ); ?></h1>
     <?php settings_errors(); ?>
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>

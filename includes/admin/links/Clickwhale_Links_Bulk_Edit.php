@@ -87,7 +87,7 @@ class Clickwhale_Links_Bulk_Edit {
         $output .= '<option value="-1">&mdash; ' . __( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
 
         foreach ( $link_targets as $k => $v ) {
-            $output .= '<option value="' . $k . '">' . $v . '</option>';
+            $output .= '<option value="' . $k . '">' . esc_html( $v ) . '</option>';
         }
 
         $output .= '</select>';
@@ -148,7 +148,7 @@ class Clickwhale_Links_Bulk_Edit {
                 <div class="inline-edit-wrapper" role="region" aria-labelledby="bulk-edit-legend" tabindex="-1">
                     <fieldset class="inline-edit-col-left">
                         <legend class="inline-edit-legend" id="bulk-edit-legend">
-                            <?php _e( 'Bulk Edit', 'clickwhale' ); ?>
+                            <?php esc_html_e( 'Bulk Edit', 'clickwhale' ); ?>
                         </legend>
                         <div class="inline-edit-col">
                             <div id="bulk-title-div">
@@ -176,7 +176,7 @@ class Clickwhale_Links_Bulk_Edit {
 
                     <fieldset class="inline-edit-col-right">
                         <label class="inline-edit-tags wp-clearfix">
-                            <span class="title"><?php _e( 'Options', 'clickwhale' ); ?></span>
+                            <span class="title"><?php esc_html_e( 'Options', 'clickwhale' ); ?></span>
                         </label>
                         <div class="inline-edit-col">
                         <?php
@@ -189,12 +189,13 @@ class Clickwhale_Links_Bulk_Edit {
                     </fieldset>
 
                     <div class="submit inline-edit-save">
-                        <button type="submit" class="button button-primary" id="bulk_edit">
-                            <?php _e( 'Update', 'clickwhale' ); ?>
-                        </button>
-                        <button type="button" class="button cancel">
-                            <?php _e( 'Cancel', 'clickwhale' ); ?>
-                        </button>
+                        <button type="submit"
+                                class="button button-primary"
+                                id="bulk_edit"
+                        ><?php esc_html_e( 'Update', 'clickwhale' ); ?></button>
+                        <button type="button"
+                                class="button cancel"
+                        ><?php esc_html_e( 'Cancel', 'clickwhale' ); ?></button>
 
                         <div class="notice notice-error notice-alt inline hidden">
                             <p class="error"></p>

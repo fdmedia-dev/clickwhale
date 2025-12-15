@@ -54,7 +54,7 @@ do_action( 'clickwhale_admin_banner' );
     <form id="form_edit_<?php echo $link->instance_single; ?>"
           class="clickwhale_form_edit"
           method="POST"
-          action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
+          action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $link->instance_single; ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
@@ -77,11 +77,11 @@ do_action( 'clickwhale_admin_banner' );
                     <?php do_action( 'clickwhale_link_before_general_tab_content', $item_id, $slug ); ?>
 
                     <table style="width: 100%;" class="form-table">
-                        <caption hidden><?php _e( 'Link Main Settings', 'clickwhale' ); ?></caption>
+                        <caption hidden><?php esc_html_e( 'Link Main Settings', 'clickwhale' ); ?></caption>
                         <tbody>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="title"><?php _e( 'Title', 'clickwhale' ); ?></label>
+                                    <label for="title"><?php esc_html_e( 'Title', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -102,7 +102,7 @@ do_action( 'clickwhale_admin_banner' );
                             </tr>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="cw-slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
+                                    <label for="cw-slug"><?php esc_html_e( 'Slug', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -130,7 +130,7 @@ do_action( 'clickwhale_admin_banner' );
                             </tr>
                             <tr class="form-field">
                                 <th scope="row">
-                                    <label for="url"><?php _e( 'Target URL', 'clickwhale' ); ?></label>
+                                    <label for="url"><?php esc_html_e( 'Target URL', 'clickwhale' ); ?></label>
                                 </th>
                                 <td>
                                     <?php
@@ -184,7 +184,7 @@ do_action( 'clickwhale_admin_banner' );
                                                    && Helper::get_clickwhale_option( 'link_manager', 'nofollow' )
                                         ? 1
                                         : intval( $item['nofollow'] ),
-                                    'label'     => __( 'Check to mark link as nofollow & noindex', 'clickwhale' )
+                                    'label'     => esc_html__( 'Check to mark link as nofollow & noindex', 'clickwhale' )
                                 ),
                                 true
                             );
@@ -199,7 +199,7 @@ do_action( 'clickwhale_admin_banner' );
                                                    && Helper::get_clickwhale_option( 'link_manager', 'sponsored' )
                                         ? 1
                                         : intval( $item['sponsored'] ),
-                                    'label'     => __( 'Check to mark link as sponsored', 'clickwhale' )
+                                    'label'     => esc_html__( 'Check to mark link as sponsored', 'clickwhale' )
                                 ),
                                 true
                             );
@@ -250,14 +250,13 @@ do_action( 'clickwhale_admin_banner' );
             <input type="submit"
                    id="submit"
                    name="submit"
-                   value="<?php _e( 'Save link', 'clickwhale' ); ?>"
+                   value="<?php esc_attr_e( 'Save link', 'clickwhale' ); ?>"
                    class="button-primary"
             >
-            <button id="copy-link-url"
+            <button id="cw-copy-link-url"
                     type="button"
-                    class="button">
-                <?php _e( 'Copy link', 'clickwhale' ); ?>
-            </button>
+                    class="button"
+            ><?php esc_html_e( 'Copy link', 'clickwhale' ); ?></button>
         </div>
     </form>
     <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>

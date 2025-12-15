@@ -588,7 +588,7 @@ class Clickwhale_Ajax {
                         $value = ( isset( $data[$c] ) ? esc_attr( $data[$c] ) : 'blank' );
                         foreach ( $link_targets as $k => $v ) {
                             $selected = selected( $k, $value, false );
-                            $options .= '<option value="' . $k . '"' . $selected . '>' . $v . '</option>';
+                            $options .= '<option value="' . $k . '"' . $selected . '>' . esc_html( $v ) . '</option>';
                         }
                         $input = '<select name="' . $mapped_columns[$c] . '">' . $options . '</select>';
                         break;

@@ -33,7 +33,7 @@ do_action( 'clickwhale_admin_banner' );
     <form id="form_edit_<?php echo $category->instance_single; ?>"
           class="clickwhale_form_edit"
           method="POST"
-          action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>">
+          action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $category->instance_single; ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
@@ -47,7 +47,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="title"><?php _e( 'Title', 'clickwhale' ); ?></label>
+                                <label for="title"><?php esc_html_e( 'Title', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -69,7 +69,7 @@ do_action( 'clickwhale_admin_banner' );
 
                         <tr class="form-field">
                             <th scope="row">
-                                <label for="slug"><?php _e( 'Slug', 'clickwhale' ); ?></label>
+                                <label for="slug"><?php esc_html_e( 'Slug', 'clickwhale' ); ?></label>
                             </th>
                             <td>
                                 <?php
@@ -98,7 +98,7 @@ do_action( 'clickwhale_admin_banner' );
                                 'name'        => 'description',
                                 'value'       => esc_html( wp_unslash( $item['description'] ) ),
                                 'placeholder' => __( 'Your comment here', 'clickwhale' ),
-                                'description' => __( 'Optional comment for the category', 'clickwhale' )
+                                'description' => esc_html__( 'Optional comment for the category', 'clickwhale' )
                             ),
                             true
                         );
@@ -108,7 +108,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <?php if ( $count < $limit ) { ?>
                         <input type="submit"
-                               value="<?php _e( 'Save category', 'clickwhale' ); ?>"
+                               value="<?php esc_attr_e( 'Save category', 'clickwhale' ); ?>"
                                id="submit"
                                class="button-primary"
                                name="submit" />

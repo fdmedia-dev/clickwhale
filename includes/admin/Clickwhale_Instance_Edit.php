@@ -1,6 +1,8 @@
 <?php
 namespace clickwhale\includes\admin;
 
+use clickwhale\includes\helpers\Helper;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -8,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Clickwhale_Instance_Edit {
 
     /**
-     * Instance type as plural e.g. "links", "linkpages"
+     * Instance type as plural e.g. "links", "linkpages", "tracking_codes"
      *
      * @var string
      * @since 1.6.0
@@ -16,7 +18,7 @@ abstract class Clickwhale_Instance_Edit {
     public string $instance_plural;
 
     /**
-     * Instance type as single e.g. "link", "linkpage"
+     * Instance type as single e.g. "link", "linkpage", "tracking_code"
      *
      * @var string
      * @since 1.6.0
@@ -24,31 +26,34 @@ abstract class Clickwhale_Instance_Edit {
     public string $instance_single;
 
     /**
-     * Instance title e.g. "Link Page", "Tracking Code"
+     * Helper class name
      *
-     * @var string
+     * @var class-string
      */
-    public string $instance_title;
+    protected string $instance_helper;
 
     /**
      * @var string
      */
-    protected string $page;
+    private string $page;
 
-    public function __construct( string $instance_plural, string $instance_single, string $instance_title ) {
-        $this->instance_plural = $instance_plural;
-        $this->instance_single = $instance_single;
-        $this->instance_title = $instance_title;
+    public function __construct() {
         $this->page = CLICKWHALE_SLUG . '-edit-' . str_replace( '_', '-', $this->instance_single );
 
-        add_action( "admin_post_save_update_clickwhale_$this->instance_single", array( $this, 'save_update' ) );
+        add_action( "admin_post_save_update_clickwhale_{$this->instance_single}", array( $this, 'save_update' ) );
 
         if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === $this->page ) {
             add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
+            add_filter( 'admin_title', array( $this, 'set_edit_page_title' ), 10, 2 );
         }
-
-        add_filter( 'admin_title', array( $this, 'set_edit_page_title' ), 10, 2 );
     }
+
+    /**
+     * Localized human readable label for instance title
+     *
+     * @return string
+     */
+    abstract protected function get_title_i18n(): string;
 
     /**
      * Default values for the instance
@@ -59,49 +64,47 @@ abstract class Clickwhale_Instance_Edit {
     abstract public function get_defaults(): array;
 
     /**
-     * Get current instance
+     * JS for current page
      *
-     * @param $request
-     *
-     * @return mixed
+     * @return void
      * @since 1.6.0
      */
-    public function get_item( $request ) {
-        if ( ! is_numeric( $request['id'] ) ) {
-            $this->no_item();
-        }
+    abstract public function admin_scripts(): void;
 
-        // get default values
-        $defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
-
-        // if item id=0 or id doesn't set/exists than use $defaults
-        if ( empty( $request['id'] ) ) {
-            return $defaults;
-        }
-
-        // get data by id
-        $helper = ucfirst( "{$this->instance_plural}_Helper" );
-
-        $item = call_user_func(
-            array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
-            intval( $request['id'] )
-        );
-
-        // if link with id doesn't exist
-        if ( ! $item ) {
-            $this->no_item();
-        }
-
+    /**
+     * Allows child classes to adjust loaded item data before returning it
+     *
+     * @param array $item
+     * @return array
+     */
+    protected function normalize_loaded_item( array $item ): array {
         return $item;
     }
 
     /**
-     * Save or update instance
+     * Get current instance
      *
-     * @return mixed
+     * @param $request
+     * @return array
      * @since 1.6.0
      */
-    abstract public function save_update();
+    public function get_item( $request ): array {
+        if ( ! is_numeric( $request['id'] ) ) {
+            $this->no_item();
+        }
+
+        if ( empty( $request['id'] ) ) {
+            return apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
+        }
+
+        $item = $this->instance_helper::get_by_id( intval( $request['id'] ) );
+
+        if ( ! $item ) {
+            $this->no_item();
+        }
+
+        return $this->normalize_loaded_item( $item );
+    }
 
     /**
      * Message if id wasn't found
@@ -109,12 +112,12 @@ abstract class Clickwhale_Instance_Edit {
      * @return void
      * @since 1.6.0
      */
-    protected function no_item() {
+    private function no_item(): void {
         wp_die(
-            __( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', 'clickwhale' ),
-            __( 'Error', 'clickwhale' ),
+            esc_html__( 'You attempted to edit an item that does not exist. Perhaps it was deleted?', 'clickwhale' ),
+            esc_html__( 'Error', 'clickwhale' ),
             array(
-                'link_text' => esc_html( __( 'Back', 'clickwhale' ) )
+                'link_text' => esc_html__( 'Back', 'clickwhale' )
             )
         );
     }
@@ -128,7 +131,7 @@ abstract class Clickwhale_Instance_Edit {
      * @return void
      * @since 1.6.0
      */
-    protected function set_transient( string $id, string $value ) {
+    protected function set_transient( string $id, string $value ): void {
         set_transient( sanitize_key( $this->instance_single . '-' . $id ), esc_html( $value ), 15 ); // 15 seconds
     }
 
@@ -140,7 +143,7 @@ abstract class Clickwhale_Instance_Edit {
      * @return void
      * @since 1.6.0
      */
-    public function show_message( string $id ) {
+    public function show_message( string $id ): void {
         if ( empty( $id ) ) {
             return;
         }
@@ -153,12 +156,12 @@ abstract class Clickwhale_Instance_Edit {
 
         if ( $transient === 'added' ) {
             echo '<div class="updated"><p>';
-            printf( __( '%s was successfully saved', 'clickwhale' ), __( $this->instance_title, 'clickwhale' ) );
+            printf( esc_html__( '%s was successfully saved', 'clickwhale' ), esc_html( $this->get_title_i18n() ) );
             echo '</p></div>';
 
         } elseif ( $transient === 'updated' ) {
             echo '<div class="updated"><p>';
-            printf( __( '%s was successfully updated', 'clickwhale' ), __( $this->instance_title, 'clickwhale' ) );
+            printf( esc_html__( '%s was successfully updated', 'clickwhale' ), esc_html( $this->get_title_i18n() ) );
             echo '</p></div>';
         }
 
@@ -175,14 +178,6 @@ abstract class Clickwhale_Instance_Edit {
      * @since 1.6.0
      */
     public function set_edit_page_title( string $admin_title, string $title ): string {
-        if ( empty( $_GET['page'] ) ) {
-            return $admin_title;
-        }
-
-        if ( sanitize_key( $_GET['page'] ) !== $this->page ) {
-            return $admin_title;
-        }
-
         if ( empty( intval( $_GET['id'] ) ) ) {
             return $admin_title;
         }
@@ -191,17 +186,74 @@ abstract class Clickwhale_Instance_Edit {
 
         return sprintf(
             /* translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category) */
-            __( 'Edit "%1$s" %2$s', 'clickwhale' ),
+            esc_html__( 'Edit "%1$s" %2$s', 'clickwhale' ),
             esc_html( wp_unslash( $item['title'] ) ),
-            __( $this->instance_title, 'clickwhale' )
+            esc_html( $this->get_title_i18n() )
         ) . str_replace( $title, '', $admin_title );
     }
 
+    protected function filter_defaults( array $defaults ): array {
+        return $defaults;
+    }
+
     /**
-     * JS for current page
+     * Allows child classes to adjust item data before saving
+     *
+     * @param array $item
+     * @return array
+     */
+    protected function process_item_before_save( array $item ): array {
+        return $item;
+    }
+
+    /**
+     * Hook for child classes to execute logic after saving the item
+     *
+     * @param int   $id
+     * @param array $raw
+     * @return void
+     */
+    protected function after_save( int $id, array $raw ): void {}
+
+    /**
+     * Save or update instance
      *
      * @return void
-     * @since 1.6.0
      */
-    abstract public function admin_scripts(): void;
+    public final function save_update(): void {
+        global $wpdb;
+        $table = Helper::get_db_table_name( $this->instance_plural );
+        $item = array_intersect_key(
+            $_POST,
+            $this->filter_defaults( $this->get_defaults() )
+        );
+        $item = $this->process_item_before_save( $item );
+        $id = intval( $item['id'] );
+
+        if ( $this->instance_helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                $table,
+                $item,
+                array( 'id' => $id )
+            );
+            do_action( "clickwhale_{$this->instance_single}_updated", $id, $_POST );
+            $this->set_transient( $id, 'updated' );
+
+        } else {
+            unset( $item['id'] );
+            $wpdb->insert( $table, $item );
+            $id = $wpdb->insert_id;
+            do_action( "clickwhale_{$this->instance_single}_inserted", $id, $_POST );
+            $this->set_transient( $id, 'added' );
+        }
+
+        $this->after_save( $id, $_POST );
+
+        wp_redirect(
+            esc_url_raw(
+                admin_url( 'admin.php?page=' . $this->page . '&id=' . $id )
+            )
+        );
+        exit;
+    }
 }

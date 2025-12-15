@@ -151,7 +151,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             'author'       => __( 'Author', 'clickwhale' )
         );
 
-        if ( isset( $tracking_options['disable_tracking'] ) ) {
+        if ( ! empty( $tracking_options['disable_tracking'] ) ) {
             unset( $columns['views_count'], $columns['clicks_count'] );
         }
 
@@ -315,6 +315,6 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Link Pages Found', 'clickwhale' );
+        esc_html_e( 'No Link Pages Found', 'clickwhale' );
     }
 }

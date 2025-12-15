@@ -10,15 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
-    /**
-     * @var string
-     */
-    private string $links_table;
-
     public function __construct() {
-        parent::__construct( 'links', 'link', 'Link' );
+        $this->instance_plural = 'links';
+        $this->instance_single = 'link';
+        $this->instance_helper = Links_Helper::class;
+        parent::__construct();
+    }
 
-        $this->links_table = Helper::get_db_table_name( $this->instance_plural );
+    protected function get_title_i18n(): string {
+        return __( 'Link', 'clickwhale' );
     }
 
     /**
@@ -120,53 +120,33 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         $this->link_scanner_html( $item );
     }
 
-    public function save_update(): void {
-        global $wpdb;
-        $item = array_intersect_key( $_POST, $this->get_defaults() );
+    protected function process_item_before_save( array $item ): array {
         $item['categories'] = isset( $item['categories'] ) ? sanitize_text_field( implode( ',', $item['categories'] ) ) : '';
         $item['nofollow']   = isset( $item['nofollow'] );
         $item['sponsored']  = isset( $item['sponsored'] );
         $item['author']     = get_current_user_id();
-        $id = intval( $item['id'] );
-
-        // Check if item exists and then update or insert.
-        // In some cases default check (not false or 0) goes wrong
-        if ( Links_Helper::get_by_id( $id ) ) {
-            $wpdb->update(
-                $this->links_table,
-                $item,
-                array( 'id' => $id )
-            );
-            do_action( 'clickwhale_link_updated', $id, $_POST );
-            $this->set_transient( $id, 'updated' );
-
-        } else {
-            unset( $item['id'] );
-            $wpdb->insert(
-                $this->links_table,
-                $item
-            );
-            $id = $wpdb->insert_id;
-            do_action( 'clickwhale_link_inserted', $id, $_POST );
-            $this->set_transient( $id, 'added' );
-        }
-
-        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=' . $id;
-        wp_redirect( esc_url_raw( admin_url( $url ) ) );
-        exit;
+        return $item;
     }
 
     public function admin_scripts(): void {
         $page_id = intval( $_GET['id'] ?? 0 );
         $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' );
         ?>
-
         <script type='text/javascript'>
             jQuery(document).ready(function(){
                 const
                     pageID = +'<?php echo $page_id; ?>', // `string` to `integer`
                     activeTab = '<?php echo sanitize_key( $_GET['tab'] ?? '' ); ?>',
-                    urlSearchParams = new URLSearchParams(window.location.search);
+                    urlSearchParams = new URLSearchParams(window.location.search),
+                    slugNotice = <?php echo wp_json_encode(
+                        esc_html__( 'Please enter slug. Allowed characters:', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'alphanumeric (a...z, A...Z, 0...9)', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'underscore (_) and dash (-)', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'with optional slash (/) as separator', 'clickwhale' ) ); ?>
+                ;
 
                 let
                     $tabs = jQuery('#clickwhale-tabs'),
@@ -185,7 +165,8 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     scanTable = $scanWrapper.find( 'table'),
                     scanThead = scanTable.find('thead'),
                     scanTbody = scanTable.find('tbody'),
-                    scanTfoot = scanTable.find('tfoot');
+                    scanTfoot = scanTable.find('tfoot')
+                ;
 
                 if (activeTab && 'link_scanner' === activeTab){
                     urlSearchParams.delete('tab');
@@ -200,7 +181,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 if (0 === pageID){
-                    slugPrefix = "<?php echo ( $slug_prefix ) ? esc_js( untrailingslashit( $slug_prefix ) ) : ''; ?>";
+                    slugPrefix = <?php echo wp_json_encode( ( $slug_prefix ) ? untrailingslashit( $slug_prefix ) : '' ); ?>;
                     scanBtn.addClass('disabled');
                     scanBtnDesc.addClass('is-visible');
                 }
@@ -274,12 +255,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
                         if (!sanitized){
                             $this.addClass('error')
-                                .next().html(`
-                                    <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
-                                    <br>
-                                    <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator', 'clickwhale' ) ); ?>
-                                    `.trim()
-                            );
+                                 .next().html(slugNotice);
                         }
                     })
                     .on('input', function(){
@@ -304,7 +280,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         title.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
+                             .next().text(<?php echo wp_json_encode( __( 'Please enter title', 'clickwhale' ) ); ?>);
                         return false;
                     } else {
                         title.removeClass('error').next().text('');
@@ -314,7 +290,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
+                            .next().text(<?php echo wp_json_encode( __( 'Please enter slug', 'clickwhale' ) ); ?>);
                         $previewContainer.find('span').html('');
                         return false;
                     } else {
@@ -329,12 +305,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         slug.addClass('error')
-                            .next().html(`
-                                <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
-                                <br>
-                                <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-), with optional slash (/) as separator', 'clickwhale' ) ); ?>
-                                `.trim()
-                            );
+                            .next().html(slugNotice);
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -347,27 +318,26 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         generalTabNotValid();
 
                         const
-                            slugUrl = '<?php echo esc_js( esc_url( home_url( '/' ) ) ); ?>' + slug.val(),
+                            baseUrl = <?php echo wp_json_encode( esc_url( home_url( '/' ) ) ); ?>,
+                            idTpl   = <?php echo wp_json_encode( esc_html__( 'ID: %s', 'clickwhale' ) ); ?>,
+                            typeTpl = <?php echo wp_json_encode( esc_html__( 'type: %s', 'clickwhale' ) ); ?>,
+                            wpTpl   = <?php echo wp_json_encode( esc_html__( 'by WordPress (core, theme, plugin or rewrite rules).', 'clickwhale' ) ); ?>,
 
-                            idTemplate = (slugMatch.id > 0)
-                                ? '<?php echo esc_js( sprintf( esc_html__( 'ID: %s, ', 'clickwhale' ), '__slug_id__' ) ); ?>'.replace('__slug_id__', `<b>${slugMatch.id}</b>`)
-                                : '',
-
-                            slugType = (slugMatch.id > 0)
-                                ? '<?php echo esc_js( sprintf( esc_html__( 'type: %s.', 'clickwhale' ), '__slug_type__' ) ); ?>'.replace('__slug_type__', `<b>${slugMatch.type}</b>`)
-                                : '<?php echo esc_js( esc_html__( 'by WordPress (core, theme, plugin or rewrite rules).', 'clickwhale' ) ); ?>';
+                            slugUrl    = baseUrl + slug.val(),
+                            idTemplate = (slugMatch.id > 0) ? idTpl.replace('%s', `<b>${slugMatch.id}</b>, `) : '',
+                            slugType   = (slugMatch.id > 0) ? typeTpl.replace('%s', `<b>${slugMatch.type}</b>.`) : wpTpl;
 
                         slug.addClass('error')
-                            .next().html(
-                                `<?php echo esc_js( esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) ); ?>
-                                <br/ >
-                                %2$s
-                                <br/ >
-                                <?php echo esc_js( esc_html__( 'Please enter another slug.', 'clickwhale' ) ); ?>
-                                `
+                            .next().html(<?php echo wp_json_encode(
+                                esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) .
+                                '<br>' .
+                                '%2$s' .
+                                '<br>' .
+                                esc_html__( 'Please enter another slug.', 'clickwhale' ) ); ?>
                                 .replace('%1$s', `<b><a href="${slugUrl}" target="_blank">${slugUrl}</a></b>`)
                                 .replace('%2$s', `${idTemplate}${slugType}`)
-                            );
+                            )
+                        ;
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -377,7 +347,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
                         url.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'Please enter URL', 'clickwhale' ) ); ?>');
+                           .next().text(<?php echo wp_json_encode( __( 'Please enter URL', 'clickwhale' ) ); ?>);
                         return false;
                     } else {
                         url.removeClass('error').next().text('');

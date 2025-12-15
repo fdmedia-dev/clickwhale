@@ -71,11 +71,6 @@ final class Clickwhale {
     protected Clickwhale_Loader $loader;
 
     /**
-     * @var Clickwhale_i18n
-     */
-    private Clickwhale_i18n $locale;
-
-    /**
      * @var Clickwhale_WP_User
      */
     public Clickwhale_WP_User $user;
@@ -151,10 +146,9 @@ final class Clickwhale {
         if ( empty( self::$instance ) ) {
             self::$instance = new self();
             self::$instance->load_dependencies();
-            self::$instance->loader = new Clickwhale_Loader();
-            self::$instance->locale = new Clickwhale_i18n();
-            self::$instance->user   = new Clickwhale_WP_User();
-            self::$instance->set_locale();
+
+            self::$instance->loader        = new Clickwhale_Loader();
+            self::$instance->user          = new Clickwhale_WP_User();
             self::$instance->admin         = Clickwhale_Admin::get_instance();
             self::$instance->settings      = Clickwhale_Settings::get_instance();
             self::$instance->tools         = new Clickwhale_Tools();
@@ -178,10 +172,6 @@ final class Clickwhale {
     /**
      * Define the core functionality of the plugin.
      *
-     * Set the plugin name and the plugin version that can be used throughout the plugin.
-     * Load the dependencies, define the locale, and set the hooks for the admin area and
-     * the public-facing side of the site.
-     *
      * @since    1.0.0
      */
     private function __construct() {}
@@ -195,7 +185,6 @@ final class Clickwhale {
      * Include the following files that make up the plugin:
      *
      * - Clickwhale_Loader. Orchestrates the hooks of the plugin.
-     * - Clickwhale_i18n. Defines internationalization functionality.
      * - Clickwhale_Admin. Defines all hooks for the admin area.
      * - Clickwhale_Public. Defines all hooks for the public side of the site.
      *
@@ -212,12 +201,6 @@ final class Clickwhale {
          * core plugin.
          */
         require_once CLICKWHALE_DIR . 'includes/Clickwhale_Loader.php';
-
-        /**
-         * The class responsible for defining internationalization functionality
-         * of the plugin.
-         */
-        require_once CLICKWHALE_DIR . 'includes/Clickwhale_i18n.php';
 
         /**
          * Debuggers
@@ -256,19 +239,6 @@ final class Clickwhale {
          * side of the site.
          */
         require_once CLICKWHALE_DIR . 'includes/front/Clickwhale_Public.php';
-    }
-
-    /**
-     * Define the locale for this plugin for internationalization.
-     *
-     * Uses the Clickwhale_i18n class in order to set the domain and to register the hook
-     * with WordPress.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function set_locale() {
-        $this->loader->add_action( 'init', $this->locale, 'load_plugin_textdomain' );
     }
 
     /**
@@ -334,7 +304,6 @@ final class Clickwhale {
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'settings_action_link' );
         $this->loader->add_filter( 'plugin_action_links_' . CLICKWHALE_ID, $this->admin, 'upgrade_action_link' );
         $this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
-        $this->loader->add_filter( 'sanitize_option_clickwhale_link_manager_options', $this->settings, 'sanitize_link_manager_options' );
     }
 
     /**
@@ -452,48 +421,48 @@ final class Clickwhale {
 
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-link',
-                'title'  => __( 'New Link', 'clickwhale' ),
+                'title'  => esc_html__( 'New Link', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-link',
-                    'title' => __( 'Add New Link', 'clickwhale' )
+                    'title' => esc_html__( 'Add New Link', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-category',
-                'title'  => __( 'New Category', 'clickwhale' ),
+                'title'  => esc_html__( 'New Category', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-category',
-                    'title' => __( 'Add New Category', 'clickwhale' )
+                    'title' => esc_html__( 'Add New Category', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-linkpage',
-                'title'  => __( 'New Link Page', 'clickwhale' ),
+                'title'  => esc_html__( 'New Link Page', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-linkpage',
-                    'title' => __( 'Add New Link Page', 'clickwhale' )
+                    'title' => esc_html__( 'Add New Link Page', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
                 'id'     => CLICKWHALE_SLUG . '-new-tracking-code',
-                'title'  => __( 'New Tracking Code', 'clickwhale' ),
+                'title'  => esc_html__( 'New Tracking Code', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ) ),
                 'parent' => CLICKWHALE_SLUG,
                 'meta'   => array(
                     'class' => CLICKWHALE_SLUG . '-new-tracking-code',
-                    'title' => __( 'Add New Tracking Code', 'clickwhale' )
+                    'title' => esc_html__( 'Add New Tracking Code', 'clickwhale' )
                 )
             )
         );

@@ -116,7 +116,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             if ( ! empty( $categories ) ) {
                 ?>
                 <select name="category" class="clickwhale-filter-categories">
-                    <option value=""><?php _e( 'All Categories', 'clickwhale' ); ?></option>
+                    <option value=""><?php esc_html_e( 'All Categories', 'clickwhale' ); ?></option>
                     <?php foreach ( $categories as $category ) {
                         $category_id = intval( $category->id );
                         $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
@@ -145,7 +145,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 }
                 ?>
             </select>
-            <input type="submit" class="button" value="<?php _e( 'Filter', 'clickwhale' ); ?>" />
+            <input type="submit" class="button" value="<?php esc_attr_e( 'Filter', 'clickwhale' ); ?>" />
         </div>
         <?php
     }
@@ -313,7 +313,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             'clicks_count' => __( 'Clicks', 'clickwhale' )
         );
 
-        if ( isset( $tracking_options['disable_tracking'] ) ) {
+        if ( ! empty( $tracking_options['disable_tracking'] ) ) {
             unset( $columns['clicks_count'] );
         }
 
@@ -583,7 +583,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     }
 
     public function no_items() {
-        _e( 'No Links Found', 'clickwhale' );
+        esc_html_e( 'No Links Found', 'clickwhale' );
     }
 
     public function display() {

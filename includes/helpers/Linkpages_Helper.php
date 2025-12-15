@@ -29,8 +29,9 @@ class Linkpages_Helper extends Helper_Abstract {
      */
     public static function get_limitation_notice(): string {
         return sprintf(
-            __( 'Currently, a maximum of %d link page can be added.', 'clickwhale' ),
-            self::get_limit()
+            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
+            self::get_limit(),
+            ( self::get_limit() === 1 ) ? esc_html__( 'link page', 'clickwhale' ) : esc_html__( 'link pages', 'clickwhale' )
         );
     }
 
@@ -41,17 +42,18 @@ class Linkpages_Helper extends Helper_Abstract {
      */
     public static function get_links_limitation_notice(): string {
         return sprintf(
-            __( 'Currently, a maximum of %d links can be added.', 'clickwhale' ),
-            self::get_linkpage_links_limit()
+            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
+            self::get_linkpage_links_limit(),
+            ( self::get_linkpage_links_limit() === 1 ) ? esc_html__( 'link', 'clickwhale' ) : esc_html__( 'links', 'clickwhale' )
         );
     }
 
     /**
      * Filter function
      * return number of available links on link page
-     * @return mixed|void
+     * @return int
      */
-    public static function get_linkpage_links_limit() {
+    public static function get_linkpage_links_limit(): int {
         return apply_filters( 'clickwhale_linkpage_links_limit', 10 );
     }
 

@@ -33,7 +33,7 @@ do_action( 'clickwhale_admin_banner' );
     <form id="form_edit_<?php echo $tracking_code->instance_single; ?>"
           class="clickwhale_form_edit"
           method="POST"
-          action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>"
+          action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
     >
         <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $tracking_code->instance_single; ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
@@ -41,7 +41,7 @@ do_action( 'clickwhale_admin_banner' );
 
         <div id="post-body-content">
             <table style="width: 100%;" class="form-table">
-                <caption style="display: none"><?php _e( 'Tracking Code Edit Table', 'clickwhale' ); ?></caption>
+                <caption style="display: none"><?php esc_html_e( 'Tracking Code Edit Table', 'clickwhale' ); ?></caption>
                 <tbody>
                     <?php
                     echo Helper::render_control(
@@ -93,7 +93,7 @@ do_action( 'clickwhale_admin_banner' );
 
                     <tr class="form-field for_mode for_standard_mode">
                         <th scope="row">
-                            <label for="position"><?php _e( 'In which page do you want to insert this code?', 'clickwhale' ); ?></label>
+                            <label for="position"><?php esc_html_e( 'In which page do you want to insert this code?', 'clickwhale' ); ?></label>
                         </th>
                         <td>
                             <?php
@@ -423,7 +423,7 @@ do_action( 'clickwhale_admin_banner' );
                             'name'             => 'is_active',
                             'class'            => 'clickwhale_tc_active_toggle',
                             'value'            => esc_attr( $item['is_active'] ),
-                            'label'            => __( 'Enable Tracking Code', 'clickwhale' ),
+                            'label'            => esc_html__( 'Enable Tracking Code', 'clickwhale' ),
                             'disabled'         => Tracking_Codes_Helper::is_active_limit(),
                             'disabled_message' => Tracking_Codes_Helper::get_limitation_notice()
                         ),
@@ -440,7 +440,7 @@ do_action( 'clickwhale_admin_banner' );
             />
             <input type="hidden" id="updated_at" name="updated_at" value="" />
             <input type="submit"
-                   value="<?php _e( 'Save', 'clickwhale' ); ?>"
+                   value="<?php esc_attr_e( 'Save', 'clickwhale' ); ?>"
                    id="submit"
                    class="button-primary"
                    name="submit"

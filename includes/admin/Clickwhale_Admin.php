@@ -377,7 +377,8 @@ final class Clickwhale_Admin {
      * @return string
      */
     public function enqueue_fs_pricing_styles( string $template ): string {
-        $style = <<<'CSS'
+        ob_start();
+        ?>
 <style>
 #root .fs-app-header .fs-page-title,
 #fs_pricing_app .fs-app-header .fs-page-title {
@@ -490,7 +491,8 @@ final class Clickwhale_Admin {
     border-color: #1A1C1D !important;
 }
 </style>
-CSS;
+        <?php
+        $style = ob_get_clean();
         return $template . $style;
     }
 
@@ -540,7 +542,7 @@ CSS;
                    class="clickwhale-banner--button outlined dark"
                    target="_blank"
                    rel="noopener"
-                ><?php _e( 'Need help?', 'clickwhale' ); ?></a>
+                ><?php esc_html_e( 'Need help?', 'clickwhale' ); ?></a>
 
                 <?php do_action( 'clickwhale_admin_banner_pro_button' ); ?>
             </div>
@@ -556,7 +558,7 @@ CSS;
         <a href="<?php echo esc_url( Helper::get_pro_link() ); ?>"
            class="clickwhale-banner--button"
            target="_blank">
-            <?php _e( 'Upgrade to PRO', 'clickwhale' ); ?>
+            <?php esc_html_e( 'Upgrade to PRO', 'clickwhale' ); ?>
         </a>
         <?php
     }
@@ -564,7 +566,7 @@ CSS;
     public function admin_pro_message() {
         ?>
         <div class="clickwhale-linkpage--message">
-            <?php _e( 'Available only in PRO version', 'clickwhale' ); ?>
+            <?php esc_html_e( 'Available only in PRO version', 'clickwhale' ); ?>
         </div>
         <?php
     }
@@ -784,7 +786,7 @@ CSS;
             ?>
             <script type='text/javascript'>
                 jQuery(document).ready(function(){
-                    jQuery('#copy-link-url').on('click', function(e){
+                    jQuery('#cw-copy-link-url').on('click', function(e){
                         e.preventDefault();
 
                         // Remove appended message
@@ -794,7 +796,7 @@ CSS;
                         copySlug();
 
                         // Append message
-                        jQuery('<span class="copied"><?php echo esc_js( __( 'Copied!', 'clickwhale' ) ); ?></span>')
+                        jQuery('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> + '</span>')
                             .insertAfter(jQuery(this));
 
                         // Hide appended message
@@ -814,7 +816,7 @@ CSS;
 
                         // Append message
                         jQuery(this)
-                            .append('<span class="copied"><?php echo esc_js( __( 'Copied!', 'clickwhale' ) ); ?></span>');
+                            .append('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> + '</span>');
 
                         // Hide appended message
                         setTimeout(function(){
@@ -828,7 +830,8 @@ CSS;
 
                         textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
                         jQuery('body').append(temp);
-                        temp.val(textToCopy).select();
+                        temp.val(textToCopy);
+                        temp[0].select();
                         document.execCommand("copy");
                         temp.remove();
                     }

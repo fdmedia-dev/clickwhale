@@ -32,13 +32,9 @@ class Links_Helper extends Helper_Abstract {
      */
     public static function get_limitation_notice(): string {
         return sprintf(
-            _n(
-                'Currently, a maximum of 1 link can be added.',
-                'Currently, a maximum of %d links can be added.',
-                self::get_limit(),
-                'clickwhale'
-            ),
-            self::get_limit()
+            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
+            self::get_limit(),
+            ( self::get_limit() === 1 ) ? esc_html__( 'link', 'clickwhale' ) : esc_html__( 'links', 'clickwhale' )
         );
     }
 

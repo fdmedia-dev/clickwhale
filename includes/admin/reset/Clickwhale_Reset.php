@@ -38,21 +38,22 @@ class Clickwhale_Reset {
 
     public function initialize_reset_settings_options() {
         add_settings_section(
-            'reset_settings_section',
+            'clickwhale_reset_settings_section',
             __( 'Reset plugin options', 'clickwhale' ),
             array( $this, 'reset_settings_callback' ),
             'clickwhale_tools_reset_settings'
         );
 
         register_setting(
-            'clickwhale_tools_reset_db_settings',
-            'clickwhale_tools_reset_db_settings'
+            'clickwhale_tools_reset_settings',
+            'clickwhale_tools_reset_settings',
+            array( 'sanitize_callback' => '__return_empty_string' )
         );
     }
 
     public function initialize_reset_db_options() {
         add_settings_section(
-            'reset_db_settings_section',
+            'clickwhale_reset_db_section',
             __( 'Delete all plugin data', 'clickwhale' ),
             array( $this, 'reset_db_settings_callback' ),
             'clickwhale_tools_reset_db_settings'
@@ -60,13 +61,14 @@ class Clickwhale_Reset {
 
         register_setting(
             'clickwhale_tools_reset_db_settings',
-            'clickwhale_tools_reset_db_settings'
+            'clickwhale_tools_reset_db_settings',
+            array( 'sanitize_callback' => '__return_empty_string' )
         );
     }
 
     public function initialize_reset_stats_options() {
         add_settings_section(
-            'reset_stats_settings_section',
+            'clickwhale_reset_stats_section',
             __( 'Reset all statistics', 'clickwhale' ),
             array( $this, 'reset_stats_settings_callback' ),
             'clickwhale_tools_reset_stats_settings'
@@ -74,20 +76,27 @@ class Clickwhale_Reset {
 
         register_setting(
             'clickwhale_tools_reset_stats_settings',
-            'clickwhale_tools_reset_stats_settings'
+            'clickwhale_tools_reset_stats_settings',
+            array( 'sanitize_callback' => '__return_empty_string' )
         );
     }
 
     public function reset_settings_callback() {
-        echo '<p>' . __( 'At this point you can reset plugin settings to default values.', 'clickwhale' ) . '</p>';
+        ?>
+        <p><?php esc_html_e( 'At this point you can reset plugin settings to default values.', 'clickwhale' ); ?></p>
+        <?php
     }
 
     public function reset_db_settings_callback() {
-        echo '<p>' . __( 'At this point you can delete all entries (links, categories and stats) from the database tables of our plugin.', 'clickwhale' ) . '</p>';
+        ?>
+        <p><?php esc_html_e( 'At this point you can delete all entries (links, categories and stats) from the database tables of our plugin.', 'clickwhale' ); ?></p>
+        <?php
     }
 
     public function reset_stats_settings_callback() {
-        echo '<p>' . __( 'In case you want to clean up your stats, you can remove all previously counted clicks from the database here.', 'clickwhale' ) . '</p>';
+        ?>
+        <p><?php esc_html_e( 'In case you want to clean up your stats, you can remove all previously counted clicks from the database here.', 'clickwhale' ); ?></p>
+        <?php
     }
 
     public function admin_scripts() {
@@ -118,15 +127,22 @@ class Clickwhale_Reset {
 
                     switch (resetButton.attr('id')){
                         case 'button-reset-settings':
-                            resetConfirm = '<?php echo esc_js( __( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', 'clickwhale' ) ); ?>';
+                            resetConfirm = <?php echo wp_json_encode(
+                                __( 'Are you sure? This action restore all plugin settings to default. This process cannot be undone!', 'clickwhale' )
+                            ); ?>;
+
                             resetType = 'settings';
                             break;
                         case 'button-reset-db':
-                            resetConfirm = '<?php echo esc_js( __( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', 'clickwhale' ) ); ?>';
+                            resetConfirm = <?php echo wp_json_encode(
+                                __( 'Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!', 'clickwhale' )
+                            ); ?>;
                             resetType = 'db';
                             break;
                         case 'button-reset-stats':
-                            resetConfirm = '<?php echo esc_js( __( 'Are you sure? This action will reset all statistic. This process cannot be undone!', 'clickwhale' ) ); ?>';
+                            resetConfirm = <?php echo wp_json_encode(
+                                __( 'Are you sure? This action will reset all statistic. This process cannot be undone!', 'clickwhale' )
+                            ); ?>;
                             resetType = 'stats';
                             break;
                     }

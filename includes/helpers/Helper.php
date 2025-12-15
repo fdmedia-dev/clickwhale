@@ -192,7 +192,7 @@ class Helper {
 
         if ( $disabled ) {
             if ( isset( $args['disabled_message'] ) ) {
-                $item .= '<div class="links-info">' . $args['disabled_message'] . '</div>';
+                $item .= '<div class="cw-links-info">' . $args['disabled_message'] . '</div>';
             }
         }
 
@@ -457,6 +457,16 @@ class Helper {
         }
 
         return array();
+    }
+
+    /**
+     * @return array
+     */
+    public static function get_tracking_durations(): array {
+        return apply_filters(
+            'clickwhale_tracking_duration',
+            array( 30 => __( '30 days', 'clickwhale' ) )
+        );
     }
 
     /**

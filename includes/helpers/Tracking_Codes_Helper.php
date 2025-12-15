@@ -61,9 +61,9 @@ class Tracking_Codes_Helper extends Helper_Abstract {
      */
     public static function get_limitation_notice(): string {
         return sprintf(
-            __( 'Currently, a maximum of %d %s can be active at the same time.', 'clickwhale' ),
+            esc_html__( 'Currently, a maximum of %d %s can be active at the same time.', 'clickwhale' ),
             self::get_active_limit(),
-            self::get_active_limit() === 1 ? __( 'tracking code', 'clickwhale' ) : __( 'tracking codes', 'clickwhale' )
+            ( self::get_active_limit() === 1 ) ? esc_html__( 'tracking code', 'clickwhale' ) : esc_html__( 'tracking codes', 'clickwhale' )
         );
     }
 

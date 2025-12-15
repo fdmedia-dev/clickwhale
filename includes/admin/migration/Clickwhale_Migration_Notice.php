@@ -92,8 +92,8 @@ class Clickwhale_Migration_Notice {
             <p>
                 <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.', 'clickwhale' ), $this->migrant_full ); ?></span>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools' ) ); ?>"
-                   class="button button-primary"><?php _e( 'Start Migration', 'clickwhale' ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Not now', 'clickwhale' ); ?></a>
+                   class="button button-primary"><?php esc_html_e( 'Start Migration', 'clickwhale' ); ?></a>
+                <a href="#" class="button button-dismiss"><?php esc_html_e( 'Not now', 'clickwhale' ); ?></a>
             </p>
         </div>
         <?php
@@ -107,10 +107,10 @@ class Clickwhale_Migration_Notice {
         ?>
         <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_html( $this->migrant ); ?>-deactive">
             <p>
-                <span> <?php printf( __( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.', 'clickwhale' ), $this->migrant_full ); ?></span>
+                <span> <?php printf( esc_html__( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.', 'clickwhale' ), $this->migrant_full ); ?></span>
                 <a href="#"
-                   class="button button-primary deactive"><?php printf( __( 'Deactivate %1$s', 'clickwhale' ), $this->migrant_full ); ?></a>
-                <a href="#" class="button button-dismiss"><?php _e( 'Leave it active', 'clickwhale' ); ?></a>
+                   class="button button-primary deactive"><?php printf( esc_html__( 'Deactivate %1$s', 'clickwhale' ), $this->migrant_full ); ?></a>
+                <a href="#" class="button button-dismiss"><?php esc_html_e( 'Leave it active', 'clickwhale' ); ?></a>
             </p>
         </div>
         <?php
@@ -126,8 +126,8 @@ class Clickwhale_Migration_Notice {
             jQuery(document).ready(function(){
                 const
                     nonce = <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_' . $this->migrant . '_admin_nonce' ) ); ?>,
-                    migrant = '<?php echo esc_js( __( $this->migrant ) ); ?>',
-                    migrant_file = '<?php echo esc_js( __( $this->migrant_file ) ); ?>';
+                    migrant = <?php echo wp_json_encode( $this->migrant ); ?>,
+                    migrantFile = <?php echo wp_json_encode( $this->migrant_file ); ?>;
 
                 jQuery('.clickwhale-notice-' + migrant + '-deactive')
                     .on('click', '.deactive', function(e){
@@ -137,7 +137,7 @@ class Clickwhale_Migration_Notice {
                             'action': 'clickwhale/admin/migration_deactive',
                             'security': nonce,
                             'plugin': migrant,
-                            'target': migrant_file
+                            'target': migrantFile
                         }, function(response){
                             if (response.success){
                                 location.reload();

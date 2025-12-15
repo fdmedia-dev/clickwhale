@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.2
+ * Version:           2.5.3
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,7 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.5.2' );
+    define( 'CLICKWHALE_VERSION', '2.5.3' );
     /**
      * @since 1.4.1
      */
@@ -61,22 +61,23 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 $clickwhale_fs = fs_dynamic_init( array(
-                    'id'              => '14609',
-                    'slug'            => 'clickwhale',
-                    'premium_slug'    => 'clickwhale-pro',
-                    'type'            => 'plugin',
-                    'public_key'      => 'pk_07a5633bd94c00467e7e58c200504',
-                    'is_premium'      => false,
-                    'premium_suffix'  => '(Pro)',
-                    'has_addons'      => false,
-                    'has_paid_plans'  => true,
-                    'has_affiliation' => 'all',
-                    'menu'            => array(
+                    'id'               => '14609',
+                    'slug'             => 'clickwhale',
+                    'premium_slug'     => 'clickwhale-pro',
+                    'type'             => 'plugin',
+                    'public_key'       => 'pk_07a5633bd94c00467e7e58c200504',
+                    'is_premium'       => false,
+                    'premium_suffix'   => '(Pro)',
+                    'has_addons'       => false,
+                    'has_paid_plans'   => true,
+                    'is_org_compliant' => true,
+                    'has_affiliation'  => 'all',
+                    'menu'             => array(
                         'slug'    => CLICKWHALE_SLUG,
                         'contact' => false,
                         'pricing' => false,
                     ),
-                    'is_live'         => true,
+                    'is_live'          => true,
                 ) );
             }
             return $clickwhale_fs;
@@ -91,7 +92,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) === 0 ) {
             add_action( 'init', function () {
                 clickwhale_fs()->override_i18n( [
-                    'account' => __( 'License', 'clickwhale' ),
+                    'account' => esc_html__( 'License', 'clickwhale' ),
                 ] );
             } );
         }

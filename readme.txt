@@ -1,15 +1,15 @@
-=== ClickWhale - Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages ===
+=== ClickWhale - Link Manager, Shortener and Click Tracker for Affiliate Links & Bio Link Pages ===
 Contributors: clickwhale, flowdee, krapan88, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4.0
-Tested up to: 6.8
-Stable tag: 2.5.2
+Tested up to: 6.9
+Stable tag: 2.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best Link Manager, Link Shortener, Click Tracker & Link Pages Plugin for WordPress
+Link Manager, Shortener, Click Tracker & Bio Link Pages Plugin for WordPress
 
 == Description ==
 
@@ -36,7 +36,7 @@ Are you looking for a WordPress [link manager](https://clickwhale.pro/link-manag
 All of these key features are available in this free version of [ClickWhale](https://clickwhale.pro/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version). That’s some crazy value!
 
 ## 🔥 Link Pages: Update & share your content on Social Media
-Moreover, we are the best plugin to **create your own [link page](https://clickwhale.pro/linkpages/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages)** or link in bio page for social media - within your own WordPress site!
+Moreover, we are the great plugin to **create your own [link page](https://clickwhale.pro/linkpages/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Link+Pages)** or link in bio page for social media - within your own WordPress site!
 
 - **Easily add and manage links** - Add previously created links to your link pages. Or add custom links, pages, posts and much more. Change their order via drag & drop or customize link titles.
 - **Manage contents** - Enter your link page title and description texts. Upload your brand or website logo.
@@ -64,7 +64,7 @@ In line with the philosophy “by developers for developers,” we have made it 
 The above-mentioned functions are available to everyone, and you can find more information in our [developer documentation](https://github.com/fdmedia-io/clickwhale-developers/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Developers).
 
 ## 🌟 ClickWhale PRO brings even more features 🌟
-Do you want to get even more out of your affiliate marketing game and take it to the **next level**?
+Do you want to get even more out of your affiliate marketing and improve your results?
 
 Here are the highlights of [ClickWhale PRO](https://clickwhale.pro/upgrade/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=ClickWhale+PRO) below:
 
@@ -112,6 +112,18 @@ Yes! ClickWhale can be used on multisite installations.
 
 Yes, ClickWhale has full translation and localization support via the `clickwhale` textdomain. Based on your site language, required `.mo` and `.po` translation files will be downloaded and placed into the default WordPress languages directory.
 
+= Where can I find source code for included libraries and minified files? =
+
+This plugin includes minified versions of several third-party libraries. Their original, uncompressed source code is publicly available here:
+
+* Ionicons – https://github.com/ionic-team/ionicons/tree/v7.1.0
+* Picmo – https://github.com/joeattardi/picmo/tree/v5.8.1/packages/picmo
+* Picmo popup picker – https://github.com/joeattardi/picmo/tree/v5.8.1/packages/popup-picker
+* Select2 - https://github.com/select2/select2/tree/4.1.0-rc.0
+* Freemius SDK - https://github.com/Freemius/wordpress-sdk
+
+These repositories contain the full sources from which the minified files in /assets/ were built.
+
 = How can I report security bugs? =
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/53a6f715-b43a-4cc3-ab77-604864fc65d2)
@@ -131,6 +143,12 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.3 (15th December 2025) =
+
+* Tweak: Improved security and data escaping across the admin interface.
+* Fix: Various minor fixes and stability improvements.
+* Info: WordPress v6.9 compatibility
 
 = Version 2.5.2 (17th November 2025) =
 

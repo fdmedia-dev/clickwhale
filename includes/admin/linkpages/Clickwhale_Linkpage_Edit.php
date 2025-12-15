@@ -10,8 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
+    /**
+     * @var int
+     */
+    private int $legals_menu_id;
+
     public function __construct() {
-        parent::__construct( 'linkpages', 'linkpage', 'Link Page' );
+        $this->instance_plural = 'linkpages';
+        $this->instance_single = 'linkpage';
+        $this->instance_helper = Linkpages_Helper::class;
+        parent::__construct();
+    }
+
+    protected function get_title_i18n(): string {
+        return __( 'Link Page', 'clickwhale' );
     }
 
     /**
@@ -148,11 +160,11 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
     public function get_link_meta( $id, $key ): array {
         global $wpdb;
-        $table_links_meta = $wpdb->prefix . 'clickwhale_meta';
+        $table = $wpdb->prefix . 'clickwhale_meta';
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table_links_meta
+                "SELECT * FROM $table
                 WHERE linkpage_id=%d
                 AND meta_key=%s",
                 intval( $id ),
@@ -162,87 +174,69 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         );
     }
 
-    private function save_linkpage_meta( $id, $key, $value, $action ) {
+    /**
+     * @param string $id
+     * @param string $key
+     * @param int $value
+     * @param string $action
+     * @return void
+     */
+    private function save_linkpage_meta( string $id, string $key, int $value, string $action ) {
         global $wpdb;
-        $links_meta_table = $wpdb->prefix . 'clickwhale_meta';
+        $table = $wpdb->prefix . 'clickwhale_meta';
+        $id    = intval( $id );
+        $key   = sanitize_text_field( $key );
+        $value = sanitize_text_field( $value );
 
         switch ( $action ) {
             case 'insert':
                 $wpdb->insert(
-                    $links_meta_table,
+                    $table,
                     array(
-                        'meta_key'    => sanitize_text_field( $key ),
-                        'meta_value'  => sanitize_text_field( $value ),
-                        'linkpage_id' => intval( $id )
+                        'meta_key'    => $key,
+                        'meta_value'  => $value,
+                        'linkpage_id' => $id
                     )
                 );
                 break;
 
             case 'update':
                 $wpdb->update(
-                    $links_meta_table,
+                    $table,
                     array(
-                        'meta_value' => sanitize_text_field( $value )
+                        'meta_value' => $value
                     ),
                     array(
-                        'linkpage_id' => intval( $id ),
-                        'meta_key'    => sanitize_text_field( $key ),
+                        'linkpage_id' => $id,
+                        'meta_key'    => $key
                     )
                 );
                 break;
         }
     }
 
-    public function save_update() {
-        global $wpdb;
+    protected function filter_defaults( array $defaults ): array {
+        return apply_filters( 'clickwhale_linkpage_defaults', $defaults );
+    }
 
-        $table = Helper::get_db_table_name( $this->instance_plural );
-        $item  = array_intersect_key(
-            $_POST,
-            apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() )
-        );
-
-        $item['links'] = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
+    protected function process_item_before_save( array $item ): array {
+        $item['links']  = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
         $item['styles'] = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
         $item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
         $item['author'] = get_current_user_id();
 
-        // Data fot meta table
-        $legals_menu_id = $item['meta__legals_menu_id'] ?? 0;
+        // Data for meta table
+        $this->legals_menu_id = intval( $item['meta__legals_menu_id'] ?? 0 );
         unset( $item['meta__legals_menu_id'] );
+        return $item;
+    }
 
-        $item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
-        $id = intval( $item['id'] );
-
-        // Check if linkpage exists and then update or insert
-        // in some cases default check (not false and < 0) goes wrong
-        if ( Linkpages_Helper::get_by_id( $id ) ) {
-            $wpdb->update(
-                $table,
-                $item,
-                array( 'id' => $id )
-            );
-            $this->set_transient( $id, 'updated' );
-
-        } else {
-            unset( $item['id'] );
-            $wpdb->insert(
-                $table,
-                $item
-            );
-            $id = $wpdb->insert_id;
-            $this->set_transient( $id, 'added' );
-        }
-
+    protected function after_save( int $id, array $raw ): void {
         if ( $this->get_link_meta( $id, 'legals_menu_id' ) ) {
-            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'update' );
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $this->legals_menu_id, 'update' );
         } else {
-            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'insert' );
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $this->legals_menu_id, 'insert' );
         }
-
-        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $id;
-        wp_redirect( esc_url_raw( admin_url( $url ) ) );
-        exit;
     }
 
     public function admin_scripts(): void {
@@ -272,7 +266,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
             jQuery(document).ready(function(){
                 const
                     pageID = '<?php echo intval( $_GET['id'] ); ?>',
-                    defaults = <?php echo json_encode( $this->get_defaults() ); ?>,
+                    defaults = <?php echo wp_json_encode( $this->get_defaults() ); ?>,
                     postTypes = <?php echo wp_json_encode( array_keys( Helper::get_post_types() ) ); ?>,
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
@@ -294,11 +288,20 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     linkBgColorHover = jQuery('[name="styles[link_bg_color_hover]"]'),
                     linkColor = jQuery('[name="styles[link_color]"]'),
                     linkColorHover = jQuery('[name="styles[link_color_hover]"]'),
-                    ogPreview = jQuery('#opengraph-live-preview');
+                    ogPreview = jQuery('#opengraph-live-preview'),
+                    slugNotice = <?php echo wp_json_encode(
+                        esc_html__( 'Please enter slug. Allowed characters:', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'alphanumeric (a...z, A...Z, 0...9)', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'underscore (_) and dash (-)', 'clickwhale' ) .
+                        '<br>-' .
+                        esc_html__( 'with optional slash (/) as separator', 'clickwhale' ) ); ?>
+                ;
 
                 /* Select2 init */
                 linksType.select2({
-                    placeholder: '<?php echo esc_js( __( 'Select Content Type', 'clickwhale' ) ); ?>',
+                    placeholder: <?php echo wp_json_encode( __( 'Select Content Type', 'clickwhale' ) ); ?>,
                     width: '100%',
                     minimumResultsForSearch: -1
                 });
@@ -307,12 +310,12 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 jQuery('.cw-color-control').wpColorPicker();
 
                 /* Disable add link button if links limit is reached */
-                if (jQuery('.linkpage-row').length >= limit){
+                if (jQuery('.cw-linkpage-row').length >= limit){
                     jQuery('#add-pagelink-link').prop('disabled', true);
                 }
 
                 /* Init wp.editor */
-                jQuery('.linkpage-row.row--cw_custom_content').each(function(){
+                jQuery('.cw-linkpage-row.row--cw_custom_content').each(function(){
                     const editorTextareaID = jQuery(this).find('textarea').attr('id');
 
                     wp.editor.initialize(editorTextareaID, {
@@ -326,7 +329,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 /* Draggable, Droppable, Sortable */
                 let
-                    contentWrap = jQuery('.links-list-wrap'),
+                    contentWrap = jQuery('.cw-links-list-wrap'),
                     contentItems = jQuery('.cw-content--items');
 
                 jQuery(".cw-content--item", contentItems).draggable({
@@ -343,7 +346,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     .sortable({
                         accept: ".cw-content--item",
                         placeholder: "ui-state-highlight",
-                        handle: '.linkpage-row--drag',
+                        handle: '.cw-linkpage-row--drag',
                         receive: function(event, ui){
                             const
                                 el = jQuery(ui.helper),
@@ -360,7 +363,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                     replace_block(el, template);
 
                                     jQuery('.select-link').select2({
-                                        placeholder: '<?php echo esc_js( __( 'Select Item', 'clickwhale' ) ); ?>',
+                                        placeholder: <?php echo wp_json_encode( __( 'Select Item', 'clickwhale' ) ); ?>,
                                         width: '100%',
                                         minimumResultsForSearch: 10
                                     });
@@ -393,7 +396,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
 
                     // Init TinyMCE (wp.editor) on custom content block drag
-                    .on('clickwhale.content.template.replace', '.links-list-wrap', function(e, template){
+                    .on('clickwhale.content.template.replace', '.cw-links-list-wrap', function(e, template){
                         const $row = jQuery(template);
 
                         if ($row.hasClass('row--cw_custom_content')){
@@ -428,26 +431,26 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     // `Clickwhale Link`
                     .on('change', '.row--cw_link .select-link', function(){
                         const
-                            $row = jQuery(this).closest('.linkpage-row'),
+                            $row = jQuery(this).closest('.cw-linkpage-row'),
                             title = jQuery(this).find('option:selected').data('title'),
                             url = jQuery(this).find('option:selected').data('url'),
                             value = jQuery(this).val();
 
                         $row.removeClass('invalid');
-                        $row.find('.linkpage-row--bottom .select2-selection').removeClass('invalid');
+                        $row.find('.cw-linkpage-row--bottom .select2-selection').removeClass('invalid');
                         $row.find('[name^="links[0]"]').each(function(){
                             let name = jQuery(this).attr('name');
                             name = name.replace('links[0]', 'links[' + value + ']');
                             jQuery(this).attr('name', name);
                         });
                         $row.find('[name$="[post_id]"]').val(value);
-                        $row.find('.linkpage-row--link strong').text(title);
-                        $row.find('.linkpage-row--link span').text(url);
+                        $row.find('.cw-linkpage-row--link strong').text(title);
+                        $row.find('.cw-linkpage-row--link span').text(url);
                     })
 
                     // Show Edit section
-                    .on('click', '.linkpage-row--actions--button-edit', function(){
-                        jQuery(this).closest('.linkpage-row').find('.linkpage-row--bottom').toggleClass('active');
+                    .on('click', '.cw-linkpage-row--actions--button-edit', function(){
+                        jQuery(this).closest('.cw-linkpage-row').find('.cw-linkpage-row--bottom').toggleClass('active');
                     })
 
                     // Init emoji picker and its actions
@@ -525,16 +528,16 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
 
                     // Remove added link row
-                    .on('click', '.linkpage-row--actions--button-remove', function(){
-                        jQuery(this).closest('.linkpage-row').remove();
+                    .on('click', '.cw-linkpage-row--actions--button-remove', function(){
+                        jQuery(this).closest('.cw-linkpage-row').remove();
                         if (count_links() < limit) {
-                            jQuery('.links-info').remove();
+                            jQuery('.cw-links-info').remove();
                             jQuery('.cw-content--item').removeClass('disabled').draggable('enable');
                         }
                     })
 
                     // `Upload image` button click
-                    .on('click', '.linkpage-image-upload', function(e){
+                    .on('click', '.cw-linkpage-image-upload', function(e){
                         e.preventDefault();
 
                         const
@@ -548,12 +551,12 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         const
                             mediaInput = button.parent().find('input'),
                             uploader = wp.media({
-                                title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
+                                title: <?php echo wp_json_encode( __( 'Insert Image', 'clickwhale' ) ); ?>,
                                 library: {
                                     type: 'image'
                                 },
                                 button: {
-                                    text: '<?php echo esc_js( __( 'Select Image', 'clickwhale' ) ); ?>'
+                                    text: <?php echo wp_json_encode( __( 'Select Image', 'clickwhale' ) ); ?>
                                 }
                             });
 
@@ -579,7 +582,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                      * `Upload image` button for LP Site Icon.
                      * `Initializes media frame for image selecting or cropping
                      */
-                    .on('click', '.favicon-field .linkpage-image-upload', function(e){
+                    .on('click', '.favicon-field .cw-linkpage-image-upload', function(e){
                         e.preventDefault();
 
                         const
@@ -588,14 +591,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         let uploader = wp.media({
                             button: {
-                                text: '<?php echo esc_js( __( 'Select Image', 'clickwhale' ) ); ?>',
+                                text: <?php echo wp_json_encode( __( 'Select Image', 'clickwhale' ) ); ?>,
 
                                 // Don't close, we might need to crop
                                 close: false
                             },
                             states: [
                                 new wp.media.controller.Library({
-                                    title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
+                                    title: <?php echo wp_json_encode( __( 'Insert Image', 'clickwhale' ) ); ?>,
                                     library: wp.media.query({
                                         type: 'image'
                                     }),
@@ -650,14 +653,14 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
 
                     // `Remove image` button click
-                    .on('click', '.linkpage-image-remove', function(e){
+                    .on('click', '.cw-linkpage-image-remove', function(e){
                         e.preventDefault();
 
                         const
                             button = jQuery(this),
                             uploadBtnText = (button.parent('.favicon-field').length) ?
-                                '<?php echo esc_js( __( 'Upload Site Icon', 'clickwhale' ) ); ?>' :
-                                '<?php echo esc_js( __( 'Upload image', 'clickwhale' ) ); ?>';
+                                <?php echo wp_json_encode( __( 'Upload Site Icon', 'clickwhale' ) ); ?> :
+                                <?php echo wp_json_encode( __( 'Upload image', 'clickwhale' ) ); ?>;
 
                         button
                             .next()
@@ -675,19 +678,19 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
 
                     // `Upload image` button for Row Image
-                    .on('click', '.linkpage-row--image-upload', function(e){
+                    .on('click', '.cw-linkpage-row--image-upload', function(e){
                         e.preventDefault();
 
                         const
                             button = jQuery(this),
                             uploader = wp.media({
-                                title: '<?php echo esc_js( __( 'Insert Image', 'clickwhale' ) ); ?>',
+                                title: <?php echo wp_json_encode( __( 'Insert Image', 'clickwhale' ) ); ?>,
                                 library: {
                                     // uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
                                     type: 'image',
                                 },
                                 button: {
-                                    text: '<?php echo esc_js( __( 'Use this image', 'clickwhale' ) ); ?>'
+                                    text: <?php echo wp_json_encode( __( 'Use this image', 'clickwhale' ) ); ?>
                                 },
                                 multiple: false
                             });
@@ -697,7 +700,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 attachment = uploader.state().get('selection').first().toJSON(),
                                 mediaInput = button.parent().find('input'),
                                 mediaLabel = button.parent().find('label'),
-                                mediaRemove = button.parent().find('.linkpage-row--image-remove'),
+                                mediaRemove = button.parent().find('.cw-linkpage-row--image-remove'),
                                 url = typeof attachment.sizes.thumbnail !== 'undefined' ? attachment.sizes.thumbnail.url : attachment.url;
 
                             mediaLabel.html('<img src="' + url + '" />');
@@ -714,24 +717,24 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     })
 
                     // `Remove image` button for Row Image
-                    .on('click', '.linkpage-row--image-remove', function(e){
+                    .on('click', '.cw-linkpage-row--image-remove', function(e){
                         e.preventDefault();
 
                         jQuery(this).parent().find('input').val('').prop('checked', false);
                         jQuery(this).parent().find('label').html('');
                         jQuery(this).hide();
 
-                        /* Remove linkpage-row-image (tab image) when "Remove Image" was clicked */
+                        /* Remove cw-linkpage-row-image (tab image) when "Remove Image" was clicked */
                         change_row_image(jQuery(this), '', false);
                     })
 
                     // Toggle image type tabs
-                    .on('change', '.linkpage-row--image-select select', function(){
-                        jQuery('.linkpage-row--image-select--tab').hide();
-                        jQuery('.linkpage-row--image-select--tab[data-tab="' + this.value + '"]').show();
+                    .on('change', '.cw-linkpage-row--image-select select', function(){
+                        jQuery('.cw-linkpage-row--image-select--tab').hide();
+                        jQuery('.cw-linkpage-row--image-select--tab[data-tab="' + this.value + '"]').show();
                     })
 
-                    // Toggle .linkpage-row-image content with selected image/icon/emoji
+                    // Toggle .cw-linkpage-row-image content with selected image/icon/emoji
                     .on('change', '.image-item [type="radio"]', function(){
                         const imageItemValue = jQuery(this).next().html();
 
@@ -741,33 +744,33 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                     // `Reset` button for Row Image
                     .on('click', '.reset-image', function(){
-                        const $row = jQuery(this).closest('.linkpage-row');
+                        const $row = jQuery(this).closest('.cw-linkpage-row');
 
-                        $row.find('.linkpage-row--image').removeClass('with-image').html('');
+                        $row.find('.cw-linkpage-row--image').removeClass('with-image').html('');
                         $row.find('.image-item').find('label').html('');
                         $row.find('[name$="[image][image_id]"]').prop('checked', false);
                         $row.find('[name$="[image][type]"]').val('');
                     })
 
                     // `Custom Link`
-                    .on('input', '.linkpage-row.row--cw_custom_link .linkpage-row--bottom input[name^="links["][name$="[url]"]', function(){
-                        jQuery(this).closest('.linkpage-row').removeClass('invalid');
+                    .on('input', '.cw-linkpage-row.row--cw_custom_link .cw-linkpage-row--bottom input[name^="links["][name$="[url]"]', function(){
+                        jQuery(this).closest('.cw-linkpage-row').removeClass('invalid');
                         jQuery(this).removeClass('invalid');
                     })
 
                     // `Heading`
-                    .on('input', '.linkpage-row.row--cw_heading .linkpage-row--bottom input[name^="links["][name$="[title]"]', function(){
-                        jQuery(this).closest('.linkpage-row').removeClass('invalid');
+                    .on('input', '.cw-linkpage-row.row--cw_heading .cw-linkpage-row--bottom input[name^="links["][name$="[title]"]', function(){
+                        jQuery(this).closest('.cw-linkpage-row').removeClass('invalid');
                         jQuery(this).removeClass('invalid');
                     });
 
                 // WP `post`, `page` and custom post types from `wp_posts` table
                 for (const type of postTypes){
-                    jQuery(document).on('change', `.linkpage-row.row--${type} .select-link`, function(){
-                        const $row = jQuery(this).closest('.linkpage-row');
+                    jQuery(document).on('change', `.cw-linkpage-row.row--${type} .select-link`, function(){
+                        const $row = jQuery(this).closest('.cw-linkpage-row');
 
                         $row.removeClass('invalid');
-                        $row.find('.linkpage-row--bottom .select2-selection').removeClass('invalid');
+                        $row.find('.cw-linkpage-row--bottom .select2-selection').removeClass('invalid');
                     });
                 }
 
@@ -980,12 +983,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         if (!sanitized){
                             $this.addClass('error')
-                                .next().html(`
-                                    <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
-                                    <br>
-                                    <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)', 'clickwhale' ) ); ?>
-                                    `.trim()
-                            );
+                                .next().html(slugNotice);
                         }
                     })
 
@@ -1004,7 +1002,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (!title.val()){
                         tabNotValid(e);
                         title.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'Please enter title', 'clickwhale' ) ); ?>');
+                            .next().text(<?php echo wp_json_encode( __( 'Please enter title', 'clickwhale' ) ); ?>);
                         return false;
                     } else {
                         title.removeClass('error').next().text('');
@@ -1013,7 +1011,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (!slug.val()){
                         tabNotValid(e);
                         slug.addClass('error')
-                            .next().text('<?php echo esc_js( __( 'Please enter slug', 'clickwhale' ) ); ?>');
+                            .next().text(<?php echo wp_json_encode( __( 'Please enter slug', 'clickwhale' ) ); ?>);
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -1024,12 +1022,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (!slug.val()){
                         tabNotValid(e);
                         slug.addClass('error')
-                            .next().html(`
-                                <?php echo esc_js( esc_html__( 'Please enter slug', 'clickwhale' ) ); ?>
-                                <br>
-                                <?php echo esc_js( esc_html__( 'Allowed alphanumeric characters (a...z, A...Z, 0...9), underscore (_) and dash (-)', 'clickwhale' ) ); ?>
-                                `.trim()
-                            );
+                            .next().html(slugNotice);
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -1040,14 +1033,15 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     if (undefined !== slug_obj.id){
                         tabNotValid(e);
                         slug.addClass('error')
-                            .next().html(`
-                                <?php echo esc_js( esc_html__( 'This slug is already used in %1$s (%2$s ID: %d)', 'clickwhale' ) ) . '.'; ?>
-                                <?php echo esc_js( esc_html__( 'Please enter another slug', 'clickwhale' ) ); ?>
-                                `.trim()
+                            .next().html(<?php echo wp_json_encode(
+                                esc_html__( 'This slug is already used in %1$s (%2$s ID: %d)', 'clickwhale' ) .
+                                '<br>' .
+                                esc_html__( 'Please enter another slug', 'clickwhale' ) ); ?>
                                 .replace('%1$s', `<b>${slug_obj.title}</b>`)
                                 .replace('%2$s', slug_obj.type)
                                 .replace('%d', slug_obj.id)
-                            );
+                            )
+                        ;
                         return false;
                     } else {
                         slug.removeClass('error').next().text('');
@@ -1061,14 +1055,16 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         tabNotValid(e, contentsTabIndex);
                         jQuery('#post-body-content .error.linkpage-blocks').remove();
-                        jQuery('#post-body-content').prepend('<div class="error linkpage-blocks"><p><?php echo esc_js( __( 'Some content block fields are not valid. Please correct them or remove the blocks.', 'clickwhale' ) ); ?></p></div>');
-                        jQuery('.linkpage-row').removeClass('invalid');
-                        jQuery('.linkpage-row .linkpage-row--bottom').removeClass('active');
+                        jQuery('#post-body-content').prepend(<?php echo wp_json_encode(
+                            '<div class="error linkpage-blocks"><p>' . esc_html__( 'Some content block fields are not valid. Please correct them or remove the blocks.', 'clickwhale' ) . '</p></div>' ); ?>
+                        );
+                        jQuery('.cw-linkpage-row').removeClass('invalid');
+                        jQuery('.cw-linkpage-row .cw-linkpage-row--bottom').removeClass('active');
 
                         blocks.forEach(block => {
                             const
                                 $row = jQuery(`#row-${block.id}`),
-                                $bottom = $row.find('.linkpage-row--bottom');
+                                $bottom = $row.find('.cw-linkpage-row--bottom');
 
                             $row.addClass('invalid');
                             $bottom.addClass('active');
@@ -1117,8 +1113,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                     let defaults;
 
-                    if (window.confirm('<?php echo esc_js( __( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', 'clickwhale' ) ); ?>')){
-                        defaults = <?php echo json_encode( $this->get_defaults() ); ?>;
+                    if (window.confirm(<?php echo wp_json_encode( __( 'Are you sure? This action will set CSS styles to default. This process cannot be undone!', 'clickwhale' ) ); ?>)){
+                        defaults = <?php echo wp_json_encode( $this->get_defaults() ); ?>;
 
                         jQuery.each(defaults.styles, function(key, val){
                             jQuery('[name="styles[' + key + ']"').wpColorPicker('color', val);
@@ -1134,7 +1130,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 function bindEditorEvents($row){
                     const
                         rowID = $row.attr('id').replace(/^row-/, ''),
-                        $bottom = $row.find('.linkpage-row--bottom'),
+                        $bottom = $row.find('.cw-linkpage-row--bottom'),
                         textareaID = $row.find(`textarea[name="links[${rowID}][content]"]`).attr('id'),
                         $textarea = jQuery(`#${textareaID}`),
                         editor = tinymce.get(textareaID),
@@ -1164,7 +1160,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 function validateBlocks(){
                     const
                         results = [],
-                        $rows = jQuery('.linkpage-row');
+                        $rows = jQuery('.cw-linkpage-row');
 
                     for (let i = 0; i < $rows.length; i++){
                         const
@@ -1175,7 +1171,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         // `ClickWhale Link`
                         if ($row.hasClass('row--cw_link')){
-                            if (!$row.find('.linkpage-row--link span').text()){
+                            if (!$row.find('.cw-linkpage-row--link span').text()){
                                 results.push({'id': rowID});
                             }
                         }
@@ -1212,7 +1208,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         // WP `post`, `page` and custom post types from `wp_posts` table
                         else if (postTypes.some(type => $row.hasClass(`row--${type}`))){
-                            if (!$row.find('.linkpage-row--link span').text()
+                            if (!$row.find('.cw-linkpage-row--link span').text()
                              && !$row.find('.select-link').val()
                             ){
                                 results.push({'id': rowID});
@@ -1277,36 +1273,36 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 function count_links(){
-                    return jQuery('.linkpage-row').length;
+                    return jQuery('.cw-linkpage-row').length;
                 }
 
                 function replace_block(target, template){
                     target.replaceWith(template);
-                    jQuery('.links-list-wrap').trigger('clickwhale.content.template.replace', template);
+                    jQuery('.cw-links-list-wrap').trigger('clickwhale.content.template.replace', template);
                 }
 
                 function links_limit_warning(){
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message(); ?></div>').insertAfter('.links-list-wrap');
+                    jQuery('<div class="cw-links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message(); ?></div>').insertAfter('.cw-links-list-wrap');
                 }
 
                 function disable_ogpreview_button(){
                     ogPreview
                         .addClass('disabled')
                         .next()
-                        .text('<?php echo esc_js( __( 'Please save the page to view Open Graph preview', 'clickwhale' ) ); ?>');
+                        .text(<?php echo wp_json_encode( __( 'Please save the page to view Open Graph preview', 'clickwhale' ) ); ?>);
                 }
 
                 function change_row_image(element, image, active = true){
                     if (active){
-                        jQuery(element).closest('.linkpage-row').find('.linkpage-row--image').addClass('with-image').html(image);
+                        jQuery(element).closest('.cw-linkpage-row').find('.cw-linkpage-row--image').addClass('with-image').html(image);
                     } else {
-                        jQuery(element).closest('.linkpage-row').find('.linkpage-row--image').removeClass('with-image').html(image);
+                        jQuery(element).closest('.cw-linkpage-row').find('.cw-linkpage-row--image').removeClass('with-image').html(image);
                     }
                 }
 
                 function change_row_image_type(element, type){
-                    jQuery(element).closest('.linkpage-row').find('[name$="[image][type]"]').val(type);
+                    jQuery(element).closest('.cw-linkpage-row').find('[name$="[image][type]"]').val(type);
                 }
 
                 function closeIconPicker(){
