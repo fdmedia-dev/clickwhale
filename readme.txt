@@ -144,19 +144,16 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 
 == Changelog ==
 
-= Version 2.5.3 (15th December 2025) =
-
+= Version 2.5.3 (18th December 2025) =
 * Tweak: Improved security and data escaping across the admin interface.
 * Fix: Various minor fixes and stability improvements.
 * Info: WordPress v6.9 compatibility
 
 = Version 2.5.2 (17th November 2025) =
-
 * Fix: Resolved entity insert failure under certain SQL mode configurations
 * Info: WordPress v6.8.3 compatibility
 
 = Version 2.5.1 (15th September 2025) =
-
 * New: Added option to override default WP favicon on link page
 * Tweak: Use button background and text colors for page text highlighting on link pages
 * Tweak: Improved font sizes for link page headlines

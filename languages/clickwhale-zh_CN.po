@@ -14,23 +14,23 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Domain: clickwhale\n"
 
-#: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:159
 #. Plugin Name of the plugin
 #. Author of the plugin
+#: clickwhale.php
+#: includes/admin/Clickwhale_Admin.php:159
 #, fuzzy
 msgid "ClickWhale"
 msgstr "点击鲸鱼"
 
-#: clickwhale.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php
 #. Description of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
 msgstr "用于联盟链接和链接页面的链接管理器、链接缩短器和点击跟踪器。"
@@ -491,10 +491,7 @@ msgstr "链接前缀"
 
 #: includes/admin/Clickwhale_Settings.php:280
 #, fuzzy
-msgid ""
-"Here, you can enter a prefix that will be prepended when creating a new link. For example: "
-"<em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing "
-"links."
+msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "在这里，您可以输入一个前缀，创建新链接时会预输入该前缀。例如：<em>link</em>.<br><strong>重要提示：</strong>如果更改前缀，将<u>不会</u>影响已存在的链接。"
 
 #: includes/admin/Clickwhale_Settings.php:292
@@ -1338,9 +1335,7 @@ msgstr "例如 %s"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:128
 #, fuzzy,php-format
-msgid ""
-"Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate "
-"Program</a>.<br>It will then be used automatically in the footer of your link pages."
+msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
 msgstr "如果您是我们<a href=\"%s\" target=\"_blank\">联盟计划</a>的会员，请输入您的个人联盟链接。<br>，它将自动用于您链接页面的页脚。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:147
@@ -1354,9 +1349,7 @@ msgstr "选中以隐藏链接页面信用。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:159
 #, fuzzy,php-format
-msgid ""
-"As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the "
-"settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
+msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
 msgstr "作为我们<a href=\"%1$s\" target=\"_blank\">联盟计划</a>的成员，您可以在<a href=\"%2$s\">这里的</a>设置中输入您的联盟链接，<br>，然后在显示积分时使用该链接。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:178
@@ -1798,12 +1791,8 @@ msgstr "请选择一个表单"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1414
 #, fuzzy,php-format
-msgid ""
-"We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite "
-"plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
-msgstr ""
-"我们找不到<a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">支持的表单插件</a>。是否缺少您最喜欢的插件？请<a href=\"%2$s\" target=\"_blank\" "
-"rel=\"noopener\">告诉我们</a>。"
+msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
+msgstr "我们找不到<a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">支持的表单插件</a>。是否缺少您最喜欢的插件？请<a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">告诉我们</a>。"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1434
 msgid "Plugin"
@@ -1825,9 +1814,7 @@ msgstr "UTM 参数"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:56
 #, fuzzy,php-format
-msgid ""
-"Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options "
-"<a href=\"%s\" target=\"_blank\">here</a>."
+msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr "在这里，您可以定义帖子和页面中自动链接的关键词。您可以<a href=\"%s\" target=\"_blank\">在这里</a>找到更多设置选项。"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:69
@@ -2115,9 +2102,7 @@ msgstr "不索引"
 
 #: templates/admin/linkpages/edit.php:43
 #, fuzzy
-msgid ""
-"Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search "
-"results."
+msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
 msgstr "不在搜索结果中显示此页面。如果不指定此规则，页面可能会被编入索引并显示在搜索结果中。"
 
 #: templates/admin/linkpages/edit.php:46
@@ -2126,9 +2111,7 @@ msgstr "不关注"
 
 #: templates/admin/linkpages/edit.php:47
 #, fuzzy
-msgid ""
-"Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to "
-"discover those linked pages"
+msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
 msgstr "请勿跟踪本页面上的链接。如果不指定此规则，搜索引擎可能会使用页面上的链接来发现这些链接页面"
 
 #: templates/admin/linkpages/edit.php:50
@@ -2292,9 +2275,7 @@ msgstr "Robots Meta"
 
 #: templates/admin/linkpages/edit.php:501
 #, fuzzy,php-format
-msgid ""
-"Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" "
-"target=\"_blank\">reading settings!</a>"
+msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
 msgstr "不允许搜索引擎索引本网站。请参阅<a href=\"%1$s\" target=\"_blank\">阅读设置</a>中的 \"搜索引擎可见性 \"选项<a href=\"%1$s\" target=\"_blank\">！</a>"
 
 #: templates/admin/linkpages/edit.php:553
@@ -2440,9 +2421,7 @@ msgstr "轻松放置转换跟踪代码，跟踪您的 WooCommerce 或 Easy Digit
 
 #: templates/admin/settings/pro.php:41
 #, fuzzy
-msgid ""
-"Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to "
-"ClickWhale PRO."
+msgid "Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to ClickWhale PRO."
 msgstr "升级到 ClickWhale 专业版后，您就可以使用更好的参数跟踪 UTM 营销活动，从而提高营销活动的效率。"
 
 #: templates/admin/settings/pro.php:46
@@ -2463,9 +2442,7 @@ msgstr "表格区块"
 
 #: templates/admin/settings/pro.php:56
 #, fuzzy
-msgid ""
-"Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social "
-"media followers."
+msgid "Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers."
 msgstr "将流行的 WordPress 表单插件中的表单轻松添加到您的链接页面，并从您的社交媒体关注者那里收集线索或反馈。"
 
 #: templates/admin/settings/pro.php:59
@@ -2476,9 +2453,7 @@ msgstr "更多定制选项"
 
 #: templates/admin/settings/pro.php:61
 #, fuzzy
-msgid ""
-"Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and "
-"more."
+msgid "Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more."
 msgstr "该插件自定义链接页面的其他功能包括添加品牌背景、图片等选项。"
 
 #: templates/admin/settings/pro.php:65
@@ -2489,9 +2464,7 @@ msgstr "无限制"
 
 #: templates/admin/settings/pro.php:67
 #, fuzzy
-msgid ""
-"Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading "
-"to ClickWhale PRO."
+msgid "Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading to ClickWhale PRO."
 msgstr "限制不再！升级到ClickWhale PRO后，可根据需要编辑和发布任意数量的跟踪代码、链接页面和品牌链接。"
 
 #: templates/admin/settings/pro.php:73
@@ -2696,8 +2669,8 @@ msgstr "编辑类别"
 msgid "Edit Tracking Code"
 msgstr "编辑跟踪代码"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:189
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
+#: includes/admin/Clickwhale_Instance_Edit.php:189
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "编辑 \"%1$s\" %2$s"
@@ -2902,14 +2875,14 @@ msgstr "您可以重命名（或删除）当前关键字，或在<a href=\"%s\" 
 msgid "The keyword you entered: <b>%s</b> has already been added to this link. Please rename or remove the duplicates."
 msgstr "您输入的关键字：<b>%s</b>已添加到此链接中。请重命名或删除重复项。"
 
-#: includes/admin/Clickwhale_Ajax.php:815
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:815
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "链接 <strong>&quot;%s&quot;</strong> 成功导入！"
 
-#: includes/admin/Clickwhale_Ajax.php:821
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:821
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>错误！</strong> 链接 <strong>&quot;%s&quot;</strong> 未导入！"
@@ -2933,8 +2906,8 @@ msgstr "上传网站图标"
 msgid "Use this image"
 msgstr "使用此图片"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #. translators: %s: singular post type
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #, php-format
 msgid "Original %1$s: "
 msgstr "原始 %1$s:"

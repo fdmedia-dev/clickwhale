@@ -14,23 +14,23 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Domain: clickwhale\n"
 
-#: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:159
 #. Plugin Name of the plugin
 #. Author of the plugin
+#: clickwhale.php
+#: includes/admin/Clickwhale_Admin.php:159
 #, fuzzy
 msgid "ClickWhale"
 msgstr "ClickWhale"
 
-#: clickwhale.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php
 #. Description of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
 msgstr "Gestionnaire de liens, raccourcisseur de liens et traqueur de clics pour les liens d'affiliation et les pages de liens."
@@ -490,14 +490,8 @@ msgstr "Préfixe de lien"
 
 #: includes/admin/Clickwhale_Settings.php:280
 #, fuzzy
-msgid ""
-"Here, you can enter a prefix that will be prepended when creating a new link. For example: "
-"<em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing "
-"links."
-msgstr ""
-"Ici, tu peux saisir un préfixe qui sera ajouté en préambule lors de la création d'un nouveau lien. Par exemple : "
-"<em>link</em>.<br><strong>Important :</strong> si tu changes le préfixe, cela <u>n'</u> affectera <u>pas</u> les liens "
-"déjà existants."
+msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
+msgstr "Ici, tu peux saisir un préfixe qui sera ajouté en préambule lors de la création d'un nouveau lien. Par exemple : <em>link</em>.<br><strong>Important :</strong> si tu changes le préfixe, cela <u>n'</u> affectera <u>pas</u> les liens déjà existants."
 
 #: includes/admin/Clickwhale_Settings.php:292
 #, fuzzy
@@ -897,9 +891,7 @@ msgstr "Pas maintenant"
 #: includes/admin/migration/Clickwhale_Migration_Notice.php:110
 #, fuzzy,php-format
 msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
-msgstr ""
-"Toutes les données %1$s ont été migrées avec succès vers Clickwhale. Tu peux maintenant désactiver %1$s sur ton site "
-"web en toute sécurité."
+msgstr "Toutes les données %1$s ont été migrées avec succès vers Clickwhale. Tu peux maintenant désactiver %1$s sur ton site web en toute sécurité."
 
 #: includes/admin/migration/Clickwhale_Migration_Notice.php:112
 #, fuzzy,php-format
@@ -934,16 +926,12 @@ msgstr "À ce stade, tu peux réinitialiser les paramètres du plugin aux valeur
 #: includes/admin/reset/Clickwhale_Reset.php:92
 #, fuzzy
 msgid "At this point you can delete all entries (links, categories and stats) from the database tables of our plugin."
-msgstr ""
-"À ce stade, tu peux supprimer toutes les entrées (liens, catégories et statistiques) des tables de la base de données "
-"de notre plugin."
+msgstr "À ce stade, tu peux supprimer toutes les entrées (liens, catégories et statistiques) des tables de la base de données de notre plugin."
 
 #: includes/admin/reset/Clickwhale_Reset.php:98
 #, fuzzy
 msgid "In case you want to clean up your stats, you can remove all previously counted clicks from the database here."
-msgstr ""
-"Au cas où tu voudrais nettoyer tes statistiques, tu peux supprimer de la base de données tous les clics précédemment "
-"comptés ici."
+msgstr "Au cas où tu voudrais nettoyer tes statistiques, tu peux supprimer de la base de données tous les clics précédemment comptés ici."
 
 #: includes/admin/reset/Clickwhale_Reset.php:131
 #, fuzzy
@@ -953,9 +941,7 @@ msgstr "Es-tu sûr ? Cette action rétablit les paramètres par défaut de tous 
 #: includes/admin/reset/Clickwhale_Reset.php:138
 #, fuzzy
 msgid "Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!"
-msgstr ""
-"Es-tu sûr ? Cette action réinitialisera les tables de plugins et supprimera toutes les données existantes. Ce processus "
-"ne peut pas être annulé !"
+msgstr "Es-tu sûr ? Cette action réinitialisera les tables de plugins et supprimera toutes les données existantes. Ce processus ne peut pas être annulé !"
 
 #: includes/admin/reset/Clickwhale_Reset.php:144
 #, fuzzy
@@ -1345,12 +1331,8 @@ msgstr "ex. %s"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:128
 #, fuzzy,php-format
-msgid ""
-"Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate "
-"Program</a>.<br>It will then be used automatically in the footer of your link pages."
-msgstr ""
-"Saisis ton lien d'affiliation personnel si tu es membre de notre <a href=\"%s\" target=\"_blank\">programme "
-"d'affiliation</a>.<br>Il sera ensuite utilisé automatiquement dans le pied de page de tes pages de liens."
+msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
+msgstr "Saisis ton lien d'affiliation personnel si tu es membre de notre <a href=\"%s\" target=\"_blank\">programme d'affiliation</a>.<br>Il sera ensuite utilisé automatiquement dans le pied de page de tes pages de liens."
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:147
 msgid "Credits"
@@ -1363,13 +1345,8 @@ msgstr "Coche cette case pour masquer les crédits de la page de liens."
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:159
 #, fuzzy,php-format
-msgid ""
-"As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the "
-"settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
-msgstr ""
-"En tant que membre de notre <a href=\"%1$s\" target=\"_blank\">programme d'affiliation</a>, tu peux saisir ton lien "
-"d'affiliation dans les paramètres <a href=\"%2$s\">ici</a>,<br>qui sera ensuite utilisé lorsque les crédits seront "
-"affichés."
+msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
+msgstr "En tant que membre de notre <a href=\"%1$s\" target=\"_blank\">programme d'affiliation</a>, tu peux saisir ton lien d'affiliation dans les paramètres <a href=\"%2$s\">ici</a>,<br>qui sera ensuite utilisé lorsque les crédits seront affichés."
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:178
 #, fuzzy
@@ -1802,13 +1779,8 @@ msgstr "Veuillez sélectionner un formulaire"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1414
 #, fuzzy,php-format
-msgid ""
-"We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite "
-"plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
-msgstr ""
-"Nous n'avons pas trouvé de <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">plugin de formulaire pris en charge</a>. "
-"Ton plugin préféré n'est pas pris en compte ? N'hésite pas à <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">nous "
-"le faire savoir</a>."
+msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
+msgstr "Nous n'avons pas trouvé de <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">plugin de formulaire pris en charge</a>. Ton plugin préféré n'est pas pris en compte ? N'hésite pas à <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">nous le faire savoir</a>."
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1434
 msgid "Plugin"
@@ -1829,12 +1801,8 @@ msgstr "Paramètres UTM"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:56
 #, fuzzy,php-format
-msgid ""
-"Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options "
-"<a href=\"%s\" target=\"_blank\">here</a>."
-msgstr ""
-"Ici, tu peux définir les mots-clés qui sont automatiquement liés dans tes articles et tes pages. Tu trouveras <a "
-"href=\"%s\" target=\"_blank\">ici</a> d'autres options de paramétrage."
+msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
+msgstr "Ici, tu peux définir les mots-clés qui sont automatiquement liés dans tes articles et tes pages. Tu trouveras <a href=\"%s\" target=\"_blank\">ici</a> d'autres options de paramétrage."
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:69
 #, fuzzy
@@ -2120,12 +2088,8 @@ msgstr "Ne pas indexer"
 
 #: templates/admin/linkpages/edit.php:43
 #, fuzzy
-msgid ""
-"Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search "
-"results."
-msgstr ""
-"Ne pas afficher cette page dans les résultats de recherche. Si tu ne spécifies pas cette règle, la page peut être "
-"indexée et affichée dans les résultats de recherche."
+msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
+msgstr "Ne pas afficher cette page dans les résultats de recherche. Si tu ne spécifies pas cette règle, la page peut être indexée et affichée dans les résultats de recherche."
 
 #: templates/admin/linkpages/edit.php:46
 msgid "No Follow"
@@ -2133,12 +2097,8 @@ msgstr "Ne pas suivre"
 
 #: templates/admin/linkpages/edit.php:47
 #, fuzzy
-msgid ""
-"Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to "
-"discover those linked pages"
-msgstr ""
-"Ne suis pas les liens de cette page. Si tu ne spécifies pas cette règle, le moteur de recherche peut utiliser les liens "
-"de la page pour découvrir les pages liées"
+msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
+msgstr "Ne suis pas les liens de cette page. Si tu ne spécifies pas cette règle, le moteur de recherche peut utiliser les liens de la page pour découvrir les pages liées"
 
 #: templates/admin/linkpages/edit.php:50
 msgid "No Archive"
@@ -2302,12 +2262,8 @@ msgstr "Méta robots"
 
 #: templates/admin/linkpages/edit.php:501
 #, fuzzy,php-format
-msgid ""
-"Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" "
-"target=\"_blank\">reading settings!</a>"
-msgstr ""
-"Les moteurs de recherche ne sont pas autorisés à indexer ce site. Vois l'option \"Visibilité sur les moteurs de "
-"recherche\" dans les <a href=\"%1$s\" target=\"_blank\">paramètres de lecture !</a>"
+msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
+msgstr "Les moteurs de recherche ne sont pas autorisés à indexer ce site. Vois l'option \"Visibilité sur les moteurs de recherche\" dans les <a href=\"%1$s\" target=\"_blank\">paramètres de lecture !</a>"
 
 #: templates/admin/linkpages/edit.php:553
 #, fuzzy
@@ -2440,9 +2396,7 @@ msgstr "Des statistiques détaillées qui te permettent de filtrer et d'analyser
 #: templates/admin/settings/pro.php:31
 #, fuzzy
 msgid "Define keywords that will be automatically replaced with links throughout your posts, pages and custom post types."
-msgstr ""
-"Définis des mots-clés qui seront automatiquement remplacés par des liens dans l'ensemble de tes posts, pages et types "
-"de posts personnalisés."
+msgstr "Définis des mots-clés qui seront automatiquement remplacés par des liens dans l'ensemble de tes posts, pages et types de posts personnalisés."
 
 #: templates/admin/settings/pro.php:34
 #: templates/admin/settings/pro.php:35
@@ -2452,18 +2406,12 @@ msgstr "Suivi des conversions"
 #: templates/admin/settings/pro.php:36
 #, fuzzy
 msgid "Easily place conversion tracking codes to track the performance of your WooCommerce or Easy Digital Downloads store."
-msgstr ""
-"Place facilement des codes de suivi des conversions pour suivre les performances de ta boutique WooCommerce ou Easy "
-"Digital Downloads."
+msgstr "Place facilement des codes de suivi des conversions pour suivre les performances de ta boutique WooCommerce ou Easy Digital Downloads."
 
 #: templates/admin/settings/pro.php:41
 #, fuzzy
-msgid ""
-"Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to "
-"ClickWhale PRO."
-msgstr ""
-"En passant à ClickWhale PRO, tu auras la possibilité de suivre les campagnes UTM avec de meilleurs paramètres pour une "
-"efficacité exceptionnelle des campagnes."
+msgid "Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to ClickWhale PRO."
+msgstr "En passant à ClickWhale PRO, tu auras la possibilité de suivre les campagnes UTM avec de meilleurs paramètres pour une efficacité exceptionnelle des campagnes."
 
 #: templates/admin/settings/pro.php:46
 #, fuzzy
@@ -2483,12 +2431,8 @@ msgstr "Bloc de formulaires"
 
 #: templates/admin/settings/pro.php:56
 #, fuzzy
-msgid ""
-"Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social "
-"media followers."
-msgstr ""
-"Ajoute facilement à ta page de liens des formulaires provenant de plugins WordPress populaires et recueille les "
-"prospects ou les commentaires des personnes qui te suivent sur les médias sociaux."
+msgid "Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers."
+msgstr "Ajoute facilement à ta page de liens des formulaires provenant de plugins WordPress populaires et recueille les prospects ou les commentaires des personnes qui te suivent sur les médias sociaux."
 
 #: templates/admin/settings/pro.php:59
 #: templates/admin/settings/pro.php:60
@@ -2498,12 +2442,8 @@ msgstr "Plus d'options de personnalisation"
 
 #: templates/admin/settings/pro.php:61
 #, fuzzy
-msgid ""
-"Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and "
-"more."
-msgstr ""
-"Les fonctions supplémentaires du plugin pour personnaliser les pages de liens comprennent des options pour ajouter des "
-"arrière-plans de marque, des images, et plus encore."
+msgid "Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more."
+msgstr "Les fonctions supplémentaires du plugin pour personnaliser les pages de liens comprennent des options pour ajouter des arrière-plans de marque, des images, et plus encore."
 
 #: templates/admin/settings/pro.php:65
 #: templates/admin/settings/pro.php:66
@@ -2513,19 +2453,13 @@ msgstr "Pas de limites"
 
 #: templates/admin/settings/pro.php:67
 #, fuzzy
-msgid ""
-"Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading "
-"to ClickWhale PRO."
-msgstr ""
-"Finies les limitations ! Culte et publie autant de codes de suivi, de pages de liens et de liens de marque que "
-"nécessaire lors de la mise à niveau vers ClickWhale PRO."
+msgid "Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading to ClickWhale PRO."
+msgstr "Finies les limitations ! Culte et publie autant de codes de suivi, de pages de liens et de liens de marque que nécessaire lors de la mise à niveau vers ClickWhale PRO."
 
 #: templates/admin/settings/pro.php:73
 #, fuzzy
 msgid "Keep the branding personal with the ability to remove ClickWhale credits like the logo from footers and more."
-msgstr ""
-"Garde ton image de marque personnelle en ayant la possibilité de supprimer les crédits ClickWhale, comme le logo, des "
-"pieds de page et autres."
+msgstr "Garde ton image de marque personnelle en ayant la possibilité de supprimer les crédits ClickWhale, comme le logo, des pieds de page et autres."
 
 #: templates/admin/settings/pro.php:81
 #: templates/admin/settings/pro.php:82
@@ -2724,8 +2658,8 @@ msgstr "Modifier la catégorie"
 msgid "Edit Tracking Code"
 msgstr "Modifier le code de suivi"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:189
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
+#: includes/admin/Clickwhale_Instance_Edit.php:189
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "Modifier \"%1$s\" %2$s"
@@ -2923,23 +2857,21 @@ msgstr "Certains champs de profil social ne sont pas valides. Veuillez les corri
 #: pro/includes/helpers/Links_Helper.php:283
 #, php-format
 msgid "You can either rename (or remove) current keyword or edit that link <a href=\"%s\" target=\"_blank\">here</a>"
-msgstr ""
-"Vous pouvez soit renommer (ou supprimer) le mot-clé actuel, soit modifier ce lien <a href=\"%s\" "
-"target=\"_blank\">ici</a>"
+msgstr "Vous pouvez soit renommer (ou supprimer) le mot-clé actuel, soit modifier ce lien <a href=\"%s\" target=\"_blank\">ici</a>"
 
 #: pro/includes/helpers/Links_Helper.php:372
 #, php-format
 msgid "The keyword you entered: <b>%s</b> has already been added to this link. Please rename or remove the duplicates."
 msgstr "Le mot-clé que vous avez saisi : <b>%s</b> a déjà été ajouté à ce lien. Veuillez renommer ou supprimer les doublons."
 
-#: includes/admin/Clickwhale_Ajax.php:815
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:815
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "Le lien <strong>&quot;%s&quot;</strong> a été importé avec succès !"
 
-#: includes/admin/Clickwhale_Ajax.php:821
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:821
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>Erreur !</strong> Le lien <strong>&quot;%s&quot;</strong> n'a pas été importé !"
@@ -2963,8 +2895,8 @@ msgstr "Télécharger l'icône du site"
 msgid "Use this image"
 msgstr "Utiliser cette image"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #. translators: %s: singular post type
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #, php-format
 msgid "Original %1$s: "
 msgstr "Original %1$s :"
@@ -3035,9 +2967,7 @@ msgstr "Retirer l'icône du site"
 
 #: templates/admin/linkpages/edit.php:238
 msgid "Add custom Site Icon for the current Link Page. It replaces default one only on this page."
-msgstr ""
-"Ajouter une icône de site personnalisée pour la page de lien actuelle. Elle remplace la par défaut uniquement sur cette "
-"page."
+msgstr "Ajouter une icône de site personnalisée pour la page de lien actuelle. Elle remplace la par défaut uniquement sur cette page."
 
 #: templates/admin/linkpages/edit.php:239
 msgid "Site Icon should be square and at least 512 by 512 pixels."

@@ -14,23 +14,23 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Domain: clickwhale\n"
 
-#: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:159
 #. Plugin Name of the plugin
 #. Author of the plugin
+#: clickwhale.php
+#: includes/admin/Clickwhale_Admin.php:159
 #, fuzzy
 msgid "ClickWhale"
 msgstr "クリックホエール"
 
-#: clickwhale.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php
 #. Description of the plugin
+#: clickwhale.php
 #, fuzzy
 msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
 msgstr "アフィリエイト・リンクとリンク・ページのためのリンク・マネージャー、リンク・ショートナー、クリック・トラッカー。"
@@ -496,10 +496,7 @@ msgstr "リンクプレフィックス"
 
 #: includes/admin/Clickwhale_Settings.php:280
 #, fuzzy
-msgid ""
-"Here, you can enter a prefix that will be prepended when creating a new link. For example: "
-"<em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing "
-"links."
+msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "ここでは、新しいリンクを作成するときに付加される接頭辞を入力できる。例：<em>link</em>.<br><strong>重要：</strong>接頭辞を変更しても、すでに存在するリンクには影響<u>しない</u>。"
 
 #: includes/admin/Clickwhale_Settings.php:292
@@ -1349,9 +1346,7 @@ msgstr "例・%s"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:128
 #, fuzzy,php-format
-msgid ""
-"Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate "
-"Program</a>.<br>It will then be used automatically in the footer of your link pages."
+msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
 msgstr "<br>リンクページのフッターに自動的に使用される。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:147
@@ -1365,12 +1360,8 @@ msgstr "リンクページのクレジットを非表示にする。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:159
 #, fuzzy,php-format
-msgid ""
-"As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the "
-"settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
-msgstr ""
-"私たちの<a href=\"%1$s\" target=\"_blank\">アフィリエイト・プログラムの</a>メンバーとして、あなたは<a "
-"href=\"%2$s\">ここの</a>設定であなたのアフィリエイト・リンクを入力することができる。<br>、クレジットが表示されるときに使用される。"
+msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
+msgstr "私たちの<a href=\"%1$s\" target=\"_blank\">アフィリエイト・プログラムの</a>メンバーとして、あなたは<a href=\"%2$s\">ここの</a>設定であなたのアフィリエイト・リンクを入力することができる。<br>、クレジットが表示されるときに使用される。"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:178
 #, fuzzy
@@ -1810,12 +1801,8 @@ msgstr "フォームを選択して下さい"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1414
 #, fuzzy,php-format
-msgid ""
-"We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite "
-"plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
-msgstr ""
-"<a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">対応しているフォームプラグインが</a>見つからない。お気に入りのプラグインが見つからない？それなら<a href=\"%2$s\" "
-"target=\"_blank\" rel=\"noopener\">私たちに知らせて</a>ほしい。"
+msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
+msgstr "<a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">対応しているフォームプラグインが</a>見つからない。お気に入りのプラグインが見つからない？それなら<a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">私たちに知らせて</a>ほしい。"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1434
 msgid "Plugin"
@@ -1837,9 +1824,7 @@ msgstr "UTMパラメータ"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:56
 #, fuzzy,php-format
-msgid ""
-"Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options "
-"<a href=\"%s\" target=\"_blank\">here</a>."
+msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr "ここでは、投稿やページに自動的にリンクされるキーワードを定義することができる。さらに詳しい設定オプションは<a href=\"%s\" target=\"_blank\">こちら</a>。"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:69
@@ -2131,9 +2116,7 @@ msgstr "インデックスなし"
 
 #: templates/admin/linkpages/edit.php:43
 #, fuzzy
-msgid ""
-"Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search "
-"results."
+msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
 msgstr "このページを検索結果に表示しない。このルールを指定しないと、ページがインデックスされ、検索結果に表示される可能性がある。"
 
 #: templates/admin/linkpages/edit.php:46
@@ -2142,9 +2125,7 @@ msgstr "フォローはありません"
 
 #: templates/admin/linkpages/edit.php:47
 #, fuzzy
-msgid ""
-"Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to "
-"discover those linked pages"
+msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
 msgstr "このページのリンクをたどらない。このルールを指定しないと、検索エンジンはページ上のリンクを使ってリンク先のページを発見する可能性がある。"
 
 #: templates/admin/linkpages/edit.php:50
@@ -2312,9 +2293,7 @@ msgstr "ロボットメタタグ（Robots Meta Tags）"
 
 #: templates/admin/linkpages/edit.php:501
 #, fuzzy,php-format
-msgid ""
-"Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" "
-"target=\"_blank\">reading settings!</a>"
+msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%1$s\" target=\"_blank\">reading settings!</a>"
 msgstr "検索エンジンはこのサイトをインデックスすることを許可されていない。<a href=\"%1$s\" target=\"_blank\">読書設定の</a>\"検索エンジンの可視性 \"オプションを参照のこと！"
 
 #: templates/admin/linkpages/edit.php:553
@@ -2463,9 +2442,7 @@ msgstr "WooCommerceまたはEasy Digital Downloadsストアのパフォーマン
 
 #: templates/admin/settings/pro.php:41
 #, fuzzy
-msgid ""
-"Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to "
-"ClickWhale PRO."
+msgid "Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to ClickWhale PRO."
 msgstr "ClickWhale PROにアップグレードすることで、より優れたパラメータでUTMキャンペーンをトラッキングし、優れたキャンペーン効果を得ることができる。"
 
 #: templates/admin/settings/pro.php:46
@@ -2486,9 +2463,7 @@ msgstr "フォーム・ブロック"
 
 #: templates/admin/settings/pro.php:56
 #, fuzzy
-msgid ""
-"Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social "
-"media followers."
+msgid "Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers."
 msgstr "人気のWordPressフォームプラグインのフォームをリンクページに簡単に追加して、リードやソーシャルメディアのフォロワーからのフィードバックを集めよう。"
 
 #: templates/admin/settings/pro.php:59
@@ -2499,9 +2474,7 @@ msgstr "より多くのカスタマイズ・オプション"
 
 #: templates/admin/settings/pro.php:61
 #, fuzzy
-msgid ""
-"Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and "
-"more."
+msgid "Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more."
 msgstr "リンクページをカスタマイズするプラグインの追加機能には、ブランドの背景や画像などを追加するオプションが含まれる。"
 
 #: templates/admin/settings/pro.php:65
@@ -2512,9 +2485,7 @@ msgstr "制限なし"
 
 #: templates/admin/settings/pro.php:67
 #, fuzzy
-msgid ""
-"Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading "
-"to ClickWhale PRO."
+msgid "Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading to ClickWhale PRO."
 msgstr "制限がなくなる！ClickWhale PROにアップグレードすると、トラッキングコード、リンクページ、ブランドリンクを必要なだけ作成し、公開できる。"
 
 #: templates/admin/settings/pro.php:73
@@ -2724,8 +2695,8 @@ msgstr "カテゴリを編集"
 msgid "Edit Tracking Code"
 msgstr "トラッキングコードを編集"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:189
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
+#: includes/admin/Clickwhale_Instance_Edit.php:189
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "「%1$s」を編集 %2$s"
@@ -2930,14 +2901,14 @@ msgstr "現在のキーワードの名前を変更（または削除）するか
 msgid "The keyword you entered: <b>%s</b> has already been added to this link. Please rename or remove the duplicates."
 msgstr "入力したキーワード：<b>%s</b>はこのリンクにすでに追加されています。重複を名前変更するか削除してください。"
 
-#: includes/admin/Clickwhale_Ajax.php:815
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:815
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "リンク <strong>&quot;%s&quot;</strong> が正常にインポートされました！"
 
-#: includes/admin/Clickwhale_Ajax.php:821
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:821
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>エラー！</strong> リンク <strong>&quot;%s&quot;</strong> がインポートされませんでした！"
@@ -2961,8 +2932,8 @@ msgstr "サイトアイコンをアップロード"
 msgid "Use this image"
 msgstr "この画像を使用"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #. translators: %s: singular post type
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:326
 #, php-format
 msgid "Original %1$s: "
 msgstr "元の %1$s:"
