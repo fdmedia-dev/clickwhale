@@ -19,6 +19,6 @@ trait Singleton_Clone {
      */
     public function __clone() {
         // Cloning instances of the class is forbidden.
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'clickwhale' ), CLICKWHALE_VERSION );
+        _doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'clickwhale' ), esc_html( CLICKWHALE_VERSION ) );
     }
 }

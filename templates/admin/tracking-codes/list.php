@@ -2,6 +2,10 @@
 use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Codes_List_Table;
 use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $table = new Clickwhale_Tracking_Codes_List_Table();
 $message = array();
 
@@ -26,12 +30,15 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
     <?php
-    echo Helper::render_heading(
-        array(
-            'name'        => esc_html( get_admin_page_title() ),
-            'is_list'     => true,
-            'link_to_add' => CLICKWHALE_SLUG . '-edit-tracking-code'
-        )
+    echo wp_kses(
+        Helper::render_heading(
+            array(
+                'name'        => esc_html( get_admin_page_title() ),
+                'is_list'     => true,
+                'link_to_add' => esc_attr( CLICKWHALE_SLUG ) . '-edit-tracking-code'
+            )
+        ),
+        Helper::get_allowed_tags()
     );
 
     if ( ! empty( $message ) ) { ?>
@@ -44,8 +51,8 @@ do_action( 'clickwhale_admin_banner' );
              style="display: block"
         >
             <p>
-                <?php echo Tracking_Codes_Helper::get_limitation_notice(); ?>
-                <?php echo Helper::get_pro_message(); ?>
+                <?php echo esc_html( Tracking_Codes_Helper::get_limitation_notice() ); ?>
+                <?php echo wp_kses( Helper::get_pro_message(), Helper::get_allowed_tags() ); ?>
             </p>
         </div>
         <hr class="wp-header-end">
@@ -54,7 +61,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php echo esc_attr( $_GET['page'] ); ?>" />
+        <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_key( $_GET['page'] ) ); ?>" />
         <?php $table->display(); ?>
     </form>
 

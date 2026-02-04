@@ -230,9 +230,17 @@ class Helper {
 
         if ( isset( $data['is_edit'] ) ) {
             if ( $data['is_edit'] ) {
-                $wpHeading = sprintf( __( 'Edit %s', 'clickwhale' ), esc_html( $data['name'] ) );
+                $wpHeading = sprintf(
+                    /* translators: %s: item type/name (e.g., Link, Category, Link Page) */
+                    esc_html__( 'Edit %s', 'clickwhale' ),
+                    esc_html( $data['name'] )
+                );
             } else {
-                $wpHeading = sprintf( __( 'Add %s', 'clickwhale' ), esc_html( $data['name'] ) );
+                $wpHeading = sprintf(
+                    /* translators: %s: item type/name (e.g., Link, Category, Link Page) */
+                    esc_html__( 'Add %s', 'clickwhale' ),
+                    esc_html( $data['name'] )
+                );
             }
         } elseif ( ! empty( $data['is_list'] ) ) {
             $wpHeading = esc_html( $data['name'] );
@@ -280,6 +288,156 @@ class Helper {
     }
 
     /**
+     * @return array
+     */
+    public static function get_allowed_tags(): array {
+        return array(
+            'input'    => array(
+                'type'        => true,
+                'id'          => true,
+                'name'        => true,
+                'value'       => true,
+                'class'       => true,
+                'style'       => true,
+                'checked'     => true,
+                'disabled'    => true,
+                'required'    => true,
+                'placeholder' => true,
+                'min'         => true,
+                'max'         => true,
+            ),
+            'select'   => array(
+                'id'       => true,
+                'name'     => true,
+                'class'    => true,
+                'multiple' => true,
+                'disabled' => true,
+                'style'    => true,
+            ),
+            'option'   => array(
+                'value'    => true,
+                'selected' => true,
+                'disabled' => true,
+            ),
+            'textarea' => array(
+                'id'       => true,
+                'name'     => true,
+                'class'    => true,
+                'rows'     => true,
+                'cols'     => true,
+                'disabled' => true,
+                'style'    => true,
+                'required' => true,
+            ),
+            'label'    => array(
+                'for'   => true,
+                'class' => true,
+            ),
+            'button'   => array(
+                'type'  => true,
+                'class' => true,
+                'id'    => true,
+                'data-id' => true,
+                'data-type' => true,
+            ),
+            'fieldset' => array(
+                'class' => true,
+            ),
+            'legend'   => array(
+                'class' => true,
+            ),
+            'p'        => array(
+                'class' => true,
+            ),
+            'span'     => array(
+                'class' => true,
+                'style' => true,
+            ),
+            'div'      => array(
+                'class' => true,
+                'style' => true,
+            ),
+            'tr'       => array(
+                'class' => true,
+                'style' => true,
+            ),
+            'th'       => array(
+                'scope' => true,
+                'class' => true,
+            ),
+            'td'       => array(
+                'class'   => true,
+                'style'   => true,
+                'colspan' => true,
+            ),
+            'br'       => array(),
+            'ul'       => array(
+                'class' => true,
+            ),
+            'li'       => array(
+                'class' => true,
+                'id'    => true,
+            ),
+            'ol'       => array(
+                'class' => true,
+            ),
+            'a'        => array(
+                'href'   => true,
+                'title'  => true,
+                'class'  => true,
+                'target' => true,
+                'rel'    => true,
+            ),
+            'svg'      => array(
+                'class' => true,
+                'xmlns' => true,
+                'viewBox' => true,
+                'fill' => true,
+                'aria-hidden' => true,
+                'role' => true,
+                'width' => true,
+                'height' => true,
+            ),
+            'path' => array(
+                'd' => true,
+                'fill' => true,
+            ),
+            'use'      => array(
+                'href' => true,
+            ),
+            'em' => array(
+                'class' => true,
+            ),
+            'ion-icon' => array(
+                'name' => true,
+            ),
+            'link'     => array(
+                'rel'   => true,
+                'href'  => true,
+                'sizes' => true,
+            ),
+            'meta'     => array(
+                'name'    => true,
+                'content' => true,
+            ),
+            'script' => array(
+                'src'   => true,
+                'type'  => true,
+                'async' => true,
+                'defer' => true,
+            ),
+            'noscript' => [],
+            'img' => array(
+                'src'    => true,
+                'height' => true,
+                'width'  => true,
+                'style'  => true,
+                'alt'    => true,
+            ),
+        );
+    }
+
+    /**
      * @param array $columns
      * @param string $order
      * @param string $orderby
@@ -311,26 +469,21 @@ class Helper {
         return self::pro_link();
     }
 
-    /**
-     * @return string
-     * @since 1.4.0
-     */
-    public static function admin_pro_label(): string {
-        return apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
-    }
-
     public static function get_pro_message( $prompt = '' ) {
-        if ( '' == $prompt ) {
-            $prompt = __( 'Unlimited with', 'clickwhale' );
+        if ( '' === $prompt ) {
+            $prompt = esc_html__( 'Unlimited with', 'clickwhale' );
+        } else {
+            $prompt = esc_html( $prompt );
         }
 
-        return apply_filters(
-            'clickwhale_get_pro_message',
-            ' <strong>' . $prompt . ' ' . sprintf(
-                __( '<a href="%s" rel="noopener" target="_blank">ClickWhale PRO</a>', 'clickwhale' ),
-                self::get_pro_link()
-            ) . '</strong>'
-        );
+        $pro_link = ' <strong>' . $prompt . ' ' . sprintf(
+            /* translators: %1$s: ClickWhale PRO link URL, %2$s: "ClickWhale PRO" name */
+            '<a href="%1$s" rel="noopener" target="_blank">%2$s</a>',
+            esc_url( self::get_pro_link() ),
+            esc_html__( 'ClickWhale PRO', 'clickwhale' )
+        ) . '</strong>';
+
+        return apply_filters( 'clickwhale_get_pro_message', $pro_link );
     }
 
     /**
@@ -484,15 +637,16 @@ class Helper {
      * @throws Exception
      */
     public static function csrf_exception( string $page_slug = '' ) {
-
-        $log_msg = sprintf( __( 'Security check failed (possible CSRF) for user ID %d', 'clickwhale' ), get_current_user_id() );
+        /* translators: %d: current user ID */
+        $log_msg = sprintf( esc_html__( 'Security check failed (possible CSRF) for user ID %d', 'clickwhale' ), get_current_user_id() );
 
         if ( $page_slug ) {
-            $log_msg .= ' ' . sprintf( __( 'on page: %s', 'clickwhale' ), $page_slug );
+            /* translators: %s: admin page slug */
+            $log_msg .= ' ' . sprintf( esc_html__( 'on page: %s', 'clickwhale' ), esc_html( $page_slug ) );
         }
 
         error_log( $log_msg );
-        throw new Exception( __( 'Security check failed. Please contact the ClickWhale customer support.', 'clickwhale' ) );
+        throw new Exception( esc_html__( 'Security check failed. Please contact the ClickWhale customer support.', 'clickwhale' ) );
     }
 
     /**

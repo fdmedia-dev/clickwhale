@@ -190,18 +190,22 @@ class Clickwhale_Ajax {
 
     public function sanitize_slug() {
         check_ajax_referer( 'sanitize_slug', 'security' );
-        $type = sanitize_key( $_POST['type'] );
+        $type = ( isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '' );
         if ( empty( $type ) ) {
+            wp_send_json_error();
+        }
+        $post_slug = ( isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '' );
+        if ( empty( $post_slug ) ) {
             wp_send_json_error();
         }
         $slug = '';
         switch ( $type ) {
             case 'link':
-                $slug = Links_Helper::sanitize_slug( $_POST['slug'] );
+                $slug = Links_Helper::sanitize_slug( $post_slug );
                 break;
             case 'linkpage':
             case 'category':
-                $slug = sanitize_title( $_POST['slug'] );
+                $slug = sanitize_title( $post_slug );
                 break;
             default:
                 wp_send_json_error();
@@ -211,17 +215,21 @@ class Clickwhale_Ajax {
 
     public function slug_exists() {
         check_ajax_referer( 'slug_exists', 'security' );
-        $type = sanitize_key( $_POST['type'] );
+        $type = ( isset( $_POST['type'] ) ? sanitize_key( $_POST['type'] ) : '' );
         if ( empty( $type ) ) {
+            wp_send_json_error();
+        }
+        $post_slug = ( isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '' );
+        if ( empty( $post_slug ) ) {
             wp_send_json_error();
         }
         // Slashes are allowed inside of `Link` slug so we use `Links_Helper::sanitize_slug()` for it.
         // For other entities (`Link Page`, `Category`) we use `sanitize_title()`
-        $slug = ( 'link' === $type ? Links_Helper::sanitize_slug( $_POST['slug'] ) : sanitize_title( $_POST['slug'] ) );
+        $slug = ( 'link' === $type ? Links_Helper::sanitize_slug( $post_slug ) : sanitize_title( $post_slug ) );
         if ( '' === $slug ) {
             wp_send_json_error();
         }
-        $id = intval( $_POST['id'] );
+        $id = ( isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0 );
         $result = array();
         switch ( $type ) {
             case 'link':
@@ -303,11 +311,12 @@ class Clickwhale_Ajax {
 
     public function scan_links() {
         check_ajax_referer( 'clickwhale_link_scanner', 'security' );
-        $slug = Links_Helper::sanitize_slug( $_POST['slug'] );
+        $post_slug = ( isset( $_POST['slug'] ) ? sanitize_text_field( wp_unslash( $_POST['slug'] ) ) : '' );
+        $slug = Links_Helper::sanitize_slug( $post_slug );
         if ( '' === $slug ) {
             wp_send_json_error();
         }
-        $id = intval( $_POST['id'] );
+        $id = ( isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0 );
         if ( 0 === $id ) {
             wp_send_json_error();
         }
@@ -450,13 +459,22 @@ class Clickwhale_Ajax {
         $delimiters = [";", "\t", "|"];
         $html = '';
         $default_columns = Helper::get_import_default_columns();
-        $file_data = fopen( $file['tmp_name'], 'r' );
-        if ( $file_data === false ) {
+        if ( !function_exists( 'WP_Filesystem' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        WP_Filesystem();
+        global $wp_filesystem;
+        $file_contents = $wp_filesystem->get_contents( $file['tmp_name'] );
+        if ( false === $file_contents || '' === $file_contents ) {
             wp_send_json_error( 'Error opening file!' );
         }
+        // Split content into lines and parse CSV headers using str_getcsv
+        $lines = preg_split( "/\r\n|\n|\r/", $file_contents );
+        $line0 = ( isset( $lines[0] ) ? $lines[0] : '' );
+        $line1 = ( isset( $lines[1] ) ? $lines[1] : '' );
         // find col head and delimiter
         // by default delimiter is comma ','
-        $headings = fgetcsv( $file_data, 4096, $col_delimiter );
+        $headings = str_getcsv( $line0, $col_delimiter );
         // if comma is not a delimiter than $columns returns
         // array{ [0]=> 'col1?col2?col3...'}
         // '?' is unknown delimiter
@@ -473,7 +491,7 @@ class Clickwhale_Ajax {
             }
             $headings = $headings_tmp;
         }
-        $first_line = fgetcsv( $file_data, 4096, $col_delimiter );
+        $first_line = str_getcsv( $line1, $col_delimiter );
         // clean headings
         foreach ( $headings as $k => $v ) {
             $v = preg_replace( '/[\\x00-\\x1F\\x80-\\xFF]/', '', $v );
@@ -508,8 +526,13 @@ class Clickwhale_Ajax {
 
     public function map_csv() {
         check_ajax_referer( 'map_csv', 'security' );
-        if ( !$_FILES['file'] || $_FILES['file']['type'] !== 'text/csv' ) {
-            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $_FILES['file']['type']);
+        if ( !isset( $_FILES['file'] ) ) {
+            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ));
+            wp_send_json_error( $error );
+        }
+        $file_type = wp_check_filetype( $_FILES['file']['name'] );
+        if ( 'csv' !== $file_type['ext'] ) {
+            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $file_type['type']);
             wp_send_json_error( $error );
         }
         $html = '';
@@ -522,33 +545,46 @@ class Clickwhale_Ajax {
         $mapped_columns = ( !empty( $_POST['mapped'] ) ? explode( ',', sanitize_text_field( $_POST['mapped'] ) ) : array() );
         $excluded_columns = ( !empty( $_POST['excluded'] ) ? explode( ',', sanitize_text_field( $_POST['excluded'] ) ) : array() );
         $filtered = array();
-        $file_data = fopen( $_FILES['file']['tmp_name'], 'r' );
-        if ( $file_data === false ) {
+        if ( !function_exists( 'WP_Filesystem' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        WP_Filesystem();
+        global $wp_filesystem;
+        $file_contents = $wp_filesystem->get_contents( $_FILES['file']['tmp_name'] );
+        if ( false === $file_contents || '' === $file_contents ) {
             $error = new WP_Error('002', __( 'Error opening file!', 'clickwhale' ));
             wp_send_json_error( $error );
         }
+        // Split CSV into lines and parse
+        $lines = preg_split( "/\r\n|\n|\r/", $file_contents );
         // get headings
-        $file_headings = fgetcsv( $file_data, 4096, $delimiter );
+        $first_line = ( isset( $lines[0] ) ? $lines[0] : '' );
+        $file_headings = str_getcsv( $first_line, $delimiter );
         // get array of unique values from mapped and default columns
         foreach ( $default_columns as $default_column ) {
             if ( !in_array( $default_column, $mapped_columns ) ) {
                 $mapped_columns[] = $default_column;
             }
         }
-        // filter csv row and exclude not mapped columns
+        // filter csv rows and exclude not mapped columns
         $headings_num = count( $file_headings );
-        while ( ($data = fgetcsv( $file_data, 4096, $delimiter )) !== false ) {
+        $total_lines = count( $lines );
+        for ($ln = 1; $ln < $total_lines; $ln++) {
+            if ( '' === trim( (string) $lines[$ln] ) ) {
+                continue;
+            }
+            $data = str_getcsv( $lines[$ln], $delimiter );
             $row = array();
             for ($c = 0; $c < $headings_num; $c++) {
-                if ( in_array( $c, $excluded_columns ) ) {
+                if ( in_array( $c, $excluded_columns, true ) ) {
                     continue;
-                } else {
-                    $row[] = $data[$c];
                 }
+                $row[] = $data[$c] ?? '';
             }
-            $filtered[] = $row;
+            if ( !empty( $row ) ) {
+                $filtered[] = $row;
+            }
         }
-        fclose( $file_data );
         // start html
         $html .= '<table class="wp-list-table widefat striped table-view-list"><thead><tr>';
         foreach ( $mapped_columns as $heading ) {
@@ -621,21 +657,24 @@ class Clickwhale_Ajax {
     public function import_csv() {
         check_ajax_referer( 'import_csv', 'security' );
         global $wpdb;
-        $data = $_POST['data'];
-        if ( !$data ) {
+        $data = ( isset( $_POST['data'] ) ? $_POST['data'] : null );
+        if ( empty( $data ) || !is_array( $data ) ) {
             $error = new WP_Error('004', __( 'Nothing to import!', 'clickwhale' ));
             wp_send_json_error( $error );
         }
         $links_table = $wpdb->prefix . 'clickwhale_links';
         $result = array();
         foreach ( $data as $v ) {
-            $v['title'] = sanitize_text_field( $v['title'] );
-            $v['slug'] = Links_Helper::sanitize_slug( $v['slug'] );
-            $v['url'] = esc_url_raw( $v['url'] );
+            if ( !is_array( $v ) ) {
+                continue;
+            }
+            $v['title'] = ( isset( $v['title'] ) ? sanitize_text_field( $v['title'] ) : '' );
+            $v['slug'] = ( isset( $v['slug'] ) ? Links_Helper::sanitize_slug( $v['slug'] ) : '' );
+            $v['url'] = ( isset( $v['url'] ) ? esc_url_raw( $v['url'] ) : '' );
             $v['description'] = '';
             $v['author'] = get_current_user_id();
-            $v['created_at'] = date( 'Y-m-d H:i:s' );
-            $v['updated_at'] = date( 'Y-m-d H:i:s' );
+            $v['created_at'] = gmdate( 'Y-m-d H:i:s' );
+            $v['updated_at'] = gmdate( 'Y-m-d H:i:s' );
             if ( isset( $v['undefined'] ) ) {
                 unset($v['undefined']);
             }
@@ -644,13 +683,13 @@ class Clickwhale_Ajax {
                 $message = sprintf( 
                     /* translators: %s: link title */
                     __( 'Link <strong>&quot;%s&quot;</strong> successfully imported!', 'clickwhale' ),
-                    $v['title']
+                    esc_html( $v['title'] )
                  );
             } else {
                 $message = sprintf( 
                     /* translators: %s: link title */
                     __( '<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!', 'clickwhale' ),
-                    $v['title']
+                    esc_html( $v['title'] )
                  );
             }
             $result[] = wp_kses( $message, array(
@@ -668,8 +707,8 @@ class Clickwhale_Ajax {
         }
         global $wpdb;
         // Disable caching
-        $now = date( "D, d M Y H:i:s" );
-        $date = date( "Y-m-d" );
+        $now = gmdate( "D, d M Y H:i:s" );
+        $date = gmdate( "Y-m-d" );
         header( "Expires: Tue, 03 Jul 2001 06:00:00 GMT" );
         header( "Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate" );
         header( "Last-Modified: {$now} GMT" );
@@ -702,12 +741,16 @@ class Clickwhale_Ajax {
             $cats = ' WHERE ' . implode( ' OR ', $conditions );
         }
         $links_table = $wpdb->prefix . 'clickwhale_links';
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $sql = "SELECT " . implode( ',', $headers ) . " FROM {$links_table}";
         if ( !empty( $prepared_categories ) ) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $query = $wpdb->prepare( $sql . $cats, ...$prepared_categories );
         } else {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $query = $sql;
         }
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $rows = $wpdb->get_results( $query, ARRAY_A );
         if ( !$rows ) {
             $error = new WP_Error('004', __( 'Nothing to export', 'clickwhale' ));
@@ -718,13 +761,43 @@ class Clickwhale_Ajax {
             $error = new WP_Error('004', __( 'Nothing to export', 'clickwhale' ));
             wp_send_json_error( $error );
         }
-        ob_start();
-        $df = fopen( "php://output", 'w' );
-        foreach ( $merged as $row ) {
-            fputcsv( $df, $row );
+        // Build CSV string without direct file operations
+        $delimiter = ',';
+        $enclosure = '"';
+        $is_assoc = static function ( $arr ) : bool {
+            if ( !is_array( $arr ) ) {
+                return false;
+            }
+            return array_keys( $arr ) !== range( 0, count( $arr ) - 1 );
+        };
+        $csv_escape = static function ( $fields ) use($delimiter, $enclosure) : string {
+            $line_parts = array();
+            foreach ( $fields as $field ) {
+                $field = (string) $field;
+                $escaped = str_replace( $enclosure, $enclosure . $enclosure, $field );
+                // Always enclose for consistency
+                $line_parts[] = $enclosure . $escaped . $enclosure;
+            }
+            return implode( $delimiter, $line_parts ) . "\r\n";
+        };
+        $csv_output = '';
+        foreach ( $merged as $idx => $row ) {
+            if ( 0 === $idx ) {
+                // Header row is already a numeric array
+                $csv_output .= $csv_escape( $row );
+                continue;
+            }
+            if ( $is_assoc( $row ) ) {
+                $ordered = array();
+                foreach ( $headers as $h ) {
+                    $ordered[] = $row[$h] ?? '';
+                }
+                $csv_output .= $csv_escape( $ordered );
+            } else {
+                $csv_output .= $csv_escape( $row );
+            }
         }
-        fclose( $df );
-        $result['file'] = ob_get_clean();
+        $result['file'] = $csv_output;
         $result['filename'] = "clickwhale-links-export-{$date}.csv";
         wp_send_json_success( $result );
     }

@@ -92,7 +92,7 @@ class Clickwhale_Rest_Controller extends WP_REST_Controller {
      * @return WP_Error|boolean
      */
     public function permissions_check( $request ) {
-        if ( current_user_can( 'edit_posts' ) ) {
+        if ( clickwhale()->user->is_current_user_role_access_granted() ) {
             return true;
         }
 
@@ -215,6 +215,7 @@ class Clickwhale_Rest_Controller extends WP_REST_Controller {
         if ( ! empty( $slug_match ) ) {
             return new WP_Error( 'wp_post_exists',
                 sprintf(
+                    /* translators: %s: matched resource type (e.g. post type or taxonomy) */
                     __( 'WordPress %s with this slug already exists.', 'clickwhale' ),
                     $slug_match['type']
                 ),
@@ -228,6 +229,7 @@ class Clickwhale_Rest_Controller extends WP_REST_Controller {
         if ( ! empty( $slug_match ) ) {
             return new WP_Error( 'wp_taxonomy_exists',
                 sprintf(
+                    /* translators: %s: matched resource type (e.g. post type or taxonomy) */
                     __( 'WordPress %s with this slug already exists.', 'clickwhale' ),
                     $slug_match['type']
                 ),

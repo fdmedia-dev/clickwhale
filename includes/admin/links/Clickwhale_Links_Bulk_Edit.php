@@ -1,7 +1,11 @@
 <?php
 namespace clickwhale\includes\admin\links;
 
-use clickwhale\includes\helpers\{Links_Helper, Categories_Helper};
+use clickwhale\includes\helpers\{
+    Links_Helper,
+    Categories_Helper,
+    Helper
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,7 +40,7 @@ class Clickwhale_Links_Bulk_Edit {
         $output = '<fieldset class="inline-edit-col-center inline-edit-categories">';
         $output .= '<div class="inline-edit-col">';
         $output .= '<span class="title inline-edit-categories-label">';
-        $output .= __( 'Categories', 'clickwhale' );
+        $output .= esc_html__( 'Categories', 'clickwhale' );
         $output .= '</span>';
         $output .= '<ul class="cat-checklist category-checklist">';
 
@@ -61,12 +65,12 @@ class Clickwhale_Links_Bulk_Edit {
         $redirections = Links_Helper::get_redirections();
 
         $output = '<label class="inline-edit-redirection">';
-        $output .= '<span class="title">' . __( 'Redirection', 'clickwhale' ) . '</span>';
+        $output .= '<span class="title">' . esc_html__( 'Redirection', 'clickwhale' ) . '</span>';
         $output .= '<select name="redirection_status">';
-        $output .= '<option value="-1">&mdash; ' . __( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
+        $output .= '<option value="-1">&mdash; ' . esc_html__( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
 
         foreach ( $redirections as $k => $v ) {
-            $output .= '<option value="' . $k . '">' . $v . '</option>';
+            $output .= '<option value="' . esc_attr( $k ) . '">' . esc_html( $v ) . '</option>';
         }
 
         $output .= '</select>';
@@ -82,12 +86,12 @@ class Clickwhale_Links_Bulk_Edit {
         );
 
         $output = '<label class="inline-edit-link-target">';
-        $output .= '<span class="title">' . __( 'Link Target', 'clickwhale' ) . '</span>';
+        $output .= '<span class="title">' . esc_html__( 'Link Target', 'clickwhale' ) . '</span>';
         $output .= '<select name="link_target_status">';
-        $output .= '<option value="-1">&mdash; ' . __( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
+        $output .= '<option value="-1">&mdash; ' . esc_html__( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
 
         foreach ( $link_targets as $k => $v ) {
-            $output .= '<option value="' . $k . '">' . esc_html( $v ) . '</option>';
+            $output .= '<option value="' . esc_attr( $k ) . '">' . esc_html( $v ) . '</option>';
         }
 
         $output .= '</select>';
@@ -103,12 +107,12 @@ class Clickwhale_Links_Bulk_Edit {
         );
 
         $output = '<label class="inline-edit-nofollow">';
-        $output .= '<span class="title">' . __( 'Nofollow', 'clickwhale' ) . '</span>';
+        $output .= '<span class="title">' . esc_html__( 'Nofollow', 'clickwhale' ) . '</span>';
         $output .= '<select name="nofollow_status">';
-        $output .= '<option value="-1">&mdash; ' . __( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
+        $output .= '<option value="-1">&mdash; ' . esc_html__( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
 
         foreach ( $nofollow as $k => $v ) {
-            $output .= '<option value="' . $k . '">' . $v . '</option>';
+            $output .= '<option value="' . esc_attr( $k ) . '">' . esc_html( $v ) . '</option>';
         }
 
         $output .= '</select>';
@@ -124,12 +128,12 @@ class Clickwhale_Links_Bulk_Edit {
         );
 
         $output = '<label class="inline-edit-sponsored">';
-        $output .= '<span class="title">' . __( 'Sponsored', 'clickwhale' ) . '</span>';
+        $output .= '<span class="title">' . esc_html__( 'Sponsored', 'clickwhale' ) . '</span>';
         $output .= '<select name="sponsored_status">';
-        $output .= '<option value="-1">&mdash; ' . __( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
+        $output .= '<option value="-1">&mdash; ' . esc_html__( 'No Change', 'clickwhale' ) . ' &mdash;</option>';
 
         foreach ( $sponsored as $k => $v ) {
-            $output .= '<option value="' . $k . '">' . $v . '</option>';
+            $output .= '<option value="' . esc_attr( $k ) . '">' . esc_html( $v ) . '</option>';
         }
 
         $output .= '</select>';
@@ -172,7 +176,7 @@ class Clickwhale_Links_Bulk_Edit {
                         </div>
                     </fieldset>
 
-                    <?php echo $this->get_categories(); ?>
+                    <?php echo wp_kses( $this->get_categories(), Helper::get_allowed_tags() ); ?>
 
                     <fieldset class="inline-edit-col-right">
                         <label class="inline-edit-tags wp-clearfix">
@@ -180,10 +184,10 @@ class Clickwhale_Links_Bulk_Edit {
                         </label>
                         <div class="inline-edit-col">
                         <?php
-                            echo $this->get_redirection();
-                            echo $this->get_link_target();
-                            echo $this->get_nofollow();
-                            echo $this->get_sponsored();
+                            echo wp_kses( $this->get_redirection(), Helper::get_allowed_tags() );
+                            echo wp_kses( $this->get_link_target(), Helper::get_allowed_tags() );
+                            echo wp_kses( $this->get_nofollow(), Helper::get_allowed_tags() );
+                            echo wp_kses( $this->get_sponsored(), Helper::get_allowed_tags() );
                         ?>
                         </div>
                     </fieldset>
@@ -205,10 +209,7 @@ class Clickwhale_Links_Bulk_Edit {
             </td>
         </tr>
         <?php
-        $output = ob_get_contents();
-        ob_clean();
-
-        return $output;
+        return ob_get_clean();
     }
 
     public function admin_scripts() {

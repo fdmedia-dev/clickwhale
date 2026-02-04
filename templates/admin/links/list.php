@@ -2,6 +2,9 @@
 
 use clickwhale\includes\helpers\Helper;
 use clickwhale\includes\admin\links\Clickwhale_Links_List_Table;
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
 if ( !isset( $table ) || !$table instanceof WP_List_Table ) {
     $table = new Clickwhale_Links_List_Table();
 }
@@ -24,15 +27,15 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
     <?php 
-echo Helper::render_heading( array(
+echo wp_kses( Helper::render_heading( array(
     'name'        => esc_html( get_admin_page_title() ),
     'is_list'     => true,
-    'link_to_add' => CLICKWHALE_SLUG . '-edit-link',
+    'link_to_add' => esc_attr( CLICKWHALE_SLUG ) . '-edit-link',
     'link_custom' => array(
         'url'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=import' ) ),
-        'title' => __( 'Import', 'clickwhale' ),
+        'title' => esc_html__( 'Import', 'clickwhale' ),
     ),
-) );
+) ), Helper::get_allowed_tags() );
 if ( !empty( $message ) ) {
     ?>
         <div class="<?php 
@@ -52,7 +55,7 @@ do_action( 'clickwhale_admin_sidebar_begin' );
 
     <form method="GET">
         <input type="hidden" name="page" value="<?php 
-echo esc_attr( $_GET['page'] );
+echo esc_attr( sanitize_key( $_GET['page'] ) );
 ?>" />
         <?php 
 $table->search_box( __( 'Search', 'clickwhale' ), 'search_id' );

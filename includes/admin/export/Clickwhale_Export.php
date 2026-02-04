@@ -66,7 +66,7 @@ class Clickwhale_Export {
         }
         $select .= '</select>';
 
-        echo $select;
+        echo wp_kses( $select, Helper::get_allowed_tags() );
     }
 
     public function export_categories_callback() {
@@ -84,7 +84,7 @@ class Clickwhale_Export {
             }
             $select .= '</select>';
 
-            echo $select;
+            echo wp_kses( $select, Helper::get_allowed_tags() );
         } else {
             esc_html_e( 'No categories', 'clickwhale' );
         }

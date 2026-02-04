@@ -32,11 +32,6 @@ final class Clickwhale_Admin {
     public array $menus;
 
     /**
-     * @var Clickwhale_WP_User
-     */
-    private Clickwhale_WP_User $user;
-
-    /**
      * @return Clickwhale_Admin
      * @since    1.5.0
      */
@@ -54,7 +49,6 @@ final class Clickwhale_Admin {
      */
     private function __construct() {
         $this->load_dependencies();
-        $this->user = clickwhale()->user;
     }
 
     use Singleton_Clone;
@@ -117,7 +111,7 @@ final class Clickwhale_Admin {
      * @since    1.0.0
      */
     public function add_plugin_menu() {
-        if ( ! $this->user->is_current_user_role_access_granted() ) {
+        if ( ! clickwhale()->user->is_current_user_role_access_granted() ) {
             return;
         }
 
@@ -323,14 +317,8 @@ final class Clickwhale_Admin {
 
             wp_enqueue_script(
                 'clickwhale_picmo',
-                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.umd.min.js',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.min.js',
                 array( 'jquery' ),
-                '5.8.1'
-            );
-            wp_enqueue_script(
-                'clickwhale_picmo_popup_picker',
-                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/popup-picker.umd.min.js',
-                array( 'clickwhale_picmo' ),
                 '5.8.1'
             );
             wp_enqueue_script(
@@ -365,7 +353,7 @@ final class Clickwhale_Admin {
             'clickwhale',
             'clickwhale_admin', array(
                 'siteurl'     => home_url(),
-                'plugin_slug' => CLICKWHALE_SLUG
+                'plugin_slug' => esc_attr( CLICKWHALE_SLUG )
             )
         );
     }
@@ -511,7 +499,7 @@ final class Clickwhale_Admin {
                 <a href="<?php echo esc_url( $link_logo ); ?>"
                    target="_blank"
                    rel="noopener"
-                ><img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/wordmark.svg' ); ?>"
+                ><img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/wordmark.svg'; ?>"
                       alt="clickwhale"
                     ></a>
             </div>
@@ -519,6 +507,7 @@ final class Clickwhale_Admin {
                 <div class="clickwhale-banner--link-review">
                     <?php echo wp_kses(
                         sprintf(
+                            /* translators: %s: review link URL */
                             __( 'You like ClickWhale? Then please <a href="%s" target="_blank">leave a review here</a>', 'clickwhale' ),
                             esc_url( $link_review )
                         ),
@@ -596,7 +585,7 @@ final class Clickwhale_Admin {
         } ?>
         <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__upgrade">
             <div class="hero">
-                <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/upgrade_to_pro_widget_hero.svg' ); ?>"
+                <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/widgets/upgrade_to_pro_widget_hero.svg'; ?>"
                      alt="clickwhale">
             </div>
             <h3 class="title"><?php esc_attr_e( 'Upgrade to ClickWhale Pro', 'clickwhale' ); ?></h3>
@@ -625,7 +614,7 @@ final class Clickwhale_Admin {
         ?>
         <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__docs">
             <div class="hero">
-                <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/widgets/docs_widget_hero.png' ); ?>"
+                <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/widgets/docs_widget_hero.png'; ?>"
                      alt="<?php echo 'clickwhale'; ?>">
             </div>
             <h3 class="title"><?php esc_attr_e( 'Plugin Documentation', 'clickwhale' ); ?></h3>
@@ -677,7 +666,7 @@ final class Clickwhale_Admin {
      * @since 1.4.0
      */
     public function pro_subscription_action() {
-        $current_user = $this->user->get_user();
+        $current_user = wp_get_current_user();
         $url = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
         $response = wp_remote_post( $url, array(
                 'method' => 'POST',
@@ -690,7 +679,11 @@ final class Clickwhale_Admin {
 
         if ( is_wp_error( $response ) ) {
             $error_message = $response->get_error_message();
-            echo "Something went wrong: $error_message";
+            printf(
+                /* translators: %s:the error message */
+                esc_html__( 'Something went wrong: %s', 'clickwhale' ),
+                esc_html( $error_message )
+            );
         } else {
             wp_redirect( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro&success=1#clickwhaleSubscribe' ) );
             exit;
@@ -747,7 +740,7 @@ final class Clickwhale_Admin {
         }
 
         $meta[] = '<a href="https://clickwhale.pro/docs/" target="_blank" rel="nofollow" title="' . esc_attr__( 'Documentation', 'clickwhale' ) . '">' . esc_html__( 'Documentation', 'clickwhale' ) . '</a>';
-        $meta[] = '<a href="https://wordpress.org/support/plugin/clickwhale/reviews/?filter=5" rel="nofollow" target="_blank" title="' . esc_attr__( 'Rate ClickWhale on WordPress.org', 'clickwhale' ) . '" style="color: #ffb900">'
+        $meta[] = '<a href="https://wordpress.org/support/plugin/clickwhale/reviews/#new-post" rel="nofollow" target="_blank" title="' . esc_attr__( 'Rate ClickWhale on WordPress.org', 'clickwhale' ) . '" style="color: #ffb900">'
             . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 )
             . '</a>';
 

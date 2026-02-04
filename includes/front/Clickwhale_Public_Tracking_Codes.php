@@ -1,7 +1,11 @@
 <?php
 namespace clickwhale\includes\front;
 
-use clickwhale\includes\helpers\{Linkpages_Helper, Tracking_Codes_Helper};
+use clickwhale\includes\helpers\{
+    Helper,
+    Linkpages_Helper,
+    Tracking_Codes_Helper
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -183,13 +187,13 @@ class Clickwhale_Public_Tracking_Codes {
 
         add_action( $position, function () use ( $code, $credit_before, $credit_after ) {
             if ( $credit_before ) {
-                echo PHP_EOL . $credit_before . PHP_EOL;
+                echo PHP_EOL . esc_html( $credit_before ) . PHP_EOL;
             }
 
-            echo wp_unslash( $code );
+            echo wp_kses( wp_unslash( $code ), Helper::get_allowed_tags() );
 
             if ( $credit_after ) {
-                echo PHP_EOL . $credit_after . PHP_EOL;
+                echo PHP_EOL . esc_html( $credit_after ) . PHP_EOL;
             }
         });
     }

@@ -72,7 +72,7 @@ class Clickwhale_Linkpage_Content_Templates {
         $result = call_user_func_array( $callback[$type][$public], array( $data ) );
 
         if ( $echo ) {
-            echo $result;
+            echo wp_kses( $result, Helper::get_allowed_tags() );
         }
 
         return $result;
@@ -113,7 +113,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="cw-linkpage-row--content">
-                    <?php echo $this->get_template_row_image( $data ); ?>
+                    <?php echo wp_kses( $this->get_template_row_image( $data ), Helper::get_allowed_tags() ); ?>
                     <div class="cw-linkpage-row--link">
                         <?php if ( ! $data['id'] ) { ?>
                             <strong><?php esc_html_e( 'ClickWhale Link', 'clickwhale' ); ?></strong>
@@ -132,7 +132,7 @@ class Clickwhale_Linkpage_Content_Templates {
             </div>
 
             <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
-                <?php echo $this->get_template_hidden_field( $data ); ?>
+                <?php echo wp_kses( $this->get_template_hidden_field( $data ), Helper::get_allowed_tags() ); ?>
                 <?php if ( ! $data['id'] ) { ?>
                     <div class="cw-linkpage-row--bottom--control-wrap">
                         <label><?php esc_html_e( 'Link', 'clickwhale' ); ?></label>
@@ -157,29 +157,26 @@ class Clickwhale_Linkpage_Content_Templates {
                     </div>
                 <?php }
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Title', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
                     $data['id'] ? $link['title'] : __( 'Custom Title', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Subtitle', 'clickwhale' ),
                     'links[' . $data['id'] . '][subtitle]',
                     $data['subtitle'] ?? '',
                     __( 'e.g. Read more about something', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
                 $this->get_template_row_images( $data );
                 ?>
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_admin_cw_custom_link( $args ): string {
@@ -204,7 +201,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="cw-linkpage-row--content">
-                    <?php echo $this->get_template_row_image( $data ); ?>
+                    <?php echo wp_kses( $this->get_template_row_image( $data ), Helper::get_allowed_tags() ); ?>
                     <div class="cw-linkpage-row--link">
                         <?php if ( isset( $data['title'] ) && $data['title'] ) { ?>
                             <strong><?php echo esc_html( wp_unslash( $data['title'] ) ); ?></strong>
@@ -225,29 +222,29 @@ class Clickwhale_Linkpage_Content_Templates {
 
                 <?php
                 // hidden fields
-                echo $this->get_template_hidden_field( $data );
+                echo wp_kses( $this->get_template_hidden_field( $data ), Helper::get_allowed_tags() );
 
                 // normal fields
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Title', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
                     __( 'e.g. My link', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Subtitle', 'clickwhale' ),
                     'links[' . $data['id'] . '][subtitle]',
                     $data['subtitle'] ?? '',
                     __( 'e.g. Read more about something', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'URL', 'clickwhale' ),
                     'links[' . $data['id'] . '][url]',
                     $data['url'] ?? '',
                     __( 'e.g. https://mysite.com', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
                 $this->get_template_row_images( $data );
                 ?>
@@ -255,10 +252,7 @@ class Clickwhale_Linkpage_Content_Templates {
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_admin_post_type( $args ): string {
@@ -311,25 +305,25 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="cw-linkpage-row--top">
                 <?php $this->get_template_row_start( $data['id'], $data['is_active'] ?? '' ); ?>
                 <div class="cw-linkpage-row--content">
-                    <?php echo $this->get_template_row_image( $data ); ?>
+                    <?php echo wp_kses( $this->get_template_row_image( $data ), Helper::get_allowed_tags() ); ?>
                     <div class="cw-linkpage-row--link">
                         <?php if ( ! isset( $data['post_id'] ) ) { ?>
-                            <strong><?php echo $post_type_singular; ?></strong>
+                            <strong><?php echo esc_html( $post_type_singular ); ?></strong>
                         <?php } else { ?>
                             <strong>
-                                <?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : get_the_title( $data['post_id'] ); ?>
-                                <?php echo ( $post_status != 'publish' ) ? '(' . $post_status . ')' : ''; ?>
+                                <?php echo ( $data['title'] ) ? esc_html( wp_unslash( $data['title'] ) ) : esc_html( get_the_title( $data['post_id'] ) ); ?>
+                                <?php echo ( $post_status != 'publish' ) ? '(' . esc_html( $post_status ) . ')' : ''; ?>
                             </strong>
                             <span><?php
                                 printf(
                                 /* translators: %s: singular post type */
-                                    __( 'Original %1$s: ', 'clickwhale' ),
-                                    $post_type_singular
+                                    esc_html__( 'Original %1$s: ', 'clickwhale' ),
+                                    esc_html( $post_type_singular )
                                 );
                                 ?><a href="<?php echo esc_url( get_the_permalink( $data['post_id'] ) ); ?>"
                                      target="_blank"
                                      rel="noopener"
-                                ><?php echo get_the_title( $data['post_id'] ); ?></a>
+                                ><?php echo esc_html( get_the_title( $data['post_id'] ) ); ?></a>
                             </span>
                         <?php } ?>
                     </div>
@@ -342,11 +336,11 @@ class Clickwhale_Linkpage_Content_Templates {
             </div>
 
             <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
-                <?php echo $this->get_template_hidden_field( $data, array( 'post_id' ) ); ?>
+                <?php echo wp_kses( $this->get_template_hidden_field( $data, array( 'post_id' ) ), Helper::get_allowed_tags() ); ?>
                 <?php if ( ! isset( $data['post_id'] ) ) { ?>
                     <div class="cw-linkpage-row--bottom--control-wrap">
                         <label for="links[<?php echo esc_attr( $data['id'] ); ?>][post_id]">
-                            <?php echo $post_type_singular; ?>
+                            <?php echo esc_html( $post_type_singular ); ?>
                         </label>
                         <div>
                             <select name="links[<?php echo esc_attr( $data['id'] ); ?>][post_id]"
@@ -367,19 +361,19 @@ class Clickwhale_Linkpage_Content_Templates {
                 }
 
                 // normal fields
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Title', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
                     isset( $data['post_id'] ) ? get_the_title( $data['post_id'] ) : __( 'Custom Title', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Subtitle', 'clickwhale' ),
                     'links[' . $data['id'] . '][subtitle]',
                     $data['subtitle'] ?? '',
                     __( 'e.g. Read more about something', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
                 $this->get_template_row_images( $data );
                 ?>
@@ -387,10 +381,7 @@ class Clickwhale_Linkpage_Content_Templates {
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_admin_cw_heading( $args ): string {
@@ -427,30 +418,27 @@ class Clickwhale_Linkpage_Content_Templates {
 
                 <?php
                 // hidden fields
-                echo $this->get_template_hidden_field( $data );
+                echo wp_kses( $this->get_template_hidden_field( $data ), Helper::get_allowed_tags() );
 
                 // normal fields
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Heading', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
                     __( 'e.g. My Links Heading', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Description', 'clickwhale' ),
                     'links[' . $data['id'] . '][description]',
                     $data['description'] ?? '',
                     __( 'e.g. My Links Description', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
                 ?>
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_admin_cw_separator( $args ): string {
@@ -478,14 +466,11 @@ class Clickwhale_Linkpage_Content_Templates {
                 <?php $this->get_template_row_end( $data['type'], false ); ?>
             </div>
             <div class="cw-linkpage-row--bottom">
-                <?php echo $this->get_template_hidden_field( $data ); ?>
+                <?php echo wp_kses( $this->get_template_hidden_field( $data ), Helper::get_allowed_tags() ); ?>
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_admin_cw_custom_content( $args ): string {
@@ -519,20 +504,20 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="cw-linkpage-row--bottom <?php echo ( $active ) ? 'active' : ''; ?>">
 
                 <?php
-                echo $this->get_template_hidden_field( $data );
+                echo wp_kses( $this->get_template_hidden_field( $data ), Helper::get_allowed_tags() );
 
-                echo $this->get_template_input_field(
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Title', 'clickwhale' ),
                     'links[' . $data['id'] . '][title]',
                     $data['title'] ?? '',
                     __( 'e.g. My link', 'clickwhale' )
-                );
-                echo $this->get_template_input_field(
+                ), Helper::get_allowed_tags() );
+                echo wp_kses( $this->get_template_input_field(
                     __( 'Subtitle', 'clickwhale' ),
                     'links[' . $data['id'] . '][subtitle]',
                     $data['subtitle'] ?? '',
                     __( 'e.g. My link', 'clickwhale' )
-                );
+                ), Helper::get_allowed_tags() );
                 ?>
                 <hr>
                 <textarea id="cw_custom_content_<?php echo esc_attr( $data['id'] ); ?>"
@@ -541,10 +526,7 @@ class Clickwhale_Linkpage_Content_Templates {
             </div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     /** PUBLIC TEMPLATES */
@@ -619,10 +601,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <?php } ?>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_public_cw_separator( $args ): string {
@@ -631,10 +610,7 @@ class Clickwhale_Linkpage_Content_Templates {
         <hr class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo esc_attr( $args['type'] ); ?>"
             data-type="<?php echo esc_attr( $args['type'] ); ?>" />
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function template_public_cw_custom_content( $args ): string {
@@ -656,10 +632,7 @@ class Clickwhale_Linkpage_Content_Templates {
             <div class="cw-linkpage-public-row--content"><?php echo nl2br( wp_kses_post( $args['data']['content'] ) ); ?></div>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     /** OTHER METHODS */
@@ -671,27 +644,23 @@ class Clickwhale_Linkpage_Content_Templates {
         $url      = esc_url( $data['url'] );
 
         $target = '';
-        if ( ! empty( $args['target'] ) ) {
-            $target_arg = esc_attr( $args['target'] );
-
-            if ( in_array( $target_arg, array( '_blank', '_self' ), true ) ) {
-                $target = 'target="' . $target_arg . '"';
-            }
+        if ( ! empty( $args['target'] ) && in_array( $args['target'], array( '_blank', '_self' ), true ) ) {
+            $target = 'target="' . $args['target'] . '"';
         }
 
         ob_start();
         ?>
-        <div class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo $type; ?>" data-type="<?php echo $type; ?>">
+        <div class="cw-linkpage-public-row cw-linkpage-public-row--<?php echo esc_attr( $type ); ?>" data-type="<?php echo esc_attr( $type ); ?>">
             <a class="cw-linkpage-public-row-link cw-track"
-               href="<?php echo $url; ?>"
-               <?php echo $target; ?>
+               href="<?php echo esc_url( $url ); ?>"
+               <?php echo esc_attr( $target ); ?>
             ><?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) {
-                    echo $this->get_template_row_image( $args['data'] );
+                    echo wp_kses( $this->get_template_row_image( $args['data'] ), Helper::get_allowed_tags() );
                 } ?>
                 <div class="cw-linkpage-row--title--wrap">
-                    <div class="cw-linkpage-row--title"><?php echo $title; ?></div>
+                    <div class="cw-linkpage-row--title"><?php echo esc_html( $title ); ?></div>
                     <?php if ( $subtitle ) { ?>
-                        <p class="cw-linkpage-row--subtitle"><?php echo $subtitle; ?></p>
+                        <p class="cw-linkpage-row--subtitle"><?php echo esc_html( $subtitle ); ?></p>
                     <?php } ?>
                 </div>
                 <?php if ( isset( $args['data']['image']['type'] ) && isset( $args['data']['image']['image_id'] ) ) { ?>
@@ -700,10 +669,7 @@ class Clickwhale_Linkpage_Content_Templates {
             </a>
         </div>
         <?php
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        return $result;
+        return ob_get_clean();
     }
 
     public function get_template_hidden_field( array $data, array $fields = [] ): string {
@@ -774,12 +740,12 @@ class Clickwhale_Linkpage_Content_Templates {
         <div class="cw-linkpage-row--start">
             <div class="cw-linkpage-row--drag" title="<?php esc_attr_e( 'Change Order', 'clickwhale' ); ?>">
                 <svg class="feather">
-                    <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#drag-2"></use>
+                    <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#drag-2"></use>
                 </svg>
             </div>
             <label class="clickwhale-checkbox--toggle">
                 <input type="checkbox"
-                       name="links[<?php echo $id ?>][is_active]"
+                       name="links[<?php echo esc_attr( $id ); ?>][is_active]"
                        class="clickwhale_linkpage_active_toggle"
                        value="1"
                     <?php checked( $is_active, 1 ); ?>
@@ -808,29 +774,29 @@ class Clickwhale_Linkpage_Content_Templates {
         $row_edit_class  = $edit ? '' : 'no-edit';
         $row_stats_class = $edit ? '' : 'no-stats';
         ?>
-        <div class="cw-linkpage-row--end <?php echo $row_stats_class ?>">
+        <div class="cw-linkpage-row--end <?php echo esc_attr( $row_stats_class ) ?>">
             <?php if ( $stats ) { ?>
                 <div class="cw-linkpage-row--statistics">
                     <span class="cw-linkpage-row--clicks">
                         <svg class="feather">
-                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#bar-chart-2"></use>
+                            <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#bar-chart-2"></use>
                         </svg>
-                        Clicks: <?php echo intval( $stats ); ?>
+                        <?php esc_html_e( 'Clicks:', 'clickwhale' ); ?> <?php echo intval( $stats ); ?>
                     </span>
                 </div>
             <?php } ?>
-            <?php echo $this->get_template_row_badge( $type ); ?>
-            <div class="cw-linkpage-row--actions <?php echo $row_edit_class ?>">
+            <?php echo wp_kses( $this->get_template_row_badge( $type ), Helper::get_allowed_tags() ); ?>
+            <div class="cw-linkpage-row--actions <?php echo esc_attr( $row_edit_class ) ?>">
                 <?php if ( $edit ) { ?>
                     <button type="button" class="cw-linkpage-row--actions--button-edit">
                         <svg class="feather">
-                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#chevron-down"></use>
+                            <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#chevron-down"></use>
                         </svg>
                     </button>
                 <?php } ?>
                 <button type="button" class="cw-linkpage-row--actions--button-remove">
                     <svg class="feather">
-                        <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#trash-2"></use>
+                        <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#trash-2"></use>
                     </svg>
                 </button>
             </div>
@@ -848,7 +814,7 @@ class Clickwhale_Linkpage_Content_Templates {
         ?>
         <div class="cw-linkpage-row--bottom--control-wrap cw-linkpage-row--image-select--wrap">
             <input type="hidden"
-                   name="links[<?php echo $id; ?>][image][type]"
+                   name="links[<?php echo esc_attr( $id ); ?>][image][type]"
                    value="<?php echo esc_attr( $data['image']['type'] ?? '' ); ?>">
             <label><?php esc_html_e( 'Icon', 'clickwhale' ); ?></label>
 
@@ -860,12 +826,12 @@ class Clickwhale_Linkpage_Content_Templates {
                             <div class="image-item">
                                 <input type="radio"
                                        data-type="image"
-                                       id="image-<?php echo $id; ?>-0"
-                                       name="links[<?php echo $id; ?>][image][image_id]"
-                                       value="<?php echo $image_type == 'image' ? $image_id : ''; ?>"
+                                       id="image-<?php echo esc_attr( $id ); ?>-0"
+                                       name="links[<?php echo esc_attr( $id ); ?>][image][image_id]"
+                                       value="<?php echo $image_type == 'image' ? esc_attr( $image_id ) : ''; ?>"
                                     <?php if ( $image_id && $image_type == 'image' ) { echo 'checked'; } ?>
                                 />
-                                <label for="image-<?php echo $id; ?>-0">
+                                <label for="image-<?php echo esc_attr( $id ); ?>-0">
                                     <?php if ( $image_id && $image_type == 'image' ) {
                                         $src = wp_get_attachment_image_url( $image_id );
                                         if ( $src ) {
@@ -884,38 +850,38 @@ class Clickwhale_Linkpage_Content_Templates {
                         </div>
 
                         <div class="cw-linkpage-row--image-select--item item--icon">
-                            <div class="image-item <?php echo $icon_class; ?>">
+                            <div class="image-item <?php echo esc_attr( $icon_class ); ?>">
                                 <input type="radio"
                                        data-type="icon"
-                                       id="image-<?php echo $id; ?>-icon"
-                                       name="links[<?php echo $id; ?>][image][image_id]"
-                                       value="<?php echo $image_id && $image_type == 'icon' ? $image_id : ''; ?>"
+                                       id="image-<?php echo esc_attr( $id ); ?>-icon"
+                                       name="links[<?php echo esc_attr( $id ); ?>][image][image_id]"
+                                       value="<?php echo $image_id && $image_type == 'icon' ? esc_attr( $image_id ) : ''; ?>"
                                     <?php if ( $image_id && $image_type == 'icon' ) { ?>
                                         checked
                                     <?php } ?>
                                 >
-                                <label for="image-<?php echo $id; ?>-icon">
+                                <label for="image-<?php echo esc_attr( $id ); ?>-icon">
                                     <?php if ( $image_id && $image_type == 'icon' ) { ?>
-                                        <ion-icon name="<?php echo $image_id; ?>"></ion-icon>
+                                        <ion-icon name="<?php echo esc_attr( $image_id ); ?>"></ion-icon>
                                     <?php } ?>
                                 </label>
                             </div>
-                            <a id="icon-picker-<?php echo $id; ?>"
+                            <a id="icon-picker-<?php echo esc_attr( $id ); ?>"
                                class="icon-picker" href="#"
                             ><?php esc_html_e( 'Select Icon', 'clickwhale' ); ?></a>
                         </div>
 
                         <div class="cw-linkpage-row--image-select--item item--emoji">
-                            <div class="image-item <?php echo $emoji_class; ?>">
+                            <div class="image-item <?php echo esc_attr( $emoji_class ); ?>">
                                 <input type="radio"
                                        data-type="emoji"
-                                       id="image-<?php echo $id; ?>-emoji"
-                                       name="links[<?php echo $id; ?>][image][image_id]"
-                                       value="<?php echo $image_id && $image_type == 'emoji' ? $image_id : ''; ?>"
+                                       id="image-<?php echo esc_attr( $id ); ?>-emoji"
+                                       name="links[<?php echo esc_attr( $id ); ?>][image][image_id]"
+                                       value="<?php echo $image_id && $image_type == 'emoji' ? esc_attr( $image_id ) : ''; ?>"
                                     <?php if ( $image_id && $image_type == 'emoji' ) { echo 'checked'; } ?>
                                 />
-                                <label for="image-<?php echo $id; ?>-emoji">
-                                    <?php echo $image_id && $image_type == 'emoji' ? $image_id : ''; ?>
+                                <label for="image-<?php echo esc_attr( $id ); ?>-emoji">
+                                    <?php echo $image_id && $image_type == 'emoji' ? esc_html( $image_id ) : ''; ?>
                                 </label>
                             </div>
                             <a class="emoji-picker" href="#"><?php esc_attr_e( 'Select Emoji', 'clickwhale' ); ?></a>

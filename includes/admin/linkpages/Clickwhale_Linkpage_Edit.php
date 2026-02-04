@@ -164,7 +164,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table
+                "SELECT * FROM {$table}
                 WHERE linkpage_id=%d
                 AND meta_key=%s",
                 intval( $id ),
@@ -261,7 +261,10 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         <script type='text/javascript'>
             /* global wp */
 
-            const {createPopup} = window.picmoPopup;
+            // Picmo
+            const {createPicker} = window.picmo;
+
+            window.cwEmojiBaseUrl = '<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/js/picmo/emojibase'; ?>';
 
             jQuery(document).ready(function(){
                 const
@@ -270,7 +273,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     postTypes = <?php echo wp_json_encode( array_keys( Helper::get_post_types() ) ); ?>,
                     title = jQuery('#title'),
                     slug = jQuery('#cw-slug'),
-                    limit = parseInt('<?php echo Linkpages_Helper::get_linkpage_links_limit(); ?>'),
+                    limit = '<?php echo intval( Linkpages_Helper::get_linkpage_links_limit() ); ?>',
                     linksType = jQuery('#add-links-type'),
                     tinymceOptions = {
                         wpautop: true,
@@ -382,12 +385,57 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     disable_ogpreview_button();
                 }
 
+                /* Emoji Picker */
+                const pickerContainer = document.createElement('div');
+                let activeEmojiTrigger = null;
+
+                Object.assign(pickerContainer.style,{
+                    position: 'absolute',
+                    display: 'none',
+                    zIndex: '10000',
+                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                    borderRadius: '8px',
+                    backgroundColor: '#fff'
+                });
+                document.body.appendChild(pickerContainer);
+
+                // Shared picker to avoid rendering delay for each CW Link instance
+                const sharedPicker = createPicker({
+                    rootElement: pickerContainer
+                });
+
+                sharedPicker.addEventListener('emoji:select', (selection) => {
+                    if (!activeEmojiTrigger){
+                        return;
+                    }
+                    const
+                        parent = activeEmojiTrigger.parentElement,
+                        emojiInput = parent.querySelector('input'),
+                        emojiLabel = parent.querySelector('label')
+                    ;
+
+                    emojiInput.value = selection.emoji;
+                    emojiLabel.innerHTML = selection.emoji;
+                    emojiInput.checked = true;
+
+                    change_row_image(activeEmojiTrigger, selection.emoji);
+                    change_row_image_type(activeEmojiTrigger, 'emoji');
+                    pickerContainer.style.display = 'none'; // Hide after selection
+                });
+
                 /* ----- */
 
                 jQuery(document)
-                    // Close icons select on document click
-                    .on('click', function(){
-                        closeIconPicker();
+                    // Close emoji and icons select on document click
+                    .on('click', function(e){
+                        const $target = jQuery(e.target);
+                        // Check if click is outside of both pickers and their triggers
+                        const isOutsideEmoji = typeof pickerContainer === 'undefined' || (!pickerContainer.contains(e.target) && !$target.closest('.emoji-picker').length);
+                        const isOutsideIcon = !$target.closest('#icon-picker--wrap').length && !$target.closest('.icon-picker').length;
+
+                        if (isOutsideEmoji && isOutsideIcon){
+                            closePickers();
+                        }
                     })
 
                     // Prevent close the icons select on document click when target is the icons select container
@@ -453,41 +501,54 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         jQuery(this).closest('.cw-linkpage-row').find('.cw-linkpage-row--bottom').toggleClass('active');
                     })
 
-                    // Init emoji picker and its actions
+                    // Emoji select
                     .on('click', '.emoji-picker', function(e){
                         e.preventDefault();
+                        e.stopPropagation();
 
                         const
                             trigger = e.target,
-                            emojiInput = trigger.parentElement.querySelector('input'),
-                            emojiLabel = trigger.parentElement.querySelector('label'),
-                            picker = createPopup({}, {
-                                referenceElement: trigger,
-                                triggerElement: trigger,
-                                position: 'right-end'
-                            });
+                            rect = trigger.getBoundingClientRect()
+                        ;
 
-                        picker.toggle();
-                        picker.addEventListener('emoji:select', (selection) => {
-                            emojiInput.value = selection.emoji;
-                            emojiLabel.innerHTML = selection.emoji;
-                            emojiInput.checked = true;
+                        if (activeEmojiTrigger !== trigger || jQuery('#icon-picker--wrap').is(':visible')){
+                            closePickers();
+                        }
 
-                            change_row_image(e.target, selection.emoji);
-                            change_row_image_type(e.target, 'emoji');
-                        });
+                        if (activeEmojiTrigger === trigger && pickerContainer.style.display === 'block'){
+                            pickerContainer.style.display = 'none';
+                            return;
+                        }
+
+                        activeEmojiTrigger = trigger;
+
+                        // Place container next to the button
+                        pickerContainer.style.top = (window.scrollY + rect.top) + 'px';
+                        pickerContainer.style.left = (window.scrollX + rect.left + trigger.offsetWidth + 10) + 'px';
+
+                        // Show instantly with no delay (DOM is already built)
+                        pickerContainer.style.display = 'block';
                     })
 
                     // Icon select
                     .on('click', '.icon-picker', function(e){
                         e.preventDefault();
+                        e.stopPropagation();
 
                         const
-                            icons = [],
-                            iconsContainer = jQuery('#icon-picker--wrap'),
                             iconsPicker = jQuery(this),
+                            iconsContainer = jQuery('#icon-picker--wrap'),
+                            isVisible = iconsContainer.is(':visible') && iconsContainer.data('id') === iconsPicker.attr('id'),
+                            icons = [],
                             wrapPosition = jQuery('.wrap').offset(),
-                            iconsPickerPosition = iconsPicker.offset();
+                            iconsPickerPosition = iconsPicker.offset()
+                        ;
+
+                        closePickers();
+
+                        if (isVisible){
+                            return;
+                        }
 
                         iconsContainer
                             .css({
@@ -495,7 +556,8 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                                 'left': iconsPickerPosition.left - wrapPosition.left + iconsPicker.width() + 10
                             })
                             .data('id', iconsPicker.attr('id'))
-                            .show();
+                            .show()
+                        ;
 
                         iconsContainer.find('button').each(function(index, element){
                             icons.push(jQuery(element).data('icon'));
@@ -524,7 +586,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                         change_row_image(trigger, icon);
                         change_row_image_type(trigger, 'icon');
-                        closeIconPicker();
+                        closePickers();
                     })
 
                     // Remove added link row
@@ -750,6 +812,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         $row.find('.image-item').find('label').html('');
                         $row.find('[name$="[image][image_id]"]').prop('checked', false);
                         $row.find('[name$="[image][type]"]').val('');
+                        $row.find('.cw-linkpage-row--image-remove').hide();
                     })
 
                     // `Custom Link`
@@ -1034,12 +1097,13 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         tabNotValid(e);
                         slug.addClass('error')
                             .next().html(<?php echo wp_json_encode(
-                                esc_html__( 'This slug is already used in %1$s (%2$s ID: %d)', 'clickwhale' ) .
+                                /* translators: 1: matched resource title, 2: resource type, 3: resource numeric ID */
+                                esc_html__( 'This slug is already used in %1$s (%2$s ID: %3$d)', 'clickwhale' ) .
                                 '<br>' .
                                 esc_html__( 'Please enter another slug', 'clickwhale' ) ); ?>
                                 .replace('%1$s', `<b>${slug_obj.title}</b>`)
                                 .replace('%2$s', slug_obj.type)
-                                .replace('%d', slug_obj.id)
+                                .replace('%3$d', slug_obj.id)
                             )
                         ;
                         return false;
@@ -1283,7 +1347,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                 function links_limit_warning(){
                     jQuery('#add-pagelink-link').prop('disabled', true);
-                    jQuery('<div class="cw-links-info"><?php echo Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message(); ?></div>').insertAfter('.cw-links-list-wrap');
+                    jQuery('<div class="cw-links-info"><?php echo wp_kses( Linkpages_Helper::get_links_limitation_notice() . Helper::get_pro_message(), Helper::get_allowed_tags() ); ?></div>').insertAfter('.cw-links-list-wrap');
                 }
 
                 function disable_ogpreview_button(){
@@ -1305,9 +1369,12 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     jQuery(element).closest('.cw-linkpage-row').find('[name$="[image][type]"]').val(type);
                 }
 
-                function closeIconPicker(){
+                function closePickers(){
                     jQuery('#icon-picker--wrap').hide().find('button').show();
                     jQuery('[name="icon-picker--search"]').val('');
+                    if (typeof pickerContainer !== 'undefined'){
+                        pickerContainer.style.display = 'none';
+                    }
                 }
 
                 // Debounce function to limit the frequency of function calls

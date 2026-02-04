@@ -27,7 +27,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
     private function get_current_data( string $search = '' ): array {
         global $wpdb;
         $table = Helper::get_db_table_name( 'categories' );
-        $query = "SELECT id,title,description FROM $table";
+        $query = "SELECT id,title,description FROM {$table}";
         $params = array();
 
         if ( ! empty( $search ) ) {
@@ -36,15 +36,19 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             $params = array( $search, $search );
         }
 
-        return (array) $wpdb->get_results(
-            empty( $params ) ? $query : $wpdb->prepare( $query, ...$params ),
-            ARRAY_A
-        );
+        if ( empty( $params ) ) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            return (array) $wpdb->get_results( $wpdb->prepare( $query ), ARRAY_A );
+        }
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        return (array) $wpdb->get_results( $wpdb->prepare( $query, ...$params ), ARRAY_A );
     }
 
     /**
      * @param $item - row (key, value array)
      * @param $column_name - string (key)
+     *
      * @return string
      */
     public function column_default( $item, $column_name ): string {
@@ -53,6 +57,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
     /**
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_title( $item ): string {
@@ -88,6 +93,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
     /**
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_description( $item ): string {
@@ -98,27 +104,33 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         global $wpdb;
         $table = Helper::get_db_table_name( 'links' );
 
-        $cat_id = intval( $item['id'] );
-        $total = $wpdb->get_var(
+        $cat_id = (string) intval( $item['id'] );
+
+        $like_start = $wpdb->esc_like( $cat_id . ',' ) . '%';  // "id,%"
+        $like_mid   = '%,' . $wpdb->esc_like( $cat_id ) . ',%';     // "%,id,%"
+        $like_end   = '%,' . $wpdb->esc_like( $cat_id );            // "%,id"
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        $total = (int) $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM $table
-                WHERE categories = '{$cat_id}'
-                OR categories LIKE '{$cat_id},%'
-                OR categories LIKE '%,{$cat_id},%'
-                OR categories LIKE '%,{$cat_id}'"
+                "SELECT COUNT(*) FROM {$table} WHERE categories = %s OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
+                $cat_id,
+                $like_start,
+                $like_mid,
+                $like_end
             )
         );
 
-        if ( $total ) {
+        if ( $total > 0 ) {
             return sprintf(
                 '<a href="%s&category=%d">%d</a>',
                 esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
-                $cat_id,
-                intval( $total )
+                (int) $cat_id,
+                $total
             );
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -129,8 +141,8 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         ?>
         <input type="checkbox"
                name="id[]"
-               id="cb-select-<?php echo $item_id; ?>"
-               value="<?php echo $item_id; ?>"
+               id="cb-select-<?php echo esc_attr( $item_id ); ?>"
+               value="<?php echo esc_attr( $item_id ); ?>"
         />
         <?php
     }
@@ -196,13 +208,14 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             Helper::csrf_exception( $page_slug );
         }
 
-        $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+        $post_id = $_GET['id'];
+        $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-        if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
-        $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+        $ids = is_array( $post_id ) ? $post_id : array( $post_id );
 
         // Convert to integers, then remove zero values
         $ids = array_filter( array_map( 'intval', $ids ) );
@@ -214,10 +227,10 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         global $wpdb;
         $table = Helper::get_db_table_name( 'categories' );
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
-
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $result = $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM $table WHERE id IN ($placeholders)",
+                "DELETE FROM {$table} WHERE id IN ($placeholders)",
                 ...$ids
             )
         );
@@ -234,23 +247,16 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
         $links_table = Helper::get_db_table_name( 'links' );
 
-        $like_start = $wpdb->esc_like( "{$id}," );
-        $like_middle = $wpdb->esc_like( ",{$id}," );
-        $like_end = $wpdb->esc_like( ",{$id}" );
-
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $links = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM $links_table
-                WHERE categories = %d
-                OR categories LIKE %s
-                OR categories LIKE %s
-                OR categories LIKE %s",
-                $id,
-                "{$like_start}%",
-                "%{$like_middle}%",
-                "%{$like_end}"
-            ),
-            ARRAY_A
+                $wpdb->prepare(
+                        "SELECT * FROM {$links_table} WHERE categories = %d OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
+                        $id,
+                        $wpdb->esc_like( $id . ',' ) . '%',
+                        '%' . $wpdb->esc_like( ',' . $id . ',' ) . '%',
+                        '%' . $wpdb->esc_like( ',' . $id )
+                ),
+                ARRAY_A
         );
 
         if ( ! $links ) {
@@ -290,12 +296,12 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
+        $order_arg   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
         $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'title';
-        $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
-        $order = $sort['order'];
-        $orderby = $sort['orderby'];
-        $paged = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
+        $sort        = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
+        $order       = $sort['order'];
+        $orderby     = $sort['orderby'];
+        $paged       = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
 
         // Will be used in pagination settings
         if ( isset( $_GET['page'] ) && ! empty( $_GET['s'] ) ) {
@@ -303,14 +309,16 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             if ( ! $current_data ) {
                 $current_data = array();
             }
-            $total_items = count( $current_data );
+            $total_items  = count( $current_data );
             $current_data = array_slice( $current_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
-            $this->items = $current_data;
+            $this->items  = $current_data;
         } else {
-            $total_items = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $table" ) );
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            $total_items = (int) $wpdb->get_var( "SELECT COUNT(id) FROM {$table}" );
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $current_data = $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT * FROM $table ORDER BY $orderby $order LIMIT $per_page OFFSET %d",
+                    "SELECT * FROM {$table} ORDER BY $orderby $order LIMIT $per_page OFFSET %d",
                     $paged
                 ),
                 ARRAY_A

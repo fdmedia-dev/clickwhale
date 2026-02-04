@@ -380,6 +380,13 @@ final class Clickwhale {
                     'exclude_user_by_role' => array( 'administrator' )
                 )
             ),
+            'linkpages'    => array(
+                'name'    => __( 'Link Pages Options', 'clickwhale' ),
+                'text'    => __( 'Global settings for the Link Pages.', 'clickwhale' ),
+                'options' => array(
+                    'show_linkpage_credits' => 0
+                )
+            ),
             'link_manager' => array(
                 'name'    => __( 'Link Manager Options', 'clickwhale' ),
                 'text'    => __( 'Global settings for ClickWhale Links.', 'clickwhale' ),
@@ -409,59 +416,59 @@ final class Clickwhale {
         }
 
         $wp_admin_bar->add_node( array(
-                'id'    => CLICKWHALE_SLUG,
+                'id'    => esc_attr( CLICKWHALE_SLUG ),
                 'title' => '<span class="ab-icon"><img src="' . CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg"/></span> ClickWhale',
                 'href'  => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ),
                 'meta'  => array(
-                    'class' => CLICKWHALE_SLUG,
+                    'class' => esc_attr( CLICKWHALE_SLUG ),
                     'title' => 'ClickWhale'
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
-                'id'     => CLICKWHALE_SLUG . '-new-link',
+                'id'     => esc_attr( CLICKWHALE_SLUG ) . '-new-link',
                 'title'  => esc_html__( 'New Link', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=0' ) ),
-                'parent' => CLICKWHALE_SLUG,
+                'parent' => esc_attr( CLICKWHALE_SLUG ),
                 'meta'   => array(
-                    'class' => CLICKWHALE_SLUG . '-new-link',
+                    'class' => esc_attr( CLICKWHALE_SLUG ) . '-new-link',
                     'title' => esc_html__( 'Add New Link', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
-                'id'     => CLICKWHALE_SLUG . '-new-category',
+                'id'     => esc_attr( CLICKWHALE_SLUG ) . '-new-category',
                 'title'  => esc_html__( 'New Category', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-category&id=0' ) ),
-                'parent' => CLICKWHALE_SLUG,
+                'parent' => esc_attr( CLICKWHALE_SLUG ),
                 'meta'   => array(
-                    'class' => CLICKWHALE_SLUG . '-new-category',
+                    'class' => esc_attr( CLICKWHALE_SLUG ) . '-new-category',
                     'title' => esc_html__( 'Add New Category', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
-                'id'     => CLICKWHALE_SLUG . '-new-linkpage',
+                'id'     => esc_attr( CLICKWHALE_SLUG ) . '-new-linkpage',
                 'title'  => esc_html__( 'New Link Page', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=0' ) ),
-                'parent' => CLICKWHALE_SLUG,
+                'parent' => esc_attr( CLICKWHALE_SLUG ),
                 'meta'   => array(
-                    'class' => CLICKWHALE_SLUG . '-new-linkpage',
+                    'class' => esc_attr( CLICKWHALE_SLUG ) . '-new-linkpage',
                     'title' => esc_html__( 'Add New Link Page', 'clickwhale' )
                 )
             )
         );
 
         $wp_admin_bar->add_node( array(
-                'id'     => CLICKWHALE_SLUG . '-new-tracking-code',
+                'id'     => esc_attr( CLICKWHALE_SLUG ) . '-new-tracking-code',
                 'title'  => esc_html__( 'New Tracking Code', 'clickwhale' ),
                 'href'   => esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=0' ) ),
-                'parent' => CLICKWHALE_SLUG,
+                'parent' => esc_attr( CLICKWHALE_SLUG ),
                 'meta'   => array(
-                    'class' => CLICKWHALE_SLUG . '-new-tracking-code',
+                    'class' => esc_attr( CLICKWHALE_SLUG ) . '-new-tracking-code',
                     'title' => esc_html__( 'Add New Tracking Code', 'clickwhale' )
                 )
             )

@@ -102,11 +102,21 @@ abstract class Clickwhale_Migration_Abstract {
     }
 
     public function link_item_import_success( $item ): string {
-        return sprintf( __( 'Link "%1$s" imported successfully.', 'clickwhale' ), $item );
+        return sprintf(
+            /* translators: %s: link title */
+            __( 'Link "%s" imported successfully.', 'clickwhale' ),
+            esc_html( $item )
+        );
     }
 
     public function link_item_import_error( $item ): string {
-        return sprintf( __( '<strong>Import failed!</strong> Link %1$s already exists', 'clickwhale' ), $item );
+        $details = sprintf(
+            /* translators: %1$s: link title */
+            esc_html__( 'Link %1$s already exists', 'clickwhale' ),
+            esc_html( $item )
+        );
+
+        return '<strong>' . esc_html__( 'Import failed!', 'clickwhale' ) . '</strong> ' . $details;
     }
 
     /**
@@ -191,11 +201,21 @@ abstract class Clickwhale_Migration_Abstract {
     }
 
     public function category_item_import_success( $item ): string {
-        return sprintf( __( 'Category "%1$s" imported successfully.', 'clickwhale' ), $item );
+        return sprintf(
+            /* translators: %s: category title */
+            __( 'Category "%s" imported successfully.', 'clickwhale' ),
+            esc_html( $item )
+        );
     }
 
     public function category_item_import_error( $item ): string {
-        return sprintf( __( '<strong>Import failed!</strong> Category "%1$s" already exists', 'clickwhale' ), $item );
+        $details = sprintf(
+            /* translators: %1$s: category title */
+            esc_html__( 'Category %1$s already exists', 'clickwhale' ),
+            esc_html( $item )
+        );
+
+        return '<strong>' . esc_html__( 'Import failed!', 'clickwhale' ) . '</strong> ' . $details;
     }
 
     public function run_links_migration( $data ): int {

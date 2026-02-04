@@ -265,6 +265,7 @@ class Clickwhale_Migration {
             <p>
                 <?php
                 printf(
+                    /* translators: 1: categories count, 2: categories word, 3: links count, 4: links word */
                     esc_html__( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
                     esc_html( $categories ),
                     esc_html( $categories_text ),
@@ -281,6 +282,7 @@ class Clickwhale_Migration {
             <p>
                 <?php
                 printf(
+                    /* translators: %s: date and time of the last migration */
                     esc_html__( 'Last migration at %s', 'clickwhale' ),
                     esc_html( $options[ $item['slug'] . '_last_migration' ] )
                 );
@@ -292,6 +294,7 @@ class Clickwhale_Migration {
         <p>
             <?php
             printf(
+                /* translators: %s: plugin name to migrate data from */
                 esc_html__( 'Set what you want to migrate from %s to CLickWhale', 'clickwhale' ),
                 esc_html( $item['name'] )
             );
@@ -305,7 +308,7 @@ class Clickwhale_Migration {
      * @return void
      */
     public static function render_controls( $args ) {
-        echo Helper::render_control( $args );
+        echo wp_kses( Helper::render_control( $args ), Helper::get_allowed_tags() );
     }
 
     public function admin_scripts() {

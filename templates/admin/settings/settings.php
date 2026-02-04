@@ -2,6 +2,10 @@
 
 use clickwhale\includes\admin\Clickwhale_Settings;
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 $tabs = Clickwhale_Settings::render_tabs();
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -21,7 +25,7 @@ do_action( 'clickwhale_admin_banner' );
                 $active = $active_tab === $tab['url'] ? 'nav-tab-active' : '';
                 ?>
                 <a href="<?php echo esc_url( $url ); ?>"
-                   class="nav-tab <?php echo $active; ?>"
+                   class="nav-tab <?php echo esc_attr( $active ); ?>"
                 ><?php echo esc_html( $tab['name'] ); ?></a>
             <?php } ?>
         </h2>

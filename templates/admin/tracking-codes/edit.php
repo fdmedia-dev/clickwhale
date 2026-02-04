@@ -2,7 +2,12 @@
 
 use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
 
-Tracking_Codes_Helper::get_limitation_error( $_GET['id'] );
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+$id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+Tracking_Codes_Helper::get_limitation_error( $id );
 
 $tracking_code = clickwhale()->tracking_code;
 
@@ -16,13 +21,16 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
     <?php
-    echo Helper::render_heading(
-        array(
-            'name'         => __( 'Tracking Code', 'clickwhale' ),
-            'is_edit'      => $item_id !== 0,
-            'link_to_list' => CLICKWHALE_SLUG . '-tracking-codes',
-            'link_to_add'  => CLICKWHALE_SLUG . '-edit-tracking-code'
-        )
+    echo wp_kses(
+        Helper::render_heading(
+            array(
+                'name'         => esc_html__( 'Tracking Code', 'clickwhale' ),
+                'is_edit'      => $item_id !== 0,
+                'link_to_list' => esc_attr( CLICKWHALE_SLUG ) . '-tracking-codes',
+                'link_to_add'  => esc_attr( CLICKWHALE_SLUG ) . '-edit-tracking-code'
+            )
+        ),
+        Helper::get_allowed_tags()
     );
 
     $tracking_code->show_message( $item_id );
@@ -30,64 +38,73 @@ do_action( 'clickwhale_admin_banner' );
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
-    <form id="form_edit_<?php echo $tracking_code->instance_single; ?>"
+    <form id="form_edit_<?php echo esc_attr( $tracking_code->instance_single ); ?>"
           class="clickwhale_form_edit"
           method="POST"
           action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
     >
-        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $tracking_code->instance_single; ?>" />
+        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo esc_attr( $tracking_code->instance_single ); ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
-        <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
+        <input type="hidden" name="id" value="<?php echo intval( $item_id ); ?>" />
 
         <div id="post-body-content">
             <table style="width: 100%;" class="form-table">
                 <caption style="display: none"><?php esc_html_e( 'Tracking Code Edit Table', 'clickwhale' ); ?></caption>
                 <tbody>
                     <?php
-                    echo Helper::render_control(
-                        array(
-                            'row_label'   => __( 'Title', 'clickwhale' ),
-                            'control'     => 'input',
-                            'id'          => 'title',
-                            'name'        => 'title',
-                            'type'        => 'text',
-                            'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                            'placeholder' => __( 'e.g. Google Tag Manager Code', 'clickwhale' ),
-                            'required'    => true
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label'   => esc_html__( 'Title', 'clickwhale' ),
+                                'control'     => 'input',
+                                'id'          => 'title',
+                                'name'        => 'title',
+                                'type'        => 'text',
+                                'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                'placeholder' => esc_attr__( 'e.g. Google Tag Manager Code', 'clickwhale' ),
+                                'required'    => true
+                            ),
+                            true
                         ),
-                        true
+                        Helper::get_allowed_tags()
                     );
 
                     /** @link https://www.ibenic.com/wordpress-code-editor/ */
-                    echo Helper::render_control(
-                        array(
-                            'row_label'   => __( 'Code', 'clickwhale' ),
-                            'control'     => 'textarea',
-                            'id'          => 'code',
-                            'name'        => 'code',
-                            'value'       => esc_textarea( wp_unslash( $item['code'] ) ),
-                            'description' => __( 'Paste your code here.', 'clickwhale' )
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label'   => esc_html__( 'Code', 'clickwhale' ),
+                                'control'     => 'textarea',
+                                'id'          => 'code',
+                                'name'        => 'code',
+                                'value'       => esc_textarea( wp_unslash( $item['code'] ) ),
+                                'description' => esc_html__( 'Paste your code here.', 'clickwhale' )
+                            ),
+                            true
                         ),
-                        true
+                        Helper::get_allowed_tags()
                     );
 
                     $tracking_code->conversion_fields( $item );
 
-                    echo Helper::render_control(
-                        array(
-                            'row_label' => __( 'Code Position', 'clickwhale' ),
-                            'control'   => 'select',
-                            'id'        => 'position_code',
-                            'name'      => 'position[code]',
-                            'value'     => esc_attr( $item['position']['code'] ?? '' ),
-                            'options'   => array(
-                                'wp_head'      => 'Before &lt;/head&gt;',
-                                'wp_body_open' => 'After &lt;body&gt;',
-                                'wp_footer'    => 'Before &lt;/body&gt;'
-                            )
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label' => esc_html__( 'Code Position', 'clickwhale' ),
+                                'control'   => 'select',
+                                'id'        => 'position_code',
+                                'name'      => 'position[code]',
+                                'value'     => esc_attr( $item['position']['code'] ?? '' ),
+                                'options'   => array(
+                                    'wp_head'      => esc_html__( 'Before </head>', 'clickwhale' ),
+                                    'wp_body_open' => esc_html__( 'After <body>', 'clickwhale' ),
+                                    'wp_footer'    => esc_html__( 'Before </body>', 'clickwhale' )
+                                )
+                            ),
+                            true,
+                            'for_mode for_standard_mode'
                         ),
-                        true,
-                        'for_mode for_standard_mode'
+                        Helper::get_allowed_tags()
                     );
                     ?>
 
@@ -97,18 +114,21 @@ do_action( 'clickwhale_admin_banner' );
                         </th>
                         <td>
                             <?php
-                            echo Helper::render_control(
-                                array(
-                                    'control' => 'radio',
-                                    'id'      => 'position_pages',
-                                    'name'    => 'position[pages]',
-                                    'value'   => esc_attr( $item['position']['pages'] ?? '' ),
-                                    'options' => array(
-                                        'all'    => __( 'Whole website', 'clickwhale' ),
-                                        'custom' => __( 'Specific page', 'clickwhale' )
-                                    ),
-                                    'default' => 'all'
-                                )
+                            echo wp_kses(
+                                Helper::render_control(
+                                    array(
+                                        'control' => 'radio',
+                                        'id'      => 'position_pages',
+                                        'name'    => 'position[pages]',
+                                        'value'   => esc_attr( $item['position']['pages'] ?? '' ),
+                                        'options' => array(
+                                            'all'    => esc_html__( 'Whole website', 'clickwhale' ),
+                                            'custom' => esc_html__( 'Specific page', 'clickwhale' )
+                                        ),
+                                        'default' => 'all'
+                                    )
+                                ),
+                                Helper::get_allowed_tags()
                             );
                             ?>
 
@@ -117,19 +137,22 @@ do_action( 'clickwhale_admin_banner' );
                             <?php if ( $linkpages ) { ?>
                                 <div class="cw-posts-row cw-posts-row--included">
                                     <?php
-                                    echo Helper::render_control(
-                                        array(
-                                            'control' => 'checkbox',
-                                            'id'      => 'position_include_cw_linkpage',
-                                            'name'    => 'position[items_included][cw_linkpage][active]',
-                                            'value'   => esc_attr( $item['position']['items_included']['cw_linkpage']['active'] ?? '0' ),
-                                            'label'   => wp_kses(
-                                                __( 'Include <strong>ClickWhale Link Pages</strong>', 'clickwhale' ),
-                                                array(
-                                                    'strong' => array()
+                                    echo wp_kses(
+                                        Helper::render_control(
+                                            array(
+                                                'control' => 'checkbox',
+                                                'id'      => 'position_include_cw_linkpage',
+                                                'name'    => 'position[items_included][cw_linkpage][active]',
+                                                'value'   => esc_attr( $item['position']['items_included']['cw_linkpage']['active'] ?? '0' ),
+                                                'label'   => wp_kses(
+                                                    __( 'Include <strong>ClickWhale Link Pages</strong>', 'clickwhale' ),
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
-                                        )
+                                        ),
+                                        Helper::get_allowed_tags()
                                     );
                                     ?>
                                     <div class="cw-posts-row--select">
@@ -140,36 +163,42 @@ do_action( 'clickwhale_admin_banner' );
                                             $ids = array();
                                         }
 
-                                        echo Helper::render_control(
-                                            array(
-                                                'control'  => 'select',
-                                                'id'       => 'position_include_linkpage_ids',
-                                                'class'    => 'with-select2',
-                                                'name'     => 'position[items_included][cw_linkpage][ids][]',
-                                                'value'    => $ids,
-                                                'options'  => $tracking_code->get_linkpages(),
-                                                'default'  => 'all',
-                                                'multiple' => true
-                                            )
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control'  => 'select',
+                                                    'id'       => 'position_include_linkpage_ids',
+                                                    'class'    => 'with-select2',
+                                                    'name'     => 'position[items_included][cw_linkpage][ids][]',
+                                                    'value'    => array_map( 'intval', $ids ),
+                                                    'options'  => $tracking_code->get_linkpages(),
+                                                    'default'  => 'all',
+                                                    'multiple' => true
+                                                )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                     </div>
                                 </div>
                                 <div class="cw-posts-row cw-posts-row--excluded">
                                     <?php
-                                    echo Helper::render_control(
-                                        array(
-                                            'control' => 'checkbox',
-                                            'id'      => 'position_exclude_cw_linkpage',
-                                            'name'    => 'position[items_excluded][cw_linkpage][active]',
-                                            'value'   => esc_attr( $item['position']['items_excluded']['cw_linkpage']['active'] ?? '0' ),
-                                            'label'   => wp_kses(
-                                                __( 'Exclude <strong>ClickWhale Link Pages</strong>', 'clickwhale' ),
-                                                array(
-                                                    'strong' => array()
+                                    echo wp_kses(
+                                        Helper::render_control(
+                                            array(
+                                                'control' => 'checkbox',
+                                                'id'      => 'position_exclude_cw_linkpage',
+                                                'name'    => 'position[items_excluded][cw_linkpage][active]',
+                                                'value'   => esc_attr( $item['position']['items_excluded']['cw_linkpage']['active'] ?? '0' ),
+                                                'label'   => wp_kses(
+                                                    __( 'Exclude <strong>ClickWhale Link Pages</strong>', 'clickwhale' ),
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
-                                        )
+                                        ),
+                                        Helper::get_allowed_tags()
                                     );
                                     ?>
                                     <div class="cw-posts-row--select">
@@ -180,17 +209,20 @@ do_action( 'clickwhale_admin_banner' );
                                             $ids = array();
                                         }
 
-                                        echo Helper::render_control(
-                                            array(
-                                                'control'  => 'select',
-                                                'id'       => 'position_exclude_linkpage_ids',
-                                                'class'    => 'with-select2',
-                                                'name'     => 'position[items_excluded][cw_linkpage][ids][]',
-                                                'value'    => $ids,
-                                                'options'  => $tracking_code->get_linkpages(),
-                                                'default'  => 'all',
-                                                'multiple' => true
-                                            )
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control'  => 'select',
+                                                    'id'       => 'position_exclude_linkpage_ids',
+                                                    'class'    => 'with-select2',
+                                                    'name'     => 'position[items_excluded][cw_linkpage][ids][]',
+                                                    'value'    => array_map( 'intval', $ids ),
+                                                    'options'  => $tracking_code->get_linkpages(),
+                                                    'default'  => 'all',
+                                                    'multiple' => true
+                                                )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                     </div>
@@ -201,22 +233,26 @@ do_action( 'clickwhale_admin_banner' );
                                 ?>
                                 <div class="cw-posts-row cw-posts-row--included">
                                     <?php
-                                    echo Helper::render_control(
-                                        array(
-                                            'control' => 'checkbox',
-                                            'id'      => 'position_include_' . esc_attr( $post_type ),
-                                            'name'    => 'position[items_included][' . esc_attr( $post_type ) . '][active]',
-                                            'value'   => esc_attr( $item['position']['items_included'][$post_type]['active'] ?? '0' ),
-                                            'label'   =>  wp_kses(
-                                                sprintf(
-                                                    __( 'Include <strong>%s</strong>', 'clickwhale' ),
-                                                    esc_html( $post_label )
-                                                ),
-                                                array(
-                                                    'strong' => array()
+                                    echo wp_kses(
+                                        Helper::render_control(
+                                            array(
+                                                'control' => 'checkbox',
+                                                'id'      => 'position_include_' . esc_attr( $post_type ),
+                                                'name'    => 'position[items_included][' . esc_attr( $post_type ) . '][active]',
+                                                'value'   => esc_attr( $item['position']['items_included'][$post_type]['active'] ?? '0' ),
+                                                'label'   =>  wp_kses(
+                                                    sprintf(
+                                                        /* translators: %s: post type label */
+                                                        __( 'Include <strong>%s</strong>', 'clickwhale' ),
+                                                        esc_html( $post_label )
+                                                    ),
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
-                                        )
+                                        ),
+                                        Helper::get_allowed_tags()
                                     );
                                     ?>
                                     <div class="cw-posts-row--select">
@@ -227,39 +263,46 @@ do_action( 'clickwhale_admin_banner' );
                                             $ids = array();
                                         }
 
-                                        echo Helper::render_control(
-                                            array(
-                                                'control'  => 'select',
-                                                'id'       => 'position_include_' . esc_attr( $post_type ) . '_ids',
-                                                'class'    => 'with-select2',
-                                                'name'     => 'position[items_included][' . esc_attr( $post_type ) . '][ids][]',
-                                                'value'    => $ids,
-                                                'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
-                                                'default'  => 'all',
-                                                'multiple' => true
-                                            )
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control'  => 'select',
+                                                    'id'       => 'position_include_' . esc_attr( $post_type ) . '_ids',
+                                                    'class'    => 'with-select2',
+                                                    'name'     => 'position[items_included][' . esc_attr( $post_type ) . '][ids][]',
+                                                    'value'    => array_map( 'intval', $ids ),
+                                                    'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
+                                                    'default'  => 'all',
+                                                    'multiple' => true
+                                                )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                     </div>
                                 </div>
                                 <div class="cw-posts-row cw-posts-row--excluded">
                                     <?php
-                                    echo Helper::render_control(
-                                        array(
-                                            'control' => 'checkbox',
-                                            'id'      => 'position_exclude_' . esc_attr( $post_type ),
-                                            'name'    => 'position[items_excluded][' . esc_attr( $post_type ) . '][active]',
-                                            'value'   => esc_attr( $item['position']['items_excluded'][$post_type]['active'] ?? '0' ),
-                                            'label'   => wp_kses(
-                                                sprintf(
-                                                    __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
-                                                    esc_html( $post_label )
-                                                ),
-                                                array(
-                                                    'strong' => array()
+                                    echo wp_kses(
+                                        Helper::render_control(
+                                            array(
+                                                'control' => 'checkbox',
+                                                'id'      => 'position_exclude_' . esc_attr( $post_type ),
+                                                'name'    => 'position[items_excluded][' . esc_attr( $post_type ) . '][active]',
+                                                'value'   => esc_attr( $item['position']['items_excluded'][$post_type]['active'] ?? '0' ),
+                                                'label'   => wp_kses(
+                                                    sprintf(
+                                                        /* translators: %s: post type label */
+                                                        __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
+                                                        esc_html( $post_label )
+                                                    ),
+                                                    array(
+                                                        'strong' => array()
+                                                    )
                                                 )
                                             )
-                                        )
+                                        ),
+                                        Helper::get_allowed_tags()
                                     );
                                     ?>
                                     <div class="cw-posts-row--select">
@@ -270,17 +313,20 @@ do_action( 'clickwhale_admin_banner' );
                                             $ids = array();
                                         }
 
-                                        echo Helper::render_control(
-                                            array(
-                                                'control'  => 'select',
-                                                'id'       => 'position_exclude_' . esc_attr( $post_type ) . '_ids',
-                                                'class'    => 'with-select2',
-                                                'name'     => 'position[items_excluded][' . esc_attr( $post_type ) . '][ids][]',
-                                                'value'    => $ids,
-                                                'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
-                                                'default'  => 'all',
-                                                'multiple' => true
-                                            )
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control'  => 'select',
+                                                    'id'       => 'position_exclude_' . esc_attr( $post_type ) . '_ids',
+                                                    'class'    => 'with-select2',
+                                                    'name'     => 'position[items_excluded][' . esc_attr( $post_type ) . '][ids][]',
+                                                    'value'    => array_map( 'intval', $ids ),
+                                                    'options'  => $tracking_code::get_posts_by_post_type( $post_type ),
+                                                    'default'  => 'all',
+                                                    'multiple' => true
+                                                )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                     </div>
@@ -293,22 +339,26 @@ do_action( 'clickwhale_admin_banner' );
                                     ?>
                                     <div class="cw-posts-row cw-posts-row--included">
                                         <?php
-                                        echo Helper::render_control(
-                                            array(
-                                                'control' => 'checkbox',
-                                                'id'      => 'position_include_' . esc_attr( $taxonomy ),
-                                                'name'    => 'position[items_included][' . esc_attr( $taxonomy ) . '][active]',
-                                                'value'   => esc_attr( $item['position']['items_included'][$taxonomy]['active'] ?? '0' ),
-                                                'label'   => wp_kses(
-                                                    sprintf(
-                                                        __( 'Include <strong>%s</strong>', 'clickwhale' ),
-                                                        esc_html( $taxonomy_object->label )
-                                                    ),
-                                                    array(
-                                                        'strong' => array()
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control' => 'checkbox',
+                                                    'id'      => 'position_include_' . esc_attr( $taxonomy ),
+                                                    'name'    => 'position[items_included][' . esc_attr( $taxonomy ) . '][active]',
+                                                    'value'   => esc_attr( $item['position']['items_included'][$taxonomy]['active'] ?? '0' ),
+                                                    'label'   => wp_kses(
+                                                        sprintf(
+                                                            /* translators: %s: taxonomy label */
+                                                            __( 'Include <strong>%s</strong>', 'clickwhale' ),
+                                                            esc_html( $taxonomy_object->label )
+                                                        ),
+                                                        array(
+                                                            'strong' => array()
+                                                        )
                                                     )
                                                 )
-                                            )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                         <div class="cw-posts-row--select">
@@ -319,39 +369,46 @@ do_action( 'clickwhale_admin_banner' );
                                                 $ids = array();
                                             }
 
-                                            echo Helper::render_control(
-                                                array(
-                                                    'control'  => 'select',
-                                                    'id'       => 'position_include_' . esc_attr( $taxonomy ) . '_ids',
-                                                    'class'    => 'with-select2',
-                                                    'name'     => 'position[items_included][' . esc_attr( $taxonomy ) . '][ids][]',
-                                                    'value'    => $ids,
-                                                    'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
-                                                    'default'  => 'all',
-                                                    'multiple' => true
-                                                )
+                                            echo wp_kses(
+                                                Helper::render_control(
+                                                    array(
+                                                        'control'  => 'select',
+                                                        'id'       => 'position_include_' . esc_attr( $taxonomy ) . '_ids',
+                                                        'class'    => 'with-select2',
+                                                        'name'     => 'position[items_included][' . esc_attr( $taxonomy ) . '][ids][]',
+                                                        'value'    => array_map( 'intval', $ids ),
+                                                        'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
+                                                        'default'  => 'all',
+                                                        'multiple' => true
+                                                    )
+                                                ),
+                                                Helper::get_allowed_tags()
                                             );
                                             ?>
                                         </div>
                                     </div>
                                     <div class="cw-posts-row cw-posts-row--excluded">
                                         <?php
-                                        echo Helper::render_control(
-                                            array(
-                                                'control' => 'checkbox',
-                                                'id'      => 'position_exclude_' . esc_attr( $taxonomy ),
-                                                'name'    => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][active]',
-                                                'value'   => esc_attr( $item['position']['items_excluded'][$taxonomy]['active'] ?? '0' ),
-                                                'label'   => wp_kses(
-                                                    sprintf(
-                                                        __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
-                                                        esc_html( $taxonomy_object->label )
-                                                    ),
-                                                    array(
-                                                        'strong' => array()
+                                        echo wp_kses(
+                                            Helper::render_control(
+                                                array(
+                                                    'control' => 'checkbox',
+                                                    'id'      => 'position_exclude_' . esc_attr( $taxonomy ),
+                                                    'name'    => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][active]',
+                                                    'value'   => esc_attr( $item['position']['items_excluded'][$taxonomy]['active'] ?? '0' ),
+                                                    'label'   => wp_kses(
+                                                        sprintf(
+                                                            /* translators: %s: taxonomy label */
+                                                            __( 'Exclude <strong>%s</strong>', 'clickwhale' ),
+                                                            esc_html( $taxonomy_object->label )
+                                                        ),
+                                                        array(
+                                                            'strong' => array()
+                                                        )
                                                     )
                                                 )
-                                            )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                         ?>
                                         <div class="cw-posts-row--select">
@@ -362,17 +419,20 @@ do_action( 'clickwhale_admin_banner' );
                                                 $ids = array();
                                             }
 
-                                            echo Helper::render_control(
-                                                array(
-                                                    'control'  => 'select',
-                                                    'id'       => 'position_exclude_' . esc_attr( $taxonomy ) . '_ids',
-                                                    'class'    => 'with-select2',
-                                                    'name'     => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][ids][]',
-                                                    'value'    => $ids,
-                                                    'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
-                                                    'default'  => 'all',
-                                                    'multiple' => true
-                                                )
+                                            echo wp_kses(
+                                                Helper::render_control(
+                                                    array(
+                                                        'control'  => 'select',
+                                                        'id'       => 'position_exclude_' . esc_attr( $taxonomy ) . '_ids',
+                                                        'class'    => 'with-select2',
+                                                        'name'     => 'position[items_excluded][' . esc_attr( $taxonomy ) . '][ids][]',
+                                                        'value'    => array_map( 'intval', $ids ),
+                                                        'options'  => $tracking_code->get_terms_by_tax( $taxonomy ),
+                                                        'default'  => 'all',
+                                                        'multiple' => true
+                                                    )
+                                                ),
+                                                Helper::get_allowed_tags()
                                             );
                                             ?>
                                         </div>
@@ -389,45 +449,54 @@ do_action( 'clickwhale_admin_banner' );
                         $ids = array();
                     }
 
-                    echo Helper::render_control(
-                        array(
-                            'row_label'   => __( 'Exclude User Roles', 'clickwhale' ),
-                            'control'     => 'checkboxes',
-                            'id'          => 'position_exclude_user_by_role',
-                            'name'        => 'position[exclude_user_by_role][]',
-                            'value'       => $ids,
-                            'options'     => clickwhale()->user->get_all_roles(),
-                            'description' => __( 'Check the user roles for which the script should not be executed.', 'clickwhale' )
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label'   => esc_html__( 'Exclude User Roles', 'clickwhale' ),
+                                'control'     => 'checkboxes',
+                                'id'          => 'position_exclude_user_by_role',
+                                'name'        => 'position[exclude_user_by_role][]',
+                                'value'       => array_map( 'intval', $ids ),
+                                'options'     => array_map( 'esc_html', clickwhale()->user->get_all_roles() ),
+                                'description' => esc_html__( 'Check the user roles for which the script should not be executed.', 'clickwhale' )
+                            ),
+                            true
                         ),
-                        true
+                        Helper::get_allowed_tags()
                     );
 
-                    echo Helper::render_control(
-                        array(
-                            'row_label'   => __( 'Description', 'clickwhale' ),
-                            'control'     => 'textarea',
-                            'id'          => 'description',
-                            'name'        => 'description',
-                            'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                            'placeholder' => __( 'Your comment here', 'clickwhale' ),
-                            'description' => __( 'Optional comment to the tracking code.', 'clickwhale' )
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label'   => esc_html__( 'Description', 'clickwhale' ),
+                                'control'     => 'textarea',
+                                'id'          => 'description',
+                                'name'        => 'description',
+                                'value'       => esc_html( wp_unslash( $item['description'] ) ),
+                                'placeholder' => esc_attr__( 'Your comment here', 'clickwhale' ),
+                                'description' => esc_html__( 'Optional comment to the tracking code.', 'clickwhale' )
+                            ),
+                            true
                         ),
-                        true
+                        Helper::get_allowed_tags()
                     );
 
-                    echo Helper::render_control(
-                        array(
-                            'row_label'        => __( 'Active', 'clickwhale' ),
-                            'control'          => 'checkbox',
-                            'id'               => 'is_active',
-                            'name'             => 'is_active',
-                            'class'            => 'clickwhale_tc_active_toggle',
-                            'value'            => esc_attr( $item['is_active'] ),
-                            'label'            => esc_html__( 'Enable Tracking Code', 'clickwhale' ),
-                            'disabled'         => Tracking_Codes_Helper::is_active_limit(),
-                            'disabled_message' => Tracking_Codes_Helper::get_limitation_notice()
+                    echo wp_kses(
+                        Helper::render_control(
+                            array(
+                                'row_label'        => esc_html__( 'Active', 'clickwhale' ),
+                                'control'          => 'checkbox',
+                                'id'               => 'is_active',
+                                'name'             => 'is_active',
+                                'class'            => 'clickwhale_tc_active_toggle',
+                                'value'            => intval( $item['is_active'] ),
+                                'label'            => esc_html__( 'Enable Tracking Code', 'clickwhale' ),
+                                'disabled'         => Tracking_Codes_Helper::is_active_limit(),
+                                'disabled_message' => esc_html( Tracking_Codes_Helper::get_limitation_notice() ),
+                            ),
+                            true
                         ),
-                        true
+                        Helper::get_allowed_tags()
                     );
                     ?>
                 </tbody>

@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.3
+ * Version:           2.5.3.1
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,7 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.5.3' );
+    define( 'CLICKWHALE_VERSION', '2.5.3.1' );
     /**
      * @since 1.4.1
      */
@@ -73,7 +73,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'is_org_compliant' => true,
                     'has_affiliation'  => 'all',
                     'menu'             => array(
-                        'slug'    => CLICKWHALE_SLUG,
+                        'slug'    => esc_attr( CLICKWHALE_SLUG ),
                         'contact' => false,
                         'pricing' => false,
                     ),

@@ -28,11 +28,17 @@ class Linkpages_Helper extends Helper_Abstract {
      * @since 1.4.0
      */
     public static function get_limitation_notice(): string {
-        return sprintf(
-            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
-            self::get_limit(),
-            ( self::get_limit() === 1 ) ? esc_html__( 'link page', 'clickwhale' ) : esc_html__( 'link pages', 'clickwhale' )
+        $count = self::get_limit();
+
+        /* translators: %1$d: maximum number of link pages */
+        $text = _n(
+            'Currently, a maximum of %1$d link page can be added.',
+            'Currently, a maximum of %1$d link pages can be added.',
+            $count,
+            'clickwhale'
         );
+
+        return sprintf( $text, intval( $count ) );
     }
 
     /**
@@ -41,11 +47,17 @@ class Linkpages_Helper extends Helper_Abstract {
      * @since 1.4.0
      */
     public static function get_links_limitation_notice(): string {
-        return sprintf(
-            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
-            self::get_linkpage_links_limit(),
-            ( self::get_linkpage_links_limit() === 1 ) ? esc_html__( 'link', 'clickwhale' ) : esc_html__( 'links', 'clickwhale' )
+        $count = self::get_linkpage_links_limit();
+
+        /* translators: %1$d: maximum number of links */
+        $text = _n(
+            'Currently, a maximum of %1$d link can be added.',
+            'Currently, a maximum of %1$d links can be added.',
+            $count,
+            'clickwhale'
         );
+
+        return sprintf( $text, intval( $count ) );
     }
 
     /**
@@ -108,7 +120,7 @@ class Linkpages_Helper extends Helper_Abstract {
 
         return intval( $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM $table WHERE slug=%s",
+                "SELECT COUNT(*) FROM {$table} WHERE slug=%s",
                 $slug
             )
         ) );
@@ -124,7 +136,7 @@ class Linkpages_Helper extends Helper_Abstract {
 
         return intval( $wpdb->get_var(
             $wpdb->prepare(
-                "SELECT COUNT(*) FROM $table WHERE linkpage_id = %s AND $column = %s AND event_type = 'click'",
+                "SELECT COUNT(*) FROM {$table} WHERE linkpage_id = %s AND $column = %s AND event_type = 'click'",
                 sanitize_text_field( $linkpage_id ),
                 sanitize_text_field( $link_id )
             )

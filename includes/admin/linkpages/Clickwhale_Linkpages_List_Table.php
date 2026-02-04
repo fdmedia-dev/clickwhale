@@ -205,13 +205,14 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             Helper::csrf_exception( $page_slug );
         }
 
-        $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+        $post_id = $_GET['id'];
+        $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-        if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
-        $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+        $ids = is_array( $post_id ) ? $post_id : array( $post_id );
 
         // Convert to integers, then remove zero values
         $ids = array_filter( array_map( 'intval', $ids ) );
@@ -226,7 +227,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 
         $result = $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM $table WHERE id IN ($placeholders)",
+                "DELETE FROM {$table} WHERE id IN ($placeholders)",
                 ...$ids
             )
         );
@@ -234,7 +235,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         if ( false !== $result ) {
             $wpdb->query(
                 $wpdb->prepare(
-                    "DELETE FROM $meta_table WHERE linkpage_id IN ($placeholders)",
+                    "DELETE FROM {$meta_table} WHERE linkpage_id IN ($placeholders)",
                     ...$ids
                 )
             );
@@ -252,7 +253,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $columns         = $this->get_columns();
         $hidden          = array();
         $sortable        = $this->get_sortable_columns();
-        $total_items     = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $table_linkpages" ) );
+        $total_items     = intval( $wpdb->get_var( "SELECT COUNT(id) FROM {$table_linkpages}" ) );
 
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
@@ -282,16 +283,16 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $current_data = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count
-                FROM $table_linkpages linkpages
+                FROM {$table_linkpages} linkpages
                 LEFT JOIN (
                     SELECT linkpage_id, COUNT(*) views 
-                    FROM $table_track 
+                    FROM {$table_track} 
                     WHERE event_type='view' 
                     GROUP BY linkpage_id
                     ) v_track ON linkpages.id = v_track.linkpage_id
                 LEFT JOIN (
                     SELECT linkpage_id, COUNT(*) clicks 
-                    FROM $table_track 
+                    FROM {$table_track} 
                     WHERE event_type='click' AND linkpage_id > 0
                     GROUP BY linkpage_id
                     ) c_track ON linkpages.id = c_track.linkpage_id

@@ -156,12 +156,20 @@ abstract class Clickwhale_Instance_Edit {
 
         if ( $transient === 'added' ) {
             echo '<div class="updated"><p>';
-            printf( esc_html__( '%s was successfully saved', 'clickwhale' ), esc_html( $this->get_title_i18n() ) );
+            printf(
+                /* translators: %s: item title */
+                esc_html__( '%s was successfully saved', 'clickwhale' ),
+                esc_html( $this->get_title_i18n() )
+            );
             echo '</p></div>';
 
         } elseif ( $transient === 'updated' ) {
             echo '<div class="updated"><p>';
-            printf( esc_html__( '%s was successfully updated', 'clickwhale' ), esc_html( $this->get_title_i18n() ) );
+            printf(
+                /* translators: %s: item title */
+                esc_html__( '%s was successfully updated', 'clickwhale' ),
+                esc_html( $this->get_title_i18n() )
+            );
             echo '</p></div>';
         }
 
@@ -236,18 +244,18 @@ abstract class Clickwhale_Instance_Edit {
                 $item,
                 array( 'id' => $id )
             );
-            do_action( "clickwhale_{$this->instance_single}_updated", $id, $_POST );
+            do_action( "clickwhale_{$this->instance_single}_updated", $id, wp_unslash( $_POST ) );
             $this->set_transient( $id, 'updated' );
 
         } else {
             unset( $item['id'] );
             $wpdb->insert( $table, $item );
             $id = $wpdb->insert_id;
-            do_action( "clickwhale_{$this->instance_single}_inserted", $id, $_POST );
+            do_action( "clickwhale_{$this->instance_single}_inserted", $id, wp_unslash( $_POST ) );
             $this->set_transient( $id, 'added' );
         }
 
-        $this->after_save( $id, $_POST );
+        $this->after_save( $id, wp_unslash( $_POST ) );
 
         wp_redirect(
             esc_url_raw(

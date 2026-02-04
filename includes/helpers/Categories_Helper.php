@@ -29,10 +29,16 @@ class Categories_Helper extends Helper_Abstract {
      * @since 1.4.0
      */
     public static function get_limitation_notice(): string {
-        return sprintf(
-            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
-            self::get_limit(),
-            ( self::get_limit() === 1 ) ? esc_html__( 'category', 'clickwhale' ) : esc_html__( 'categories', 'clickwhale' )
+        $count = self::get_limit();
+
+        /* translators: %1$d: maximum number of categories */
+        $text = _n(
+            'Currently, a maximum of %1$d category can be added.',
+            'Currently, a maximum of %1$d categories can be added.',
+            $count,
+            'clickwhale'
         );
+
+        return sprintf( $text, intval( $count ) );
     }
 }

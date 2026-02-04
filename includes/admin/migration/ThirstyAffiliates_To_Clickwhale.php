@@ -14,7 +14,8 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         $table_ta_relationships = $wpdb->prefix . 'term_relationships';
         $table_cw_categories    = $wpdb->prefix . 'clickwhale_categories';
 
-        $data = $wpdb->get_results( "SELECT * FROM $table_ta_posts WHERE post_type='thirstylink' AND post_status='publish'" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_ta_posts} WHERE post_type=%s AND post_status=%s", 'thirstylink', 'publish' ) );
 
         if ( ! $data ) {
             return array(
@@ -65,9 +66,10 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
             if ( $nofollow_post_meta === 'global' ) {
                 if ( $global_nofollow === 'category' ) {
+                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     $categories_for_nofollow = $wpdb->get_results(
                         $wpdb->prepare(
-                            "SELECT term_taxonomy_id FROM $table_ta_relationships WHERE object_id=%d",
+                            "SELECT term_taxonomy_id FROM {$table_ta_relationships} WHERE object_id=%d",
                             intval( $item_id )
                         ),
                         ARRAY_A
@@ -88,14 +90,15 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
             } else {
                 $nofollow = ( 'yes' === $nofollow_post_meta ); // bool
             }
-
+            
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $categories_for_id = (array) $wpdb->get_results(
                 $wpdb->prepare(
-                    "SELECT $table_cw_categories.id
-                    FROM $table_cw_categories, $table_ta_terms, $table_ta_relationships 
-                    WHERE $table_ta_terms.term_id=$table_ta_relationships.term_taxonomy_id 
-                    AND $table_ta_relationships.object_id=%d 
-                    AND $table_ta_terms.slug=$table_cw_categories.slug",
+                    "SELECT categories.id
+                    FROM {$table_cw_categories} categories, {$table_ta_terms} terms, {$table_ta_relationships} relationships 
+                    WHERE terms.term_id=relationships.term_taxonomy_id 
+                    AND relationships.object_id=%d 
+                    AND terms.slug=categories.slug",
                     intval( $item_id )
                 ),
                 ARRAY_A
@@ -134,10 +137,16 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         $table_ta_term_taxnomy = $wpdb->prefix . 'term_taxonomy';
         $table_ta_terms        = $wpdb->prefix . 'terms';
 
-        $data = $wpdb->get_results( "SELECT $table_ta_terms.term_id, $table_ta_terms.name, $table_ta_terms.slug
-            FROM $table_ta_term_taxnomy, $table_ta_terms
-            WHERE $table_ta_terms.term_id=$table_ta_term_taxnomy.term_taxonomy_id  
-            AND $table_ta_term_taxnomy.taxonomy='thirstylink-category'" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $data = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT terms.term_id, terms.name, terms.slug
+                FROM {$table_ta_term_taxnomy} taxonomy, {$table_ta_terms} terms
+                WHERE terms.term_id=taxonomy.term_taxonomy_id  
+                AND taxonomy.taxonomy=%s",
+                'thirstylink-category'
+            )
+        );
 
         if ( ! $data ) {
             return array(

@@ -32,7 +32,7 @@ abstract class Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
-        return intval( $wpdb->get_var( "SELECT COUNT(*) FROM $table" ) );
+        return intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" ) );
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class Helper_Abstract {
         if ( empty( $id ) && static::is_limit() ) {
 
             wp_die(
-                static::get_limitation_notice(),
+                wp_kses( static::get_limitation_notice(), Helper::get_allowed_tags() ),
                 'Error',
                 array(
                     'back_link' => true,
@@ -94,7 +94,7 @@ abstract class Helper_Abstract {
         $orderby = sanitize_text_field( $orderby );
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
-        return (array) $wpdb->get_results( "SELECT * FROM $table order by $orderby $order", $output );
+        return (array) $wpdb->get_results( "SELECT * FROM {$table} order by $orderby $order", $output );
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class Helper_Abstract {
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table WHERE id=%d",
+                "SELECT * FROM {$table} WHERE id=%d",
                 $id
             ),
             ARRAY_A
@@ -132,7 +132,7 @@ abstract class Helper_Abstract {
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table WHERE title=%s",
+                "SELECT * FROM {$table} WHERE title=%s",
                 sanitize_text_field( $title )
             ),
             ARRAY_A
@@ -152,7 +152,7 @@ abstract class Helper_Abstract {
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table WHERE slug=%s",
+                "SELECT * FROM {$table} WHERE slug=%s",
                 $slug
             ),
             ARRAY_A

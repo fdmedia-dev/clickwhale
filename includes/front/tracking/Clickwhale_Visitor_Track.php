@@ -95,7 +95,7 @@ class Clickwhale_Visitor_Track {
         global $wpdb;
         $table = Helper::get_db_table_name( 'visitors' );
 
-        return (array) $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE hash=%s", $this->hash ), ARRAY_A );
+        return (array) $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE hash=%s", $this->hash ), ARRAY_A );
     }
 
     /**

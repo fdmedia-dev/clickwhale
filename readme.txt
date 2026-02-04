@@ -3,9 +3,9 @@ Contributors: clickwhale, flowdee, krapan88, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
-Requires PHP: 7.4.0
+Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 2.5.3
+Stable tag: 2.5.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ From now on, you don't need a third-party service, you save on monthly subscript
 In line with the philosophy “by developers for developers,” we have made it possible for developers and experienced users to customize our plugin to their needs:
 
 - **Filter and action hooks** - Ready-to-use filters and actions to apply dynamic adjustments according to your needs.
-- **WP REST API routes** - Ready-to-use API routes to connect our plugin to third-party tools.
+- **WP REST API routes** - Ready-to-use API routes to connect our plugin to third-party tools. Access is limited to Administrators by default and can be configured for other roles in the plugin settings (Access Level). Note: Only roles with "upload_files" capability can be granted access.
 
 The above-mentioned functions are available to everyone, and you can find more information in our [developer documentation](https://github.com/fdmedia-io/clickwhale-developers/?utm_source=WordPress.org&utm_medium=Plugin+Description&utm_campaign=ClickWhale+-+Free+Version&utm_term=Developers).
 
@@ -112,17 +112,16 @@ Yes! ClickWhale can be used on multisite installations.
 
 Yes, ClickWhale has full translation and localization support via the `clickwhale` textdomain. Based on your site language, required `.mo` and `.po` translation files will be downloaded and placed into the default WordPress languages directory.
 
-= Where can I find source code for included libraries and minified files? =
+= Where can I find source code for included libraries and built assets? =
 
-This plugin includes minified versions of several third-party libraries. Their original, uncompressed source code is publicly available here:
+This plugin includes generated (compiled) JavaScript and CSS assets from third-party libraries.
+
+The non-compiled, human-readable source code and build configuration for these libraries are publicly available at the following locations:
 
 * Ionicons – https://github.com/ionic-team/ionicons/tree/v7.1.0
 * Picmo – https://github.com/joeattardi/picmo/tree/v5.8.1/packages/picmo
-* Picmo popup picker – https://github.com/joeattardi/picmo/tree/v5.8.1/packages/popup-picker
 * Select2 - https://github.com/select2/select2/tree/4.1.0-rc.0
 * Freemius SDK - https://github.com/Freemius/wordpress-sdk
-
-These repositories contain the full sources from which the minified files in /assets/ were built.
 
 = How can I report security bugs? =
 
@@ -130,6 +129,27 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = Do you offer support? =
 Of course! We offer support in the [support forum](https://WordPress.org/support/plugin/clickwhale/) here on WordPress.org
+
+== External Services ==
+
+This plugin utilizes third-party services to ensure proper licensing, provide optional features, and improve user experience. By using these features, data may be sent to external providers.
+
+**1. ClickWhale.pro (Subscription Service)**
+*   **Service URL:** https://clickwhale.pro
+*   **Purpose:** Allows users to optionally subscribe to our newsletter and pro-version updates directly from the admin interface.
+*   **Data Sent:** Email address and first name (only if provided by the user).
+*   **When:** Data is sent only when the user explicitly clicks the "Subscribe" button in the ClickWhale admin area.
+*   **Privacy Policy:** [https://clickwhale.pro/privacy-policy/](https://clickwhale.pro/privacy-policy/)
+
+**2. Freemius (Licensing and Insights)**
+*   **Service URL:** https://freemius.com
+*   **Purpose:** Handles plugin licensing, automatic updates, and provides optional usage analytics to help us improve the plugin.
+*   **Data Sent:** Site URL, version, PHP version, and other non-sensitive site data as described in Freemius privacy policy.
+*   **When:**
+    - For licensing/updates: Automatically to verify the license status.
+    - For insights: Only if the user explicitly opts-in during plugin activation or via settings.
+*   **Terms of Service:** [https://freemius.com/terms/](https://freemius.com/terms/)
+*   **Privacy Policy:** [https://freemius.com/privacy/](https://freemius.com/privacy/)
 
 == Screenshots ==
 
@@ -144,7 +164,12 @@ Of course! We offer support in the [support forum](https://WordPress.org/support
 
 == Changelog ==
 
-= Version 2.5.3 (18th December 2025) =
+= Version 2.5.3.1 (4th February 2026) =
+* Tweak: Improved data validation.
+* Fix: Various fixes and stability improvements.
+* Info: WordPress v6.9.1 compatibility
+
+= Version 2.5.3 (15th December 2025) =
 * Tweak: Improved security and data escaping across the admin interface.
 * Fix: Various minor fixes and stability improvements.
 * Info: WordPress v6.9 compatibility

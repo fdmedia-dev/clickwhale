@@ -82,12 +82,13 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         slug.addClass('error')
                             .next().html(<?php echo wp_json_encode(
-                                esc_html__( 'This slug is already used in %1$s (%2$s ID: %d)', 'clickwhale' ) .
+                                /* translators: 1: matched resource title, 2: resource type, 3: resource numeric ID */
+                                esc_html__( 'This slug is already used in %1$s (%2$s ID: %3$d)', 'clickwhale' ) .
                                 '<br>' .
                                 esc_html__( 'Please enter another slug', 'clickwhale' ) ); ?>
                                 .replace('%1$s', `<b>${slug_obj.title}</b>`)
                                 .replace('%2$s', slug_obj.type)
-                                .replace('%d', slug_obj.id)
+                                .replace('%3$d', slug_obj.id)
                             )
                         ;
                         return false;

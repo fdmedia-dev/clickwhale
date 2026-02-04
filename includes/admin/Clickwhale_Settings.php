@@ -26,11 +26,6 @@ final class Clickwhale_Settings {
     private static Clickwhale_Settings $instance;
 
     /**
-     * @var Clickwhale_WP_User
-     */
-    private Clickwhale_WP_User $user;
-
-    /**
      * @return Clickwhale_Settings
      */
     public static function get_instance(): Clickwhale_Settings {
@@ -41,14 +36,7 @@ final class Clickwhale_Settings {
         return self::$instance;
     }
 
-    /**
-     * Initialize the class and set its properties.
-     *
-     * @since    1.0.0
-     */
-    private function __construct() {
-        $this->user = clickwhale()->user;
-    }
+    private function __construct() {}
 
     use Singleton_Clone;
     use Singleton_Wakeup;
@@ -86,7 +74,7 @@ final class Clickwhale_Settings {
         $general_options      = get_option( 'clickwhale_general_options' );
         $tracking_options     = get_option( 'clickwhale_tracking_options' );
         $link_manager_options = get_option( 'clickwhale_link_manager_options' );
-        $current_user_roles   = $this->user->get_current_user_roles();
+        $current_user_roles   = clickwhale()->user->get_current_user_roles();
         $always_checked_roles = array( 'administrator' );
 
         $slug = ( ! empty( $link_manager_options['slug'] ) ) ? esc_attr( wp_unslash( $link_manager_options['slug'] ) ) : $defaults['link_manager']['options']['slug'];
@@ -113,7 +101,9 @@ final class Clickwhale_Settings {
                     $option_name,
                     $option_name,
                     array(
-                        'sanitize_callback' => array( $this, $callback )
+                        'type'              => 'array',
+                        'sanitize_callback' => array( $this, $callback ),
+                        'default'           => array()
                     )
                 );
             }
@@ -135,7 +125,7 @@ final class Clickwhale_Settings {
                     'id'             => 'access_level',
                     'name'           => 'clickwhale_general_options[access_level][]',
                     'value'          => $general_options['access_level'] ?? $defaults['general']['options']['access_level'],
-                    'options'        => $this->user->get_roles_with_upload_cap(),
+                    'options'        => clickwhale()->user->get_roles_with_upload_cap(),
                     'always_checked' => $always_checked_roles,
                     'description'    => esc_html__( 'Decide who can access plugin admin pages.', 'clickwhale' )
                 )
@@ -197,7 +187,7 @@ final class Clickwhale_Settings {
                 'id'          => 'exclude_user_by_role',
                 'name'        => 'clickwhale_tracking_options[exclude_user_by_role][]',
                 'value'       => $tracking_options['exclude_user_by_role'] ?? '',
-                'options'     => $this->user->get_all_roles(),
+                'options'     => clickwhale()->user->get_all_roles(),
                 'description' => esc_html__( 'Check the user roles that should be excluded from tracking.', 'clickwhale' )
             )
         );
@@ -306,6 +296,36 @@ final class Clickwhale_Settings {
                 )
             )
         );
+        $linkpages_options = get_option( 'clickwhale_linkpages_options' );
+        add_settings_field(
+            'show_linkpage_credits',
+            __( 'Credits', 'clickwhale' ),
+            array( $this, 'render_controls' ),
+            'clickwhale_linkpages_options',
+            'linkpages_settings_section',
+            array(
+                'control'     => 'checkbox',
+                'id'          => 'show_linkpage_credits',
+                'name'        => 'clickwhale_linkpages_options[show_linkpage_credits]',
+                'value'       => ! empty( $linkpages_options['show_linkpage_credits'] ) ? 1 : 0,
+                'label'       => esc_html__( 'Check to show Link Page credits.', 'clickwhale' ),
+                'description' => wp_kses(
+                    sprintf(
+                        /* translators: 1: Affiliate program URL, 2: Settings page URL */
+                        __( 'As a member of our <a href="%1$s" target="_blank">affiliate program</a>, you can enter your affiliate link in the settings <a href="%2$s">here</a>,<br>which will then be used when the credits are displayed.', 'clickwhale' ),
+                        esc_url( Helper::get_affiliates_link() ),
+                        esc_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-settings&tab=general_options' )
+                    ),
+                    array(
+                        'a' => array(
+                            'href' => array(),
+                            'target' => array( '_blank' )
+                        ),
+                        'br' => array()
+                    )
+                )
+            )
+        );
 
         do_action( 'clickwhale_settings_fields' );
     }
@@ -335,6 +355,10 @@ final class Clickwhale_Settings {
                 'name' => __( 'Tracking', 'clickwhale' ),
                 'url'  => 'tracking_options'
             ),
+            'linkpages'    => array(
+                'name' => __( 'Link Pages', 'clickwhale' ),
+                'url'  => 'linkpages_options'
+            ),
             'link_manager' => array(
                 'name' => __( 'Link Manager', 'clickwhale' ),
                 'url'  => 'link_manager_options'
@@ -346,7 +370,7 @@ final class Clickwhale_Settings {
      * This function renders the interface elements.
      */
     public static function render_controls( $args ) {
-        echo Helper::render_control( $args );
+        echo wp_kses( Helper::render_control( $args ), Helper::get_allowed_tags() );
     }
 
     public function filter_settings_tabs_capability() {
@@ -368,7 +392,7 @@ final class Clickwhale_Settings {
     }
 
     public function extend_capability( $capability ) {
-        $current_user = $this->user->get_user();
+        $current_user = wp_get_current_user();
 
         if ( ! $current_user->exists() ) {
             return $capability;
@@ -378,7 +402,7 @@ final class Clickwhale_Settings {
             return $capability;
         }
 
-        $current_user_roles = $this->user->get_current_user_roles();
+        $current_user_roles = clickwhale()->user->get_current_user_roles();
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
             return $capability;
@@ -396,11 +420,11 @@ final class Clickwhale_Settings {
     }
 
     public function sanitize_option_capability( $options ) {
-        if ( in_array( 'administrator', $this->user->get_current_user_roles() ) ) {
+        if ( in_array( 'administrator', clickwhale()->user->get_current_user_roles() ) ) {
             return $options;
         }
 
-        $current_user = $this->user->get_user();
+        $current_user = wp_get_current_user();
 
         if ( ! $current_user->exists() ) {
             return $options;
@@ -462,10 +486,14 @@ final class Clickwhale_Settings {
             return array();
         }
 
-        return $options;
+        return map_deep( $options, 'sanitize_text_field' );
     }
 
-    public function sanitize_general_options( array $options ): array {
+    public function sanitize_general_options( $options ): array {
+        if ( ! is_array( $options ) ) {
+            $options = array();
+        }
+
         // Access Level
         if ( isset( $options['access_level'] ) && is_array( $options['access_level'] ) ) {
             $options['access_level'] = array_map( 'sanitize_key', $options['access_level'] );
@@ -476,7 +504,11 @@ final class Clickwhale_Settings {
         return $options;
     }
 
-    public function sanitize_tracking_options( array $options ): array {
+    public function sanitize_tracking_options( $options ): array {
+        if ( ! is_array( $options ) ) {
+            $options = array();
+        }
+
         $defaults = self::default_options();
 
         // Tracking Duration
@@ -502,7 +534,11 @@ final class Clickwhale_Settings {
         return $options;
     }
 
-    public function sanitize_link_manager_options( array $options ): array {
+    public function sanitize_link_manager_options( $options ): array {
+        if ( ! is_array( $options ) ) {
+            $options = array();
+        }
+
         $defaults = self::default_options();
 
         // Redirection Type
@@ -542,6 +578,17 @@ final class Clickwhale_Settings {
 
         // Random Slug
         $options['random_slug'] = ! empty( $options['random_slug'] ) ? 1 : 0;
+
+        return $options;
+    }
+
+    public function sanitize_linkpages_options( $options ): array {
+        if ( ! is_array( $options ) ) {
+            $options = array();
+        }
+
+        // Show Credits
+        $options['show_linkpage_credits'] = ! empty( $options['show_linkpage_credits'] ) ? 1 : 0;
 
         return $options;
     }

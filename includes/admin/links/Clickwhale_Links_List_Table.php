@@ -30,14 +30,24 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $table_links = Helper::get_db_table_name( 'links' );
         $table_track = Helper::get_db_table_name( 'track' );
         $non_api_condition = '(links.created_by_api IS NULL OR links.created_by_api = 0)';
-        $orderby = sanitize_text_field( $orderby );
+
+        $allowed_columns = array_keys( $this->get_columns() );
+        $allowed_columns[] = 'id';
+        $orderby = in_array( $orderby, $allowed_columns, true ) ? $orderby : 'id';
+
+        if ( 'clicks_count' !== $orderby ) {
+            $orderby = 'links.' . $orderby;
+        }
+
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
         if ( empty( $params ) ) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             return (array) $wpdb->get_results(
                 "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
-                FROM $table_links links
-                LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id
+                FROM {$table_links} links
+                LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id
                 WHERE $non_api_condition
                 ORDER BY $orderby $order",
                 ARRAY_A
@@ -50,8 +60,11 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $prepared_args = array();
 
         $sql = "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
-        FROM $table_links links
-        LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM $table_track WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id ";
+        FROM {$table_links} links
+        LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id ";
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        $sql = apply_filters( 'clickwhale_links_list_table_sql', $sql, $table_links, $table_track );
 
         $is_filtered_created_by = ( 'all' !== $created_by );
 
@@ -93,15 +106,16 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             }
         }
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $sql .= "ORDER BY $orderby $order";
 
-        if ( ! empty( $prepared_args ) ) {
-            $query = $wpdb->prepare( $sql, ...$prepared_args );
-        } else {
-            $query = $sql;
+        if ( empty( $prepared_args ) ) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            return (array) $wpdb->get_results( $sql, ARRAY_A );
         }
 
-        return (array) $wpdb->get_results( $query, ARRAY_A );
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        return (array) $wpdb->get_results( $wpdb->prepare( $sql, ...$prepared_args ), ARRAY_A );
     }
 
     public function extra_tablenav( $which ) {
@@ -121,7 +135,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                         $category_id = intval( $category->id );
                         $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
                         ?>
-                        <option value="<?php echo $category_id; ?>" <?php echo $selected; ?>><?php echo esc_html( $category->title ); ?></option>
+                        <option value="<?php echo esc_attr( $category_id ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_html( $category->title ); ?></option>
                     <?php } ?>
                 </select>
                 <?php
@@ -462,13 +476,14 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     Helper::csrf_exception( $page_slug );
                 }
 
-                $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+                $post_id = $_GET['id'];
+                $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-                if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+                if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
                     Helper::csrf_exception( $page_slug );
                 }
 
-                $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+                $ids = is_array( $post_id ) ? $post_id : array( $post_id );
 
                 // Convert to integers, then remove zero values
                 $ids = array_filter( array_map( 'intval', $ids ) );
@@ -482,16 +497,18 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
                 $result = $wpdb->query(
+                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     $wpdb->prepare(
-                        "DELETE FROM $links_table WHERE id IN ($placeholders)",
+                        "DELETE FROM {$links_table} WHERE id IN ($placeholders)",
                         ...$ids
                     )
                 );
 
                 if ( false !== $result ) {
                     $wpdb->query(
+                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                         $wpdb->prepare(
-                            "DELETE FROM $meta_table WHERE link_id IN ($placeholders)",
+                            "DELETE FROM {$meta_table} WHERE link_id IN ($placeholders)",
                             ...$ids
                         )
                     );
@@ -507,13 +524,14 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     Helper::csrf_exception( $page_slug );
                 }
 
-                $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'reset-' . $this->_args['singular'];
+                $post_id = $_GET['id'];
+                $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'reset-' . $this->_args['singular'];
 
-                if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+                if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
                     Helper::csrf_exception( $page_slug );
                 }
 
-                $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+                $ids = is_array( $post_id ) ? $post_id : array( $post_id );
 
                 // Convert to integers, then remove zero values
                 $ids = array_filter( array_map( 'intval', $ids ) );
@@ -526,8 +544,9 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
                 $wpdb->query(
+                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     $wpdb->prepare(
-                        "DELETE FROM $table WHERE link_id IN ($placeholders)",
+                        "DELETE FROM {$table} WHERE link_id IN ($placeholders)",
                         ...$ids
                     )
                 );
@@ -591,7 +610,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $this->display_tablenav( 'top' );
         $this->screen->render_screen_reader_content( 'heading_list' );
         ?>
-        <table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+        <table class="wp-list-table <?php echo esc_attr( implode( ' ', $this->get_table_classes() ) ); ?>">
             <?php $this->print_table_description(); ?>
             <thead>
             <tr>
@@ -601,14 +620,14 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             <tbody id="the-list"
                 <?php
                 if ( $singular ) {
-                    echo " data-wp-lists='list:$singular'";
+                    echo " data-wp-lists='list:" . esc_attr( $singular ) . "'";
                 }
                 ?>
             >
             <?php
                 if ( ( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) && ! empty( $_GET['id'] ) ) {
                     $quick_edit = new Clickwhale_Links_Bulk_Edit( $_GET['id'], $this->get_column_count() );
-                    echo $quick_edit->render_quick_edit();
+                    echo wp_kses( $quick_edit->render_quick_edit(), Helper::get_allowed_tags() );
                 }
                 $this->display_rows_or_placeholder();
             ?>

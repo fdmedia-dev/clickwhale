@@ -2014,7 +2014,7 @@ table.tracking-codes .column-is_active {
 
 #poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__upgrade .inside ul li::before {
 	top: 3px;
-	content: url("https://s.w.org/images/core/emoji/15.0.3/svg/2b50.svg");
+	content: url("../images/star.svg");
 }
 
 #poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__docs .inside ul li::before {

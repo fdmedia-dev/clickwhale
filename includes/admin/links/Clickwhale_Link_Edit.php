@@ -108,7 +108,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                             <th scope="col"><?php esc_html_e( 'Actions', 'clickwhale' ); ?></th>
                         </tr>
                     </thead>
-                    <tbody><?php echo $html; ?></tbody>
+                    <tbody><?php echo wp_kses( $html, Helper::get_allowed_tags() ); ?></tbody>
                     <tfoot><tr><th colspan="5"><?php esc_html_e( 'This link could not be found on any posts or pages.', 'clickwhale' ); ?></th></tr></tfoot>
                 </table>
             </div>
@@ -129,13 +129,12 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
     }
 
     public function admin_scripts(): void {
-        $page_id = intval( $_GET['id'] ?? 0 );
         $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' );
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function(){
                 const
-                    pageID = +'<?php echo $page_id; ?>', // `string` to `integer`
+                    pageID = +'<?php echo intval( $_GET['id'] ?? 0 ); ?>', // `string` to `integer`
                     activeTab = '<?php echo sanitize_key( $_GET['tab'] ?? '' ); ?>',
                     urlSearchParams = new URLSearchParams(window.location.search),
                     slugNotice = <?php echo wp_json_encode(
@@ -317,23 +316,34 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         e.preventDefault();
                         generalTabNotValid();
 
+                        <?php
+                        /* translators: %s: matched resource ID (post/term ID) */
+                        $id_tpl = esc_html__( 'ID: %s', 'clickwhale' );
+
+                        /* translators: %s: matched resource type (e.g. post type or taxonomy) */
+                        $type_tpl = esc_html__( 'type: %s', 'clickwhale' );
+
+                        $wp_tpl = esc_html__( 'by WordPress (core, theme, plugin or rewrite rules).', 'clickwhale' );
+
+                        /* translators: 1: HTML link to the URL using this slug, 2: HTML string with ID and type */
+                        $slug_used_tpl = esc_html__( 'This slug is already used in %1$s', 'clickwhale' )
+                            . '<br>'
+                            . '%2$s'
+                            . '<br>'
+                            . esc_html__( 'Please enter another slug.', 'clickwhale' );
+                        ?>
                         const
                             baseUrl = <?php echo wp_json_encode( esc_url( home_url( '/' ) ) ); ?>,
-                            idTpl   = <?php echo wp_json_encode( esc_html__( 'ID: %s', 'clickwhale' ) ); ?>,
-                            typeTpl = <?php echo wp_json_encode( esc_html__( 'type: %s', 'clickwhale' ) ); ?>,
-                            wpTpl   = <?php echo wp_json_encode( esc_html__( 'by WordPress (core, theme, plugin or rewrite rules).', 'clickwhale' ) ); ?>,
-
+                            idTpl   = <?php echo wp_json_encode( $id_tpl ); ?>,
+                            typeTpl = <?php echo wp_json_encode( $type_tpl ); ?>,
+                            wpTpl   = <?php echo wp_json_encode( $wp_tpl ); ?>,
                             slugUrl    = baseUrl + slug.val(),
                             idTemplate = (slugMatch.id > 0) ? idTpl.replace('%s', `<b>${slugMatch.id}</b>, `) : '',
-                            slugType   = (slugMatch.id > 0) ? typeTpl.replace('%s', `<b>${slugMatch.type}</b>.`) : wpTpl;
+                            slugType   = (slugMatch.id > 0) ? typeTpl.replace('%s', `<b>${slugMatch.type}</b>.`) : wpTpl
+                        ;
 
                         slug.addClass('error')
-                            .next().html(<?php echo wp_json_encode(
-                                esc_html__( 'This slug is already used in %1$s', 'clickwhale' ) .
-                                '<br>' .
-                                '%2$s' .
-                                '<br>' .
-                                esc_html__( 'Please enter another slug.', 'clickwhale' ) ); ?>
+                            .next().html(<?php echo wp_json_encode( $slug_used_tpl ); ?>
                                 .replace('%1$s', `<b><a href="${slugUrl}" target="_blank">${slugUrl}</a></b>`)
                                 .replace('%2$s', `${idTemplate}${slugType}`)
                             )

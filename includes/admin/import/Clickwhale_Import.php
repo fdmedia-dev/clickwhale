@@ -46,7 +46,7 @@ class Clickwhale_Import {
         $text = esc_html__( 'This tool allows you to import links to your site from a CSV file.', 'clickwhale' );
         $link = sprintf(
             '<a href="%1$s" rel="noopener">%2$s</a>',
-            esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/clickwhale-example-import.csv' ),
+            esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/clickwhale-example-import.csv',
             esc_html__( 'Download Example CSV', 'clickwhale' )
         );
 

@@ -52,7 +52,7 @@ class Tracking_Codes_Helper extends Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( 'tracking_codes' );
 
-        return (array) $wpdb->get_results( "SELECT * FROM $table WHERE is_active = '1' OR is_active = 1", ARRAY_A );
+        return (array) $wpdb->get_results( "SELECT * FROM {$table} WHERE is_active = '1' OR is_active = 1", ARRAY_A );
     }
 
     /**
@@ -60,11 +60,17 @@ class Tracking_Codes_Helper extends Helper_Abstract {
      * @return string
      */
     public static function get_limitation_notice(): string {
-        return sprintf(
-            esc_html__( 'Currently, a maximum of %d %s can be active at the same time.', 'clickwhale' ),
-            self::get_active_limit(),
-            ( self::get_active_limit() === 1 ) ? esc_html__( 'tracking code', 'clickwhale' ) : esc_html__( 'tracking codes', 'clickwhale' )
+        $count = self::get_active_limit();
+
+        /* translators: %1$d: maximum number of links */
+        $text = _n(
+            'Currently, a maximum of %1$d tracking code can be added.',
+            'Currently, a maximum of %1$d tracking codes can be added.',
+            $count,
+            'clickwhale'
         );
+
+        return sprintf( $text, intval( $count ) );
     }
 
     public static function get_default_post_types() {

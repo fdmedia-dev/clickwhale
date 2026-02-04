@@ -88,9 +88,15 @@ class Clickwhale_Migration_Notice {
      */
     public function migration_notice() {
         ?>
-        <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo $this->migrant; ?>-migrate">
+        <div class="notice notice-info clickwhale-notice clickwhale-notice-<?php echo esc_attr( $this->migrant ); ?>-migrate">
             <p>
-                <span> <?php printf( __( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.', 'clickwhale' ), $this->migrant_full ); ?></span>
+                <span><?php
+                    printf(
+                        /* translators: %1$s: the full name of the migrated plugin */
+                        esc_html__( 'You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here.', 'clickwhale' ),
+                        esc_html( $this->migrant_full )
+                    );
+                ?></span>
                 <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools' ) ); ?>"
                    class="button button-primary"><?php esc_html_e( 'Start Migration', 'clickwhale' ); ?></a>
                 <a href="#" class="button button-dismiss"><?php esc_html_e( 'Not now', 'clickwhale' ); ?></a>
@@ -105,12 +111,27 @@ class Clickwhale_Migration_Notice {
      */
     public function deactive_notice() {
         ?>
-        <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_html( $this->migrant ); ?>-deactive">
+        <div class="notice notice-error clickwhale-notice clickwhale-notice-<?php echo esc_attr( $this->migrant ); ?>-deactive">
             <p>
-                <span> <?php printf( esc_html__( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.', 'clickwhale' ), $this->migrant_full ); ?></span>
+                <span><?php
+                    printf(
+                        /* translators: %1$s: the full name of the migrated plugin */
+                        esc_html__( 'All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website.', 'clickwhale' ),
+                        esc_html( $this->migrant_full )
+                    );
+                ?></span>
                 <a href="#"
-                   class="button button-primary deactive"><?php printf( esc_html__( 'Deactivate %1$s', 'clickwhale' ), $this->migrant_full ); ?></a>
-                <a href="#" class="button button-dismiss"><?php esc_html_e( 'Leave it active', 'clickwhale' ); ?></a>
+                   class="button button-primary deactive"
+                ><?php
+                    printf(
+                        /* translators: %1$s: the full name of the plugin to deactivate */
+                        esc_html__( 'Deactivate %1$s', 'clickwhale' ),
+                        esc_html( $this->migrant_full )
+                    );
+                ?></a>
+                <a href="#"
+                   class="button button-dismiss"
+                ><?php esc_html_e( 'Leave it active', 'clickwhale' ); ?></a>
             </p>
         </div>
         <?php

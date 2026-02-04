@@ -3,7 +3,12 @@
 use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
 use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
 
-Linkpages_Helper::get_limitation_error( $_GET['id'] );
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+$id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+Linkpages_Helper::get_limitation_error( $id );
 
 $linkpage = clickwhale()->linkpage;
 $item = $linkpage->get_item( $_GET );
@@ -71,15 +76,18 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
     <?php
-    echo Helper::render_heading(
-        array(
-            'name' => __( 'Link Page', 'clickwhale' ),
-            'is_edit' => $item_id !== 0,
-            'link_to_list' => CLICKWHALE_SLUG . '-linkpages',
-            'link_to_add' => CLICKWHALE_SLUG . '-edit-linkpage',
-            'link_to_view' => $linkpage_url,
-            'is_limit' => Linkpages_Helper::get_count() >= Linkpages_Helper::get_limit()
-        )
+    echo wp_kses(
+        Helper::render_heading(
+            array(
+                'name' => esc_html__( 'Link Page', 'clickwhale' ),
+                'is_edit' => $item_id !== 0,
+                'link_to_list' => esc_attr( CLICKWHALE_SLUG ) . '-linkpages',
+                'link_to_add' => esc_attr( CLICKWHALE_SLUG ) . '-edit-linkpage',
+                'link_to_view' => esc_url( $linkpage_url ),
+                'is_limit' => Linkpages_Helper::get_count() >= Linkpages_Helper::get_limit()
+            )
+        ),
+        Helper::get_allowed_tags()
     );
 
     $linkpage->show_message( $item_id );
@@ -87,14 +95,14 @@ do_action( 'clickwhale_admin_banner' );
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
-    <form id="form_edit_<?php echo $linkpage->instance_single; ?>"
+    <form id="form_edit_<?php echo esc_attr( $linkpage->instance_single ); ?>"
           class="clickwhale_form_edit"
           method="POST"
           action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
     >
-        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $linkpage->instance_single ?>" />
+        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo esc_attr( $linkpage->instance_single ); ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
-        <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
+        <input type="hidden" name="id" value="<?php echo intval( $item_id ); ?>" />
 
         <div id="post-body-content">
             <div id="clickwhale-tabs" class="clickwhale-tabs">
@@ -119,16 +127,19 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo Helper::render_control(
-                                    array(
-                                        'control'     => 'input',
-                                        'id'          => 'title',
-                                        'name'        => 'title',
-                                        'type'        => 'text',
-                                        'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                        'placeholder' => __( 'Link Page Title', 'clickwhale' ),
-                                        'required'    => true
-                                    )
+                                echo wp_kses(
+                                    Helper::render_control(
+                                        array(
+                                            'control'     => 'input',
+                                            'id'          => 'title',
+                                            'name'        => 'title',
+                                            'type'        => 'text',
+                                            'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                            'placeholder' => esc_attr__( 'Link Page Title', 'clickwhale' ),
+                                            'required'    => true
+                                        )
+                                    ),
+                                    Helper::get_allowed_tags()
                                 );
                                 ?>
                                 <p id="cw-title--description"></p>
@@ -136,16 +147,19 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
 
                         <?php
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'Description', 'clickwhale' ),
-                                'control'     => 'textarea',
-                                'id'          => 'description',
-                                'name'        => 'description',
-                                'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                                'placeholder' => __( 'Description', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'Description', 'clickwhale' ),
+                                    'control'     => 'textarea',
+                                    'id'          => 'description',
+                                    'name'        => 'description',
+                                    'value'       => esc_attr( wp_unslash( $item['description'] ) ),
+                                    'placeholder' => esc_attr__( 'Description', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
                         ?>
 
@@ -155,16 +169,19 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo Helper::render_control(
-                                    array(
-                                        'control'     => 'input',
-                                        'id'          => 'cw-slug',
-                                        'name'        => 'slug',
-                                        'type'        => 'text',
-                                        'value'       => esc_attr( $slug ),
-                                        'placeholder' => __( 'Link Page Slug', 'clickwhale' ),
-                                        'required'    => true
-                                    )
+                                echo wp_kses(
+                                    Helper::render_control(
+                                        array(
+                                            'control'     => 'input',
+                                            'id'          => 'cw-slug',
+                                            'name'        => 'slug',
+                                            'type'        => 'text',
+                                            'value'       => esc_attr( $slug ),
+                                            'placeholder' => esc_attr__( 'Link Page Slug', 'clickwhale' ),
+                                            'required'    => true
+                                        )
+                                    ),
+                                    Helper::get_allowed_tags()
                                 );
                                 ?>
                                 <p id="cw-slug--description"></p>
@@ -173,7 +190,7 @@ do_action( 'clickwhale_admin_banner' );
                                    title="<?php esc_attr_e( 'Copy url', 'clickwhale' ); ?>"
                                 ><?php
                                     echo esc_html__( 'URL Preview', 'clickwhale' ) . ': ' . esc_html( trailingslashit( home_url() ) );
-                                    ?><span><?php echo ( $slug ) ? esc_html( trailingslashit( $slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#copy"></use></svg>
+                                    ?><span><?php echo ( $slug ) ? esc_html( trailingslashit( $slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#copy"></use></svg>
                                 </p>
                             </td>
                         </tr>
@@ -192,7 +209,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <a href="#"
                                            class="button cw-linkpage-image-remove"
                                         ><?php esc_html_e( 'Remove image', 'clickwhale' ); ?></a>
-                                        <input type="hidden" name="logo" value="<?php echo $logo_id; ?>" />
+                                        <input type="hidden" name="logo" value="<?php echo esc_attr( $logo_id ); ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="button cw-linkpage-image-upload"
@@ -223,7 +240,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <a href="#"
                                            class="button cw-linkpage-image-remove"
                                         ><?php esc_html_e( 'Remove Site Icon', 'clickwhale' ); ?></a>
-                                        <input type="hidden" name="favicon" value="<?php echo $favicon_id; ?>" />
+                                        <input type="hidden" name="favicon" value="<?php echo esc_attr( $favicon_id ); ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="button cw-linkpage-image-upload"
@@ -247,15 +264,18 @@ do_action( 'clickwhale_admin_banner' );
                             <td>
                                 <?php if ( current_theme_supports( 'menus' ) ) {
                                     $legals = $linkpage->get_link_meta( $item_id, 'legals_menu_id' );
-                                    echo Helper::render_control(
-                                        array(
-                                            'row_label' => __( 'Legals', 'clickwhale' ),
-                                            'control'   => 'select',
-                                            'id'        => 'cw-legals',
-                                            'name'      => 'meta__legals_menu_id',
-                                            'value'     => $legals['meta_value'] ?? 0,
-                                            'options'   => $linkpage->get_nav_menus()
-                                        )
+                                    echo wp_kses(
+                                        Helper::render_control(
+                                            array(
+                                                'row_label' => esc_html__( 'Legals', 'clickwhale' ),
+                                                'control'   => 'select',
+                                                'id'        => 'cw-legals',
+                                                'name'      => 'meta__legals_menu_id',
+                                                'value'     => esc_attr( $legals['meta_value'] ?? 0 ),
+                                                'options'   => $linkpage->get_nav_menus()
+                                            )
+                                        ),
+                                        Helper::get_allowed_tags()
                                     );
                                     ?>
                                     <p class="description">
@@ -265,7 +285,7 @@ do_action( 'clickwhale_admin_banner' );
                                     </p>
                                     <?php
                                 } else {
-                                    esc_html_e( 'Your theme does not support navigation menus or widgets.' );
+                                    esc_html_e( 'Your theme does not support navigation menus or widgets.', 'clickwhale' );
                                 }
                                 ?>
                             </td>
@@ -315,11 +335,14 @@ do_action( 'clickwhale_admin_banner' );
                                 if ( $links ) {
                                     $template = new Clickwhale_Linkpage_Content_Templates();
                                     foreach ( $links as $link ) {
-                                        $template->get_template(
-                                            sanitize_text_field( $link['type'] ),
-                                            true,
-                                            false,
-                                            array( 'data' => $link, 'linkpage_id' => $item_id )
+                                        echo wp_kses(
+                                            $template->get_template(
+                                                sanitize_key( $link['type'] ),
+                                                false,
+                                                false,
+                                                array( 'data' => $link, 'linkpage_id' => intval( $item_id ) )
+                                            ),
+                                            Helper::get_allowed_tags()
                                         );
                                     }
                                 }
@@ -327,8 +350,8 @@ do_action( 'clickwhale_admin_banner' );
                             </div>
                             <?php if ( $links_limit ) { ?>
                                 <div class="cw-links-info">
-                                    <?php echo Linkpages_Helper::get_links_limitation_notice(); ?>
-                                    <?php echo Helper::get_pro_message(); ?>
+                                    <?php echo esc_html( Linkpages_Helper::get_links_limitation_notice() ); ?>
+                                    <?php echo wp_kses( Helper::get_pro_message(), Helper::get_allowed_tags() ); ?>
                                 </div>
                             <?php } ?>
                         </div>
@@ -458,31 +481,37 @@ do_action( 'clickwhale_admin_banner' );
                         <caption hidden><?php esc_html_e( 'Link Page SEO Options', 'clickwhale' ); ?></caption>
                         <tbody>
                         <?php
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'SEO Title', 'clickwhale' ),
-                                'control'     => 'input',
-                                'id'          => 'socialSeoTitle',
-                                'name'        => 'social[seo][title]',
-                                'type'        => 'text',
-                                'value'       => wp_unslash( $seoTitle ),
-                                'placeholder' => '',
-                                'description' => esc_html__( 'Set page SEO title', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'SEO Title', 'clickwhale' ),
+                                    'control'     => 'input',
+                                    'id'          => 'socialSeoTitle',
+                                    'name'        => 'social[seo][title]',
+                                    'type'        => 'text',
+                                    'value'       => esc_attr( wp_unslash( $seoTitle ) ),
+                                    'placeholder' => '',
+                                    'description' => esc_html__( 'Set page SEO title', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'SEO Description', 'clickwhale' ),
-                                'control'     => 'input',
-                                'id'          => 'socialSeoDescription',
-                                'name'        => 'social[seo][description]',
-                                'type'        => 'text',
-                                'value'       => wp_unslash( $seoDescription ),
-                                'placeholder' => '',
-                                'description' => esc_html__( 'Set page SEO description', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'SEO Description', 'clickwhale' ),
+                                    'control'     => 'input',
+                                    'id'          => 'socialSeoDescription',
+                                    'name'        => 'social[seo][description]',
+                                    'type'        => 'text',
+                                    'value'       => wp_unslash( $seoDescription ),
+                                    'placeholder' => '',
+                                    'description' => esc_html__( 'Set page SEO description', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
                         ?>
 
@@ -496,17 +525,18 @@ do_action( 'clickwhale_admin_banner' );
                                     ?>
                                     <div class="cw-links-info">
                                         <?php
-                                        printf(
-                                            wp_kses(
-                                                __( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%1$s" target="_blank">reading settings!</a>', 'clickwhale' ),
-                                                array(
-                                                    'a' => array(
-                                                        'href'   => array(),
-                                                        'target' => array( '_blank' )
-                                                    )
-                                                )
+                                        echo wp_kses(
+                                            sprintf(
+                                                /* translators: %s: URL to WordPress Reading Settings screen */
+                                                __( 'Search engines are not allowed to index this site. See the option "Search engine visibility" in <a href="%s" target="_blank">reading settings!</a>', 'clickwhale' ),
+                                                esc_url( admin_url( 'options-reading.php' ) )
                                             ),
-                                            esc_url( admin_url( 'options-reading.php' ) )
+                                            array(
+                                                'a' => array(
+                                                    'href'   => array(),
+                                                    'target' => array( '_blank' )
+                                                )
+                                            )
                                         );
                                         ?>
                                     </div>
@@ -555,31 +585,37 @@ do_action( 'clickwhale_admin_banner' );
                         <caption hidden><?php esc_html_e( 'Link Page Open Graph Options', 'clickwhale' ); ?></caption>
                         <tbody>
                         <?php
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'Open Graph Title (Optional)', 'clickwhale' ),
-                                'control'     => 'input',
-                                'id'          => 'socialOGTitle',
-                                'name'        => 'social[seo][ogtitle]',
-                                'type'        => 'text',
-                                'value'       => wp_unslash( $seoOGTitle ),
-                                'placeholder' => wp_unslash( $seoTitle ),
-                                'description' => esc_html__( 'The title of your page for social network. By default this is Link Page title.', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'Open Graph Title (Optional)', 'clickwhale' ),
+                                    'control'     => 'input',
+                                    'id'          => 'socialOGTitle',
+                                    'name'        => 'social[seo][ogtitle]',
+                                    'type'        => 'text',
+                                    'value'       => esc_attr( wp_unslash( $seoOGTitle ) ),
+                                    'placeholder' => esc_attr( wp_unslash( $seoTitle ) ),
+                                    'description' => esc_html__( 'The title of your page for social network. By default this is Link Page title.', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'Open Graph Description (Optional)', 'clickwhale' ),
-                                'control'     => 'input',
-                                'id'          => 'socialOGDescription',
-                                'name'        => 'social[seo][ogdescription]',
-                                'type'        => 'text',
-                                'value'       => wp_unslash( $seoOGDescription ),
-                                'placeholder' => wp_unslash( $seoDescription ),
-                                'description' => esc_html__( 'The description of your page for social network. By default this is SEO description.', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'Open Graph Description (Optional)', 'clickwhale' ),
+                                    'control'     => 'input',
+                                    'id'          => 'socialOGDescription',
+                                    'name'        => 'social[seo][ogdescription]',
+                                    'type'        => 'text',
+                                    'value'       => esc_attr( wp_unslash( $seoOGDescription ) ),
+                                    'placeholder' => esc_attr( wp_unslash( $seoDescription ) ),
+                                    'description' => esc_html__( 'The description of your page for social network. By default this is SEO description.', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
                         ?>
 
@@ -599,7 +635,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <a href="#"
                                            class="button cw-linkpage-image-remove"
                                         ><?php esc_html_e( 'Remove image', 'clickwhale' ); ?></a>
-                                        <input type="hidden" name="social[seo][ogimage]" value="<?php echo $seoOGImageId; ?>" />
+                                        <input type="hidden" name="social[seo][ogimage]" value="<?php echoesc_attr( $seoOGImageId ); ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="button cw-linkpage-image-upload"
@@ -673,15 +709,15 @@ do_action( 'clickwhale_admin_banner' );
                             <input type="search" name="icon-picker--search" />
                             <span>
                             <svg class="feather">
-                                <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR; ?>/images/feather-sprite.svg#search"></use>
+                                <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#search"></use>
                             </svg>
                         </span>
                         </div>
                         <div class="icon-picker--icons-wrap">
                             <?php foreach ( $images as $image ) { ?>
                                 <button type="button"
-                                        data-icon="<?php echo $image; ?>"
-                                ><ion-icon name="<?php echo $image; ?>"></ion-icon></button>
+                                        data-icon="<?php echo esc_attr( $image ); ?>"
+                                ><ion-icon name="<?php echo esc_attr( $image ); ?>"></ion-icon></button>
                             <?php } ?>
                         </div>
                     </div>

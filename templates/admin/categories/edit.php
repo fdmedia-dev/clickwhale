@@ -1,9 +1,12 @@
 <?php
-global $wpdb;
-
 use clickwhale\includes\helpers\{Helper, Categories_Helper};
 
-Categories_Helper::get_limitation_error( $_GET['id'] );
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+$id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+Categories_Helper::get_limitation_error( $id );
 
 $category = clickwhale()->category;
 $item = $category->get_item( $_GET );
@@ -15,14 +18,17 @@ do_action( 'clickwhale_admin_banner' );
 ?>
 <div class="wrap">
     <?php
-    echo Helper::render_heading(
-        array(
-            'name'         => __( 'Category', 'clickwhale' ),
-            'is_edit'      => $item_id !== 0,
-            'link_to_list' => CLICKWHALE_SLUG . '-categories',
-            'link_to_add'  => CLICKWHALE_SLUG . '-edit-category',
-            'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
-        )
+    echo wp_kses(
+        Helper::render_heading(
+            array(
+                'name'         => esc_html__( 'Category', 'clickwhale' ),
+                'is_edit'      => $item_id !== 0,
+                'link_to_list' => esc_attr( CLICKWHALE_SLUG ) . '-categories',
+                'link_to_add'  => esc_attr( CLICKWHALE_SLUG ) . '-edit-category',
+                'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
+            )
+        ),
+        Helper::get_allowed_tags()
     );
 
     $category->show_message( $item_id );
@@ -30,14 +36,14 @@ do_action( 'clickwhale_admin_banner' );
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
-    <form id="form_edit_<?php echo $category->instance_single; ?>"
+    <form id="form_edit_<?php echo esc_attr( $category->instance_single ); ?>"
           class="clickwhale_form_edit"
           method="POST"
           action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
-        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo $category->instance_single; ?>" />
+        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo esc_attr( $category->instance_single ); ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
-        <input type="hidden" name="id" value="<?php echo $item_id; ?>" />
+        <input type="hidden" name="id" value="<?php echo intval( $item_id ); ?>" />
 
         <div class="metabox-holder" id="poststuff">
             <div id="post-body">
@@ -51,16 +57,19 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo Helper::render_control(
-                                    array(
-                                        'control'     => 'input',
-                                        'id'          => 'title',
-                                        'name'        => 'title',
-                                        'type'        => 'text',
-                                        'value'       => esc_attr( wp_unslash( $item['title'] ) ),
-                                        'placeholder' => __( 'e.g. Affiliate links', 'clickwhale' ),
-                                        'required'    => true
-                                    )
+                                echo wp_kses(
+                                    Helper::render_control(
+                                        array(
+                                            'control'     => 'input',
+                                            'id'          => 'title',
+                                            'name'        => 'title',
+                                            'type'        => 'text',
+                                            'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                            'placeholder' => esc_attr__( 'e.g. Affiliate links', 'clickwhale' ),
+                                            'required'    => true
+                                        )
+                                    ),
+                                    Helper::get_allowed_tags()
                                 );
                                 ?>
                                 <p id="cw-title--description"></p>
@@ -73,16 +82,19 @@ do_action( 'clickwhale_admin_banner' );
                             </th>
                             <td>
                                 <?php
-                                echo Helper::render_control(
-                                    array(
-                                        'control'     => 'input',
-                                        'id'          => 'slug',
-                                        'name'        => 'slug',
-                                        'type'        => 'text',
-                                        'value'       => esc_attr( $item['slug'] ),
-                                        'placeholder' => __( 'e.g. affiliate-links', 'clickwhale' ),
-                                        'required'    => false
-                                    )
+                                echo wp_kses(
+                                    Helper::render_control(
+                                        array(
+                                            'control'     => 'input',
+                                            'id'          => 'slug',
+                                            'name'        => 'slug',
+                                            'type'        => 'text',
+                                            'value'       => esc_attr( $item['slug'] ),
+                                            'placeholder' => esc_attr__( 'e.g. affiliate-links', 'clickwhale' ),
+                                            'required'    => false
+                                        )
+                                    ),
+                                    Helper::get_allowed_tags()
                                 );
                                 ?>
                                 <p id="cw-slug--description"></p>
@@ -90,17 +102,20 @@ do_action( 'clickwhale_admin_banner' );
                         </tr>
 
                         <?php
-                        echo Helper::render_control(
-                            array(
-                                'row_label'   => __( 'Description', 'clickwhale' ),
-                                'control'     => 'textarea',
-                                'id'          => 'description',
-                                'name'        => 'description',
-                                'value'       => esc_html( wp_unslash( $item['description'] ) ),
-                                'placeholder' => __( 'Your comment here', 'clickwhale' ),
-                                'description' => esc_html__( 'Optional comment for the category', 'clickwhale' )
+                        echo wp_kses(
+                            Helper::render_control(
+                                array(
+                                    'row_label'   => esc_html__( 'Description', 'clickwhale' ),
+                                    'control'     => 'textarea',
+                                    'id'          => 'description',
+                                    'name'        => 'description',
+                                    'value'       => esc_html( wp_unslash( $item['description'] ) ),
+                                    'placeholder' => esc_attr__( 'Your comment here', 'clickwhale' ),
+                                    'description' => esc_html__( 'Optional comment for the category', 'clickwhale' )
+                                ),
+                                true
                             ),
-                            true
+                            Helper::get_allowed_tags()
                         );
                         ?>
                         </tbody>

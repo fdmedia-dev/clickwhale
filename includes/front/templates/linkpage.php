@@ -2,6 +2,7 @@
 
 use clickwhale\includes\front\Clickwhale_Public_Linkpage;
 use clickwhale\includes\front\tracking\Clickwhale_View_Track;
+use clickwhale\includes\helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,9 +20,9 @@ $user_id = get_current_user_id();
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <link rel="canonical" href="<?php echo $linkpage->get_url(); ?>">
+    <link rel="canonical" href="<?php echo esc_url( $linkpage->get_url() ); ?>">
     <?php wp_head(); ?>
-    <?php echo $linkpage->get_styles(); ?>
+    <style><?php echo esc_html( $linkpage->get_styles() ); ?></style>
     <?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
 </head>
 <body <?php body_class(); ?>>
@@ -29,21 +30,20 @@ $user_id = get_current_user_id();
 <div class="cw-linkpage-public--wrap">
     <div class="cw-linkpage-public--top">
         <div class="cw-linkpage-public--header">
-            <?php echo $linkpage->get_logo(); ?>
-            <div class="cw-linkpage-public--title"><?php echo $linkpage->get_title(); ?></div>
+            <?php echo wp_kses( $linkpage->get_logo(), Helper::get_allowed_tags() ); ?>
+            <div class="cw-linkpage-public--title"><?php echo esc_html( $linkpage->get_title() ); ?></div>
             <?php if ( $linkpage->get_desc() ) { ?>
-                <div class="cw-linkpage-public--description"><?php echo $linkpage->get_desc(); ?></div>
+                <div class="cw-linkpage-public--description"><?php echo wp_kses_post( $linkpage->get_desc() ); ?></div>
             <?php } ?>
         </div>
-        <div class="cw-linkpage-public--links"><?php echo $linkpage->get_links(); ?></div>
-
+        <div class="cw-linkpage-public--links"><?php echo wp_kses( $linkpage->get_links(), Helper::get_allowed_tags() ); ?></div>
     </div>
     <div class="cw-linkpage-public--bottom">
         <?php
         if ( $linkpage->get_legals_menu() ) {
-            echo $linkpage->get_legals_menu();
+            echo wp_kses( $linkpage->get_legals_menu(), Helper::get_allowed_tags() );
         }
-        echo $linkpage->get_credits_link();
+        echo wp_kses( $linkpage->get_credits_link(), Helper::get_allowed_tags() );
         ?>
     </div>
 </div>

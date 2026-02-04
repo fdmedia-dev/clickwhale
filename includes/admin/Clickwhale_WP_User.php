@@ -1,7 +1,6 @@
 <?php
 namespace clickwhale\includes\admin;
 
-use WP_User;
 use clickwhale\includes\helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,7 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * class Clickwhale_WP_User
  *
- * WP User information and is user able to be tracked
+ * WP User information and is user able to be tracked.
+ *
+ * In some cases trying to access WP_User was too early and did not return a valid user instance,
+ * so it is no longer called in the constructor
  *
  * @since 1.0.0
  *
@@ -19,19 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @subpackage Clickwhale/public
  */
 class Clickwhale_WP_User {
-
-    /**
-     * @var WP_User|null
-     */
-    private ?WP_User $user;
-
-    public function __construct() {
-        $this->user = wp_get_current_user();
-    }
-
-    public function get_user(): ?WP_User {
-        return $this->user;
-    }
 
     public function get_all_roles(): array {
         global $wp_roles;
@@ -70,11 +59,12 @@ class Clickwhale_WP_User {
      * @since  1.0.0
      */
     public function get_current_user_roles(): array {
-        if ( ! $this->user->exists() ) {
+        $user = wp_get_current_user();
+        if ( ! $user->exists() ) {
             return array();
         }
 
-        return $this->user->roles;
+        return $user->roles;
     }
 
     /**
@@ -83,15 +73,16 @@ class Clickwhale_WP_User {
      * @return bool
      */
     public function is_current_user_role_access_granted(): bool {
-        if ( ! $this->user->exists() ) {
+        $user = wp_get_current_user();
+        if ( ! $user->exists() ) {
             return false;
         }
 
-        if ( $this->user->has_cap( 'manage_options' ) ) {
+        if ( $user->has_cap( 'manage_options' ) ) {
             return true;
         }
 
-        $current_user_roles = $this->get_current_user_roles();
+        $current_user_roles = $user->roles;
 
         if ( in_array( 'administrator', $current_user_roles ) ) {
             return true;
@@ -121,7 +112,11 @@ class Clickwhale_WP_User {
             return false;
         }
 
-        $current_user_roles = $this->get_current_user_roles();
+        $user = wp_get_current_user();
+        if ( ! $user->exists() ) {
+            return false;
+        }
+        $current_user_roles = $user->roles;
 
         if ( empty( $current_user_roles ) ) {
             return false;

@@ -65,7 +65,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
             <td>
                 <fieldset>
                     <?php
-                    $is_pro_label   = Helper::admin_pro_label();
+                    $is_pro_label   = apply_filters( 'clickwhale_admin_pro_label', '<em class="clickwhale-pro-label">PRO</em>' );
                     $radio_class    = $is_pro_label ? 'disabled' : '';
                     $is_disabled    = $is_pro_label ? 'disabled="disabled"' : '';
                     $conversion_val = esc_attr( $item['position']['conversion'] ?? '' );
@@ -79,33 +79,33 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                 <?php checked( $conversion_val ?? 'standard', 'standard' ); ?>
                             >
                             <label for="conversionStandard">
-                                <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-wordpress-dark.svg'; ?>"
+                                <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-wordpress-dark.svg'; ?>"
                                      alt="WordPress">
                                 <span><?php esc_html_e( 'Standard code tracking', 'clickwhale' ); ?></span>
                             </label>
                         </div>
 
                         <?php if ( $is_woo ) { ?>
-                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+                            <div class="radio-card radio-conversion <?php echo esc_attr( $radio_class ); ?>">
                                 <?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
-                                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
+                                            <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/feather-sprite.svg#lock'; ?>"></use>
                                         </svg>
                                     </div>
-                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+                                    <div class="radio-card--pro"><?php echo wp_kses( $is_pro_label, Helper::get_allowed_tags() ); ?></div>
                                 <?php } ?>
                                 <input id="conversionProduct"
                                        type="radio"
                                        name="position[conversion]"
                                        value="product"
                                     <?php
-                                    echo $is_disabled;
+                                    echo esc_attr( $is_disabled );
                                     checked( $conversion_val, 'product' );
                                     ?>
                                 >
                                 <label for="conversionProduct">
-                                    <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
+                                    <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
                                          alt="WooCommerce">
                                     <span><?php esc_html_e( 'WooCommerce conversion', 'clickwhale' ); ?></span>
                                 </label>
@@ -113,26 +113,26 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                         <?php } ?>
 
                         <?php if ( $is_edd ) { ?>
-                            <div class="radio-card radio-conversion <?php echo $radio_class ?>">
+                            <div class="radio-card radio-conversion <?php echo esc_attr( $radio_class ); ?>">
                                 <?php if ( $is_pro_label ) { ?>
                                     <div class="radio-card--lock">
                                         <svg class="feather">
-                                            <use href="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR ?>/images/feather-sprite.svg#lock"></use>
+                                            <use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/feather-sprite.svg#lock'; ?>"></use>
                                         </svg>
                                     </div>
-                                    <div class="radio-card--pro"><?php echo $is_pro_label ?></div>
+                                    <div class="radio-card--pro"><?php echo wp_kses( $is_pro_label, Helper::get_allowed_tags() ); ?></div>
                                 <?php } ?>
                                 <input id="conversionDownload"
                                        type="radio"
                                        name="position[conversion]"
                                        value="download"
                                     <?php
-                                    echo $is_disabled;
+                                    echo esc_attr( $is_disabled );
                                     checked( $conversion_val, 'download' );
                                     ?>
                                 >
                                 <label for="conversionDownload">
-                                    <img src="<?php echo CLICKWHALE_ADMIN_ASSETS_DIR . '/images/vendors/logo-edd-short-dark.svg'; ?>"
+                                    <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-edd-short-dark.svg'; ?>"
                                          alt="Easy Digital Downloads">
                                     <span><?php esc_html_e( 'EDD conversion', 'clickwhale' ); ?></span>
                                 </label>

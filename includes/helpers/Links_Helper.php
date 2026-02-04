@@ -31,11 +31,17 @@ class Links_Helper extends Helper_Abstract {
      * @since 1.4.0
      */
     public static function get_limitation_notice(): string {
-        return sprintf(
-            esc_html__( 'Currently, a maximum of %d %s can be added.', 'clickwhale' ),
-            self::get_limit(),
-            ( self::get_limit() === 1 ) ? esc_html__( 'link', 'clickwhale' ) : esc_html__( 'links', 'clickwhale' )
+        $count = self::get_limit();
+
+        /* translators: %1$d: maximum number of link pages */
+        $text = _n(
+            'Currently, a maximum of %1$d link can be added.',
+            'Currently, a maximum of %1$d links can be added.',
+            $count,
+            'clickwhale'
         );
+
+        return sprintf( $text, intval( $count ) );
     }
 
     /**
@@ -69,7 +75,7 @@ class Links_Helper extends Helper_Abstract {
 
         return (array) $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM $table
+                "SELECT * FROM {$table}
                 WHERE link_id=%d
                 AND meta_key=%s",
                 $link_id,
@@ -120,6 +126,8 @@ class Links_Helper extends Helper_Abstract {
     }
 
     /**
+     * Fetch links data with click counts.
+     *
      * @param string $clauses
      * @param array $params
      * @return string
@@ -131,10 +139,10 @@ class Links_Helper extends Helper_Abstract {
 
         return $wpdb->prepare(
             "SELECT links.*, COALESCE(track.clicks,0) AS clicks_count
-            FROM $table_links links
+            FROM {$table_links} links
             LEFT JOIN (
               SELECT link_id, COUNT(*) clicks
-              FROM $table_track
+              FROM {$table_track}
               WHERE event_type='click'
               GROUP BY link_id
             ) track ON links.id = track.link_id
@@ -150,7 +158,8 @@ class Links_Helper extends Helper_Abstract {
         global $wpdb;
 
         return (array) $wpdb->get_results(
-            self::query_links_with_click_data( 'ORDER BY links.id DESC' ),
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            self::query_links_with_click_data( "ORDER BY links.id DESC" ),
             ARRAY_A
         );
     }
@@ -163,7 +172,8 @@ class Links_Helper extends Helper_Abstract {
         global $wpdb;
 
         return (array) $wpdb->get_row(
-            self::query_links_with_click_data( 'WHERE links.id = %d LIMIT 1', array( $id ) ),
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            self::query_links_with_click_data( "WHERE links.id = %d LIMIT 1", array( $id ) ),
             ARRAY_A
         );
     }
@@ -176,7 +186,8 @@ class Links_Helper extends Helper_Abstract {
         global $wpdb;
 
         return (array) $wpdb->get_row(
-            self::query_links_with_click_data( 'WHERE links.slug = %s LIMIT 1', array( $slug ) ),
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            self::query_links_with_click_data( "WHERE links.slug = %s LIMIT 1", array( $slug ) ),
             ARRAY_A
         );
     }

@@ -220,13 +220,14 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
             Helper::csrf_exception( $page_slug );
         }
 
-        $nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+        $post_id = $_GET['id'];
+        $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-        if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
-        $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+        $ids = is_array( $post_id ) ? $post_id : array( $post_id );
 
         // Convert to integers, then remove zero values
         $ids = array_filter( array_map( 'intval', $ids ) );
@@ -241,7 +242,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 
         $wpdb->query(
             $wpdb->prepare(
-                "DELETE FROM $table WHERE id IN ($placeholders)",
+                "DELETE FROM {$table} WHERE id IN ($placeholders)",
                 ...$ids
             )
         );
@@ -257,7 +258,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
         $columns     = $this->get_columns();
         $hidden      = array();
         $sortable    = $this->get_sortable_columns();
-        $total_items = intval( $wpdb->get_var( "SELECT COUNT(id) FROM $table" ) );
+        $total_items = intval( $wpdb->get_var( "SELECT COUNT(id) FROM {$table}" ) );
 
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
@@ -286,7 +287,7 @@ class Clickwhale_Tracking_Codes_List_Table extends WP_List_Table {
 
         $current_data = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM $table
+                "SELECT * FROM {$table}
                 $where_clause
                 ORDER BY $orderby $order LIMIT %d OFFSET %d",
                 ...$prepare_args
