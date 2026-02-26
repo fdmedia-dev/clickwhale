@@ -10,30 +10,30 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
-Links_Helper::get_limitation_error( $id );
+$clickwhale_get_id = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+Links_Helper::get_limitation_error( $clickwhale_get_id );
 
-$link = clickwhale()->link;
-$item = $link->get_item( $_GET );
-$item_id = intval( $item['id'] );
-$item_categories = Categories_Helper::get_all();
-$tabs = $link->render_tabs();
+$clickwhale_link = clickwhale()->link;
+$clickwhale_item = $clickwhale_link->get_item( array( 'id' => $clickwhale_get_id ) );
+$clickwhale_item_id = intval( $clickwhale_item['id'] );
+$clickwhale_item_categories = Categories_Helper::get_all();
+$clickwhale_tabs = $clickwhale_link->render_tabs();
 
 // Slug
-if ( $item['slug'] ) {
-    $slug = $item['slug'];
+if ( $clickwhale_item['slug'] ) {
+    $clickwhale_slug = $clickwhale_item['slug'];
 } else {
-    $random_slug = ! Helper::get_clickwhale_option( 'link_manager', 'random_slug' )
+    $clickwhale_random_slug = ! Helper::get_clickwhale_option( 'link_manager', 'random_slug' )
         ? Links_Helper::generate_random_slug()
         : '';
 
-    $slug = Helper::get_clickwhale_option( 'link_manager', 'slug' ) ?
-        trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) ) . $random_slug
-        : $random_slug;
+    $clickwhale_slug = Helper::get_clickwhale_option( 'link_manager', 'slug' ) ?
+        trailingslashit( Helper::get_clickwhale_option( 'link_manager', 'slug' ) ) . $clickwhale_random_slug
+        : $clickwhale_random_slug;
 }
 
 // Link target
-$link_targets = array_merge(
+$clickwhale_link_targets = array_merge(
     array( '' => __( 'Default', 'clickwhale' ) ),
     Links_Helper::get_link_targets()
 );
@@ -46,7 +46,7 @@ do_action( 'clickwhale_admin_banner' );
         Helper::render_heading(
             array(
                 'name'         => esc_html__( 'Link', 'clickwhale' ),
-                'is_edit'      => $item_id !== 0,
+                'is_edit'      => $clickwhale_item_id !== 0,
                 'link_to_list' => esc_attr( CLICKWHALE_SLUG ),
                 'link_to_add'  => esc_attr( CLICKWHALE_SLUG ) . '-edit-link'
             )
@@ -54,35 +54,35 @@ do_action( 'clickwhale_admin_banner' );
         Helper::get_allowed_tags()
     );
 
-    $link->show_message( intval( $item_id ) );
+    $clickwhale_link->show_message( intval( $clickwhale_item_id ) );
     ?>
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
-    <form id="form_edit_<?php echo esc_attr( $link->instance_single ); ?>"
+    <form id="form_edit_<?php echo esc_attr( $clickwhale_link->instance_single ); ?>"
           class="clickwhale_form_edit"
           method="POST"
           action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
     >
-        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo esc_attr( $link->instance_single ); ?>" />
+        <input type="hidden" name="action" value="save_update_clickwhale_<?php echo esc_attr( $clickwhale_link->instance_single ); ?>" />
         <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( basename( __FILE__ ) ) ); ?>" />
-        <input type="hidden" name="id" value="<?php echo esc_attr( $item_id ); ?>" />
+        <input type="hidden" name="id" value="<?php echo esc_attr( $clickwhale_item_id ); ?>" />
 
         <div id="post-body-content">
             <div id="clickwhale-tabs" class="clickwhale-tabs">
-                <?php if ( $tabs ) {
+                <?php if ( $clickwhale_tabs ) {
                     ?>
                     <ul>
-                        <?php foreach ( $tabs as $tab ) { ?>
+                        <?php foreach ( $clickwhale_tabs as $clickwhale_tab ) { ?>
                             <li>
-                                <a href="#link-tab-<?php echo esc_attr( $tab['url'] ); ?>"><?php echo esc_html( $tab['name'] ); ?></a>
+                                <a href="#link-tab-<?php echo esc_attr( $clickwhale_tab['url'] ); ?>"><?php echo esc_html( $clickwhale_tab['name'] ); ?></a>
                             </li>
                         <?php } ?>
                     </ul>
                 <?php } ?>
 
                 <div id="link-tab-general">
-                    <?php do_action( 'clickwhale_link_before_general_tab_content', $item_id, $slug ); ?>
+                    <?php do_action( 'clickwhale_link_before_general_tab_content', $clickwhale_item_id, $clickwhale_slug ); ?>
 
                     <table style="width: 100%;" class="form-table">
                         <caption hidden><?php esc_html_e( 'Link Main Settings', 'clickwhale' ); ?></caption>
@@ -100,7 +100,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 'id'          => 'title',
                                                 'name'        => 'title',
                                                 'type'        => 'text',
-                                                'value'       => esc_attr( wp_unslash( $item['title'] ) ),
+                                                'value'       => esc_attr( wp_unslash( $clickwhale_item['title'] ) ),
                                                 'placeholder' => esc_html__( 'Link Title', 'clickwhale' ),
                                                 'required'    => false // we validate title in Clickwhale_Link_Edit::admin_scripts()
                                             )
@@ -124,7 +124,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 'id'          => 'cw-slug',
                                                 'name'        => 'slug',
                                                 'type'        => 'text',
-                                                'value'       => esc_attr( $slug ),
+                                                'value'       => esc_attr( $clickwhale_slug ),
                                                 'placeholder' => esc_html__( 'e.g. my-link', 'clickwhale' ),
                                                 'required'    => false // we validate slug in Clickwhale_Link_Edit::admin_scripts()
                                             )
@@ -138,7 +138,7 @@ do_action( 'clickwhale_admin_banner' );
                                        title="<?php esc_attr_e( 'Copy url', 'clickwhale' ); ?>"
                                     ><?php
                                         echo esc_html__( 'URL Preview', 'clickwhale' ) . ': ' . esc_html( trailingslashit( home_url() ) );
-                                        ?><span><?php echo ( $slug ) ? esc_html( trailingslashit( $slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#copy"></use></svg>
+                                        ?><span><?php echo ( $clickwhale_slug ) ? esc_html( trailingslashit( $clickwhale_slug ) ) : ''; ?></span><svg class="feather"><use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ); ?>/images/feather-sprite.svg#copy"></use></svg>
                                     </p>
                                 </td>
                             </tr>
@@ -155,7 +155,7 @@ do_action( 'clickwhale_admin_banner' );
                                                 'id'          => 'url',
                                                 'name'        => 'url',
                                                 'type'        => 'url',
-                                                'value'       => esc_url( $item['url'] ),
+                                                'value'       => esc_url( $clickwhale_item['url'] ),
                                                 'placeholder' => esc_html__( 'Link Target URL', 'clickwhale' ),
                                                 'required'    => false // we validate url in Clickwhale_Link_Edit::admin_scripts()
                                             )
@@ -175,7 +175,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'id'        => 'redirection',
                                         'name'      => 'redirection',
                                         'options'   => Links_Helper::get_redirections(),
-                                        'value'     => esc_attr( $item['redirection'] )
+                                        'value'     => esc_attr( $clickwhale_item['redirection'] )
                                     ),
                                     true
                                 ),
@@ -189,8 +189,8 @@ do_action( 'clickwhale_admin_banner' );
                                         'control'   => 'select',
                                         'id'        => 'link_target',
                                         'name'      => 'link_target',
-                                        'options'   => $link_targets,
-                                        'value'     => $item_id === 0 ? '' : esc_attr( $item['link_target'] )
+                                        'options'   => $clickwhale_link_targets,
+                                        'value'     => $clickwhale_item_id === 0 ? '' : esc_attr( $clickwhale_item['link_target'] )
                                     ),
                                     true
                                 ),
@@ -204,10 +204,10 @@ do_action( 'clickwhale_admin_banner' );
                                         'control'   => 'checkbox',
                                         'id'        => 'nofollow',
                                         'name'      => 'nofollow',
-                                        'value'     => $item_id === 0
+                                        'value'     => $clickwhale_item_id === 0
                                                        && Helper::get_clickwhale_option( 'link_manager', 'nofollow' )
                                             ? 1
-                                            : intval( $item['nofollow'] ),
+                                            : intval( $clickwhale_item['nofollow'] ),
                                         'label'     => esc_html__( 'Check to mark link as nofollow & noindex', 'clickwhale' )
                                     ),
                                     true
@@ -222,10 +222,10 @@ do_action( 'clickwhale_admin_banner' );
                                         'control'   => 'checkbox',
                                         'id'        => 'sponsored',
                                         'name'      => 'sponsored',
-                                        'value'     => $item_id === 0
+                                        'value'     => $clickwhale_item_id === 0
                                                        && Helper::get_clickwhale_option( 'link_manager', 'sponsored' )
                                             ? 1
-                                            : intval( $item['sponsored'] ),
+                                            : intval( $clickwhale_item['sponsored'] ),
                                         'label'     => esc_html__( 'Check to mark link as sponsored', 'clickwhale' )
                                     ),
                                     true
@@ -240,7 +240,7 @@ do_action( 'clickwhale_admin_banner' );
                                         'control'     => 'textarea',
                                         'id'          => 'description',
                                         'name'        => 'description',
-                                        'value'       => esc_html( wp_unslash( $item['description'] ) ),
+                                        'value'       => esc_html( wp_unslash( $clickwhale_item['description'] ) ),
                                         'placeholder' => esc_html__( 'Description', 'clickwhale' )
                                     ),
                                     true
@@ -248,14 +248,14 @@ do_action( 'clickwhale_admin_banner' );
                                 Helper::get_allowed_tags()
                             );
 
-                            if ( $item_categories ) {
-                                $categories_for_options = array();
-                                $current_categories     = ! empty( $item['categories'] )
-                                    ? explode( ',', sanitize_text_field( $item['categories'] ) )
+                            if ( $clickwhale_item_categories ) {
+                                $clickwhale_categories_for_options = array();
+                                $clickwhale_current_categories     = ! empty( $clickwhale_item['categories'] )
+                                    ? explode( ',', sanitize_text_field( $clickwhale_item['categories'] ) )
                                     : array();
 
-                                foreach ( $item_categories as $category ) {
-                                    $categories_for_options[intval( $category->id )] = esc_html( $category->title );
+                                foreach ( $clickwhale_item_categories as $clickwhale_category ) {
+                                    $clickwhale_categories_for_options[intval( $clickwhale_category->id )] = esc_html( $clickwhale_category->title );
                                 }
 
                                 echo wp_kses(
@@ -265,8 +265,8 @@ do_action( 'clickwhale_admin_banner' );
                                             'control'   => 'checkboxes',
                                             'id'        => 'category',
                                             'name'      => 'categories[]',
-                                            'options'   => $categories_for_options,
-                                            'value'     => $current_categories
+                                            'options'   => $clickwhale_categories_for_options,
+                                            'value'     => $clickwhale_current_categories
                                         ),
                                         true
                                     ),
@@ -276,11 +276,13 @@ do_action( 'clickwhale_admin_banner' );
                             ?>
                         </tbody>
                     </table>
+
+                    <?php do_action( 'clickwhale_link_after_general_tab_content', $clickwhale_item_id, $clickwhale_slug ); ?>
                 </div>
-                <?php do_action( 'clickwhale_link_after_tabs_content', $item ); ?>
+                <?php do_action( 'clickwhale_link_after_tabs_content', $clickwhale_item ); ?>
             </div>
             <input type="hidden" id="created_at" name="created_at"
-                   value="<?php echo esc_attr( $item['created_at'] ); ?>" />
+                   value="<?php echo esc_attr( $clickwhale_item['created_at'] ); ?>" />
             <input type="hidden" id="updated_at" name="updated_at" value="" />
             <input type="submit"
                    id="submit"

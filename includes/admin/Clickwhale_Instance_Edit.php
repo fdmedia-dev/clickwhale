@@ -42,7 +42,9 @@ abstract class Clickwhale_Instance_Edit {
 
         add_action( "admin_post_save_update_clickwhale_{$this->instance_single}", array( $this, 'save_update' ) );
 
-        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === $this->page ) {
+        $get_page_raw = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $get_page = $get_page_raw ? sanitize_key( $get_page_raw ) : '';
+        if ( $get_page === $this->page ) {
             add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
             add_filter( 'admin_title', array( $this, 'set_edit_page_title' ), 10, 2 );
         }
@@ -186,11 +188,13 @@ abstract class Clickwhale_Instance_Edit {
      * @since 1.6.0
      */
     public function set_edit_page_title( string $admin_title, string $title ): string {
-        if ( empty( intval( $_GET['id'] ) ) ) {
+        $id_raw = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+        $id = $id_raw ? intval( $id_raw ) : 0;
+        if ( empty( $id ) ) {
             return $admin_title;
         }
 
-        $item = $this->get_item( $_GET );
+        $item = $this->get_item( array( 'id' => $id ) );
 
         return sprintf(
             /* translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category) */
@@ -229,16 +233,22 @@ abstract class Clickwhale_Instance_Edit {
      * @return void
      */
     public final function save_update(): void {
+        check_admin_referer( basename( $this->instance_single . '/edit.php' ), 'nonce' );
+
         global $wpdb;
         $table = Helper::get_db_table_name( $this->instance_plural );
-        $item = array_intersect_key(
-            $_POST,
-            $this->filter_defaults( $this->get_defaults() )
-        );
+        $defaults = $this->filter_defaults( $this->get_defaults() );
+        $item = array();
+        foreach ( $defaults as $key => $default_value ) {
+            if ( isset( $_POST[ $key ] ) ) {
+                $item[ $key ] = wp_unslash( $_POST[ $key ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            }
+        }
         $item = $this->process_item_before_save( $item );
-        $id = intval( $item['id'] );
+        $id = isset( $item['id'] ) ? intval( $item['id'] ) : 0;
 
         if ( $this->instance_helper::get_by_id( $id ) ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->update(
                 $table,
                 $item,
@@ -249,6 +259,7 @@ abstract class Clickwhale_Instance_Edit {
 
         } else {
             unset( $item['id'] );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $wpdb->insert( $table, $item );
             $id = $wpdb->insert_id;
             do_action( "clickwhale_{$this->instance_single}_inserted", $id, wp_unslash( $_POST ) );
@@ -257,7 +268,7 @@ abstract class Clickwhale_Instance_Edit {
 
         $this->after_save( $id, wp_unslash( $_POST ) );
 
-        wp_redirect(
+	    wp_safe_redirect(
             esc_url_raw(
                 admin_url( 'admin.php?page=' . $this->page . '&id=' . $id )
             )

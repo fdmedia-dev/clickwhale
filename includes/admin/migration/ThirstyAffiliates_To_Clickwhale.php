@@ -14,7 +14,7 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         $table_ta_relationships = $wpdb->prefix . 'term_relationships';
         $table_cw_categories    = $wpdb->prefix . 'clickwhale_categories';
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_ta_posts} WHERE post_type=%s AND post_status=%s", 'thirstylink', 'publish' ) );
 
         if ( ! $data ) {
@@ -66,7 +66,8 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
             if ( $nofollow_post_meta === 'global' ) {
                 if ( $global_nofollow === 'category' ) {
-                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
                     $categories_for_nofollow = $wpdb->get_results(
                         $wpdb->prepare(
                             "SELECT term_taxonomy_id FROM {$table_ta_relationships} WHERE object_id=%d",
@@ -74,6 +75,7 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
                         ),
                         ARRAY_A
                     );
+                    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                     if ( ! $categories_for_nofollow ) {
                         $categories_for_nofollow = array();
                     }
@@ -91,7 +93,8 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 $nofollow = ( 'yes' === $nofollow_post_meta ); // bool
             }
             
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $categories_for_id = (array) $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT categories.id
@@ -103,6 +106,7 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 ),
                 ARRAY_A
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
             $category_id = array();
 
@@ -137,7 +141,8 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
         $table_ta_term_taxnomy = $wpdb->prefix . 'term_taxonomy';
         $table_ta_terms        = $wpdb->prefix . 'terms';
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $data = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT terms.term_id, terms.name, terms.slug
@@ -147,6 +152,7 @@ class ThirstyAffiliates_To_Clickwhale extends Clickwhale_Migration_Abstract {
                 'thirstylink-category'
             )
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         if ( ! $data ) {
             return array(

@@ -91,11 +91,12 @@ class Clickwhale_Export {
     }
 
     public function admin_scripts() {
-        if ( empty( $_GET['page'] ) ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $get_page ) ) {
             return;
         }
 
-        if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
+        if ( $get_page !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
         ?>

@@ -40,8 +40,8 @@ class Clickwhale_Ajax {
     }
 
     public function migration_notice_hide() {
-        $type = ( isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '' );
-        $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( $_POST['plugin'] ) : '' );
+        $type = ( isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '' );
+        $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '' );
         check_ajax_referer( 'clickwhale_' . $plugin . '_admin_nonce', 'security' );
         if ( $type === 'migrate' ) {
             $options_migrate = get_option( 'clickwhale_hide_notice_migrate' );
@@ -56,9 +56,12 @@ class Clickwhale_Ajax {
     }
 
     public function migration_deactive() {
-        $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( $_POST['plugin'] ) : '' );
-        $target = ( isset( $_POST['target'] ) ? sanitize_text_field( $_POST['target'] ) : '' );
+        $plugin = ( isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '' );
+        $target = ( isset( $_POST['target'] ) ? sanitize_text_field( wp_unslash( $_POST['target'] ) ) : '' );
         check_ajax_referer( 'clickwhale_' . $plugin . '_admin_nonce', 'security' );
+        if ( !current_user_can( 'activate_plugins' ) ) {
+            wp_send_json_error();
+        }
         deactivate_plugins( $target );
         wp_send_json_success();
     }
@@ -67,8 +70,8 @@ class Clickwhale_Ajax {
         check_ajax_referer( 'migration_to_clickwhale', 'security' );
         if ( isset( $_POST['name'] ) && isset( $_POST['value'] ) ) {
             $options = get_option( 'clickwhale_tools_migration_options' );
-            $option = sanitize_text_field( $_POST['name'] );
-            $value = boolval( sanitize_text_field( $_POST['value'] ) );
+            $option = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+            $value = boolval( sanitize_text_field( wp_unslash( $_POST['value'] ) ) );
             $options[$option] = $value;
             update_option( 'clickwhale_tools_migration_options', $options );
             wp_send_json_success();
@@ -79,7 +82,7 @@ class Clickwhale_Ajax {
         check_ajax_referer( 'migration_to_clickwhale', 'security' );
         $available = clickwhale()->tools->migration->available_migrations();
         $options = get_option( 'clickwhale_tools_migration_options' );
-        $migrant = ( isset( $_POST['migrant'] ) ? sanitize_text_field( $_POST['migrant'] ) : '' );
+        $migrant = ( isset( $_POST['migrant'] ) ? sanitize_text_field( wp_unslash( $_POST['migrant'] ) ) : '' );
         $item = $available[$migrant];
         $result = array();
         if ( !$item ) {
@@ -131,15 +134,22 @@ class Clickwhale_Ajax {
         global $wpdb;
         $result = array();
         $text = '';
-        if ( !isset( $_POST['reset'] ) ) {
+        $reset_raw = filter_input( INPUT_POST, 'reset', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $reset = ( $reset_raw ? sanitize_key( $reset_raw ) : '' );
+        if ( empty( $reset ) ) {
             wp_send_json_error();
         }
-        switch ( $_POST['reset'] ) {
+        switch ( $reset ) {
             case 'stats':
                 $text = __( 'All statistic has been reset', 'clickwhale' );
                 $tables = array('track', 'visitors');
-                $tables_sql = implode( ', ', Helper::get_db_table_names( $tables ) );
+                $tables_full = Helper::get_db_table_names( $tables );
+                $tables_escaped = array_map( static function ( $t ) use($wpdb) {
+                    return '`' . esc_sql( $t ) . '`';
+                }, $tables_full );
+                $tables_sql = implode( ', ', $tables_escaped );
                 // Drop `stats` plugin tables
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
                 $result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$tables_sql}" );
                 break;
             case 'db':
@@ -153,8 +163,18 @@ class Clickwhale_Ajax {
                     'tracking_codes',
                     'visitors'
                 );
-                $tables_sql = apply_filters( 'clickwhale_reset_tables', implode( ', ', Helper::get_db_table_names( $tables ) ) );
+                $tables_full = Helper::get_db_table_names( $tables );
+                // Allow 3rd-parties to filter the list of tables before building SQL
+                $tables_full = apply_filters( 'clickwhale_reset_tables', $tables_full );
+                if ( !is_array( $tables_full ) ) {
+                    $tables_full = array();
+                }
+                $tables_escaped = array_map( static function ( $t ) use($wpdb) {
+                    return '`' . esc_sql( $t ) . '`';
+                }, $tables_full );
+                $tables_sql = implode( ', ', $tables_escaped );
                 // Drop all plugin tables
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
                 $result['status'] = $wpdb->query( "DROP TABLE IF EXISTS {$tables_sql}" );
                 break;
             case 'settings':
@@ -278,11 +298,48 @@ class Clickwhale_Ajax {
                     );
                     break;
                 }
-                // HTTP request to URL: check if slug is handled by custom endpoints, rewrite rules, .htaccess rules, etc.
-                $response = wp_remote_get( home_url( $slug ), [
-                    'timeout' => 2,
-                ] );
-                if ( !is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+                // HTTP probe to URL: detect if slug is handled by custom endpoints, rewrite rules, .htaccess rules, etc.
+                // Strategy:
+                // - Use HEAD (fallback to GET) with redirection disabled to observe raw status and Location.
+                // - 200 → occupied (custom endpoint)
+                // - 3xx → compare Location with control redirect of a random non-existing path
+                //        if equal → catch-all (free); if different → specific redirect (occupied)
+                // - 404/410 → free
+                // - 401/403/405/406/429 or 5xx → conservative: occupied
+                $probe_url = home_url( ltrim( $slug, '/' ) );
+                $args = array(
+                    'timeout'     => 2,
+                    'redirection' => 0,
+                );
+                $response = wp_remote_head( $probe_url, $args );
+                if ( is_wp_error( $response ) ) {
+                    // retry with GET once; if still fails — conservative: occupied
+                    $response = wp_remote_get( $probe_url, $args );
+                    if ( is_wp_error( $response ) ) {
+                        $result = array(
+                            'id'    => 0,
+                            'title' => esc_html( $slug ),
+                            'type'  => 'custom endpoint',
+                        );
+                        break;
+                    }
+                }
+                $code = (int) wp_remote_retrieve_response_code( $response );
+                // If HEAD not allowed, some servers return 405. Fallback to GET once.
+                if ( 405 === $code ) {
+                    $response = wp_remote_get( $probe_url, $args );
+                    if ( is_wp_error( $response ) ) {
+                        $result = array(
+                            'id'    => 0,
+                            'title' => esc_html( $slug ),
+                            'type'  => 'custom endpoint',
+                        );
+                        break;
+                    }
+                    $code = (int) wp_remote_retrieve_response_code( $response );
+                }
+                if ( 200 === $code ) {
+                    // 200 without redirect — definite custom endpoint
                     $result = array(
                         'id'    => 0,
                         'title' => esc_html( $slug ),
@@ -290,6 +347,79 @@ class Clickwhale_Ajax {
                     );
                     break;
                 }
+                if ( $code >= 300 && $code < 400 ) {
+                    $loc = wp_remote_retrieve_header( $response, 'location' );
+                    if ( is_array( $loc ) ) {
+                        $loc = reset( $loc );
+                    }
+                    // 3xx without Location → specific handler
+                    if ( empty( $loc ) ) {
+                        $result = array(
+                            'id'    => 0,
+                            'title' => esc_html( $slug ),
+                            'type'  => 'custom endpoint',
+                        );
+                        break;
+                    }
+                    // Control probe to detect catch-all redirects used for 404s
+                    $ctrl_url = home_url( '__cw_probe__' . wp_rand( 100000, 999999 ) . '__' );
+                    $ctrl_resp = wp_remote_head( $ctrl_url, $args );
+                    if ( is_wp_error( $ctrl_resp ) ) {
+                        // try GET once before concluding occupied
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            $result = array(
+                                'id'    => 0,
+                                'title' => esc_html( $slug ),
+                                'type'  => 'custom endpoint',
+                            );
+                            break;
+                        }
+                    }
+                    $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    // HEAD may be 405 on some hosts for the control path as well
+                    if ( 405 === $ctrl_code ) {
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            $result = array(
+                                'id'    => 0,
+                                'title' => esc_html( $slug ),
+                                'type'  => 'custom endpoint',
+                            );
+                            break;
+                        }
+                        $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    }
+                    $ctrl_loc = wp_remote_retrieve_header( $ctrl_resp, 'location' );
+                    if ( is_array( $ctrl_loc ) ) {
+                        $ctrl_loc = reset( $ctrl_loc );
+                    }
+                    // Same redirect as random 404 → catch-all → free
+                    if ( $ctrl_code >= 300 && $ctrl_code < 400 && !empty( $ctrl_loc ) && Helper::urls_effectively_equal( $loc, $ctrl_loc ) ) {
+                        break;
+                    }
+                    // Otherwise → specific redirect → occupied
+                    $result = array(
+                        'id'    => 0,
+                        'title' => esc_html( $slug ),
+                        'type'  => 'custom endpoint',
+                    );
+                    break;
+                }
+                if ( in_array( $code, array(
+                    401,
+                    403,
+                    406,
+                    429
+                ), true ) || $code >= 500 ) {
+                    $result = array(
+                        'id'    => 0,
+                        'title' => esc_html( $slug ),
+                        'type'  => 'custom endpoint',
+                    );
+                    break;
+                }
+                // 404/410 or other non-success, non-redirect codes → free
                 break;
             case 'category':
                 $category = Categories_Helper::get_by_slug( $slug );
@@ -326,7 +456,10 @@ class Clickwhale_Ajax {
         $post_types = array('post', 'page');
         $placeholders = implode( ', ', array_fill( 0, count( $post_types ), '%s' ) );
         $params = array_merge( $post_types, array('%' . $wpdb->esc_like( $target_url ) . '%') );
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $posts = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_type, post_title, post_content\n                FROM {$wpdb->prefix}posts\n                WHERE post_status = 'publish'\n                AND post_type IN ({$placeholders})\n                AND post_content LIKE %s\n                ORDER BY ID ASC, post_type ASC, post_title ASC", ...$params ) );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $result = array();
         if ( $posts ) {
             // 1. Match slug URL as `href` value in <a> element
@@ -371,13 +504,14 @@ class Clickwhale_Ajax {
      */
     public function get_posts_by_post_type() {
         check_ajax_referer( 'get_posts_by_post_type', 'security' );
-        if ( !isset( $_POST['post_type'] ) || !$_POST['post_type'] ) {
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        if ( !isset( $_POST['post_type'] ) || !sanitize_key( wp_unslash( $_POST['post_type'] ) ) ) {
             wp_send_json_error( 'Post Type Error!' );
         }
         $result = array();
         $args = array(
             'numberposts' => -1,
-            'post_type'   => sanitize_text_field( $_POST['post_type'] ),
+            'post_type'   => ( isset( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : 'post' ),
             'orderby'     => 'title',
             'order'       => 'ASC',
             'post_status' => 'publish',
@@ -422,11 +556,12 @@ class Clickwhale_Ajax {
         $result = array();
         $table = Helper::get_db_table_name( 'tracking_codes' );
         $data = array(
-            'is_active' => sanitize_text_field( $_POST['status'] ),
+            'is_active' => ( isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 0 ),
         );
         $where = array(
-            'id' => intval( $_POST['id'] ),
+            'id' => ( isset( $_POST['id'] ) ? intval( wp_unslash( $_POST['id'] ) ) : 0 ),
         );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->update( $table, $data, $where );
         $result['action_disable_all'] = Tracking_Codes_Helper::is_active_limit();
         wp_send_json_success( $result );
@@ -439,7 +574,7 @@ class Clickwhale_Ajax {
     public function add_link_to_linkpage() {
         check_ajax_referer( 'clickwhale_add_link_to_linkpage', 'security' );
         $template = new Clickwhale_Linkpage_Content_Templates();
-        $type = sanitize_text_field( $_POST['type'] );
+        $type = ( isset( $_POST['type'] ) ? sanitize_text_field( wp_unslash( $_POST['type'] ) ) : '' );
         $result['template'] = $template->get_template( $type, false, false );
         wp_send_json_success( $result );
     }
@@ -449,11 +584,19 @@ class Clickwhale_Ajax {
         if ( !function_exists( 'wp_handle_upload' ) ) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
+        if ( !isset( $_FILES['file'] ) ) {
+            wp_send_json_error( __( 'Please, select .csv file', 'clickwhale' ) );
+        }
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         $file = $_FILES['file'];
-        // Check file &type
-        if ( !$file || $file['type'] !== 'text/csv' ) {
-            $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $file['type']);
-            wp_send_json_error( $error );
+        // Validate upload and ensure it's a CSV
+        if ( !$file || empty( $file['tmp_name'] ) || !is_uploaded_file( $file['tmp_name'] ) ) {
+            wp_send_json_error( new WP_Error('001', __( 'Invalid upload.', 'clickwhale' )) );
+        }
+        $filetype = wp_check_filetype_and_ext( $file['tmp_name'], ( isset( $file['name'] ) ? sanitize_file_name( $file['name'] ) : '' ) );
+        $is_csv = isset( $filetype['ext'] ) && 'csv' === strtolower( (string) $filetype['ext'] );
+        if ( !$is_csv ) {
+            wp_send_json_error( new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' )) );
         }
         $col_delimiter = ",";
         $delimiters = [";", "\t", "|"];
@@ -530,27 +673,29 @@ class Clickwhale_Ajax {
             $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ));
             wp_send_json_error( $error );
         }
-        $file_type = wp_check_filetype( $_FILES['file']['name'] );
+        $file_name = ( isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '' );
+        $file_type = wp_check_filetype( $file_name );
         if ( 'csv' !== $file_type['ext'] ) {
             $error = new WP_Error('001', __( 'Please, select .csv file', 'clickwhale' ), $file_type['type']);
             wp_send_json_error( $error );
         }
         $html = '';
-        $delimiter = sanitize_text_field( $_POST['delimiter'] );
+        $delimiter = ( isset( $_POST['delimiter'] ) ? sanitize_text_field( wp_unslash( $_POST['delimiter'] ) ) : ',' );
         $redirections = Links_Helper::get_redirections();
         $link_targets = array_merge( array(
             '' => __( 'Default', 'clickwhale' ),
         ), Links_Helper::get_link_targets() );
         $default_columns = Helper::get_import_default_columns();
-        $mapped_columns = ( !empty( $_POST['mapped'] ) ? explode( ',', sanitize_text_field( $_POST['mapped'] ) ) : array() );
-        $excluded_columns = ( !empty( $_POST['excluded'] ) ? explode( ',', sanitize_text_field( $_POST['excluded'] ) ) : array() );
+        $mapped_columns = ( !empty( $_POST['mapped'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST['mapped'] ) ) ) : array() );
+        $excluded_columns = ( !empty( $_POST['excluded'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_POST['excluded'] ) ) ) : array() );
         $filtered = array();
         if ( !function_exists( 'WP_Filesystem' ) ) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
         WP_Filesystem();
         global $wp_filesystem;
-        $file_contents = $wp_filesystem->get_contents( $_FILES['file']['tmp_name'] );
+        $tmp_name = ( isset( $_FILES['file']['tmp_name'] ) ? sanitize_text_field( wp_unslash( $_FILES['file']['tmp_name'] ) ) : '' );
+        $file_contents = $wp_filesystem->get_contents( $tmp_name );
         if ( false === $file_contents || '' === $file_contents ) {
             $error = new WP_Error('002', __( 'Error opening file!', 'clickwhale' ));
             wp_send_json_error( $error );
@@ -650,14 +795,17 @@ class Clickwhale_Ajax {
         check_ajax_referer( 'check_slug', 'security' );
         global $wpdb;
         $links_table = $wpdb->prefix . 'clickwhale_links';
-        $result = $wpdb->get_results( "SELECT slug FROM {$links_table}", ARRAY_A );
+        $table = '`' . esc_sql( $links_table ) . '`';
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $result = $wpdb->get_results( "SELECT slug FROM {$table}", ARRAY_A );
         wp_send_json_success( $result );
     }
 
     public function import_csv() {
         check_ajax_referer( 'import_csv', 'security' );
         global $wpdb;
-        $data = ( isset( $_POST['data'] ) ? $_POST['data'] : null );
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $data = ( isset( $_POST['data'] ) ? wp_unslash( $_POST['data'] ) : null );
         if ( empty( $data ) || !is_array( $data ) ) {
             $error = new WP_Error('004', __( 'Nothing to import!', 'clickwhale' ));
             wp_send_json_error( $error );
@@ -678,6 +826,7 @@ class Clickwhale_Ajax {
             if ( isset( $v['undefined'] ) ) {
                 unset($v['undefined']);
             }
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $insert = $wpdb->insert( $links_table, $v );
             if ( $insert ) {
                 $message = sprintf( 
@@ -720,10 +869,12 @@ class Clickwhale_Ajax {
         header( "Content-Disposition: attachment;filename=clickwhale-links-export-{$date}.csv" );
         header( "Content-Transfer-Encoding: binary" );
         $allowed_columns = Helper::get_import_default_columns();
-        if ( $_POST['columns'] === 'all' ) {
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $post_columns = ( isset( $_POST['columns'] ) ? wp_unslash( $_POST['columns'] ) : '' );
+        if ( $post_columns === 'all' ) {
             $headers = $allowed_columns;
         } else {
-            $post_columns = (array) $_POST['columns'];
+            $post_columns = (array) $post_columns;
             $headers = array_values( array_intersect( $post_columns, $allowed_columns ) );
         }
         if ( empty( $headers ) ) {
@@ -731,11 +882,13 @@ class Clickwhale_Ajax {
         }
         $cats = '';
         $prepared_categories = array();
-        if ( $_POST['categories'] !== 'all' ) {
-            $post_categories = (array) $_POST['categories'];
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $post_categories = ( isset( $_POST['categories'] ) ? wp_unslash( $_POST['categories'] ) : '' );
+        if ( $post_categories !== 'all' ) {
+            $post_categories = (array) $post_categories;
             $prepared_categories = array_map( function ( $cat ) use($wpdb) {
                 $sanitized = sanitize_text_field( $cat );
-                return $wpdb->esc_like( $sanitized );
+                return '%' . $wpdb->esc_like( $sanitized ) . '%';
             }, $post_categories );
             $conditions = array_fill( 0, count( $prepared_categories ), "categories LIKE %s" );
             $cats = ' WHERE ' . implode( ' OR ', $conditions );
@@ -750,7 +903,7 @@ class Clickwhale_Ajax {
             // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             $query = $sql;
         }
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $rows = $wpdb->get_results( $query, ARRAY_A );
         if ( !$rows ) {
             $error = new WP_Error('004', __( 'Nothing to export', 'clickwhale' ));

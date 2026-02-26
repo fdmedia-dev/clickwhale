@@ -59,7 +59,8 @@ class Clickwhale_Migration_Notice {
      * @since    1.0.0
      */
     public function init() {
-        if ( ! empty( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-tools' ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( ! empty( $get_page ) && $get_page === CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
 

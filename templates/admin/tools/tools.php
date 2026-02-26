@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$migration = clickwhale()->tools->migration;
+$clickwhale_migration = clickwhale()->tools->migration;
 
 do_action( 'clickwhale_admin_banner' );
 ?>
@@ -14,41 +14,41 @@ do_action( 'clickwhale_admin_banner' );
 
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
-    <?php $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'migration_options'; ?>
+    <?php $clickwhale_active_tab_raw = (string) filter_input( INPUT_GET, 'tab' ); $clickwhale_active_tab = $clickwhale_active_tab_raw !== '' && $clickwhale_active_tab_raw !== null ? sanitize_text_field( $clickwhale_active_tab_raw ) : 'migration_options'; ?>
 
     <h2 class="nav-tab-wrapper">
         <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=migration_options' ) ); ?>"
-           class="nav-tab <?php echo $active_tab === 'migration_options' ? 'nav-tab-active' : ''; ?>"
+           class="nav-tab <?php echo $clickwhale_active_tab === 'migration_options' ? 'nav-tab-active' : ''; ?>"
         ><?php esc_html_e( 'Migration', 'clickwhale' ); ?></a>
         <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=reset_options' ) ); ?>"
-           class="nav-tab <?php echo $active_tab === 'reset_options' ? 'nav-tab-active' : ''; ?>"
+           class="nav-tab <?php echo $clickwhale_active_tab === 'reset_options' ? 'nav-tab-active' : ''; ?>"
         ><?php esc_html_e( 'Reset', 'clickwhale' ); ?></a>
         <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=import' ) ); ?>"
-           class="nav-tab <?php echo $active_tab === 'import' ? 'nav-tab-active' : ''; ?>"
+           class="nav-tab <?php echo $clickwhale_active_tab === 'import' ? 'nav-tab-active' : ''; ?>"
         ><?php esc_html_e( 'Import', 'clickwhale' ); ?></a>
         <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-tools&tab=export' ) ); ?>"
-           class="nav-tab <?php echo $active_tab === 'export' ? 'nav-tab-active' : ''; ?>"
+           class="nav-tab <?php echo $clickwhale_active_tab === 'export' ? 'nav-tab-active' : ''; ?>"
         ><?php esc_html_e( 'Export', 'clickwhale' ); ?></a>
     </h2>
 
     <?php
-    if ( $active_tab == 'migration_options' ) {
-        $show_settings = false;
+    if ( $clickwhale_active_tab == 'migration_options' ) {
+        $clickwhale_show_settings = false;
 
-        foreach ( $migration->available_migrations() as $item ) {
-            if ( $migration->check_active( $item['path'] ) ) {
-                $show_settings = true;
-                $slug = esc_attr( $item['slug'] );
+        foreach ( $clickwhale_migration->available_migrations() as $clickwhale_item ) {
+            if ( $clickwhale_migration->check_active( $clickwhale_item['path'] ) ) {
+                $clickwhale_show_settings = true;
+                $clickwhale_slug = esc_attr( $clickwhale_item['slug'] );
                 ?>
-                <div class="clickwhale-migration-section clickwhale-migration-section-<?php echo esc_attr( $slug ); ?>">
+                <div class="clickwhale-migration-section clickwhale-migration-section-<?php echo esc_attr( $clickwhale_slug ); ?>">
                     <?php
-                    settings_fields( 'clickwhale_tools_' . $slug . '_migration_options' );
-                    do_settings_sections( 'clickwhale_tools_' . $slug . '_migration_options' );
+                    settings_fields( 'clickwhale_tools_' . $clickwhale_slug . '_migration_options' );
+                    do_settings_sections( 'clickwhale_tools_' . $clickwhale_slug . '_migration_options' );
                     ?>
                     <div id="clickwhale-tools-migration-submit">
                         <button type="button"
                                 class="button button_start_migrate"
-                                data-migration="<?php echo esc_attr( $slug ); ?>"
+                                data-migration="<?php echo esc_attr( $clickwhale_slug ); ?>"
                         ><?php esc_html_e( 'Start migration', 'clickwhale' ); ?></button>
                         <span class="spinner"></span>
                     </div>
@@ -58,7 +58,7 @@ do_action( 'clickwhale_admin_banner' );
             }
         }
 
-        if ( $show_settings ) {
+        if ( $clickwhale_show_settings ) {
             ?>
             <div id="clickwhale-tools-migration-reset">
                 <button class="button button-primary button_reset_migrate"
@@ -73,7 +73,7 @@ do_action( 'clickwhale_admin_banner' );
         <?php }
     }
 
-    if ( $active_tab == 'reset_options' ) {
+    if ( $clickwhale_active_tab == 'reset_options' ) {
         ?>
         <div id="clickwhale-tools-reset">
             <?php
@@ -117,7 +117,7 @@ do_action( 'clickwhale_admin_banner' );
         <?php
     }
 
-    if ( $active_tab == 'import' ) {
+    if ( $clickwhale_active_tab == 'import' ) {
         ?>
         <div id="clickwhale_tools_import">
 
@@ -175,7 +175,7 @@ do_action( 'clickwhale_admin_banner' );
         <?php
     }
 
-    if ( $active_tab == 'export' ) {
+    if ( $clickwhale_active_tab == 'export' ) {
         ?>
         <div id="clickwhale_tools_export">
             <form method="post" id="export_form" enctype="multipart/form-data">

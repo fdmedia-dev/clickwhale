@@ -6,22 +6,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$limit = Categories_Helper::get_limit();
-$table = new Clickwhale_Categories_List_Table();
-$message = array();
+$clickwhale_limit = Categories_Helper::get_limit();
+$clickwhale_table = new Clickwhale_Categories_List_Table();
+$clickwhale_message = array();
 
 try {
-    $table->prepare_items();
+    $clickwhale_table->prepare_items();
 
-    if ( 'delete' === $table->current_action() ) {
-        $message = array(
+    if ( 'delete' === $clickwhale_table->current_action() ) {
+        $clickwhale_message = array(
             'class' => 'updated',
             'text' => __( 'Items deleted', 'clickwhale' )
         );
     }
 
 } catch ( Exception $e ) {
-    $message = array(
+    $clickwhale_message = array(
         'class' => 'error',
         'text' => __( 'An error occurred', 'clickwhale' ) . ': ' . $e->getMessage()
     );
@@ -37,17 +37,17 @@ do_action( 'clickwhale_admin_banner' );
                 'name'        => esc_html( get_admin_page_title() ),
                 'is_list'     => true,
                 'link_to_add' => esc_attr( CLICKWHALE_SLUG ) . '-edit-category',
-                'is_limit'    => Categories_Helper::get_count() >= $limit
+                'is_limit'    => Categories_Helper::get_count() >= $clickwhale_limit
             )
         ),
         Helper::get_allowed_tags()
     );
 
-    if ( ! empty( $message ) ) { ?>
-        <div class="<?php echo esc_attr( $message['class'] ); ?> below-h2" id="message"><p><?php echo esc_html( $message['text'] ); ?></p></div>
+    if ( ! empty( $clickwhale_message ) ) { ?>
+        <div class="<?php echo esc_attr( $clickwhale_message['class'] ); ?> below-h2" id="message"><p><?php echo esc_html( $clickwhale_message['text'] ); ?></p></div>
     <?php } ?>
 
-    <?php if ( Categories_Helper::get_count() >= $limit ) { ?>
+    <?php if ( Categories_Helper::get_count() >= $clickwhale_limit ) { ?>
         <div class="notice notice-info">
             <p>
                 <?php echo esc_html( Categories_Helper::get_limitation_notice() ); ?>
@@ -60,10 +60,10 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_key( $_GET['page'] ) ); ?>" />
+        <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) ); ?>" />
         <?php
-            $table->search_box( __( 'Search', 'clickwhale' ), 'search_id' );
-            $table->display();
+            $clickwhale_table->search_box( __( 'Search', 'clickwhale' ), 'search_id' );
+            $clickwhale_table->display();
         ?>
     </form>
 

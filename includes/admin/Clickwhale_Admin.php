@@ -1,4 +1,5 @@
 <?php
+
 namespace clickwhale\includes\admin;
 
 use clickwhale\includes\helpers\Helper;
@@ -96,12 +97,12 @@ final class Clickwhale_Admin {
 
     private function add_submenu_page( $parent, $k, $v ): void {
         add_submenu_page(
-            $parent,
-            $v,
-            $v,
-            'read',
-            $k !== 'links' ? CLICKWHALE_SLUG . '-' . $k : CLICKWHALE_SLUG,
-            array( $this, 'get_template' )
+                $parent,
+                $v,
+                $v,
+                'read',
+                $k !== 'links' ? CLICKWHALE_SLUG . '-' . $k : CLICKWHALE_SLUG,
+                array( $this, 'get_template' )
         );
     }
 
@@ -116,46 +117,46 @@ final class Clickwhale_Admin {
         }
 
         $this->menus = apply_filters( 'clickwhale_menus', array(
-            'subpages' => array(
-                'links'              => __( 'Links', 'clickwhale' ),
-                'edit-link'          => __( 'Add New Link', 'clickwhale' ),
-                'categories'         => __( 'Categories', 'clickwhale' ),
-                'edit-category'      => __( 'Add New Category', 'clickwhale' ),
-                'linkpages'          => __( 'Link Pages', 'clickwhale' ),
-                'edit-linkpage'      => __( 'Add New Link Page', 'clickwhale' ),
-                'tracking-codes'     => __( 'Tracking Codes', 'clickwhale' ),
-                'edit-tracking-code' => __( 'Add New Tracking Code', 'clickwhale' )
-            ),
-            'edit_titles' => array(
-                'edit-link'          => __( 'Edit Link', 'clickwhale' ),
-                'edit-category'      => __( 'Edit Category', 'clickwhale' ),
-                'edit-linkpage'      => __( 'Edit Link Page', 'clickwhale' ),
-                'edit-tracking-code' => __( 'Edit Tracking Code', 'clickwhale' )
-            ),
-            'templates' => array(
-                'toplevel_page_' . CLICKWHALE_SLUG                       => 'links/list',
-                'admin_page_' . CLICKWHALE_SLUG . '-edit-link'           => 'links/edit',
-                'clickwhale_page_' . CLICKWHALE_SLUG . '-categories'     => 'categories/list',
-                'admin_page_' . CLICKWHALE_SLUG . '-edit-category'       => 'categories/edit',
-                'clickwhale_page_' . CLICKWHALE_SLUG . '-linkpages'      => 'linkpages/list',
-                'admin_page_' . CLICKWHALE_SLUG . '-edit-linkpage'       => 'linkpages/edit',
-                'clickwhale_page_' . CLICKWHALE_SLUG . '-tracking-codes' => 'tracking-codes/list',
-                'admin_page_' . CLICKWHALE_SLUG . '-edit-tracking-code'  => 'tracking-codes/edit'
-            ),
-            'toplevel' => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
+                'subpages'    => array(
+                        'links'              => __( 'Links', 'clickwhale' ),
+                        'edit-link'          => __( 'Add New Link', 'clickwhale' ),
+                        'categories'         => __( 'Categories', 'clickwhale' ),
+                        'edit-category'      => __( 'Add New Category', 'clickwhale' ),
+                        'linkpages'          => __( 'Link Pages', 'clickwhale' ),
+                        'edit-linkpage'      => __( 'Add New Link Page', 'clickwhale' ),
+                        'tracking-codes'     => __( 'Tracking Codes', 'clickwhale' ),
+                        'edit-tracking-code' => __( 'Add New Tracking Code', 'clickwhale' )
+                ),
+                'edit_titles' => array(
+                        'edit-link'          => __( 'Edit Link', 'clickwhale' ),
+                        'edit-category'      => __( 'Edit Category', 'clickwhale' ),
+                        'edit-linkpage'      => __( 'Edit Link Page', 'clickwhale' ),
+                        'edit-tracking-code' => __( 'Edit Tracking Code', 'clickwhale' )
+                ),
+                'templates'   => array(
+                        'toplevel_page_' . CLICKWHALE_SLUG                       => 'links/list',
+                        'admin_page_' . CLICKWHALE_SLUG . '-edit-link'           => 'links/edit',
+                        'clickwhale_page_' . CLICKWHALE_SLUG . '-categories'     => 'categories/list',
+                        'admin_page_' . CLICKWHALE_SLUG . '-edit-category'       => 'categories/edit',
+                        'clickwhale_page_' . CLICKWHALE_SLUG . '-linkpages'      => 'linkpages/list',
+                        'admin_page_' . CLICKWHALE_SLUG . '-edit-linkpage'       => 'linkpages/edit',
+                        'clickwhale_page_' . CLICKWHALE_SLUG . '-tracking-codes' => 'tracking-codes/list',
+                        'admin_page_' . CLICKWHALE_SLUG . '-edit-tracking-code'  => 'tracking-codes/edit'
+                ),
+                'toplevel'    => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
         ) );
 
         // Add menu pages
         do_action( 'clickwhale_menu_before_all' );
 
         add_menu_page(
-            __( 'ClickWhale Links', 'clickwhale' ),
-            __( 'ClickWhale', 'clickwhale' ),
-            'read',
-            CLICKWHALE_SLUG,
-            '',
-            CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg',
-            26
+                __( 'ClickWhale Links', 'clickwhale' ),
+                __( 'ClickWhale', 'clickwhale' ),
+                'read',
+                CLICKWHALE_SLUG,
+                '',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/images/click-icon.svg',
+                26
         );
 
         foreach ( $this->menus['subpages'] as $k => $v ) {
@@ -166,28 +167,28 @@ final class Clickwhale_Admin {
                 continue;
             }
 
-            if ( empty( $_GET['page'] ) ) {
+            $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+            if ( empty( $get_page ) ) {
                 continue;
             }
 
-            $page = sanitize_key( $_GET['page'] );
-
-            if ( ! strpos( $page, $k ) ) {
+            if ( strpos( $get_page, $k ) === false ) {
                 continue;
             }
 
-            $pos = strpos( $page, '-edit-' );
+            $pos = strpos( $get_page, '-edit-' );
 
             if ( $pos === false ) {
                 continue;
             }
 
-            $instance_slug = substr( $page, $pos + strlen( '-edit-' ) );
+            $instance_slug = substr( $get_page, $pos + strlen( '-edit-' ) );
 
-            if ( isset( $_GET['id'] ) && intval( $_GET['id'] ) > 0 ) {
-                $parent = $this->menus['edit_titles']['edit-' . $instance_slug];
+            $get_id = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+            if ( $get_id > 0 ) {
+                $parent = $this->menus['edit_titles'][ 'edit-' . $instance_slug ];
             } else {
-                $parent = $this->menus['subpages']['edit-' . $instance_slug];
+                $parent = $this->menus['subpages'][ 'edit-' . $instance_slug ];
             }
 
             $this->add_submenu_page( $parent, $k, $v );
@@ -196,23 +197,23 @@ final class Clickwhale_Admin {
         do_action( 'clickwhale_menu_before_settings' );
 
         add_submenu_page(
-            CLICKWHALE_SLUG,
-            __( 'Settings', 'clickwhale' ),
-            __( 'Settings', 'clickwhale' ),
-            'read',
-            CLICKWHALE_SLUG . '-settings',
-            array( $this, 'render_settings_page_template' )
+                CLICKWHALE_SLUG,
+                __( 'Settings', 'clickwhale' ),
+                __( 'Settings', 'clickwhale' ),
+                'read',
+                CLICKWHALE_SLUG . '-settings',
+                array( $this, 'render_settings_page_template' )
         );
 
         do_action( 'clickwhale_menu_before_tools' );
 
         add_submenu_page(
-            CLICKWHALE_SLUG,
-            __( 'Tools', 'clickwhale' ),
-            __( 'Tools', 'clickwhale' ),
-            'read',
-            CLICKWHALE_SLUG . '-tools',
-            array( $this, 'render_tools_page_template' )
+                CLICKWHALE_SLUG,
+                __( 'Tools', 'clickwhale' ),
+                __( 'Tools', 'clickwhale' ),
+                'read',
+                CLICKWHALE_SLUG . '-tools',
+                array( $this, 'render_tools_page_template' )
         );
 
         do_action( 'clickwhale_menu_after_all' );
@@ -224,12 +225,12 @@ final class Clickwhale_Admin {
         }
 
         add_submenu_page(
-            CLICKWHALE_SLUG,
-            __( 'Upgrade to PRO', 'clickwhale' ),
-            __( 'Upgrade to PRO', 'clickwhale' ),
-            'read',
-            CLICKWHALE_SLUG . '-pro',
-            array( $this, 'render_pro_page_template' )
+                CLICKWHALE_SLUG,
+                __( 'Upgrade to PRO', 'clickwhale' ),
+                __( 'Upgrade to PRO', 'clickwhale' ),
+                'read',
+                CLICKWHALE_SLUG . '-pro',
+                array( $this, 'render_pro_page_template' )
         );
     }
 
@@ -254,7 +255,7 @@ final class Clickwhale_Admin {
      * @since 1.3.0
      */
     public function get_template() {
-        $current_template = $this->menus['templates'][current_filter()];
+        $current_template = $this->menus['templates'][ current_filter() ];
         include_once( CLICKWHALE_TEMPLATES_DIR . '/admin/' . $current_template . '.php' );
     }
 
@@ -263,26 +264,27 @@ final class Clickwhale_Admin {
      * @since    1.0.0
      */
     public function enqueue_styles() {
-        if ( empty( $_GET['page'] ) ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $get_page ) ) {
             return;
         }
 
-        if ( 0 !== strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) ) {
+        if ( 0 !== strpos( $get_page, CLICKWHALE_SLUG ) ) {
             return;
         }
 
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_style(
-            'clickwhale_select2',
-            CLICKWHALE_ADMIN_ASSETS_DIR . '/css/select2/select2.min.css',
-            array(),
-            '4.1.0-rc.0'
+                'clickwhale_select2',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/css/select2/select2.min.css',
+                array(),
+                '4.1.0-rc.0'
         );
         wp_enqueue_style(
-            'clickwhale',
-            CLICKWHALE_ADMIN_ASSETS_DIR . '/css/clickwhale-admin.css',
-            array(),
-            CLICKWHALE_VERSION
+                'clickwhale',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/css/clickwhale-admin.css',
+                array(),
+                CLICKWHALE_VERSION
         );
     }
 
@@ -291,70 +293,54 @@ final class Clickwhale_Admin {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-        if ( empty( $_GET['page'] ) ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $get_page ) ) {
             return;
         }
 
-        $page = sanitize_key( $_GET['page'] );
-
-        if ( '' === $page ) {
-            return;
-        }
-
-        if ( 0 !== strpos( $page, CLICKWHALE_SLUG ) ) {
+        if ( 0 !== strpos( $get_page, CLICKWHALE_SLUG ) ) {
             return;
         }
 
         wp_enqueue_script( 'jquery-ui-tabs' );
 
-        if ( $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+        if ( $get_page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             wp_enqueue_script( 'jquery-ui-droppable' );
             wp_enqueue_script( 'jquery-ui-draggable' );
             wp_enqueue_script( 'jquery-ui-sortable' );
             wp_enqueue_media();
             wp_enqueue_editor();
             wp_enqueue_script( 'wp-color-picker' );
-
-            wp_enqueue_script(
-                'clickwhale_picmo',
-                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/picmo/picmo.min.js',
-                array( 'jquery' ),
-                '5.8.1'
-            );
-            wp_enqueue_script(
-                'clickwhale_ionicons',
-                CLICKWHALE_PUBLIC_ASSETS_DIR . '/js/ionicons/ionicons.js',
-                array( 'jquery' ),
-                '7.1.0'
-            );
         }
 
-        if ( $page === CLICKWHALE_SLUG . '-edit-link' ) {
+        if ( $get_page === CLICKWHALE_SLUG . '-edit-link' ) {
             wp_enqueue_script( 'jquery-ui-sortable' );
         }
 
-        if ( $page === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
+        if ( $get_page === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
             wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
         }
 
         wp_enqueue_script(
-            'clickwhale_select2',
-            CLICKWHALE_ADMIN_ASSETS_DIR . '/js/select2/select2.min.js',
-            array( 'jquery' ),
-            '4.1.0-rc.0'
+                'clickwhale_select2',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/select2/select2.min.js',
+                array( 'jquery' ),
+                '4.1.0-rc.0',
+                true
         );
         wp_enqueue_script(
-            'clickwhale',
-            CLICKWHALE_ADMIN_ASSETS_DIR . '/js/clickwhale-admin.js',
-            array( 'jquery' ),
-            CLICKWHALE_VERSION
+                'clickwhale',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/clickwhale-admin.js',
+                array( 'jquery' ),
+                CLICKWHALE_VERSION,
+                true
         );
         wp_localize_script(
-            'clickwhale',
-            'clickwhale_admin', array(
-                'siteurl'     => home_url(),
-                'plugin_slug' => esc_attr( CLICKWHALE_SLUG )
-            )
+                'clickwhale',
+                'clickwhale_admin', array(
+                        'siteurl'     => home_url(),
+                        'plugin_slug' => esc_attr( CLICKWHALE_SLUG )
+                )
         );
     }
 
@@ -362,125 +348,146 @@ final class Clickwhale_Admin {
      * Extend the stylesheets for Freemius pricing page
      *
      * @param string $template
+     *
      * @return string
      */
     public function enqueue_fs_pricing_styles( string $template ): string {
         ob_start();
         ?>
-<style>
-#root .fs-app-header .fs-page-title,
-#fs_pricing_app .fs-app-header .fs-page-title {
-    display: block !important;
-}
-#root .fs-app-header .fs-page-title h1,
-#fs_pricing_app .fs-app-header .fs-page-title h1 {
-    font-size: 2.5em !important;
-}
-#root .fs-app-header .fs-page-title h3,
-#fs_pricing_app .fs-app-header .fs-page-title h3 {
-    color:  #1A1C1D !important;
-    font-size: small !important;
-    font-weight: 600 !important;
-}
-#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle,
-#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle {
-    background: #4B7CF7 0 0 no-repeat padding-box !important;
-    color: #FFFFFF !important;
-}
-#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover,
-#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover {
-    color: #FFFFFF !important;
-}
-#root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover,
-#fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover {
-    background-color: #1A1C1D !important;
-}
-#root .fs-package,
-#fs_pricing_app .fs-package {
-    margin: 2.8em 0.8em 0 !important;
-    border-radius: 20px !important;
-    box-shadow: 0 0 1px #00000029 !important;
-}
-#root .fs-package.fs-featured-plan,
-#fs_pricing_app .fs-package.fs-featured-plan {
-    background: #FDD231 0 0 no-repeat padding-box !important;
-}
-#root .fs-package.fs-featured-plan .fs-most-popular,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular {
-    background: #4B7CF7 0 0 no-repeat padding-box !important;
-    opacity: 1 !important;
-    border-radius: 20px 20px 0 0 !important;
-    font-size: 1.2em !important;
-    text-transform: uppercase !important;
-    color: #FFFFFF !important;
-    line-height: 2.6em !important;
-    margin: -2.5em 0 -1px 0 !important;
-}
-#root .fs-package.fs-featured-plan .fs-most-popular h4,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular h4 {
-    color: #FFFFFF !important;
-}
-#root .fs-package .fs-plan-title,
-#fs_pricing_app .fs-package .fs-plan-title {
-    background: #f8f8f9 !important;
-    text-transform: capitalize !important;
-}
-#root .fs-package:not(.fs-featured-plan) .fs-plan-title,
-#fs_pricing_app .fs-package:not(.fs-featured-plan) .fs-plan-title {
-    border-radius: 20px 20px 0 0 !important;
-}
-#root .fs-package.fs-featured-plan .fs-plan-title,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-plan-title {
-    background: #1A1C1D 0 0 no-repeat padding-box !important;
-    color: #FFFFFF !important;
-    border-color: transparent !important;
-    border-radius: 0 !important;
-}
-#root .fs-package .fs-selected-pricing-cycle,
-#fs_pricing_app .fs-package .fs-selected-pricing-cycle {
-    text-transform: capitalize !important;
-}
-#root .fs-package .fs-selected-pricing-license-quantity,
-#fs_pricing_app .fs-package .fs-selected-pricing-license-quantity {
-    color: #47AED6 !important;
-}
-#root .fs-package .fs-plan-features li .fs-icon,
-#root .fs-package .fs-plan-features li .fs-tooltip,
-#fs_pricing_app .fs-package .fs-plan-features li .fs-icon,
-#fs_pricing_app .fs-package .fs-plan-features li .fs-tooltip {
-    color: #47AED6 !important;
-}
-#root .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
-#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
-#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
-#root .fs-package.fs-featured-plan .fs-plan-features li .fs-icon,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-plan-features li .fs-icon {
-    color: #4B7CF7 !important;
-}
-#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
-#root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
-#fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path {
-    fill: #4B7CF7 !important;
-}
-#root .fs-package .fs-upgrade-button-container .fs-upgrade-button,
-#fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button {
-    background: #4B7CF7 0 0 no-repeat padding-box !important;
-    color: #FFFFFF !important;
-    border: 1px solid #4B7CF7 !important;
-    border-radius: 10px !important;
-}
-#root .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover,
-#fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover {
-    background-color: #1A1C1D !important;
-    border-color: #1A1C1D !important;
-}
-</style>
+        <style>
+            #root .fs-app-header .fs-page-title,
+            #fs_pricing_app .fs-app-header .fs-page-title {
+                display: block !important;
+            }
+
+            #root .fs-app-header .fs-page-title h1,
+            #fs_pricing_app .fs-app-header .fs-page-title h1 {
+                font-size: 2.5em !important;
+            }
+
+            #root .fs-app-header .fs-page-title h3,
+            #fs_pricing_app .fs-app-header .fs-page-title h3 {
+                color: #1A1C1D !important;
+                font-size: small !important;
+                font-weight: 600 !important;
+            }
+
+            #root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle,
+            #fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle {
+                background: #4B7CF7 0 0 no-repeat padding-box !important;
+                color: #FFFFFF !important;
+            }
+
+            #root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover,
+            #fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:hover {
+                color: #FFFFFF !important;
+            }
+
+            #root .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover,
+            #fs_pricing_app .fs-app-main .fs-section--plans-and-pricing .fs-section--billing-cycles .fs-billing-cycles li:not(.fs-selected-billing-cycle):hover {
+                background-color: #1A1C1D !important;
+            }
+
+            #root .fs-package,
+            #fs_pricing_app .fs-package {
+                margin: 2.8em 0.8em 0 !important;
+                border-radius: 20px !important;
+                box-shadow: 0 0 1px #00000029 !important;
+            }
+
+            #root .fs-package.fs-featured-plan,
+            #fs_pricing_app .fs-package.fs-featured-plan {
+                background: #FDD231 0 0 no-repeat padding-box !important;
+            }
+
+            #root .fs-package.fs-featured-plan .fs-most-popular,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular {
+                background: #4B7CF7 0 0 no-repeat padding-box !important;
+                opacity: 1 !important;
+                border-radius: 20px 20px 0 0 !important;
+                font-size: 1.2em !important;
+                text-transform: uppercase !important;
+                color: #FFFFFF !important;
+                line-height: 2.6em !important;
+                margin: -2.5em 0 -1px 0 !important;
+            }
+
+            #root .fs-package.fs-featured-plan .fs-most-popular h4,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular h4 {
+                color: #FFFFFF !important;
+            }
+
+            #root .fs-package .fs-plan-title,
+            #fs_pricing_app .fs-package .fs-plan-title {
+                background: #f8f8f9 !important;
+                text-transform: capitalize !important;
+            }
+
+            #root .fs-package:not(.fs-featured-plan) .fs-plan-title,
+            #fs_pricing_app .fs-package:not(.fs-featured-plan) .fs-plan-title {
+                border-radius: 20px 20px 0 0 !important;
+            }
+
+            #root .fs-package.fs-featured-plan .fs-plan-title,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-plan-title {
+                background: #1A1C1D 0 0 no-repeat padding-box !important;
+                color: #FFFFFF !important;
+                border-color: transparent !important;
+                border-radius: 0 !important;
+            }
+
+            #root .fs-package .fs-selected-pricing-cycle,
+            #fs_pricing_app .fs-package .fs-selected-pricing-cycle {
+                text-transform: capitalize !important;
+            }
+
+            #root .fs-package .fs-selected-pricing-license-quantity,
+            #fs_pricing_app .fs-package .fs-selected-pricing-license-quantity {
+                color: #47AED6 !important;
+            }
+
+            #root .fs-package .fs-plan-features li .fs-icon,
+            #root .fs-package .fs-plan-features li .fs-tooltip,
+            #fs_pricing_app .fs-package .fs-plan-features li .fs-icon,
+            #fs_pricing_app .fs-package .fs-plan-features li .fs-tooltip {
+                color: #47AED6 !important;
+            }
+
+            #root .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
+            #root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+            #root .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+            #root .fs-package.fs-featured-plan .fs-plan-features li .fs-icon,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-selected-pricing-license-quantity,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-plan-features li .fs-icon {
+                color: #4B7CF7 !important;
+            }
+
+            #root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+            #root .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path,
+            #fs_pricing_app .fs-package.fs-featured-plan .fs-tooltip .fs-icon path {
+                fill: #4B7CF7 !important;
+            }
+
+            #root .fs-package .fs-upgrade-button-container .fs-upgrade-button,
+            #fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button {
+                background: #4B7CF7 0 0 no-repeat padding-box !important;
+                color: #FFFFFF !important;
+                border: 1px solid #4B7CF7 !important;
+                border-radius: 10px !important;
+            }
+
+            #root .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover,
+            #fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button:hover {
+                background-color: #1A1C1D !important;
+                border-color: #1A1C1D !important;
+            }
+        </style>
         <?php
         $style = ob_get_clean();
+
         return $template . $style;
     }
 
@@ -506,17 +513,17 @@ final class Clickwhale_Admin {
             <div class="clickwhale-banner--links">
                 <div class="clickwhale-banner--link-review">
                     <?php echo wp_kses(
-                        sprintf(
+                            sprintf(
                             /* translators: %s: review link URL */
-                            __( 'You like ClickWhale? Then please <a href="%s" target="_blank">leave a review here</a>', 'clickwhale' ),
-                            esc_url( $link_review )
-                        ),
-                        array(
-                            'a' => array(
-                                'href' => array(),
-                                'target' => array( '_blank' )
+                                    __( 'You like ClickWhale? Then please <a href="%s" target="_blank">leave a review here</a>', 'clickwhale' ),
+                                    esc_url( $link_review )
+                            ),
+                            array(
+                                    'a' => array(
+                                            'href'   => array(),
+                                            'target' => array( '_blank' )
+                                    )
                             )
-                        )
                     );
                     ?>
                     <span class="clickwhale-banner--link-review--rating">
@@ -560,29 +567,30 @@ final class Clickwhale_Admin {
         <?php
     }
 
-    public function admin_sidebar_begin() {
-        ?>
-            <div id="poststuff">
-                <div id="post-body" class="metabox-holder columns-2">
-                    <div id="post-body-content">
-        <?php
-    }
+public function admin_sidebar_begin() {
+    ?>
+    <div id="poststuff">
+        <div id="post-body" class="metabox-holder columns-2">
+            <div id="post-body-content">
+                <?php
+                }
 
-    public function admin_sidebar_end() {
-        ?>
-                    </div><!-- /#post-body-content -->
-                    <div id="postbox-container-1" class="postbox-container">
-                        <?php do_action( 'clickwhale_admin_sidebar_area' ); ?>
-                    </div><!-- /.postbox-container -->
-                </div><!-- /#post-body -->
-            </div><!-- /#poststuff -->
-        <?php
-    }
+                public function admin_sidebar_end() {
+                ?>
+            </div><!-- /#post-body-content -->
+            <div id="postbox-container-1" class="postbox-container">
+                <?php do_action( 'clickwhale_admin_sidebar_area' ); ?>
+            </div><!-- /.postbox-container -->
+        </div><!-- /#post-body -->
+    </div><!-- /#poststuff -->
+    <?php
+}
 
     public function admin_widget_upgrade() {
         if ( clickwhale_fs()->can_use_premium_code() ) {
             return;
-        } ?>
+        }
+        ?>
         <div class="postbox clickwhale-admin-widget" id="clickwhale-admin-widget__upgrade">
             <div class="hero">
                 <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/widgets/upgrade_to_pro_widget_hero.svg'; ?>"
@@ -594,9 +602,12 @@ final class Clickwhale_Admin {
                     <li><span class="text"><?php esc_attr_e( 'Detailed Statistics', 'clickwhale' ); ?></span></li>
                     <li><span class="text"><?php esc_attr_e( 'Keyword Auto Linker', 'clickwhale' ); ?></span></li>
                     <li><span class="text"><?php esc_attr_e( 'UTM Campaign Tracking', 'clickwhale' ); ?></span></li>
-                    <li><span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', 'clickwhale' ); ?></span></li>
-                    <li><span class="text"><?php esc_attr_e( 'Advanced Customization Options', 'clickwhale' ); ?></span></li>
-                    <li><span class="text"><?php esc_attr_e( 'More Blocks for Link Pages', 'clickwhale' ); ?></span></li>
+                    <li><span class="text"><?php esc_attr_e( 'E-Commerce Conversion Tracking', 'clickwhale' ); ?></span>
+                    </li>
+                    <li><span class="text"><?php esc_attr_e( 'Advanced Customization Options', 'clickwhale' ); ?></span>
+                    </li>
+                    <li><span class="text"><?php esc_attr_e( 'More Blocks for Link Pages', 'clickwhale' ); ?></span>
+                    </li>
                     <li><span class="text"><?php esc_attr_e( 'Remove Plugin Credits', 'clickwhale' ); ?></span></li>
                 </ul>
 
@@ -620,34 +631,44 @@ final class Clickwhale_Admin {
             <h3 class="title"><?php esc_attr_e( 'Plugin Documentation', 'clickwhale' ); ?></h3>
             <div class="inside">
                 <ul>
-                    <li><a href="https://clickwhale.pro/docs/article/how-to-shorten-links-and-create-redirects/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                    <li>
+                        <a href="https://clickwhale.pro/docs/article/how-to-shorten-links-and-create-redirects/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How-To Shorten Links & Create Redirects', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Shorten Links & Create Redirects', 'clickwhale' ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Shorten Links & Create Redirects', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Shorten Links & Create Redirects', 'clickwhale' ); ?></a>
+                    </li>
 
-                    <li><a href="https://clickwhale.pro/docs/article/how-to-import-links/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                    <li>
+                        <a href="https://clickwhale.pro/docs/article/how-to-import-links/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How-To Import Links', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Import Links', 'clickwhale' ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Import Links', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Import Links', 'clickwhale' ); ?></a>
+                    </li>
 
-                    <li><a href="https://clickwhale.pro/docs/article/how-to-use-the-keyword-auto-linker/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                    <li>
+                        <a href="https://clickwhale.pro/docs/article/how-to-use-the-keyword-auto-linker/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How-To Use the Keyword Auto Linker', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Use the Keyword Auto Linker', 'clickwhale' ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Use the Keyword Auto Linker', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Use the Keyword Auto Linker', 'clickwhale' ); ?></a>
+                    </li>
 
-                    <li><a href="https://clickwhale.pro/docs/article/creating-your-first-link-page/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                    <li>
+                        <a href="https://clickwhale.pro/docs/article/creating-your-first-link-page/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'Creating Your First Link Page', 'clickwhale' ); ?>"><?php esc_attr_e( 'Creating Your First Link Page', 'clickwhale' ); ?></a></li>
-                    <li><a href="https://clickwhale.pro/docs/article/add-google-tag-manager-to-wordpress/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
+                           title="<?php esc_attr_e( 'Creating Your First Link Page', 'clickwhale' ); ?>"><?php esc_attr_e( 'Creating Your First Link Page', 'clickwhale' ); ?></a>
+                    </li>
+                    <li>
+                        <a href="https://clickwhale.pro/docs/article/add-google-tag-manager-to-wordpress/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=widget_documentation"
                            class="text"
                            target="_blank"
                            rel="nofollow"
-                           title="<?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', 'clickwhale' ); ?></a></li>
+                           title="<?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', 'clickwhale' ); ?>"><?php esc_attr_e( 'How-To Add Google Tag Manager To WordPress with ClickWhale', 'clickwhale' ); ?></a>
+                    </li>
                 </ul>
 
                 <div class="clickwhale-pro-button">
@@ -666,26 +687,34 @@ final class Clickwhale_Admin {
      * @since 1.4.0
      */
     public function pro_subscription_action() {
+        check_admin_referer( 'clickwhale_pro_subscribe', 'nonce' );
+
         $current_user = wp_get_current_user();
-        $url = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
-        $response = wp_remote_post( $url, array(
-                'method' => 'POST',
-                'body'   => array(
-                    'email'      => sanitize_email( $_POST['email'] ),
-                    'first_name' => ( $current_user->exists() ) ? $current_user->first_name : '',
+        $url          = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
+        $email        = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
+
+        $response     = wp_remote_post( $url, array(
+                        'method' => 'POST',
+                        'body'   => array(
+                                'email'      => $email,
+                                'first_name' => ( $current_user->exists() ) ? $current_user->first_name : '',
+                        )
                 )
-            )
         );
 
         if ( is_wp_error( $response ) ) {
             $error_message = $response->get_error_message();
             printf(
-                /* translators: %s:the error message */
-                esc_html__( 'Something went wrong: %s', 'clickwhale' ),
-                esc_html( $error_message )
+            /* translators: %s:the error message */
+                    esc_html__( 'Something went wrong: %s', 'clickwhale' ),
+                    esc_html( $error_message )
             );
         } else {
-            wp_redirect( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro&success=1#clickwhaleSubscribe' ) );
+            wp_safe_redirect(
+                    esc_url_raw(
+                            admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro&success=1#clickwhaleSubscribe' )
+                    )
+            );
             exit;
         }
     }
@@ -699,7 +728,7 @@ final class Clickwhale_Admin {
             return $links;
         }
 
-        $url = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-settings' ) );
+        $url           = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-settings' ) );
         $settings_link = '<a href="' . $url . '" rel="noopener">' . __( 'Settings', 'clickwhale' ) . '</a>';
         array_unshift( $links, $settings_link );
 
@@ -715,10 +744,10 @@ final class Clickwhale_Admin {
             return $links;
         }
 
-        $url = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro' ) );
-        $text = __( 'Upgrade to PRO', 'clickwhale' );
+        $url           = esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG . '-pro' ) );
+        $text          = __( 'Upgrade to PRO', 'clickwhale' );
         $settings_link = '<a href="' . $url . '" rel="noopener" style="color: #007AFF; font-weight: 700;">' . $text . '</a>';
-        $links[] = $settings_link;
+        $links[]       = $settings_link;
 
         return $links;
     }
@@ -728,7 +757,8 @@ final class Clickwhale_Admin {
      * @since 1.4.1
      */
     public function hide_notice_on_upgrade_to_pro_page() {
-        if ( isset( $_GET['page'] ) && sanitize_key( $_GET['page'] ) === CLICKWHALE_SLUG . '-pro' ) {
+        $page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( $page === CLICKWHALE_SLUG . '-pro' ) {
             remove_all_actions( 'user_admin_notices' );
             remove_all_actions( 'admin_notices' );
         }
@@ -741,24 +771,23 @@ final class Clickwhale_Admin {
 
         $meta[] = '<a href="https://clickwhale.pro/docs/" target="_blank" rel="nofollow" title="' . esc_attr__( 'Documentation', 'clickwhale' ) . '">' . esc_html__( 'Documentation', 'clickwhale' ) . '</a>';
         $meta[] = '<a href="https://wordpress.org/support/plugin/clickwhale/reviews/#new-post" rel="nofollow" target="_blank" title="' . esc_attr__( 'Rate ClickWhale on WordPress.org', 'clickwhale' ) . '" style="color: #ffb900">'
-            . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 )
-            . '</a>';
+                  . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 )
+                  . '</a>';
 
         return $meta;
     }
 
     public function admin_scripts() {
-        if ( empty( $_GET['page'] ) ) {
+        $page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $page ) ) {
             return;
         }
-
-        $page = sanitize_key( $_GET['page'] );
 
         if ( $page === CLICKWHALE_SLUG || $page === CLICKWHALE_SLUG . '-linkpages' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function(){
-                    jQuery('.slug-input--btn').on('click', function(e){
+                jQuery(document).ready(function () {
+                    jQuery('.slug-input--btn').on('click', function (e) {
                         e.preventDefault();
                         let
                             $temp = jQuery('<input>'),
@@ -778,8 +807,8 @@ final class Clickwhale_Admin {
         if ( $page === CLICKWHALE_SLUG . '-edit-link' || $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function(){
-                    jQuery('#cw-copy-link-url').on('click', function(e){
+                jQuery(document).ready(function () {
+                    jQuery('#cw-copy-link-url').on('click', function (e) {
                         e.preventDefault();
 
                         // Remove appended message
@@ -789,16 +818,16 @@ final class Clickwhale_Admin {
                         copySlug();
 
                         // Append message
-                        jQuery('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> + '</span>')
+                        jQuery('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>')
                             .insertAfter(jQuery(this));
 
                         // Hide appended message
-                        setTimeout(function(){
+                        setTimeout(function () {
                             jQuery('.copied').remove();
                         }, 2000);
                     });
 
-                    jQuery('#cw-slug--text').on('click', function(e){
+                    jQuery('#cw-slug--text').on('click', function (e) {
                         e.preventDefault();
 
                         // Remove appended message
@@ -809,15 +838,15 @@ final class Clickwhale_Admin {
 
                         // Append message
                         jQuery(this)
-                            .append('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> + '</span>');
+                            .append('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>');
 
                         // Hide appended message
-                        setTimeout(function(){
+                        setTimeout(function () {
                             jQuery('.copied').remove();
                         }, 2000);
                     });
 
-                    function copySlug(){
+                    function copySlug() {
                         const temp = jQuery('<input>');
                         let textToCopy = jQuery('#cw-slug').val();
 
@@ -836,8 +865,8 @@ final class Clickwhale_Admin {
         if ( $page === CLICKWHALE_SLUG . '-tracking-codes' ) {
             ?>
             <script type='text/javascript'>
-                jQuery(document).ready(function(){
-                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function(){
+                jQuery(document).ready(function () {
+                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function () {
                         let
                             active = this.checked,
                             id = this.dataset.id;
@@ -847,8 +876,8 @@ final class Clickwhale_Admin {
                             'action': 'clickwhale/admin/tracking_code_toggle_active',
                             'status': active ? 1 : 0,
                             'id': id
-                        }, function(response){
-                            if (response.data.action_disable_all){
+                        }, function (response) {
+                            if (response.data.action_disable_all) {
                                 jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
                                 jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
                             } else {

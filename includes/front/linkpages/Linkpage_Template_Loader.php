@@ -39,7 +39,7 @@ class Linkpage_Template_Loader implements Linkpage_Template_Loader_Interface {
     public function load() {
         global $wp_query;
 
-        do_action( 'template_redirect' );
+        do_action( 'template_redirect' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
         $template = $this->wpscap_locate_template( array_filter( $this->templates ), true );
         if ( array_key_exists( 'virtualpage', $wp_query->query_vars ) ) {
             if ( '1' == $wp_query->query_vars['clickwhale_virtual_page_template'] ) {
@@ -47,7 +47,7 @@ class Linkpage_Template_Loader implements Linkpage_Template_Loader_Interface {
             }
             exit();
         }
-        $filtered = apply_filters( 'template_include',
+        $filtered = apply_filters( 'template_include', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
             apply_filters( 'clickwhale_virtual_page_template', $template )
         );
         if ( empty( $filtered ) || file_exists( $filtered ) ) {

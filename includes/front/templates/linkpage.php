@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 global $post;
-$linkpage = new Clickwhale_Public_Linkpage( $post );
-$view = new Clickwhale_View_Track();
-$view->maybe_update_track_database( $post->linkpage['id'] );
-$user_id = get_current_user_id();
+$clickwhale_linkpage = new Clickwhale_Public_Linkpage( $post );
+$clickwhale_view = new Clickwhale_View_Track();
+$clickwhale_view->maybe_update_track_database( $post->linkpage['id'] );
+$clickwhale_user_id = get_current_user_id();
 ?>
 <!DOCTYPE html>
 <html lang="<?php bloginfo( 'language' ); ?>">
@@ -20,34 +20,34 @@ $user_id = get_current_user_id();
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="profile" href="https://gmpg.org/xfn/11">
-    <link rel="canonical" href="<?php echo esc_url( $linkpage->get_url() ); ?>">
+    <link rel="canonical" href="<?php echo esc_url( $clickwhale_linkpage->get_url() ); ?>">
     <?php wp_head(); ?>
-    <style><?php echo esc_html( $linkpage->get_styles() ); ?></style>
-    <?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
+    <style><?php echo esc_html( $clickwhale_linkpage->get_styles() ); ?></style>
+    <?php do_action( 'clickwhale/link_page_head', $post->linkpage, $post->linkpage['id'], $clickwhale_user_id ); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div class="cw-linkpage-public--wrap">
     <div class="cw-linkpage-public--top">
         <div class="cw-linkpage-public--header">
-            <?php echo wp_kses( $linkpage->get_logo(), Helper::get_allowed_tags() ); ?>
-            <div class="cw-linkpage-public--title"><?php echo esc_html( $linkpage->get_title() ); ?></div>
-            <?php if ( $linkpage->get_desc() ) { ?>
-                <div class="cw-linkpage-public--description"><?php echo wp_kses_post( $linkpage->get_desc() ); ?></div>
+            <?php echo wp_kses( $clickwhale_linkpage->get_logo(), Helper::get_allowed_tags() ); ?>
+            <div class="cw-linkpage-public--title"><?php echo esc_html( $clickwhale_linkpage->get_title() ); ?></div>
+            <?php if ( $clickwhale_linkpage->get_desc() ) { ?>
+                <div class="cw-linkpage-public--description"><?php echo wp_kses_post( $clickwhale_linkpage->get_desc() ); ?></div>
             <?php } ?>
         </div>
-        <div class="cw-linkpage-public--links"><?php echo wp_kses( $linkpage->get_links(), Helper::get_allowed_tags() ); ?></div>
+        <div class="cw-linkpage-public--links"><?php echo wp_kses( $clickwhale_linkpage->get_links(), Helper::get_allowed_tags() ); ?></div>
     </div>
     <div class="cw-linkpage-public--bottom">
         <?php
-        if ( $linkpage->get_legals_menu() ) {
-            echo wp_kses( $linkpage->get_legals_menu(), Helper::get_allowed_tags() );
+        if ( $clickwhale_linkpage->get_legals_menu() ) {
+            echo wp_kses( $clickwhale_linkpage->get_legals_menu(), Helper::get_allowed_tags() );
         }
-        echo wp_kses( $linkpage->get_credits_link(), Helper::get_allowed_tags() );
+        echo wp_kses( $clickwhale_linkpage->get_credits_link(), Helper::get_allowed_tags() );
         ?>
     </div>
 </div>
 <?php wp_footer(); ?>
-<?php do_action( 'clickwhale/link_page_footer', $post->linkpage, $post->linkpage['id'], $user_id ); ?>
+<?php do_action( 'clickwhale/link_page_footer', $post->linkpage, $post->linkpage['id'], $clickwhale_user_id ); ?>
 </body>
 </html>

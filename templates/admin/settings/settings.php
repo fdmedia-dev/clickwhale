@@ -17,23 +17,24 @@ do_action( 'clickwhale_admin_banner' );
 
     <?php
     if ( $tabs ) {
-        $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general_options';
+        $clickwhale_get_tab_raw = (string) filter_input( INPUT_GET, 'tab' );
+        $clickwhale_get_tab = $clickwhale_get_tab_raw !== '' && $clickwhale_get_tab_raw !== null ? sanitize_text_field( $clickwhale_get_tab_raw ) : 'general_options';
         ?>
         <h2 class="nav-tab-wrapper">
             <?php foreach ( $tabs as $tab ) {
-                $url    = '?page=' . CLICKWHALE_SLUG . '-settings&tab=' . $tab['url'];
-                $active = $active_tab === $tab['url'] ? 'nav-tab-active' : '';
+                $clickwhale_url    = '?page=' . CLICKWHALE_SLUG . '-settings&tab=' . $tab['url'];
+                $clickwhale_active = $clickwhale_get_tab === $tab['url'] ? 'nav-tab-active' : '';
                 ?>
-                <a href="<?php echo esc_url( $url ); ?>"
-                   class="nav-tab <?php echo esc_attr( $active ); ?>"
+                <a href="<?php echo esc_url( $clickwhale_url ); ?>"
+                   class="nav-tab <?php echo esc_attr( $clickwhale_active ); ?>"
                 ><?php echo esc_html( $tab['name'] ); ?></a>
             <?php } ?>
         </h2>
 
         <form method="post" action="options.php">
             <?php
-            settings_fields( 'clickwhale_' . $active_tab );
-            do_settings_sections( 'clickwhale_' . $active_tab );
+            settings_fields( 'clickwhale_' . $clickwhale_get_tab );
+            do_settings_sections( 'clickwhale_' . $clickwhale_get_tab );
             submit_button( __( 'Save changes', 'clickwhale' ) );
             ?>
         </form>

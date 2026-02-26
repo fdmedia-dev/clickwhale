@@ -73,6 +73,8 @@ class Links_Helper extends Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( 'meta' );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$table}
@@ -83,6 +85,7 @@ class Links_Helper extends Helper_Abstract {
             ),
             ARRAY_A
         );
+        // phpcs:enable
     }
 
     /**
@@ -132,11 +135,12 @@ class Links_Helper extends Helper_Abstract {
      * @param array $params
      * @return string
      */
-    private static function query_links_with_click_data( string $clauses = '', array $params = [] ): string {
+    private static function query_links_with_click_data( string $clauses = '', array $params = array() ): string {
         global $wpdb;
         $table_links = Helper::get_db_table_name( 'links' );
-        $table_track = Helper::get_db_table_name( 'track' );;
+        $table_track = Helper::get_db_table_name( 'track' );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
         return $wpdb->prepare(
             "SELECT links.*, COALESCE(track.clicks,0) AS clicks_count
             FROM {$table_links} links
@@ -149,6 +153,7 @@ class Links_Helper extends Helper_Abstract {
             $clauses",
             ...$params
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
     }
 
     /**
@@ -157,11 +162,13 @@ class Links_Helper extends Helper_Abstract {
     public static function get_links_with_click_data(): array {
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_results(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             self::query_links_with_click_data( "ORDER BY links.id DESC" ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
     }
 
     /**
@@ -171,11 +178,13 @@ class Links_Helper extends Helper_Abstract {
     public static function get_link_by_id_with_click_data( int $id ): array {
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             self::query_links_with_click_data( "WHERE links.id = %d LIMIT 1", array( $id ) ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
     }
 
     /**
@@ -185,11 +194,13 @@ class Links_Helper extends Helper_Abstract {
     public static function get_link_by_slug_with_click_data( string $slug ): array {
         global $wpdb;
 
+        // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             self::query_links_with_click_data( "WHERE links.slug = %s LIMIT 1", array( $slug ) ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
     }
 
     public static function render_link_rows( array $rows ): string {

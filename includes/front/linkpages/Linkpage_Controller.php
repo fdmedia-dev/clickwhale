@@ -34,9 +34,9 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
         if ( $this->checkRequest() && $this->matched instanceof Linkpage ) {
             $this->loader->init( $this->matched );
             $wp->virtual_page = $this->matched;
-            do_action( 'parse_request', $wp );
+            do_action( 'parse_request', $wp ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
             $this->setupQuery();
-            do_action( 'wp', $wp );
+            do_action( 'wp', $wp ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
             $this->loader->load();
             $this->handleExit();
         }
@@ -81,7 +81,7 @@ class Linkpage_Controller implements Linkpage_Controller_Interface {
         $wp_query->found_posts    = 1;
         $wp_query->post_count     = 1;
         $wp_query->max_num_pages  = 1;
-        $posts                    = (array) apply_filters( 'the_posts', array( $this->matched->asWpPost() ),
+        $posts                    = (array) apply_filters( 'the_posts', array( $this->matched->asWpPost() ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
             $wp_query );
         $post                     = $posts[0];
         $wp_query->posts          = $posts;

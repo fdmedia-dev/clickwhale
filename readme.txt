@@ -1,11 +1,11 @@
-=== ClickWhale - Link Manager, Shortener and Click Tracker for Affiliate Links & Bio Link Pages ===
+=== ClickWhale ===
 Contributors: clickwhale, flowdee, krapan88, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 2.5.3.1
+Stable tag: 2.5.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,9 +81,6 @@ This was just a selection of the additional features that await you. If you alre
 
 You won't regret it. ✊
 
-### Credits
-- Thanks to [ionicons](https://ionic.io/ionicons) for designing and providing your great icons.
-
 == Installation ==
 
 This plugin is easy to install and configure.
@@ -118,10 +115,8 @@ This plugin includes generated (compiled) JavaScript and CSS assets from third-p
 
 The non-compiled, human-readable source code and build configuration for these libraries are publicly available at the following locations:
 
-* Ionicons – https://github.com/ionic-team/ionicons/tree/v7.1.0
-* Picmo – https://github.com/joeattardi/picmo/tree/v5.8.1/packages/picmo
-* Select2 - https://github.com/select2/select2/tree/4.1.0-rc.0
-* Freemius SDK - https://github.com/Freemius/wordpress-sdk
+* [Select2](https://github.com/select2/select2/tree/4.1.0-rc.0)
+* [Freemius SDK](https://github.com/Freemius/wordpress-sdk)
 
 = How can I report security bugs? =
 
@@ -163,11 +158,6 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
-
-= Version 2.5.3.1 (4th February 2026) =
-* Tweak: Improved data validation.
-* Fix: Various fixes and stability improvements.
-* Info: WordPress v6.9.1 compatibility
 
 = Version 2.5.3 (15th December 2025) =
 * Tweak: Improved security and data escaping across the admin interface.

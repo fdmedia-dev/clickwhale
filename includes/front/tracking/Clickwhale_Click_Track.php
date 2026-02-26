@@ -44,10 +44,11 @@ class Clickwhale_Click_Track {
             'custom_link_id' => $this->is_custom ? $this->link_id : '',
             'linkpage_id'    => $linkpage['id'] ?? 0,
             'visitor_id'     => $visitor->visitor_id,
-            'referer'        => esc_url_raw( $_SERVER['HTTP_REFERER'] ?? '' ),
+            'referer'        => esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER']) ?? '' ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
             'created_at'     => gmdate( 'Y-m-d H:i:s' )
         );
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $result = $wpdb->insert( $table_name, $data );
 
         if ( empty( $result ) ) {

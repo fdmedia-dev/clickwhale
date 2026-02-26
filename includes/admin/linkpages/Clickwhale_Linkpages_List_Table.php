@@ -55,7 +55,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) . '&action=delete&id=' . $id ),
                         'delete-' . $this->_args['singular']
                     )
                 ),
@@ -195,20 +195,26 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( empty( $_GET['id'] ) ) {
+        $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+        if ( null === $get_id ) {
+            $get_id = (string) filter_input( INPUT_GET, 'id' );
+        }
+
+        if ( empty( $get_id ) ) {
             return;
         }
 
-        $page_slug = sanitize_key( $_GET['page'] );
+        $page_slug = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
 
-        if ( ! isset( $_GET['_wpnonce'] ) ) {
+        $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
+        if ( empty( $wpnonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
-        $post_id = $_GET['id'];
+        $post_id = $get_id;
         $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
+        if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, $nonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
@@ -225,20 +231,26 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $meta_table = Helper::get_db_table_name( 'meta' );
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $result = $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM {$table} WHERE id IN ($placeholders)",
                 ...$ids
             )
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
         if ( false !== $result ) {
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query(
                 $wpdb->prepare(
                     "DELETE FROM {$meta_table} WHERE linkpage_id IN ($placeholders)",
                     ...$ids
                 )
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
         }
     }
 
@@ -253,24 +265,31 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $columns         = $this->get_columns();
         $hidden          = array();
         $sortable        = $this->get_sortable_columns();
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $total_items     = intval( $wpdb->get_var( "SELECT COUNT(id) FROM {$table_linkpages}" ) );
 
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_GET['order'] ) ? sanitize_key( $_GET['order'] ) : 'desc';
-        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_key( $_GET['orderby'] ) : 'id';
+        $order_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'order' ) );
+        if ( empty( $order_arg ) ) {
+            $order_arg = 'desc';
+        }
+        $orderby_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'orderby' ) );
+        if ( empty( $orderby_arg ) ) {
+            $orderby_arg = 'id';
+        }
         $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order = $sort['order'];
         $orderby = $sort['orderby'];
-        $paged = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
+        $paged_q = (int) filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
+        $paged = $paged_q ? ( $per_page * max( 0, $paged_q - 1 ) ) : 0;
 
         $where_clause = '';
         $prepare_args = array();
 
-        if ( isset( $_GET['author'] ) ) {
-            $author = intval( $_GET['author'] );
-
+        $author = (int) filter_input( INPUT_GET, 'author', FILTER_SANITIZE_NUMBER_INT );
+        if ( $author ) {
             if ( $author > 0 ) {
                 $where_clause = "WHERE linkpages.author = %d";
                 $prepare_args[] = $author;
@@ -280,6 +299,8 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
         $prepare_args[] = $per_page;
         $prepare_args[] = $paged;
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $current_data = $wpdb->get_results(
             $wpdb->prepare(
                 "SELECT *, COALESCE(v_track.views,0) AS views_count, COALESCE(c_track.clicks,0) AS clicks_count
@@ -302,6 +323,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
         if ( ! $current_data ) {
             $current_data = array();
         }

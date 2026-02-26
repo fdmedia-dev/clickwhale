@@ -32,6 +32,7 @@ abstract class Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" ) );
     }
 
@@ -94,6 +95,7 @@ abstract class Helper_Abstract {
         $orderby = sanitize_text_field( $orderby );
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_results( "SELECT * FROM {$table} order by $orderby $order", $output );
     }
 
@@ -109,6 +111,8 @@ abstract class Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$table} WHERE id=%d",
@@ -116,6 +120,7 @@ abstract class Helper_Abstract {
             ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     }
 
     /**
@@ -130,6 +135,8 @@ abstract class Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$table} WHERE title=%s",
@@ -137,6 +144,7 @@ abstract class Helper_Abstract {
             ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     }
 
     /**
@@ -150,6 +158,8 @@ abstract class Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( static::$plural );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT * FROM {$table} WHERE slug=%s",
@@ -157,5 +167,6 @@ abstract class Helper_Abstract {
             ),
             ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     }
 }

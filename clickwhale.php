@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.3.1
+ * Version:           2.5.3.3
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -30,7 +30,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.5.3.1' );
+    define( 'CLICKWHALE_VERSION', '2.5.3.2' );
     /**
      * @since 1.4.1
      */
@@ -52,7 +52,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      * @since 2.3.0
      */
     define( 'CLICKWHALE_URL_COLUMN', 'clickwhale_updated_links_table_url_column' );
-    // DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
+    // DO NOT REMOVE THIS IF IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
     if ( !function_exists( 'clickwhale_fs' ) ) {
         // Create a helper function for easy SDK access.
         function clickwhale_fs() {
@@ -89,7 +89,8 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         do_action( 'clickwhale_fs_loaded' );
         // Hooked on `init` due to WordPress v6.7 translation logic updates
         // https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
-        if ( isset( $_GET['page'] ) && strpos( sanitize_key( $_GET['page'] ), CLICKWHALE_SLUG ) === 0 ) {
+        $clickwhale_get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( !empty( $clickwhale_get_page ) && strpos( $clickwhale_get_page, CLICKWHALE_SLUG ) === 0 ) {
             add_action( 'init', function () {
                 clickwhale_fs()->override_i18n( [
                     'account' => esc_html__( 'License', 'clickwhale' ),
@@ -151,7 +152,10 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         global $wpdb;
-        $query = $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
+        $table = $wpdb->prefix . 'clickwhale_links';
+        $table_escaped = '`' . esc_sql( $table ) . '`';
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $query = $wpdb->query( "ALTER TABLE {$table_escaped} MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
         if ( !$query ) {
             return;
         }
@@ -165,11 +169,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         global $wpdb;
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$wpdb->prefix}clickwhale_links LIKE 'link_target'" );
+        $table = $wpdb->prefix . 'clickwhale_links';
+        $table_escaped = '`' . esc_sql( $table ) . '`';
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'link_target'" );
         if ( $column_exists ) {
             return;
         }
-        $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links ADD link_target varchar(10) DEFAULT '' NOT NULL AFTER redirection" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $wpdb->query( "ALTER TABLE {$table_escaped} ADD link_target varchar(10) DEFAULT '' NOT NULL AFTER redirection" );
     }
 
     function clickwhale_maybe_add_created_by_api_column() : void {
@@ -178,11 +186,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         global $wpdb;
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$wpdb->prefix}clickwhale_links LIKE 'created_by_api'" );
+        $table = $wpdb->prefix . 'clickwhale_links';
+        $table_escaped = '`' . esc_sql( $table ) . '`';
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'created_by_api'" );
         if ( $column_exists ) {
             return;
         }
-        $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_links ADD created_by_api TINYINT(1) AFTER categories" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $wpdb->query( "ALTER TABLE {$table_escaped} ADD created_by_api TINYINT(1) AFTER categories" );
     }
 
     function clickwhale_maybe_add_favicon_column() : void {
@@ -191,11 +203,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         global $wpdb;
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$wpdb->prefix}clickwhale_linkpages LIKE 'favicon'" );
+        $table = $wpdb->prefix . 'clickwhale_linkpages';
+        $table_escaped = '`' . esc_sql( $table ) . '`';
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'favicon'" );
         if ( $column_exists ) {
             return;
         }
-        $wpdb->query( "ALTER TABLE {$wpdb->prefix}clickwhale_linkpages ADD favicon INT(11) NOT NULL AFTER logo" );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $wpdb->query( "ALTER TABLE {$table_escaped} ADD favicon INT(11) NOT NULL AFTER logo" );
     }
 
     register_activation_hook( __FILE__, 'clickwhale_activate' );
@@ -216,7 +232,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      *
      * @since    1.0.0
      */
-    function run_clickwhale() {
+    function clickwhale_run() {
         clickwhale()->run();
         /* @since 2.3.0 */
         $maybe_update_version = clickwhale_maybe_add_or_update_version();
@@ -231,7 +247,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
     }
 
-    add_action( 'plugins_loaded', 'run_clickwhale' );
+    add_action( 'plugins_loaded', 'clickwhale_run' );
     /**
      * Returns the instance of Clickwhale.
      *

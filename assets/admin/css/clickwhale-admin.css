@@ -735,7 +735,7 @@ ion-icon {
 
 .cw-linkpage-row--link span {
 	display: block;
-	max-width: 400px;
+	max-width: 230px;
 	margin-top: 4px;
 	font-size: 12px;
 	white-space: nowrap;
@@ -753,9 +753,9 @@ ion-icon {
 	display: inline-block;
 	text-align: center;
 	line-height: 1.5em;
-	font-size: 10px;
+	font-size: 9px;
 	font-weight: 600;
-	letter-spacing: .03em;
+	letter-spacing: .02em;
 	padding: 3px 10px;
 	border-radius: 10px;
 	background: #f7f7f7;
@@ -1945,20 +1945,6 @@ table.tracking-codes .column-is_active {
 }
 
 /* VENDORS */
-
-.cw-linkpage-row--image-select--tab .picmo__picker.picmo__picker {
-	width: 100% !important;
-}
-
-.cw-linkpage-row--image-select--tab .picmo__picker .picmo__emojiContainer {
-	grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
-	grid-auto-rows: unset;
-	gap: 5px;
-}
-
-.cw-linkpage-row--image-select--tab .picmo__emojiButton {
-	font-size: 1.5rem;
-}
 
 /* ADMIN SIDEBAR WIDGETS */
 

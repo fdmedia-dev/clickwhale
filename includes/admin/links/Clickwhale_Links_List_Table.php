@@ -1,4 +1,5 @@
 <?php
+
 namespace clickwhale\includes\admin\links;
 
 use Exception;
@@ -17,23 +18,23 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
     public function __construct() {
         parent::__construct(
-            array(
-                'singular' => 'link',
-                'plural'   => 'links',
-                'ajax'     => true
-            )
+                array(
+                        'singular' => 'link',
+                        'plural'   => 'links',
+                        'ajax'     => true
+                )
         );
     }
 
     private function get_current_data( $order, $orderby, $params ): array {
         global $wpdb;
-        $table_links = Helper::get_db_table_name( 'links' );
-        $table_track = Helper::get_db_table_name( 'track' );
+        $table_links       = Helper::get_db_table_name( 'links' );
+        $table_track       = Helper::get_db_table_name( 'track' );
         $non_api_condition = '(links.created_by_api IS NULL OR links.created_by_api = 0)';
 
-        $allowed_columns = array_keys( $this->get_columns() );
+        $allowed_columns   = array_keys( $this->get_columns() );
         $allowed_columns[] = 'id';
-        $orderby = in_array( $orderby, $allowed_columns, true ) ? $orderby : 'id';
+        $orderby           = in_array( $orderby, $allowed_columns, true ) ? $orderby : 'id';
 
         if ( 'clicks_count' !== $orderby ) {
             $orderby = 'links.' . $orderby;
@@ -42,26 +43,30 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $order = strtolower( $order ) === 'desc' ? 'DESC' : 'ASC';
 
         if ( empty( $params ) ) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
             return (array) $wpdb->get_results(
-                "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
-                FROM {$table_links} links
-                LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id
-                WHERE $non_api_condition
-                ORDER BY $orderby $order",
-                ARRAY_A
+                    $wpdb->prepare(
+                            "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
+                    FROM {$table_links} links
+                    LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type=%s GROUP BY link_id) track ON links.id = track.link_id
+                    WHERE links.created_by_api IS NULL OR links.created_by_api = 0
+                    ORDER BY $orderby $order",
+                            'click'
+                    ),
+                    ARRAY_A
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
 
-        $search = sanitize_text_field( $params['search'] ?? '' );
-        $category = sanitize_text_field( $params['category'] ?? '' );
-        $created_by = sanitize_text_field( $params['created_by'] ?? 'admin' );
-        $prepared_args = array();
+        $search        = isset( $params['search'] ) ? sanitize_text_field( wp_unslash( $params['search'] ) ) : '';
+        $category      = isset( $params['category'] ) ? sanitize_text_field( wp_unslash( $params['category'] ) ) : '';
+        $created_by    = isset( $params['created_by'] ) ? sanitize_text_field( wp_unslash( $params['created_by'] ) ) : 'admin';
+        $prepared_args = array( 'click' );
 
         $sql = "SELECT links.id, links.title, links.url, links.slug, links.description, links.categories, links.created_by_api, COALESCE(track.clicks,0) AS clicks_count
         FROM {$table_links} links
-        LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type='click' GROUP BY link_id) track ON links.id = track.link_id ";
+        LEFT JOIN (SELECT link_id, COUNT(*) clicks FROM {$table_track} WHERE event_type=%s GROUP BY link_id) track ON links.id = track.link_id ";
 
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $sql = apply_filters( 'clickwhale_links_list_table_sql', $sql, $table_links, $table_track );
@@ -73,9 +78,9 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
             // Search
             if ( $search ) {
-                $search = '%' . $wpdb->esc_like( $search ) . '%';
-                $sql .= "(links.title LIKE %s OR links.url LIKE %s OR links.slug LIKE %s OR links.description LIKE %s) ";
-                $prepared_args = array_fill( 0, 4, $search );
+                $search        = '%' . $wpdb->esc_like( $search ) . '%';
+                $sql           .= "(links.title LIKE %s OR links.url LIKE %s OR links.slug LIKE %s OR links.description LIKE %s) ";
+                $prepared_args = array_merge( $prepared_args, array_fill( 0, 4, $search ) );
 
                 if ( $category || $is_filtered_created_by ) {
                     $sql .= "AND ";
@@ -84,12 +89,17 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
             // Category
             if ( $category ) {
-                $like_start = $wpdb->esc_like( "{$category}," );
+                $like_start  = $wpdb->esc_like( "{$category}," );
                 $like_middle = $wpdb->esc_like( ",{$category}," );
-                $like_end = $wpdb->esc_like( ",{$category}" );
+                $like_end    = $wpdb->esc_like( ",{$category}" );
 
-                $sql .= "(links.categories = %d OR links.categories LIKE %s OR links.categories LIKE %s OR links.categories LIKE %s) ";
-                $prepared_args = array_merge( $prepared_args, array( intval( $category ), "{$like_start}%", "%{$like_middle}%", "%{$like_end}" ) );
+                $sql           .= "(links.categories = %d OR links.categories LIKE %s OR links.categories LIKE %s OR links.categories LIKE %s) ";
+                $prepared_args = array_merge( $prepared_args, array(
+                        intval( $category ),
+                        "{$like_start}%",
+                        "%{$like_middle}%",
+                        "%{$like_end}"
+                ) );
 
                 if ( $is_filtered_created_by ) {
                     $sql .= "AND ";
@@ -101,7 +111,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 if ( 'api' === $created_by ) {
                     $sql .= "links.created_by_api = 1 ";
                 } else {
-                    $sql .= $non_api_condition . " ";
+                    $sql .= "(links.created_by_api IS NULL OR links.created_by_api = 0) ";
                 }
             }
         }
@@ -109,12 +119,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         $sql .= "ORDER BY $orderby $order";
 
-        if ( empty( $prepared_args ) ) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            return (array) $wpdb->get_results( $sql, ARRAY_A );
-        }
-
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_results( $wpdb->prepare( $sql, ...$prepared_args ), ARRAY_A );
     }
 
@@ -132,8 +137,9 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 <select name="category" class="clickwhale-filter-categories">
                     <option value=""><?php esc_html_e( 'All Categories', 'clickwhale' ); ?></option>
                     <?php foreach ( $categories as $category ) {
-                        $category_id = intval( $category->id );
-                        $selected = isset( $_GET['category'] ) && intval( $_GET['category'] ) == $category_id ? ' selected="selected"' : '';
+                        $category_id  = intval( $category->id );
+                        $get_category = (int) filter_input( INPUT_GET, 'category', FILTER_SANITIZE_NUMBER_INT );
+                        $selected     = $get_category === $category_id ? ' selected="selected"' : '';
                         ?>
                         <option value="<?php echo esc_attr( $category_id ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_html( $category->title ); ?></option>
                     <?php } ?>
@@ -143,12 +149,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             ?>
             <select name="created_by" class="clickwhale-filter-created_by">
                 <?php
-                    $options = array(
+                $options    = array(
                         'all'   => __( 'All Links', 'clickwhale' ),
                         'admin' => __( 'Non-API Links', 'clickwhale' ),
                         'api'   => __( 'Created by API Links', 'clickwhale' )
-                    );
-                    $selected = isset( $_GET['created_by'] ) && in_array( $_GET['created_by'], array_keys( $options ), true ) ? $_GET['created_by'] : 'admin';
+                );
+                $created_by = sanitize_key( (string) filter_input( INPUT_GET, 'created_by' ) );
+                $selected   = in_array( $created_by, array_keys( $options ), true ) ? $created_by : 'admin';
                 ?>
                 <?php foreach ( $options as $value => $label ) {
                     ?>
@@ -159,7 +166,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 }
                 ?>
             </select>
-            <input type="submit" class="button" value="<?php esc_attr_e( 'Filter', 'clickwhale' ); ?>" />
+            <input type="submit" class="button" value="<?php esc_attr_e( 'Filter', 'clickwhale' ); ?>"/>
         </div>
         <?php
     }
@@ -167,59 +174,62 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
     /**
      * @param $item - row (key, value array)
      * @param $column_name - string (key)
+     *
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[$column_name] );
+        return esc_html( $item[ $column_name ] );
     }
 
     /**
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_title( $item ): string {
-        $id = intval( $item['id'] );
-        $title = sprintf(
-            '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
-            $id,
-            esc_html( wp_unslash( $item['title'] ) )
-        );
-        $actions = array(
-            'edit'   => sprintf(
+        $id           = intval( $item['id'] );
+        $current_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        $title        = sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
                 $id,
-                __( 'Edit', 'clickwhale' )
-            ),
-            'scan'   => sprintf(
-                '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d&tab=link_scanner">%s</a>',
-                $id,
-                __( 'Scan', 'clickwhale' )
-            ),
-            'reset'  => sprintf(
-                '<a href="%s">%s</a>',
-                esc_url(
-                    wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=reset&id=' . $id ),
-                        'reset-' . $this->_args['singular']
-                    )
+                esc_html( wp_unslash( $item['title'] ) )
+        );
+        $actions      = array(
+                'edit'   => sprintf(
+                        '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d">%s</a>',
+                        $id,
+                        __( 'Edit', 'clickwhale' )
                 ),
-                __( 'Reset Clicks', 'clickwhale' )
-            ),
-            'delete' => sprintf(
-                '<a href="%s">%s</a>',
-                esc_url(
-                    wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
-                        'delete-' . $this->_args['singular']
-                    )
+                'scan'   => sprintf(
+                        '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d&tab=link_scanner">%s</a>',
+                        $id,
+                        __( 'Scan', 'clickwhale' )
                 ),
-                __( 'Delete', 'clickwhale' )
-            )
+                'reset'  => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(
+                                wp_nonce_url(
+                                        admin_url( 'admin.php?page=' . $current_page . '&action=reset&id=' . $id ),
+                                        'reset-' . $this->_args['singular']
+                                )
+                        ),
+                        __( 'Reset Clicks', 'clickwhale' )
+                ),
+                'delete' => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(
+                                wp_nonce_url(
+                                        admin_url( 'admin.php?page=' . $current_page . '&action=delete&id=' . $id ),
+                                        'delete-' . $this->_args['singular']
+                                )
+                        ),
+                        __( 'Delete', 'clickwhale' )
+                )
         );
 
         return sprintf( '%s %s',
-            $title,
-            $this->row_actions( $actions )
+                $title,
+                $this->row_actions( $actions )
         );
     }
 
@@ -227,6 +237,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * Link url with copy button
      *
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_slug( $item ): string {
@@ -237,6 +248,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * Target URL
      *
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_url( $item ): string {
@@ -247,6 +259,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * List of categories
      *
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_categories( $item ): string {
@@ -262,23 +275,23 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             return $dash;
         }
 
-        $link_categories = explode( ',', esc_html( $item['categories'] ) );
-        $last = end( $link_categories );
+        $link_categories    = explode( ',', esc_html( $item['categories'] ) );
+        $last               = end( $link_categories );
         $current_categories = '';
 
         foreach ( $link_categories as $v ) {
-            $v = intval( $v );
-            $result = array_column( $categories, null, 'id' )[$v] ?? false;
+            $v      = intval( $v );
+            $result = array_column( $categories, null, 'id' )[ $v ] ?? false;
 
             if ( empty( $result ) ) {
                 continue;
             }
 
             $current_categories .= sprintf(
-                '<a href="%s&category=%d">%s</a>',
-                esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
-                intval( $result['id'] ),
-                esc_html( wp_unslash( $result['title'] ) )
+                    '<a href="%s&category=%d">%s</a>',
+                    esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
+                    intval( $result['id'] ),
+                    esc_html( wp_unslash( $result['title'] ) )
             );
 
             if ( $v != $last ) {
@@ -293,6 +306,7 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * Total clicks per link
      *
      * @param $item - row (key, value array)
+     *
      * @return string
      * @since 1.1.0
      *
@@ -303,12 +317,13 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
     /**
      * @param $item - row (key, value array)
+     *
      * @return string
      */
     public function column_cb( $item ): string {
         return sprintf(
-            '<input type="checkbox" name="id[]" value="%d" />',
-            intval( $item['id'] )
+                '<input type="checkbox" name="id[]" value="%d" />',
+                intval( $item['id'] )
         );
     }
 
@@ -319,12 +334,12 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $tracking_options = get_option( 'clickwhale_tracking_options' );
 
         $columns = array(
-            'cb'           => '<input type="checkbox" />',
-            'title'        => __( 'Title', 'clickwhale' ),
-            'slug'         => __( 'Slug', 'clickwhale' ),
-            'url'          => __( 'Target URL', 'clickwhale' ),
-            'categories'   => __( 'Categories', 'clickwhale' ),
-            'clicks_count' => __( 'Clicks', 'clickwhale' )
+                'cb'           => '<input type="checkbox" />',
+                'title'        => __( 'Title', 'clickwhale' ),
+                'slug'         => __( 'Slug', 'clickwhale' ),
+                'url'          => __( 'Target URL', 'clickwhale' ),
+                'categories'   => __( 'Categories', 'clickwhale' ),
+                'clicks_count' => __( 'Clicks', 'clickwhale' )
         );
 
         if ( ! empty( $tracking_options['disable_tracking'] ) ) {
@@ -343,8 +358,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      */
     public function get_sortable_columns(): array {
         return array(
-            'title' => array( 'title', true ),
-            'clicks_count' => array( 'clicks_count', true )
+                'title'        => array( 'title', true ),
+                'clicks_count' => array( 'clicks_count', true )
         );
     }
 
@@ -355,18 +370,18 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'edit' => __( 'Edit', 'clickwhale' ),
-            'reset' => __( 'Reset Clicks', 'clickwhale' ),
-            'delete' => __( 'Delete', 'clickwhale' )
+                'edit'   => __( 'Edit', 'clickwhale' ),
+                'reset'  => __( 'Reset Clicks', 'clickwhale' ),
+                'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
     /**
      * This method processes bulk actions
      * it can be outside of class
-     * it can not use wp_redirect coz there is output already
+     * it cannot use wp_redirect coz there is output already
      * in this example we are processing delete action
-     * message about successful deletion will be shown on page in next part
+     * a message about successful deletion will be shown on the page in the next part
      *
      * @throws Exception
      */
@@ -379,111 +394,112 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( empty( $_GET['id'] ) ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        $get_id   = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+        if ( null === $get_id ) {
+            $get_id = (string) filter_input( INPUT_GET, 'id' );
+        }
+
+        if ( empty( $get_id ) ) {
             return;
         }
 
         switch ( $action ) {
             case 'edit':
+                $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
+                if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, 'bulk-' . $this->_args['plural'] ) ) {
+                    Helper::csrf_exception( $get_page );
+                }
+
                 $data = array();
 
-                if ( isset( $_GET['link_category'] ) ) {
-                    $categories = $_GET['link_category'];
-
-                    if ( is_array( $categories ) ) {
-                        $data['categories'] = implode( ',', array_map( 'sanitize_text_field', $categories ) );
-                    } else {
-                        $data['categories'] = sanitize_text_field( $categories );
+                $categories = filter_input( INPUT_GET, 'link_category', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+                if ( is_array( $categories ) ) {
+                    $data['categories'] = implode( ',', array_map( 'sanitize_text_field', $categories ) );
+                } else {
+                    $category_single = (string) filter_input( INPUT_GET, 'link_category' );
+                    if ( $category_single !== '' && $category_single !== null ) {
+                        $data['categories'] = sanitize_text_field( $category_single );
                     }
                 }
 
-                if ( isset( $_GET['redirection_status'] ) ) {
-                    $redirection = sanitize_text_field( $_GET['redirection_status'] );
-
-                    if ( $redirection !== '-1' ) {
-                        $data['redirection'] = $redirection;
-                    }
+                $redirection = sanitize_text_field( (string) filter_input( INPUT_GET, 'redirection_status' ) );
+                if ( $redirection !== '' && $redirection !== '-1' ) {
+                    $data['redirection'] = $redirection;
                 }
 
-                if ( isset( $_GET['link_target_status'] ) ) {
-                    $link_target = sanitize_text_field( $_GET['link_target_status'] );
-
-                    if ( $link_target !== '-1' ) {
-                        $data['link_target'] = $link_target;
-                    }
+                $link_target = sanitize_text_field( (string) filter_input( INPUT_GET, 'link_target_status' ) );
+                if ( $link_target !== '' && $link_target !== '-1' ) {
+                    $data['link_target'] = $link_target;
                 }
 
-                if ( isset( $_GET['nofollow_status'] ) ) {
-                    $nofollow = sanitize_text_field( $_GET['nofollow_status'] );
-
-                    if ( $nofollow !== '-1' ) {
-                        $data['nofollow'] = $nofollow;
-                    }
+                $nofollow = sanitize_text_field( (string) filter_input( INPUT_GET, 'nofollow_status' ) );
+                if ( $nofollow !== '' && $nofollow !== '-1' ) {
+                    $data['nofollow'] = $nofollow;
                 }
 
-                if ( isset( $_GET['sponsored_status'] ) ) {
-                    $sponsored = sanitize_text_field( $_GET['sponsored_status'] );
-
-                    if ( $sponsored !== '-1' ) {
-                        $data['sponsored'] = $sponsored;
-                    }
+                $sponsored = sanitize_text_field( (string) filter_input( INPUT_GET, 'sponsored_status' ) );
+                if ( $sponsored !== '' && $sponsored !== '-1' ) {
+                    $data['sponsored'] = $sponsored;
                 }
 
                 if ( $data ) {
-                    $ids = is_array( $_GET['id'] ) ? $_GET['id'] : array( $_GET['id'] );
+                    $ids = is_array( $get_id ) ? $get_id : array( $get_id );
 
                     // Convert to integers, then remove zero values
                     $ids = array_filter( array_map( 'intval', $ids ) );
 
                     if ( ! empty( $ids ) ) {
                         foreach ( $ids as $id ) {
+                            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                             $wpdb->update(
-                                Helper::get_db_table_name( 'links' ),
-                                $data,
-                                array( 'id' => $id )
+                                    Helper::get_db_table_name( 'links' ),
+                                    $data,
+                                    array( 'id' => $id )
                             );
                         }
                     }
 
                     $url = remove_query_arg( '_wp_http_referer' );
                     $url = remove_query_arg(
-                        array(
-                            'link_category',
-                            'redirection_status',
-                            'link_target_status',
-                            'nofollow_status',
-                            'sponsored_status'
-                        ),
-                        $url
+                            array(
+                                    'link_category',
+                                    'redirection_status',
+                                    'link_target_status',
+                                    'nofollow_status',
+                                    'sponsored_status'
+                            ),
+                            $url
                     );
                     $url = add_query_arg(
-                        array(
-                            'action' => '-1',
-                            'action2' => '-1'
-                        ),
-                        $url
+                            array(
+                                    'action'  => '-1',
+                                    'action2' => '-1'
+                            ),
+                            $url
                     );
                     ?>
-                    <script>window.location.href=<?php echo wp_json_encode( $url ); ?></script>
+                    <script>window.location.href =<?php echo wp_json_encode( $url ); ?></script>
                     <?php
                 }
                 break;
 
             case 'delete':
-                $page_slug = sanitize_key( $_GET['page'] );
+                $get_page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 
                 if ( ! isset( $_GET['_wpnonce'] ) ) {
-                    Helper::csrf_exception( $page_slug );
+                    Helper::csrf_exception( $get_page );
                 }
 
-                $post_id = $_GET['id'];
-                $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+                $get_id = isset( $_GET['id'] ) ? wp_unslash( $_GET['id'] ) : '';
+                $nonce  = is_array( $get_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
                 if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
-                    Helper::csrf_exception( $page_slug );
+                    Helper::csrf_exception( $get_page );
                 }
 
-                $ids = is_array( $post_id ) ? $post_id : array( $post_id );
+                $ids = is_array( $get_id ) ? $get_id : array( $get_id );
 
                 // Convert to integers, then remove zero values
                 $ids = array_filter( array_map( 'intval', $ids ) );
@@ -492,46 +508,54 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     break;
                 }
 
-                $links_table = Helper::get_db_table_name( 'links' );
-                $meta_table = Helper::get_db_table_name( 'meta' );
+                $links_table  = Helper::get_db_table_name( 'links' );
+                $meta_table   = Helper::get_db_table_name( 'meta' );
                 $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
                 $result = $wpdb->query(
-                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    $wpdb->prepare(
-                        "DELETE FROM {$links_table} WHERE id IN ($placeholders)",
-                        ...$ids
-                    )
+                        $wpdb->prepare(
+                                "DELETE FROM {$links_table} WHERE id IN ($placeholders)",
+                                ...$ids
+                        )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
                 if ( false !== $result ) {
+                    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
                     $wpdb->query(
-                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                        $wpdb->prepare(
-                            "DELETE FROM {$meta_table} WHERE link_id IN ($placeholders)",
-                            ...$ids
-                        )
+                            $wpdb->prepare(
+                                    "DELETE FROM {$meta_table} WHERE link_id IN ($placeholders)",
+                                    ...$ids
+                            )
                     );
+                    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
                     do_action( 'clickwhale_link_deleted', $ids );
                 }
                 break;
 
             case 'reset':
-                $page_slug = sanitize_key( $_GET['page'] );
+                $get_page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 
                 if ( ! isset( $_GET['_wpnonce'] ) ) {
-                    Helper::csrf_exception( $page_slug );
+                    Helper::csrf_exception( $get_page );
                 }
 
-                $post_id = $_GET['id'];
-                $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'reset-' . $this->_args['singular'];
+                $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+                if ( null === $get_id ) {
+                    $get_id = (string) filter_input( INPUT_GET, 'id' );
+                }
+                $nonce = is_array( $get_id ) ? 'bulk-' . $this->_args['plural'] : 'reset-' . $this->_args['singular'];
 
-                if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
-                    Helper::csrf_exception( $page_slug );
+                $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
+                if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, $nonce ) ) {
+                    Helper::csrf_exception( $get_page );
                 }
 
-                $ids = is_array( $post_id ) ? $post_id : array( $post_id );
+                $ids = is_array( $get_id ) ? $get_id : array( $get_id );
 
                 // Convert to integers, then remove zero values
                 $ids = array_filter( array_map( 'intval', $ids ) );
@@ -540,16 +564,18 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     break;
                 }
 
-                $table = Helper::get_db_table_name( 'track' );
+                $table        = Helper::get_db_table_name( 'track' );
                 $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
+                // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
                 $wpdb->query(
-                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                    $wpdb->prepare(
-                        "DELETE FROM {$table} WHERE link_id IN ($placeholders)",
-                        ...$ids
-                    )
+                        $wpdb->prepare(
+                                "DELETE FROM {$table} WHERE link_id IN ($placeholders)",
+                                ...$ids
+                        )
                 );
+                // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
                 break;
         }
     }
@@ -567,37 +593,46 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'desc';
-        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'id';
-        $sort = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
-        $order = $sort['order'];
+        $order_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'order' ) );
+        if ( empty( $order_arg ) ) {
+            $order_arg = 'desc';
+        }
+        $orderby_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'orderby' ) );
+        if ( empty( $orderby_arg ) ) {
+            $orderby_arg = 'id';
+        }
+        $sort    = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
+        $order   = $sort['order'];
         $orderby = $sort['orderby'];
 
         // Will be used in pagination settings
         $params = array();
 
-        if ( ! empty( $_GET['s'] ) ) {
-            $params['search'] = sanitize_text_field( $_GET['s'] );
+        $search_q = (string) filter_input( INPUT_GET, 's' );
+        if ( '' !== $search_q && null !== $search_q ) {
+            $params['search'] = sanitize_text_field( $search_q );
         }
 
-        if ( ! empty( $_GET['category'] ) ) {
-            $params['category'] = intval( $_GET['category'] );
+        $cat_q = (int) filter_input( INPUT_GET, 'category', FILTER_SANITIZE_NUMBER_INT );
+        if ( $cat_q ) {
+            $params['category'] = $cat_q;
         }
 
-        if ( ! empty( $_GET['created_by'] ) ) {
-            $params['created_by'] = sanitize_text_field( $_GET['created_by'] );
+        $created_by_q = (string) filter_input( INPUT_GET, 'created_by' );
+        if ( '' !== $created_by_q && null !== $created_by_q ) {
+            $params['created_by'] = sanitize_text_field( $created_by_q );
         }
 
         $current_data = $this->get_current_data( $order, $orderby, $params );
-        $total_items = count( $current_data );
+        $total_items  = count( $current_data );
         $current_data = array_slice( $current_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
-        $this->items = $current_data;
+        $this->items  = $current_data;
 
         // [REQUIRED] Configure pagination
         $this->set_pagination_args( array(
-            'per_page'    => $per_page,
-            'total_items' => $total_items,
-            'total_pages' => ceil( $total_items / $per_page )
+                'per_page'    => $per_page,
+                'total_items' => $total_items,
+                'total_pages' => ceil( $total_items / $per_page )
         ) );
     }
 
@@ -618,18 +653,20 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             </tr>
             </thead>
             <tbody id="the-list"
-                <?php
-                if ( $singular ) {
-                    echo " data-wp-lists='list:" . esc_attr( $singular ) . "'";
-                }
-                ?>
+                    <?php
+                    if ( $singular ) {
+                        echo " data-wp-lists='list:" . esc_attr( $singular ) . "'";
+                    }
+                    ?>
             >
             <?php
-                if ( ( isset( $_GET['action'] ) && $_GET['action'] === 'edit' ) && ! empty( $_GET['id'] ) ) {
-                    $quick_edit = new Clickwhale_Links_Bulk_Edit( $_GET['id'], $this->get_column_count() );
-                    echo wp_kses( $quick_edit->render_quick_edit(), Helper::get_allowed_tags() );
-                }
-                $this->display_rows_or_placeholder();
+            $action_q = sanitize_key( (string) filter_input( INPUT_GET, 'action' ) );
+            $id_q     = array_map( 'intval', (array) filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ) );
+            if ( $action_q === 'edit' && $id_q ) {
+                $quick_edit = new Clickwhale_Links_Bulk_Edit( $id_q, $this->get_column_count() );
+                echo wp_kses( $quick_edit->render_quick_edit(), Helper::get_allowed_tags() );
+            }
+            $this->display_rows_or_placeholder();
             ?>
             </tbody>
             <tfoot>

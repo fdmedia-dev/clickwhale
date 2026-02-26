@@ -77,7 +77,7 @@ class Linkpages_Helper extends Helper_Abstract {
             return array();
         }
 
-        $url = esc_url_raw( $_SERVER['HTTP_REFERER'] );
+        $url = esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER']) );
 
         if ( ! $url ) {
             return array();
@@ -118,12 +118,15 @@ class Linkpages_Helper extends Helper_Abstract {
         global $wpdb;
         $table = Helper::get_db_table_name( self::$plural );
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return intval( $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM {$table} WHERE slug=%s",
                 $slug
             )
         ) );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     }
 
     /**
@@ -134,6 +137,8 @@ class Linkpages_Helper extends Helper_Abstract {
         $table = Helper::get_db_table_name( 'track' );
         $column = ( $is_link ) ? 'link_id' : 'custom_link_id';
 
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return intval( $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM {$table} WHERE linkpage_id = %s AND $column = %s AND event_type = 'click'",
@@ -141,5 +146,6 @@ class Linkpages_Helper extends Helper_Abstract {
                 sanitize_text_field( $link_id )
             )
         ) );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
     }
 }

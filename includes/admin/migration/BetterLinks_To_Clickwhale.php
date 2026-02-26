@@ -9,6 +9,8 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
     public function process_links_data(): array {
         global $wpdb;
+
+	    // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks" );
 
         if ( ! $data ) {
@@ -21,6 +23,8 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
         foreach ( $data as $item ) {
             if ( ! $this->link_exists( $item->link_slug ) ) {
+
+	            // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $category_id = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT {$wpdb->prefix}clickwhale_categories.id
@@ -67,6 +71,7 @@ class BetterLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
     public function process_categories_data(): array {
         global $wpdb;
 
+	    // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}betterlinks_terms" );
 
         if ( ! $data ) {

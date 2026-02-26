@@ -32,10 +32,11 @@ class Clickwhale_View_Track {
             'link_id'     => 0,
             'linkpage_id' => $linkpage_id,
             'visitor_id'  => $this->visitor->visitor_id,
-            'referer'     => esc_url_raw( $_SERVER['HTTP_REFERER'] ?? '' ),
+            'referer'     => esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER']) ?? '' ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
             'created_at'  => gmdate( 'Y-m-d H:i:s' )
         );
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->insert( $table_name, $item );
     }
 }

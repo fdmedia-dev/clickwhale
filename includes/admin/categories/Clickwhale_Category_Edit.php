@@ -31,6 +31,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
     }
 
     public function admin_scripts(): void {
+        $id = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function(){
@@ -130,7 +131,7 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                             'action': 'clickwhale/admin/slug_exists',
                             'type': 'category',
                             'slug': slug.val() ? slug.val() : title.val(),
-                            'id': <?php echo intval( $_GET['id'] ?? 0 ); ?>
+                            'id': <?php echo intval( $id ); ?>
                         }, success: function(response){
                             result = response.data;
                         }

@@ -178,11 +178,11 @@ class Clickwhale_Public_Tracking_Codes {
     public function do_tracking_action( string $position, string $code ) {
         $credit_before = apply_filters(
             'clickwhale_tracking_code_credits',
-            '<!-- START ClickWhale - Tracking Code -->'
+            ''
         );
         $credit_after  = apply_filters(
             'clickwhale_tracking_code_credits',
-            '<!-- END ClickWhale - Tracking Code ( https://clickwhale.pro ) -->'
+            ''
         );
 
         add_action( $position, function () use ( $code, $credit_before, $credit_after ) {

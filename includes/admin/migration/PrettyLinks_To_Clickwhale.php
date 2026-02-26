@@ -9,6 +9,8 @@ class PrettyLinks_To_Clickwhale extends Clickwhale_Migration_Abstract {
 
     public function process_links_data(): array {
         global $wpdb;
+
+	    // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}prli_links" );
 
         if ( ! $data ) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace clickwhale\includes\admin\migration;
 
 use clickwhale\includes\helpers\Helper;
@@ -53,24 +54,24 @@ class Clickwhale_Migration {
      */
     public static function available_migrations(): array {
         return array(
-            'betterlinks'       => array(
-                'slug'  => 'betterlinks',
-                'name'  => 'Betterlinks',
-                'path'  => 'betterlinks/betterlinks.php',
-                'class' => 'BetterLinks_To_Clickwhale'
-            ),
-            'thirstyaffiliates' => array(
-                'slug'  => 'thirstyaffiliates',
-                'name'  => 'ThirstyAffiliates',
-                'path'  => 'thirstyaffiliates/thirstyaffiliates.php',
-                'class' => 'ThirstyAffiliates_To_Clickwhale'
-            ),
-            'prettylinks'       => array(
-                'slug'  => 'prettylinks',
-                'name'  => 'PrettyLinks',
-                'path'  => 'pretty-link/pretty-link.php',
-                'class' => 'PrettyLinks_To_Clickwhale'
-            )
+                'betterlinks'       => array(
+                        'slug'  => 'betterlinks',
+                        'name'  => 'Betterlinks',
+                        'path'  => 'betterlinks/betterlinks.php',
+                        'class' => 'BetterLinks_To_Clickwhale'
+                ),
+                'thirstyaffiliates' => array(
+                        'slug'  => 'thirstyaffiliates',
+                        'name'  => 'ThirstyAffiliates',
+                        'path'  => 'thirstyaffiliates/thirstyaffiliates.php',
+                        'class' => 'ThirstyAffiliates_To_Clickwhale'
+                ),
+                'prettylinks'       => array(
+                        'slug'  => 'prettylinks',
+                        'name'  => 'PrettyLinks',
+                        'path'  => 'pretty-link/pretty-link.php',
+                        'class' => 'PrettyLinks_To_Clickwhale'
+                )
         );
     }
 
@@ -84,8 +85,8 @@ class Clickwhale_Migration {
             $defaults = array();
 
             foreach ( $this->available_migrations() as $item ) {
-                $defaults[$item['slug'] . '_categories'] = true;
-                $defaults[$item['slug'] . '_links']      = true;
+                $defaults[ $item['slug'] . '_categories' ] = true;
+                $defaults[ $item['slug'] . '_links' ]      = true;
             }
 
             add_option( $this->options, $defaults );
@@ -102,7 +103,7 @@ class Clickwhale_Migration {
             $notice_migrate_options = array();
 
             foreach ( $this->available_migrations() as $item ) {
-                $notice_migrate_options[$item['slug']] = false;
+                $notice_migrate_options[ $item['slug'] ] = false;
             }
 
             add_option( 'clickwhale_hide_notice_migrate', $notice_migrate_options );
@@ -119,7 +120,7 @@ class Clickwhale_Migration {
             $notice_deactive_options = array();
 
             foreach ( $this->available_migrations() as $item ) {
-                $notice_deactive_options[$item['slug']] = true;
+                $notice_deactive_options[ $item['slug'] ] = true;
             }
 
             add_option( 'clickwhale_hide_notice_deactive', $notice_deactive_options );
@@ -135,6 +136,7 @@ class Clickwhale_Migration {
      * @since 1.0.0
      */
     public function check_active( string $path ): bool {
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- core WP filter
         return in_array( $path, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
     }
 
@@ -152,16 +154,21 @@ class Clickwhale_Migration {
 
         switch ( $plugin ) {
             case 'betterlinks':
-                $data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks" ) );
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                $data['links'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks" ) );
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $data['categories'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}betterlinks_terms" ) );
                 break;
 
             case 'thirstyaffiliates':
-                $data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type='thirstylink' AND post_status='publish'" ) );
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+                $data['links'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type='thirstylink' AND post_status='publish'" ) );
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $data['categories'] = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}term_taxonomy WHERE taxonomy='thirstylink-category'" ) );
                 break;
 
             case 'prettylinks':
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $data['links']      = intval( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}prli_links" ) );
                 $data['categories'] = '';
                 break;
@@ -199,52 +206,52 @@ class Clickwhale_Migration {
                 continue;
             }
 
-            $slug = $item['slug'];
+            $slug    = $item['slug'];
             $options = get_option( $this->options );
 
             add_settings_section(
-                'clickwhale_tools_migration_' . $slug . '_section',
-                $item['name'],
-                function () use ( $item ) {
-                    $this->migration_settings_section_callback( $item );
-                },
-                'clickwhale_tools_' . $slug . '_migration_options'
+                    'clickwhale_tools_migration_' . $slug . '_section',
+                    $item['name'],
+                    function () use ( $item ) {
+                        $this->migration_settings_section_callback( $item );
+                    },
+                    'clickwhale_tools_' . $slug . '_migration_options'
             );
 
             add_settings_field(
-                "{$slug}_categories",
-                esc_html__( 'Categories', 'clickwhale' ),
-                array( $this, 'render_controls' ),
-                "clickwhale_tools_{$slug}_migration_options",
-                "clickwhale_tools_migration_{$slug}_section",
-                array(
-                    'control' => 'checkbox',
-                    'id'      => "{$slug}_categories",
-                    'name'    => "$this->options[{$slug}_categories]",
-                    'value'   => ! empty( $options[$slug . '_categories'] ) ? 1 : 0,
-                    'label'   => esc_html__( 'Migrate categories', 'clickwhale' )
-                )
+                    "{$slug}_categories",
+                    esc_html__( 'Categories', 'clickwhale' ),
+                    array( $this, 'render_controls' ),
+                    "clickwhale_tools_{$slug}_migration_options",
+                    "clickwhale_tools_migration_{$slug}_section",
+                    array(
+                            'control' => 'checkbox',
+                            'id'      => "{$slug}_categories",
+                            'name'    => "$this->options[{$slug}_categories]",
+                            'value'   => ! empty( $options[ $slug . '_categories' ] ) ? 1 : 0,
+                            'label'   => esc_html__( 'Migrate categories', 'clickwhale' )
+                    )
             );
 
             add_settings_field(
-                "{$slug}_links",
-                esc_html__( 'Links', 'clickwhale' ),
-                array( $this, 'render_controls' ),
-                "clickwhale_tools_{$slug}_migration_options",
-                "clickwhale_tools_migration_{$slug}_section",
-                array(
-                    'control' => 'checkbox',
-                    'id'      => "{$slug}_links",
-                    'name'    => "$this->options[{$slug}_links]",
-                    'value'   => ! empty( $options[$slug . '_links'] ) ? 1 : 0,
-                    'label'   => esc_html__( 'Migrate links', 'clickwhale' )
-                )
+                    "{$slug}_links",
+                    esc_html__( 'Links', 'clickwhale' ),
+                    array( $this, 'render_controls' ),
+                    "clickwhale_tools_{$slug}_migration_options",
+                    "clickwhale_tools_migration_{$slug}_section",
+                    array(
+                            'control' => 'checkbox',
+                            'id'      => "{$slug}_links",
+                            'name'    => "$this->options[{$slug}_links]",
+                            'value'   => ! empty( $options[ $slug . '_links' ] ) ? 1 : 0,
+                            'label'   => esc_html__( 'Migrate links', 'clickwhale' )
+                    )
             );
 
             register_setting(
-                'clickwhale_tools_' . $slug . '_migration_options',
-                'clickwhale_tools_' . $slug . '_migration_options',
-                array( 'sanitize_callback' => '__return_empty_string' )
+                    'clickwhale_tools_' . $slug . '_migration_options',
+                    'clickwhale_tools_' . $slug . '_migration_options',
+                    array( 'sanitize_callback' => '__return_empty_string' )
             );
         }
     }
@@ -265,26 +272,26 @@ class Clickwhale_Migration {
             <p>
                 <?php
                 printf(
-                    /* translators: 1: categories count, 2: categories word, 3: links count, 4: links word */
-                    esc_html__( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
-                    esc_html( $categories ),
-                    esc_html( $categories_text ),
-                    esc_html( $links ),
-                    esc_html( $links_text )
+                /* translators: 1: categories count, 2: categories word, 3: links count, 4: links word */
+                        esc_html__( 'Found %1$s %2$s and %3$s %4$s.', 'clickwhale' ),
+                        esc_html( $categories ),
+                        esc_html( $categories_text ),
+                        esc_html( $links ),
+                        esc_html( $links_text )
                 );
                 ?>
             </p>
             <?php
         }
 
-        if ( ! empty( $options[$item['slug'] . '_last_migration'] ) ) {
+        if ( ! empty( $options[ $item['slug'] . '_last_migration' ] ) ) {
             ?>
             <p>
                 <?php
                 printf(
-                    /* translators: %s: date and time of the last migration */
-                    esc_html__( 'Last migration at %s', 'clickwhale' ),
-                    esc_html( $options[ $item['slug'] . '_last_migration' ] )
+                /* translators: %s: date and time of the last migration */
+                        esc_html__( 'Last migration at %s', 'clickwhale' ),
+                        esc_html( $options[ $item['slug'] . '_last_migration' ] )
                 );
                 ?>
             </p>
@@ -294,9 +301,9 @@ class Clickwhale_Migration {
         <p>
             <?php
             printf(
-                /* translators: %s: plugin name to migrate data from */
-                esc_html__( 'Set what you want to migrate from %s to CLickWhale', 'clickwhale' ),
-                esc_html( $item['name'] )
+            /* translators: %s: plugin name to migrate data from */
+                    esc_html__( 'Set what you want to migrate from %s to CLickWhale', 'clickwhale' ),
+                    esc_html( $item['name'] )
             );
             ?>
         </p>
@@ -305,6 +312,7 @@ class Clickwhale_Migration {
 
     /**
      * @param $args
+     *
      * @return void
      */
     public static function render_controls( $args ) {
@@ -313,18 +321,19 @@ class Clickwhale_Migration {
 
     public function admin_scripts() {
 
-        if ( empty( $_GET['page'] ) ) {
+        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $get_page ) ) {
             return;
         }
 
-        if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
+        if ( $get_page !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function(){
+            jQuery(document).ready(function () {
 
-                jQuery('.clickwhale-migration-section [type="checkbox"]').on('change', function(){
+                jQuery('.clickwhale-migration-section [type="checkbox"]').on('change', function () {
                     let migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
                         migrationButton = jQuery(migrationContainer).find('.button_start_migrate'),
                         checkbox = jQuery(this),
@@ -339,12 +348,12 @@ class Clickwhale_Migration {
                         'action': 'clickwhale/admin/save_migration_option',
                         'name': matches[1],
                         'value': value
-                    }, function(response){
+                    }, function (response) {
                         jQuery(migrationButton).prop('disabled', false);
                     });
                 });
 
-                jQuery('.button_start_migrate').on('click', function(e){
+                jQuery('.button_start_migrate').on('click', function (e) {
                     e.preventDefault();
 
                     let migrationContainer = jQuery(this).closest('.clickwhale-migration-section'),
@@ -360,26 +369,26 @@ class Clickwhale_Migration {
                         'security': <?php echo wp_json_encode( wp_create_nonce( 'migration_to_clickwhale' ) ); ?>,
                         'action': 'clickwhale/admin/migration_to_clickwhale',
                         'migrant': migrationButton.data('migration')
-                    }, function(response){
-                        if (response.success){
+                    }, function (response) {
+                        if (response.success) {
                             let result = response.data;
 
-                            if ('string' === typeof result.data){
+                            if ('string' === typeof result.data) {
                                 jQuery(migrationResult).append('<p>' + result.data + '</p>');
-                            } else if ('object' === typeof result.data){
+                            } else if ('object' === typeof result.data) {
 
-                                for (let type in result.data){
+                                for (let type in result.data) {
                                     let categories = result.data[type].categories,
                                         links = result.data[type].links;
 
-                                    if (categories !== null){
-                                        for (let category in categories){
+                                    if (categories !== null) {
+                                        for (let category in categories) {
                                             jQuery(migrationResult).append('<p>' + categories[category] + '</p>');
                                         }
                                     }
 
-                                    if (links !== null){
-                                        for (let link in links){
+                                    if (links !== null) {
+                                        for (let link in links) {
                                             jQuery(migrationResult).append('<p>' + links[link] + '</p>');
                                         }
                                     }
@@ -390,22 +399,22 @@ class Clickwhale_Migration {
                             jQuery(migrationButton).prop('disabled', false);
                             jQuery(migrationSpinner).removeClass("is-active");
 
-                            if ('object' === typeof result.data){
+                            if ('object' === typeof result.data) {
                                 jQuery(migrationResult).append(
-                                    <?php echo wp_json_encode(
-                                        sprintf(
-                                            '<br><a href="%1$s" class="button-primary">%2$s</a>',
-                                            esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ),
-                                            esc_html__( 'Get started with ClickWhale now', 'clickwhale' )
-                                        )
-                                    ); ?>
+                                        <?php echo wp_json_encode(
+                                                sprintf(
+                                                        '<br><a href="%1$s" class="button-primary">%2$s</a>',
+                                                        esc_url( admin_url( 'admin.php?page=' . CLICKWHALE_SLUG ) ),
+                                                        esc_html__( 'Get started with ClickWhale now', 'clickwhale' )
+                                                )
+                                        ); ?>
                                 );
                             }
                         }
                     });
                 });
 
-                jQuery('.button_reset_migrate').on('click', function(e){
+                jQuery('.button_reset_migrate').on('click', function (e) {
                     e.preventDefault();
 
                     let resetContainer = jQuery('#clickwhale-tools-migration-reset'),
@@ -419,8 +428,8 @@ class Clickwhale_Migration {
                     jQuery.post(ajaxurl, {
                         'security': <?php echo wp_json_encode( wp_create_nonce( 'migration_reset' ) ); ?>,
                         'action': 'clickwhale/admin/migration_reset'
-                    }, function(response){
-                        if (response.success){
+                    }, function (response) {
+                        if (response.success) {
                             jQuery(resetButton).prop('disabled', false);
                             jQuery(resetSpinner).removeClass("is-active");
                             jQuery(resetResult).html(response.data);

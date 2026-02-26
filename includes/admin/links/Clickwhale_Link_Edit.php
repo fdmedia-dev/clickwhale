@@ -130,12 +130,14 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
     public function admin_scripts(): void {
         $slug_prefix = Helper::get_clickwhale_option( 'link_manager', 'slug' );
+        $id = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+        $tab = sanitize_key( (string) filter_input( INPUT_GET, 'tab' ) );
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function(){
                 const
-                    pageID = +'<?php echo intval( $_GET['id'] ?? 0 ); ?>', // `string` to `integer`
-                    activeTab = '<?php echo sanitize_key( $_GET['tab'] ?? '' ); ?>',
+                    pageID = +'<?php echo intval( $id ); ?>', // `string` to `integer`
+                    activeTab = '<?php echo sanitize_key( $tab ); ?>',
                     urlSearchParams = new URLSearchParams(window.location.search),
                     slugNotice = <?php echo wp_json_encode(
                         esc_html__( 'Please enter slug. Allowed characters:', 'clickwhale' ) .

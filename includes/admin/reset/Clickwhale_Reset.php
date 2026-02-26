@@ -100,11 +100,14 @@ class Clickwhale_Reset {
     }
 
     public function admin_scripts() {
-        if ( empty( $_GET['page'] ) ) {
+        $get_page_raw = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+        $get_page = $get_page_raw ? sanitize_key( $get_page_raw ) : '';
+
+        if ( empty( $get_page ) ) {
             return;
         }
 
-        if ( sanitize_key( $_GET['page'] ) !== CLICKWHALE_SLUG . '-tools' ) {
+        if ( $get_page !== CLICKWHALE_SLUG . '-tools' ) {
             return;
         }
         ?>

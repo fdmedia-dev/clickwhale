@@ -37,11 +37,11 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         }
 
         if ( empty( $params ) ) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
             return (array) $wpdb->get_results( $wpdb->prepare( $query ), ARRAY_A );
         }
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_results( $wpdb->prepare( $query, ...$params ), ARRAY_A );
     }
 
@@ -77,7 +77,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 '<a href="%s">%s</a>',
                 esc_url(
                     wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=delete&id=' . $id ),
+                        admin_url( 'admin.php?page=' . sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) . '&action=delete&id=' . $id ),
                         'delete-' . $this->_args['singular']
                     )
                 ),
@@ -110,7 +110,8 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         $like_mid   = '%,' . $wpdb->esc_like( $cat_id ) . ',%';     // "%,id,%"
         $like_end   = '%,' . $wpdb->esc_like( $cat_id );            // "%,id"
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $total = (int) $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(*) FROM {$table} WHERE categories = %s OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
@@ -120,6 +121,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 $like_end
             )
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         if ( $total > 0 ) {
             return sprintf(
@@ -198,20 +200,26 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             return;
         }
 
-        if ( empty( $_GET['id'] ) ) {
+        $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+        if ( null === $get_id ) {
+            $get_id = (string) filter_input( INPUT_GET, 'id' );
+        }
+
+        if ( empty( $get_id ) ) {
             return;
         }
 
-        $page_slug = sanitize_key( $_GET['page'] );
+        $page_slug = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
 
-        if ( ! isset( $_GET['_wpnonce'] ) ) {
+        $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
+        if ( empty( $wpnonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
-        $post_id = $_GET['id'];
+        $post_id = $get_id;
         $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
+        if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, $nonce ) ) {
             Helper::csrf_exception( $page_slug );
         }
 
@@ -227,13 +235,15 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         global $wpdb;
         $table = Helper::get_db_table_name( 'categories' );
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $result = $wpdb->query(
             $wpdb->prepare(
                 "DELETE FROM {$table} WHERE id IN ($placeholders)",
                 ...$ids
             )
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
         if ( false !== $result ) {
             foreach ( $ids as $id ) {
@@ -247,7 +257,8 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
         $links_table = Helper::get_db_table_name( 'links' );
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+        // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $links = $wpdb->get_results(
                 $wpdb->prepare(
                         "SELECT * FROM {$links_table} WHERE categories = %d OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
@@ -258,6 +269,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 ),
                 ARRAY_A
         );
+        // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         if ( ! $links ) {
             return;
@@ -273,6 +285,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             $categories = implode( ',', $categories );
             $link['categories'] = $categories;
 
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->update(
                 $links_table,
                 $link,
@@ -296,16 +309,24 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg   = isset( $_GET['order'] ) ? sanitize_text_field( $_GET['order'] ) : 'asc';
-        $orderby_arg = isset( $_GET['orderby'] ) ? sanitize_text_field( $_GET['orderby'] ) : 'title';
+        $order_arg   = sanitize_text_field( (string) filter_input( INPUT_GET, 'order' ) );
+        if ( empty( $order_arg ) ) {
+            $order_arg = 'asc';
+        }
+        $orderby_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'orderby' ) );
+        if ( empty( $orderby_arg ) ) {
+            $orderby_arg = 'title';
+        }
         $sort        = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
         $order       = $sort['order'];
         $orderby     = $sort['orderby'];
-        $paged       = isset( $_GET['paged'] ) ? ( $per_page * max( 0, intval( $_GET['paged'] ) - 1 ) ) : 0;
+        $paged_q     = (int) filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
+        $paged       = $paged_q ? ( $per_page * max( 0, $paged_q - 1 ) ) : 0;
 
         // Will be used in pagination settings
-        if ( isset( $_GET['page'] ) && ! empty( $_GET['s'] ) ) {
-            $current_data = $this->get_current_data( sanitize_text_field( $_GET['s'] ) );
+        $search_q = (string) filter_input( INPUT_GET, 's' );
+        if ( '' !== $search_q && null !== $search_q ) {
+            $current_data = $this->get_current_data( sanitize_text_field( $search_q ) );
             if ( ! $current_data ) {
                 $current_data = array();
             }
@@ -313,9 +334,10 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             $current_data = array_slice( $current_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
             $this->items  = $current_data;
         } else {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $total_items = (int) $wpdb->get_var( "SELECT COUNT(id) FROM {$table}" );
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $current_data = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT * FROM {$table} ORDER BY $orderby $order LIMIT $per_page OFFSET %d",
@@ -323,6 +345,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
                 ),
                 ARRAY_A
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             if ( ! $current_data ) {
                 $current_data = array();
             }

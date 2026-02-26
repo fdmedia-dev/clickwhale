@@ -51,8 +51,10 @@ class Tracking_Codes_Helper extends Helper_Abstract {
     public static function get_active(): array {
         global $wpdb;
         $table = Helper::get_db_table_name( 'tracking_codes' );
+        $table_escaped = '`' . esc_sql( $table ) . '`';
 
-        return (array) $wpdb->get_results( "SELECT * FROM {$table} WHERE is_active = '1' OR is_active = 1", ARRAY_A );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        return (array) $wpdb->get_results( "SELECT * FROM {$table_escaped} WHERE is_active = '1' OR is_active = 1", ARRAY_A );
     }
 
     /**

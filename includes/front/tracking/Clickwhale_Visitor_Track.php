@@ -54,7 +54,7 @@ class Clickwhale_Visitor_Track {
             return;
         }
 
-        $user_agent = sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] );
+        $user_agent = sanitize_text_field( wp_unslash($_SERVER['HTTP_USER_AGENT']) );
 
         if ( '' === $user_agent ) {
             return;
@@ -74,7 +74,7 @@ class Clickwhale_Visitor_Track {
             return '';
         }
 
-        $ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
+        $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR']) );
 
         if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
             return wp_privacy_anonymize_ip( $ip );
@@ -95,6 +95,7 @@ class Clickwhale_Visitor_Track {
         global $wpdb;
         $table = Helper::get_db_table_name( 'visitors' );
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return (array) $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} WHERE hash=%s", $this->hash ), ARRAY_A );
     }
 
@@ -138,6 +139,7 @@ class Clickwhale_Visitor_Track {
             'expired_at' => gmdate( 'Y-m-d H:i:s', strtotime( '+' . $duration . ' days', strtotime( $this->date ) ) )
         );
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->insert( $table_visitors, $visitor );
 
         return $wpdb->insert_id;

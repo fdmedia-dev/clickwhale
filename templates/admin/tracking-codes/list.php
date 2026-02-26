@@ -6,21 +6,23 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$table = new Clickwhale_Tracking_Codes_List_Table();
-$message = array();
+if ( ! isset( $clickwhale_table ) || ! $clickwhale_table instanceof WP_List_Table ) {
+    $clickwhale_table = new Clickwhale_Tracking_Codes_List_Table();
+}
+$clickwhale_message = array();
 
 try {
-    $table->prepare_items();
+    $clickwhale_table->prepare_items();
 
-    if ( 'delete' === $table->current_action() ) {
-        $message = array(
+    if ( 'delete' === $clickwhale_table->current_action() ) {
+        $clickwhale_message = array(
             'class' => 'updated',
             'text' => __( 'Items deleted', 'clickwhale' )
         );
     }
 
 } catch ( Exception $e ) {
-    $message = array(
+    $clickwhale_message = array(
         'class' => 'error',
         'text' => __( 'An error occurred', 'clickwhale' ) . ': ' . $e->getMessage()
     );
@@ -41,8 +43,8 @@ do_action( 'clickwhale_admin_banner' );
         Helper::get_allowed_tags()
     );
 
-    if ( ! empty( $message ) ) { ?>
-        <div class="<?php echo esc_attr( $message['class'] ); ?> below-h2" id="message"><p><?php echo esc_html( $message['text'] ); ?></p></div>
+    if ( ! empty( $clickwhale_message ) ) { ?>
+        <div class="<?php echo esc_attr( $clickwhale_message['class'] ); ?> below-h2" id="message"><p><?php echo esc_html( $clickwhale_message['text'] ); ?></p></div>
     <?php } ?>
 
     <?php if ( Tracking_Codes_Helper::is_limit() ) { ?>
@@ -61,8 +63,8 @@ do_action( 'clickwhale_admin_banner' );
     <?php do_action( 'clickwhale_admin_sidebar_begin' ); ?>
 
     <form method="GET">
-        <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_key( $_GET['page'] ) ); ?>" />
-        <?php $table->display(); ?>
+        <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) ); ?>" />
+        <?php $clickwhale_table->display(); ?>
     </form>
 
     <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
