@@ -14,21 +14,21 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 "X-Domain: clickwhale\n"
 
-#: clickwhale.php
-#: includes/admin/Clickwhale_Admin.php:154
 #. Plugin Name of the plugin
 #. Author of the plugin
+#: clickwhale.php
+#: includes/admin/Clickwhale_Admin.php:154
 msgid "ClickWhale"
 msgstr "ClickWhale"
 
-#: clickwhale.php
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: clickwhale.php
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php
 #. Description of the plugin
+#: clickwhale.php
 msgid "Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages."
 msgstr "Administrador de enlaces, acortador de enlaces y rastreador de clics para enlaces de afiliados y páginas de enlaces."
 
@@ -358,14 +358,14 @@ msgstr "Error"
 msgid "Back"
 msgstr "Atrás"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:163
 #. translators: %s: item title
+#: includes/admin/Clickwhale_Instance_Edit.php:163
 #, php-format
 msgid "%s was successfully saved"
 msgstr "%s se guardó con éxito"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:172
 #. translators: %s: item title
+#: includes/admin/Clickwhale_Instance_Edit.php:172
 #, php-format
 msgid "%s was successfully updated"
 msgstr "%s se actualizó con éxito"
@@ -452,13 +452,8 @@ msgid "Link Prefix"
 msgstr "Prefijo de enlace"
 
 #: includes/admin/Clickwhale_Settings.php:272
-msgid ""
-"Here, you can enter a prefix that will be prepended when creating a new link. For example: "
-"<em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing "
-"links."
-msgstr ""
-"Aquí, puede ingresar un prefijo que se añadirá al crear un nuevo enlace. Por ejemplo: "
-"<em>enlace</em>.<br><strong>Importante:</strong> Si cambia el prefijo, <u>no</u> afectará a los enlaces ya existentes."
+msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
+msgstr "Aquí, puede ingresar un prefijo que se añadirá al crear un nuevo enlace. Por ejemplo: <em>enlace</em>.<br><strong>Importante:</strong> Si cambia el prefijo, <u>no</u> afectará a los enlaces ya existentes."
 
 #: includes/admin/Clickwhale_Settings.php:284
 msgid "Random Slug"
@@ -683,9 +678,7 @@ msgstr "Por favor, ingrese el slug"
 
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:1062
 msgid "Are you sure? This action will set CSS styles to default. This process cannot be undone!"
-msgstr ""
-"¿Está seguro? Esta acción restablecerá los estilos CSS a los valores predeterminados. ¡Este proceso no se puede "
-"deshacer!"
+msgstr "¿Está seguro? Esta acción restablecerá los estilos CSS a los valores predeterminados. ¡Este proceso no se puede deshacer!"
 
 #: includes/admin/links/Clickwhale_Links_Bulk_Edit.php:68
 msgid "Redirection"
@@ -783,14 +776,14 @@ msgstr "categorías"
 msgid "category"
 msgstr "categoría"
 
-#: includes/admin/migration/Clickwhale_Migration.php:276
 #. translators: 1: categories count, 2: categories word, 3: links count, 4: links word
+#: includes/admin/migration/Clickwhale_Migration.php:276
 #, php-format
 msgid "Found %1$s %2$s and %3$s %4$s."
 msgstr "Encontrado %1$s %2$s y %3$s %4$s."
 
-#: includes/admin/migration/Clickwhale_Migration.php:305
 #. translators: %s: plugin name to migrate data from
+#: includes/admin/migration/Clickwhale_Migration.php:305
 #, php-format
 msgid "Set what you want to migrate from %s to CLickWhale"
 msgstr "Establezca lo que desea migrar de %s a ClickWhale"
@@ -799,8 +792,8 @@ msgstr "Establezca lo que desea migrar de %s a ClickWhale"
 msgid "Get started with ClickWhale now"
 msgstr "Comience con ClickWhale ahora"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:97
 #. translators: %1$s: the full name of the migrated plugin
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:97
 #, php-format
 msgid "You are already using %1$s on your website. To migrate your %1$s data to Clickwhale, click here."
 msgstr "Ya está utilizando %1$s en su sitio web. Para migrar sus datos de %1$s a ClickWhale, haga clic aquí."
@@ -813,16 +806,14 @@ msgstr "Iniciar migración"
 msgid "Not now"
 msgstr "No ahora"
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:120
 #. translators: %1$s: the full name of the migrated plugin
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:120
 #, php-format
 msgid "All %1$s data have been successfully migrated to Clickwhale. You can now safely deactivate %1$s on your website."
-msgstr ""
-"Todos los datos de %1$s se han migrado con éxito a ClickWhale. Ahora puede desactivar %1$s de forma segura en su sitio "
-"web."
+msgstr "Todos los datos de %1$s se han migrado con éxito a ClickWhale. Ahora puede desactivar %1$s de forma segura en su sitio web."
 
-#: includes/admin/migration/Clickwhale_Migration_Notice.php:129
 #. translators: %1$s: the full name of the plugin to deactivate
+#: includes/admin/migration/Clickwhale_Migration_Notice.php:129
 #, php-format
 msgid "Deactivate %1$s"
 msgstr "Desactivar %1$s"
@@ -849,27 +840,19 @@ msgstr "En este punto, puedes restablecer la configuración del plugin a los val
 
 #: includes/admin/reset/Clickwhale_Reset.php:92
 msgid "At this point you can delete all entries (links, categories and stats) from the database tables of our plugin."
-msgstr ""
-"En este punto, puedes eliminar todas las entradas (enlaces, categorías y estadísticas) de las tablas de la base de "
-"datos de nuestro plugin."
+msgstr "En este punto, puedes eliminar todas las entradas (enlaces, categorías y estadísticas) de las tablas de la base de datos de nuestro plugin."
 
 #: includes/admin/reset/Clickwhale_Reset.php:98
 msgid "In case you want to clean up your stats, you can remove all previously counted clicks from the database here."
-msgstr ""
-"En caso de que quieras limpiar tus estadísticas, puedes eliminar todos los clics contados previamente de la base de "
-"datos aquí."
+msgstr "En caso de que quieras limpiar tus estadísticas, puedes eliminar todos los clics contados previamente de la base de datos aquí."
 
 #: includes/admin/reset/Clickwhale_Reset.php:134
 msgid "Are you sure? This action restore all plugin settings to default. This process cannot be undone!"
-msgstr ""
-"¿Estás seguro? Esta acción restaurará todas las configuraciones del plugin a los valores predeterminados. ¡Este proceso "
-"no se puede deshacer!"
+msgstr "¿Estás seguro? Esta acción restaurará todas las configuraciones del plugin a los valores predeterminados. ¡Este proceso no se puede deshacer!"
 
 #: includes/admin/reset/Clickwhale_Reset.php:141
 msgid "Are you sure? This action will reset plugin tables and delete all existing data. This process cannot be undone!"
-msgstr ""
-"¿Estás seguro? Esta acción restablecerá las tablas del plugin y eliminará todos los datos existentes. ¡Este proceso no "
-"se puede deshacer!"
+msgstr "¿Estás seguro? Esta acción restablecerá las tablas del plugin y eliminará todos los datos existentes. ¡Este proceso no se puede deshacer!"
 
 #: includes/admin/reset/Clickwhale_Reset.php:147
 msgid "Are you sure? This action will reset all statistic. This process cannot be undone!"
@@ -1055,15 +1038,15 @@ msgstr "Desarrollado por"
 msgid "Edit Link Page"
 msgstr "Editar página de enlace"
 
+#. translators: %s: item type/name (e.g., Link, Category, Link Page)
 #: includes/helpers/Helper.php:239
 #: pro/includes/admin/statistics/Statistics_Abstract.php:335
-#. translators: %s: item type/name (e.g., Link, Category, Link Page)
 #, php-format
 msgid "Edit %s"
 msgstr "Editar %s"
 
-#: includes/helpers/Helper.php:245
 #. translators: %s: item type/name (e.g., Link, Category, Link Page)
+#: includes/helpers/Helper.php:245
 #, php-format
 msgid "Add %s"
 msgstr "Agregar %s"
@@ -1084,14 +1067,14 @@ msgstr "Ver página"
 msgid "Unlimited with"
 msgstr "Ilimitado con"
 
-#: includes/helpers/Helper.php:709
 #. translators: %d: current user ID
+#: includes/helpers/Helper.php:709
 #, php-format
 msgid "Security check failed (possible CSRF) for user ID %d"
 msgstr "Falló la verificación de seguridad (posible CSRF) para el ID de usuario %d"
 
-#: includes/helpers/Helper.php:713
 #. translators: %s: admin page slug
+#: includes/helpers/Helper.php:713
 #, php-format
 msgid "on page: %s"
 msgstr "en la página: %s"
@@ -1196,26 +1179,18 @@ msgstr "p. ej. %s"
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:122
 #, php-format
-msgid ""
-"Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate "
-"Program</a>.<br>It will then be used automatically in the footer of your link pages."
-msgstr ""
-"Por favor, ingresa tu enlace de afiliado personal si eres miembro de nuestro <a href=\"%s\" target=\"_blank\">Programa "
-"de Afiliados</a>.<br>Se utilizará automáticamente en el pie de tus páginas de enlace."
+msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
+msgstr "Por favor, ingresa tu enlace de afiliado personal si eres miembro de nuestro <a href=\"%s\" target=\"_blank\">Programa de Afiliados</a>.<br>Se utilizará automáticamente en el pie de tus páginas de enlace."
 
 #: includes/admin/Clickwhale_Settings.php:322
 msgid "Credits"
 msgstr "Créditos"
 
-#: includes/admin/Clickwhale_Settings.php:306
 #. translators: 1: Affiliate program URL, 2: Settings page URL
+#: includes/admin/Clickwhale_Settings.php:306
 #, php-format
-msgid ""
-"As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the "
-"settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
-msgstr ""
-"Como miembro de nuestro <a href=\"%1$s\" target=\"_blank\">programa de afiliados</a>, puedes ingresar tu enlace de "
-"afiliado en la configuración <a href=\"%2$s\">aquí</a>,<br>que se utilizará cuando se muestren los créditos."
+msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
+msgstr "Como miembro de nuestro <a href=\"%1$s\" target=\"_blank\">programa de afiliados</a>, puedes ingresar tu enlace de afiliado en la configuración <a href=\"%2$s\">aquí</a>,<br>que se utilizará cuando se muestren los créditos."
 
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:144
 msgid "Tracking Codes Credits"
@@ -1613,12 +1588,8 @@ msgstr "Por favor, seleccione un formulario"
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1444
 #, php-format
-msgid ""
-"We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite "
-"plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
-msgstr ""
-"No pudimos encontrar un <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">plugin de formulario compatible</a>. ¿Falta "
-"su plugin favorito? Entonces, por favor <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">háganoslo saber</a>."
+msgid "We could not find a <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">supported form plugin</a>. Is your favorite plugin missing? Then please <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">let us know</a>."
+msgstr "No pudimos encontrar un <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">plugin de formulario compatible</a>. ¿Falta su plugin favorito? Entonces, por favor <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">háganoslo saber</a>."
 
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1464
 msgid "Plugin"
@@ -1638,12 +1609,8 @@ msgstr "Parámetros UTM"
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:56
 #, php-format
-msgid ""
-"Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options "
-"<a href=\"%s\" target=\"_blank\">here</a>."
-msgstr ""
-"Aquí puede definir palabras clave que se vinculan automáticamente en sus publicaciones y páginas. Puede encontrar más "
-"opciones de configuración <a href=\"%s\" target=\"_blank\">aquí</a>."
+msgid "Here you can define keywords that are automatically linked in your posts & pages. You can find further settings options <a href=\"%s\" target=\"_blank\">here</a>."
+msgstr "Aquí puede definir palabras clave que se vinculan automáticamente en sus publicaciones y páginas. Puede encontrar más opciones de configuración <a href=\"%s\" target=\"_blank\">aquí</a>."
 
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:69
 msgid "Link Keywords"
@@ -1902,24 +1869,16 @@ msgid "No Index"
 msgstr "Sin índice"
 
 #: templates/admin/linkpages/edit.php:48
-msgid ""
-"Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search "
-"results."
-msgstr ""
-"No mostrar esta página en los resultados de búsqueda. Si no especificas esta regla, la página puede ser indexada y "
-"mostrada en los resultados de búsqueda."
+msgid "Do not show this page in search results. If you don't specify this rule, the page may be indexed and shown in search results."
+msgstr "No mostrar esta página en los resultados de búsqueda. Si no especificas esta regla, la página puede ser indexada y mostrada en los resultados de búsqueda."
 
 #: templates/admin/linkpages/edit.php:51
 msgid "No Follow"
 msgstr "No seguir"
 
 #: templates/admin/linkpages/edit.php:52
-msgid ""
-"Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to "
-"discover those linked pages"
-msgstr ""
-"No seguir los enlaces en esta página. Si no especificas esta regla, el motor de búsqueda puede usar los enlaces en la "
-"página para descubrir esas páginas enlazadas"
+msgid "Do not follow the links on this page. If you don't specify this rule, search engine may use the links on the page to discover those linked pages"
+msgstr "No seguir los enlaces en esta página. Si no especificas esta regla, el motor de búsqueda puede usar los enlaces en la página para descubrir esas páginas enlazadas"
 
 #: templates/admin/linkpages/edit.php:55
 msgid "No Archive"
@@ -2170,9 +2129,7 @@ msgstr "Estadísticas detalladas que te permiten filtrar y analizar clics en enl
 
 #: templates/admin/settings/pro.php:36
 msgid "Define keywords that will be automatically replaced with links throughout your posts, pages and custom post types."
-msgstr ""
-"Define palabras clave que se reemplazarán automáticamente con enlaces en tus publicaciones, páginas y tipos de "
-"publicaciones personalizadas."
+msgstr "Define palabras clave que se reemplazarán automáticamente con enlaces en tus publicaciones, páginas y tipos de publicaciones personalizadas."
 
 #: templates/admin/settings/pro.php:39
 #: templates/admin/settings/pro.php:40
@@ -2181,17 +2138,11 @@ msgstr "Seguimiento de conversiones"
 
 #: templates/admin/settings/pro.php:41
 msgid "Easily place conversion tracking codes to track the performance of your WooCommerce or Easy Digital Downloads store."
-msgstr ""
-"Coloca fácilmente códigos de seguimiento de conversiones para rastrear el rendimiento de tu tienda WooCommerce o Easy "
-"Digital Downloads."
+msgstr "Coloca fácilmente códigos de seguimiento de conversiones para rastrear el rendimiento de tu tienda WooCommerce o Easy Digital Downloads."
 
 #: templates/admin/settings/pro.php:46
-msgid ""
-"Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to "
-"ClickWhale PRO."
-msgstr ""
-"Obtén la capacidad de rastrear campañas UTM con mejores parámetros para una eficacia excepcional de la campaña al "
-"actualizar a ClickWhale PRO."
+msgid "Gain the ability to track UTM campaigns with better parameters for exceptional campaign efficacy when you upgrade to ClickWhale PRO."
+msgstr "Obtén la capacidad de rastrear campañas UTM con mejores parámetros para una eficacia excepcional de la campaña al actualizar a ClickWhale PRO."
 
 #: templates/admin/settings/pro.php:51
 msgid "Add your social profiles to your existing link page in order to gain more followers on your favorite social networks."
@@ -2207,12 +2158,8 @@ msgid "Forms Block"
 msgstr "Bloque de formularios"
 
 #: templates/admin/settings/pro.php:61
-msgid ""
-"Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social "
-"media followers."
-msgstr ""
-"Agrega fácilmente formularios de populares plugins de formularios de WordPress a tu página de enlaces y recopila leads "
-"o comentarios de tus seguidores en redes sociales."
+msgid "Easily add forms from popular WordPress form plugins to your link page and collect leads or feedback from your social media followers."
+msgstr "Agrega fácilmente formularios de populares plugins de formularios de WordPress a tu página de enlaces y recopila leads o comentarios de tus seguidores en redes sociales."
 
 #: templates/admin/settings/pro.php:64
 #: templates/admin/settings/pro.php:65
@@ -2220,12 +2167,8 @@ msgid "More Customization Options"
 msgstr "Más opciones de personalización"
 
 #: templates/admin/settings/pro.php:66
-msgid ""
-"Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and "
-"more."
-msgstr ""
-"Las características adicionales del plugin para personalizar páginas de enlaces incluyen opciones para agregar fondos "
-"de marca, imágenes y más."
+msgid "Additional features from the plugin to customize link pages include options to add branded backgrounds, images, and more."
+msgstr "Las características adicionales del plugin para personalizar páginas de enlaces incluyen opciones para agregar fondos de marca, imágenes y más."
 
 #: templates/admin/settings/pro.php:70
 #: templates/admin/settings/pro.php:71
@@ -2233,18 +2176,12 @@ msgid "No Limitations"
 msgstr "Sin limitaciones"
 
 #: templates/admin/settings/pro.php:72
-msgid ""
-"Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading "
-"to ClickWhale PRO."
-msgstr ""
-"¡Las limitaciones se han ido! Crea y publica tantos códigos de seguimiento, páginas de enlaces y enlaces de marca como "
-"necesites al actualizar a ClickWhale PRO."
+msgid "Limitations be gone! Curate and publish as many tracking codes, link pages and branded links as needed when upgrading to ClickWhale PRO."
+msgstr "¡Las limitaciones se han ido! Crea y publica tantos códigos de seguimiento, páginas de enlaces y enlaces de marca como necesites al actualizar a ClickWhale PRO."
 
 #: templates/admin/settings/pro.php:78
 msgid "Keep the branding personal with the ability to remove ClickWhale credits like the logo from footers and more."
-msgstr ""
-"Mantén la marca personal con la capacidad de eliminar los créditos de ClickWhale, como el logo de los pies de página y "
-"más."
+msgstr "Mantén la marca personal con la capacidad de eliminar los créditos de ClickWhale, como el logo de los pies de página y más."
 
 #: templates/admin/settings/pro.php:86
 #: templates/admin/settings/pro.php:87
@@ -2368,18 +2305,18 @@ msgstr "Incluir <strong>Páginas de enlaces de ClickWhale</strong>"
 msgid "Exclude <strong>ClickWhale Link Pages</strong>"
 msgstr "Excluir <strong>Páginas de enlaces de ClickWhale</strong>"
 
-#: templates/admin/tracking-codes/edit.php:246
-#: templates/admin/tracking-codes/edit.php:352
 #. translators: %s: post type label
 #. translators: %s: taxonomy label
+#: templates/admin/tracking-codes/edit.php:246
+#: templates/admin/tracking-codes/edit.php:352
 #, php-format
 msgid "Include <strong>%s</strong>"
 msgstr "Incluir <strong>%s</strong>"
 
-#: templates/admin/tracking-codes/edit.php:296
-#: templates/admin/tracking-codes/edit.php:402
 #. translators: %s: post type label
 #. translators: %s: taxonomy label
+#: templates/admin/tracking-codes/edit.php:296
+#: templates/admin/tracking-codes/edit.php:402
 #, php-format
 msgid "Exclude <strong>%s</strong>"
 msgstr "Excluir <strong>%s</strong>"
@@ -2400,8 +2337,8 @@ msgstr "Habilitar código de seguimiento"
 msgid "Decide who can access plugin admin pages."
 msgstr "Decide quién puede acceder a las páginas de administración del plugin."
 
-#: includes/admin/Clickwhale_Admin.php:518
 #. translators: %s: review link URL
+#: includes/admin/Clickwhale_Admin.php:518
 #, php-format
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "¿Te gusta ClickWhale? Entonces, por favor <a href=\"%s\" target=\"_blank\">deja una reseña aquí</a>"
@@ -2429,8 +2366,8 @@ msgstr "Editar categoría"
 msgid "Edit Tracking Code"
 msgstr "Editar código de seguimiento"
 
-#: includes/admin/Clickwhale_Instance_Edit.php:201
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
+#: includes/admin/Clickwhale_Instance_Edit.php:201
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "Editar \"%1$s\" %2$s"
@@ -2439,8 +2376,8 @@ msgstr "Editar \"%1$s\" %2$s"
 msgid "Please save the page to view Open Graph preview"
 msgstr "Por favor, guarda la página para ver la vista previa de Open Graph"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:331
 #. translators: 1: HTML link to the URL using this slug, 2: HTML string with ID and type
+#: includes/admin/links/Clickwhale_Link_Edit.php:331
 #, php-format
 msgid "This slug is already used in %1$s"
 msgstr "Este slug ya está en uso en %1$s"
@@ -2479,9 +2416,9 @@ msgstr "El enlace de ClickWhale con este slug ya existe."
 msgid "ClickWhale link page with this slug already exists."
 msgstr "La página del enlace de ClickWhale con este slug ya existe."
 
+#. translators: %s: matched resource type (e.g. post type or taxonomy)
 #: includes/admin/Clickwhale_Rest_Controller.php:224
 #: includes/admin/Clickwhale_Rest_Controller.php:238
-#. translators: %s: matched resource type (e.g. post type or taxonomy)
 #, php-format
 msgid "WordPress %s with this slug already exists."
 msgstr "WordPress %s con este slug ya existe."
@@ -2635,18 +2572,16 @@ msgstr "Puedes renombrar (o eliminar) la palabra clave actual o editar ese enlac
 #: pro/includes/helpers/Links_Helper.php:372
 #, php-format
 msgid "The keyword you entered: <b>%s</b> has already been added to this link. Please rename or remove the duplicates."
-msgstr ""
-"La palabra clave que ingresaste: <b>%s</b> ya ha sido añadida a este enlace. Por favor, renombra o elimina los "
-"duplicados."
+msgstr "La palabra clave que ingresaste: <b>%s</b> ya ha sido añadida a este enlace. Por favor, renombra o elimina los duplicados."
 
-#: includes/admin/Clickwhale_Ajax.php:1040
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:1040
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "¡Enlace <strong>&quot;%s&quot;</strong> importado con éxito!"
 
-#: includes/admin/Clickwhale_Ajax.php:1046
 #. translators: %s: link title
+#: includes/admin/Clickwhale_Ajax.php:1046
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>¡Error!</strong> Enlace <strong>&quot;%s&quot;</strong> no importado!"
@@ -2670,8 +2605,8 @@ msgstr "Subir ícono del sitio"
 msgid "Use this image"
 msgstr "Usar esta imagen"
 
-#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:320
 #. translators: %s: singular post type
+#: includes/content_templates/Clickwhale_Linkpage_Content_Templates.php:320
 #, php-format
 msgid "Original %1$s: "
 msgstr "Original %1$s:"
@@ -2773,15 +2708,15 @@ msgstr "alfanuméricos (a...z, A...Z, 0...9)"
 msgid "underscore (_) and dash (-)"
 msgstr "guion bajo (_) y guion (-)"
 
+#. translators: 1: matched resource title, 2: resource type, 3: resource numeric ID
 #: includes/admin/categories/Clickwhale_Category_Edit.php:87
 #: includes/admin/linkpages/Clickwhale_Linkpage_Edit.php:983
-#. translators: 1: matched resource title, 2: resource type, 3: resource numeric ID
 #, php-format
 msgid "This slug is already used in %1$s (%2$s ID: %3$d)"
 msgstr "Este slug ya está en uso en %1$s (ID: %2$s %3$d)"
 
-#: includes/admin/Clickwhale_Admin.php:709
 #. translators: %s:the error message
+#: includes/admin/Clickwhale_Admin.php:709
 #, php-format
 msgid "Something went wrong: %s"
 msgstr "Algo salió mal: %s"
@@ -2808,32 +2743,32 @@ msgstr "Descargar CSV de ejemplo"
 msgid "with optional slash (/) as separator"
 msgstr "con barra opcional (/) como separador"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:323
 #. translators: %s: matched resource ID (post/term ID)
+#: includes/admin/links/Clickwhale_Link_Edit.php:323
 #, php-format
 msgid "ID: %s"
 msgstr "ID: %s"
 
-#: includes/admin/links/Clickwhale_Link_Edit.php:326
 #. translators: %s: matched resource type (e.g. post type or taxonomy)
+#: includes/admin/links/Clickwhale_Link_Edit.php:326
 #, php-format
 msgid "type: %s"
 msgstr "tipo: %s"
 
-#: includes/admin/migration/Clickwhale_Migration.php:293
 #. translators: %s: date and time of the last migration
+#: includes/admin/migration/Clickwhale_Migration.php:293
 #, php-format
 msgid "Last migration at %s"
 msgstr "Última migración en %s"
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:110
 #. translators: %s: link title
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:110
 #, php-format
 msgid "Link \"%s\" imported successfully."
 msgstr "Enlace \"%s\" importado con éxito."
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:118
 #. translators: %1$s: link title
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:118
 #, php-format
 msgid "Link %1$s already exists"
 msgstr "El enlace %1$s ya existe"
@@ -2843,14 +2778,14 @@ msgstr "El enlace %1$s ya existe"
 msgid "Import failed!"
 msgstr "¡Importación fallida!"
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:213
 #. translators: %s: category title
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:213
 #, php-format
 msgid "Category \"%s\" imported successfully."
 msgstr "Categoría \"%s\" importada con éxito."
 
-#: includes/admin/migration/Clickwhale_Migration_Abstract.php:221
 #. translators: %1$s: category title
+#: includes/admin/migration/Clickwhale_Migration_Abstract.php:221
 #, php-format
 msgid "Category %1$s already exists"
 msgstr "La categoría %1$s ya existe"
@@ -2859,8 +2794,8 @@ msgstr "La categoría %1$s ya existe"
 msgid "Clicks:"
 msgstr "Clics:"
 
-#: includes/helpers/Categories_Helper.php:35
 #. translators: %1$d: maximum number of categories
+#: includes/helpers/Categories_Helper.php:35
 #, php-format
 msgid "Currently, a maximum of %1$d category can be added."
 msgid_plural "Currently, a maximum of %1$d categories can be added."
@@ -2871,26 +2806,26 @@ msgstr[1] ""
 msgid "ClickWhale PRO"
 msgstr "ClickWhale PRO"
 
-#: includes/helpers/Linkpages_Helper.php:34
 #. translators: %1$d: maximum number of link pages
+#: includes/helpers/Linkpages_Helper.php:34
 #, php-format
 msgid "Currently, a maximum of %1$d link page can be added."
 msgid_plural "Currently, a maximum of %1$d link pages can be added."
 msgstr[0] "Actualmente, se puede añadir un máximo de %1$d página de enlaces."
 msgstr[1] ""
 
-#: includes/helpers/Linkpages_Helper.php:53
-#: includes/helpers/Links_Helper.php:37
 #. translators: %1$d: maximum number of links
 #. translators: %1$d: maximum number of link pages
+#: includes/helpers/Linkpages_Helper.php:53
+#: includes/helpers/Links_Helper.php:37
 #, php-format
 msgid "Currently, a maximum of %1$d link can be added."
 msgid_plural "Currently, a maximum of %1$d links can be added."
 msgstr[0] "Actualmente, se puede añadir un máximo de %1$d enlace."
 msgstr[1] ""
 
-#: includes/helpers/Tracking_Codes_Helper.php:68
 #. translators: %1$d: maximum number of links
+#: includes/helpers/Tracking_Codes_Helper.php:68
 #, php-format
 msgid "Currently, a maximum of %1$d tracking code can be added."
 msgid_plural "Currently, a maximum of %1$d tracking codes can be added."
@@ -2901,15 +2836,11 @@ msgstr[1] ""
 msgid "Your theme does not support navigation menus or widgets."
 msgstr "Tu tema no soporta menús de navegación ni widgets."
 
-#: templates/admin/linkpages/edit.php:531
 #. translators: %s: URL to WordPress Reading Settings screen
+#: templates/admin/linkpages/edit.php:531
 #, php-format
-msgid ""
-"Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%s\" "
-"target=\"_blank\">reading settings!</a>"
-msgstr ""
-"Los motores de búsqueda no pueden indexar este sitio. Consulta la opción \"Visibilidad del motor de búsqueda\" en <a "
-"href=\"%s\" target=\"_blank\">configuración de lectura!</a>"
+msgid "Search engines are not allowed to index this site. See the option \"Search engine visibility\" in <a href=\"%s\" target=\"_blank\">reading settings!</a>"
+msgstr "Los motores de búsqueda no pueden indexar este sitio. Consulta la opción \"Visibilidad del motor de búsqueda\" en <a href=\"%s\" target=\"_blank\">configuración de lectura!</a>"
 
 #: templates/admin/tracking-codes/edit.php:99
 msgid "Before </head>"

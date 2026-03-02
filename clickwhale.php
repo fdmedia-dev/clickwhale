@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.3.3
+ * Version:           2.5.3.4
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -59,7 +59,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             global $clickwhale_fs;
             if ( !isset( $clickwhale_fs ) ) {
                 // Include Freemius SDK.
-                require_once dirname( __FILE__ ) . '/freemius/start.php';
+                require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
                 $clickwhale_fs = fs_dynamic_init( array(
                     'id'               => '14609',
                     'slug'             => 'clickwhale',

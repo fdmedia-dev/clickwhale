@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 2.5.3.3
+Stable tag: 2.5.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,16 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.3.4 (2nd March 2025) =
+* Tweak: Freemius SDK moved to vendor/freemius directory
+
+= Version 2.5.3.3 (26th February 2025) =
+* Fix: WordPress Guideline Violations
+* Fix: Improved redirect check for clickwhale/admin/slug_exists
+
+= Version 2.5.3.1 (4th February 2025) =
+* Fix: WordPress Guideline Violations
 
 = Version 2.5.3 (15th December 2025) =
 * Tweak: Improved security and data escaping across the admin interface.
