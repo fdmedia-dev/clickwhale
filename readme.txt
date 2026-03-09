@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 5.0
 Requires PHP: 7.4
 Tested up to: 6.9
-Stable tag: 2.5.3.4
+Stable tag: 2.5.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,9 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.5.3.5 (9th March 2025) =
+* Tweak: Removed redundant 'freemius' folder from the plugin's directory
 
 = Version 2.5.3.4 (2nd March 2025) =
 * Tweak: Freemius SDK moved to vendor/freemius directory

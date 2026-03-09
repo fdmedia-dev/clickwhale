@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.3.4
+ * Version:           2.5.3.5
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
