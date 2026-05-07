@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\admin\import;
+namespace Clickwhale\Admin\Import;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

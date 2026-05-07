@@ -1,6 +1,6 @@
 <?php
 
-use clickwhale\includes\helpers\{Helper, Tracking_Codes_Helper};
+use Clickwhale\Helpers\{Helper, Tracking_Codes_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

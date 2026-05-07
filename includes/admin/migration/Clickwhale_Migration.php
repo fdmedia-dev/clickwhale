@@ -1,8 +1,8 @@
 <?php
 
-namespace clickwhale\includes\admin\migration;
+namespace Clickwhale\Admin\Migration;
 
-use clickwhale\includes\helpers\Helper;
+use Clickwhale\Helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -24,8 +24,6 @@ class Clickwhale_Migration {
         $this->options        = 'clickwhale_tools_migration_options';
         $this->last_migration = 'clickwhale_tools_last_migration_options';
 
-        $this->load_dependencies();
-
         // Actions
         add_action( 'admin_init', array( $this, 'add_migration_options' ) );
         add_action( 'admin_init', array( $this, 'add_migration_settings' ) );
@@ -35,15 +33,6 @@ class Clickwhale_Migration {
 
         // add js
         add_action( 'admin_print_footer_scripts', array( $this, 'admin_scripts' ) );
-    }
-
-    private function load_dependencies() {
-        // load classes if available plugin is active
-        foreach ( $this->available_migrations() as $item ) {
-            if ( $this->check_active( $item['path'] ) ) {
-                require_once plugin_dir_path( dirname( __FILE__ ) ) . 'migration/' . $item['class'] . '.php';
-            }
-        }
     }
 
     /**

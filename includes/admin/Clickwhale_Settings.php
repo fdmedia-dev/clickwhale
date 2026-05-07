@@ -1,9 +1,9 @@
 <?php
 
-namespace clickwhale\includes\admin;
+namespace Clickwhale\Admin;
 
-use clickwhale\includes\helpers\{Helper, Links_Helper};
-use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use Clickwhale\Helpers\{Helper, Links_Helper};
+use Clickwhale\Helpers\Traits\{Singleton_Clone, Singleton_Wakeup};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

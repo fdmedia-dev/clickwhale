@@ -1,6 +1,6 @@
 <?php
 
-use clickwhale\includes\helpers\{
+use Clickwhale\Helpers\{
     Helper,
     Links_Helper,
     Categories_Helper

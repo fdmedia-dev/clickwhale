@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\helpers;
+namespace Clickwhale\Helpers;
 
 use Exception;
 

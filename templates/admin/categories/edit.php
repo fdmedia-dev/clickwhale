@@ -1,5 +1,5 @@
 <?php
-use clickwhale\includes\helpers\{Helper, Categories_Helper};
+use Clickwhale\Helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

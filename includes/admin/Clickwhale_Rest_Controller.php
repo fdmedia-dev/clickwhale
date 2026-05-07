@@ -1,6 +1,6 @@
 <?php
 
-namespace clickwhale\includes\admin;
+namespace Clickwhale\Admin;
 
 use WP_Error;
 use WP_REST_Controller;
@@ -9,7 +9,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_HTTP_Response;
 
-use clickwhale\includes\helpers\{
+use Clickwhale\Helpers\{
 	Helper,
 	Links_Helper,
 	Linkpages_Helper,

@@ -1,15 +1,15 @@
 <?php
 
-namespace clickwhale\includes\admin;
+namespace Clickwhale\Admin;
 
-use clickwhale\includes\helpers\{
+use Clickwhale\Helpers\{
     Helper,
     Categories_Helper,
     Linkpages_Helper,
     Links_Helper,
     Tracking_Codes_Helper
 };
-use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use Clickwhale\ContentTemplates\Clickwhale_Linkpage_Content_Templates;
 use WP_Error;
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -298,6 +298,16 @@ class Clickwhale_Ajax {
                     );
                     break;
                 }
+                // Search in WP virtual URLs: posts page (blog archive) and CPT archives
+                $virtual = Helper::get_virtual_url_by_slug( $slug );
+                if ( !empty( $virtual ) ) {
+                    $result = array(
+                        'id'    => (int) $virtual['id'],
+                        'title' => esc_html( wp_unslash( $virtual['title'] ) ),
+                        'type'  => esc_html( $virtual['type'] ),
+                    );
+                    break;
+                }
                 // HTTP probe to URL: detect if slug is handled by custom endpoints, rewrite rules, .htaccess rules, etc.
                 // Strategy:
                 // - Use HEAD (fallback to GET) with redirection disabled to observe raw status and Location.
@@ -308,19 +318,14 @@ class Clickwhale_Ajax {
                 // - 401/403/405/406/429 or 5xx → conservative: occupied
                 $probe_url = home_url( ltrim( $slug, '/' ) );
                 $args = array(
-                    'timeout'     => 2,
+                    'timeout'     => 5,
                     'redirection' => 0,
                 );
                 $response = wp_remote_head( $probe_url, $args );
                 if ( is_wp_error( $response ) ) {
-                    // retry with GET once; if still fails — conservative: occupied
+                    // retry with GET once; if still fails — loopback likely blocked, treat as free
                     $response = wp_remote_get( $probe_url, $args );
                     if ( is_wp_error( $response ) ) {
-                        $result = array(
-                            'id'    => 0,
-                            'title' => esc_html( $slug ),
-                            'type'  => 'custom endpoint',
-                        );
                         break;
                     }
                 }
@@ -329,17 +334,41 @@ class Clickwhale_Ajax {
                 if ( 405 === $code ) {
                     $response = wp_remote_get( $probe_url, $args );
                     if ( is_wp_error( $response ) ) {
-                        $result = array(
-                            'id'    => 0,
-                            'title' => esc_html( $slug ),
-                            'type'  => 'custom endpoint',
-                        );
+                        // loopback unreliable — treat as free
                         break;
                     }
                     $code = (int) wp_remote_retrieve_response_code( $response );
                 }
+                // Build control probe at the same path-prefix as the slug so that
+                // prefix-based handlers (e.g. AAWP's /link/* endpoint) respond the same
+                // way for the control request as they would for the actual slug.
+                $slug_prefix = ( false !== strrpos( $slug, '/' ) ? substr( $slug, 0, strrpos( $slug, '/' ) + 1 ) : '' );
+                $ctrl_token = '__cw_probe__' . wp_rand( 100000, 999999 ) . '__';
                 if ( 200 === $code ) {
-                    // 200 without redirect — definite custom endpoint
+                    // Some hosts return 200 for every URL (soft/theme 404).
+                    // Run a control probe: if a random non-existent path also returns 200
+                    // it is a catch-all → slug is free.
+                    $ctrl_url = home_url( $slug_prefix . $ctrl_token );
+                    $ctrl_resp = wp_remote_head( $ctrl_url, $args );
+                    if ( is_wp_error( $ctrl_resp ) ) {
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            break;
+                            // loopback unreliable — treat as free
+                        }
+                    }
+                    $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    if ( 405 === $ctrl_code ) {
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            break;
+                        }
+                        $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    }
+                    if ( 200 === $ctrl_code ) {
+                        break;
+                        // catch-all 200 → free
+                    }
                     $result = array(
                         'id'    => 0,
                         'title' => esc_html( $slug ),
@@ -361,31 +390,22 @@ class Clickwhale_Ajax {
                         );
                         break;
                     }
-                    // Control probe to detect catch-all redirects used for 404s
-                    $ctrl_url = home_url( '__cw_probe__' . wp_rand( 100000, 999999 ) . '__' );
+                    // Control probe: if the same random path also redirects to the SAME destination,
+                    // it is a catch-all rule (http→https, www→non-www, etc.) → free.
+                    // Per-slug redirects (e.g. blog → blog/, docs → docs/) have different destinations → occupied.
+                    $ctrl_url = home_url( $slug_prefix . $ctrl_token );
                     $ctrl_resp = wp_remote_head( $ctrl_url, $args );
                     if ( is_wp_error( $ctrl_resp ) ) {
-                        // try GET once before concluding occupied
                         $ctrl_resp = wp_remote_get( $ctrl_url, $args );
                         if ( is_wp_error( $ctrl_resp ) ) {
-                            $result = array(
-                                'id'    => 0,
-                                'title' => esc_html( $slug ),
-                                'type'  => 'custom endpoint',
-                            );
                             break;
+                            // loopback unreliable — treat as free
                         }
                     }
                     $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
-                    // HEAD may be 405 on some hosts for the control path as well
                     if ( 405 === $ctrl_code ) {
                         $ctrl_resp = wp_remote_get( $ctrl_url, $args );
                         if ( is_wp_error( $ctrl_resp ) ) {
-                            $result = array(
-                                'id'    => 0,
-                                'title' => esc_html( $slug ),
-                                'type'  => 'custom endpoint',
-                            );
                             break;
                         }
                         $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
@@ -394,11 +414,11 @@ class Clickwhale_Ajax {
                     if ( is_array( $ctrl_loc ) ) {
                         $ctrl_loc = reset( $ctrl_loc );
                     }
-                    // Same redirect as random 404 → catch-all → free
+                    // Both redirect to the same destination → catch-all → free
                     if ( $ctrl_code >= 300 && $ctrl_code < 400 && !empty( $ctrl_loc ) && Helper::urls_effectively_equal( $loc, $ctrl_loc ) ) {
                         break;
                     }
-                    // Otherwise → specific redirect → occupied
+                    // Different destinations → specific redirect → occupied
                     $result = array(
                         'id'    => 0,
                         'title' => esc_html( $slug ),
@@ -412,6 +432,30 @@ class Clickwhale_Ajax {
                     406,
                     429
                 ), true ) || $code >= 500 ) {
+                    // Could be a WAF/security plugin blocking all loopback requests.
+                    // Control probe: if a random path also gets blocked (not a normal 404/410),
+                    // it is server-level → slug is free.
+                    $ctrl_url = home_url( $slug_prefix . $ctrl_token );
+                    $ctrl_resp = wp_remote_head( $ctrl_url, $args );
+                    if ( is_wp_error( $ctrl_resp ) ) {
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            break;
+                            // loopback unreliable — treat as free
+                        }
+                    }
+                    $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    if ( 405 === $ctrl_code ) {
+                        $ctrl_resp = wp_remote_get( $ctrl_url, $args );
+                        if ( is_wp_error( $ctrl_resp ) ) {
+                            break;
+                        }
+                        $ctrl_code = (int) wp_remote_retrieve_response_code( $ctrl_resp );
+                    }
+                    // Control also blocked (not a plain 404/410) → server-wide rule → free
+                    if ( $ctrl_code >= 400 && !in_array( $ctrl_code, array(404, 410), true ) ) {
+                        break;
+                    }
                     $result = array(
                         'id'    => 0,
                         'title' => esc_html( $slug ),

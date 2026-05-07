@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking;
+namespace Clickwhale\Front\Tracking;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -35,14 +35,7 @@ class Clickwhale_Parser {
 
     public function __construct( $ua ) {
         $this->ua = $ua;
-        $this->load_dependencies();
         $this->get_device( $this->ua );
-    }
-
-    private function load_dependencies() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/Clickwhale_Bot.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/Clickwhale_Device.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/Clickwhale_OS.php';
     }
 
     public function get_device( $ua ) {

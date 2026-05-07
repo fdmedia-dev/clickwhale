@@ -1,6 +1,6 @@
 <?php
 
-use clickwhale\includes\admin\Clickwhale_Settings;
+use Clickwhale\Admin\Clickwhale_Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

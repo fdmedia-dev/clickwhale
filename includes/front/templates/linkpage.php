@@ -1,8 +1,8 @@
 <?php
 
-use clickwhale\includes\front\Clickwhale_Public_Linkpage;
-use clickwhale\includes\front\tracking\Clickwhale_View_Track;
-use clickwhale\includes\helpers\Helper;
+use Clickwhale\Front\Clickwhale_Public_Linkpage;
+use Clickwhale\Front\Tracking\Clickwhale_View_Track;
+use Clickwhale\Helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $post;
 $clickwhale_linkpage = new Clickwhale_Public_Linkpage( $post );
-$clickwhale_view = new Clickwhale_View_Track();
+$clickwhale_view     = new Clickwhale_View_Track();
 $clickwhale_view->maybe_update_track_database( $post->linkpage['id'] );
 $clickwhale_user_id = get_current_user_id();
 ?>

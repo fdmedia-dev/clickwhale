@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\admin\reset;
+namespace Clickwhale\Admin\Reset;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

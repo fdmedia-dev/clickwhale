@@ -1,9 +1,9 @@
 <?php
 
-namespace clickwhale\includes\front;
+namespace Clickwhale\Front;
 
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use Clickwhale\Helpers\Helper;
+use Clickwhale\ContentTemplates\Clickwhale_Linkpage_Content_Templates;
 use WP_Post;
 
 if ( ! defined( 'ABSPATH' ) ) {

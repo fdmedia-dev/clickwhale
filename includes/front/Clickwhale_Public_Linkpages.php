@@ -1,12 +1,12 @@
 <?php
-namespace clickwhale\includes\front;
+namespace Clickwhale\Front;
 
-use clickwhale\includes\front\linkpages\{
+use Clickwhale\Front\Linkpages\{
     Linkpage,
     Linkpage_Controller,
     Linkpage_Template_Loader
 };
-use clickwhale\includes\helpers\Linkpages_Helper;
+use Clickwhale\Helpers\Linkpages_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -20,7 +20,6 @@ class Clickwhale_Public_Linkpages {
      * @since    1.0.0
      */
     public function __construct() {
-        $this->load_dependencies();
         $this->init();
     }
 
@@ -35,14 +34,6 @@ class Clickwhale_Public_Linkpages {
      * @since    1.0.0
      * @access   private
      */
-    private function load_dependencies() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage_Interface.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage_Controller_Interface.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage_Template_Loader_Interface.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage_Controller.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/linkpages/Linkpage_Template_Loader.php';
-    }
 
     public function init() {
         $linkpages = Linkpages_Helper::get_all( 'title', 'asc', 'ARRAY_A' );

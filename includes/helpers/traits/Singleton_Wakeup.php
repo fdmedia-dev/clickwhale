@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\helpers\traits;
+namespace Clickwhale\Helpers\Traits;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

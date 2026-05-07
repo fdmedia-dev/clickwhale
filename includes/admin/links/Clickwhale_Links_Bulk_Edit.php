@@ -1,7 +1,7 @@
 <?php
-namespace clickwhale\includes\admin\links;
+namespace Clickwhale\Admin\Links;
 
-use clickwhale\includes\helpers\{
+use Clickwhale\Helpers\{
     Links_Helper,
     Categories_Helper,
     Helper

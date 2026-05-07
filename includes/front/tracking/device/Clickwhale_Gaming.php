@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking\device;
+namespace Clickwhale\Front\Tracking\Device;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -106,7 +106,6 @@ class Clickwhale_Gaming {
         }
     }
 
-
     /** Sony PlayStation */
 
     private function detectPlaystation( $ua ) {
@@ -185,7 +184,6 @@ class Clickwhale_Gaming {
         }
     }
 
-
     /** Microsoft Xbox */
 
     private function detectXbox( $ua ) {
@@ -218,7 +216,6 @@ class Clickwhale_Gaming {
             );
         }
     }
-
 
     /** Sega */
 

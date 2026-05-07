@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking;
+namespace Clickwhale\Front\Tracking;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -1381,13 +1381,11 @@ class Clickwhale_OS {
                 $this->type = 'mobile';
             }
 
-
             if ( preg_match( '/Linux\/SLP\/([0-9.]+)/u', $ua, $match ) ) {
                 $this->name    = 'Linux SLP';
                 $this->version = $match[1];
                 $this->type    = 'mobile';
             }
-
 
             if ( preg_match( '/LinuxOS\//u', $ua ) && preg_match( '/Software\/R5/u', $ua ) ) {
                 $this->name = 'EZX Linux';

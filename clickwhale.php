@@ -8,8 +8,8 @@
  * @wordpress-plugin
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
- * Description:       Link Manager, Link Shortener and Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.5.3.5
+ * Description:       Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages.
+ * Version:           2.6.0
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -19,7 +19,9 @@
  * Text Domain:       clickwhale
  * Domain Path:       /languages
  */
-use clickwhale\includes\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
+require_once __DIR__ . '/vendor/autoload.php';
+use Clickwhale\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -30,7 +32,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.5.3.2' );
+    define( 'CLICKWHALE_VERSION', '2.6.0' );
     /**
      * @since 1.4.1
      */
@@ -58,8 +60,6 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         function clickwhale_fs() {
             global $clickwhale_fs;
             if ( !isset( $clickwhale_fs ) ) {
-                // Include Freemius SDK.
-                require_once dirname( __FILE__ ) . '/vendor/freemius/start.php';
                 $clickwhale_fs = fs_dynamic_init( array(
                     'id'               => '14609',
                     'slug'             => 'clickwhale',
@@ -70,7 +70,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'premium_suffix'   => '(Pro)',
                     'has_addons'       => false,
                     'has_paid_plans'   => true,
-                    'is_org_compliant' => true,
+                    'is_org_compliant' => false,
                     'has_affiliation'  => 'all',
                     'menu'             => array(
                         'slug'    => esc_attr( CLICKWHALE_SLUG ),
@@ -98,13 +98,33 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             } );
         }
     }
+    /**
+     * @since 2.6.0
+     */
+    if ( clickwhale_fs()->is_free_plan() ) {
+        // Freemius registers FS_Plugin_Updater during dynamic_init() (fires on 'init' hook).
+        // We remove its transient filters on 'wp_loaded' (after dynamic_init() completes)
+        // so that PUC exclusively handles update checks for the free version.
+        add_action( 'wp_loaded', function () {
+            $updater = FS_Plugin_Updater::instance( clickwhale_fs() );
+            $basename = clickwhale_fs()->get_plugin_basename();
+            // Remove update transient hooks so PUC handles update detection.
+            remove_filter( 'pre_set_site_transient_update_plugins', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
+            remove_filter( 'pre_set_site_transient_update_themes', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
+            // Remove hooks that replace the standard update row with "Buy license".
+            remove_action( "after_plugin_row_{$basename}", [$updater, 'catch_plugin_update_row'], 9 );
+            remove_action( "after_plugin_row_{$basename}", [$updater, 'edit_and_echo_plugin_update_row'], 11 );
+            // Remove Freemius plugin-information dialog override so PUC's "View details" works normally.
+            remove_filter( 'plugins_api', [$updater, 'plugins_api_filter'], 10 );
+            remove_action( 'admin_head', [$updater, 'catch_plugin_information_dialog_contents'] );
+        } );
+        $ClickWhaleUpdateChecker = PucFactory::buildUpdateChecker( 'https://github.com/fdmedia-dev/clickwhale', __FILE__, CLICKWHALE_SLUG );
+    }
     function clickwhale_activate() {
-        require_once CLICKWHALE_DIR . 'includes/Clickwhale_Activator.php';
         Clickwhale_Activator::activate();
     }
 
     function clickwhale_deactivate() {
-        require_once CLICKWHALE_DIR . 'includes/Clickwhale_Deactivator.php';
         Clickwhale_Deactivator::deactivate();
     }
 
@@ -218,15 +238,6 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     register_deactivation_hook( __FILE__, 'clickwhale_deactivate' );
     // Uninstall action
     clickwhale_fs()->add_action( 'after_uninstall', 'clickwhale_uninstall_cleanup' );
-    /**
-     * Traits for Singleton
-     */
-    require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Clone.php';
-    require_once CLICKWHALE_DIR . 'includes/helpers/traits/Singleton_Wakeup.php';
-    /**
-     * Core class of plugin
-     */
-    require CLICKWHALE_DIR . 'includes/Clickwhale.php';
     /**
      * Begins execution of the plugin.
      *

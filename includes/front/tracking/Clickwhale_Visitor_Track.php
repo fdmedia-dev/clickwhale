@@ -1,7 +1,7 @@
 <?php
-namespace clickwhale\includes\front\tracking;
+namespace Clickwhale\Front\Tracking;
 
-use clickwhale\includes\helpers\Helper;
+use Clickwhale\Helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,7 +1,7 @@
 <?php
-namespace clickwhale\includes\admin\export;
+namespace Clickwhale\Admin\Export;
 
-use clickwhale\includes\helpers\{Helper, Categories_Helper};
+use Clickwhale\Helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

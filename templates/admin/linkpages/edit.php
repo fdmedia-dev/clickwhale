@@ -1,7 +1,7 @@
 <?php
 
-use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
-use clickwhale\includes\content_templates\Clickwhale_Linkpage_Content_Templates;
+use Clickwhale\Helpers\{Helper, Linkpages_Helper};
+use Clickwhale\ContentTemplates\Clickwhale_Linkpage_Content_Templates;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

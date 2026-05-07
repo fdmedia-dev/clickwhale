@@ -1,8 +1,8 @@
 <?php
-namespace clickwhale\includes\admin\categories;
+namespace Clickwhale\Admin\Categories;
 
-use clickwhale\includes\admin\Clickwhale_Instance_Edit;
-use clickwhale\includes\helpers\Categories_Helper;
+use Clickwhale\Admin\Clickwhale_Instance_Edit;
+use Clickwhale\Helpers\Categories_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

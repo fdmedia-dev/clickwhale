@@ -1,6 +1,6 @@
 <?php
 
-namespace clickwhale\includes\helpers;
+namespace Clickwhale\Helpers;
 
 use Exception;
 
@@ -295,160 +295,264 @@ class Helper {
 	 * @return array
 	 */
 	public static function get_allowed_tags(): array {
-		return array(
-			'input'    => array(
-				'type'        => true,
-				'id'          => true,
-				'name'        => true,
-				'value'       => true,
-				'class'       => true,
-				'style'       => true,
-				'checked'     => true,
-				'disabled'    => true,
-				'required'    => true,
-				'placeholder' => true,
-				'min'         => true,
-				'max'         => true,
-			),
-			'select'   => array(
-				'id'       => true,
-				'name'     => true,
-				'class'    => true,
-				'multiple' => true,
+		// Common ARIA attributes
+		$common_aria = [
+			'aria-atomic'      => true,
+			'aria-busy'        => true,
+			'aria-controls'    => true,
+			'aria-current'     => true,
+			'aria-describedby' => true,
+			'aria-details'     => true,
+			'aria-disabled'    => true,
+			'aria-expanded'    => true,
+			'aria-hidden'      => true,
+			'aria-invalid'     => true,
+			'aria-label'       => true,
+			'aria-labelledby'  => true,
+			'aria-live'        => true,
+			'aria-pressed'     => true,
+			'aria-readonly'    => true,
+			'aria-relevant'    => true,
+			'aria-required'    => true,
+			'aria-selected'    => true,
+			'aria-valuemax'    => true,
+			'aria-valuemin'    => true,
+			'aria-valuenow'    => true,
+			'aria-valuetext'   => true,
+		];
+
+		// Common global attributes
+		$common_global = [
+			'class'  => true,
+			'data-*' => true,
+			'id'     => true,
+			'style'  => true,
+		];
+
+		// Common SVG stroke attributes
+		$common_stroke = [
+			'stroke'            => true,
+			'stroke-dasharray'  => true,
+			'stroke-dashoffset' => true,
+			'stroke-linecap'    => true,
+			'stroke-linejoin'   => true,
+			'stroke-miterlimit' => true,
+			'stroke-opacity'    => true,
+			'stroke-width'      => true,
+		];
+
+		return [
+			'a'          => array_merge( $common_global, $common_aria, [
+				'href'   => true,
+				'rel'    => true,
+				'role'   => true,
+				'target' => true,
+				'title'  => true,
+			] ),
+			'article'    => $common_global,
+			'aside'      => $common_global,
+			'b'          => array_merge( $common_global, $common_aria ),
+			'blockquote' => array_merge( $common_global, [
+				'cite' => true,
+			] ),
+			'br'         => $common_global,
+			'button'     => array_merge( $common_global, $common_aria, [
+				'type' => true,
+			] ),
+			'circle'     => array_merge( $common_global, $common_stroke, [
+				'cx'        => true,
+				'cy'        => true,
+				'fill'      => true,
+				'opacity'   => true,
+				'r'         => true,
+				'transform' => true,
+			] ),
+			'code'       => array_merge( $common_global, $common_aria ),
+			'div'        => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'em'         => array_merge( $common_global, $common_aria ),
+			'fieldset'   => $common_global,
+			'footer'     => $common_global,
+			'form'       => array_merge( $common_global, $common_aria, [
+				'action'     => true,
+				'enctype'    => true,
+				'method'     => true,
+				'novalidate' => true,
+			] ),
+			'g'          => [
+				'fill' => true,
+			],
+			'h1'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'h2'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'h3'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'h4'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'h5'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'h6'         => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'header'     => $common_global,
+			'hr'         => $common_global,
+			'i'          => array_merge( $common_global, $common_aria ),
+			'img'        => array_merge( $common_global, $common_aria, [
+				'alt'    => true,
+				'height' => true,
+				'src'    => true,
+				'srcset' => true,
+				'width'  => true,
+			] ),
+			'input'      => array_merge( $common_global, $common_aria, [
+				'accept'       => true,
+				'autocomplete' => true,
+				'checked'      => true,
+				'disabled'     => true,
+				'max'          => true,
+				'maxlength'    => true,
+				'min'          => true,
+				'minlength'    => true,
+				'name'         => true,
+				'placeholder'  => true,
+				'required'     => true,
+				'size'         => true,
+				'type'         => true,
+				'value'        => true,
+			] ),
+			'label'      => array_merge( $common_global, $common_aria, [
+				'for' => true,
+			] ),
+			'legend'     => $common_global,
+			'li'         => array_merge( $common_global, $common_aria, [
+				'role' => true,
+			] ),
+			'line'       => array_merge( $common_global, $common_stroke, [
+				'fill'      => true,
+				'transform' => true,
+				'x1'        => true,
+				'x2'        => true,
+				'y1'        => true,
+				'y2'        => true,
+			] ),
+			'link'       => [
+				'as'              => true,
+				'crossorigin'     => true,
+				'href'            => true,
+				'importance'      => true,
+				'integrity'       => true,
+				'prefetch'        => true,
+				'referrerpolicy'  => true,
+				'rel'             => true,
+				'sizes'           => true,
+				'target'          => true,
+				'title'           => true,
+				'type'            => true,
+				'use-credentials' => true,
+			],
+			'main'       => $common_global,
+			'meta'       => [
+				'content' => true,
+				'data-*'  => true,
+				'name'    => true,
+			],
+			'nav'        => array_merge( $common_global, $common_aria ),
+			'noscript'   => [
+				'data-*' => true,
+			],
+			'ol'         => array_merge( $common_global, $common_aria, [
+				'role' => true,
+			] ),
+			'option'     => [
+				'data-*'   => true,
 				'disabled' => true,
-				'style'    => true,
-			),
-			'option'   => array(
-				'value'    => true,
 				'selected' => true,
+				'value'    => true,
+			],
+			'p'          => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'path'       => array_merge( $common_global, $common_stroke, [
+				'd'         => true,
+				'fill'      => true,
+				'fill-rule' => true,
+				'transform' => true
+			] ),
+			'pre'        => array_merge( $common_global, $common_aria ),
+			'rect'       => array_merge( $common_global, $common_stroke, [
+				'fill'      => true,
+				'height'    => true,
+				'opacity'   => true,
+				'rx'        => true,
+				'transform' => true,
+				'width'     => true,
+				'x'         => true,
+				'y'         => true,
+			] ),
+			'script'     => [
+				'async'  => true,
+				'data-*' => true,
+				'defer'  => true,
+				'src'    => true,
+				'type'   => true,
+			],
+			'section'    => $common_global,
+			'select'     => array_merge( $common_global, $common_aria, [
 				'disabled' => true,
-			),
-			'textarea' => array(
-				'id'       => true,
+				'multiple' => true,
 				'name'     => true,
-				'class'    => true,
-				'rows'     => true,
+			] ),
+			'span'       => array_merge( $common_global, $common_aria, [
+				'title' => true,
+			] ),
+			'strong'     => array_merge( $common_global, $common_aria ),
+			'svg'        => array_merge( $common_global, $common_aria, [
+				'fill'    => true,
+				'height'  => true,
+				'role'    => true,
+				'viewbox' => true,
+				'width'   => true,
+				'xmlns'   => true,
+			] ),
+			'table'      => array_merge( $common_global, $common_aria, [
+				'role' => true,
+			] ),
+			'tbody'      => $common_global,
+			'td'         => array_merge( $common_global, $common_aria, [
+				'colspan' => true,
+				'rowspan' => true,
+			] ),
+			'textarea'   => array_merge( $common_global, $common_aria, [
 				'cols'     => true,
 				'disabled' => true,
-				'style'    => true,
+				'name'     => true,
 				'required' => true,
-			),
-			'label'    => array(
-				'for'   => true,
-				'class' => true,
-			),
-			'button'   => array(
-				'type'      => true,
-				'class'     => true,
-				'id'        => true,
-				'data-id'   => true,
-				'data-type' => true,
-			),
-			'fieldset' => array(
-				'class' => true,
-			),
-			'legend'   => array(
-				'class' => true,
-			),
-			'p'        => array(
-				'class' => true,
-			),
-			'span'     => array(
-				'class' => true,
-				'style' => true,
-			),
-			'div'      => array(
-				'id'    => true,
-				'class' => true,
-				'style' => true,
-			),
-			'tr'       => array(
-				'class' => true,
-				'style' => true,
-			),
-			'th'       => array(
+				'rows'     => true,
+			] ),
+			'tfoot'      => $common_global,
+			'th'         => array_merge( $common_global, $common_aria, [
 				'scope' => true,
-				'class' => true,
-			),
-			'td'       => array(
-				'class'   => true,
-				'style'   => true,
-				'colspan' => true,
-			),
-			'br'       => array(),
-			'ul'       => array(
-				'id'    => true,
-				'class' => true,
-				'role'  => true,
-			),
-			'ol'       => array(
-				'id'    => true,
-				'class' => true,
-				'role'  => true,
-			),
-			'li'       => array(
-				'class' => true,
-				'id'    => true,
-			),
-			'a'        => array(
+			] ),
+			'thead'      => $common_global,
+			'tr'         => array_merge( $common_global, $common_aria, [
+				'role' => true,
+			] ),
+			'u'          => array_merge( $common_global, $common_aria ),
+			'ul'         => array_merge( $common_global, $common_aria, [
+				'role' => true,
+			] ),
+			'use'        => [
+				'data-*' => true,
 				'href'   => true,
-				'title'  => true,
-				'class'  => true,
-				'target' => true,
-				'rel'    => true,
-			),
-			'svg'      => array(
-				'class'       => true,
-				'xmlns'       => true,
-				'viewBox'     => true,
-				'fill'        => true,
-				'aria-hidden' => true,
-				'role'        => true,
-				'width'       => true,
-				'height'      => true,
-			),
-			'path'     => array(
-				'd'    => true,
-				'fill' => true,
-			),
-			'use'      => array(
-				'href' => true,
-			),
-			'em'       => array(
-				'class' => true,
-			),
-			'link'     => array(
-				'rel'   => true,
-				'href'  => true,
-				'sizes' => true,
-			),
-			'meta'     => array(
-				'name'    => true,
-				'content' => true,
-			),
-			'script'   => array(
-				'src'   => true,
-				'type'  => true,
-				'async' => true,
-				'defer' => true,
-			),
-			'noscript' => [],
-			'img'      => array(
-				'src'    => true,
-				'height' => true,
-				'width'  => true,
-				'style'  => true,
-				'alt'    => true,
-			),
-			'h1'       => [
-				'id'    => true,
-				'class' => true
 			],
-			'h2'       => [
-				'id'    => true,
-				'class' => true
-			]
-		);
+		];
 	}
 
 	/**
@@ -631,6 +735,74 @@ class Helper {
 	}
 
 	/**
+	 * Check if slug matches a WordPress virtual URL that has no real post/taxonomy entry:
+	 * the Posts page (blog archive) or a public CPT archive.
+	 *
+	 * @param string $slug
+	 *
+	 * @return array  Empty if not found; otherwise ['id', 'title', 'type'].
+	 */
+	public static function get_virtual_url_by_slug( string $slug ): array {
+		$slug     = ltrim( $slug, '/' );
+		$home     = trailingslashit( home_url() );
+		$home_len = strlen( $home );
+
+		// Posts page (Settings → Reading → "Posts page")
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$page_for_posts_id = (int) get_option( 'page_for_posts' );
+
+			if ( $page_for_posts_id > 0 ) {
+				$posts_page = get_post( $page_for_posts_id );
+
+				if ( $posts_page ) {
+					$posts_page_url = get_permalink( $posts_page->ID );
+
+					if ( is_string( $posts_page_url ) && strpos( $posts_page_url, $home ) === 0 ) {
+						$path = trim( substr( $posts_page_url, $home_len ), '/' );
+
+						if ( $path === $slug ) {
+							return array(
+								'id'    => $posts_page->ID,
+								'title' => $posts_page->post_title,
+								'type'  => 'posts page',
+							);
+						}
+					}
+				}
+			}
+		}
+
+		// Public CPT archives
+		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+
+		foreach ( $post_types as $post_type ) {
+			if ( empty( $post_type->has_archive ) ) {
+				continue;
+			}
+
+			$archive_url = get_post_type_archive_link( $post_type->name );
+
+			if ( ! $archive_url || strpos( $archive_url, $home ) !== 0 ) {
+				continue;
+			}
+
+			$path = trim( substr( $archive_url, $home_len ), '/' );
+
+			if ( $path === $slug ) {
+				$label = isset( $post_type->labels->name ) ? $post_type->labels->name : $post_type->name;
+
+				return array(
+					'id'    => 0,
+					'title' => $label,
+					'type'  => $post_type->name . ' archive',
+				);
+			}
+		}
+
+		return array();
+	}
+
+	/**
 	 * @return array
 	 */
 	public static function get_tracking_durations(): array {
@@ -647,10 +819,11 @@ class Helper {
 	 *
 	 * @param string $a
 	 * @param string $b
+	 *
 	 * @return bool
 	 */
 	public static function urls_effectively_equal( string $a, string $b ): bool {
-		$base = wp_parse_url( home_url( '/' ) );
+		$base      = wp_parse_url( home_url( '/' ) );
 		$base_host = isset( $base['host'] ) ? preg_replace( '/^www\./i', '', strtolower( $base['host'] ) ) : '';
 
 		$normalize = static function ( $url ) use ( $base_host ) {
@@ -665,8 +838,17 @@ class Helper {
 
 			$path = isset( $parts['path'] ) ? rtrim( $parts['path'], '/' ) : '';
 
-			$ignore = array( 'utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','fbclid','_ga' );
-			$query = array();
+			$ignore = array(
+				'utm_source',
+				'utm_medium',
+				'utm_campaign',
+				'utm_term',
+				'utm_content',
+				'gclid',
+				'fbclid',
+				'_ga'
+			);
+			$query  = array();
 			if ( ! empty( $parts['query'] ) ) {
 				parse_str( $parts['query'], $query );
 				foreach ( $ignore as $k ) {

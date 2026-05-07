@@ -1,6 +1,6 @@
 <?php
-use clickwhale\includes\admin\categories\Clickwhale_Categories_List_Table;
-use clickwhale\includes\helpers\{Helper, Categories_Helper};
+use Clickwhale\Admin\Categories\Clickwhale_Categories_List_Table;
+use Clickwhale\Helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,9 +1,9 @@
 <?php
 
-namespace clickwhale\includes\admin\linkpages;
+namespace Clickwhale\Admin\Linkpages;
 
-use clickwhale\includes\admin\Clickwhale_Instance_Edit;
-use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
+use Clickwhale\Admin\Clickwhale_Instance_Edit;
+use Clickwhale\Helpers\{Helper, Linkpages_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

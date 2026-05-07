@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\admin\migration;
+namespace Clickwhale\Admin\Migration;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,6 +1,6 @@
 <?php
 
-namespace clickwhale\includes;
+namespace Clickwhale;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

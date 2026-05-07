@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking\device;
+namespace Clickwhale\Front\Tracking\Device;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

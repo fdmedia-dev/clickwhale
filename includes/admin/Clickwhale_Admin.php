@@ -1,9 +1,9 @@
 <?php
 
-namespace clickwhale\includes\admin;
+namespace Clickwhale\Admin;
 
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use Clickwhale\Helpers\Helper;
+use Clickwhale\Helpers\Traits\{Singleton_Clone, Singleton_Wakeup};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -68,9 +68,6 @@ final class Clickwhale_Admin {
      */
     private function load_dependencies() {
         // Settings
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Ajax.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Settings.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Tools.php';
 
         // Controllers
         if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -78,21 +75,10 @@ final class Clickwhale_Admin {
         }
 
         // Abstract for all instances
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Instance_Edit.php';
 
         // Child classes
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/categories/Clickwhale_Categories_List_Table.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/categories/Clickwhale_Category_Edit.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/linkpages/Clickwhale_Linkpages_List_Table.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/linkpages/Clickwhale_Linkpage_Edit.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/links/Clickwhale_Links_List_Table.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/links/Clickwhale_Links_Bulk_Edit.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/links/Clickwhale_Link_Edit.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Tracking_Codes_List_Table.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/tracking_codes/Clickwhale_Tracking_Code_Edit.php';
 
         // ClickWhale REST API
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/Clickwhale_Rest_Controller.php';
     }
 
     private function add_submenu_page( $parent, $k, $v ): void {

@@ -1,8 +1,8 @@
 <?php
 
-namespace clickwhale\includes\admin\migration;
+namespace Clickwhale\Admin\Migration;
 
-use clickwhale\includes\helpers\Links_Helper;
+use Clickwhale\Helpers\Links_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -1,10 +1,10 @@
 <?php
-namespace clickwhale\includes\admin;
+namespace Clickwhale\Admin;
 
-use clickwhale\includes\admin\migration\Clickwhale_Migration;
-use clickwhale\includes\admin\reset\Clickwhale_Reset;
-use clickwhale\includes\admin\import\Clickwhale_Import;
-use clickwhale\includes\admin\export\Clickwhale_Export;
+use Clickwhale\Admin\Migration\Clickwhale_Migration;
+use Clickwhale\Admin\Reset\Clickwhale_Reset;
+use Clickwhale\Admin\Import\Clickwhale_Import;
+use Clickwhale\Admin\Export\Clickwhale_Export;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -48,20 +48,10 @@ class Clickwhale_Tools {
      */
     public function __construct() {
 
-        $this->load_dependencies();
-
         $this->migration = new Clickwhale_Migration();
         $this->reset     = new Clickwhale_Reset();
         $this->import    = new Clickwhale_Import();
         $this->export    = new Clickwhale_Export();
     }
 
-    private function load_dependencies() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration_Abstract.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/migration/Clickwhale_Migration_Notice.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/reset/Clickwhale_Reset.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/import/Clickwhale_Import.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/export/Clickwhale_Export.php';
-    }
 }

@@ -1,9 +1,10 @@
 <?php
-namespace clickwhale\includes\admin\categories;
+
+namespace Clickwhale\Admin\Categories;
 
 use Exception;
 use WP_List_Table;
-use clickwhale\includes\helpers\Helper;
+use Clickwhale\Helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -17,22 +18,22 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
 
     public function __construct() {
         parent::__construct(
-            array(
-                'singular' => 'category',
-                'plural'   => 'categories'
-            )
+                array(
+                        'singular' => 'category',
+                        'plural'   => 'categories'
+                )
         );
     }
 
     private function get_current_data( string $search = '' ): array {
         global $wpdb;
-        $table = Helper::get_db_table_name( 'categories' );
-        $query = "SELECT id,title,description FROM {$table}";
+        $table  = Helper::get_db_table_name( 'categories' );
+        $query  = "SELECT id,title,description FROM {$table}";
         $params = array();
 
         if ( ! empty( $search ) ) {
             $search = '%' . $wpdb->esc_like( $search ) . '%';
-            $query .= " WHERE title LIKE %s OR description LIKE %s";
+            $query  .= " WHERE title LIKE %s OR description LIKE %s";
             $params = array( $search, $search );
         }
 
@@ -52,7 +53,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_default( $item, $column_name ): string {
-        return esc_html( $item[$column_name] );
+        return esc_html( $item[ $column_name ] );
     }
 
     /**
@@ -61,33 +62,33 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_title( $item ): string {
-        $id = intval( $item['id'] );
-        $title = sprintf(
-            '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
-            $id,
-            esc_html( wp_unslash( $item['title'] ) )
-        );
-        $actions = array(
-            'edit'   => sprintf(
+        $id      = intval( $item['id'] );
+        $title   = sprintf(
                 '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
                 $id,
-                __( 'Edit', 'clickwhale' )
-            ),
-            'delete' => sprintf(
-                '<a href="%s">%s</a>',
-                esc_url(
-                    wp_nonce_url(
-                        admin_url( 'admin.php?page=' . sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) . '&action=delete&id=' . $id ),
-                        'delete-' . $this->_args['singular']
-                    )
+                esc_html( wp_unslash( $item['title'] ) )
+        );
+        $actions = array(
+                'edit'   => sprintf(
+                        '<a href="?page=' . CLICKWHALE_SLUG . '-edit-category&id=%d">%s</a>',
+                        $id,
+                        __( 'Edit', 'clickwhale' )
                 ),
-                __( 'Delete', 'clickwhale' )
-            )
+                'delete' => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(
+                                wp_nonce_url(
+                                        admin_url( 'admin.php?page=' . sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) . '&action=delete&id=' . $id ),
+                                        'delete-' . $this->_args['singular']
+                                )
+                        ),
+                        __( 'Delete', 'clickwhale' )
+                )
         );
 
         return sprintf( '%s %s',
-            $title,
-            $this->row_actions( $actions )
+                $title,
+                $this->row_actions( $actions )
         );
     }
 
@@ -113,22 +114,22 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $total = (int) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$table} WHERE categories = %s OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
-                $cat_id,
-                $like_start,
-                $like_mid,
-                $like_end
-            )
+                $wpdb->prepare(
+                        "SELECT COUNT(*) FROM {$table} WHERE categories = %s OR categories LIKE %s OR categories LIKE %s OR categories LIKE %s",
+                        $cat_id,
+                        $like_start,
+                        $like_mid,
+                        $like_end
+                )
         );
         // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
         if ( $total > 0 ) {
             return sprintf(
-                '<a href="%s&category=%d">%d</a>',
-                esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
-                (int) $cat_id,
-                $total
+                    '<a href="%s&category=%d">%d</a>',
+                    esc_url( get_admin_url( get_current_blog_id(), 'admin.php?page=' . CLICKWHALE_SLUG ) ),
+                    (int) $cat_id,
+                    $total
             );
         }
 
@@ -154,10 +155,10 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      */
     public function get_columns(): array {
         return array(
-            'cb'          => '<input type="checkbox" />',
-            'title'       => __( 'Title', 'clickwhale' ),
-            'description' => __( 'Description', 'clickwhale' ),
-            'count'       => __( 'Links count', 'clickwhale' )
+                'cb'          => '<input type="checkbox" />',
+                'title'       => __( 'Title', 'clickwhale' ),
+                'description' => __( 'Description', 'clickwhale' ),
+                'count'       => __( 'Links count', 'clickwhale' )
         );
     }
 
@@ -170,7 +171,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      */
     public function get_sortable_columns(): array {
         return array(
-            'title' => array( 'title', true )
+                'title' => array( 'title', true )
         );
     }
 
@@ -181,7 +182,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
      */
     public function get_bulk_actions(): array {
         return array(
-            'delete' => __( 'Delete', 'clickwhale' )
+                'delete' => __( 'Delete', 'clickwhale' )
         );
     }
 
@@ -201,7 +202,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         }
 
         $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-        if ( null === $get_id ) {
+        if ( ! is_array( $get_id ) ) {
             $get_id = (string) filter_input( INPUT_GET, 'id' );
         }
 
@@ -217,7 +218,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         }
 
         $post_id = $get_id;
-        $nonce = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+        $nonce   = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
         if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, $nonce ) ) {
             Helper::csrf_exception( $page_slug );
@@ -233,15 +234,15 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         }
 
         global $wpdb;
-        $table = Helper::get_db_table_name( 'categories' );
+        $table        = Helper::get_db_table_name( 'categories' );
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
         // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $result = $wpdb->query(
-            $wpdb->prepare(
-                "DELETE FROM {$table} WHERE id IN ($placeholders)",
-                ...$ids
-            )
+                $wpdb->prepare(
+                        "DELETE FROM {$table} WHERE id IN ($placeholders)",
+                        ...$ids
+                )
         );
         // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
@@ -279,17 +280,17 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             $categories = explode( ',', $link['categories'] );
 
             while ( ( $i = array_search( $id, $categories ) ) !== false ) {
-                unset( $categories[$i] );
+                unset( $categories[ $i ] );
             }
 
-            $categories = implode( ',', $categories );
+            $categories         = implode( ',', $categories );
             $link['categories'] = $categories;
 
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->update(
-                $links_table,
-                $link,
-                array( 'id' => intval( $link['id'] ) )
+                    $links_table,
+                    $link,
+                    array( 'id' => intval( $link['id'] ) )
             );
         }
     }
@@ -309,7 +310,7 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         $this->_column_headers = array( $columns, $hidden, $sortable );
         $this->process_bulk_action();
 
-        $order_arg   = sanitize_text_field( (string) filter_input( INPUT_GET, 'order' ) );
+        $order_arg = sanitize_text_field( (string) filter_input( INPUT_GET, 'order' ) );
         if ( empty( $order_arg ) ) {
             $order_arg = 'asc';
         }
@@ -317,11 +318,11 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         if ( empty( $orderby_arg ) ) {
             $orderby_arg = 'title';
         }
-        $sort        = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
-        $order       = $sort['order'];
-        $orderby     = $sort['orderby'];
-        $paged_q     = (int) filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
-        $paged       = $paged_q ? ( $per_page * max( 0, $paged_q - 1 ) ) : 0;
+        $sort    = Helper::get_sort_params( $sortable, $order_arg, $orderby_arg );
+        $order   = $sort['order'];
+        $orderby = $sort['orderby'];
+        $paged_q = (int) filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
+        $paged   = $paged_q ? ( $per_page * max( 0, $paged_q - 1 ) ) : 0;
 
         // Will be used in pagination settings
         $search_q = (string) filter_input( INPUT_GET, 's' );
@@ -339,11 +340,11 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
             // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $current_data = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT * FROM {$table} ORDER BY $orderby $order LIMIT $per_page OFFSET %d",
-                    $paged
-                ),
-                ARRAY_A
+                    $wpdb->prepare(
+                            "SELECT * FROM {$table} ORDER BY $orderby $order LIMIT $per_page OFFSET %d",
+                            $paged
+                    ),
+                    ARRAY_A
             );
             // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             if ( ! $current_data ) {
@@ -354,9 +355,9 @@ class Clickwhale_Categories_List_Table extends WP_List_Table {
         }
 
         $this->set_pagination_args( array(
-            'per_page'    => $per_page,
-            'total_items' => $total_items,
-            'total_pages' => ceil( $total_items / $per_page )
+                'per_page'    => $per_page,
+                'total_items' => $total_items,
+                'total_pages' => ceil( $total_items / $per_page )
         ) );
     }
 

@@ -1,7 +1,7 @@
 <?php
-namespace clickwhale\includes\front\tracking;
+namespace Clickwhale\Front\Tracking;
 
-use clickwhale\includes\front\tracking\device\{
+use Clickwhale\Front\Tracking\Device\{
     Clickwhale_Appliance,
     Clickwhale_Ereader,
     Clickwhale_Gaming,
@@ -23,18 +23,7 @@ class Clickwhale_Device {
     public $device;
 
     public function __construct( $ua ) {
-        $this->load_dependencies();
         $this->get_device_type( $ua );
-    }
-
-    private function load_dependencies() {
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Appliance.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Ereader.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Gaming.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Media.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Mobile.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Pda.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'tracking/device/Clickwhale_Tablet.php';
     }
 
     public function get_device_type( $ua ) {

@@ -1,15 +1,15 @@
 <?php
 
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\admin\links\Clickwhale_Links_List_Table;
+use Clickwhale\Helpers\Helper;
+use Clickwhale\Admin\Links\Clickwhale_Links_List_Table;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 if ( function_exists( 'clickwhale_fs' ) && clickwhale_fs()->is__premium_only() ) {
-    if ( class_exists( 'clickwhale_pro\includes\admin\links\Clickwhale_Pro_Links_List_Table' ) ) {
-        $clickwhale_table = new clickwhale_pro\includes\admin\links\Clickwhale_Pro_Links_List_Table();
+    if ( class_exists( 'ClickwhalePro\Admin\Links\Clickwhale_Pro_Links_List_Table' ) ) {
+        $clickwhale_table = new ClickwhalePro\Admin\Links\Clickwhale_Pro_Links_List_Table();
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
-use clickwhale\includes\admin\linkpages\Clickwhale_Linkpages_List_Table;
-use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
+use Clickwhale\Admin\Linkpages\Clickwhale_Linkpages_List_Table;
+use Clickwhale\Helpers\{Helper, Linkpages_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

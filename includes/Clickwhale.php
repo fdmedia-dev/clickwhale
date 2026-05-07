@@ -12,13 +12,13 @@
  * @subpackage Clickwhale/includes
  */
 
-namespace clickwhale\includes;
+namespace Clickwhale;
 
-use clickwhale\includes\front\{Clickwhale_Public, Clickwhale_Public_Ajax};
-use clickwhale\includes\helpers\Helper;
-use clickwhale\includes\helpers\traits\{Singleton_Clone, Singleton_Wakeup};
+use Clickwhale\Front\{Clickwhale_Public, Clickwhale_Public_Ajax};
+use Clickwhale\Helpers\Helper;
+use Clickwhale\Helpers\Traits\{Singleton_Clone, Singleton_Wakeup};
 
-use clickwhale\includes\admin\{
+use Clickwhale\Admin\{
     Clickwhale_Admin,
     Clickwhale_Ajax,
     Clickwhale_Settings,
@@ -27,11 +27,11 @@ use clickwhale\includes\admin\{
     Clickwhale_Rest_Controller
 };
 
-use clickwhale\includes\admin\reset\Clickwhale_Reset;
-use clickwhale\includes\admin\categories\Clickwhale_Category_Edit;
-use clickwhale\includes\admin\linkpages\Clickwhale_Linkpage_Edit;
-use clickwhale\includes\admin\links\Clickwhale_Link_Edit;
-use clickwhale\includes\admin\tracking_codes\Clickwhale_Tracking_Code_Edit;
+use Clickwhale\Admin\Reset\Clickwhale_Reset;
+use Clickwhale\Admin\Categories\Clickwhale_Category_Edit;
+use Clickwhale\Admin\Linkpages\Clickwhale_Linkpage_Edit;
+use Clickwhale\Admin\Links\Clickwhale_Link_Edit;
+use Clickwhale\Admin\TrackingCodes\Clickwhale_Tracking_Code_Edit;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -145,8 +145,6 @@ final class Clickwhale {
     public static function get_instance(): Clickwhale {
         if ( empty( self::$instance ) ) {
             self::$instance = new self();
-            self::$instance->load_dependencies();
-
             self::$instance->loader        = new Clickwhale_Loader();
             self::$instance->user          = new Clickwhale_WP_User();
             self::$instance->admin         = Clickwhale_Admin::get_instance();
@@ -179,67 +177,6 @@ final class Clickwhale {
     use Singleton_Clone;
     use Singleton_Wakeup;
 
-    /**
-     * Load the required dependencies for this plugin.
-     *
-     * Include the following files that make up the plugin:
-     *
-     * - Clickwhale_Loader. Orchestrates the hooks of the plugin.
-     * - Clickwhale_Admin. Defines all hooks for the admin area.
-     * - Clickwhale_Public. Defines all hooks for the public side of the site.
-     *
-     * Create an instance of the loader which will be used to register the hooks
-     * with WordPress.
-     *
-     * @since    1.0.0
-     * @access   private
-     */
-    private function load_dependencies() {
-
-        /**
-         * The class responsible for orchestrating the actions and filters of the
-         * core plugin.
-         */
-        require_once CLICKWHALE_DIR . 'includes/Clickwhale_Loader.php';
-
-        /**
-         * Debuggers
-         */
-        if ( file_exists( CLICKWHALE_DIR . 'includes/debuggers/Debugger.php' ) ) {
-            require_once CLICKWHALE_DIR . 'includes/debuggers/Debugger.php';
-        }
-
-        /**
-         * Helpers
-         */
-        require_once CLICKWHALE_DIR . 'includes/helpers/Helper_Abstract.php';
-        require_once CLICKWHALE_DIR . 'includes/helpers/Helper.php';
-        require_once CLICKWHALE_DIR . 'includes/helpers/Links_Helper.php';
-        require_once CLICKWHALE_DIR . 'includes/helpers/Categories_Helper.php';
-        require_once CLICKWHALE_DIR . 'includes/helpers/Linkpages_Helper.php';
-        require_once CLICKWHALE_DIR . 'includes/helpers/Tracking_Codes_Helper.php';
-
-        /**
-         * Templates
-         */
-        require_once CLICKWHALE_DIR . 'includes/content_templates/Clickwhale_Linkpage_Content_Templates.php';
-
-        /**
-         * The class responsible for defining user functionality
-         */
-        require_once CLICKWHALE_DIR . 'includes/admin/Clickwhale_WP_User.php';
-
-        /**
-         * The class responsible for defining all actions that occur in the admin area.
-         */
-        require_once CLICKWHALE_DIR . 'includes/admin/Clickwhale_Admin.php';
-
-        /**
-         * The class responsible for defining all actions that occur in the public-facing
-         * side of the site.
-         */
-        require_once CLICKWHALE_DIR . 'includes/front/Clickwhale_Public.php';
-    }
 
     /**
      * Register all the hooks related to the admin area functionality

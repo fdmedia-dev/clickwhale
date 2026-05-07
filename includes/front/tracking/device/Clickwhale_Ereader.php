@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking\device;
+namespace Clickwhale\Front\Tracking\Device;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -52,7 +52,6 @@ class Clickwhale_Ereader {
         }
     }
 
-
     /** Barnes & Noble Nook */
 
     private function detectNook( $ua ) {
@@ -64,7 +63,6 @@ class Clickwhale_Ereader {
             );
         }
     }
-
 
     /** Bookeen */
 
@@ -78,7 +76,6 @@ class Clickwhale_Ereader {
         }
     }
 
-
     /** Kobo */
 
     private function detectKobo( $ua ) {
@@ -90,7 +87,6 @@ class Clickwhale_Ereader {
             );
         }
     }
-
 
     /** Sony Reader */
 

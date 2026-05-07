@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking\device;
+namespace Clickwhale\Front\Tracking\Device;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -80,7 +80,6 @@ class Clickwhale_Media {
         }
     }
 
-
     /** Microsoft Zune */
 
     private function detectZune( $ua ) {
@@ -92,7 +91,6 @@ class Clickwhale_Media {
             );
         }
     }
-
 
     /** Sony Walkman */
 

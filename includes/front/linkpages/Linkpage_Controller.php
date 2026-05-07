@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\linkpages;
+namespace Clickwhale\Front\Linkpages;
 
 use SplObjectStorage;
 use WP_Post;

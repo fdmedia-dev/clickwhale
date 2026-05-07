@@ -1,9 +1,9 @@
 <?php
 
-namespace clickwhale\includes\front;
+namespace Clickwhale\Front;
 
-use clickwhale\includes\front\tracking\Clickwhale_Click_Track;
-use clickwhale\includes\helpers\{
+use Clickwhale\Front\Tracking\Clickwhale_Click_Track;
+use Clickwhale\Helpers\{
 	Helper,
 	Linkpages_Helper,
 	Links_Helper
@@ -65,7 +65,6 @@ final class Clickwhale_Public {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->load_dependencies();
 
 		$this->path           = Helper::get_public_path();
 		$this->linkpages      = new Clickwhale_Public_Linkpages();
@@ -80,16 +79,6 @@ final class Clickwhale_Public {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Ajax.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_View_Track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Parser.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Visitor_Track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/tracking/Clickwhale_Click_Track.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Linkpages.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Linkpage.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'front/Clickwhale_Public_Tracking_Codes.php';
-	}
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
@@ -129,7 +118,7 @@ final class Clickwhale_Public {
 	}
 
 	/**
-	 * Clickwhale Link redirect to its url
+	 * Redirect Clickwhale Link to its url
 	 *
 	 * @return void
 	 * @since 1.0.0
@@ -208,7 +197,7 @@ final class Clickwhale_Public {
 		}
 
 		$link_url = apply_filters( 'clickwhale_url_params', $link['url'], $link_id );
-		wp_safe_redirect( esc_url_raw( $link_url ), $link['redirection'] );
+		wp_redirect( esc_url_raw( $link_url ), $link['redirection'] );
 		exit;
 	}
 

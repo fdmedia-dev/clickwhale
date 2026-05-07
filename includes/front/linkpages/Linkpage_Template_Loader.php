@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\linkpages;
+namespace Clickwhale\Front\Linkpages;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

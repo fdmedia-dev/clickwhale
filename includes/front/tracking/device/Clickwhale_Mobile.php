@@ -1,5 +1,5 @@
 <?php
-namespace clickwhale\includes\front\tracking\device;
+namespace Clickwhale\Front\Tracking\Device;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -38,7 +38,6 @@ class Clickwhale_Mobile {
         }
     }
 
-
     /** Nokia */
 
     private function detectNokia( $ua ) {
@@ -54,7 +53,6 @@ class Clickwhale_Mobile {
         }
     }
 
-
     /** Samsung */
 
     private function detectSamsung( $ua ) {
@@ -68,7 +66,6 @@ class Clickwhale_Mobile {
             );
         }
     }
-
 
     /** Generic models */
 

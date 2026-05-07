@@ -1,10 +1,10 @@
 <?php
 
-namespace clickwhale\includes\admin\links;
+namespace Clickwhale\Admin\Links;
 
 use Exception;
 use WP_List_Table;
-use clickwhale\includes\helpers\{Helper, Categories_Helper};
+use Clickwhale\Helpers\{Helper, Categories_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -396,7 +396,8 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
 
         $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
         $get_id   = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-        if ( null === $get_id ) {
+
+        if ( ! is_array( $get_id ) ) {
             $get_id = (string) filter_input( INPUT_GET, 'id' );
         }
 
@@ -404,10 +405,15 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
             return;
         }
 
+        $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
+
+        if ( empty( $wpnonce ) ) {
+            Helper::csrf_exception( $get_page );
+        }
+
         switch ( $action ) {
             case 'edit':
-                $wpnonce = (string) filter_input( INPUT_GET, '_wpnonce' );
-                if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, 'bulk-' . $this->_args['plural'] ) ) {
+                if ( ! wp_verify_nonce( $wpnonce, 'bulk-' . $this->_args['plural'] ) ) {
                     Helper::csrf_exception( $get_page );
                 }
 
@@ -485,17 +491,10 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                 break;
 
             case 'delete':
-                $get_page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 
-                if ( ! isset( $_GET['_wpnonce'] ) ) {
-                    Helper::csrf_exception( $get_page );
-                }
+                $nonce = is_array( $get_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
 
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-                $get_id = isset( $_GET['id'] ) ? wp_unslash( $_GET['id'] ) : '';
-                $nonce  = is_array( $get_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
-
-                if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), $nonce ) ) {
+                if ( ! wp_verify_nonce( $wpnonce, $nonce ) ) {
                     Helper::csrf_exception( $get_page );
                 }
 

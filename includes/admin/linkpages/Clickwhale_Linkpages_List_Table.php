@@ -1,9 +1,9 @@
 <?php
-namespace clickwhale\includes\admin\linkpages;
+namespace Clickwhale\Admin\Linkpages;
 
 use Exception;
 use WP_List_Table;
-use clickwhale\includes\helpers\{Helper, Linkpages_Helper};
+use Clickwhale\Helpers\{Helper, Linkpages_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -195,10 +195,10 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
             return;
         }
 
-        $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-        if ( null === $get_id ) {
-            $get_id = (string) filter_input( INPUT_GET, 'id' );
-        }
+	    $get_id = filter_input( INPUT_GET, 'id', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+	    if ( ! is_array( $get_id ) ) {
+		    $get_id = (string) filter_input( INPUT_GET, 'id' );
+	    }
 
         if ( empty( $get_id ) ) {
             return;
