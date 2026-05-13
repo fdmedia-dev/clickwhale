@@ -1,0 +1,48 @@
+name: Build release ZIP
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          else
+            TAG="$(git tag --sort=-v:refname | head -n 1)"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Using tag: $TAG"
+      - name: Checkout tag
+        run: |
+          git checkout "${{ steps.tag.outputs.tag }}"
+      - name: Create plugin ZIP
+        run: |
+          mkdir -p build
+          git archive \
+            --format=zip \
+            --prefix=clickwhale/ \
+            --output=build/clickwhale.zip \
+            HEAD
+      - name: Upload ZIP to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/clickwhale.zip
+          tag_name: ${{ steps.tag.outputs.tag }}
+          overwrite_files: true
