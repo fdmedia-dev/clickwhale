@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-07T14:31:48+00:00\n"
+"POT-Creation-Date: 2026-05-13T10:27:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clickwhale\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages."
 msgstr ""
 
-#: clickwhale.php:112
+#: clickwhale.php:132
 msgid "License"
 msgstr ""
 

@@ -159,6 +159,9 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 
 == Changelog ==
 
+= Version 2.6.1 (13th May 2026) =
+* Fix: Fixed autoload issue
+
 = Version 2.6.0 (7th May 2026) =
 * Fix: Fixed an issue with slug_exists() function
 * Tweak: Added custom plugin updater for the free version

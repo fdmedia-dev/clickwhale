@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.6.0
+ * Version:           2.6.1
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -19,7 +19,26 @@
  * Text Domain:       clickwhale
  * Domain Path:       /languages
  */
-require_once __DIR__ . '/vendor/autoload.php';
+// Standalone PSR-4 autoloader for plugin classes — works without vendor.
+spl_autoload_register( function ( $class ) {
+    $prefixes = array(
+        'Clickwhale\\'    => __DIR__ . '/includes/',
+        'ClickwhalePro\\' => __DIR__ . '/pro/includes/',
+    );
+    foreach ( $prefixes as $prefix => $base_dir ) {
+        $prefix_len = strlen( $prefix );
+        if ( strncmp( $prefix, $class, $prefix_len ) !== 0 ) {
+            continue;
+        }
+        $file = $base_dir . str_replace( '\\', '/', substr( $class, $prefix_len ) ) . '.php';
+        if ( file_exists( $file ) ) {
+            require $file;
+        }
+    }
+} );
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 use Clickwhale\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 if ( !defined( 'ABSPATH' ) ) {
@@ -32,7 +51,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.6.0' );
+    define( 'CLICKWHALE_VERSION', '2.6.1' );
     /**
      * @since 1.4.1
      */
