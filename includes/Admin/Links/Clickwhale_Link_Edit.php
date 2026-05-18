@@ -55,25 +55,16 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                 )
         );
 
-        return apply_filters( 'clickwhale_link_tabs', $tabs );
-    }
+        // Pro Tabs
+        $tabs = apply_filters( 'clickwhale_link_tabs', $tabs );
 
-    /**
-     * Adds `Link Scanner` tab after `General` tab.
-     * If Pro version is active, this runs after Pro tabs as well.
-     *
-     * @param $tabs
-     *
-     * @return array
-     * @see Clickwhale_Link_Edit::render_tabs()
-     */
-    public function link_tabs( $tabs ): array {
-        return array_merge( $tabs, array(
-                'link_scanner' => array(
-                        'name' => __( 'Link Scanner', 'clickwhale' ),
-                        'url'  => 'scanner'
-                )
-        ) );
+        // link Scanner tab (Free)
+        $tabs['link_scanner'] = [
+                'name' => __( 'Link Scanner', 'clickwhale' ),
+                'url'  => 'link_scanner'
+        ];
+
+        return $tabs;
     }
 
     public function link_scanner_html( $item ) {

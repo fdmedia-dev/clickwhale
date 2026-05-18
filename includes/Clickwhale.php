@@ -229,7 +229,6 @@ final class Clickwhale {
         $this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_db_options' );
         $this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_stats_options' );
         $this->loader->add_action( 'admin_print_footer_scripts', $this->reset, 'admin_scripts' );
-        $this->loader->add_filter( 'clickwhale_link_tabs', $this->link, 'link_tabs', 20 );
         $this->loader->add_action( 'clickwhale_link_after_tabs_content', $this->link, 'after_tabs_content', 25 );
         $this->loader->add_action( 'rest_api_init', $this->rest_api, 'register_routes' );
 

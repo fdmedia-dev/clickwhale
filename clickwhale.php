@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.6.1
+ * Version:           2.6.2
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -19,39 +19,24 @@
  * Text Domain:       clickwhale
  * Domain Path:       /languages
  */
-// Standalone PSR-4 autoloader for plugin classes — works without vendor.
-spl_autoload_register( function ( $class ) {
-    $prefixes = array(
-        'Clickwhale\\'    => __DIR__ . '/includes/',
-        'ClickwhalePro\\' => __DIR__ . '/pro/includes/',
-    );
-    foreach ( $prefixes as $prefix => $base_dir ) {
-        $prefix_len = strlen( $prefix );
-        if ( strncmp( $prefix, $class, $prefix_len ) !== 0 ) {
-            continue;
-        }
-        $file = $base_dir . str_replace( '\\', '/', substr( $class, $prefix_len ) ) . '.php';
-        if ( file_exists( $file ) ) {
-            require $file;
-        }
-    }
-} );
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-    require_once __DIR__ . '/vendor/autoload.php';
-}
+require_once __DIR__ . '/vendor/autoload.php';
 use Clickwhale\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
-// Note from Freemius docs: The SDK comes with a special mechanism to auto deactivate the free version when activating the paid one. In order for this mechanism to work properly, you'd need to slightly adjust the code of the plugin's main file
+/**
+ * Note from Freemius docs:
+ * The SDK comes with a special mechanism to auto deactivate the free version when activating the paid one.
+ * In order for this mechanism to work properly, you'd need to slightly adjust the code of the plugin's main file
+ */
 if ( function_exists( 'clickwhale_fs' ) ) {
     clickwhale_fs()->set_basename( false, __FILE__ );
 } else {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.6.1' );
+    define( 'CLICKWHALE_VERSION', '2.6.2' );
     /**
      * @since 1.4.1
      */
@@ -73,12 +58,17 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      * @since 2.3.0
      */
     define( 'CLICKWHALE_URL_COLUMN', 'clickwhale_updated_links_table_url_column' );
-    // DO NOT REMOVE THIS IF IT IS ESSENTIAL FOR THE `function_exists` CALL ABOVE TO PROPERLY WORK.
+    /**
+     * DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE
+     * `function_exists` CALL ABOVE TO PROPERLY WORK.
+     */
     if ( !function_exists( 'clickwhale_fs' ) ) {
         // Create a helper function for easy SDK access.
         function clickwhale_fs() {
             global $clickwhale_fs;
             if ( !isset( $clickwhale_fs ) ) {
+                // Include Freemius SDK.
+                // SDK is auto-loaded through Composer
                 $clickwhale_fs = fs_dynamic_init( array(
                     'id'               => '14609',
                     'slug'             => 'clickwhale',
@@ -95,6 +85,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                         'slug'    => esc_attr( CLICKWHALE_SLUG ),
                         'contact' => false,
                         'pricing' => false,
+                        'support' => false,
                     ),
                     'is_live'          => true,
                 ) );
@@ -117,28 +108,23 @@ if ( function_exists( 'clickwhale_fs' ) ) {
             } );
         }
     }
-    /**
-     * @since 2.6.0
-     */
-    if ( clickwhale_fs()->is_free_plan() ) {
-        // Freemius registers FS_Plugin_Updater during dynamic_init() (fires on 'init' hook).
-        // We remove its transient filters on 'wp_loaded' (after dynamic_init() completes)
-        // so that PUC exclusively handles update checks for the free version.
-        add_action( 'wp_loaded', function () {
-            $updater = FS_Plugin_Updater::instance( clickwhale_fs() );
-            $basename = clickwhale_fs()->get_plugin_basename();
-            // Remove update transient hooks so PUC handles update detection.
-            remove_filter( 'pre_set_site_transient_update_plugins', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
-            remove_filter( 'pre_set_site_transient_update_themes', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
-            // Remove hooks that replace the standard update row with "Buy license".
-            remove_action( "after_plugin_row_{$basename}", [$updater, 'catch_plugin_update_row'], 9 );
-            remove_action( "after_plugin_row_{$basename}", [$updater, 'edit_and_echo_plugin_update_row'], 11 );
-            // Remove Freemius plugin-information dialog override so PUC's "View details" works normally.
-            remove_filter( 'plugins_api', [$updater, 'plugins_api_filter'], 10 );
-            remove_action( 'admin_head', [$updater, 'catch_plugin_information_dialog_contents'] );
-        } );
-        $ClickWhaleUpdateChecker = PucFactory::buildUpdateChecker( 'https://github.com/fdmedia-dev/clickwhale', __FILE__, CLICKWHALE_SLUG );
-    }
+    // Freemius registers FS_Plugin_Updater during dynamic_init() (fires on 'init' hook).
+    // We remove its transient filters on 'wp_loaded' (after dynamic_init() completes)
+    // so that PUC exclusively handles update checks for the free version.
+    add_action( 'wp_loaded', function () {
+        $updater = FS_Plugin_Updater::instance( clickwhale_fs() );
+        $basename = clickwhale_fs()->get_plugin_basename();
+        // Remove update transient hooks so PUC handles update detection.
+        remove_filter( 'pre_set_site_transient_update_plugins', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
+        remove_filter( 'pre_set_site_transient_update_themes', [$updater, 'pre_set_site_transient_update_plugins_filter'] );
+        // Remove hooks that replace the standard update row with "Buy license".
+        remove_action( "after_plugin_row_{$basename}", [$updater, 'catch_plugin_update_row'], 9 );
+        remove_action( "after_plugin_row_{$basename}", [$updater, 'edit_and_echo_plugin_update_row'], 11 );
+        // Remove Freemius plugin-information dialog override so PUC's "View details" works normally.
+        remove_filter( 'plugins_api', [$updater, 'plugins_api_filter'], 10 );
+        remove_action( 'admin_head', [$updater, 'catch_plugin_information_dialog_contents'] );
+    } );
+    $ClickWhaleUpdateChecker = PucFactory::buildUpdateChecker( 'https://github.com/fdmedia-dev/clickwhale', __FILE__, CLICKWHALE_SLUG );
     function clickwhale_activate() {
         Clickwhale_Activator::activate();
     }
