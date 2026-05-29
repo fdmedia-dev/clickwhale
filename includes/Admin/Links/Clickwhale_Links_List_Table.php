@@ -241,7 +241,12 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
      * @return string
      */
     public function column_slug( $item ): string {
-        return '<div class="slug-input--wrap"><input class="slug-input" type="text" value="' . esc_attr( $item['slug'] ) . '" readonly><a href="#" class="slug-input--btn" data-id="' . intval( $item['id'] ) . '" title="' . __( 'Copy Link', 'clickwhale' ) . '"><span class="dashicons dashicons-clipboard"></span></a></div>';
+        return sprintf(
+                '<div class="slug-input--wrap"><input class="slug-input" type="text" value="%1$s" readonly /><a href="#" class="slug-input--btn" data-id="%2$d" title="%3$s"><span class="dashicons dashicons-clipboard"></span></a></div>',
+                esc_attr( $item['slug'] ),
+                intval( $item['id'] ),
+                esc_attr__( 'Copy Link', 'clickwhale' )
+        );
     }
 
     /**

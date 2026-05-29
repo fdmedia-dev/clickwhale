@@ -2,7 +2,7 @@
 
 namespace Clickwhale\Admin;
 
-use Clickwhale\Helpers\{Helper, Links_Helper};
+use Clickwhale\Helpers\{Helper, Links_Helper, Smart_Displays_Helper};
 use Clickwhale\Helpers\Traits\{Singleton_Clone, Singleton_Wakeup};
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -75,11 +75,20 @@ final class Clickwhale_Settings {
 		$defaults             = self::default_options();
 		$general_options      = get_option( 'clickwhale_general_options' );
 		$tracking_options     = get_option( 'clickwhale_tracking_options' );
-		$link_manager_options = get_option( 'clickwhale_link_manager_options' );
+		$link_manager_options    = get_option( 'clickwhale_link_manager_options' );
+		/* @since 2.7.0 */
+		$smart_displays_options  = get_option( 'clickwhale_smart_displays_options' );
+		$primary_border_defaults = $defaults['smart_displays']['options']['primary']['border'];
+
+		// User roles
 		$current_user_roles   = clickwhale()->user->get_current_user_roles();
 		$always_checked_roles = array( 'administrator' );
 
+		// Link prefix slug
 		$slug = ( ! empty( $link_manager_options['slug'] ) ) ? esc_attr( wp_unslash( $link_manager_options['slug'] ) ) : $defaults['link_manager']['options']['slug'];
+
+		// Border styles
+		$border_styles = Smart_Displays_Helper::get_border_styles();
 
 		if ( $defaults ) {
 			// Register settings sections
@@ -145,6 +154,207 @@ final class Clickwhale_Settings {
 				'name'    => 'clickwhale_general_options[hide_admin_bar_menu]',
 				'value'   => ! empty( $general_options['hide_admin_bar_menu'] ) ? 1 : 0,
 				'label'   => esc_html__( 'Check to hide Clickwhale quick menu from the admin bar.', 'clickwhale' )
+			)
+		);
+
+		/**
+		 * Smart Displays options
+		 * @since 2.7.0
+		 */
+		add_settings_field(
+			'disclosure',
+			__( 'Disclosure Text', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'textarea',
+				'id'          => 'disclosure',
+				'name'        => 'clickwhale_smart_displays_options[disclosure]',
+				'value'       => $smart_displays_options['disclosure'] ?? '',
+				'description' => __( 'Set default disclosure text', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_button_header',
+			__( 'Primary Button', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control' => 'header',
+				'class'   => 'clickwhale-label-header'
+			)
+		);
+
+		add_settings_field(
+			'primary_text',
+			__( 'Text', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_text',
+				'name'        => 'clickwhale_smart_displays_options[primary][text]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['text'] ?? $defaults['smart_displays']['options']['primary']['text'],
+				'description' => __( 'Set default text for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_color',
+			__( 'Text Color', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_color',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][color]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['color'] ?? $defaults['smart_displays']['options']['primary']['color'],
+				'description' => __( 'Set default text color (normal state) for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_color_hover',
+			__( 'Text Color (hover/active)', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_color_hover',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][color_hover]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['color_hover'] ?? $defaults['smart_displays']['options']['primary']['color_hover'],
+				'description' => __( 'Set default text color (hover/active) for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_bg_color',
+			__( 'Background Color', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_bg_color',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][bg_color]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['bg_color'] ?? $defaults['smart_displays']['options']['primary']['bg_color'],
+				'description' => __( 'Set default background color (normal state) for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_bg_color_hover',
+			__( 'Background Color (hover/active)', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_bg_color_hover',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][bg_color_hover]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['bg_color_hover'] ?? $defaults['smart_displays']['options']['primary']['bg_color_hover'],
+				'description' => __( 'Set default background color (hover/active) for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_border_width',
+			__( 'Border Width', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_border_width',
+				'name'        => 'clickwhale_smart_displays_options[primary][border][width][value]',
+				'type'        => 'number',
+				'min'         => $primary_border_defaults['width']['min'],
+				'max'         => $primary_border_defaults['width']['max'],
+				'value'       => intval( $smart_displays_options['primary']['border']['width']['value'] ?? $primary_border_defaults['width']['value'] ),
+				'description' => __( 'Set default border width for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_border_style',
+			__( 'Border Style', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'select',
+				'id'          => 'primary_border_style',
+				'name'        => 'clickwhale_smart_displays_options[primary][border][style]',
+				'value'       => esc_attr( $smart_displays_options['primary']['border']['style'] ?? $primary_border_defaults['style'] ),
+				'options'     => array_combine( $border_styles, $border_styles ),
+				'description' => __( 'Set default border style for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_border_radius',
+			__( 'Border Radius', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_border_radius',
+				'name'        => 'clickwhale_smart_displays_options[primary][border][radius][value]',
+				'type'        => 'number',
+				'min'         => $primary_border_defaults['radius']['min'],
+				'max'         => $primary_border_defaults['radius']['max'],
+				'value'       => intval( $smart_displays_options['primary']['border']['radius']['value'] ?? $primary_border_defaults['radius']['value'] ),
+				'description' => __( 'Set default border radius for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_border_color',
+			__( 'Border Color', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_border_color',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][border][color]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['border']['color'] ?? $primary_border_defaults['color'],
+				'description' => __( 'Set default border color (normal state) for primary button', 'clickwhale' )
+			)
+		);
+
+		add_settings_field(
+			'primary_border_color_hover',
+			__( 'Border Color (hover/active)', 'clickwhale' ),
+			array( $this, 'render_controls' ),
+			'clickwhale_smart_displays_options',
+			'smart_displays_settings_section',
+			array(
+				'control'     => 'input',
+				'id'          => 'primary_border_color_hover',
+				'class'       => 'cw-color-control',
+				'name'        => 'clickwhale_smart_displays_options[primary][border][color_hover]',
+				'type'        => 'text',
+				'value'       => $smart_displays_options['primary']['border']['color_hover'] ?? $primary_border_defaults['color_hover'],
+				'description' => __( 'Set default border color (hover/active) for primary button', 'clickwhale' )
 			)
 		);
 
@@ -353,21 +563,25 @@ final class Clickwhale_Settings {
 	 */
 	public static function render_tabs(): array {
 		return apply_filters( 'clickwhale_settings_tabs', array(
-			'general'      => array(
+			'general'        => array(
 				'name' => __( 'General', 'clickwhale' ),
 				'url'  => 'general_options'
 			),
-			'tracking'     => array(
+			'tracking'       => array(
 				'name' => __( 'Tracking', 'clickwhale' ),
 				'url'  => 'tracking_options'
 			),
-			'linkpages'    => array(
+			'linkpages'      => array(
 				'name' => __( 'Link Pages', 'clickwhale' ),
 				'url'  => 'linkpages_options'
 			),
-			'link_manager' => array(
+			'link_manager'   => array(
 				'name' => __( 'Link Manager', 'clickwhale' ),
 				'url'  => 'link_manager_options'
+			),
+			'smart_displays' => array(
+				'name' => __( 'Smart Displays', 'clickwhale' ),
+				'url'  => 'smart_displays_options'
 			)
 		) );
 	}
@@ -606,6 +820,81 @@ final class Clickwhale_Settings {
 
 		// Show Credits
 		$options['show_linkpage_credits'] = ! empty( $options['show_linkpage_credits'] ) ? 1 : 0;
+
+		return $options;
+	}
+
+	/**
+	 * @param array $options
+	 *
+	 * @return array
+	 * @since 2.7.0
+	 */
+	public function sanitize_smart_displays_options( $options ): array {
+		if ( ! is_array( $options ) ) {
+			$options = array();
+		}
+
+		$border_options          = $options['primary']['border'] ?? [];
+		$defaults                = self::default_options();
+		$primary_border_defaults = $defaults['smart_displays']['options']['primary']['border'] ?? [];
+
+		// Disclosure text
+		$options['disclosure'] = sanitize_textarea_field( wp_unslash( $options['disclosure'] ?? '' ) );
+
+		// Primary button text
+		if ( '' === sanitize_text_field( wp_unslash( $options['primary']['text'] ?? '' ) ) ) {
+			$options['primary']['text'] = $defaults['smart_displays']['options']['primary']['text'];
+		}
+
+		// Primary button text color
+		if ( ! Helper::validate_hex_color( $options['primary']['color'] ) ) {
+			$options['primary']['color'] = $defaults['smart_displays']['options']['primary']['color'];
+		}
+
+		if ( ! Helper::validate_hex_color( $options['primary']['color_hover'] ) ) {
+			$options['primary']['color_hover'] = $defaults['smart_displays']['options']['primary']['color_hover'];
+		}
+
+		// Primary button background color
+		if ( ! Helper::validate_hex_color( $options['primary']['bg_color'] ) ) {
+			$options['primary']['bg_color'] = $defaults['smart_displays']['options']['primary']['bg_color'];
+		}
+
+		if ( ! Helper::validate_hex_color( $options['primary']['bg_color_hover'] ) ) {
+			$options['primary']['bg_color_hover'] = $defaults['smart_displays']['options']['primary']['bg_color_hover'];
+		}
+
+		// Primary button border style
+		$allowed_border_styles = Smart_Displays_Helper::get_border_styles();
+		if ( isset( $border_options['style'] ) && in_array( $border_options['style'], $allowed_border_styles, true ) ) {
+			$options['primary']['border']['style'] = $border_options['style'];
+		} else {
+			$options['primary']['border']['style'] = $primary_border_defaults['style'];
+		}
+
+		// Primary button border width
+		$min_width   = intval( $primary_border_defaults['width']['min'] );
+		$max_width   = intval( $primary_border_defaults['width']['max'] );
+		$width_value = intval( $border_options['width']['value'] );
+
+		$options['primary']['border']['width']['value'] = max( $min_width, min( $max_width, $width_value ) );
+
+		// Primary button border color
+		if ( ! Helper::validate_hex_color( $border_options['color'] ) ) {
+			$options['primary']['border']['color'] = $primary_border_defaults['color'];
+		}
+
+		if ( ! Helper::validate_hex_color( $border_options['color_hover'] ) ) {
+			$options['primary']['border']['color_hover'] = $primary_border_defaults['color_hover'];
+		}
+
+		// Primary button border radius
+		$min_radius   = intval( $primary_border_defaults['radius']['min'] );
+		$max_radius   = intval( $primary_border_defaults['radius']['max'] );
+		$radius_value = intval( $border_options['radius']['value'] );
+
+		$options['primary']['border']['radius']['value'] = max( $min_radius, min( $max_radius, $radius_value ) );
 
 		return $options;
 	}

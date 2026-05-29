@@ -69,7 +69,7 @@ class Helper {
 		$id         = isset( $args['id'] ) && $args['id'] ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
 		$class      = isset( $args['class'] ) && $args['class'] ? ' class="' . esc_attr( $args['class'] ) . '"' : '';
 		$name       = isset( $args['name'] ) && $args['name'] ? ' name="' . esc_attr( $args['name'] ) . '"' : '';
-		$value      = $args['value'];
+		$value      = $args['value'] ?? '';
 		$required   = isset( $args['required'] ) && $args['required'] ? ' required' : '';
 		$disabled   = isset( $args['disabled'] ) && $args['disabled'] ? ' disabled="disabled"' : '';
 		$extra_desc = esc_attr( $args['extra_desc'] ?? '' );
@@ -86,11 +86,27 @@ class Helper {
 
 		switch ( $args['control'] ) {
 			case 'input':
-				$class       = $class ? $class . ' regular-text' : $class;
-				$type        = esc_attr( $args['type'] );
-				$width       = ( 'number' !== $type ) ? '300' : '60';
+				$type = esc_attr( $args['type'] );
+
+				if ( 'number' === $type ) {
+					$width = '60';
+				} elseif ( false !== strpos( $class, 'cw-color-control' ) ) {
+					$width = '';
+				} else {
+					$width = '300';
+				}
+
+				if ( $width ) {
+					$width = ' style="width: ' . $width . 'px;"';
+				}
+
+				if ( $class ) {
+					$class = $class . ' regular-text';
+				}
+
 				$placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
-				$item        .= '<input ' . $id . $class . $name . ' type="' . $type . '" value="' . esc_attr( $value ) . '"' . $placeholder . $disabled . $required . ' style="width: ' . $width . 'px;"';
+				$item        .= '<input ' . $id . $class . $name . ' type="' . $type . '" value="' . esc_attr( $value ) . '"' . $placeholder . $disabled . $required . $width;
+
 				if ( 'number' === $type ) {
 					if ( isset( $args['min'] ) ) {
 						$item .= ' min="' . esc_attr( $args['min'] ) . '"';
@@ -99,6 +115,7 @@ class Helper {
 						$item .= ' max="' . esc_attr( $args['max'] ) . '"';
 					}
 				}
+
 				$item .= ' />';
 
 				if ( ! empty( $extra_desc ) ) {
@@ -190,6 +207,10 @@ class Helper {
 				$item        .= '<textarea ' . $id . $class . $name . $placeholder . ' rows="5" ' . $required . $disabled . '>' . esc_attr( $value ) . '</textarea>';
 				break;
 
+			case 'header':
+				$item .= '';
+				break;
+
 			default:
 				$item .= 'Undefined control type';
 		}
@@ -201,7 +222,7 @@ class Helper {
 		}
 
 		if ( isset( $args['description'] ) ) {
-			$item .= '<p class="description ">' . $args['description'] . '</p>';
+			$item .= '<p class="description ">' . wp_kses_post( $args['description'] ) . '</p>';
 		}
 
 		if ( $row ) {
@@ -907,5 +928,22 @@ class Helper {
 	 */
 	public static function validate_hex_color( string $color ): bool {
 		return preg_match( '/^#([0-9A-F]{3}){1,2}$/i', $color );
+	}
+
+	/**
+	 * @param array $options
+	 * @param array $defaults
+	 * @param string $key
+	 *
+	 * @return string
+	 *
+	 * @since 2.7.0
+	 */
+	public static function get_valid_color( array $options, array $defaults, string $key ): string {
+		if ( ! empty( $options[ $key ] ) && self::validate_hex_color( $options[ $key ] ) ) {
+			return $options[ $key ];
+		}
+
+		return $defaults[ $key ] ?? '';
 	}
 }

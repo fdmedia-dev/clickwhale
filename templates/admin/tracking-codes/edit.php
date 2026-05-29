@@ -49,7 +49,7 @@ do_action( 'clickwhale_admin_banner' );
 
         <div id="post-body-content">
             <table style="width: 100%;" class="form-table">
-                <caption style="display: none"><?php esc_html_e( 'Tracking Code Edit Table', 'clickwhale' ); ?></caption>
+                <caption hidden><?php esc_html_e( 'Tracking Code Edit Table', 'clickwhale' ); ?></caption>
                 <tbody>
                     <?php
                     echo wp_kses(

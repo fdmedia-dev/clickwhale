@@ -1,11 +1,11 @@
 === ClickWhale ===
-Contributors: clickwhale, flowdee, krapan88, webdj, liquiemm, freemius
+Contributors: clickwhale, flowdee, petrokrupenia, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
-Requires at least: 5.0
+Requires at least: 6.0
 Requires PHP: 7.4
-Tested up to: 6.9
-Stable tag: 2.6.2
+Tested up to: 7.0
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,12 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.7.0 (1st Jun 2026) =
+* New: Smart Displays
+* Fix: Admin tabs hover color issue
+* Fix: Various minor fixes and stability improvements
+* Info: WordPress v7.0 compatibility
 
 = Version 2.6.2 (18th May 2026) =
 * Fix: Fixed Link Scanner position

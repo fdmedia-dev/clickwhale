@@ -3,10 +3,12 @@
 namespace Clickwhale\Front;
 
 use Clickwhale\Front\Tracking\Clickwhale_Click_Track;
+use Clickwhale\Front\SmartDisplays\Clickwhale_Smart_Display_Template;
 use Clickwhale\Helpers\{
 	Helper,
 	Linkpages_Helper,
-	Links_Helper
+	Links_Helper,
+	Smart_Displays_Helper
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -199,6 +201,47 @@ final class Clickwhale_Public {
 		$link_url = apply_filters( 'clickwhale_url_params', $link['url'], $link_id );
 		wp_redirect( esc_url_raw( $link_url ), $link['redirection'] );
 		exit;
+	}
+
+	public function enqueue_smart_display_styles(): void {
+		global $post;
+
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			return;
+		}
+
+		$has_content = has_shortcode( $post->post_content, 'cw_smart_display' )
+		               || has_block( 'clickwhale/smart-display', $post );
+
+		if ( ! $has_content ) {
+			return;
+		}
+
+		wp_register_style( 'clickwhale-smart-display', false ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		wp_enqueue_style( 'clickwhale-smart-display' );
+		wp_add_inline_style( 'clickwhale-smart-display', Clickwhale_Smart_Display_Template::get_smart_display_styles() );
+	}
+
+	public function render_smart_display_shortcode( $atts ): string {
+		$atts = shortcode_atts( array( 'id' => 0 ), $atts, 'cw_smart_display' );
+		$id   = intval( $atts['id'] );
+
+		if ( ! $id ) {
+			return '';
+		}
+
+		$data = Smart_Displays_Helper::get_by_id( $id );
+
+		if ( ! $data ) {
+			return '';
+		}
+
+		$template = new Clickwhale_Smart_Display_Template( $data );
+
+		ob_start();
+		include CLICKWHALE_DIR . 'includes/Front/templates/smart-display.php';
+
+		return ob_get_clean();
 	}
 
 	public function add_target_to_clickwhale_link( string $content ): string {

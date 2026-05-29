@@ -108,6 +108,8 @@ final class Clickwhale_Admin {
                         'edit-link'          => __( 'Add New Link', 'clickwhale' ),
                         'categories'         => __( 'Categories', 'clickwhale' ),
                         'edit-category'      => __( 'Add New Category', 'clickwhale' ),
+                        'smart-displays'     => __( 'Smart Displays', 'clickwhale' ),
+                        'edit-smart-display' => __( 'Add New Smart Display', 'clickwhale' ),
                         'linkpages'          => __( 'Link Pages', 'clickwhale' ),
                         'edit-linkpage'      => __( 'Add New Link Page', 'clickwhale' ),
                         'tracking-codes'     => __( 'Tracking Codes', 'clickwhale' ),
@@ -116,6 +118,7 @@ final class Clickwhale_Admin {
                 'edit_titles' => array(
                         'edit-link'          => __( 'Edit Link', 'clickwhale' ),
                         'edit-category'      => __( 'Edit Category', 'clickwhale' ),
+                        'edit-smart-display' => __( 'Edit Smart Display', 'clickwhale' ),
                         'edit-linkpage'      => __( 'Edit Link Page', 'clickwhale' ),
                         'edit-tracking-code' => __( 'Edit Tracking Code', 'clickwhale' )
                 ),
@@ -124,12 +127,14 @@ final class Clickwhale_Admin {
                         'admin_page_' . CLICKWHALE_SLUG . '-edit-link'           => 'links/edit',
                         'clickwhale_page_' . CLICKWHALE_SLUG . '-categories'     => 'categories/list',
                         'admin_page_' . CLICKWHALE_SLUG . '-edit-category'       => 'categories/edit',
+                        'clickwhale_page_' . CLICKWHALE_SLUG . '-smart-displays' => 'smart-displays/list',
+                        'admin_page_' . CLICKWHALE_SLUG . '-edit-smart-display'  => 'smart-displays/edit',
                         'clickwhale_page_' . CLICKWHALE_SLUG . '-linkpages'      => 'linkpages/list',
                         'admin_page_' . CLICKWHALE_SLUG . '-edit-linkpage'       => 'linkpages/edit',
                         'clickwhale_page_' . CLICKWHALE_SLUG . '-tracking-codes' => 'tracking-codes/list',
                         'admin_page_' . CLICKWHALE_SLUG . '-edit-tracking-code'  => 'tracking-codes/edit'
                 ),
-                'toplevel'    => array( 'links', 'categories', 'linkpages', 'tracking-codes' )
+                'toplevel'    => array( 'links', 'categories', 'smart-displays', 'linkpages', 'tracking-codes' )
         ) );
 
         // Add menu pages
@@ -279,18 +284,18 @@ final class Clickwhale_Admin {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
-        $get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
-        if ( empty( $get_page ) ) {
+        $page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
+        if ( empty( $page ) ) {
             return;
         }
 
-        if ( 0 !== strpos( $get_page, CLICKWHALE_SLUG ) ) {
+        if ( 0 !== strpos( $page, CLICKWHALE_SLUG ) ) {
             return;
         }
 
         wp_enqueue_script( 'jquery-ui-tabs' );
 
-        if ( $get_page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+        if ( $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
             wp_enqueue_script( 'jquery-ui-droppable' );
             wp_enqueue_script( 'jquery-ui-draggable' );
             wp_enqueue_script( 'jquery-ui-sortable' );
@@ -299,12 +304,24 @@ final class Clickwhale_Admin {
             wp_enqueue_script( 'wp-color-picker' );
         }
 
-        if ( $get_page === CLICKWHALE_SLUG . '-edit-link' ) {
+        if ( $page === CLICKWHALE_SLUG . '-edit-link' ) {
             wp_enqueue_script( 'jquery-ui-sortable' );
         }
 
-        if ( $get_page === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
+        if ( $page === CLICKWHALE_SLUG . '-edit-tracking-code' ) {
             wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+        }
+
+        if ( $page === CLICKWHALE_SLUG . '-edit-smart-display' ) {
+            wp_enqueue_media();
+            wp_enqueue_editor();
+            wp_enqueue_script( 'wp-color-picker' );
+        }
+
+        if ( $page === CLICKWHALE_SLUG . '-settings'
+             && ( empty( $_GET['tab'] ) || sanitize_key( $_GET['tab'] ) === 'smart_displays_options' )
+        ) {
+            wp_enqueue_script( 'wp-color-picker' );
         }
 
         wp_enqueue_script(
@@ -679,7 +696,7 @@ public function admin_sidebar_begin() {
         $url          = "https://clickwhale.pro/?fluentcrm=1&route=contact&hash=e2920f25-a285-4568-bea4-ede017a039fb";
         $email        = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
-        $response     = wp_remote_post( $url, array(
+        $response = wp_remote_post( $url, array(
                         'method' => 'POST',
                         'body'   => array(
                                 'email'      => $email,
@@ -768,113 +785,276 @@ public function admin_sidebar_begin() {
         if ( empty( $page ) ) {
             return;
         }
+        ?>
+        <script type='text/javascript'>
+            jQuery(document).ready(function () {
+                <?php if ( $page === CLICKWHALE_SLUG || $page === CLICKWHALE_SLUG . '-linkpages' ) {
+                ?>
+                jQuery('.slug-input--btn').on('click', function (e) {
+                    e.preventDefault();
+                    let
+                        $temp = jQuery('<input>'),
+                        textToCopy = jQuery(this).parent().find('input').val();
 
-        if ( $page === CLICKWHALE_SLUG || $page === CLICKWHALE_SLUG . '-linkpages' ) {
-            ?>
-            <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('.slug-input--btn').on('click', function (e) {
-                        e.preventDefault();
-                        let
-                            $temp = jQuery('<input>'),
-                            textToCopy = jQuery(this).parent().find('input').val();
+                    textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                    jQuery('body').append($temp);
+                    $temp.val(textToCopy).trigger('select');
+                    document.execCommand("copy");
+                    $temp.remove();
+                });
+                <?php
+                }
 
-                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
-                        jQuery('body').append($temp);
-                        $temp.val(textToCopy).select();
-                        document.execCommand("copy");
-                        $temp.remove();
+                if ( $page === CLICKWHALE_SLUG . '-edit-link' || $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
+                ?>
+                jQuery('#cw-copy-link-url').on('click', function (e) {
+                    e.preventDefault();
+
+                    // Remove appended message
+                    jQuery('.copied').remove();
+
+                    // Copy slug
+                    copySlug();
+
+                    // Append message
+                    jQuery('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>')
+                        .insertAfter(jQuery(this));
+
+                    // Hide appended message
+                    setTimeout(function () {
+                        jQuery('.copied').remove();
+                    }, 2000);
+                });
+
+                jQuery('#cw-slug--text').on('click', function (e) {
+                    e.preventDefault();
+
+                    // Remove appended message
+                    jQuery('.copied').remove();
+
+                    // Copy slug
+                    copySlug();
+
+                    // Append message
+                    jQuery(this)
+                        .append('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>');
+
+                    // Hide appended message
+                    setTimeout(function () {
+                        jQuery('.copied').remove();
+                    }, 2000);
+                });
+
+                function copySlug() {
+                    const temp = jQuery('<input>');
+                    let textToCopy = jQuery('#cw-slug').val();
+
+                    textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
+                    jQuery('body').append(temp);
+                    temp.val(textToCopy).trigger('select');
+                    document.execCommand("copy");
+                    temp.remove();
+                }
+                <?php
+                }
+
+                if ( $page === CLICKWHALE_SLUG . '-tracking-codes' ) {
+                ?>
+                jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function () {
+                    let
+                        active = this.checked,
+                        id = this.dataset.id;
+
+                    jQuery.post(ajaxurl, {
+                        'security': <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_toggle_tracking_code' ) ); ?>,
+                        'action': 'clickwhale/admin/tracking_code_toggle_active',
+                        'status': active ? 1 : 0,
+                        'id': id
+                    }, function (response) {
+                        if (response.data.action_disable_all) {
+                            jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
+                            jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
+                        } else {
+                            jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', false);
+                            jQuery('#clickwhale_tracking_codes_list_limit_notice').hide()
+                        }
                     });
                 });
-            </script>
-            <?php
-        }
+                <?php
+                }
 
-        if ( $page === CLICKWHALE_SLUG . '-edit-link' || $page === CLICKWHALE_SLUG . '-edit-linkpage' ) {
-            ?>
-            <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('#cw-copy-link-url').on('click', function (e) {
-                        e.preventDefault();
+                if ( $page === CLICKWHALE_SLUG . '-smart-displays' ) {
+                ?>
+                jQuery('.shortcode-input--btn').on('click', function (e) {
+                    e.preventDefault();
+                    const $temp = jQuery('<input>');
+                    let textToCopy = jQuery(this).parent().find('input').val();
 
-                        // Remove appended message
-                        jQuery('.copied').remove();
-
-                        // Copy slug
-                        copySlug();
-
-                        // Append message
-                        jQuery('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>')
-                            .insertAfter(jQuery(this));
-
-                        // Hide appended message
-                        setTimeout(function () {
-                            jQuery('.copied').remove();
-                        }, 2000);
-                    });
-
-                    jQuery('#cw-slug--text').on('click', function (e) {
-                        e.preventDefault();
-
-                        // Remove appended message
-                        jQuery('.copied').remove();
-
-                        // Copy slug
-                        copySlug();
-
-                        // Append message
-                        jQuery(this)
-                            .append('<span class="copied">' + <?php echo wp_json_encode( esc_html__( 'Copied!', 'clickwhale' ) ); ?> +'</span>');
-
-                        // Hide appended message
-                        setTimeout(function () {
-                            jQuery('.copied').remove();
-                        }, 2000);
-                    });
-
-                    function copySlug() {
-                        const temp = jQuery('<input>');
-                        let textToCopy = jQuery('#cw-slug').val();
-
-                        textToCopy = clickwhale_admin.siteurl + '/' + textToCopy + '/';
-                        jQuery('body').append(temp);
-                        temp.val(textToCopy);
-                        temp[0].select();
-                        document.execCommand("copy");
-                        temp.remove();
-                    }
+                    jQuery('body').append($temp);
+                    $temp.val(textToCopy).trigger('select');
+                    document.execCommand("copy");
+                    $temp.remove();
                 });
-            </script>
-            <?php
-        }
+                <?php
+                }
 
-        if ( $page === CLICKWHALE_SLUG . '-tracking-codes' ) {
-            ?>
-            <script type='text/javascript'>
-                jQuery(document).ready(function () {
-                    jQuery('.clickwhale-checkbox--toggle [type="checkbox"]').on('change', function () {
-                        let
-                            active = this.checked,
-                            id = this.dataset.id;
+                if ( $page === CLICKWHALE_SLUG . '-edit-smart-display' ) {
+                ?>
+                jQuery('#cw-shortcode--text').on('click', function (e) {
+                    e.preventDefault();
 
-                        jQuery.post(ajaxurl, {
-                            'security': <?php echo wp_json_encode( wp_create_nonce( 'clickwhale_toggle_tracking_code' ) ); ?>,
-                            'action': 'clickwhale/admin/tracking_code_toggle_active',
-                            'status': active ? 1 : 0,
-                            'id': id
-                        }, function (response) {
-                            if (response.data.action_disable_all) {
-                                jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', true);
-                                jQuery('#clickwhale_tracking_codes_list_limit_notice').show()
-                            } else {
-                                jQuery('.clickwhale-checkbox--toggle [type="checkbox"]:not(:checked)').prop('disabled', false);
-                                jQuery('#clickwhale_tracking_codes_list_limit_notice').hide()
+                    const $temp = jQuery('<input>');
+                    let textToCopy = jQuery('#cw-shortcode').text();
+
+                    // Remove appended message
+                    jQuery('.copied').remove();
+
+                    // Copy shortcode
+                    jQuery('body').append($temp);
+                    $temp.val(textToCopy).trigger('select');
+                    document.execCommand("copy");
+                    $temp.remove();
+
+                    // Append message
+                    jQuery(this)
+                        .append('<span class="copied"><?php echo esc_js( __( 'Copied!', 'clickwhale' ) ); ?></span>');
+
+                    // Hide appended message
+                    setTimeout(function () {
+                        jQuery('.copied').remove();
+                    }, 2000);
+                });
+                <?php
+                }
+
+
+                if ( $page === CLICKWHALE_SLUG . '-settings'
+                     && ( empty( $_GET['tab'] ) || sanitize_key( $_GET['tab'] ) === 'smart_displays_options' )
+                ){
+                ?>
+                const
+                    defaults = <?php echo json_encode( clickwhale()->settings->default_options() ); ?>,
+                    pickers = [
+                        {
+                            selector: '#title_color',
+                            defaultColor: defaults.smart_displays.options.title.color
+                        },
+                        {
+                            selector: '#title_color_hover',
+                            defaultColor: defaults.smart_displays.options.title.color_hover
+                        },
+                        {
+                            selector: '#container_border_color',
+                            defaultColor: defaults.smart_displays.options.container.border.color
+                        },
+                        {
+                            selector: '#container_border_color_hover',
+                            defaultColor: defaults.smart_displays.options.container.border.color_hover
+                        },
+                        {
+                            selector: '#primary_color',
+                            defaultColor: defaults.smart_displays.options.primary.color
+                        },
+                        {
+                            selector: '#primary_color_hover',
+                            defaultColor: defaults.smart_displays.options.primary.color_hover
+                        },
+                        {
+                            selector: '#primary_bg_color',
+                            defaultColor: defaults.smart_displays.options.primary.bg_color
+                        },
+                        {
+                            selector: '#primary_bg_color_hover',
+                            defaultColor: defaults.smart_displays.options.primary.bg_color_hover
+                        },
+                        {
+                            selector: '#primary_border_color',
+                            defaultColor: defaults.smart_displays.options.primary.border.color
+                        },
+                        {
+                            selector: '#primary_border_color_hover',
+                            defaultColor: defaults.smart_displays.options.primary.border.color_hover
+                        }
+                    ];
+
+                pickers.forEach((picker) => {
+                    const
+                        $field = jQuery(picker.selector),
+                        defaultColor = picker.defaultColor;
+
+                    if (!$field.length) return;
+
+                    $field.wpColorPicker({
+                        clear() {
+                            resetToDefaultColor($field, defaultColor);
+                        },
+                        change(event, ui) {
+                            updateColorResultButton($field, ui.color.toString());
+                        },
+                        create() {
+                            const iris = $field.data('a8cIris');
+
+                            // Check if hex color is valid on page load because `wpColorPicker` doesn't sometimes
+                            if (!validateHexColor($field.val())) {
+                                resetToDefaultColor($field, defaultColor);
                             }
-                        });
+
+                            $field.on('input', debounce(function () {
+                                const
+                                    val = jQuery(this).val(),
+                                    color = validateHexColor(val) ? val : 'transparent';
+
+                                iris._setOption('color', color);
+                                updateColorResultButton($field, color);
+                            }));
+                        }
                     });
                 });
-            </script>
-            <?php
-        }
+
+                // Rename color picker `Clear` button
+                setTimeout(() => {
+                    jQuery('.wp-picker-clear')
+                        .val('<?php echo esc_js( __( 'Reset', 'clickwhale' ) ); ?>')
+                        .attr('aria-label', '<?php echo esc_js( __( 'Reset color', 'clickwhale' ) ); ?>');
+                }, 0);
+
+                /**
+                 * FUNCTIONS
+                 */
+
+                // Debounce function to limit the frequency of function calls
+                // e.g. for handling user input events from color picker
+                function debounce(func, delay = 300) {
+                    let timer;
+                    return function (...args) {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => func.apply(this, args), delay);
+                    };
+                }
+
+                // Validate hex color
+                function validateHexColor(val) {
+                    return /^#([0-9A-F]{3}){1,2}$/i.test(val);
+                }
+
+                function resetToDefaultColor($field, defaultColor) {
+                    const iris = $field.data('a8cIris');
+                    $field.val(defaultColor);
+                    iris._setOption('color', defaultColor);
+                    updateColorResultButton($field, defaultColor);
+                }
+
+                function updateColorResultButton($field, color) {
+                    $field
+                        .closest('.wp-picker-container')
+                        .find('button.wp-color-result')
+                        .css('background', color);
+                }
+                <?php
+                }
+                ?>
+            });
+        </script>
+        <?php
     }
 }

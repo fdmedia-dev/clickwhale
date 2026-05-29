@@ -44,8 +44,9 @@ class Clickwhale_Loader {
      * @since    1.0.0
      */
     public function __construct() {
-        $this->actions = array();
-        $this->filters = array();
+        $this->actions    = array();
+        $this->filters    = array();
+        $this->shortcodes = array();
     }
 
     /**
@@ -187,6 +188,13 @@ class Clickwhale_Loader {
                 $hook['component'],
                 $hook['callback']
             ), $hook['priority'], $hook['accepted_args'] );
+        }
+
+        foreach ( $this->shortcodes as $hook ) {
+            add_shortcode( $hook['hook'], array(
+                $hook['component'],
+                $hook['callback']
+            ) );
         }
     }
 }

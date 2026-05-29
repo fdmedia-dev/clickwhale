@@ -11,15 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
 
-    public function __construct() {
-        $this->instance_plural = 'links';
-        $this->instance_single = 'link';
-        $this->instance_helper = Links_Helper::class;
-        parent::__construct();
-    }
+    /**
+     * @var string
+     */
+    private string $links_table;
 
-    protected function get_title_i18n(): string {
-        return __( 'Link', 'clickwhale' );
+    public function __construct() {
+        parent::__construct( 'links', 'link', 'Link' );
+
+        $this->links_table = Helper::get_db_table_name( $this->instance_plural );
     }
 
     /**
@@ -117,13 +117,40 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         $this->link_scanner_html( $item );
     }
 
-    protected function process_item_before_save( array $item ): array {
+    public function save_update(): void {
+        global $wpdb;
+        $item               = array_intersect_key( $_POST, $this->get_defaults() );
         $item['categories'] = isset( $item['categories'] ) ? sanitize_text_field( implode( ',', $item['categories'] ) ) : '';
         $item['nofollow']   = isset( $item['nofollow'] );
         $item['sponsored']  = isset( $item['sponsored'] );
         $item['author']     = get_current_user_id();
+        $id                 = intval( $item['id'] );
 
-        return $item;
+        // Check if item exists and then update or insert.
+        // In some cases default check (not false or 0) goes wrong
+        if ( Links_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                    $this->links_table,
+                    $item,
+                    array( 'id' => $id )
+            );
+            do_action( 'clickwhale_link_updated', $id, $_POST );
+            $this->set_transient( $id, 'updated' );
+
+        } else {
+            unset( $item['id'] );
+            $wpdb->insert(
+                    $this->links_table,
+                    $item
+            );
+            $id = $wpdb->insert_id;
+            do_action( 'clickwhale_link_inserted', $id, $_POST );
+            $this->set_transient( $id, 'added' );
+        }
+
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-link&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
     }
 
     public function admin_scripts(): void {

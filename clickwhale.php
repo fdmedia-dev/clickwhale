@@ -9,8 +9,8 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.6.2
- * Requires at least: 5.0
+ * Version:           2.7.0
+ * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
  * Author URI:        https://clickwhale.pro
@@ -36,7 +36,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.6.2' );
+    define( 'CLICKWHALE_VERSION', '2.7.0' );
     /**
      * @since 1.4.1
      */
@@ -54,10 +54,6 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     define( 'CLICKWHALE_TEMPLATES_DIR', CLICKWHALE_DIR . 'templates' );
     define( 'CLICKWHALE_ADMIN_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/admin' );
     define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
-    /**
-     * @since 2.3.0
-     */
-    define( 'CLICKWHALE_URL_COLUMN', 'clickwhale_updated_links_table_url_column' );
     /**
      * DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE
      * `function_exists` CALL ABOVE TO PROPERLY WORK.
@@ -97,16 +93,15 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         clickwhale_fs();
         // Signal that SDK was initiated
         do_action( 'clickwhale_fs_loaded' );
-        // Hooked on `init` due to WordPress v6.7 translation logic updates
-        // https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
-        $clickwhale_get_page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
-        if ( !empty( $clickwhale_get_page ) && strpos( $clickwhale_get_page, CLICKWHALE_SLUG ) === 0 ) {
-            add_action( 'init', function () {
-                clickwhale_fs()->override_i18n( [
-                    'account' => esc_html__( 'License', 'clickwhale' ),
-                ] );
-            } );
-        }
+        /**
+         * Hooked on `init` due to WordPress v6.7 translation logic updates
+         * @link https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
+         */
+        add_action( 'init', function () {
+            clickwhale_fs()->override_i18n( [
+                'account' => esc_html__( 'License', 'clickwhale' ),
+            ] );
+        } );
     }
     // Freemius registers FS_Plugin_Updater during dynamic_init() (fires on 'init' hook).
     // We remove its transient filters on 'wp_loaded' (after dynamic_init() completes)
@@ -135,7 +130,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
 
     function clickwhale_uninstall_cleanup() {
         delete_option( 'clickwhale_version' );
-        delete_option( CLICKWHALE_URL_COLUMN );
+        delete_option( 'clickwhale_updated_links_table_url_column' );
     }
 
     /**
@@ -163,82 +158,6 @@ if ( function_exists( 'clickwhale_fs' ) ) {
         }
     }
 
-    function clickwhale_maybe_add_or_update_url_column() : void {
-        if ( version_compare( CLICKWHALE_VERSION, '2.1.3', '<=' ) ) {
-            return;
-        }
-        $updated_url_column = get_option( CLICKWHALE_URL_COLUMN );
-        if ( !$updated_url_column ) {
-            $action = 'add';
-        } elseif ( version_compare( $updated_url_column, CLICKWHALE_VERSION, '!=' ) ) {
-            $action = 'update';
-        } else {
-            return;
-        }
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        global $wpdb;
-        $table = $wpdb->prefix . 'clickwhale_links';
-        $table_escaped = '`' . esc_sql( $table ) . '`';
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $query = $wpdb->query( "ALTER TABLE {$table_escaped} MODIFY COLUMN url varchar(1000) DEFAULT '' NOT NULL" );
-        if ( !$query ) {
-            return;
-        }
-        $function = $action . '_option';
-        $function( CLICKWHALE_URL_COLUMN, CLICKWHALE_VERSION );
-    }
-
-    function clickwhale_maybe_add_link_target_column() : void {
-        if ( version_compare( CLICKWHALE_VERSION, '2.4.5', '<' ) ) {
-            return;
-        }
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        global $wpdb;
-        $table = $wpdb->prefix . 'clickwhale_links';
-        $table_escaped = '`' . esc_sql( $table ) . '`';
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'link_target'" );
-        if ( $column_exists ) {
-            return;
-        }
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $wpdb->query( "ALTER TABLE {$table_escaped} ADD link_target varchar(10) DEFAULT '' NOT NULL AFTER redirection" );
-    }
-
-    function clickwhale_maybe_add_created_by_api_column() : void {
-        if ( version_compare( CLICKWHALE_VERSION, '2.5.0', '<' ) ) {
-            return;
-        }
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        global $wpdb;
-        $table = $wpdb->prefix . 'clickwhale_links';
-        $table_escaped = '`' . esc_sql( $table ) . '`';
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'created_by_api'" );
-        if ( $column_exists ) {
-            return;
-        }
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $wpdb->query( "ALTER TABLE {$table_escaped} ADD created_by_api TINYINT(1) AFTER categories" );
-    }
-
-    function clickwhale_maybe_add_favicon_column() : void {
-        if ( version_compare( CLICKWHALE_VERSION, '2.5.1', '<' ) ) {
-            return;
-        }
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        global $wpdb;
-        $table = $wpdb->prefix . 'clickwhale_linkpages';
-        $table_escaped = '`' . esc_sql( $table ) . '`';
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $column_exists = $wpdb->get_var( "SHOW COLUMNS FROM {$table_escaped} LIKE 'favicon'" );
-        if ( $column_exists ) {
-            return;
-        }
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
-        $wpdb->query( "ALTER TABLE {$table_escaped} ADD favicon INT(11) NOT NULL AFTER logo" );
-    }
-
     register_activation_hook( __FILE__, 'clickwhale_activate' );
     register_deactivation_hook( __FILE__, 'clickwhale_deactivate' );
     // Uninstall action
@@ -250,17 +169,6 @@ if ( function_exists( 'clickwhale_fs' ) ) {
      */
     function clickwhale_run() {
         clickwhale()->run();
-        /* @since 2.3.0 */
-        $maybe_update_version = clickwhale_maybe_add_or_update_version();
-        if ( $maybe_update_version ) {
-            clickwhale_maybe_add_or_update_url_column();
-            /* @since 2.4.5 */
-            clickwhale_maybe_add_link_target_column();
-            /* @since 2.5.0 */
-            clickwhale_maybe_add_created_by_api_column();
-            /* @since 2.5.1 */
-            clickwhale_maybe_add_favicon_column();
-        }
     }
 
     add_action( 'plugins_loaded', 'clickwhale_run' );

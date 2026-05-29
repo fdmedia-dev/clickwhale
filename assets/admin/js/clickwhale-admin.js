@@ -53,6 +53,10 @@
                 setCurrentTopLevelPage();
                 setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-tracking-codes');
             }
+            if (params['page'] === clickwhale_admin.plugin_slug + '-edit-smart-display') {
+                setCurrentTopLevelPage();
+                setCurrentSubmenuPage(clickwhale_admin.plugin_slug + '-smart-displays');
+            }
         }
 
         // Init jQuery UI tabs

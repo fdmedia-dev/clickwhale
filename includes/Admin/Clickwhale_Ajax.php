@@ -7,6 +7,7 @@ use Clickwhale\Helpers\{
     Categories_Helper,
     Linkpages_Helper,
     Links_Helper,
+    Smart_Displays_Helper,
     Tracking_Codes_Helper
 };
 use Clickwhale\ContentTemplates\Clickwhale_Linkpage_Content_Templates;
@@ -161,6 +162,7 @@ class Clickwhale_Ajax {
                     'meta',
                     'track',
                     'tracking_codes',
+                    'smart_displays',
                     'visitors'
                 );
                 $tables_full = Helper::get_db_table_names( $tables );
@@ -997,6 +999,16 @@ class Clickwhale_Ajax {
         $result['file'] = $csv_output;
         $result['filename'] = "clickwhale-links-export-{$date}.csv";
         wp_send_json_success( $result );
+    }
+
+    public function select_link() {
+        check_ajax_referer( 'clickwhale_select_link', 'security' );
+        $id = intval( $_POST['id'] );
+        $link = Links_Helper::get_by_id( $id );
+        if ( empty( $link['id'] ) ) {
+            wp_send_json_error( 'ClickWhale Link Not Found!' );
+        }
+        wp_send_json_success( Smart_Displays_Helper::prepare_link_data( $link ) );
     }
 
 }

@@ -3,10 +3,11 @@
  * included in this file.
  */
 
-body[class*="toplevel_page_clickwhale"] #wpbody-content,
+body.toplevel_page_clickwhale #wpbody-content,
+body.toplevel_page_clickwhale-pro #wpbody-content,
 body[class*="clickwhale_page_clickwhale"] #wpbody-content,
-body[class*="admin_page_clickwhale"] #wpbody-content,
-body[class*="admin_page_clickwhale-pro"] #wpbody-content {
+body[class*="admin_page_clickwhale-edit"] #wpbody-content,
+body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
     padding-top: 80px;
 }
 
@@ -39,16 +40,23 @@ ion-icon {
     pointer-events: none !important;
 }
 
-.slug-input--wrap {
+.slug-input--wrap,
+.shortcode-input--wrap {
     position: relative;
 }
 
-.slug-input--wrap input {
+.shortcode-input--wrap {
+    width: 250px;
+}
+
+.slug-input--wrap input,
+.shortcode-input--wrap input {
     width: 100%;
     padding-right: 30px;
 }
 
-.slug-input--btn {
+.slug-input--btn,
+.shortcode-input--btn {
     position: absolute;
     display: block;
     width: 20px;
@@ -58,7 +66,8 @@ ion-icon {
     color: #bbbbbb;
 }
 
-.slug-input-edit--wrap {
+.slug-input-edit--wrap,
+.shortcode-input-edit--wrap {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -66,12 +75,14 @@ ion-icon {
     max-width: 95%;
 }
 
-.slug-input-edit--wrap span {
+.slug-input-edit--wrap span,
+.shortcode-input-edit--wrap span {
     font-size: 13px;
     opacity: .7;
 }
 
-#cw-slug--text {
+#cw-slug--text,
+#cw-shortcode--text {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -80,15 +91,16 @@ ion-icon {
     font-size: 12px;
 }
 
-#cw-slug--text .feather {
+#cw-slug--text .feather,
+#cw-shortcode--text .feather {
     width: 12px;
     height: 12px;
     opacity: .7;
     margin-left: 7px;
 }
 
-
-#cw-slug--text .dashicons {
+#cw-slug--text .dashicons,
+#cw-shortcode--text .dashicons {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,7 +111,9 @@ ion-icon {
 }
 
 #cw-slug--text:hover .dashicons,
-#cw-slug--text:hover .feather {
+#cw-slug--text:hover .feather,
+#cw-shortcode--text:hover .dashicons,
+#cw-shortcode--text:hover .feather {
     opacity: 1;
 }
 
@@ -414,7 +428,8 @@ ion-icon {
 
 #lp-tab-settings .logo-field,
 #lp-tab-settings .favicon-field,
-#lp-tab-settings .og-image-field {
+#lp-tab-settings .og-image-field,
+.cw-smart-display-field {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -424,13 +439,15 @@ ion-icon {
 
 #lp-tab-settings .logo-field a,
 #lp-tab-settings .favicon-field a,
-#lp-tab-settings .og-image-field a {
+#lp-tab-settings .og-image-field a,
+.cw-smart-display-field a {
     display: inline-block;
 }
 
 #lp-tab-settings .logo-field img,
 #lp-tab-settings .favicon-field img,
-#lp-tab-settings .og-image-field img {
+#lp-tab-settings .og-image-field img,
+.cw-smart-display-field img {
     padding: 5px;
     border: 1px solid #dcdcde;
     border-radius: 5px;
@@ -734,7 +751,7 @@ ion-icon {
 
 .cw-linkpage-row--link span {
     display: block;
-    max-width: 230px;
+    max-width: 400px;
     margin-top: 4px;
     font-size: 12px;
     white-space: nowrap;
@@ -752,9 +769,9 @@ ion-icon {
     display: inline-block;
     text-align: center;
     line-height: 1.5em;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: .02em;
+    letter-spacing: .03em;
     padding: 3px 10px;
     border-radius: 10px;
     background: #f7f7f7;
@@ -1161,7 +1178,6 @@ ion-icon {
     opacity: .5 !important;
 }
 
-
 .cw-links-info {
     display: block;
     width: 100%;
@@ -1208,13 +1224,13 @@ td > .cw-links-info {
 
 .clickwhale-tabs > ul > li > a {
     display: block;
-    border: 1px solid #c3c4c7;
+    border: 1px solid #c3c4c7 !important;
     padding: 5px 10px;
     font-size: 14px;
     line-height: 1.71428571;
     font-weight: 600;
-    background: #dcdcde;
-    color: #50575e;
+    background: #dcdcde !important;
+    color: #50575e !important;
     text-decoration: none;
     white-space: nowrap;
     outline: none !important;
@@ -1222,15 +1238,15 @@ td > .cw-links-info {
 
 .clickwhale-tabs > ul > li > a:hover,
 .clickwhale-tabs > ul > li > a:focus {
-    background: #ffffff;
+    background: #ffffff !important;
     outline: none !important;
     box-shadow: none;
 }
 
 .clickwhale-tabs > ul > li.ui-tabs-active > a {
-    border-bottom: 1px solid #f0f0f1;
-    background: #f0f0f1;
-    color: #000;
+    border-bottom: 1px solid #f0f0f1 !important;
+    background: #f0f0f1 !important;
+    color: #000000 !important;;
 }
 
 .clickwhale-tab {
@@ -1251,7 +1267,12 @@ td > .cw-links-info {
     color: #41464b;
 }
 
-.clickwhale_form_edit .cw-linkpage-image-remove {
+.clickwhale_form_edit .clickwhale-label-header {
+    font-size: 16px !important;
+}
+
+.clickwhale_form_edit .cw-linkpage-image-remove,
+.clickwhale_form_edit .cw-smart-display-image-remove {
     color: #dc3232;
     border-color: transparent;
     background-color: transparent;
@@ -1262,7 +1283,8 @@ td > .cw-links-info {
     transition: all .3s;
 }
 
-.clickwhale_form_edit .cw-linkpage-image-remove:hover {
+.clickwhale_form_edit .cw-linkpage-image-remove:hover,
+.clickwhale_form_edit .cw-smart-display-image-remove:hover {
     color: #ffebee;
     border-color: #dc3232;
     background-color: #dc3232;
@@ -1278,11 +1300,19 @@ td > .cw-links-info {
     font-size: 14px;
 }
 
-.linkpages .column-links,
-.linkpages .column-clicks_count,
-.linkpages .column-views_count {
+table.linkpages .column-links,
+table.linkpages .column-clicks_count,
+table.linkpages .column-views_count {
     width: 10%;
     text-align: left;
+}
+
+table.tracking-codes .column-is_active {
+    width: 50px;
+}
+
+table.smart-displays.fixed .column-title {
+    width: 30%;
 }
 
 #form_edit_tracking_code .CodeMirror-sizer {
@@ -1308,8 +1338,97 @@ td > .cw-links-info {
     padding-top: 5px;
 }
 
-table.tracking-codes .column-is_active {
-    width: 50px;
+/* SMART DISPLAY STYLES */
+
+#smart-display-edit #poststuff #post-body > #post-body-content {
+    position: relative;
+    border-top: 1px solid #dcdcde;
+}
+
+#smart-display-edit #form_edit_smart_display #title,
+#smart-display-edit #form_edit_smart_display #primary_text {
+    min-width: 25rem;
+}
+
+#smart-display-edit #form_edit_smart_display .wp-editor-wrap {
+    max-width: 50rem;
+    width: 25rem;
+}
+
+#smart-display-edit #form_edit_smart_display .wp-editor-wrap iframe#smart-display-description_ifr,
+#smart-display-edit #form_edit_smart_display .wp-editor-wrap textarea#smart-display-description {
+    min-height: 15rem;
+}
+
+#smart-display-edit #form_edit_smart_display .clickwhale-sd-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+#smart-display-edit #form_edit_smart_display .clickwhale-sd-grid p.description {
+    margin: 0 0 .25rem 0;
+    white-space: nowrap;
+}
+
+#smart-display-edit #form_edit_smart_display .wp-picker-container.cw-disabled .wp-color-result,
+#smart-display-edit #form_edit_smart_display .wp-picker-container.cw-disabled .wp-picker-clear {
+    opacity: 0.5;
+}
+
+/* SMART DISPLAY PREVIEW STYLES */
+
+#sd-tab {
+    display: grid;
+    grid-template-areas: "table preview" "actions actions";
+    gap: 1rem;
+}
+
+#sd-table {
+    grid-area: table;
+}
+
+#sd-preview {
+    grid-area: preview;
+    max-width: 50rem;
+    margin-top: 10px;
+
+    h2 {
+        font-size: 1.125rem;
+    }
+
+    .cw-smart-display-preview--wrap {
+        position: sticky;
+        top: 3rem;
+        margin-top: .25rem;
+    }
+}
+
+#sd-actions {
+    grid-area: actions;
+}
+
+@media (max-width: 1600px) {
+    #sd-tab {
+        display: grid;
+        grid-template-areas: "table" "preview" "actions";
+        gap: 1rem;
+    }
+}
+
+.cw-smart-display-preview--wrap {
+    width: 100%;
+    max-width: 50rem;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.cw-smart-display-preview--wrap * {
+    box-sizing: border-box !important;
+}
+
+.cw-smart-display-preview {
+    margin-top: 0 !important;
 }
 
 .clickwhale-checkbox--toggle {
@@ -1525,6 +1644,15 @@ table.tracking-codes .column-is_active {
 
 .nav-tab-wrapper {
     padding-bottom: 0 !important;
+}
+
+.clickwhale-settings-wrap form textarea {
+    width: 300px;
+    max-width: 25rem;
+}
+
+.clickwhale-settings-wrap form .clickwhale-label-header th {
+    font-size: 16px;
 }
 
 /* PRO PAGE PROMO */
@@ -1945,6 +2073,20 @@ table.tracking-codes .column-is_active {
 
 /* VENDORS */
 
+.cw-linkpage-row--image-select--tab .picmo__picker.picmo__picker {
+    width: 100% !important;
+}
+
+.cw-linkpage-row--image-select--tab .picmo__picker .picmo__emojiContainer {
+    grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+    grid-auto-rows: unset;
+    gap: 5px;
+}
+
+.cw-linkpage-row--image-select--tab .picmo__emojiButton {
+    font-size: 1.5rem;
+}
+
 /* ADMIN SIDEBAR WIDGETS */
 
 #poststuff .postbox.clickwhale-admin-widget {
@@ -1999,7 +2141,7 @@ table.tracking-codes .column-is_active {
 
 #poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__upgrade .inside ul li::before {
     top: 3px;
-    content: url("../images/star.svg");
+    content: url("https://s.w.org/images/core/emoji/15.0.3/svg/2b50.svg");
 }
 
 #poststuff .postbox.clickwhale-admin-widget#clickwhale-admin-widget__docs .inside ul li::before {
@@ -2031,7 +2173,7 @@ table.tracking-codes .column-is_active {
     display: block;
     padding: 14px;
     font-size: 14px;
-    background-color: #397EFF;
+    background-color: #397eff;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -2059,7 +2201,33 @@ table.tracking-codes .column-is_active {
     }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
+    .cw-smart-display-preview {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    .cw-smart-display-preview--content {
+        width: 100%;
+        flex: 1;
+    }
+
+    .cw-smart-display-preview--title,
+    .cw-smart-display-preview--title a {
+        font-size: 1.25rem;
+    }
+
+    .cw-smart-display-preview--buttons {
+        justify-content: center;
+    }
+
+    .cw-smart-display-preview--buttons a {
+        width: 100%;
+        text-align: center;
+    }
+
     body.toplevel_page_clickwhale #wpbody-content,
     body.toplevel_page_clickwhale-pro #wpbody-content,
     body[class*="clickwhale_page_clickwhale"] #wpbody-content,

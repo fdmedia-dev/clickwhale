@@ -17,14 +17,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
     private int $legals_menu_id;
 
     public function __construct() {
-        $this->instance_plural = 'linkpages';
-        $this->instance_single = 'linkpage';
-        $this->instance_helper = Linkpages_Helper::class;
-        parent::__construct();
-    }
-
-    protected function get_title_i18n(): string {
-        return __( 'Link Page', 'clickwhale' );
+        parent::__construct( 'linkpages', 'linkpage', 'Link Page' );
     }
 
     /**
@@ -226,29 +219,54 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         }
     }
 
-    protected function filter_defaults( array $defaults ): array {
-        return apply_filters( 'clickwhale_linkpage_defaults', $defaults );
-    }
-
-    protected function process_item_before_save( array $item ): array {
+    public function save_update() {
+        global $wpdb;
+        $table          = Helper::get_db_table_name( $this->instance_plural );
+        $item           = array_intersect_key(
+                $_POST,
+                apply_filters( 'clickwhale_linkpage_defaults', $this->get_defaults() )
+        );
         $item['links']  = isset( $item['links'] ) ? maybe_serialize( $item['links'] ) : '';
         $item['styles'] = isset( $item['styles'] ) ? maybe_serialize( $item['styles'] ) : '';
         $item['social'] = isset( $item['social'] ) ? maybe_serialize( $item['social'] ) : '';
         $item['author'] = get_current_user_id();
 
-        // Data for meta table
-        $this->legals_menu_id = intval( $item['meta__legals_menu_id'] ?? 0 );
+        // Data fot meta table
+        $legals_menu_id = $item['meta__legals_menu_id'] ?? 0;
         unset( $item['meta__legals_menu_id'] );
 
-        return $item;
-    }
+        $item = apply_filters( 'clickwhale_linkpage_data_before_save', $item );
+        $id   = intval( $item['id'] );
 
-    protected function after_save( int $id, array $raw ): void {
-        if ( $this->get_link_meta( $id, 'legals_menu_id' ) ) {
-            $this->save_linkpage_meta( $id, 'legals_menu_id', $this->legals_menu_id, 'update' );
+        // Check if item exists and then update or insert
+        // in some cases default check (not false and < 0) goes wrong
+        if ( Linkpages_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                    $table,
+                    $item,
+                    array( 'id' => $id )
+            );
+            $this->set_transient( $id, 'updated' );
+
         } else {
-            $this->save_linkpage_meta( $id, 'legals_menu_id', $this->legals_menu_id, 'insert' );
+            unset( $item['id'] );
+            $wpdb->insert(
+                    $table,
+                    $item
+            );
+            $id = $wpdb->insert_id;
+            $this->set_transient( $id, 'added' );
         }
+
+        if ( $this->get_link_meta( $id, 'legals_menu_id' ) ) {
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'update' );
+        } else {
+            $this->save_linkpage_meta( $id, 'legals_menu_id', $legals_menu_id, 'insert' );
+        }
+
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-linkpage&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
     }
 
     public function admin_scripts(): void {

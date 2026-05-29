@@ -1,11 +1,12 @@
 <?php
+
 namespace Clickwhale\Admin\TrackingCodes;
 
 use Clickwhale\Admin\Clickwhale_Instance_Edit;
 use Clickwhale\Helpers\{
-    Helper,
-    Linkpages_Helper,
-    Tracking_Codes_Helper
+        Helper,
+        Linkpages_Helper,
+        Tracking_Codes_Helper
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,16 +21,9 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
     public bool $conversion;
 
     public function __construct() {
-        $this->instance_plural = 'tracking_codes';
-        $this->instance_single = 'tracking_code';
-        $this->instance_helper = Tracking_Codes_Helper::class;
-        parent::__construct();
+        parent::__construct( 'tracking_codes', 'tracking_code', 'Tracking Code' );
 
         $this->conversion = apply_filters( 'clickwhale_is_tracking_code_conversion', false );
-    }
-
-    protected function get_title_i18n(): string {
-        return __( 'Tracking Code', 'clickwhale' );
     }
 
     /**
@@ -39,16 +33,16 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
      */
     public function get_defaults(): array {
         return array(
-            'id'          => 0,
-            'title'       => '',
-            'description' => '',
-            'type'        => '', //html/css/js
-            'code'        => '',
-            'position'    => array(), // array(), post/page/CPT/LP // header/footer/body
-            'is_active'   => 0,
-            'author'      => 0,
-            'created_at'  => '',
-            'updated_at'  => '',
+                'id'          => 0,
+                'title'       => '',
+                'description' => '',
+                'type'        => '', //html/css/js
+                'code'        => '',
+                'position'    => array(), // array(), post/page/CPT/LP // header/footer/body
+                'is_active'   => 0,
+                'author'      => 0,
+                'created_at'  => '',
+                'updated_at'  => '',
         );
     }
 
@@ -76,7 +70,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                    type="radio"
                                    name="position[conversion]"
                                    value="standard"
-                                <?php checked( $conversion_val ?? 'standard', 'standard' ); ?>
+                                    <?php checked( $conversion_val ?? 'standard', 'standard' ); ?>
                             >
                             <label for="conversionStandard">
                                 <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-wordpress-dark.svg'; ?>"
@@ -99,10 +93,10 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                        type="radio"
                                        name="position[conversion]"
                                        value="product"
-                                    <?php
-                                    echo esc_attr( $is_disabled );
-                                    checked( $conversion_val, 'product' );
-                                    ?>
+                                        <?php
+                                        echo esc_attr( $is_disabled );
+                                        checked( $conversion_val, 'product' );
+                                        ?>
                                 >
                                 <label for="conversionProduct">
                                     <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-woocommerce-short-purple.svg'; ?>"
@@ -126,10 +120,10 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                                        type="radio"
                                        name="position[conversion]"
                                        value="download"
-                                    <?php
-                                    echo esc_attr( $is_disabled );
-                                    checked( $conversion_val, 'download' );
-                                    ?>
+                                        <?php
+                                        echo esc_attr( $is_disabled );
+                                        checked( $conversion_val, 'download' );
+                                        ?>
                                 >
                                 <label for="conversionDownload">
                                     <img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/vendors/logo-edd-short-dark.svg'; ?>"
@@ -146,18 +140,44 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         do_action( 'clickwhale_tracking_code_conversion_fields', $item );
     }
 
-    protected function normalize_loaded_item( array $item ): array {
+    public function get_item( $request ): array {
+        if ( ! is_numeric( $request['id'] ) ) {
+            $this->no_item();
+        }
+
+        // Get default values
+        $defaults = apply_filters( "clickwhale_{$this->instance_single}_defaults", $this->get_defaults() );
+
+        // If item id=0 or id doesn't set/exists than use $defaults
+        if ( empty( $request['id'] ) ) {
+            return $defaults;
+        }
+
+        // Get data by id
+        $helper = ucfirst( "{$this->instance_plural}_Helper" );
+
+        $item = call_user_func(
+                array( "clickwhale\\includes\\helpers\\" . $helper, 'get_by_id' ),
+                intval( $request['id'] )
+        );
+
         $item['position'] = maybe_unserialize( $item['position'] );
+
+        // If link with id doesn't exist
+        if ( ! $item ) {
+            $this->no_item();
+        }
+
         return $item;
     }
 
     public function get_linkpages(): array {
-        $result = array();
+        $result    = array();
         $linkpages = Linkpages_Helper::get_all( 'title', 'asc', 'ARRAY_A' );
         if ( $linkpages ) {
             $result['all'] = __( 'All', 'clickwhale' );
             foreach ( $linkpages as $linkpage ) {
-                $result[$linkpage['id']] = $linkpage['title'];
+                $result[ $linkpage['id'] ] = $linkpage['title'];
             }
         }
 
@@ -167,18 +187,18 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
     public static function get_posts_by_post_type( $post_type ): array {
         $result = array();
         $args   = array(
-            'numberposts' => - 1,
-            'post_type'   => $post_type,
-            'orderby'     => 'title',
-            'order'       => 'ASC',
-            'post_status' => 'publish'
+                'numberposts' => - 1,
+                'post_type'   => $post_type,
+                'orderby'     => 'title',
+                'order'       => 'ASC',
+                'post_status' => 'publish'
         );
         $posts  = get_posts( $args );
 
         if ( $posts ) {
             $result['all'] = __( 'All', 'clickwhale' );
             foreach ( $posts as $post ) {
-                $result[$post->ID] = $post->post_title;
+                $result[ $post->ID ] = $post->post_title;
             }
         }
 
@@ -188,21 +208,24 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
     public function get_terms_by_tax( $taxonomy ): array {
         $result = array();
         $args   = array(
-            'taxonomy'   => $taxonomy,
-            'hide_empty' => false,
+                'taxonomy'   => $taxonomy,
+                'hide_empty' => false,
         );
         $terms  = get_terms( $args );
         if ( $terms ) {
             $result['all'] = __( 'All', 'clickwhale' );
             foreach ( $terms as $term ) {
-                $result[$term->term_id] = $term->name;
+                $result[ $term->term_id ] = $term->name;
             }
         }
 
         return $result;
     }
 
-    protected function process_item_before_save( array $item ): array {
+    public function save_update() {
+        global $wpdb;
+        $table               = Helper::get_db_table_name( $this->instance_plural );
+        $item                = array_intersect_key( $_POST, $this->get_defaults() );
         $item['description'] = esc_html( $item['description'] );
         $item['author']      = get_current_user_id();
 
@@ -213,7 +236,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
             unset( $item['position']['pages'] );
             foreach ( $item['position']['conversion_items'] as $k => $v ) {
                 if ( $k !== $item['position']['conversion'] ) {
-                    unset( $item['position']['conversion_items'][$k] );
+                    unset( $item['position']['conversion_items'][ $k ] );
                 }
             }
         } else {
@@ -244,19 +267,19 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
         foreach ( $post_types as $post_type => $post_label ) {
             // Included
-            if ( ! isset( $item['position']['items_included'][$post_type]['active'] ) ) {
-                unset( $item['position']['items_included'][$post_type] );
+            if ( ! isset( $item['position']['items_included'][ $post_type ]['active'] ) ) {
+                unset( $item['position']['items_included'][ $post_type ] );
 
-            } elseif ( empty( $item['position']['items_included'][$post_type]['ids'] ) ) {
-                $item['position']['items_included'][$post_type]['ids'][] = 'all';
+            } elseif ( empty( $item['position']['items_included'][ $post_type ]['ids'] ) ) {
+                $item['position']['items_included'][ $post_type ]['ids'][] = 'all';
             }
 
             // Excluded
-            if ( ! isset( $item['position']['items_excluded'][$post_type]['active'] ) ) {
-                unset( $item['position']['items_excluded'][$post_type] );
+            if ( ! isset( $item['position']['items_excluded'][ $post_type ]['active'] ) ) {
+                unset( $item['position']['items_excluded'][ $post_type ] );
 
-            } elseif ( empty( $item['position']['items_excluded'][$post_type]['ids'] ) ) {
-                $item['position']['items_excluded'][$post_type]['ids'][] = 'all';
+            } elseif ( empty( $item['position']['items_excluded'][ $post_type ]['ids'] ) ) {
+                $item['position']['items_excluded'][ $post_type ]['ids'][] = 'all';
             }
         }
 
@@ -266,31 +289,56 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
 
         foreach ( $taxonomies as $taxonomy ) {
             // Included
-            if ( ! isset( $item['position']['items_included'][$taxonomy]['active'] ) ) {
-                unset( $item['position']['items_included'][$taxonomy] );
+            if ( ! isset( $item['position']['items_included'][ $taxonomy ]['active'] ) ) {
+                unset( $item['position']['items_included'][ $taxonomy ] );
 
-            } elseif ( empty( $item['position']['items_included'][$taxonomy]['ids'] ) ) {
-                $item['position']['items_included'][$taxonomy]['ids'][] = 'all';
+            } elseif ( empty( $item['position']['items_included'][ $taxonomy ]['ids'] ) ) {
+                $item['position']['items_included'][ $taxonomy ]['ids'][] = 'all';
             }
 
             // Excluded
-            if ( ! isset( $item['position']['items_excluded'][$taxonomy]['active'] ) ) {
-                unset( $item['position']['items_excluded'][$taxonomy] );
+            if ( ! isset( $item['position']['items_excluded'][ $taxonomy ]['active'] ) ) {
+                unset( $item['position']['items_excluded'][ $taxonomy ] );
 
-            } elseif ( empty( $item['position']['items_excluded'][$taxonomy]['ids'] ) ) {
-                $item['position']['items_excluded'][$taxonomy]['ids'][] = 'all';
+            } elseif ( empty( $item['position']['items_excluded'][ $taxonomy ]['ids'] ) ) {
+                $item['position']['items_excluded'][ $taxonomy ]['ids'][] = 'all';
             }
         }
 
-        $item['position'] = maybe_serialize( $item['position'] );
+        $item['position']  = maybe_serialize( $item['position'] );
         $item['is_active'] = ! empty( $item['is_active'] ) ? 1 : 0;
-        return $item;
+        $item              = apply_filters( 'clickwhale_tracking_code_data_before_save', $item );
+        $id                = intval( $item['id'] );
+
+        // Check if item exists and then update or insert.
+        // In some cases default check (not false or 0) goes wrong
+        if ( Tracking_Codes_Helper::get_by_id( $id ) ) {
+            $wpdb->update(
+                    $table,
+                    $item,
+                    array( 'id' => $id )
+            );
+            $this->set_transient( $id, 'updated' );
+
+        } else {
+            unset( $item['id'] );
+            $wpdb->insert(
+                    $table,
+                    $item
+            );
+            $id = $wpdb->insert_id;
+            $this->set_transient( $id, 'added' );
+        }
+
+        $url = 'admin.php?page=' . CLICKWHALE_SLUG . '-edit-tracking-code&id=' . $id;
+        wp_redirect( esc_url_raw( admin_url( $url ) ) );
+        exit;
     }
 
     public function admin_scripts(): void {
         ?>
         <script type='text/javascript'>
-            jQuery(document).ready(function(){
+            jQuery(document).ready(function () {
                 jQuery('#position_code').select2({
                     placeholder: <?php echo wp_json_encode( __( 'Select Code position', 'clickwhale' ) ); ?>,
                     width: '100%',
@@ -298,18 +346,18 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 });
 
                 jQuery('.with-select2').select2({
-                        placeholder: <?php echo wp_json_encode( __( 'Select', 'clickwhale' ) ); ?>,
-                        width: '100%',
-                        multiple: true,
-                        minimumResultsForSearch: 10
-                    })
-                    .on('select2:select', function(e){
+                    placeholder: <?php echo wp_json_encode( __( 'Select', 'clickwhale' ) ); ?>,
+                    width: '100%',
+                    multiple: true,
+                    minimumResultsForSearch: 10
+                })
+                    .on('select2:select', function (e) {
                         const
                             select = jQuery(this),
                             data = e.params.data,
                             selected = select.val();
 
-                        if (data.id !== 'all'){
+                        if (data.id !== 'all') {
                             selected.splice(selected.indexOf('all'), 1);
                             selected.push(data.id);
 
@@ -321,7 +369,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                         }
                     });
 
-                if (jQuery('#code').length){
+                if (jQuery('#code').length) {
                     let editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
 
                     editorSettings.codemirror = _.extend(
@@ -336,7 +384,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 // Toggle pages select
-                if (jQuery('[name="position[pages]"]:checked').val() !== 'all'){
+                if (jQuery('[name="position[pages]"]:checked').val() !== 'all') {
                     jQuery('.cw-posts-row--included').show();
                     jQuery('.cw-posts-row--excluded').hide();
                 } else {
@@ -345,12 +393,12 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 }
 
                 // Toggle page select
-                jQuery('.cw-posts-row').each(function(){
+                jQuery('.cw-posts-row').each(function () {
                     let
                         checkbox = jQuery(this).find('[type="checkbox"]'),
                         selectWrap = jQuery(this).find('.cw-posts-row--select');
 
-                    if (checkbox.is(':checked')){
+                    if (checkbox.is(':checked')) {
                         selectWrap.show();
                     } else {
                         selectWrap.hide();
@@ -362,8 +410,8 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                 jQuery('[name="position[conversion]"][value="standard"]').prop('disabled', false);
 
                 jQuery(document)
-                    .on('change', '[name="position[pages]"]', function(){
-                        if (jQuery(this).val() !== 'all'){
+                    .on('change', '[name="position[pages]"]', function () {
+                        if (jQuery(this).val() !== 'all') {
                             jQuery('.cw-posts-row--included').show();
                             jQuery('.cw-posts-row--excluded').hide();
                         } else {
@@ -371,10 +419,10 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                             jQuery('.cw-posts-row--excluded').show();
                         }
                     })
-                    .on('change', '.cw-posts-row [type="checkbox"]', function(){
+                    .on('change', '.cw-posts-row [type="checkbox"]', function () {
                         let parent = jQuery(this).closest('.cw-posts-row');
 
-                        if (jQuery(this).is(':checked')){
+                        if (jQuery(this).is(':checked')) {
                             jQuery(parent).find('.cw-posts-row--select').show();
                         } else {
                             jQuery(parent).find('.cw-posts-row--select').hide();

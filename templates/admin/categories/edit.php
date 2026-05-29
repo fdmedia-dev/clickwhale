@@ -25,7 +25,7 @@ do_action( 'clickwhale_admin_banner' );
                 'is_edit'      => $clickwhale_item_id !== 0,
                 'link_to_list' => esc_attr( CLICKWHALE_SLUG ) . '-categories',
                 'link_to_add'  => esc_attr( CLICKWHALE_SLUG ) . '-edit-category',
-                'is_limit'     => Categories_Helper::get_count() >= Categories_Helper::get_limit()
+                'is_limit'     => $clickwhale_count >= $clickwhale_limit
             )
         ),
         Helper::get_allowed_tags()
