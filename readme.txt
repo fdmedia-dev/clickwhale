@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 6.0
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,9 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.7.1 (3rd Jun 2026) =
+* Fix: DB migration on plugin update
 
 = Version 2.7.0 (1st Jun 2026) =
 * New: Smart Displays
