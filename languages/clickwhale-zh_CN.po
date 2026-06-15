@@ -3283,9 +3283,9 @@ msgid "Currently, a maximum of %d smart displays can be added."
 msgstr "目前最多可以添加 %d 个智能显示器。"
 
 #: templates/admin/smart-displays/edit.php:33
-#: assets/admin/js/blocks/cw-smart-display-block.js:29
-#: assets/admin/js/blocks/cw-smart-display-block.js:54
-#: assets/admin/js/blocks/cw-smart-display-block.js:73
+#: assets/admin/js/blocks/cw-smart-display-block.js:107
+#: assets/admin/js/blocks/cw-smart-display-block.js:132
+#: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr "智能显示器"
 
@@ -3345,22 +3345,22 @@ msgstr "设置价格（留空以省略）"
 msgid "Smart Display Preview"
 msgstr "智能显示器预览"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:22
+#: assets/admin/js/blocks/cw-smart-display-block.js:19
 msgid "— Select Smart Display —"
 msgstr "— 选择智能显示器 —"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:30
+#: assets/admin/js/blocks/cw-smart-display-block.js:108
 msgid "Embed a Smart Display on your page."
 msgstr "在您的页面上嵌入智能显示器。"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:56
+#: assets/admin/js/blocks/cw-smart-display-block.js:134
 msgid "Selected Smart Display"
 msgstr "选定的智能显示器"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:75
+#: assets/admin/js/blocks/cw-smart-display-block.js:153
 msgid "Select a Smart Display to embed on this page."
 msgstr "选择一个智能显示器以嵌入此页面。"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:76
+#: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr "未找到智能显示器。请先创建一个。"

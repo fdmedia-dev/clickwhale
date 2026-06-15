@@ -3033,9 +3033,9 @@ msgid "Currently, a maximum of %d smart displays can be added."
 msgstr "Derzeit können maximal %d Smart Displays hinzugefügt werden."
 
 #: templates/admin/smart-displays/edit.php:33
-#: assets/admin/js/blocks/cw-smart-display-block.js:29
-#: assets/admin/js/blocks/cw-smart-display-block.js:54
-#: assets/admin/js/blocks/cw-smart-display-block.js:73
+#: assets/admin/js/blocks/cw-smart-display-block.js:107
+#: assets/admin/js/blocks/cw-smart-display-block.js:132
+#: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr "Smart Display"
 
@@ -3095,22 +3095,22 @@ msgstr "Preis festlegen (leer lassen, um zu omittieren)"
 msgid "Smart Display Preview"
 msgstr "Vorschau des Smart Displays"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:22
+#: assets/admin/js/blocks/cw-smart-display-block.js:19
 msgid "— Select Smart Display —"
 msgstr "— Smart Display auswählen —"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:30
+#: assets/admin/js/blocks/cw-smart-display-block.js:108
 msgid "Embed a Smart Display on your page."
 msgstr "Ein Smart Display auf Ihrer Seite einbetten."
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:56
+#: assets/admin/js/blocks/cw-smart-display-block.js:134
 msgid "Selected Smart Display"
 msgstr "Ausgewähltes Smart Display"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:75
+#: assets/admin/js/blocks/cw-smart-display-block.js:153
 msgid "Select a Smart Display to embed on this page."
 msgstr "Wählen Sie ein Smart Display aus, um es auf dieser Seite einzubetten."
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:76
+#: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr "Keine Smart Displays gefunden. Erstellen Sie zuerst eines."

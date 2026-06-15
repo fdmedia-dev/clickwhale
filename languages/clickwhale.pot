@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-03T10:12:33+00:00\n"
+"POT-Creation-Date: 2026-06-15T14:09:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: clickwhale\n"
@@ -2881,9 +2881,9 @@ msgid "Save changes"
 msgstr ""
 
 #: templates/admin/smart-displays/edit.php:33
-#: assets/admin/js/blocks/cw-smart-display-block.js:29
-#: assets/admin/js/blocks/cw-smart-display-block.js:54
-#: assets/admin/js/blocks/cw-smart-display-block.js:73
+#: assets/admin/js/blocks/cw-smart-display-block.js:107
+#: assets/admin/js/blocks/cw-smart-display-block.js:132
+#: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr ""
 
@@ -3095,22 +3095,22 @@ msgstr ""
 msgid "Enable Tracking Code"
 msgstr ""
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:22
+#: assets/admin/js/blocks/cw-smart-display-block.js:19
 msgid "— Select Smart Display —"
 msgstr ""
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:30
+#: assets/admin/js/blocks/cw-smart-display-block.js:108
 msgid "Embed a Smart Display on your page."
 msgstr ""
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:56
+#: assets/admin/js/blocks/cw-smart-display-block.js:134
 msgid "Selected Smart Display"
 msgstr ""
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:75
+#: assets/admin/js/blocks/cw-smart-display-block.js:153
 msgid "Select a Smart Display to embed on this page."
 msgstr ""
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:76
+#: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr ""

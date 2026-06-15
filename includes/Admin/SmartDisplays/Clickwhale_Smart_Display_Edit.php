@@ -79,6 +79,9 @@ class Clickwhale_Smart_Display_Edit extends Clickwhale_Instance_Edit {
                 apply_filters( 'clickwhale_smart_display_defaults', $this->get_defaults() )
         );
 
+        // Title
+        $item['title'] = sanitize_text_field( wp_unslash( $item['title'] ?? '' ) );
+
         // Description
         $description         = ! empty( $item['description'] ) ? wp_unslash( $item['description'] ) : '';
         $description         = html_entity_decode( $description, ENT_QUOTES, 'UTF-8' );

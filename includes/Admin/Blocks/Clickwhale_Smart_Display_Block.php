@@ -68,16 +68,19 @@ class Clickwhale_Smart_Display_Block {
 			$handle,
 			'clickwhaleBlockData',
 			array(
-				'iconUrl'       => CLICKWHALE_ADMIN_ASSETS_DIR . '/images/whale.svg',
-				'smartDisplays' => array_map(
+				'smartDisplays' => array_values( array_filter( array_map(
 					function ( $sd ) {
+						if ( empty( $sd['title'] ) ) {
+							return null;
+						}
+
 						return array(
 							'id'    => intval( $sd['id'] ),
-							'title' => esc_html( $sd['title'] ),
+							'label' => $sd['title'] . ' (#' . intval( $sd['id'] ) . ')',
 						);
 					},
 					$smart_displays
-				),
+				) ) ),
 			)
 		);
 	}
@@ -91,7 +94,7 @@ class Clickwhale_Smart_Display_Block {
 
 		$data = Smart_Displays_Helper::get_by_id( $id );
 
-		if ( ! $data ) {
+		if ( ! $data || empty( $data['title'] ) ) {
 			return '';
 		}
 

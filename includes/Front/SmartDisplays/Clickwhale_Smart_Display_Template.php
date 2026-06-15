@@ -94,18 +94,18 @@ class Clickwhale_Smart_Display_Template {
 	}
 
 	public function get_title(): string {
-		$title = esc_html( $this->data['title'] );
+		$title = esc_html( wp_unslash( $this->data['title'] ) );
 
-		if ( $this->is_title_linked() && $this->link_url ) {
-			return sprintf(
-				'<a href="%1$s"%2$s>%3$s</a>',
-				$this->link_url,
-				$this->link_target,
-				$title
-			);
+		if ( ! $this->link_url ) {
+			return $title;
 		}
 
-		return $title;
+		return sprintf(
+			'<a href="%1$s"%2$s>%3$s</a>',
+			$this->link_url,
+			$this->link_target,
+			$title
+		);
 	}
 
 	public function get_image(): string {

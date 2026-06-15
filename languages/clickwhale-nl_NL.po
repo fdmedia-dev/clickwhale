@@ -3033,9 +3033,9 @@ msgid "Currently, a maximum of %d smart displays can be added."
 msgstr "Momenteel kan een maximum van %d slimme displays worden toegevoegd."
 
 #: templates/admin/smart-displays/edit.php:33
-#: assets/admin/js/blocks/cw-smart-display-block.js:29
-#: assets/admin/js/blocks/cw-smart-display-block.js:54
-#: assets/admin/js/blocks/cw-smart-display-block.js:73
+#: assets/admin/js/blocks/cw-smart-display-block.js:107
+#: assets/admin/js/blocks/cw-smart-display-block.js:132
+#: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr "Slimme Display"
 
@@ -3095,22 +3095,22 @@ msgstr "Stel prijs in (laat leeg om weg te laten)"
 msgid "Smart Display Preview"
 msgstr "Voorbeeld van Slimme Display"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:22
+#: assets/admin/js/blocks/cw-smart-display-block.js:19
 msgid "— Select Smart Display —"
 msgstr "— Selecteer Slimme Display —"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:30
+#: assets/admin/js/blocks/cw-smart-display-block.js:108
 msgid "Embed a Smart Display on your page."
 msgstr "Embed een Slimme Display op je pagina."
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:56
+#: assets/admin/js/blocks/cw-smart-display-block.js:134
 msgid "Selected Smart Display"
 msgstr "Geselecteerde Slimme Display"
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:75
+#: assets/admin/js/blocks/cw-smart-display-block.js:153
 msgid "Select a Smart Display to embed on this page."
 msgstr "Selecteer een Slimme Display om op deze pagina in te voegen."
 
-#: assets/admin/js/blocks/cw-smart-display-block.js:76
+#: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr "Geen Slimme Displays gevonden. Maak er eerst een."
