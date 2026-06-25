@@ -5,6 +5,7 @@ namespace Clickwhale\Admin;
 use Clickwhale\Helpers\{
     Helper,
     Categories_Helper,
+    Integrations_Helper,
     Linkpages_Helper,
     Links_Helper,
     Smart_Displays_Helper,
@@ -1009,6 +1010,84 @@ class Clickwhale_Ajax {
             wp_send_json_error( 'ClickWhale Link Not Found!' );
         }
         wp_send_json_success( Smart_Displays_Helper::prepare_link_data( $link ) );
+    }
+
+    /**
+     * @return void
+     * @since 2.8.0
+     */
+    public function amz_connect_validate_api_key() {
+        check_ajax_referer( 'clickwhale_amz_connect_validate', 'security' );
+        $api_key = ( isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '' );
+        if ( empty( $api_key ) ) {
+            wp_send_json_error( array(
+                'status' => 'disconnected',
+            ) );
+        }
+        $is_valid = Integrations_Helper::amz_connect_validate_key( $api_key );
+        $status = ( $is_valid ? 'connected' : 'disconnected' );
+        wp_send_json_success( array(
+            'status' => $status,
+        ) );
+    }
+
+    /**
+     * @return void
+     * @since 2.8.0
+     */
+    public function amz_connect_get_quota() {
+        check_ajax_referer( 'clickwhale_amz_connect_quota', 'security' );
+        $force = !empty( $_POST['force'] );
+        if ( !$force ) {
+            $cached = get_transient( 'clickwhale_amz_connect_quota' );
+            if ( false !== $cached ) {
+                wp_send_json_success( $cached );
+            }
+        }
+        $api_key = Integrations_Helper::get_integration_api_key( 'amz_connect' );
+        if ( empty( $api_key ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'AMZ Connect API key is not configured', 'clickwhale' ),
+            ) );
+        }
+        $result = Integrations_Helper::amz_connect_get_quota( $api_key );
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( array(
+                'message' => $result->get_error_message(),
+            ) );
+        }
+        $result['cached_at'] = time();
+        $result['cached_at_formatted'] = wp_date( 'F j, Y, H:i' );
+        set_transient( 'clickwhale_amz_connect_quota', $result, HOUR_IN_SECONDS );
+        wp_send_json_success( $result );
+    }
+
+    /**
+     * @return void
+     * @since 2.8.0
+     */
+    public function amz_connect_get_product() {
+        check_ajax_referer( 'clickwhale_amz_connect_validate', 'security' );
+        $asin = ( isset( $_POST['asin'] ) ? sanitize_text_field( wp_unslash( $_POST['asin'] ) ) : '' );
+        $store = ( isset( $_POST['store'] ) ? sanitize_text_field( wp_unslash( $_POST['store'] ) ) : '' );
+        if ( empty( $asin ) || empty( $store ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'ASIN and store are required', 'clickwhale' ),
+            ) );
+        }
+        $api_key = Integrations_Helper::get_integration_api_key( 'amz_connect' );
+        if ( empty( $api_key ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'AMZ Connect API key is not configured', 'clickwhale' ),
+            ) );
+        }
+        $result = Integrations_Helper::amz_connect_get_product( $api_key, $asin, $store );
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( array(
+                'message' => $result->get_error_message(),
+            ) );
+        }
+        wp_send_json_success( $result );
     }
 
 }

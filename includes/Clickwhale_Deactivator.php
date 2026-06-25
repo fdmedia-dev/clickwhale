@@ -1,6 +1,8 @@
 <?php
 namespace Clickwhale;
 
+use Clickwhale\Admin\SmartDisplays\Clickwhale_Smart_Display_Scheduler;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -24,5 +26,7 @@ class Clickwhale_Deactivator {
      *
      * @since    1.0.0
      */
-    public static function deactivate() {}
+    public static function deactivate(): void {
+        Clickwhale_Smart_Display_Scheduler::unschedule();
+    }
 }

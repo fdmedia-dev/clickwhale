@@ -29,7 +29,7 @@ msgstr "点击鲸鱼"
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php:121
+#: clickwhale.php:128
 #, fuzzy
 msgid "License"
 msgstr "许可证"
@@ -38,7 +38,7 @@ msgstr "许可证"
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:50
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:201
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:378
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:51
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:57
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:53
 msgid "Edit"
 msgstr "编辑"
@@ -49,8 +49,8 @@ msgstr "编辑"
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:190
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:226
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:380
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:61
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:124
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:67
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:130
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:63
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:201
 msgid "Delete"
@@ -59,7 +59,6 @@ msgstr "删除"
 #: includes/Admin/Categories/Clickwhale_Categories_List_Table.php:159
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:159
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:343
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:103
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:177
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:164
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:233
@@ -69,7 +68,7 @@ msgstr "删除"
 #: templates/admin/categories/edit.php:56
 #: templates/admin/linkpages/edit.php:126
 #: templates/admin/links/edit.php:92
-#: templates/admin/smart-displays/edit.php:61
+#: templates/admin/smart-displays/edit.php:109
 #: templates/admin/tracking-codes/edit.php:58
 msgid "Title"
 msgstr "标题"
@@ -82,7 +81,7 @@ msgstr "标题"
 #: templates/admin/linkpages/edit.php:158
 #: templates/admin/links/edit.php:239
 #: templates/admin/links/edit.php:244
-#: templates/admin/smart-displays/edit.php:158
+#: templates/admin/smart-displays/edit.php:215
 #: templates/admin/tracking-codes/edit.php:471
 msgid "Description"
 msgstr "描述"
@@ -99,7 +98,7 @@ msgstr "找不到类别"
 #: includes/Admin/Categories/Clickwhale_Category_Edit.php:79
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:968
 #: includes/Admin/Links/Clickwhale_Link_Edit.php:311
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:360
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:573
 msgid "Please enter title"
 msgstr "请输入标题！"
 
@@ -113,7 +112,7 @@ msgid "Links"
 msgstr "链接"
 
 #: includes/Admin/Clickwhale_Admin.php:108
-#: includes/Clickwhale.php:452
+#: includes/Clickwhale.php:519
 msgid "Add New Link"
 msgstr "添加新链接"
 
@@ -127,12 +126,12 @@ msgid "Categories"
 msgstr "类别"
 
 #: includes/Admin/Clickwhale_Admin.php:110
-#: includes/Clickwhale.php:464
+#: includes/Clickwhale.php:531
 msgid "Add New Category"
 msgstr "添加新类别"
 
 #: includes/Admin/Clickwhale_Admin.php:113
-#: includes/Admin/Clickwhale_Settings.php:575
+#: includes/Admin/Clickwhale_Settings.php:764
 #: pro/includes/admin/statistics/Linkpages.php:28
 #: pro/templates/admin/statistics/statistics.php:21
 #: templates/admin/settings/pro.php:30
@@ -147,7 +146,7 @@ msgid "Link Pages"
 msgstr "链接页面"
 
 #: includes/Admin/Clickwhale_Admin.php:114
-#: includes/Clickwhale.php:476
+#: includes/Clickwhale.php:543
 #, fuzzy
 msgid "Add New Link Page"
 msgstr "添加新链接页面"
@@ -161,7 +160,7 @@ msgid "Tracking Codes"
 msgstr "跟踪代码"
 
 #: includes/Admin/Clickwhale_Admin.php:116
-#: includes/Clickwhale.php:488
+#: includes/Clickwhale.php:555
 #, fuzzy
 msgid "Add New Tracking Code"
 msgstr "添加新跟踪代码"
@@ -173,7 +172,7 @@ msgstr "点击鲸链接"
 
 #: includes/Admin/Clickwhale_Admin.php:192
 #: includes/Admin/Clickwhale_Admin.php:193
-#: includes/Admin/Clickwhale_Admin.php:735
+#: includes/Admin/Clickwhale_Admin.php:742
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:57
 #: templates/admin/settings/settings.php:13
 msgid "Settings"
@@ -187,33 +186,33 @@ msgstr "工具"
 
 #: includes/Admin/Clickwhale_Admin.php:220
 #: includes/Admin/Clickwhale_Admin.php:221
-#: includes/Admin/Clickwhale_Admin.php:560
-#: includes/Admin/Clickwhale_Admin.php:751
+#: includes/Admin/Clickwhale_Admin.php:567
+#: includes/Admin/Clickwhale_Admin.php:758
 msgid "Upgrade to PRO"
 msgstr "升级到专业版"
 
-#: includes/Admin/Clickwhale_Admin.php:544
+#: includes/Admin/Clickwhale_Admin.php:551
 msgid "Need help?"
 msgstr "需要帮助？"
 
-#: includes/Admin/Clickwhale_Admin.php:568
+#: includes/Admin/Clickwhale_Admin.php:575
 #, fuzzy
 msgid "Available only in PRO version"
 msgstr "仅适用于专业版"
 
-#: includes/Admin/Clickwhale_Admin.php:602
+#: includes/Admin/Clickwhale_Admin.php:609
 #, fuzzy
 msgid "Upgrade to ClickWhale Pro"
 msgstr "升级到 ClickWhale Pro"
 
-#: includes/Admin/Clickwhale_Admin.php:605
+#: includes/Admin/Clickwhale_Admin.php:612
 #: templates/admin/settings/pro.php:29
 #: templates/admin/settings/pro.php:30
 #, fuzzy
 msgid "Detailed Statistics"
 msgstr "详细统计数据"
 
-#: includes/Admin/Clickwhale_Admin.php:606
+#: includes/Admin/Clickwhale_Admin.php:613
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:305
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:39
 #: templates/admin/settings/pro.php:34
@@ -222,305 +221,306 @@ msgstr "详细统计数据"
 msgid "Keyword Auto Linker"
 msgstr "关键词自动链接器"
 
-#: includes/Admin/Clickwhale_Admin.php:607
+#: includes/Admin/Clickwhale_Admin.php:614
 #: templates/admin/settings/pro.php:44
 #: templates/admin/settings/pro.php:45
 #, fuzzy
 msgid "UTM Campaign Tracking"
 msgstr "UTM 活动跟踪"
 
-#: includes/Admin/Clickwhale_Admin.php:608
+#: includes/Admin/Clickwhale_Admin.php:615
 #, fuzzy
 msgid "E-Commerce Conversion Tracking"
 msgstr "电子商务转化跟踪"
 
-#: includes/Admin/Clickwhale_Admin.php:610
+#: includes/Admin/Clickwhale_Admin.php:617
 #, fuzzy
 msgid "Advanced Customization Options"
 msgstr "高级定制选项"
 
-#: includes/Admin/Clickwhale_Admin.php:612
+#: includes/Admin/Clickwhale_Admin.php:619
 #, fuzzy
 msgid "More Blocks for Link Pages"
 msgstr "链接页面的更多区块"
 
-#: includes/Admin/Clickwhale_Admin.php:614
+#: includes/Admin/Clickwhale_Admin.php:621
 #: templates/admin/settings/pro.php:76
 #: templates/admin/settings/pro.php:77
 #, fuzzy
 msgid "Remove Plugin Credits"
 msgstr "删除插件积分"
 
-#: includes/Admin/Clickwhale_Admin.php:620
+#: includes/Admin/Clickwhale_Admin.php:627
 msgid "Upgrade Now"
 msgstr "现在升级"
 
-#: includes/Admin/Clickwhale_Admin.php:634
+#: includes/Admin/Clickwhale_Admin.php:641
 msgid "Plugin Documentation"
 msgstr "插件文档"
 
-#: includes/Admin/Clickwhale_Admin.php:642
+#: includes/Admin/Clickwhale_Admin.php:649
 #, fuzzy
 msgid "How-To Shorten Links & Create Redirects"
 msgstr "如何缩短链接和创建重定向"
 
-#: includes/Admin/Clickwhale_Admin.php:650
+#: includes/Admin/Clickwhale_Admin.php:657
 #, fuzzy
 msgid "How-To Import Links"
 msgstr "如何导入链接"
 
-#: includes/Admin/Clickwhale_Admin.php:658
+#: includes/Admin/Clickwhale_Admin.php:665
 #, fuzzy
 msgid "How-To Use the Keyword Auto Linker"
 msgstr "如何使用关键字自动链接器"
 
-#: includes/Admin/Clickwhale_Admin.php:666
+#: includes/Admin/Clickwhale_Admin.php:673
 #, fuzzy
 msgid "Creating Your First Link Page"
 msgstr "创建第一个链接页面"
 
-#: includes/Admin/Clickwhale_Admin.php:673
+#: includes/Admin/Clickwhale_Admin.php:680
 #, fuzzy
 msgid "How-To Add Google Tag Manager To WordPress with ClickWhale"
 msgstr "如何使用 ClickWhale 在 WordPress 中添加 Google 标签管理器"
 
-#: includes/Admin/Clickwhale_Admin.php:681
+#: includes/Admin/Clickwhale_Admin.php:688
 msgid "View all Articles"
 msgstr "查看所有文章"
 
-#: includes/Admin/Clickwhale_Admin.php:775
+#: includes/Admin/Clickwhale_Admin.php:782
 msgid "Documentation"
 msgstr "文档"
 
-#: includes/Admin/Clickwhale_Admin.php:776
+#: includes/Admin/Clickwhale_Admin.php:783
 #, fuzzy
 msgid "Rate ClickWhale on WordPress.org"
 msgstr "在 WordPress.org 上评价 ClickWhale"
 
-#: includes/Admin/Clickwhale_Admin.php:820
-#: includes/Admin/Clickwhale_Admin.php:840
-#: includes/Admin/Clickwhale_Admin.php:920
+#: includes/Admin/Clickwhale_Admin.php:827
+#: includes/Admin/Clickwhale_Admin.php:847
+#: includes/Admin/Clickwhale_Admin.php:927
 msgid "Copied!"
 msgstr "复制！"
 
-#: includes/Admin/Clickwhale_Ajax.php:119
+#: includes/Admin/Clickwhale_Ajax.php:120
 #, fuzzy
 msgid "Nothing to migrate"
 msgstr "无须迁移"
 
-#: includes/Admin/Clickwhale_Ajax.php:155
+#: includes/Admin/Clickwhale_Ajax.php:156
 #, fuzzy
 msgid "Successfully deleted! Page will be reloaded..."
 msgstr "成功删除！页面将重新加载..."
 
-#: includes/Admin/Clickwhale_Ajax.php:176
+#: includes/Admin/Clickwhale_Ajax.php:177
 #, fuzzy
 msgid "All statistic has been reset"
 msgstr "所有统计数据已重置"
 
-#: includes/Admin/Clickwhale_Ajax.php:193
+#: includes/Admin/Clickwhale_Ajax.php:194
 #, fuzzy
 msgid "All plugin tables has been reset"
 msgstr "已重置所有插件表"
 
-#: includes/Admin/Clickwhale_Ajax.php:221
+#: includes/Admin/Clickwhale_Ajax.php:222
 #, fuzzy
 msgid "All plugin settings has been restored"
 msgstr "已恢复所有插件设置"
 
-#: includes/Admin/Clickwhale_Ajax.php:778
-#: includes/Admin/Clickwhale_Ajax.php:792
-#: includes/Admin/Clickwhale_Ajax.php:889
-#: includes/Admin/Clickwhale_Ajax.php:899
+#: includes/Admin/Clickwhale_Ajax.php:779
+#: includes/Admin/Clickwhale_Ajax.php:793
+#: includes/Admin/Clickwhale_Ajax.php:890
+#: includes/Admin/Clickwhale_Ajax.php:900
 #: includes/Admin/Import/Clickwhale_Import.php:83
 #: includes/Admin/Import/Clickwhale_Import.php:121
 #, fuzzy
 msgid "Please, select .csv file"
 msgstr "请选择 .csv 文件"
 
-#: includes/Admin/Clickwhale_Ajax.php:851
+#: includes/Admin/Clickwhale_Ajax.php:852
 msgid "Column name"
 msgstr "列名称"
 
-#: includes/Admin/Clickwhale_Ajax.php:852
+#: includes/Admin/Clickwhale_Ajax.php:853
 msgid "Map to field"
 msgstr "映射到字段"
 
-#: includes/Admin/Clickwhale_Ajax.php:858
+#: includes/Admin/Clickwhale_Ajax.php:859
 msgid "Do not import"
 msgstr "不导入"
 
-#: includes/Admin/Clickwhale_Ajax.php:869
+#: includes/Admin/Clickwhale_Ajax.php:870
 msgid "Example:"
 msgstr "例如："
 
-#: includes/Admin/Clickwhale_Ajax.php:909
+#: includes/Admin/Clickwhale_Ajax.php:910
 #: includes/Admin/Links/Clickwhale_Links_Bulk_Edit.php:84
 #: pro/includes/admin/ContentTemplates/Clickwhale_Pro_Link_Content_Templates.php:100
 #: templates/admin/links/edit.php:37
 msgid "Default"
 msgstr "默认"
 
-#: includes/Admin/Clickwhale_Ajax.php:930
+#: includes/Admin/Clickwhale_Ajax.php:931
 #, fuzzy
 msgid "Error opening file!"
 msgstr "打开文件出错！"
 
-#: includes/Admin/Clickwhale_Ajax.php:1063
+#: includes/Admin/Clickwhale_Ajax.php:1064
 msgid "Nothing to import!"
 msgstr "没什么可导入的！"
 
-#: includes/Admin/Clickwhale_Ajax.php:1119
+#: includes/Admin/Clickwhale_Ajax.php:1120
 msgid "Bad request"
 msgstr "错误的请求"
 
-#: includes/Admin/Clickwhale_Ajax.php:1195
-#: includes/Admin/Clickwhale_Ajax.php:1205
+#: includes/Admin/Clickwhale_Ajax.php:1196
+#: includes/Admin/Clickwhale_Ajax.php:1206
 msgid "Nothing to export"
 msgstr "没有可以输出的文件"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:119
+#: includes/Admin/Clickwhale_Instance_Edit.php:132
 #, fuzzy
 msgid "You attempted to edit an item that does not exist. Perhaps it was deleted?"
 msgstr "您试图编辑一个不存在的项目。也许它已被删除？"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:120
+#: includes/Admin/Clickwhale_Instance_Edit.php:133
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1134
 msgid "Error"
 msgstr "错误"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:122
+#: includes/Admin/Clickwhale_Instance_Edit.php:135
 msgid "Back"
 msgstr "返回"
 
 #. translators: %s: item title
-#: includes/Admin/Clickwhale_Instance_Edit.php:163
+#: includes/Admin/Clickwhale_Instance_Edit.php:176
 #, fuzzy,php-format
 msgid "%s was successfully saved"
 msgstr "已成功保存 [0］"
 
 #. translators: %s: item title
-#: includes/Admin/Clickwhale_Instance_Edit.php:172
+#: includes/Admin/Clickwhale_Instance_Edit.php:185
 #, fuzzy,php-format
 msgid "%s was successfully updated"
 msgstr "%s 已成功更新"
 
-#: includes/Admin/Clickwhale_Settings.php:130
+#: includes/Admin/Clickwhale_Settings.php:154
 msgid "Access Level"
 msgstr "访问级别"
 
-#: includes/Admin/Clickwhale_Settings.php:147
+#: includes/Admin/Clickwhale_Settings.php:171
 msgid "Hide Admin Bar Menu"
 msgstr "隐藏管理栏菜单"
 
-#: includes/Admin/Clickwhale_Settings.php:156
+#: includes/Admin/Clickwhale_Settings.php:180
 #, fuzzy
 msgid "Check to hide Clickwhale quick menu from the admin bar."
 msgstr "勾选从管理栏中隐藏 Clickwhale 快速菜单。"
 
-#: includes/Admin/Clickwhale_Settings.php:365
+#: includes/Admin/Clickwhale_Settings.php:188
 #, fuzzy
 msgid "Tracking Duration"
 msgstr "跟踪时间"
 
-#: includes/Helpers/Helper.php:832
+#: includes/Helpers/Helper.php:848
 msgid "30 days"
 msgstr "30天"
 
-#: includes/Admin/Clickwhale_Settings.php:379
+#: includes/Admin/Clickwhale_Settings.php:202
 msgid "Disable Tracking"
 msgstr "禁用跟踪"
 
-#: includes/Admin/Clickwhale_Settings.php:388
+#: includes/Admin/Clickwhale_Settings.php:211
 #, fuzzy
 msgid "Check to disable tracking of views and clicks."
 msgstr "选中以禁用浏览和点击跟踪。"
 
-#: includes/Admin/Clickwhale_Settings.php:393
+#: includes/Admin/Clickwhale_Settings.php:216
 #: templates/admin/tracking-codes/edit.php:455
 msgid "Exclude User Roles"
 msgstr "排除用户角色"
 
-#: includes/Admin/Clickwhale_Settings.php:403
+#: includes/Admin/Clickwhale_Settings.php:226
 #, fuzzy
 msgid "Check the user roles that should be excluded from tracking."
 msgstr "选中应从跟踪中排除的用户角色。"
 
-#: includes/Admin/Clickwhale_Settings.php:411
+#: includes/Admin/Clickwhale_Settings.php:234
 #: templates/admin/links/edit.php:173
 msgid "Redirection Type"
 msgstr "重定向类型"
 
-#: includes/Admin/Clickwhale_Settings.php:421
+#: includes/Admin/Clickwhale_Settings.php:244
 #, fuzzy
 msgid "Set default redirection type which will be used for new links."
 msgstr "设置用于新链接的默认重定向类型。"
 
-#: includes/Admin/Clickwhale_Settings.php:426
+#: includes/Admin/Clickwhale_Settings.php:249
 #: includes/Admin/Links/Clickwhale_Links_Bulk_Edit.php:89
 #: pro/includes/admin/ContentTemplates/Clickwhale_Pro_Link_Content_Templates.php:97
 #: templates/admin/links/edit.php:188
 msgid "Link Target"
 msgstr "链接目标"
 
-#: includes/Admin/Clickwhale_Settings.php:436
+#: includes/Admin/Clickwhale_Settings.php:259
 #, fuzzy
 msgid "Set default target which will be used for all links."
 msgstr "设置默认目标，所有链接都将使用该目标。"
 
-#: includes/Admin/Clickwhale_Settings.php:441
+#: includes/Admin/Clickwhale_Settings.php:264
 msgid "Nofollow Links"
 msgstr "Nofollow Links"
 
-#: includes/Admin/Clickwhale_Settings.php:450
+#: includes/Admin/Clickwhale_Settings.php:273
 #, fuzzy
 msgid "Check to mark links as nofollow & noindex by default."
 msgstr "勾选默认将链接标记为 nofollow 和 noindex。"
 
-#: includes/Admin/Clickwhale_Settings.php:455
+#: includes/Admin/Clickwhale_Settings.php:278
 #, fuzzy
 msgid "Sponsored Links"
 msgstr "赞助商链接"
 
-#: includes/Admin/Clickwhale_Settings.php:464
+#: includes/Admin/Clickwhale_Settings.php:287
 #, fuzzy
 msgid "Check to mark links as sponsored by default."
 msgstr "勾选默认将链接标记为赞助商链接。"
 
-#: includes/Admin/Clickwhale_Settings.php:465
+#: includes/Admin/Clickwhale_Settings.php:288
 #, fuzzy
 msgid "Recommended for affiliate links."
 msgstr "推荐使用联盟链接。"
 
-#: includes/Admin/Clickwhale_Settings.php:470
+#: includes/Admin/Clickwhale_Settings.php:293
 msgid "Link Prefix"
 msgstr "链接前缀"
 
-#: includes/Admin/Clickwhale_Settings.php:482
+#: includes/Admin/Clickwhale_Settings.php:305
 #, fuzzy
 msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "在这里，您可以输入一个前缀，创建新链接时会预输入该前缀。例如：<em>link</em>.<br><strong>重要提示：</strong>如果更改前缀，将<u>不会</u>影响已存在的链接。"
 
-#: includes/Admin/Clickwhale_Settings.php:494
+#: includes/Admin/Clickwhale_Settings.php:317
 #, fuzzy
 msgid "Random Slug"
 msgstr "随机鼻涕虫"
 
-#: includes/Admin/Clickwhale_Settings.php:504
+#: includes/Admin/Clickwhale_Settings.php:327
 #, fuzzy
 msgid "Check to <u>not</u> suggest a random link slug when creating a new link."
 msgstr "勾选在创建新链接时<u>不</u>建议使用随机链接标题。"
 
-#: includes/Admin/Clickwhale_Settings.php:567
+#: includes/Admin/Clickwhale_Settings.php:756
 #: includes/Admin/Links/Clickwhale_Link_Edit.php:53
 #: templates/admin/linkpages/edit.php:120
 msgid "General"
 msgstr "常规"
 
-#: includes/Admin/Clickwhale_Settings.php:571
+#: includes/Admin/Clickwhale_Settings.php:760
 msgid "Tracking"
 msgstr "跟踪"
 
-#: includes/Admin/Clickwhale_Settings.php:579
+#: includes/Admin/Clickwhale_Settings.php:768
 #: templates/admin/settings/pro.php:30
 #: templates/admin/settings/pro.php:35
 #: templates/admin/settings/pro.php:45
@@ -620,7 +620,7 @@ msgstr "复制链接"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1624
 #: pro/includes/admin/statistics/Links.php:26
 #: templates/admin/links/edit.php:48
-#: templates/admin/smart-displays/edit.php:135
+#: templates/admin/smart-displays/edit.php:193
 msgid "Link"
 msgstr "链接"
 
@@ -716,19 +716,21 @@ msgstr "选择项目"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:521
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:556
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:223
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:394
 msgid "Select Image"
 msgstr "选择图像"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:625
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:254
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:425
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:895
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:945
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:852
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:477
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:827
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1818
 #: templates/admin/linkpages/edit.php:216
 #: templates/admin/linkpages/edit.php:642
-#: templates/admin/smart-displays/edit.php:118
+#: templates/admin/smart-displays/edit.php:177
 msgid "Upload image"
 msgstr "上传图片"
 
@@ -997,48 +999,48 @@ msgstr "选择代码位置"
 msgid "Select"
 msgstr "选择"
 
-#: includes/Clickwhale.php:327
+#: includes/Clickwhale.php:339
 msgid "General Options"
 msgstr "常规选项"
 
-#: includes/Clickwhale.php:328
+#: includes/Clickwhale.php:340
 #, fuzzy
 msgid "Set up ClickWhale plugin global options."
 msgstr "设置 ClickWhale 插件的全局选项。"
 
-#: includes/Clickwhale.php:335
+#: includes/Clickwhale.php:347
 msgid "Tracking Options"
 msgstr "跟踪选项"
 
-#: includes/Clickwhale.php:336
+#: includes/Clickwhale.php:348
 #, fuzzy
 msgid "Set up ClickWhale plugin global link tracking options."
 msgstr "设置 ClickWhale 插件的全局链接跟踪选项。"
 
-#: includes/Clickwhale.php:350
+#: includes/Clickwhale.php:362
 #, fuzzy
 msgid "Link Manager Options"
 msgstr "链接管理器选项"
 
-#: includes/Clickwhale.php:351
+#: includes/Clickwhale.php:363
 #, fuzzy
 msgid "Global settings for ClickWhale Links."
 msgstr "ClickWhale 链接的全局设置。"
 
-#: includes/Clickwhale.php:447
+#: includes/Clickwhale.php:514
 msgid "New Link"
 msgstr "新链接"
 
-#: includes/Clickwhale.php:459
+#: includes/Clickwhale.php:526
 msgid "New Category"
 msgstr "新分类"
 
-#: includes/Clickwhale.php:471
+#: includes/Clickwhale.php:538
 #, fuzzy
 msgid "New Link Page"
 msgstr "新链接页面"
 
-#: includes/Clickwhale.php:483
+#: includes/Clickwhale.php:550
 #, fuzzy
 msgid "New Tracking Code"
 msgstr "新跟踪代码"
@@ -1119,13 +1121,13 @@ msgstr "您可以选择图像、图标或表情符号。不能同时激活多个
 #: templates/admin/linkpages/edit.php:220
 #: templates/admin/linkpages/edit.php:637
 #: templates/admin/linkpages/edit.php:646
-#: templates/admin/smart-displays/edit.php:109
-#: templates/admin/smart-displays/edit.php:122
+#: templates/admin/smart-displays/edit.php:168
+#: templates/admin/smart-displays/edit.php:181
 msgid "Remove image"
 msgstr "删除图像"
 
-#: includes/Admin/Clickwhale_Admin.php:1017
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:188
+#: includes/Admin/Clickwhale_Admin.php:1024
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:359
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:861
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:342
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1824
@@ -1146,48 +1148,48 @@ msgstr "编辑链接页面"
 
 #. translators: %s: item type/name (e.g., Link, Category, Link Page)
 #. translators: type of data: link, linkpage, category
-#: includes/Helpers/Helper.php:260
+#: includes/Helpers/Helper.php:272
 #: pro/includes/admin/statistics/Statistics_Abstract.php:360
 #, php-format
 msgid "Edit %s"
 msgstr "编辑 %s"
 
 #. translators: %s: item type/name (e.g., Link, Category, Link Page)
-#: includes/Helpers/Helper.php:266
+#: includes/Helpers/Helper.php:278
 #, php-format
 msgid "Add %s"
 msgstr "添加 %s"
 
-#: includes/Helpers/Helper.php:277
+#: includes/Helpers/Helper.php:289
 msgid "Back to list"
 msgstr "返回列表"
 
-#: includes/Helpers/Helper.php:291
+#: includes/Helpers/Helper.php:303
 msgid "Add new"
 msgstr "添加新的"
 
-#: includes/Helpers/Helper.php:299
+#: includes/Helpers/Helper.php:311
 msgid "View page"
 msgstr "查看页面"
 
-#: includes/Helpers/Helper.php:614
+#: includes/Helpers/Helper.php:630
 #, fuzzy
 msgid "Unlimited with"
 msgstr "无限制"
 
 #. translators: %d: current user ID
-#: includes/Helpers/Helper.php:912
+#: includes/Helpers/Helper.php:928
 #, fuzzy,php-format
 msgid "Security check failed (possible CSRF) for user ID %d"
 msgstr "用户 ID %d 的安全检查失败（可能是 CSRF］"
 
 #. translators: %s: admin page slug
-#: includes/Helpers/Helper.php:916
+#: includes/Helpers/Helper.php:932
 #, fuzzy,php-format
 msgid "on page: %s"
 msgstr "页上：%s"
 
-#: includes/Helpers/Helper.php:921
+#: includes/Helpers/Helper.php:937
 #, fuzzy
 msgid "Security check failed. Please contact the ClickWhale customer support."
 msgstr "安全检查失败。请联系 ClickWhale 客户支持。"
@@ -1253,12 +1255,12 @@ msgstr "关键词自动链接器选项"
 msgid "Global settings for the Keyword Auto Linker."
 msgstr "关键字自动链接器的全局设置。"
 
-#: includes/Clickwhale.php:343
+#: includes/Clickwhale.php:355
 #, fuzzy
 msgid "Link Pages Options"
 msgstr "链接页面选项"
 
-#: includes/Clickwhale.php:344
+#: includes/Clickwhale.php:356
 #, fuzzy
 msgid "Global settings for the Link Pages."
 msgstr "链接页面的全局设置。"
@@ -1310,12 +1312,12 @@ msgstr "例如 %s"
 msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
 msgstr "如果您是我们<a href=\"%s\" target=\"_blank\">联盟计划</a>的会员，请输入您的个人联盟链接。<br>，它将自动用于您链接页面的页脚。"
 
-#: includes/Admin/Clickwhale_Settings.php:532
+#: includes/Admin/Clickwhale_Settings.php:354
 msgid "Credits"
 msgstr "积分"
 
 #. translators: 1: Affiliate program URL, 2: Settings page URL
-#: includes/Admin/Clickwhale_Settings.php:516
+#: includes/Admin/Clickwhale_Settings.php:339
 #, fuzzy,php-format
 msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
 msgstr "作为我们<a href=\"%1$s\" target=\"_blank\">联盟计划</a>的成员，您可以在<a href=\"%2$s\">这里的</a>设置中输入您的联盟链接，<br>，然后在显示积分时使用该链接。"
@@ -1466,7 +1468,7 @@ msgstr "表单"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:653
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1612
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1795
-#: templates/admin/smart-displays/edit.php:97
+#: templates/admin/smart-displays/edit.php:156
 #, fuzzy
 msgid "Image"
 msgstr "图片"
@@ -2181,7 +2183,7 @@ msgstr "页面背景"
 msgid "Link Page Links Customization Options"
 msgstr "链接页面链接自定义选项"
 
-#: includes/Admin/Clickwhale_Settings.php:243
+#: includes/Admin/Clickwhale_Settings.php:446
 #: templates/admin/linkpages/edit.php:420
 msgid "Background Color"
 msgstr "背景颜色"
@@ -2191,7 +2193,7 @@ msgstr "背景颜色"
 msgid "Set link background color (normal state)"
 msgstr "设置链接背景颜色（正常状态）"
 
-#: includes/Admin/Clickwhale_Settings.php:260
+#: includes/Admin/Clickwhale_Settings.php:462
 #: templates/admin/linkpages/edit.php:434
 #, fuzzy
 msgid "Background Color (hover/active)"
@@ -2202,7 +2204,7 @@ msgstr "背景颜色（悬停/激活）"
 msgid "Set link background color (hover/active)"
 msgstr "设置链接背景颜色（悬停/激活）"
 
-#: includes/Admin/Clickwhale_Settings.php:209
+#: includes/Admin/Clickwhale_Settings.php:414
 #: templates/admin/linkpages/edit.php:448
 msgid "Text Color"
 msgstr "文本颜色"
@@ -2212,7 +2214,7 @@ msgstr "文本颜色"
 msgid "Set link text color (normal state)"
 msgstr "设置链接文本颜色（正常状态）"
 
-#: includes/Admin/Clickwhale_Settings.php:226
+#: includes/Admin/Clickwhale_Settings.php:430
 #: templates/admin/linkpages/edit.php:462
 #, fuzzy
 msgid "Text Color (hover/active)"
@@ -2299,7 +2301,7 @@ msgid "View live preview"
 msgstr "查看实时预览"
 
 #: templates/admin/linkpages/edit.php:687
-#: templates/admin/smart-displays/edit.php:241
+#: templates/admin/smart-displays/edit.php:426
 #: templates/admin/tracking-codes/edit.php:512
 msgid "Save"
 msgstr "保存"
@@ -2615,12 +2617,12 @@ msgstr "跟踪代码的可选注释。"
 msgid "Enable Tracking Code"
 msgstr "启用跟踪代码"
 
-#: includes/Admin/Clickwhale_Settings.php:141
+#: includes/Admin/Clickwhale_Settings.php:165
 msgid "Decide who can access plugin admin pages."
 msgstr "决定谁可以访问插件管理页面。"
 
 #. translators: %s: review link URL
-#: includes/Admin/Clickwhale_Admin.php:521
+#: includes/Admin/Clickwhale_Admin.php:528
 #, php-format
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "你喜欢 ClickWhale 吗？那么请 <a href=\"%s\" target=\"_blank\">在这里留下评论</a>"
@@ -2644,7 +2646,7 @@ msgid "Edit Tracking Code"
 msgstr "编辑跟踪代码"
 
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
-#: includes/Admin/Clickwhale_Instance_Edit.php:206
+#: includes/Admin/Clickwhale_Instance_Edit.php:219
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "编辑 \"%1$s\" %2$s"
@@ -2828,6 +2830,8 @@ msgstr "查看帖子"
 msgid "Show all"
 msgstr "显示全部"
 
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:697
+#: includes/front/SmartDisplays/Clickwhale_Smart_Display_Template.php:175
 #: includes/Helpers/Links_Helper.php:233
 msgid "Show less"
 msgstr "显示较少"
@@ -2849,25 +2853,25 @@ msgid "The keyword you entered: <b>%s</b> has already been added to this link. P
 msgstr "您输入的关键字：<b>%s</b>已添加到此链接中。请重命名或删除重复项。"
 
 #. translators: %s: link title
-#: includes/Admin/Clickwhale_Ajax.php:1096
+#: includes/Admin/Clickwhale_Ajax.php:1097
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "链接 <strong>&quot;%s&quot;</strong> 成功导入！"
 
 #. translators: %s: link title
-#: includes/Admin/Clickwhale_Ajax.php:1102
+#: includes/Admin/Clickwhale_Ajax.php:1103
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>错误！</strong> 链接 <strong>&quot;%s&quot;</strong> 未导入！"
 
-#: includes/Admin/Clickwhale_Ajax.php:1155
+#: includes/Admin/Clickwhale_Ajax.php:1156
 msgid "No valid columns selected"
 msgstr "未选择有效的列"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:516
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:563
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:649
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:218
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:389
 msgid "Insert Image"
 msgstr "插入图片"
 
@@ -3002,16 +3006,16 @@ msgid "This slug is already used in %1$s (%2$s ID: %3$d)"
 msgstr "此别名已在 %1$s 中使用（%2$s ID: %3$d）"
 
 #. translators: %s:the error message
-#: includes/Admin/Clickwhale_Admin.php:712
+#: includes/Admin/Clickwhale_Admin.php:719
 #, php-format
 msgid "Something went wrong: %s"
 msgstr "出现错误：%s"
 
-#: includes/Admin/Clickwhale_Ajax.php:786
+#: includes/Admin/Clickwhale_Ajax.php:787
 msgid "Invalid upload."
 msgstr "无效的上传。"
 
-#: includes/Admin/Clickwhale_Settings.php:541
+#: includes/Admin/Clickwhale_Settings.php:363
 msgid "Check to show Link Page credits."
 msgstr "勾选以显示链接页面的版权信息。"
 
@@ -3087,7 +3091,7 @@ msgid "Currently, a maximum of %1$d category can be added."
 msgid_plural "Currently, a maximum of %1$d categories can be added."
 msgstr[0] "目前最多可以添加 %1$d 个分类。"
 
-#: includes/Helpers/Helper.php:623
+#: includes/Helpers/Helper.php:639
 msgid "ClickWhale PRO"
 msgstr "ClickWhale PRO"
 
@@ -3156,12 +3160,12 @@ msgid "Check to replace keywords inside ACF Fields (text, textarea, WYSIWYG, rep
 msgstr "检查以在ACF字段（文本、文本区域、所见即所得、重复器、灵活内容）中替换关键词。"
 
 #: includes/Admin/Clickwhale_Admin.php:111
-#: includes/Admin/Clickwhale_Settings.php:583
+#: includes/Admin/Clickwhale_Settings.php:772
 msgid "Smart Displays"
 msgstr "智能显示器"
 
 #: includes/Admin/Clickwhale_Admin.php:112
-#: includes/Clickwhale.php:500
+#: includes/Clickwhale.php:567
 msgid "Add New Smart Display"
 msgstr "添加新的智能显示器"
 
@@ -3169,111 +3173,111 @@ msgstr "添加新的智能显示器"
 msgid "Edit Smart Display"
 msgstr "编辑智能显示器"
 
-#: includes/Admin/Clickwhale_Admin.php:1018
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:189
+#: includes/Admin/Clickwhale_Admin.php:1025
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:360
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:343
 msgid "Reset color"
 msgstr "重置颜色"
 
-#: includes/Admin/Clickwhale_Settings.php:166
+#: includes/Admin/Clickwhale_Settings.php:374
 msgid "Disclosure Text"
 msgstr "披露文本"
 
-#: includes/Admin/Clickwhale_Settings.php:175
+#: includes/Admin/Clickwhale_Settings.php:383
 msgid "Set default disclosure text"
 msgstr "设置默认披露文本"
 
-#: includes/Admin/Clickwhale_Settings.php:181
-#: includes/Clickwhale.php:394
+#: includes/Admin/Clickwhale_Settings.php:388
+#: includes/Clickwhale.php:402
 msgid "Primary Button"
 msgstr "主按钮"
 
-#: includes/Admin/Clickwhale_Settings.php:193
+#: includes/Admin/Clickwhale_Settings.php:399
 msgid "Text"
 msgstr "文本"
 
-#: includes/Admin/Clickwhale_Settings.php:203
+#: includes/Admin/Clickwhale_Settings.php:409
 msgid "Set default text for primary button"
 msgstr "设置主按钮的默认文本"
 
-#: includes/Admin/Clickwhale_Settings.php:220
+#: includes/Admin/Clickwhale_Settings.php:425
 msgid "Set default text color (normal state) for primary button"
 msgstr "设置主按钮的默认文本颜色（正常状态）"
 
-#: includes/Admin/Clickwhale_Settings.php:237
+#: includes/Admin/Clickwhale_Settings.php:441
 msgid "Set default text color (hover/active) for primary button"
 msgstr "设置主按钮的默认文本颜色（悬停/活动）"
 
-#: includes/Admin/Clickwhale_Settings.php:254
+#: includes/Admin/Clickwhale_Settings.php:457
 msgid "Set default background color (normal state) for primary button"
 msgstr "设置主按钮的默认背景颜色（正常状态）"
 
-#: includes/Admin/Clickwhale_Settings.php:271
+#: includes/Admin/Clickwhale_Settings.php:473
 msgid "Set default background color (hover/active) for primary button"
 msgstr "设置主按钮的默认背景颜色（悬停/活动）"
 
-#: includes/Admin/Clickwhale_Settings.php:277
+#: includes/Admin/Clickwhale_Settings.php:478
 msgid "Border Width"
 msgstr "边框宽度"
 
-#: includes/Admin/Clickwhale_Settings.php:289
+#: includes/Admin/Clickwhale_Settings.php:490
 msgid "Set default border width for primary button"
 msgstr "设置主按钮的默认边框宽度"
 
-#: includes/Admin/Clickwhale_Settings.php:295
+#: includes/Admin/Clickwhale_Settings.php:495
 msgid "Border Style"
 msgstr "边框样式"
 
-#: includes/Admin/Clickwhale_Settings.php:305
+#: includes/Admin/Clickwhale_Settings.php:505
 msgid "Set default border style for primary button"
 msgstr "设置主按钮的默认边框样式"
 
-#: includes/Admin/Clickwhale_Settings.php:311
+#: includes/Admin/Clickwhale_Settings.php:510
 msgid "Border Radius"
 msgstr "边框半径"
 
-#: includes/Admin/Clickwhale_Settings.php:323
+#: includes/Admin/Clickwhale_Settings.php:522
 msgid "Set default border radius for primary button"
 msgstr "设置主按钮的默认边框半径"
 
-#: includes/Admin/Clickwhale_Settings.php:329
+#: includes/Admin/Clickwhale_Settings.php:527
 msgid "Border Color"
 msgstr "边框颜色"
 
-#: includes/Admin/Clickwhale_Settings.php:340
+#: includes/Admin/Clickwhale_Settings.php:538
 msgid "Set default border color (normal state) for primary button"
 msgstr "设置主按钮的默认边框颜色（正常状态）"
 
-#: includes/Admin/Clickwhale_Settings.php:346
+#: includes/Admin/Clickwhale_Settings.php:543
 msgid "Border Color (hover/active)"
 msgstr "边框颜色（悬停/活动）"
 
-#: includes/Admin/Clickwhale_Settings.php:357
+#: includes/Admin/Clickwhale_Settings.php:554
 msgid "Set default border color (hover/active) for primary button"
 msgstr "设置主按钮的默认边框颜色（悬停/活动）"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:82
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:88
 msgid "Copy Shortcode"
 msgstr "复制短代码"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:104
-#: templates/admin/smart-displays/edit.php:84
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:110
+#: templates/admin/smart-displays/edit.php:143
 msgid "Shortcode"
 msgstr "短代码"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:237
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:251
 msgid "No Smart Displays Found"
 msgstr "未找到智能显示器"
 
-#: includes/Clickwhale.php:362
+#: includes/Clickwhale.php:375
 msgid "Smart Displays Options"
 msgstr "智能显示器选项"
 
-#: includes/Clickwhale.php:363
+#: includes/Clickwhale.php:376
 msgid "Global settings for the Smart Displays."
 msgstr "智能显示器的全局设置。"
 
-#: includes/Clickwhale.php:495
+#: includes/Clickwhale.php:562
 msgid "New Smart Display"
 msgstr "新的智能显示器"
 
@@ -3282,66 +3286,54 @@ msgstr "新的智能显示器"
 msgid "Currently, a maximum of %d smart displays can be added."
 msgstr "目前最多可以添加 %d 个智能显示器。"
 
-#: templates/admin/smart-displays/edit.php:33
+#: templates/admin/smart-displays/edit.php:53
 #: assets/admin/js/blocks/cw-smart-display-block.js:107
 #: assets/admin/js/blocks/cw-smart-display-block.js:132
 #: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr "智能显示器"
 
-#: templates/admin/smart-displays/edit.php:57
+#: templates/admin/smart-displays/edit.php:84
 msgid "Smart Display Settings"
 msgstr "智能显示器设置"
 
-#: templates/admin/smart-displays/edit.php:72
+#: templates/admin/smart-displays/edit.php:120
 msgid "Smart Display Title"
 msgstr "智能显示器标题"
 
-#: templates/admin/smart-displays/edit.php:83
+#: templates/admin/smart-displays/edit.php:142
 msgid "Copy shortcode"
 msgstr "复制短代码"
 
-#: templates/admin/smart-displays/edit.php:130
-msgid "Please use a ratio of 1:1"
-msgstr "请使用 1:1 的比例"
-
-#: templates/admin/smart-displays/edit.php:142
+#: templates/admin/smart-displays/edit.php:200
 msgid "Select Link"
 msgstr "选择链接"
 
-#: templates/admin/smart-displays/edit.php:163
+#: templates/admin/smart-displays/edit.php:216
 msgid "Paste your content here"
 msgstr "在此处粘贴您的内容"
 
-#: templates/admin/smart-displays/edit.php:169
-msgid "Title and Image as Link"
-msgstr "标题和图像作为链接"
-
-#: templates/admin/smart-displays/edit.php:174
-msgid "Should the title and image be shown as a link?"
-msgstr "标题和图像是否应显示为链接？"
-
-#: templates/admin/smart-displays/edit.php:180
+#: templates/admin/smart-displays/edit.php:236
 msgid "Primary Button Text"
 msgstr "主按钮文本"
 
-#: templates/admin/smart-displays/edit.php:187
+#: templates/admin/smart-displays/edit.php:243
 msgid "Set primary button text (leave blank to use default value)"
 msgstr "设置主按钮文本（留空以使用默认值）"
 
-#: templates/admin/smart-displays/edit.php:193
+#: templates/admin/smart-displays/edit.php:249
 msgid "Price"
 msgstr "价格"
 
-#: templates/admin/smart-displays/edit.php:199
+#: templates/admin/smart-displays/edit.php:255
 msgid "e.g. $1999.99 or 1999.99 USD"
 msgstr "例如 $1999.99 或 1999.99 美元"
 
-#: templates/admin/smart-displays/edit.php:200
+#: templates/admin/smart-displays/edit.php:256
 msgid "Set price (leave blank to omit)"
 msgstr "设置价格（留空以省略）"
 
-#: templates/admin/smart-displays/edit.php:209
+#: templates/admin/smart-displays/edit.php:382
 msgid "Smart Display Preview"
 msgstr "智能显示器预览"
 
@@ -3364,3 +3356,274 @@ msgstr "选择一个智能显示器以嵌入此页面。"
 #: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr "未找到智能显示器。请先创建一个。"
+
+#: includes/Admin/Clickwhale_Admin.php:349
+#: includes/Helpers/Integrations_Helper.php:151
+msgid "Connected"
+msgstr "已连接"
+
+#: includes/Admin/Clickwhale_Admin.php:350
+#: includes/Helpers/Integrations_Helper.php:151
+msgid "Invalid API Key"
+msgstr "无效的API密钥"
+
+#: includes/Admin/Clickwhale_Admin.php:351
+msgid "Validating..."
+msgstr "正在验证..."
+
+#: includes/Admin/Clickwhale_Ajax.php:1310
+#: includes/Admin/Clickwhale_Ajax.php:1343
+#: includes/Helpers/Integrations_Helper.php:172
+msgid "AMZ Connect API key is not configured"
+msgstr "AMZ Connect API密钥未配置"
+
+#: includes/Admin/Clickwhale_Ajax.php:1337
+msgid "ASIN and store are required"
+msgstr "ASIN和商店是必需的"
+
+#: includes/Admin/Clickwhale_Settings.php:568
+#: includes/Clickwhale.php:444
+msgid "About"
+msgstr "关于"
+
+#: includes/Admin/Clickwhale_Settings.php:580
+msgid "API Key"
+msgstr "API密钥"
+
+#: includes/Admin/Clickwhale_Settings.php:594
+msgid "Usage Quota"
+msgstr "使用配额"
+
+#: includes/Admin/Clickwhale_Settings.php:607
+#: includes/Clickwhale.php:470
+#: templates/admin/smart-displays/edit.php:310
+msgid "Store"
+msgstr "商店"
+
+#: includes/Admin/Clickwhale_Settings.php:620
+msgid "Used as the default when creating a new Smart Display. Can be overridden per display."
+msgstr "在创建新的智能显示时用作默认值。可以按显示覆盖。"
+
+#: includes/Admin/Clickwhale_Settings.php:625
+#: includes/Clickwhale.php:455
+msgid "Tracking ID"
+msgstr "跟踪ID"
+
+#. translators: 1: Amazon Associates tracking ID example
+#: includes/Admin/Clickwhale_Settings.php:637
+msgid "Your Amazon Associates tracking ID (e.g. mysite-21). Without it, your sales won't be attributed to your account."
+msgstr "您的亚马逊联属跟踪ID（例如mysite-21）。没有它，您的销售将无法归属到您的账户。"
+
+#: includes/Admin/Clickwhale_Settings.php:645
+msgid "Output Settings"
+msgstr "输出设置"
+
+#: includes/Admin/Clickwhale_Settings.php:656
+msgid "Button Text"
+msgstr "按钮文本"
+
+#: includes/Admin/Clickwhale_Settings.php:668
+msgid "Default text shown on the buy button. Can be overridden per display."
+msgstr "在购买按钮上显示的默认文本。可以按显示覆盖。"
+
+#: includes/Admin/Clickwhale_Settings.php:676
+msgid "Description Bullets"
+msgstr "描述要点"
+
+#: includes/Admin/Clickwhale_Settings.php:687
+msgid "Maximum number of description bullet points to show. Set to 0 for all."
+msgstr "要显示的最大描述要点数。设置为0以显示全部。"
+
+#: includes/Admin/Clickwhale_Settings.php:693
+msgid "Long Descriptions"
+msgstr "长描述"
+
+#: includes/Admin/Clickwhale_Settings.php:703
+msgid "Truncate"
+msgstr "截断"
+
+#: includes/Admin/Clickwhale_Settings.php:704
+msgid "Show \"Show more\" toggle"
+msgstr "显示“显示更多”切换"
+
+#: includes/Admin/Clickwhale_Settings.php:707
+msgid "Used when a product has more bullet points than your limit."
+msgstr "当产品的要点超过您的限制时使用。"
+
+#: includes/Admin/Clickwhale_Settings.php:776
+msgid "Integrations"
+msgstr "集成"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:45
+msgid "Inactive"
+msgstr "未激活"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:109
+#: templates/admin/smart-displays/edit.php:88
+msgid "Name"
+msgstr "名称"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:696
+#: includes/front/SmartDisplays/Clickwhale_Smart_Display_Template.php:174
+msgid "Show more"
+msgstr "显示更多"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1110
+msgid "Please enter an ASIN"
+msgstr "请输入ASIN"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1116
+msgid "Fetching"
+msgstr "获取中"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1128
+msgid "Done"
+msgstr "完成"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1139
+msgid "Request failed"
+msgstr "请求失败"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:255
+msgid "ClickWhale — AMZ Connect:"
+msgstr "ClickWhale — AMZ Connect:"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:256
+msgid "The following Smart Displays became inactive because their Amazon product data could not be fetched. Please review them:"
+msgstr "以下智能显示因无法获取其亚马逊产品数据而变为非活动状态。请检查它们："
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:258
+msgid "Dismiss"
+msgstr "忽略"
+
+#: includes/Clickwhale.php:429
+msgid "Integrations Options"
+msgstr "集成选项"
+
+#: includes/Clickwhale.php:430
+msgid "Connect ClickWhale with the third-party services."
+msgstr "将ClickWhale与第三方服务连接。"
+
+#: includes/Clickwhale.php:433
+msgid "AMZ Connect"
+msgstr "AMZ Connect"
+
+#: includes/Clickwhale.php:434
+msgid "Amazon product data for Smart Displays"
+msgstr "智能显示的亚马逊产品数据"
+
+#: includes/Clickwhale.php:439
+msgid "Fetches live Amazon product data (title, image, price, buy link) into your Smart Displays and keeps it up to date automatically."
+msgstr "获取实时亚马逊产品数据（标题、图片、价格、购买链接）到您的智能显示中，并自动保持更新。"
+
+#: includes/Clickwhale.php:445
+msgid "API key"
+msgstr "API密钥"
+
+#: includes/Clickwhale.php:449
+msgid "Default store"
+msgstr "默认商店"
+
+#: includes/Clickwhale.php:460
+msgid "Default button text"
+msgstr "默认按钮文本"
+
+#: includes/Clickwhale.php:466
+msgid "ASIN"
+msgstr "ASIN"
+
+#: includes/Clickwhale.php:477
+msgid "Buy on Amazon"
+msgstr "在亚马逊上购买"
+
+#: includes/Helpers/Integrations_Helper.php:37
+msgid "Learn more"
+msgstr "了解更多"
+
+#: includes/Helpers/Integrations_Helper.php:137
+msgid "Remove key"
+msgstr "移除密钥"
+
+#: includes/Helpers/Integrations_Helper.php:146
+msgid "Paste API key here"
+msgstr "在此粘贴API密钥"
+
+#: includes/Helpers/Integrations_Helper.php:163
+msgid "Your AMZ Connect API key. Get one at amzconnect.io."
+msgstr "您的AMZ Connect API密钥。请在amzconnect.io获取一个。"
+
+#. translators: 1: number of used requests, 2: total limit, 3: month name, 4: number remaining
+#: includes/Helpers/Integrations_Helper.php:180
+#, php-format
+msgid "%1$s of %2$s monthly fetches used <span class=\"muted\">(%3$s remaining)</span>"
+msgstr "%1$s / %2$s 每月获取次数已使用 <span class=\"muted\">(%3$s 剩余)</span>"
+
+#: includes/Helpers/Integrations_Helper.php:189
+msgid "Refresh"
+msgstr "刷新"
+
+#: includes/Helpers/Integrations_Helper.php:197
+msgid "Updated:"
+msgstr "已更新："
+
+#: includes/Helpers/Integrations_Helper.php:232
+msgid "Failed to fetch AMZ Connect quota"
+msgstr "获取AMZ Connect配额失败"
+
+#: includes/Helpers/Integrations_Helper.php:331
+msgid "AMZ Connect API request failed"
+msgstr "AMZ Connect API请求失败"
+
+#: templates/admin/smart-displays/edit.php:65
+msgid "This display is inactive because required fields are empty. Fill in at least the Title to publish it."
+msgstr "此显示处于非活动状态，因为必填字段为空。请至少填写标题以发布。"
+
+#: templates/admin/smart-displays/edit.php:99
+msgid "Internal name for admin use"
+msgstr "供管理员使用的内部名称"
+
+#: templates/admin/smart-displays/edit.php:101
+msgid "Used in the admin list and block editor. Not shown on the frontend."
+msgstr "在管理员列表和区块编辑器中使用。前端不显示。"
+
+#: templates/admin/smart-displays/edit.php:134
+#: templates/admin/smart-displays/edit.php:228
+msgid "Override with custom value"
+msgstr "用自定义值覆盖"
+
+#: templates/admin/smart-displays/edit.php:295
+msgid "Product ASIN"
+msgstr "产品ASIN"
+
+#: templates/admin/smart-displays/edit.php:302
+msgid "e.g. B08MQZXN1X"
+msgstr "例如B08MQZXN1X"
+
+#: templates/admin/smart-displays/edit.php:323
+msgid "Default from settings. Can be overridden per display."
+msgstr "来自设置的默认值。可以按显示覆盖。"
+
+#: templates/admin/smart-displays/edit.php:332
+msgid "Fetch Product"
+msgstr "获取产品"
+
+#: templates/admin/smart-displays/edit.php:343
+msgid "Use Amazon product data"
+msgstr "使用亚马逊产品数据"
+
+#: templates/admin/smart-displays/edit.php:349
+msgid "Product URL"
+msgstr "产品URL"
+
+#: templates/admin/smart-displays/edit.php:364
+msgid "Product data fetched. Last sync:"
+msgstr "产品数据已获取。最后同步："
+
+#: templates/admin/smart-displays/edit.php:374
+#, php-format
+msgid "AMZ Connect is not configured. Please check <a href=\"%s\">Integrations Settings</a>"
+msgstr "AMZ Connect未配置。请检查<a href=\"%s\">集成设置</a>"
+
+#: templates/admin/smart-displays/edit.php:386
+msgid "No display data yet. Fill in the fields above."
+msgstr "尚无显示数据。请填写上面的字段。"

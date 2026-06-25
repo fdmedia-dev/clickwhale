@@ -5,7 +5,7 @@ Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 6.0
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 2.7.2
+Stable tag: 2.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,13 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.8.0 (25th Jun 2026) =
+* New: AMZ Connect Integration for Smart Displays
+* Fix: QR Code position
+* Fix: Linkpage Open Graph Image Display
+* Info: Updated Plugin Update Checker to v5.7
+* Info: Updated Freemius SDK to v2.13.2
 
 = Version 2.7.2 (16th Jun 2026) =
 * Fix: Fatal error on the Tracking code edit page

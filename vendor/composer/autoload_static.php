@@ -8,18 +8,23 @@ class ComposerStaticInit3014e0c93ae8da6a4fbd2712e9fbf6a4
 {
     public static $files = array (
         '8d50dc88e56bace65e1e72f6017983ed' => __DIR__ . '/..' . '/freemius/wordpress-sdk/start.php',
-        'f6d4f6bcee7247df6b777884c3e22f98' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p6.php',
+        'bc0af1337b39f0d750e835f5263eb646' => __DIR__ . '/..' . '/yahnis-elsts/plugin-update-checker/load-v5p7.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'C' =>
         array (
+            'Composer\\Installers\\' => 20,
             'Clickwhale\\' => 11,
             'ClickwhalePro\\' => 14,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Composer\\Installers\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
         'Clickwhale\\' =>
         array (
             0 => __DIR__ . '/../..' . '/includes',

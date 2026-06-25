@@ -20,7 +20,7 @@ do_action( 'clickwhale_admin_banner' );
         $clickwhale_get_tab_raw = (string) filter_input( INPUT_GET, 'tab' );
         $clickwhale_get_tab = $clickwhale_get_tab_raw !== '' && $clickwhale_get_tab_raw !== null ? sanitize_text_field( $clickwhale_get_tab_raw ) : 'general_options';
         ?>
-        <h2 class="nav-tab-wrapper">
+        <div class="nav-tab-wrapper">
             <?php foreach ( $tabs as $tab ) {
                 $clickwhale_url    = '?page=' . CLICKWHALE_SLUG . '-settings&tab=' . $tab['url'];
                 $clickwhale_active = $clickwhale_get_tab === $tab['url'] ? 'nav-tab-active' : '';
@@ -29,7 +29,7 @@ do_action( 'clickwhale_admin_banner' );
                    class="nav-tab <?php echo esc_attr( $clickwhale_active ); ?>"
                 ><?php echo esc_html( $tab['name'] ); ?></a>
             <?php } ?>
-        </h2>
+        </div>
 
         <form method="post" action="options.php">
             <?php

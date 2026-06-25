@@ -154,7 +154,7 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         }
 
         // Get data by id
-        $helper = ucwords( "{$this->instance_plural}_Helper", '_' );
+        $helper = $this->to_helper_classname( $this->instance_plural );
 
         $item = call_user_func(
                 array( "Clickwhale\\Helpers\\" . $helper, 'get_by_id' ),

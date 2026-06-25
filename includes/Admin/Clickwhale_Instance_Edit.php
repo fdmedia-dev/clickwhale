@@ -77,6 +77,19 @@ abstract class Clickwhale_Instance_Edit {
 	abstract public function admin_scripts(): void;
 
 	/**
+	 * Convert an underscored plural name to a PascalCase helper class name.
+	 * e.g. "tracking_codes" → "Tracking_Codes_Helper"
+	 *
+	 * @param string $name
+	 *
+	 * @return string
+	 * @since 1.8.0
+	 */
+	protected function to_helper_classname( string $name ): string {
+		return ucwords( $name . '_Helper', '_' );
+	}
+
+	/**
 	 * Get the current instance
 	 *
 	 * @param $request
@@ -94,7 +107,7 @@ abstract class Clickwhale_Instance_Edit {
 		}
 
 		// get data by id
-		$helper = ucwords( "{$this->instance_plural}_Helper", '_' );
+		$helper = $this->to_helper_classname( $this->instance_plural );
 		$item = call_user_func(
 			array( "Clickwhale\\Helpers\\" . $helper, 'get_by_id' ),
 			intval( $request['id'] )

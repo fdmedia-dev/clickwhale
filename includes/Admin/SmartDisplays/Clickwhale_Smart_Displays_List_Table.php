@@ -38,11 +38,17 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_title( $item ): string {
-		$id = intval( $item['id'] );
+		$id           = intval( $item['id'] );
+		$display_name = ! empty( $item['name'] ) ? $item['name'] : $item['title'];
+		$is_inactive  = empty( $item['title'] );
+		$label_html   = $is_inactive
+			? ' <span class="post-state">' . esc_html__( 'Inactive', 'clickwhale' ) . '</span>'
+			: '';
 		$title = sprintf(
-			'<a href="?page=' . CLICKWHALE_SLUG . '-edit-smart-display&id=%d">%s</a>',
+			'<a href="?page=' . CLICKWHALE_SLUG . '-edit-smart-display&id=%d">%s</a>%s',
 			$id,
-			esc_html( wp_unslash( $item['title'] ) )
+			esc_html( wp_unslash( $display_name ) ),
+			$label_html
 		);
 		$actions = array(
 			'edit'   => sprintf(
@@ -100,7 +106,7 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 	public function get_columns(): array {
 		return array(
 			'cb'        => '<input type="checkbox" />',
-			'title'     => __( 'Title', 'clickwhale' ),
+			'title'     => __( 'Name', 'clickwhale' ),
 			'shortcode' => __( 'Shortcode', 'clickwhale' )
 		);
 	}
@@ -166,12 +172,20 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 		}
 
 		global $wpdb;
-		$table = Helper::get_db_table_name( 'smart_displays' );
+		$table      = Helper::get_db_table_name( 'smart_displays' );
+		$data_table = Helper::get_db_table_name( 'smart_display_data' );
 		$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
 		$wpdb->query(
 			$wpdb->prepare(
 				"DELETE FROM $table WHERE id IN ($placeholders)",
+				...$ids
+			)
+		);
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM $data_table WHERE smart_display_id IN ($placeholders)",
 				...$ids
 			)
 		);

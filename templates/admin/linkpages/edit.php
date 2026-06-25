@@ -635,7 +635,7 @@ do_action( 'clickwhale_admin_banner' );
                                         <a href="#"
                                            class="button cw-linkpage-image-remove"
                                         ><?php esc_html_e( 'Remove image', 'clickwhale' ); ?></a>
-                                        <input type="hidden" name="social[seo][ogimage]" value="<?php echoesc_attr( $clickwhale_seoOGImageId ); ?>" />
+                                        <input type="hidden" name="social[seo][ogimage]" value="<?php echo esc_attr( $clickwhale_seoOGImageId ); ?>" />
                                     <?php } else { ?>
                                         <a href="#"
                                            class="button cw-linkpage-image-upload"

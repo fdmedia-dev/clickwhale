@@ -61,11 +61,23 @@ class Clickwhale_Smart_Display_Template {
 	}
 
 	private function set_link_url(): void {
-		$this->link_url = ! empty( $this->link['slug'] ) ? esc_url( trailingslashit( home_url( $this->link['slug'] ) ) ) : '';
+		if ( ! empty( $this->link['slug'] ) ) {
+			$this->link_url = esc_url( trailingslashit( home_url( $this->link['slug'] ) ) );
+
+			return;
+		}
+		$link_url       = $this->data['options']['link_url'] ?? '';
+		$this->link_url = $link_url ? esc_url( $link_url ) : '';
 	}
 
 	private function set_link_target(): void {
 		$this->link_target = '';
+
+		if ( empty( $this->link ) && ! empty( $this->data['options']['link_url'] ) ) {
+			$this->link_target = ' target="_blank"';
+
+			return;
+		}
 
 		if ( ! isset( $this->link['link_target'] ) ) {
 			return;
@@ -89,10 +101,6 @@ class Clickwhale_Smart_Display_Template {
 		return intval( $this->data['id'] );
 	}
 
-	public function is_title_linked(): bool {
-		return ! empty( $this->data['options']['is_title_linked'] );
-	}
-
 	public function get_title(): string {
 		$title = esc_html( wp_unslash( $this->data['title'] ) );
 
@@ -109,21 +117,24 @@ class Clickwhale_Smart_Display_Template {
 	}
 
 	public function get_image(): string {
-		$img_id = intval( $this->data['image'] ?? 0 );
+		$img_id  = intval( $this->data['image'] ?? 0 );
+		$img_url = '';
 
-		if ( empty( $img_id ) ) {
-			return '';
+		if ( $img_id ) {
+			$img_url = wp_get_attachment_image_url( $img_id, 'full' ) ?: '';
 		}
 
-		$img_url = wp_get_attachment_image_url( $img_id, 'full' );
+		if ( empty( $img_url ) ) {
+			$img_url = $this->data['options']['image_url'] ?? '';
+		}
 
-		if ( ! $img_url ) {
+		if ( empty( $img_url ) ) {
 			return '';
 		}
 
 		$img_html = '<img src="' . esc_url( $img_url ) . '" alt="" />';
 
-		if ( $this->is_title_linked() && $this->link_url ) {
+		if ( $this->link_url ) {
 			return sprintf(
 				'<a href="%1$s"%2$s>%3$s</a>',
 				$this->link_url,
@@ -136,7 +147,51 @@ class Clickwhale_Smart_Display_Template {
 	}
 
 	public function get_description(): string {
-		return ! empty( $this->data['description'] ) ? wpautop( wp_kses_post( $this->data['description'] ) ) : '';
+		if ( empty( $this->data['description'] ) ) {
+			return '';
+		}
+
+		if ( ! empty( $this->data['options']['override']['description'] ) ) {
+			return wpautop( wp_kses_post( $this->data['description'] ) );
+		}
+
+		$integrations_options = get_option( 'clickwhale_integrations_options', array() );
+		$max_items            = intval( $integrations_options['amz_connect']['fields']['max_list_items'] ?? 3 );
+		$overflow             = $integrations_options['amz_connect']['fields']['overflow_behavior'] ?? 'truncate';
+
+		$description = $this->data['description'];
+
+		if ( $max_items > 0 && preg_match( '/<ul[^>]*>(.*?)<\/ul>/si', $description, $ul_match ) ) {
+			preg_match_all( '/<li[^>]*>.*?<\/li>/si', $ul_match[1], $li_matches );
+			$items = $li_matches[0];
+
+			if ( count( $items ) > $max_items ) {
+				$visible      = array_slice( $items, 0, $max_items );
+				$excess       = array_slice( $items, $max_items );
+				$visible_html = '<ul>' . implode( '', $visible ) . '</ul>';
+
+				if ( 'show_more' === $overflow ) {
+					$summary_html = '<span class="cw-show-more-label">' . esc_html__( 'Show more', 'clickwhale' ) . '</span>'
+					                . '<span class="cw-show-less-label">' . esc_html__( 'Show less', 'clickwhale' ) . '</span>';
+					$description  = $visible_html . '<details class="cw-sd-show-more"><summary>' . $summary_html . '</summary><ul>' . implode( '', $excess ) . '</ul></details>';
+
+					return wp_kses( $description, array_merge(
+						wp_kses_allowed_html( 'post' ),
+						array(
+							'details' => array( 'class' => true, 'open' => true ),
+							'summary' => array(),
+							'span'    => array( 'class' => true ),
+						)
+					) );
+				}
+
+				$description = $visible_html;
+
+				return wp_kses_post( $description );
+			}
+		}
+
+		return wpautop( wp_kses_post( $description ) );
 	}
 
 	public function get_disclosure(): string {
@@ -154,6 +209,11 @@ class Clickwhale_Smart_Display_Template {
 
 		if ( ! empty( $this->data['options']['primary']['text'] ) ) {
 			$text = $this->data['options']['primary']['text'];
+		} elseif ( ! empty( $this->data['options']['link_url'] ) ) {
+			$integrations_options = get_option( 'clickwhale_integrations_options', array() );
+			$text = ! empty( $integrations_options['amz_connect']['fields']['button_text'] )
+				? $integrations_options['amz_connect']['fields']['button_text']
+				: 'Buy on Amazon';
 		} else {
 			$text = $this->smart_displays_options['primary']['text'] ?? '';
 		}
@@ -182,7 +242,6 @@ class Clickwhale_Smart_Display_Template {
 		$defaults               = $plugin_defaults['smart_displays']['options'];
 
 		$container = $defaults['container'];
-		$title     = $defaults['title'];
 		$primary   = $smart_displays_options['primary'] ?? $defaults['primary'];
 
 		// Container
@@ -193,11 +252,6 @@ class Clickwhale_Smart_Display_Template {
 		$border_radius      = intval( $container['border']['radius']['value'] );
 		$padding            = intval( $container['padding']['value'] );
 		$box_shadow         = esc_attr( $container['box_shadow'] );
-
-		// Title
-		$title_color       = esc_attr( $title['color'] );
-		$title_color_hover = esc_attr( $title['color_hover'] );
-		$title_font_size   = esc_attr( $title['font_size'] );
 
 		// Primary button
 		$primary_color              = esc_attr( $primary['color'] );
@@ -221,9 +275,6 @@ class Clickwhale_Smart_Display_Template {
 		$css .= "--clickwhale-sd--border-radius:{$border_radius}px;";
 		$css .= "--clickwhale-sd--padding:{$padding}px;";
 		$css .= "--clickwhale-sd--box-shadow:{$box_shadow};";
-		$css .= "--clickwhale-sd--title-color:{$title_color};";
-		$css .= "--clickwhale-sd--title-color-hover:{$title_color_hover};";
-		$css .= "--clickwhale-sd--title-font-size:{$title_font_size};";
 		$css .= "--clickwhale-sd--primary-color:var(--clickwhale-sd-preview-primary-color, {$primary_color});";
 		$css .= "--clickwhale-sd--primary-color-hover:{$primary_color_hover};";
 		$css .= "--clickwhale-sd--primary-bg-color:{$primary_bg_color};";
@@ -271,17 +322,15 @@ class Clickwhale_Smart_Display_Template {
 		$css .= '}';
 
 		$css .= '.cw-smart-display-preview--title, .cw-smart-display-public--title{';
-		$css .= 'margin-top:.5rem;color:var(--clickwhale-sd--title-color);';
-		$css .= 'font-size:var(--clickwhale-sd--title-font-size);line-height:1.3;font-weight:700;';
-		$css .= '';
+		$css .= 'color:var(--clickwhale-sd--title-color, #1a1c1d);';
+		$css .= 'font-size:var(--clickwhale-sd--title-font-size, 1rem);line-height:1.25;font-weight:700;';
 
 		$css .= 'a{';
-		$css .= 'color:var(--clickwhale-sd--title-color);';
-		$css .= 'font-size:var(--clickwhale-sd--title-font-size);';
+		$css .= 'display:block;color:var(--clickwhale-sd--title-color, #1a1c1d);';
 		$css .= 'text-decoration:none;';
 
-		$css .= '&:hover, .&:focus{';
-		$css .= 'color:var(--clickwhale-sd--title-color-hover);';
+		$css .= '&:hover, &:focus{';
+		$css .= 'color:var(--clickwhale-sd--title-color-hover, #397eff);';
 		$css .= 'text-decoration:underline;';
 		$css .= '}';
 
@@ -290,10 +339,10 @@ class Clickwhale_Smart_Display_Template {
 		$css .= '}'; //.cw-smart-display-preview--title, .cw-smart-display-public--title
 
 		$css .= '.cw-smart-display-preview--description, .cw-smart-display-public--description{';
-		$css .= 'font-family:inherit;font-size:var(--clickwhale-sd--text-font-size, 1rem);line-height:var(--clickwhale-sd--text-line-height, 1.5em);font-weight:400;';
+		$css .= 'font-family:inherit;font-size:var(--clickwhale-sd--text-font-size, .875rem);line-height:var(--clickwhale-sd--text-line-height, 1.5em);font-weight:400;';
 
 		$css .= '*{';
-		$css .= 'font-family:inherit;font-size:var(--clickwhale-sd--text-font-size, 1rem);line-height:var(--clickwhale-sd--text-line-height, 1.5em);';
+		$css .= 'font-family:inherit;font-size:var(--clickwhale-sd--text-font-size, .875rem);line-height:var(--clickwhale-sd--text-line-height, 1.5em);';
 		$css .= '}';
 
 		$css .= '& > * {';
@@ -306,18 +355,45 @@ class Clickwhale_Smart_Display_Template {
 		$css .= '}'; // & > *
 
 		$css .= 'ul, ol{';
-		$css .= 'padding-left: 1rem;';
+		$css .=     'padding-left: 1rem;';
+		$css .=     'li{';
+		$css .=         'margin-top: .25rem;';
+		$css .=     '}';
 		$css .= '}';
+		$css .= 'ul li{list-style:disc;}';
 
-		$css .= 'ul li{';
-		$css .= 'list-style:disc;';
-		$css .= '}';
+		$css .= '.cw-sd-show-more{';
+		$css .=     'display:flex; flex-direction:column-reverse; gap:0; margin: 0;';
+		$css .=     'summary{';
+		$css .=         'padding-left: 1rem; list-style:none; outline:none; color:var(--clickwhale-sd--primary-bg-color); cursor:pointer;';
+		$css .=         'span{';
+		$css .=             'font-size: .75rem; border-bottom:1px dotted var(--clickwhale-sd--primary-bg-color);';
+		$css .=             '&.cw-show-less-label{display:none;}';
+		$css .=         '}';
+		$css .=         '&::-webkit-details-marker{display:none;}';
+		$css .=         '&:hover, &:focus{';
+		$css .=             'color: var(--clickwhale-sd--primary-bg-color-hover);';
+		$css .=             'span{';
+		$css .=                 'border-bottom-color: var(--clickwhale-sd--primary-bg-color-hover);';
+		$css .=             '}';
+		$css .=         '}';
+		$css .=     '}'; // summary
+		$css .=     'ul{margin: 0;}';
+		$css .=     '&[open]{';
+		$css .=         'summary{';
+		$css .=             'span{';
+		$css .=                 '&.cw-show-more-label{display:none;}';
+		$css .=                 '&.cw-show-less-label{display:inline-block;}';
+		$css .=             '}';
+		$css .=         '}';
+		$css .=     '}';
+		$css .= '}'; // .cw-sd-show-more / details
 
 		$css .= '}'; //.cw-smart-display-preview--description, .cw-smart-display-public--description
 
 
 		$css .= '.cw-smart-display-preview--footer, .cw-smart-display-public--footer{';
-		$css .= 'display:flex;flex-direction:column;justify-content:flex-end;gap:var(--clickwhale-sd--footer-gap, 1rem);height:100%;margin-top:var(--clickwhale-sd--footer-margin, 1rem);';
+		$css .= 'display:flex;flex-direction:column;justify-content:flex-end;gap:var(--clickwhale-sd--footer-gap, 1rem);height:100%;margin-top:var(--clickwhale-sd--footer-margin, 1.5rem);';
 		$css .= '}';
 
 		$css .= '.cw-smart-display-preview--price, .cw-smart-display-public--price{';

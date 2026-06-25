@@ -232,7 +232,7 @@ final class Clickwhale_Public {
 
 		$data = Smart_Displays_Helper::get_by_id( $id );
 
-		if ( ! $data ) {
+		if ( ! $data || empty( $data['title'] ) ) {
 			return '';
 		}
 

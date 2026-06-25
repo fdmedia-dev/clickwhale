@@ -198,12 +198,45 @@ class Clickwhale_Activator {
 
 		$sql = "CREATE TABLE $table_name (
 					id INT(9) NOT NULL AUTO_INCREMENT,
+					name VARCHAR(255) NOT NULL DEFAULT '',
 					title VARCHAR(255) NOT NULL DEFAULT '',
 					image INT(11) NOT NULL DEFAULT 0,
 					link_id INT(11) DEFAULT 0,
 					description MEDIUMTEXT DEFAULT NULL,
 					options longtext default NULL,
 					created_at DATETIME,
+					PRIMARY KEY (id)
+				) $charset_collate;";
+
+		if ( ! maybe_create_table( $table_name, $sql ) ) {
+			dbDelta( $sql );
+		}
+	}
+
+	/**
+	 * Add the smart display data table if it doesn't exist.
+	 *
+	 * @return void
+	 * @since 2.8.0
+	 */
+	private static function add_clickwhale_smart_display_data_table(): void {
+		if ( version_compare( CLICKWHALE_VERSION, '2.7.2', '<' ) ) {
+			return;
+		}
+
+		global $wpdb;
+		$table_name      = Helper::get_db_table_name( 'smart_display_data' );
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+					id INT(9) NOT NULL AUTO_INCREMENT,
+					smart_display_id INT(11) NOT NULL DEFAULT 0,
+					integration VARCHAR(50) NOT NULL DEFAULT '',
+					is_active TINYINT(1) NOT NULL DEFAULT 0,
+					params longtext default NULL,
+					raw_data longtext default NULL,
+					created_at DATETIME,
+					updated_at DATETIME,
 					PRIMARY KEY (id)
 				) $charset_collate;";
 
@@ -273,6 +306,16 @@ class Clickwhale_Activator {
 				"ALTER TABLE $linkpages_table_name ADD favicon INT(11) NOT NULL AFTER logo"
 			);
 		}
+
+		/* @since 2.8.0 */
+		if ( version_compare( CLICKWHALE_VERSION, '2.8.0', '>=' ) ) {
+			$smart_displays_table = Helper::get_db_table_name( 'smart_displays' );
+			maybe_add_column(
+				$smart_displays_table,
+				'name',
+				"ALTER TABLE $smart_displays_table ADD name VARCHAR(255) NOT NULL DEFAULT '' AFTER id"
+			);
+		}
 	}
 
 	/**
@@ -294,6 +337,7 @@ class Clickwhale_Activator {
 			self::add_clickwhale_tracking_codes_table();
 			self::add_clickwhale_visitors_table();
 			self::add_clickwhale_smart_displays_table();
+			self::add_clickwhale_smart_display_data_table();
 			self::modify_columns();
 		}
 	}

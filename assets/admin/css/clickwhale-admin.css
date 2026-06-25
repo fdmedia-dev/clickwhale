@@ -3,12 +3,147 @@
  * included in this file.
  */
 
+:root {
+    --clickwhale-brand-blue: #397eff;
+    --clickwhale-brand-yellow: #FDD231;
+    --clickwhale-brand-red: #dc3545;
+    --clickwhale-brand-green: #28a745;
+}
+
 body.toplevel_page_clickwhale #wpbody-content,
 body.toplevel_page_clickwhale-pro #wpbody-content,
 body[class*="clickwhale_page_clickwhale"] #wpbody-content,
 body[class*="admin_page_clickwhale-edit"] #wpbody-content,
 body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
     padding-top: 80px;
+}
+
+.clickwhale-box {
+    --border-color: #e7e7e7;
+    --main-bg: #ffffff;
+    --secondary-bg: #f6f7f7;
+    --text-color: #1a1a1a;
+    --muted-color: #646970;
+    --box-pt: 1rem;
+    --box-pb: 0;
+    --box-pi: 1.5rem;
+    --box-br: 1rem;
+    --box-image-height: 2.5rem;
+
+    background: var(--main-bg);
+    padding: var(--box-pt) var(--box-pi) 0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--box-br);
+    overflow: hidden;
+
+    .clickwhale-box--header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: calc(-1 * var(--box-pt)) calc(-1 * var(--box-pi)) var(--box-pb);
+        padding: var(--box-pt) var(--box-pi);
+        background: var(--secondary-bg);
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        max-width: 100%;
+
+        .clickwhale-box--header-left {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: .5rem;
+        }
+
+        .clickwhale-box--header-image {
+            img {
+                display: block;
+                border-radius: .5rem;
+                width: 100%;
+                max-width: 100%;
+                height: var(--box-image-height);
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+
+        .clickwhale-box--header-meta {
+            h2 {
+                margin: 0 !important;
+
+                & + p {
+                    margin: 0 !important;
+                    line-height: 1.2em !important;
+                    color: var(--muted-color);
+                }
+            }
+        }
+    }
+
+    .clickwhale-box--footer {
+        background: var(--secondary-bg);
+        border-top: 1px solid var(--border-color);
+        margin: 0 calc(-1 * var(--box-pi)) 0;
+        padding: var(--box-pt) var(--box-pi);
+
+        p {
+            margin: 0;
+            font-size: .75rem;
+            line-height: 1.25rem;
+            color: var(--muted-color);
+        }
+    }
+
+    &.sm {
+        --box-pt: .5rem;
+        --box-pb: 0;
+        --box-pi: 1rem;
+        --box-br: .5rem;
+        --box-image-height: 1.5rem;
+
+        .clickwhale-box--header {
+            .clickwhale-box--header-meta {
+                h2 {
+                    font-size: .875rem !important;
+                }
+            }
+        }
+    }
+}
+
+.clickwhale-api-status {
+    --clickwhale-api-status-color: #949494;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    font-size: .75rem;
+    font-weight: 500;
+    line-height: 2.92307692;
+    min-height: 2.5rem;
+    margin: 0;
+    padding: 0 1rem;
+    border: 1px solid color-mix(in oklch, var(--clickwhale-api-status-color), black 0%);
+    border-radius: 0;
+    color: var(--clickwhale-api-status-color);
+    background-color: color-mix(in oklch, var(--clickwhale-api-status-color), white 80%);
+
+    &.connected {
+        --clickwhale-api-status-color: var(--clickwhale-brand-green);
+    }
+
+    &.disconnected {
+        --clickwhale-api-status-color: var(--clickwhale-brand-red);
+    }
+
+    &.inline {
+        border: none;
+        background: none;
+        line-height: inherit;
+        min-height: inherit;
+        padding: 0;
+    }
 }
 
 .feather {
@@ -120,7 +255,7 @@ ion-icon {
 .copied {
     margin-left: 7px;
     font-weight: 700;
-    color: green;
+    color: var(--clickwhale-brand-green);
 }
 
 .clickwhale-notice span {
@@ -327,7 +462,7 @@ ion-icon {
     top: 0;
     left: 0;
     right: 0;
-    background: #FDD231;
+    background: var(--clickwhale-brand-yellow);
     padding: 1.5em 2em;
     margin-left: -20px;
 }
@@ -367,8 +502,8 @@ ion-icon {
 .clickwhale-banner--links a.clickwhale-banner--button {
     padding: 10px 20px;
     color: #ffffff;
-    background-color: #007AFF;
-    border: 2px solid #007AFF;
+    background-color: var(--clickwhale-brand-blue);
+    border: 2px solid var(--clickwhale-brand-blue);
     border-radius: 4px;
     text-decoration: none;
     text-align: center;
@@ -377,11 +512,11 @@ ion-icon {
 }
 
 .clickwhale-banner--links a:hover {
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
 }
 
 .clickwhale-banner--links a.clickwhale-banner--button.outlined {
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
     background: transparent;
 }
 
@@ -402,8 +537,8 @@ ion-icon {
 .clickwhale-banner--links a.clickwhale-banner--button.outlined:hover,
 .clickwhale-banner--links a.clickwhale-banner--button.outlined:focus {
     color: #ffffff;
-    background: #007AFF;
-    border-color: #007AFF;
+    background: var(--clickwhale-brand-blue);
+    border-color: var(--clickwhale-brand-blue);
 }
 
 .clickwhale-banner--links a.clickwhale-banner--button.dark:hover,
@@ -525,15 +660,15 @@ ion-icon {
 
 .cw-content--item:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, .05);
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
 }
 
 .cw-content--item.ui-draggable-dragging {
     width: 50px;
     max-width: 50px;
     box-shadow: 0 0 15px rgba(0, 0, 0, .1);
-    border: 2px solid #007AFF;
-    color: #007AFF;
+    border: 2px solid var(--clickwhale-brand-blue);
+    color: var(--clickwhale-brand-blue);
 }
 
 .cw-content--item.disabled {
@@ -562,7 +697,7 @@ ion-icon {
 }
 
 .cw-links-list-wrap.ui-droppable-active {
-    border-color: #007AFF;
+    border-color: var(--clickwhale-brand-blue);
     border-style: solid;
 }
 
@@ -617,7 +752,7 @@ ion-icon {
 .cw-linkpage-row.row--cw_custom_content .cw-linkpage-row--bottom .wp-editor-container.invalid,
 .cw-linkpage-row.row--cw_heading .cw-linkpage-row--bottom input[name^="links["][name$="][title]"].invalid,
 .cw-linkpage-row.row--cw_heading .cw-linkpage-row--bottom input[name^="links["][name$="][description]"].invalid {
-    border-color: #dc3232;
+    border-color: var(--clickwhale-brand-red);
 }
 
 .cw-linkpage-row.ui-sortable-helper,
@@ -761,7 +896,7 @@ ion-icon {
 }
 
 .cw-linkpage-row--link a {
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
 }
 
 .cw-linkpage-row--badge span {
@@ -832,7 +967,7 @@ ion-icon {
 .cw-linkpage-row--actions button:hover,
 .cw-link-row--actions button:hover {
     background: #f7f7f7;
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
     cursor: pointer;
 }
 
@@ -843,7 +978,7 @@ ion-icon {
 
 .cw-linkpage-row--actions button.cw-linkpage-row--actions--button-remove:hover,
 .cw-link-row--actions button.cw-link-row--actions--button-remove:hover {
-    color: red;
+    color: var(--clickwhale-brand-red);
 }
 
 .cw-linkpage-row--bottom,
@@ -963,7 +1098,7 @@ ion-icon {
 }
 
 .image-item input:checked + label {
-    outline: 2px solid #007AFF;
+    outline: 2px solid var(--clickwhale-brand-blue);
     outline-offset: -2px;
 }
 
@@ -1049,7 +1184,7 @@ ion-icon {
 }
 
 .icon-picker--icons-wrap > button:hover {
-    background-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
     color: #ffffff;
 }
 
@@ -1164,7 +1299,7 @@ ion-icon {
 }
 
 .unavailable-link {
-    border-color: #dc3232;
+    border-color: var(--clickwhale-brand-red);
     background: #ffebee;
 }
 
@@ -1273,7 +1408,7 @@ td > .cw-links-info {
 
 .clickwhale_form_edit .cw-linkpage-image-remove,
 .clickwhale_form_edit .cw-smart-display-image-remove {
-    color: #dc3232;
+    color: var(--clickwhale-brand-red);
     border-color: transparent;
     background-color: transparent;
     -webkit-transition: all .3s;
@@ -1286,17 +1421,17 @@ td > .cw-links-info {
 .clickwhale_form_edit .cw-linkpage-image-remove:hover,
 .clickwhale_form_edit .cw-smart-display-image-remove:hover {
     color: #ffebee;
-    border-color: #dc3232;
-    background-color: #dc3232;
+    border-color: var(--clickwhale-brand-red);
+    background-color: var(--clickwhale-brand-red);
 }
 
 .clickwhale_form_edit .error {
-    border-color: #dc3232;
+    border-color: var(--clickwhale-brand-red);
     background: #ffebee;
 }
 
 .clickwhale_form_edit .error + p {
-    color: #dc3232;
+    color: var(--clickwhale-brand-red);
     font-size: 14px;
 }
 
@@ -1339,20 +1474,160 @@ table.smart-displays.fixed .column-title {
 }
 
 /* SMART DISPLAY STYLES */
+#sd-tab {
+    display: grid;
+    grid-template-areas: "table aside" "actions actions";
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+#sd-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    grid-area: aside;
+    margin-top: .5em;
+    padding: 15px 0;
+
+    #sd-amz-connect {
+        margin-top: 0;
+
+        .form-table {
+            tr {
+                & + tr {
+                    th, td {
+                        padding-top: 0;
+                    }
+                }
+            }
+
+            input[type="text"], select {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .description {
+                font-size: .75rem;
+                margin-top: 0;
+            }
+
+            * + .description {
+                margin-top: .5rem;
+            }
+        }
+    }
+
+    #amz-link-url-row {
+        display: none !important;
+    }
+
+    #amz_actions {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+
+        #amz-fetch-status {
+            position: relative;
+            margin-left: .5rem;
+
+            &.fetching {
+                gap: 0;
+
+                &::after {
+                    content: "";
+                    animation: dots 1.5s steps(1, end) infinite;
+                }
+            }
+        }
+    }
+}
+
+#sd-table {
+    grid-area: table;
+
+    th {
+        max-width: 10rem;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    .fullwidth-textarea {
+        width: 100%;
+
+        td {
+            padding-left: 0;
+
+            label {
+                line-height: 1.3;
+                font-weight: 600;
+            }
+
+            .wp-editor-wrap,
+            textarea {
+                max-width: 50rem;
+                width: calc(10px + 95%);
+            }
+        }
+    }
+}
+
+#sd-preview {
+    max-width: 50rem;
+
+    #sd-preview--header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: .5rem;
+
+        h2 {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+    }
+
+    .cw-smart-display-preview--wrap {
+        position: sticky;
+        top: 3rem;
+        margin-top: .25rem;
+    }
+
+    .cw-smart-display-preview {
+        box-shadow: none;
+        border: 1px solid #e7e7e7;
+    }
+}
+
+#sd-actions {
+    grid-area: actions;
+}
+
+@media (max-width: 1600px) {
+    #sd-tab {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-areas: "table" "aside" "actions";
+        gap: 1rem;
+    }
+}
 
 #smart-display-edit #poststuff #post-body > #post-body-content {
     position: relative;
     border-top: 1px solid #dcdcde;
 }
 
+#smart-display-edit #link_id + .select2-container {
+    max-width: 30.25rem !important;
+    width: 95% !important;
+}
+
 #smart-display-edit #form_edit_smart_display #title,
 #smart-display-edit #form_edit_smart_display #primary_text {
     min-width: 25rem;
-}
-
-#smart-display-edit #form_edit_smart_display .wp-editor-wrap {
-    max-width: 50rem;
-    width: 25rem;
 }
 
 #smart-display-edit #form_edit_smart_display .wp-editor-wrap iframe#smart-display-description_ifr,
@@ -1377,44 +1652,6 @@ table.smart-displays.fixed .column-title {
 }
 
 /* SMART DISPLAY PREVIEW STYLES */
-
-#sd-tab {
-    display: grid;
-    grid-template-areas: "table preview" "actions actions";
-    gap: 1rem;
-}
-
-#sd-table {
-    grid-area: table;
-}
-
-#sd-preview {
-    grid-area: preview;
-    max-width: 50rem;
-    margin-top: 10px;
-
-    h2 {
-        font-size: 1.125rem;
-    }
-
-    .cw-smart-display-preview--wrap {
-        position: sticky;
-        top: 3rem;
-        margin-top: .25rem;
-    }
-}
-
-#sd-actions {
-    grid-area: actions;
-}
-
-@media (max-width: 1600px) {
-    #sd-tab {
-        display: grid;
-        grid-template-areas: "table" "preview" "actions";
-        gap: 1rem;
-    }
-}
 
 .cw-smart-display-preview--wrap {
     width: 100%;
@@ -1470,7 +1707,7 @@ table.smart-displays.fixed .column-title {
 }
 
 .clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider {
-    background: #007AFF;
+    background: var(--clickwhale-brand-blue);
 }
 
 .clickwhale-checkbox--toggle input:checked + .clickwhale-checkbox--toggle-slider::before {
@@ -1582,11 +1819,11 @@ table.smart-displays.fixed .column-title {
 }
 
 .form-table td fieldset .radio-card input:checked + label {
-    border-color: #007AFF;
+    border-color: var(--clickwhale-brand-blue);
 }
 
 .radio-card input:checked + label::before {
-    background: #007AFF;
+    background: var(--clickwhale-brand-blue);
 }
 
 .radio-card input:checked + label::after {
@@ -1628,7 +1865,7 @@ table.smart-displays.fixed .column-title {
     position: relative;
     display: inline-block;
     top: -1px;
-    background: #007AFF;
+    background: var(--clickwhale-brand-blue);
     color: #ffffff;
     padding: 2px 4px;
     border-radius: 4px;
@@ -1646,6 +1883,179 @@ table.smart-displays.fixed .column-title {
     padding-bottom: 0 !important;
 }
 
+@media (max-width: 1440px) {
+    .clickwhale-settings-wrap .nav-tab {
+        font-size: .75rem;
+        padding: .24rem .5rem;
+    }
+}
+
+body[class*="page_clickwhale-edit"] #poststuff h2,
+body[class*="page_clickwhale-edit"] #poststuff > h3,
+.clickwhale-settings-wrap #poststuff h2,
+.clickwhale-settings-wrap #poststuff > h3 {
+    font-size: 1.3em;
+    margin: 1em 0 0 0;
+    padding: 0;
+
+    & + p {
+        margin: .25em 0 1rem 0;
+    }
+}
+
+.clickwhale-settings-wrap .subsection {
+    & > h2 {
+        display: none;
+    }
+
+    p, label {
+        color: var(--text-color);
+
+        &.description {
+            color: var(--muted-color);
+            font-size: .75rem;
+        }
+    }
+
+    .cw-api-key-field {
+        display: flex;
+        justify-content: flex-start;
+        gap: .5rem;
+    }
+
+
+    .form-table {
+        tr {
+            border-bottom: 1px solid var(--border-color);
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:has(+ tr .cw-row-header) {
+                border-bottom: none;
+            }
+
+            &:has(.cw-row-header) {
+                th {
+                    padding: 2rem 0 .5rem 0;
+                    text-transform: uppercase;
+                    opacity: .5;
+                    font-size: 12px;
+                    letter-spacing: .05em;
+                }
+            }
+
+            td {
+                input[type="text"],
+                select,
+                textarea {
+                    min-width: 300px;
+                }
+
+                input[type="number"] {
+                    min-width: 100px;
+                }
+            }
+        }
+    }
+
+    .cw-amz-connect-quota-field {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        max-width: 33rem;
+
+        p, span {
+            transition: color .2s ease-in-out;
+        }
+
+        .cw-amz-connect-quota--header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2px 0 0;
+
+            p {
+                margin: 0;
+                font-size: .875rem;
+                font-weight: 500;
+                color: var(--text-color);
+
+                span.muted {
+                    font-weight: 400;
+                    color: var(--muted-color);
+                    font-size: .75rem;
+                }
+            }
+
+            .button {
+                border: none;
+                padding: 0;
+                background: none;
+                min-height: auto;
+                line-height: 1;
+            }
+        }
+
+        .cw-amz-connect-quota--progress-bar {
+            display: flex;
+            opacity: 1;
+            transition: opacity .2s ease-in-out;
+
+            progress {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                width: 100%;
+                height: .5rem;
+                overflow: hidden;
+                border: none;
+                border-radius: .5rem;
+                line-height: 1;
+
+                &::-webkit-progress-bar {
+                    background-color: color-mix(in oklch, var(--clickwhale-brand-blue), white 90%);
+                    border-radius: .5rem;
+                }
+
+                &::-webkit-progress-value {
+                    background-color: color-mix(in oklch, var(--clickwhale-brand-blue), black 10%);
+                    border-radius: .5rem;
+                }
+            }
+        }
+
+        .cw-amz-connect-quota--footer {
+            display: flex;
+            justify-content: space-between;
+
+            p {
+                font-size: .75rem;
+                color: var(--muted-color);
+                margin: 0;
+            }
+        }
+
+        &.cw-is-loading {
+            p, span {
+                color: rgba(0, 0, 0, 0) !important;
+            }
+
+            progress {
+                opacity: 0 !important;
+            }
+
+            p, .cw-amz-connect-quota--progress-bar {
+                border-radius: .25rem;
+                background-color: color-mix(in oklch, var(--clickwhale-brand-blue), white 95%);
+                animation: cw-loading-pulse 1.5s infinite;
+            }
+        }
+    }
+}
+
 .clickwhale-settings-wrap form textarea {
     width: 300px;
     max-width: 25rem;
@@ -1655,11 +2065,23 @@ table.smart-displays.fixed .column-title {
     font-size: 16px;
 }
 
+@keyframes cw-loading-pulse {
+    0% {
+        background-color: color-mix(in oklch, var(--clickwhale-brand-blue), white 95%);
+    }
+    50% {
+        background-color: color-mix(in oklch, var(--clickwhale-brand-blue), white 80%);
+    }
+    100% {
+        background-color: color-mix(in oklch, var(--clickwhale-brand-blue), white 95%);
+    }
+}
+
 /* PRO PAGE PROMO */
 
 #adminmenu #toplevel_page_clickwhale .wp-submenu a[href="admin.php?page=clickwhale-pro"],
 #adminmenu #toplevel_page_clickwhale .wp-submenu a[href="admin.php?page=clickwhale-pro"].current {
-    color: #FDD231;
+    color: var(--clickwhale-brand-yellow);
     font-weight: 700;
 }
 
@@ -1681,7 +2103,7 @@ table.smart-displays.fixed .column-title {
 
 .clickwhale-pro-promo--hero {
     padding: 80px 0 100px;
-    background: #FDD231;
+    background: var(--clickwhale-brand-yellow);
     color: #1A1C1D;
     text-align: center;
 }
@@ -1708,7 +2130,7 @@ table.smart-displays.fixed .column-title {
     content: '';
     width: auto;
     height: 100%;
-    background-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
     top: 0;
     right: -10px;
     left: -8px;
@@ -1730,7 +2152,7 @@ table.smart-displays.fixed .column-title {
     display: inline-block;
     padding: 25px 85px;
     color: #ffffff;
-    background-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
     border-radius: 15px;
     text-decoration: none;
     text-align: center;
@@ -1741,7 +2163,7 @@ table.smart-displays.fixed .column-title {
 
 .button-get-pro:hover {
     background-color: #ffffff;
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
 }
 
 .clickwhale-pro-promo--hero img {
@@ -1879,7 +2301,7 @@ table.smart-displays.fixed .column-title {
     transition: opacity .3s ease-in-out;
     width: 100%;
     color: #ffffff;
-    background-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
     border: none;
     padding: 32px 90px 31px;
     border-radius: 0 25px 25px 0;
@@ -1922,7 +2344,7 @@ table.smart-displays.fixed .column-title {
     bottom: 1rem;
     width: 25%;
     height: 2px;
-    background-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
     background-size: 10px 10px;
     z-index: 2;
     border-radius: 2px;
@@ -1992,13 +2414,13 @@ table.smart-displays.fixed .column-title {
 }
 
 .import-progress--point.active {
-    color: #007AFF;
+    color: var(--clickwhale-brand-blue);
 }
 
 .import-progress--point.active::before,
 #point-04.active::after {
-    background-color: #007AFF;
-    border-color: #007AFF;
+    background-color: var(--clickwhale-brand-blue);
+    border-color: var(--clickwhale-brand-blue);
 }
 
 #mapping_table,
@@ -2052,7 +2474,7 @@ table.smart-displays.fixed .column-title {
 
 #import_table table td button:hover {
     background: #f7f7f7;
-    color: red;
+    color: var(--clickwhale-brand-red);
     cursor: pointer;
 }
 
@@ -2173,7 +2595,7 @@ table.smart-displays.fixed .column-title {
     display: block;
     padding: 14px;
     font-size: 14px;
-    background-color: #397eff;
+    background-color: var(--clickwhale-brand-blue);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -2383,5 +2805,23 @@ table.smart-displays.fixed .column-title {
 @media (max-width: 380px) {
     .button-get-pro {
         font-size: 15px;
+    }
+}
+
+@keyframes dots {
+    0% {
+        content: "";
+    }
+    25% {
+        content: ".";
+    }
+    50% {
+        content: "..";
+    }
+    75% {
+        content: "...";
+    }
+    100% {
+        content: "";
     }
 }

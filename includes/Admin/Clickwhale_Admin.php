@@ -341,8 +341,15 @@ final class Clickwhale_Admin {
         wp_localize_script(
                 'clickwhale',
                 'clickwhale_admin', array(
-                        'siteurl'     => home_url(),
-                        'plugin_slug' => esc_attr( CLICKWHALE_SLUG )
+                        'siteurl'                 => home_url(),
+                        'plugin_slug'             => esc_attr( CLICKWHALE_SLUG ),
+                        'nonce_amz_connect'       => wp_create_nonce( 'clickwhale_amz_connect_validate' ),
+                        'nonce_amz_connect_quota' => wp_create_nonce( 'clickwhale_amz_connect_quota' ),
+                        'status_labels'           => array(
+                                'connected'   => __( 'Connected', 'clickwhale' ),
+                                'disconnected' => __( 'Invalid API Key', 'clickwhale' ),
+                                'validating'  => __( 'Validating...', 'clickwhale' ),
+                        ),
                 )
         );
     }

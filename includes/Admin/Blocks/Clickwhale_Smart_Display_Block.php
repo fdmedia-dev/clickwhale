@@ -73,10 +73,11 @@ class Clickwhale_Smart_Display_Block {
 						if ( empty( $sd['title'] ) ) {
 							return null;
 						}
+						$label = ! empty( $sd['name'] ) ? $sd['name'] : $sd['title'];
 
 						return array(
 							'id'    => intval( $sd['id'] ),
-							'label' => $sd['title'] . ' (#' . intval( $sd['id'] ) . ')',
+							'label' => $label . ' (#' . intval( $sd['id'] ) . ')',
 						);
 					},
 					$smart_displays

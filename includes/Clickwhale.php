@@ -33,6 +33,7 @@ use Clickwhale\Admin\Linkpages\Clickwhale_Linkpage_Edit;
 use Clickwhale\Admin\Links\Clickwhale_Link_Edit;
 use Clickwhale\Admin\TrackingCodes\Clickwhale_Tracking_Code_Edit;
 use Clickwhale\Admin\SmartDisplays\Clickwhale_Smart_Display_Edit;
+use Clickwhale\Admin\SmartDisplays\Clickwhale_Smart_Display_Scheduler;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -132,6 +133,11 @@ final class Clickwhale {
 	public Clickwhale_Smart_Display_Block $smart_display_block;
 
 	/**
+	 * @var Clickwhale_Smart_Display_Scheduler
+	 */
+	public Clickwhale_Smart_Display_Scheduler $smart_display_scheduler;
+
+	/**
 	 * @var Clickwhale_Public
 	 */
 	public Clickwhale_Public $public;
@@ -167,8 +173,9 @@ final class Clickwhale {
 			self::$instance->category            = new Clickwhale_Category_Edit();
 			self::$instance->linkpage            = new Clickwhale_Linkpage_Edit();
 			self::$instance->tracking_code       = new Clickwhale_Tracking_Code_Edit();
-			self::$instance->smart_display       = new Clickwhale_Smart_Display_Edit();
-			self::$instance->smart_display_block = new Clickwhale_Smart_Display_Block();
+			self::$instance->smart_display           = new Clickwhale_Smart_Display_Edit();
+			self::$instance->smart_display_block     = new Clickwhale_Smart_Display_Block();
+			self::$instance->smart_display_scheduler = new Clickwhale_Smart_Display_Scheduler();
 			self::$instance->public              = Clickwhale_Public::get_instance();
 			self::$instance->public_ajax         = Clickwhale_Public_Ajax::get_instance();
 			self::$instance->rest_api            = new Clickwhale_Rest_Controller();
@@ -240,6 +247,9 @@ final class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/import_csv', $this->ajax, 'import_csv' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/export_csv', $this->ajax, 'export_csv' );
 		$this->loader->add_action( 'wp_ajax_clickwhale/admin/select_link', $this->ajax, 'select_link' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/amz_connect_validate_api_key', $this->ajax, 'amz_connect_validate_api_key' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/amz_connect_get_product', $this->ajax, 'amz_connect_get_product' );
+		$this->loader->add_action( 'wp_ajax_clickwhale/admin/amz_connect_get_quota', $this->ajax, 'amz_connect_get_quota' );
 		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_settings_options' );
 		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_db_options' );
 		$this->loader->add_action( 'admin_init', $this->reset, 'initialize_reset_stats_options' );
@@ -249,6 +259,7 @@ final class Clickwhale {
 		$this->loader->add_action( 'init', $this->smart_display_block, 'register' );
 		$this->loader->add_action( 'enqueue_block_editor_assets', $this->smart_display_block, 'enqueue_block_editor_assets' );
 		$this->loader->add_filter( 'block_categories_all', $this->smart_display_block, 'register_block_category' );
+		$this->smart_display_scheduler->register_hooks();
 
 		/**
 		 * FILTERS
@@ -321,6 +332,7 @@ final class Clickwhale {
 	 * Provides default options.
 	 * @return array
 	 */
+
 	public function default_options(): array {
 		return array(
 			'general'        => array(
@@ -358,6 +370,7 @@ final class Clickwhale {
 					'random_slug'   => 0
 				)
 			),
+			/* @since 2.7.0 */
 			'smart_displays' => array(
 				'name'    => __( 'Smart Displays Options', 'clickwhale' ),
 				'text'    => __( 'Global settings for the Smart Displays.', 'clickwhale' ),
@@ -371,7 +384,7 @@ final class Clickwhale {
 							),
 							'style'       => 'none',
 							'radius'      => array(
-								'value' => 16,
+								'value' => 8,
 								'min'   => 0,
 								'max'   => 200
 							),
@@ -384,11 +397,6 @@ final class Clickwhale {
 							'max'   => 200
 						),
 						'box_shadow' => '0 .25rem 1rem rgba(0, 0, 0, 0.05)'
-					),
-					'title'      => array(
-						'color'       => '#1a1c1d',
-						'color_hover' => '#007aff',
-						'font_size'   => '1.25rem'
 					),
 					'primary'    => array(
 						'text'           => esc_html__( 'Primary Button', 'clickwhale' ),
@@ -415,6 +423,65 @@ final class Clickwhale {
 					'disclosure' => '',
 				)
 			),
+			/* @since 2.8.0 */
+			'integrations'   => array(
+				'type'    => 'multiple',
+				'name'    => __( 'Integrations Options', 'clickwhale' ),
+				'text'    => __( 'Connect ClickWhale with the third-party services.', 'clickwhale' ),
+				'options' => array(
+					'amz_connect' => array(
+						'name'            => __( 'AMZ Connect', 'clickwhale' ),
+						'description'     => __( 'Amazon product data for Smart Displays', 'clickwhale' ),
+						'url'             => esc_url( 'https://amzconnect.io/?utm_source=clickwhale&utm_medium=link&utm_campaign=clickwhale_integrations&utm_content=plugin_settings_page' ),
+						'image'           => CLICKWHALE_ADMIN_ASSETS_DIR . '/images/integrations/amz-connect-icon.png',
+						'entities'        => array( 'smart_displays' ),
+						'about'           => array(
+							'text'        => __( 'Fetches live Amazon product data (title, image, price, buy link) into your Smart Displays and keeps it up to date automatically.', 'clickwhale' ),
+							'description' => '',
+						),
+						// plugin settings page
+						'settings_fields' => array(
+							array( 'id' => 'about', 'type' => 'about', 'label' => __( 'About', 'clickwhale' ) ),
+							array( 'id' => 'api_key', 'type' => 'api_key', 'label' => __( 'API key', 'clickwhale' ) ),
+							array(
+								'id'               => 'default_store',
+								'type'             => 'select',
+								'label'            => __( 'Default store', 'clickwhale' ),
+								'options_callback' => 'get_amz_connect_stores'
+							),
+							array(
+								'id'    => 'tracking_id',
+								'type'  => 'input',
+								'label' => __( 'Tracking ID', 'clickwhale' )
+							),
+							array(
+								'id'    => 'button_text',
+								'type'  => 'input',
+								'label' => __( 'Default button text', 'clickwhale' )
+							),
+							array( 'id' => 'quota', 'type' => 'quota' ),
+						),
+						// templates/[entity]/edit page
+						'entity_fields'   => array(
+							array( 'id' => 'asin', 'type' => 'input', 'label' => __( 'ASIN', 'clickwhale' ) ),
+							array(
+								'id'               => 'store',
+								'type'             => 'select',
+								'label'            => __( 'Store', 'clickwhale' ),
+								'options_callback' => 'get_amz_connect_stores'
+							),
+						),
+						// default settings
+						'defaults'        => array(
+							'default_store'     => 'com',
+							'button_text'       => __( 'Buy on Amazon', 'clickwhale' ),
+							'tracking_id'       => '',
+							'max_list_items'    => 3,
+							'overflow_behavior' => 'truncate',
+						),
+					)
+				)
+			)
 		);
 	}
 

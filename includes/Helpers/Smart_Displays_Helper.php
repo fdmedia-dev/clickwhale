@@ -89,4 +89,19 @@ class Smart_Displays_Helper extends Helper_Abstract {
 			'destination' => esc_url( wp_unslash( $link['url'] ) )
 		);
 	}
+
+	public static function get_integration_data( int $sd_id, string $integration ): array {
+		global $wpdb;
+		$table = Helper::get_db_table_name( 'smart_display_data' );
+		$row   = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM $table WHERE smart_display_id = %d AND integration = %s LIMIT 1",
+				$sd_id,
+				$integration
+			),
+			ARRAY_A
+		);
+
+		return $row ?? array();
+	}
 }

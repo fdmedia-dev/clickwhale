@@ -93,7 +93,7 @@ class Helper {
 				} elseif ( false !== strpos( $class, 'cw-color-control' ) ) {
 					$width = '';
 				} else {
-					$width = '300';
+					$width = '';
 				}
 
 				if ( $width ) {
@@ -207,9 +207,21 @@ class Helper {
 				$item        .= '<textarea ' . $id . $class . $name . $placeholder . ' rows="5" ' . $required . $disabled . '>' . esc_attr( $value ) . '</textarea>';
 				break;
 
+			/**
+			 * @since 2.7.0
+			 */
 			case 'header':
-				$item .= '';
+				$item .= '<div class="cw-row-header"></div>';
 				break;
+
+			/**
+			 * Return custom html
+			 * @since 2.8.0
+			 */
+			case 'html':
+				$item .= $args['content'];
+				break;
+
 
 			default:
 				$item .= 'Undefined control type';
@@ -507,6 +519,10 @@ class Helper {
 				'transform' => true
 			] ),
 			'pre'        => array_merge( $common_global, $common_aria ),
+			'progress'   => array_merge( $common_global, $common_aria, [
+				'max'   => true,
+				'value' => true,
+			] ),
 			'rect'       => array_merge( $common_global, $common_stroke, [
 				'fill'      => true,
 				'height'    => true,

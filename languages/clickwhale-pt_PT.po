@@ -29,7 +29,7 @@ msgstr "ClickWhale"
 msgid "https://clickwhale.pro"
 msgstr "https://clickwhale.pro"
 
-#: clickwhale.php:121
+#: clickwhale.php:128
 msgid "License"
 msgstr "Licença"
 
@@ -37,7 +37,7 @@ msgstr "Licença"
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:50
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:201
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:378
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:51
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:57
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:53
 msgid "Edit"
 msgstr "Editar"
@@ -48,8 +48,8 @@ msgstr "Editar"
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:190
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:226
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:380
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:61
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:124
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:67
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:130
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:63
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:201
 msgid "Delete"
@@ -58,7 +58,6 @@ msgstr "Apagar"
 #: includes/Admin/Categories/Clickwhale_Categories_List_Table.php:159
 #: includes/Admin/Linkpages/Clickwhale_Linkpages_List_Table.php:159
 #: includes/Admin/Links/Clickwhale_Links_List_Table.php:343
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:103
 #: includes/Admin/TrackingCodes/Clickwhale_Tracking_Codes_List_Table.php:177
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:164
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:233
@@ -68,7 +67,7 @@ msgstr "Apagar"
 #: templates/admin/categories/edit.php:56
 #: templates/admin/linkpages/edit.php:126
 #: templates/admin/links/edit.php:92
-#: templates/admin/smart-displays/edit.php:61
+#: templates/admin/smart-displays/edit.php:109
 #: templates/admin/tracking-codes/edit.php:58
 msgid "Title"
 msgstr "Título"
@@ -81,7 +80,7 @@ msgstr "Título"
 #: templates/admin/linkpages/edit.php:158
 #: templates/admin/links/edit.php:239
 #: templates/admin/links/edit.php:244
-#: templates/admin/smart-displays/edit.php:158
+#: templates/admin/smart-displays/edit.php:215
 #: templates/admin/tracking-codes/edit.php:471
 msgid "Description"
 msgstr "Descrição"
@@ -98,7 +97,7 @@ msgstr "Nenhuma Categoria Encontrada"
 #: includes/Admin/Categories/Clickwhale_Category_Edit.php:79
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:968
 #: includes/Admin/Links/Clickwhale_Link_Edit.php:311
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:360
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:573
 #, fuzzy
 msgid "Please enter title"
 msgstr "Introduz o título"
@@ -113,7 +112,7 @@ msgid "Links"
 msgstr "Links"
 
 #: includes/Admin/Clickwhale_Admin.php:108
-#: includes/Clickwhale.php:452
+#: includes/Clickwhale.php:519
 msgid "Add New Link"
 msgstr "Adicionar Novo Link"
 
@@ -127,12 +126,12 @@ msgid "Categories"
 msgstr "Categorias"
 
 #: includes/Admin/Clickwhale_Admin.php:110
-#: includes/Clickwhale.php:464
+#: includes/Clickwhale.php:531
 msgid "Add New Category"
 msgstr "Adicionar nova categoria"
 
 #: includes/Admin/Clickwhale_Admin.php:113
-#: includes/Admin/Clickwhale_Settings.php:575
+#: includes/Admin/Clickwhale_Settings.php:764
 #: pro/includes/admin/statistics/Linkpages.php:28
 #: pro/templates/admin/statistics/statistics.php:21
 #: templates/admin/settings/pro.php:30
@@ -147,7 +146,7 @@ msgid "Link Pages"
 msgstr "Páginas de ligação"
 
 #: includes/Admin/Clickwhale_Admin.php:114
-#: includes/Clickwhale.php:476
+#: includes/Clickwhale.php:543
 #, fuzzy
 msgid "Add New Link Page"
 msgstr "Adicionar nova página de ligação"
@@ -162,7 +161,7 @@ msgid "Tracking Codes"
 msgstr "Códigos de rastreio"
 
 #: includes/Admin/Clickwhale_Admin.php:116
-#: includes/Clickwhale.php:488
+#: includes/Clickwhale.php:555
 #, fuzzy
 msgid "Add New Tracking Code"
 msgstr "Adiciona um novo código de rastreio"
@@ -174,7 +173,7 @@ msgstr "Links do ClickWhale"
 
 #: includes/Admin/Clickwhale_Admin.php:192
 #: includes/Admin/Clickwhale_Admin.php:193
-#: includes/Admin/Clickwhale_Admin.php:735
+#: includes/Admin/Clickwhale_Admin.php:742
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:57
 #: templates/admin/settings/settings.php:13
 msgid "Settings"
@@ -188,33 +187,33 @@ msgstr "Ferramentas"
 
 #: includes/Admin/Clickwhale_Admin.php:220
 #: includes/Admin/Clickwhale_Admin.php:221
-#: includes/Admin/Clickwhale_Admin.php:560
-#: includes/Admin/Clickwhale_Admin.php:751
+#: includes/Admin/Clickwhale_Admin.php:567
+#: includes/Admin/Clickwhale_Admin.php:758
 #, fuzzy
 msgid "Upgrade to PRO"
 msgstr "Actualiza para PRO"
 
-#: includes/Admin/Clickwhale_Admin.php:544
+#: includes/Admin/Clickwhale_Admin.php:551
 msgid "Need help?"
 msgstr "Precisa de ajuda?"
 
-#: includes/Admin/Clickwhale_Admin.php:568
+#: includes/Admin/Clickwhale_Admin.php:575
 #, fuzzy
 msgid "Available only in PRO version"
 msgstr "Disponível apenas na versão PRO"
 
-#: includes/Admin/Clickwhale_Admin.php:602
+#: includes/Admin/Clickwhale_Admin.php:609
 #, fuzzy
 msgid "Upgrade to ClickWhale Pro"
 msgstr "Actualiza para o ClickWhale Pro"
 
-#: includes/Admin/Clickwhale_Admin.php:605
+#: includes/Admin/Clickwhale_Admin.php:612
 #: templates/admin/settings/pro.php:29
 #: templates/admin/settings/pro.php:30
 msgid "Detailed Statistics"
 msgstr "Estatísticas Detalhadas"
 
-#: includes/Admin/Clickwhale_Admin.php:606
+#: includes/Admin/Clickwhale_Admin.php:613
 #: pro/includes/admin/Clickwhale_Pro_Settings.php:305
 #: pro/includes/admin/links/Clickwhale_Pro_Link_Edit.php:39
 #: templates/admin/settings/pro.php:34
@@ -223,313 +222,314 @@ msgstr "Estatísticas Detalhadas"
 msgid "Keyword Auto Linker"
 msgstr "Auto Linker de palavras-chave"
 
-#: includes/Admin/Clickwhale_Admin.php:607
+#: includes/Admin/Clickwhale_Admin.php:614
 #: templates/admin/settings/pro.php:44
 #: templates/admin/settings/pro.php:45
 #, fuzzy
 msgid "UTM Campaign Tracking"
 msgstr "Acompanhamento de campanhas UTM"
 
-#: includes/Admin/Clickwhale_Admin.php:608
+#: includes/Admin/Clickwhale_Admin.php:615
 #, fuzzy
 msgid "E-Commerce Conversion Tracking"
 msgstr "Acompanhamento de conversões de comércio eletrónico"
 
-#: includes/Admin/Clickwhale_Admin.php:610
+#: includes/Admin/Clickwhale_Admin.php:617
 #, fuzzy
 msgid "Advanced Customization Options"
 msgstr "Opções avançadas de personalização"
 
-#: includes/Admin/Clickwhale_Admin.php:612
+#: includes/Admin/Clickwhale_Admin.php:619
 #, fuzzy
 msgid "More Blocks for Link Pages"
 msgstr "Mais blocos para páginas de ligação"
 
-#: includes/Admin/Clickwhale_Admin.php:614
+#: includes/Admin/Clickwhale_Admin.php:621
 #: templates/admin/settings/pro.php:76
 #: templates/admin/settings/pro.php:77
 #, fuzzy
 msgid "Remove Plugin Credits"
 msgstr "Remover créditos de plugins"
 
-#: includes/Admin/Clickwhale_Admin.php:620
+#: includes/Admin/Clickwhale_Admin.php:627
 msgid "Upgrade Now"
 msgstr "Actualizar Agora"
 
-#: includes/Admin/Clickwhale_Admin.php:634
+#: includes/Admin/Clickwhale_Admin.php:641
 msgid "Plugin Documentation"
 msgstr "Documentação do Plugin"
 
-#: includes/Admin/Clickwhale_Admin.php:642
+#: includes/Admin/Clickwhale_Admin.php:649
 #, fuzzy
 msgid "How-To Shorten Links & Create Redirects"
 msgstr "Como encurtar ligações e criar redireccionamentos"
 
-#: includes/Admin/Clickwhale_Admin.php:650
+#: includes/Admin/Clickwhale_Admin.php:657
 #, fuzzy
 msgid "How-To Import Links"
 msgstr "Como importar ligações"
 
-#: includes/Admin/Clickwhale_Admin.php:658
+#: includes/Admin/Clickwhale_Admin.php:665
 #, fuzzy
 msgid "How-To Use the Keyword Auto Linker"
 msgstr "Como utilizar o Auto Linker de palavras-chave"
 
-#: includes/Admin/Clickwhale_Admin.php:666
+#: includes/Admin/Clickwhale_Admin.php:673
 #, fuzzy
 msgid "Creating Your First Link Page"
 msgstr "Criar a tua primeira página de ligação"
 
-#: includes/Admin/Clickwhale_Admin.php:673
+#: includes/Admin/Clickwhale_Admin.php:680
 #, fuzzy
 msgid "How-To Add Google Tag Manager To WordPress with ClickWhale"
 msgstr "Como adicionar o Google Tag Manager ao WordPress com o ClickWhale"
 
-#: includes/Admin/Clickwhale_Admin.php:681
+#: includes/Admin/Clickwhale_Admin.php:688
 #, fuzzy
 msgid "View all Articles"
 msgstr "Ver todos os artigos"
 
-#: includes/Admin/Clickwhale_Admin.php:775
+#: includes/Admin/Clickwhale_Admin.php:782
 msgid "Documentation"
 msgstr "Documentação"
 
-#: includes/Admin/Clickwhale_Admin.php:776
+#: includes/Admin/Clickwhale_Admin.php:783
 #, fuzzy
 msgid "Rate ClickWhale on WordPress.org"
 msgstr "Avalia o ClickWhale em WordPress.org"
 
-#: includes/Admin/Clickwhale_Admin.php:820
-#: includes/Admin/Clickwhale_Admin.php:840
-#: includes/Admin/Clickwhale_Admin.php:920
+#: includes/Admin/Clickwhale_Admin.php:827
+#: includes/Admin/Clickwhale_Admin.php:847
+#: includes/Admin/Clickwhale_Admin.php:927
 msgid "Copied!"
 msgstr "Copiado!"
 
-#: includes/Admin/Clickwhale_Ajax.php:119
+#: includes/Admin/Clickwhale_Ajax.php:120
 #, fuzzy
 msgid "Nothing to migrate"
 msgstr "Nada a migrar"
 
-#: includes/Admin/Clickwhale_Ajax.php:155
+#: includes/Admin/Clickwhale_Ajax.php:156
 #, fuzzy
 msgid "Successfully deleted! Page will be reloaded..."
 msgstr "Apagaste com sucesso! A página será recarregada..."
 
-#: includes/Admin/Clickwhale_Ajax.php:176
+#: includes/Admin/Clickwhale_Ajax.php:177
 #, fuzzy
 msgid "All statistic has been reset"
 msgstr "Todas as estatísticas foram repostas"
 
-#: includes/Admin/Clickwhale_Ajax.php:193
+#: includes/Admin/Clickwhale_Ajax.php:194
 #, fuzzy
 msgid "All plugin tables has been reset"
 msgstr "Todas as tabelas de plug-ins foram redefinidas"
 
-#: includes/Admin/Clickwhale_Ajax.php:221
+#: includes/Admin/Clickwhale_Ajax.php:222
 #, fuzzy
 msgid "All plugin settings has been restored"
 msgstr "Todas as definições do plugin foram restauradas"
 
-#: includes/Admin/Clickwhale_Ajax.php:778
-#: includes/Admin/Clickwhale_Ajax.php:792
-#: includes/Admin/Clickwhale_Ajax.php:889
-#: includes/Admin/Clickwhale_Ajax.php:899
+#: includes/Admin/Clickwhale_Ajax.php:779
+#: includes/Admin/Clickwhale_Ajax.php:793
+#: includes/Admin/Clickwhale_Ajax.php:890
+#: includes/Admin/Clickwhale_Ajax.php:900
 #: includes/Admin/Import/Clickwhale_Import.php:83
 #: includes/Admin/Import/Clickwhale_Import.php:121
 #, fuzzy
 msgid "Please, select .csv file"
 msgstr "Por favor, seleciona o ficheiro .csv"
 
-#: includes/Admin/Clickwhale_Ajax.php:851
+#: includes/Admin/Clickwhale_Ajax.php:852
 msgid "Column name"
 msgstr "O nome da coluna"
 
-#: includes/Admin/Clickwhale_Ajax.php:852
+#: includes/Admin/Clickwhale_Ajax.php:853
 msgid "Map to field"
 msgstr "Mapear ao campo"
 
-#: includes/Admin/Clickwhale_Ajax.php:858
+#: includes/Admin/Clickwhale_Ajax.php:859
 msgid "Do not import"
 msgstr "Não importar"
 
-#: includes/Admin/Clickwhale_Ajax.php:869
+#: includes/Admin/Clickwhale_Ajax.php:870
 msgid "Example:"
 msgstr "Exemplo:"
 
-#: includes/Admin/Clickwhale_Ajax.php:909
+#: includes/Admin/Clickwhale_Ajax.php:910
 #: includes/Admin/Links/Clickwhale_Links_Bulk_Edit.php:84
 #: pro/includes/admin/ContentTemplates/Clickwhale_Pro_Link_Content_Templates.php:100
 #: templates/admin/links/edit.php:37
 msgid "Default"
 msgstr "Padrão"
 
-#: includes/Admin/Clickwhale_Ajax.php:930
+#: includes/Admin/Clickwhale_Ajax.php:931
 #, fuzzy
 msgid "Error opening file!"
 msgstr "Erro ao abrir o ficheiro!"
 
-#: includes/Admin/Clickwhale_Ajax.php:1063
+#: includes/Admin/Clickwhale_Ajax.php:1064
 #, fuzzy
 msgid "Nothing to import!"
 msgstr "Não tens nada para importar!"
 
-#: includes/Admin/Clickwhale_Ajax.php:1119
+#: includes/Admin/Clickwhale_Ajax.php:1120
 msgid "Bad request"
 msgstr "Erro"
 
-#: includes/Admin/Clickwhale_Ajax.php:1195
-#: includes/Admin/Clickwhale_Ajax.php:1205
+#: includes/Admin/Clickwhale_Ajax.php:1196
+#: includes/Admin/Clickwhale_Ajax.php:1206
 #, fuzzy
 msgid "Nothing to export"
 msgstr "Nada a exportar"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:119
+#: includes/Admin/Clickwhale_Instance_Edit.php:132
 #, fuzzy
 msgid "You attempted to edit an item that does not exist. Perhaps it was deleted?"
 msgstr "Tentaste editar um item que não existe. Talvez tenha sido apagado?"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:120
+#: includes/Admin/Clickwhale_Instance_Edit.php:133
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1134
 msgid "Error"
 msgstr "Erro"
 
-#: includes/Admin/Clickwhale_Instance_Edit.php:122
+#: includes/Admin/Clickwhale_Instance_Edit.php:135
 msgid "Back"
 msgstr "Voltar"
 
 #. translators: %s: item title
-#: includes/Admin/Clickwhale_Instance_Edit.php:163
+#: includes/Admin/Clickwhale_Instance_Edit.php:176
 #, fuzzy,php-format
 msgid "%s was successfully saved"
 msgstr "%s foi guardado com sucesso"
 
 #. translators: %s: item title
-#: includes/Admin/Clickwhale_Instance_Edit.php:172
+#: includes/Admin/Clickwhale_Instance_Edit.php:185
 #, fuzzy,php-format
 msgid "%s was successfully updated"
 msgstr "%s foi atualizado com sucesso"
 
-#: includes/Admin/Clickwhale_Settings.php:130
+#: includes/Admin/Clickwhale_Settings.php:154
 #, fuzzy
 msgid "Access Level"
 msgstr "Nível de acesso"
 
-#: includes/Admin/Clickwhale_Settings.php:147
+#: includes/Admin/Clickwhale_Settings.php:171
 #, fuzzy
 msgid "Hide Admin Bar Menu"
 msgstr "Ocultar o menu da barra de administração"
 
-#: includes/Admin/Clickwhale_Settings.php:156
+#: includes/Admin/Clickwhale_Settings.php:180
 #, fuzzy
 msgid "Check to hide Clickwhale quick menu from the admin bar."
 msgstr "Marca a opção para ocultar o menu rápido Clickwhale da barra de administração."
 
-#: includes/Admin/Clickwhale_Settings.php:365
+#: includes/Admin/Clickwhale_Settings.php:188
 #, fuzzy
 msgid "Tracking Duration"
 msgstr "Duração do rastreio"
 
-#: includes/Helpers/Helper.php:832
+#: includes/Helpers/Helper.php:848
 msgid "30 days"
 msgstr "30 dias"
 
-#: includes/Admin/Clickwhale_Settings.php:379
+#: includes/Admin/Clickwhale_Settings.php:202
 #, fuzzy
 msgid "Disable Tracking"
 msgstr "Desativar o rastreio"
 
-#: includes/Admin/Clickwhale_Settings.php:388
+#: includes/Admin/Clickwhale_Settings.php:211
 #, fuzzy
 msgid "Check to disable tracking of views and clicks."
 msgstr "Marca para desativar o acompanhamento de visualizações e cliques."
 
-#: includes/Admin/Clickwhale_Settings.php:393
+#: includes/Admin/Clickwhale_Settings.php:216
 #: templates/admin/tracking-codes/edit.php:455
 msgid "Exclude User Roles"
 msgstr "Excluir papéis de utilizador"
 
-#: includes/Admin/Clickwhale_Settings.php:403
+#: includes/Admin/Clickwhale_Settings.php:226
 #, fuzzy
 msgid "Check the user roles that should be excluded from tracking."
 msgstr "Verifica as funções de utilizador que devem ser excluídas do seguimento."
 
-#: includes/Admin/Clickwhale_Settings.php:411
+#: includes/Admin/Clickwhale_Settings.php:234
 #: templates/admin/links/edit.php:173
 #, fuzzy
 msgid "Redirection Type"
 msgstr "Tipo de redireccionamento"
 
-#: includes/Admin/Clickwhale_Settings.php:421
+#: includes/Admin/Clickwhale_Settings.php:244
 #, fuzzy
 msgid "Set default redirection type which will be used for new links."
 msgstr "Define o tipo de redireccionamento predefinido que será utilizado para novas ligações."
 
-#: includes/Admin/Clickwhale_Settings.php:426
+#: includes/Admin/Clickwhale_Settings.php:249
 #: includes/Admin/Links/Clickwhale_Links_Bulk_Edit.php:89
 #: pro/includes/admin/ContentTemplates/Clickwhale_Pro_Link_Content_Templates.php:97
 #: templates/admin/links/edit.php:188
 msgid "Link Target"
 msgstr "Link alvo"
 
-#: includes/Admin/Clickwhale_Settings.php:436
+#: includes/Admin/Clickwhale_Settings.php:259
 #, fuzzy
 msgid "Set default target which will be used for all links."
 msgstr "Define o destino padrão que será usado para todos os links."
 
-#: includes/Admin/Clickwhale_Settings.php:441
+#: includes/Admin/Clickwhale_Settings.php:264
 #, fuzzy
 msgid "Nofollow Links"
 msgstr "Links Nofollow"
 
-#: includes/Admin/Clickwhale_Settings.php:450
+#: includes/Admin/Clickwhale_Settings.php:273
 #, fuzzy
 msgid "Check to mark links as nofollow & noindex by default."
 msgstr "Assinala para marcar as ligações como nofollow e noindex por defeito."
 
-#: includes/Admin/Clickwhale_Settings.php:455
+#: includes/Admin/Clickwhale_Settings.php:278
 msgid "Sponsored Links"
 msgstr "Links Patrocinados"
 
-#: includes/Admin/Clickwhale_Settings.php:464
+#: includes/Admin/Clickwhale_Settings.php:287
 #, fuzzy
 msgid "Check to mark links as sponsored by default."
 msgstr "Marca para marcar links como patrocinados por padrão."
 
-#: includes/Admin/Clickwhale_Settings.php:465
+#: includes/Admin/Clickwhale_Settings.php:288
 #, fuzzy
 msgid "Recommended for affiliate links."
 msgstr "Recomendado para ligações de afiliados."
 
-#: includes/Admin/Clickwhale_Settings.php:470
+#: includes/Admin/Clickwhale_Settings.php:293
 #, fuzzy
 msgid "Link Prefix"
 msgstr "Prefixo da ligação"
 
-#: includes/Admin/Clickwhale_Settings.php:482
+#: includes/Admin/Clickwhale_Settings.php:305
 #, fuzzy
 msgid "Here, you can enter a prefix that will be prepended when creating a new link. For example: <em>link</em>.<br><strong>Important:</strong> If you change the prefix, it will <u>not</u> affect already existing links."
 msgstr "Aqui, podes introduzir um prefixo que será anexado quando criares uma nova ligação. Por exemplo: <em>link</em>.<br><strong>Importante:</strong> Se alterares o prefixo, isso <u>não</u> afectará os links já existentes."
 
-#: includes/Admin/Clickwhale_Settings.php:494
+#: includes/Admin/Clickwhale_Settings.php:317
 #, fuzzy
 msgid "Random Slug"
 msgstr "Lesma aleatória"
 
-#: includes/Admin/Clickwhale_Settings.php:504
+#: includes/Admin/Clickwhale_Settings.php:327
 #, fuzzy
 msgid "Check to <u>not</u> suggest a random link slug when creating a new link."
 msgstr "Verifica para <u>não</u> sugerir um slug de link aleatório ao criar um novo link."
 
-#: includes/Admin/Clickwhale_Settings.php:567
+#: includes/Admin/Clickwhale_Settings.php:756
 #: includes/Admin/Links/Clickwhale_Link_Edit.php:53
 #: templates/admin/linkpages/edit.php:120
 msgid "General"
 msgstr "Geral"
 
-#: includes/Admin/Clickwhale_Settings.php:571
+#: includes/Admin/Clickwhale_Settings.php:760
 msgid "Tracking"
 msgstr "Rastreamento"
 
-#: includes/Admin/Clickwhale_Settings.php:579
+#: includes/Admin/Clickwhale_Settings.php:768
 #: templates/admin/settings/pro.php:30
 #: templates/admin/settings/pro.php:35
 #: templates/admin/settings/pro.php:45
@@ -633,7 +633,7 @@ msgstr "Copiar ligação"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1624
 #: pro/includes/admin/statistics/Links.php:26
 #: templates/admin/links/edit.php:48
-#: templates/admin/smart-displays/edit.php:135
+#: templates/admin/smart-displays/edit.php:193
 msgid "Link"
 msgstr "Ligação"
 
@@ -731,19 +731,21 @@ msgstr "Selecionar item"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:521
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:556
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:223
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:394
 msgid "Select Image"
 msgstr "Seleccionar imagem"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:625
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:254
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:425
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:895
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:945
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:852
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:477
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:827
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1818
 #: templates/admin/linkpages/edit.php:216
 #: templates/admin/linkpages/edit.php:642
-#: templates/admin/smart-displays/edit.php:118
+#: templates/admin/smart-displays/edit.php:177
 msgid "Upload image"
 msgstr "Upload Image"
 
@@ -1010,48 +1012,48 @@ msgstr "Seleciona a posição do código"
 msgid "Select"
 msgstr "Selecionar"
 
-#: includes/Clickwhale.php:327
+#: includes/Clickwhale.php:339
 msgid "General Options"
 msgstr "Opções gerais"
 
-#: includes/Clickwhale.php:328
+#: includes/Clickwhale.php:340
 #, fuzzy
 msgid "Set up ClickWhale plugin global options."
 msgstr "Configura as opções globais do plugin ClickWhale."
 
-#: includes/Clickwhale.php:335
+#: includes/Clickwhale.php:347
 msgid "Tracking Options"
 msgstr "Opções de rastreamento"
 
-#: includes/Clickwhale.php:336
+#: includes/Clickwhale.php:348
 #, fuzzy
 msgid "Set up ClickWhale plugin global link tracking options."
 msgstr "Configura as opções globais de seguimento de ligações do plugin ClickWhale."
 
-#: includes/Clickwhale.php:350
+#: includes/Clickwhale.php:362
 #, fuzzy
 msgid "Link Manager Options"
 msgstr "Opções do Link Manager"
 
-#: includes/Clickwhale.php:351
+#: includes/Clickwhale.php:363
 #, fuzzy
 msgid "Global settings for ClickWhale Links."
 msgstr "Definições globais para as ligações ClickWhale."
 
-#: includes/Clickwhale.php:447
+#: includes/Clickwhale.php:514
 msgid "New Link"
 msgstr "Novo LInk"
 
-#: includes/Clickwhale.php:459
+#: includes/Clickwhale.php:526
 msgid "New Category"
 msgstr "Adicionar Nova Categoria"
 
-#: includes/Clickwhale.php:471
+#: includes/Clickwhale.php:538
 #, fuzzy
 msgid "New Link Page"
 msgstr "Nova página de ligação"
 
-#: includes/Clickwhale.php:483
+#: includes/Clickwhale.php:550
 #, fuzzy
 msgid "New Tracking Code"
 msgstr "Novo código de rastreio"
@@ -1132,13 +1134,13 @@ msgstr "Podes selecionar uma imagem, um ícone ou um emoji. Não podes ter mais 
 #: templates/admin/linkpages/edit.php:220
 #: templates/admin/linkpages/edit.php:637
 #: templates/admin/linkpages/edit.php:646
-#: templates/admin/smart-displays/edit.php:109
-#: templates/admin/smart-displays/edit.php:122
+#: templates/admin/smart-displays/edit.php:168
+#: templates/admin/smart-displays/edit.php:181
 msgid "Remove image"
 msgstr "Remover imagem"
 
-#: includes/Admin/Clickwhale_Admin.php:1017
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:188
+#: includes/Admin/Clickwhale_Admin.php:1024
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:359
 #: includes/ContentTemplates/Clickwhale_Linkpage_Content_Templates.php:861
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:342
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1824
@@ -1159,48 +1161,48 @@ msgstr "Editar página de ligação"
 
 #. translators: %s: item type/name (e.g., Link, Category, Link Page)
 #. translators: type of data: link, linkpage, category
-#: includes/Helpers/Helper.php:260
+#: includes/Helpers/Helper.php:272
 #: pro/includes/admin/statistics/Statistics_Abstract.php:360
 #, php-format
 msgid "Edit %s"
 msgstr "Editar %s"
 
 #. translators: %s: item type/name (e.g., Link, Category, Link Page)
-#: includes/Helpers/Helper.php:266
+#: includes/Helpers/Helper.php:278
 #, php-format
 msgid "Add %s"
 msgstr "Adicionar %s"
 
-#: includes/Helpers/Helper.php:277
+#: includes/Helpers/Helper.php:289
 msgid "Back to list"
 msgstr "Voltar à lista"
 
-#: includes/Helpers/Helper.php:291
+#: includes/Helpers/Helper.php:303
 msgid "Add new"
 msgstr "Adicionar novo"
 
-#: includes/Helpers/Helper.php:299
+#: includes/Helpers/Helper.php:311
 msgid "View page"
 msgstr "Ver página"
 
-#: includes/Helpers/Helper.php:614
+#: includes/Helpers/Helper.php:630
 #, fuzzy
 msgid "Unlimited with"
 msgstr "Ilimitado com"
 
 #. translators: %d: current user ID
-#: includes/Helpers/Helper.php:912
+#: includes/Helpers/Helper.php:928
 #, fuzzy,php-format
 msgid "Security check failed (possible CSRF) for user ID %d"
 msgstr "Falha na verificação de segurança (possível CSRF) para o ID de utilizador %d"
 
 #. translators: %s: admin page slug
-#: includes/Helpers/Helper.php:916
+#: includes/Helpers/Helper.php:932
 #, fuzzy,php-format
 msgid "on page: %s"
 msgstr "na página: %s"
 
-#: includes/Helpers/Helper.php:921
+#: includes/Helpers/Helper.php:937
 #, fuzzy
 msgid "Security check failed. Please contact the ClickWhale customer support."
 msgstr "A verificação de segurança falhou. Contacta o apoio ao cliente da ClickWhale."
@@ -1267,12 +1269,12 @@ msgstr "Opções do Keyword Auto Linker"
 msgid "Global settings for the Keyword Auto Linker."
 msgstr "Configurações globais para o Auto Linker de palavras-chave."
 
-#: includes/Clickwhale.php:343
+#: includes/Clickwhale.php:355
 #, fuzzy
 msgid "Link Pages Options"
 msgstr "Opções de páginas de ligação"
 
-#: includes/Clickwhale.php:344
+#: includes/Clickwhale.php:356
 #, fuzzy
 msgid "Global settings for the Link Pages."
 msgstr "Definições globais para as Páginas de ligação."
@@ -1325,12 +1327,12 @@ msgstr "por exemplo, %s"
 msgid "Please enter your personal affiliate link if you are a member of our <a href=\"%s\" target=\"_blank\">Affiliate Program</a>.<br>It will then be used automatically in the footer of your link pages."
 msgstr "Por favor, introduz o teu link pessoal de afiliado se fores membro do nosso <a href=\"%s\" target=\"_blank\">Programa de Afiliados</a>.<br>Será depois utilizado automaticamente no rodapé das tuas páginas de links."
 
-#: includes/Admin/Clickwhale_Settings.php:532
+#: includes/Admin/Clickwhale_Settings.php:354
 msgid "Credits"
 msgstr "Créditos"
 
 #. translators: 1: Affiliate program URL, 2: Settings page URL
-#: includes/Admin/Clickwhale_Settings.php:516
+#: includes/Admin/Clickwhale_Settings.php:339
 #, fuzzy,php-format
 msgid "As a member of our <a href=\"%1$s\" target=\"_blank\">affiliate program</a>, you can enter your affiliate link in the settings <a href=\"%2$s\">here</a>,<br>which will then be used when the credits are displayed."
 msgstr "Como membro do nosso <a href=\"%1$s\" target=\"_blank\">programa de afiliados</a>, podes introduzir o teu link de afiliado nas definições <a href=\"%2$s\">aqui</a>,<br>, que será depois utilizado quando os créditos forem apresentados."
@@ -1482,7 +1484,7 @@ msgstr "Formulários"
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:653
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1612
 #: pro/includes/admin/linkpages/Clickwhale_Pro_Linkpage_Edit.php:1795
-#: templates/admin/smart-displays/edit.php:97
+#: templates/admin/smart-displays/edit.php:156
 msgid "Image"
 msgstr "Imagem"
 
@@ -2212,7 +2214,7 @@ msgstr "Fundo da Página"
 msgid "Link Page Links Customization Options"
 msgstr "Opções de personalização dos links da página de links"
 
-#: includes/Admin/Clickwhale_Settings.php:243
+#: includes/Admin/Clickwhale_Settings.php:446
 #: templates/admin/linkpages/edit.php:420
 msgid "Background Color"
 msgstr "Cor de fundo"
@@ -2222,7 +2224,7 @@ msgstr "Cor de fundo"
 msgid "Set link background color (normal state)"
 msgstr "Define a cor de fundo da ligação (estado normal)"
 
-#: includes/Admin/Clickwhale_Settings.php:260
+#: includes/Admin/Clickwhale_Settings.php:462
 #: templates/admin/linkpages/edit.php:434
 #, fuzzy
 msgid "Background Color (hover/active)"
@@ -2233,7 +2235,7 @@ msgstr "Cor de fundo (hover/ativo)"
 msgid "Set link background color (hover/active)"
 msgstr "Define a cor de fundo do link (hover/ativo)"
 
-#: includes/Admin/Clickwhale_Settings.php:209
+#: includes/Admin/Clickwhale_Settings.php:414
 #: templates/admin/linkpages/edit.php:448
 msgid "Text Color"
 msgstr "Cor do texto"
@@ -2243,7 +2245,7 @@ msgstr "Cor do texto"
 msgid "Set link text color (normal state)"
 msgstr "Define a cor do texto do link (estado normal)"
 
-#: includes/Admin/Clickwhale_Settings.php:226
+#: includes/Admin/Clickwhale_Settings.php:430
 #: templates/admin/linkpages/edit.php:462
 #, fuzzy
 msgid "Text Color (hover/active)"
@@ -2334,7 +2336,7 @@ msgid "View live preview"
 msgstr "Vê a pré-visualização em direto"
 
 #: templates/admin/linkpages/edit.php:687
-#: templates/admin/smart-displays/edit.php:241
+#: templates/admin/smart-displays/edit.php:426
 #: templates/admin/tracking-codes/edit.php:512
 msgid "Save"
 msgstr "Guardar"
@@ -2658,12 +2660,12 @@ msgstr "Comentário opcional ao código de rastreio."
 msgid "Enable Tracking Code"
 msgstr "Ativar o código de rastreio"
 
-#: includes/Admin/Clickwhale_Settings.php:141
+#: includes/Admin/Clickwhale_Settings.php:165
 msgid "Decide who can access plugin admin pages."
 msgstr "Decida quem pode acessar as páginas de administração do plugin."
 
 #. translators: %s: review link URL
-#: includes/Admin/Clickwhale_Admin.php:521
+#: includes/Admin/Clickwhale_Admin.php:528
 #, php-format
 msgid "You like ClickWhale? Then please <a href=\"%s\" target=\"_blank\">leave a review here</a>"
 msgstr "Você gosta do ClickWhale? Então, por favor, <a href=\"%s\" target=\"_blank\">deixe uma avaliação aqui</a>"
@@ -2687,7 +2689,7 @@ msgid "Edit Tracking Code"
 msgstr "Editar Código de Rastreamento"
 
 #. translators: %1$s: item title, %2$s: instance title (e.g. Link Page, Category)
-#: includes/Admin/Clickwhale_Instance_Edit.php:206
+#: includes/Admin/Clickwhale_Instance_Edit.php:219
 #, php-format
 msgid "Edit \"%1$s\" %2$s"
 msgstr "Editar \"%1$s\" %2$s"
@@ -2871,6 +2873,8 @@ msgstr "Ver postagem"
 msgid "Show all"
 msgstr "Mostrar tudo"
 
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:697
+#: includes/front/SmartDisplays/Clickwhale_Smart_Display_Template.php:175
 #: includes/Helpers/Links_Helper.php:233
 msgid "Show less"
 msgstr "Mostrar menos"
@@ -2892,25 +2896,25 @@ msgid "The keyword you entered: <b>%s</b> has already been added to this link. P
 msgstr "A palavra-chave que você inseriu: <b>%s</b> já foi adicionada a este link. Por favor, renomeie ou remova os duplicados."
 
 #. translators: %s: link title
-#: includes/Admin/Clickwhale_Ajax.php:1096
+#: includes/Admin/Clickwhale_Ajax.php:1097
 #, php-format
 msgid "Link <strong>&quot;%s&quot;</strong> successfully imported!"
 msgstr "Link <strong>&quot;%s&quot;</strong> importado com sucesso!"
 
 #. translators: %s: link title
-#: includes/Admin/Clickwhale_Ajax.php:1102
+#: includes/Admin/Clickwhale_Ajax.php:1103
 #, php-format
 msgid "<strong>Error!</strong> Link <strong>&quot;%s&quot;</strong> not imported!"
 msgstr "<strong>Erro!</strong> Link <strong>&quot;%s&quot;</strong> não importado!"
 
-#: includes/Admin/Clickwhale_Ajax.php:1155
+#: includes/Admin/Clickwhale_Ajax.php:1156
 msgid "No valid columns selected"
 msgstr "Nenhuma coluna válida selecionada"
 
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:516
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:563
 #: includes/Admin/Linkpages/Clickwhale_Linkpage_Edit.php:649
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:218
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:389
 msgid "Insert Image"
 msgstr "Inserir Imagem"
 
@@ -3045,16 +3049,16 @@ msgid "This slug is already used in %1$s (%2$s ID: %3$d)"
 msgstr "Este slug já está em uso em %1$s (ID %2$s: %3$d)"
 
 #. translators: %s:the error message
-#: includes/Admin/Clickwhale_Admin.php:712
+#: includes/Admin/Clickwhale_Admin.php:719
 #, php-format
 msgid "Something went wrong: %s"
 msgstr "Algo deu errado: %s"
 
-#: includes/Admin/Clickwhale_Ajax.php:786
+#: includes/Admin/Clickwhale_Ajax.php:787
 msgid "Invalid upload."
 msgstr "Upload inválido."
 
-#: includes/Admin/Clickwhale_Settings.php:541
+#: includes/Admin/Clickwhale_Settings.php:363
 msgid "Check to show Link Page credits."
 msgstr "Marque para mostrar os créditos da Página de Links."
 
@@ -3131,7 +3135,7 @@ msgid_plural "Currently, a maximum of %1$d categories can be added."
 msgstr[0] "Atualmente, um máximo de %1$d categoria pode ser adicionada."
 msgstr[1] ""
 
-#: includes/Helpers/Helper.php:623
+#: includes/Helpers/Helper.php:639
 msgid "ClickWhale PRO"
 msgstr "ClickWhale PRO"
 
@@ -3203,12 +3207,12 @@ msgid "Check to replace keywords inside ACF Fields (text, textarea, WYSIWYG, rep
 msgstr "Marque para substituir palavras-chave dentro dos Campos ACF (texto, área de texto, WYSIWYG, repetidor, conteúdo flexível)."
 
 #: includes/Admin/Clickwhale_Admin.php:111
-#: includes/Admin/Clickwhale_Settings.php:583
+#: includes/Admin/Clickwhale_Settings.php:772
 msgid "Smart Displays"
 msgstr "Displays Inteligentes"
 
 #: includes/Admin/Clickwhale_Admin.php:112
-#: includes/Clickwhale.php:500
+#: includes/Clickwhale.php:567
 msgid "Add New Smart Display"
 msgstr "Adicionar Novo Display Inteligente"
 
@@ -3216,111 +3220,111 @@ msgstr "Adicionar Novo Display Inteligente"
 msgid "Edit Smart Display"
 msgstr "Editar Display Inteligente"
 
-#: includes/Admin/Clickwhale_Admin.php:1018
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:189
+#: includes/Admin/Clickwhale_Admin.php:1025
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:360
 #: pro/includes/admin/Clickwhale_Pro_Admin.php:343
 msgid "Reset color"
 msgstr "Redefinir cor"
 
-#: includes/Admin/Clickwhale_Settings.php:166
+#: includes/Admin/Clickwhale_Settings.php:374
 msgid "Disclosure Text"
 msgstr "Texto de Divulgação"
 
-#: includes/Admin/Clickwhale_Settings.php:175
+#: includes/Admin/Clickwhale_Settings.php:383
 msgid "Set default disclosure text"
 msgstr "Definir texto de divulgação padrão"
 
-#: includes/Admin/Clickwhale_Settings.php:181
-#: includes/Clickwhale.php:394
+#: includes/Admin/Clickwhale_Settings.php:388
+#: includes/Clickwhale.php:402
 msgid "Primary Button"
 msgstr "Botão Primário"
 
-#: includes/Admin/Clickwhale_Settings.php:193
+#: includes/Admin/Clickwhale_Settings.php:399
 msgid "Text"
 msgstr "Texto"
 
-#: includes/Admin/Clickwhale_Settings.php:203
+#: includes/Admin/Clickwhale_Settings.php:409
 msgid "Set default text for primary button"
 msgstr "Definir texto padrão para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:220
+#: includes/Admin/Clickwhale_Settings.php:425
 msgid "Set default text color (normal state) for primary button"
 msgstr "Definir cor do texto padrão (estado normal) para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:237
+#: includes/Admin/Clickwhale_Settings.php:441
 msgid "Set default text color (hover/active) for primary button"
 msgstr "Definir cor do texto padrão (hover/ativo) para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:254
+#: includes/Admin/Clickwhale_Settings.php:457
 msgid "Set default background color (normal state) for primary button"
 msgstr "Definir cor de fundo padrão (estado normal) para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:271
+#: includes/Admin/Clickwhale_Settings.php:473
 msgid "Set default background color (hover/active) for primary button"
 msgstr "Definir cor de fundo padrão (hover/ativo) para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:277
+#: includes/Admin/Clickwhale_Settings.php:478
 msgid "Border Width"
 msgstr "Largura da Borda"
 
-#: includes/Admin/Clickwhale_Settings.php:289
+#: includes/Admin/Clickwhale_Settings.php:490
 msgid "Set default border width for primary button"
 msgstr "Definir largura da borda padrão para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:295
+#: includes/Admin/Clickwhale_Settings.php:495
 msgid "Border Style"
 msgstr "Estilo da Borda"
 
-#: includes/Admin/Clickwhale_Settings.php:305
+#: includes/Admin/Clickwhale_Settings.php:505
 msgid "Set default border style for primary button"
 msgstr "Definir estilo da borda padrão para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:311
+#: includes/Admin/Clickwhale_Settings.php:510
 msgid "Border Radius"
 msgstr "Raio da Borda"
 
-#: includes/Admin/Clickwhale_Settings.php:323
+#: includes/Admin/Clickwhale_Settings.php:522
 msgid "Set default border radius for primary button"
 msgstr "Definir raio da borda padrão para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:329
+#: includes/Admin/Clickwhale_Settings.php:527
 msgid "Border Color"
 msgstr "Cor da Borda"
 
-#: includes/Admin/Clickwhale_Settings.php:340
+#: includes/Admin/Clickwhale_Settings.php:538
 msgid "Set default border color (normal state) for primary button"
 msgstr "Definir cor da borda padrão (estado normal) para o botão primário"
 
-#: includes/Admin/Clickwhale_Settings.php:346
+#: includes/Admin/Clickwhale_Settings.php:543
 msgid "Border Color (hover/active)"
 msgstr "Cor da Borda (hover/ativo)"
 
-#: includes/Admin/Clickwhale_Settings.php:357
+#: includes/Admin/Clickwhale_Settings.php:554
 msgid "Set default border color (hover/active) for primary button"
 msgstr "Definir cor da borda padrão (hover/ativo) para o botão primário"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:82
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:88
 msgid "Copy Shortcode"
 msgstr "Copiar Shortcode"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:104
-#: templates/admin/smart-displays/edit.php:84
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:110
+#: templates/admin/smart-displays/edit.php:143
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:237
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:251
 msgid "No Smart Displays Found"
 msgstr "Nenhum Display Inteligente Encontrado"
 
-#: includes/Clickwhale.php:362
+#: includes/Clickwhale.php:375
 msgid "Smart Displays Options"
 msgstr "Opções de Displays Inteligentes"
 
-#: includes/Clickwhale.php:363
+#: includes/Clickwhale.php:376
 msgid "Global settings for the Smart Displays."
 msgstr "Configurações globais para os Displays Inteligentes."
 
-#: includes/Clickwhale.php:495
+#: includes/Clickwhale.php:562
 msgid "New Smart Display"
 msgstr "Novo Display Inteligente"
 
@@ -3329,66 +3333,54 @@ msgstr "Novo Display Inteligente"
 msgid "Currently, a maximum of %d smart displays can be added."
 msgstr "Atualmente, um máximo de %d displays inteligentes pode ser adicionado."
 
-#: templates/admin/smart-displays/edit.php:33
+#: templates/admin/smart-displays/edit.php:53
 #: assets/admin/js/blocks/cw-smart-display-block.js:107
 #: assets/admin/js/blocks/cw-smart-display-block.js:132
 #: assets/admin/js/blocks/cw-smart-display-block.js:151
 msgid "Smart Display"
 msgstr "Display Inteligente"
 
-#: templates/admin/smart-displays/edit.php:57
+#: templates/admin/smart-displays/edit.php:84
 msgid "Smart Display Settings"
 msgstr "Configurações do Display Inteligente"
 
-#: templates/admin/smart-displays/edit.php:72
+#: templates/admin/smart-displays/edit.php:120
 msgid "Smart Display Title"
 msgstr "Título do Display Inteligente"
 
-#: templates/admin/smart-displays/edit.php:83
+#: templates/admin/smart-displays/edit.php:142
 msgid "Copy shortcode"
 msgstr "Copiar shortcode"
 
-#: templates/admin/smart-displays/edit.php:130
-msgid "Please use a ratio of 1:1"
-msgstr "Por favor, use uma proporção de 1:1"
-
-#: templates/admin/smart-displays/edit.php:142
+#: templates/admin/smart-displays/edit.php:200
 msgid "Select Link"
 msgstr "Selecionar Link"
 
-#: templates/admin/smart-displays/edit.php:163
+#: templates/admin/smart-displays/edit.php:216
 msgid "Paste your content here"
 msgstr "Cole seu conteúdo aqui"
 
-#: templates/admin/smart-displays/edit.php:169
-msgid "Title and Image as Link"
-msgstr "Título e Imagem como Link"
-
-#: templates/admin/smart-displays/edit.php:174
-msgid "Should the title and image be shown as a link?"
-msgstr "O título e a imagem devem ser mostrados como um link?"
-
-#: templates/admin/smart-displays/edit.php:180
+#: templates/admin/smart-displays/edit.php:236
 msgid "Primary Button Text"
 msgstr "Texto do Botão Primário"
 
-#: templates/admin/smart-displays/edit.php:187
+#: templates/admin/smart-displays/edit.php:243
 msgid "Set primary button text (leave blank to use default value)"
 msgstr "Definir texto do botão primário (deixe em branco para usar o valor padrão)"
 
-#: templates/admin/smart-displays/edit.php:193
+#: templates/admin/smart-displays/edit.php:249
 msgid "Price"
 msgstr "Preço"
 
-#: templates/admin/smart-displays/edit.php:199
+#: templates/admin/smart-displays/edit.php:255
 msgid "e.g. $1999.99 or 1999.99 USD"
 msgstr "ex. $1999.99 ou 1999.99 USD"
 
-#: templates/admin/smart-displays/edit.php:200
+#: templates/admin/smart-displays/edit.php:256
 msgid "Set price (leave blank to omit)"
 msgstr "Definir preço (deixe em branco para omitir)"
 
-#: templates/admin/smart-displays/edit.php:209
+#: templates/admin/smart-displays/edit.php:382
 msgid "Smart Display Preview"
 msgstr "Pré-visualização do Display Inteligente"
 
@@ -3411,3 +3403,274 @@ msgstr "Selecione um Display Inteligente para incorporar nesta página."
 #: assets/admin/js/blocks/cw-smart-display-block.js:154
 msgid "No Smart Displays found. Create one first."
 msgstr "Nenhum Display Inteligente encontrado. Crie um primeiro."
+
+#: includes/Admin/Clickwhale_Admin.php:349
+#: includes/Helpers/Integrations_Helper.php:151
+msgid "Connected"
+msgstr "Conectado"
+
+#: includes/Admin/Clickwhale_Admin.php:350
+#: includes/Helpers/Integrations_Helper.php:151
+msgid "Invalid API Key"
+msgstr "Chave de API inválida"
+
+#: includes/Admin/Clickwhale_Admin.php:351
+msgid "Validating..."
+msgstr "Validando..."
+
+#: includes/Admin/Clickwhale_Ajax.php:1310
+#: includes/Admin/Clickwhale_Ajax.php:1343
+#: includes/Helpers/Integrations_Helper.php:172
+msgid "AMZ Connect API key is not configured"
+msgstr "A chave de API AMZ Connect não está configurada"
+
+#: includes/Admin/Clickwhale_Ajax.php:1337
+msgid "ASIN and store are required"
+msgstr "ASIN e loja são obrigatórios"
+
+#: includes/Admin/Clickwhale_Settings.php:568
+#: includes/Clickwhale.php:444
+msgid "About"
+msgstr "Sobre"
+
+#: includes/Admin/Clickwhale_Settings.php:580
+msgid "API Key"
+msgstr "Chave de API"
+
+#: includes/Admin/Clickwhale_Settings.php:594
+msgid "Usage Quota"
+msgstr "Quota de Uso"
+
+#: includes/Admin/Clickwhale_Settings.php:607
+#: includes/Clickwhale.php:470
+#: templates/admin/smart-displays/edit.php:310
+msgid "Store"
+msgstr "Loja"
+
+#: includes/Admin/Clickwhale_Settings.php:620
+msgid "Used as the default when creating a new Smart Display. Can be overridden per display."
+msgstr "Usado como padrão ao criar um novo Smart Display. Pode ser substituído por display."
+
+#: includes/Admin/Clickwhale_Settings.php:625
+#: includes/Clickwhale.php:455
+msgid "Tracking ID"
+msgstr "ID de Rastreamento"
+
+#. translators: 1: Amazon Associates tracking ID example
+#: includes/Admin/Clickwhale_Settings.php:637
+msgid "Your Amazon Associates tracking ID (e.g. mysite-21). Without it, your sales won't be attributed to your account."
+msgstr "Seu ID de rastreamento da Amazon Associates (ex. mysite-21). Sem ele, suas vendas não serão atribuídas à sua conta."
+
+#: includes/Admin/Clickwhale_Settings.php:645
+msgid "Output Settings"
+msgstr "Configurações de Saída"
+
+#: includes/Admin/Clickwhale_Settings.php:656
+msgid "Button Text"
+msgstr "Texto do Botão"
+
+#: includes/Admin/Clickwhale_Settings.php:668
+msgid "Default text shown on the buy button. Can be overridden per display."
+msgstr "Texto padrão exibido no botão de compra. Pode ser substituído por display."
+
+#: includes/Admin/Clickwhale_Settings.php:676
+msgid "Description Bullets"
+msgstr "Pontos de Descrição"
+
+#: includes/Admin/Clickwhale_Settings.php:687
+msgid "Maximum number of description bullet points to show. Set to 0 for all."
+msgstr "Número máximo de pontos de descrição a serem exibidos. Defina como 0 para todos."
+
+#: includes/Admin/Clickwhale_Settings.php:693
+msgid "Long Descriptions"
+msgstr "Descrições Longas"
+
+#: includes/Admin/Clickwhale_Settings.php:703
+msgid "Truncate"
+msgstr "Truncar"
+
+#: includes/Admin/Clickwhale_Settings.php:704
+msgid "Show \"Show more\" toggle"
+msgstr "Mostrar alternância \"Mostrar mais\""
+
+#: includes/Admin/Clickwhale_Settings.php:707
+msgid "Used when a product has more bullet points than your limit."
+msgstr "Usado quando um produto tem mais pontos do que seu limite."
+
+#: includes/Admin/Clickwhale_Settings.php:776
+msgid "Integrations"
+msgstr "Integrações"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:45
+msgid "Inactive"
+msgstr "Inativo"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Displays_List_Table.php:109
+#: templates/admin/smart-displays/edit.php:88
+msgid "Name"
+msgstr "Nome"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:696
+#: includes/front/SmartDisplays/Clickwhale_Smart_Display_Template.php:174
+msgid "Show more"
+msgstr "Mostrar mais"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1110
+msgid "Please enter an ASIN"
+msgstr "Por favor, insira um ASIN"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1116
+msgid "Fetching"
+msgstr "Buscando"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1128
+msgid "Done"
+msgstr "Concluído"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Edit.php:1139
+msgid "Request failed"
+msgstr "Solicitação falhou"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:255
+msgid "ClickWhale — AMZ Connect:"
+msgstr "ClickWhale — AMZ Connect:"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:256
+msgid "The following Smart Displays became inactive because their Amazon product data could not be fetched. Please review them:"
+msgstr "Os seguintes Smart Displays tornaram-se inativos porque seus dados de produto da Amazon não puderam ser buscados. Por favor, revise-os:"
+
+#: includes/Admin/SmartDisplays/Clickwhale_Smart_Display_Scheduler.php:258
+msgid "Dismiss"
+msgstr "Dispensar"
+
+#: includes/Clickwhale.php:429
+msgid "Integrations Options"
+msgstr "Opções de Integrações"
+
+#: includes/Clickwhale.php:430
+msgid "Connect ClickWhale with the third-party services."
+msgstr "Conectar ClickWhale com os serviços de terceiros."
+
+#: includes/Clickwhale.php:433
+msgid "AMZ Connect"
+msgstr "AMZ Connect"
+
+#: includes/Clickwhale.php:434
+msgid "Amazon product data for Smart Displays"
+msgstr "Dados de produto da Amazon para Smart Displays"
+
+#: includes/Clickwhale.php:439
+msgid "Fetches live Amazon product data (title, image, price, buy link) into your Smart Displays and keeps it up to date automatically."
+msgstr "Busca dados de produto da Amazon ao vivo (título, imagem, preço, link de compra) para seus Smart Displays e mantém atualizado automaticamente."
+
+#: includes/Clickwhale.php:445
+msgid "API key"
+msgstr "Chave de API"
+
+#: includes/Clickwhale.php:449
+msgid "Default store"
+msgstr "Loja padrão"
+
+#: includes/Clickwhale.php:460
+msgid "Default button text"
+msgstr "Texto padrão do botão"
+
+#: includes/Clickwhale.php:466
+msgid "ASIN"
+msgstr "ASIN"
+
+#: includes/Clickwhale.php:477
+msgid "Buy on Amazon"
+msgstr "Comprar na Amazon"
+
+#: includes/Helpers/Integrations_Helper.php:37
+msgid "Learn more"
+msgstr "Saiba mais"
+
+#: includes/Helpers/Integrations_Helper.php:137
+msgid "Remove key"
+msgstr "Remover chave"
+
+#: includes/Helpers/Integrations_Helper.php:146
+msgid "Paste API key here"
+msgstr "Cole a chave de API aqui"
+
+#: includes/Helpers/Integrations_Helper.php:163
+msgid "Your AMZ Connect API key. Get one at amzconnect.io."
+msgstr "Sua chave de API AMZ Connect. Obtenha uma em amzconnect.io."
+
+#. translators: 1: number of used requests, 2: total limit, 3: month name, 4: number remaining
+#: includes/Helpers/Integrations_Helper.php:180
+#, php-format
+msgid "%1$s of %2$s monthly fetches used <span class=\"muted\">(%3$s remaining)</span>"
+msgstr "%1$s de %2$s buscas mensais usadas <span class=\"muted\">(%3$s restantes)</span>"
+
+#: includes/Helpers/Integrations_Helper.php:189
+msgid "Refresh"
+msgstr "Atualizar"
+
+#: includes/Helpers/Integrations_Helper.php:197
+msgid "Updated:"
+msgstr "Atualizado:"
+
+#: includes/Helpers/Integrations_Helper.php:232
+msgid "Failed to fetch AMZ Connect quota"
+msgstr "Falha ao buscar a quota do AMZ Connect"
+
+#: includes/Helpers/Integrations_Helper.php:331
+msgid "AMZ Connect API request failed"
+msgstr "Falha na solicitação da API AMZ Connect"
+
+#: templates/admin/smart-displays/edit.php:65
+msgid "This display is inactive because required fields are empty. Fill in at least the Title to publish it."
+msgstr "Este display está inativo porque campos obrigatórios estão vazios. Preencha pelo menos o Título para publicá-lo."
+
+#: templates/admin/smart-displays/edit.php:99
+msgid "Internal name for admin use"
+msgstr "Nome interno para uso administrativo"
+
+#: templates/admin/smart-displays/edit.php:101
+msgid "Used in the admin list and block editor. Not shown on the frontend."
+msgstr "Usado na lista administrativa e no editor de blocos. Não exibido na interface do usuário."
+
+#: templates/admin/smart-displays/edit.php:134
+#: templates/admin/smart-displays/edit.php:228
+msgid "Override with custom value"
+msgstr "Substituir por valor personalizado"
+
+#: templates/admin/smart-displays/edit.php:295
+msgid "Product ASIN"
+msgstr "ASIN do Produto"
+
+#: templates/admin/smart-displays/edit.php:302
+msgid "e.g. B08MQZXN1X"
+msgstr "ex. B08MQZXN1X"
+
+#: templates/admin/smart-displays/edit.php:323
+msgid "Default from settings. Can be overridden per display."
+msgstr "Padrão das configurações. Pode ser substituído por display."
+
+#: templates/admin/smart-displays/edit.php:332
+msgid "Fetch Product"
+msgstr "Buscar Produto"
+
+#: templates/admin/smart-displays/edit.php:343
+msgid "Use Amazon product data"
+msgstr "Usar dados de produto da Amazon"
+
+#: templates/admin/smart-displays/edit.php:349
+msgid "Product URL"
+msgstr "URL do Produto"
+
+#: templates/admin/smart-displays/edit.php:364
+msgid "Product data fetched. Last sync:"
+msgstr "Dados do produto buscados. Última sincronização:"
+
+#: templates/admin/smart-displays/edit.php:374
+#, php-format
+msgid "AMZ Connect is not configured. Please check <a href=\"%s\">Integrations Settings</a>"
+msgstr "AMZ Connect não está configurado. Por favor, verifique <a href=\"%s\">Configurações de Integrações</a>"
+
+#: templates/admin/smart-displays/edit.php:386
+msgid "No display data yet. Fill in the fields above."
+msgstr "Nenhum dado de display ainda. Preencha os campos acima."
