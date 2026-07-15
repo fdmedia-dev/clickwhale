@@ -4,8 +4,8 @@ Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 6.0
 Requires PHP: 7.4
-Tested up to: 7.0
-Stable tag: 2.8.0
+Tested up to: 7.0.1
+Stable tag: 2.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,18 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.8.1 (15th July 2026) =
+* New: Option to append asterisk to ClikcWhale links on frontend
+* New: Custom CSS and JS fields for link pages
+* New: Action button in listtable to duplicate link pages and smart displays
+* Tweak: Allow clicking row content to toggle link edit section
+* Tweak: Replace default color picker with Coloris to support opacity
+* Tweak: Confirmation dialog when leaving a page with unsaved changes
+* Fix: Fatal error while creating new link page on classic themes
+* Fix: Rename case sensitive directories to comply with composer autoloader
+* Info: Updated Freemius SDK to v2.13.4
+* Info: WordPress 7.0.1 compatibility
 
 = Version 2.8.0 (25th Jun 2026) =
 * New: AMZ Connect Integration for Smart Displays

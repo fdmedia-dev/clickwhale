@@ -339,6 +339,13 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
         ?>
         <script type='text/javascript'>
             jQuery(document).ready(function () {
+                const form = jQuery('#submit').closest('form');
+
+                clickwhaleUnsavedChanges.track(form);
+                form.on('submit', function () {
+                    clickwhaleUnsavedChanges.markClean();
+                });
+
                 jQuery('#position_code').select2({
                     placeholder: <?php echo wp_json_encode( __( 'Select Code position', 'clickwhale' ) ); ?>,
                     width: '100%',
@@ -381,6 +388,10 @@ class Clickwhale_Tracking_Code_Edit extends Clickwhale_Instance_Edit {
                         }
                     );
                     let editor = wp.codeEditor.initialize(jQuery('#code'), editorSettings);
+
+                    editor.codemirror.on('change', function () {
+                        clickwhaleUnsavedChanges.markDirty();
+                    });
                 }
 
                 // Toggle pages select

@@ -331,6 +331,56 @@ final class Clickwhale_Settings {
                         )
                 )
         );
+        /**
+         * @since 2.8.1
+         */
+        add_settings_field(
+                'show_asterisk',
+                __( 'Show Asterisk', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_link_manager_options',
+                'link_manager_settings_section',
+                array(
+                        'control' => 'checkbox',
+                        'id'      => 'show_asterisk',
+                        'name'    => 'clickwhale_link_manager_options[show_asterisk]',
+                        'value'   => ! empty( $link_manager_options['show_asterisk'] ) ? 1 : 0,
+                        'label'   => esc_html__( 'Check to show asterisk after the link on the site.', 'clickwhale' )
+                )
+        );
+        add_settings_field(
+                'disclosure_text',
+                __( 'Disclosure Text', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_link_manager_options',
+                'link_manager_settings_section',
+                array(
+                        'control'     => 'textarea',
+                        'id'          => 'disclosure_text',
+                        'name'        => 'clickwhale_link_manager_options[disclosure_text]',
+                        'value'       => $link_manager_options['disclosure_text'] ?? $defaults['link_manager']['options']['disclosure_text'],
+                        'description' => '<p id="cw-shortcode--text" class="code" title="' . esc_attr__( 'Copy shortcode', 'clickwhale' ) . '">' . esc_html__( 'Shortcode', 'clickwhale' ) . ': <span id="cw-shortcode">[cw_link_disclosure]</span><svg class="feather"><use href="' . esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/feather-sprite.svg#copy"></use></svg></p>' . esc_html__( 'Use the shortcode to output the disclosure text anywhere, regardless of the position setting below.', 'clickwhale' )
+                )
+        );
+        add_settings_field(
+                'disclosure_position',
+                __( 'Disclosure Position', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_link_manager_options',
+                'link_manager_settings_section',
+                array(
+                        'control' => 'radio',
+                        'id'      => 'disclosure_position',
+                        'name'    => 'clickwhale_link_manager_options[disclosure_position]',
+                        'value'   => $link_manager_options['disclosure_position'] ?? 'none',
+                        'options' => array(
+                                'none'    => __( 'None', 'clickwhale' ),
+                                'tooltip' => __( 'Tooltip (on hover)', 'clickwhale' ),
+                                'before'  => __( 'Before post content', 'clickwhale' ),
+                                'after'   => __( 'After post content', 'clickwhale' ),
+                        )
+                )
+        );
         $linkpages_options   = get_option( 'clickwhale_linkpages_options' );
         $credits_description = function_exists( 'clickwhale_fs' ) && clickwhale_fs()->is__premium_only()
                 ? wp_kses(
@@ -362,6 +412,32 @@ final class Clickwhale_Settings {
                         'value'       => ! empty( $linkpages_options['show_linkpage_credits'] ) ? 1 : 0,
                         'label'       => esc_html__( 'Check to show Link Page credits.', 'clickwhale' ),
                         'description' => $credits_description
+                )
+        );
+        add_settings_field(
+                'custom_css',
+                __( 'Custom CSS', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_linkpages_options',
+                'linkpages_settings_section',
+                array(
+                        'control'     => 'html',
+                        'id'          => 'linkpages_custom_css',
+                        'content'     => '<textarea id="linkpages_custom_css" name="clickwhale_linkpages_options[custom_css]" rows="10" class="large-text code">' . esc_textarea( $linkpages_options['custom_css'] ?? '' ) . '</textarea>',
+                        'description' => esc_html__( 'Added before the closing head tag on all Link Pages.', 'clickwhale' )
+                )
+        );
+        add_settings_field(
+                'custom_js',
+                __( 'Custom JS', 'clickwhale' ),
+                array( $this, 'render_controls' ),
+                'clickwhale_linkpages_options',
+                'linkpages_settings_section',
+                array(
+                        'control'     => 'html',
+                        'id'          => 'linkpages_custom_js',
+                        'content'     => '<textarea id="linkpages_custom_js" name="clickwhale_linkpages_options[custom_js]" rows="10" class="large-text code">' . esc_textarea( $linkpages_options['custom_js'] ?? '' ) . '</textarea>',
+                        'description' => esc_html__( 'Added before the closing body tag on all Link Pages.', 'clickwhale' )
                 )
         );
 
@@ -1003,6 +1079,18 @@ final class Clickwhale_Settings {
         // Random Slug
         $options['random_slug'] = ! empty( $options['random_slug'] ) ? 1 : 0;
 
+        // Show Asterisk
+        $options['show_asterisk'] = ! empty( $options['show_asterisk'] ) ? 1 : 0;
+
+        // Disclosure Text
+        $options['disclosure_text'] = sanitize_text_field( wp_unslash( $options['disclosure_text'] ?? '' ) );
+
+        // Disclosure Position
+        $allowed_positions              = array( 'none', 'tooltip', 'before', 'after' );
+        $options['disclosure_position'] = in_array( $options['disclosure_position'] ?? 'none', $allowed_positions, true )
+                ? $options['disclosure_position']
+                : 'none';
+
         return $options;
     }
 
@@ -1013,6 +1101,10 @@ final class Clickwhale_Settings {
 
         // Show Credits
         $options['show_linkpage_credits'] = ! empty( $options['show_linkpage_credits'] ) ? 1 : 0;
+
+        // Custom CSS / JS — admin-only, no stripping of < > characters
+        $options['custom_css'] = wp_unslash( $options['custom_css'] ?? '' );
+        $options['custom_js']  = wp_unslash( $options['custom_js'] ?? '' );
 
         return $options;
     }

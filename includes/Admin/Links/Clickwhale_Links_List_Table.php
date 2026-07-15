@@ -4,7 +4,7 @@ namespace Clickwhale\Admin\Links;
 
 use Exception;
 use WP_List_Table;
-use Clickwhale\Helpers\{Helper, Categories_Helper};
+use Clickwhale\Helpers\{Helper, Categories_Helper, Links_Helper};
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -204,6 +204,16 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                         '<a href="?page=' . CLICKWHALE_SLUG . '-edit-link&id=%d&tab=link_scanner">%s</a>',
                         $id,
                         __( 'Scan', 'clickwhale' )
+                ),
+                'duplicate' => sprintf(
+                        '<a href="%s">%s</a>',
+                        esc_url(
+                                wp_nonce_url(
+                                        admin_url( 'admin.php?page=' . $current_page . '&action=duplicate&id=' . $id ),
+                                        'duplicate-' . $this->_args['singular']
+                                )
+                        ),
+                        __( 'Duplicate', 'clickwhale' )
                 ),
                 'reset'  => sprintf(
                         '<a href="%s">%s</a>',
@@ -492,6 +502,70 @@ class Clickwhale_Links_List_Table extends WP_List_Table {
                     ?>
                     <script>window.location.href =<?php echo wp_json_encode( $url ); ?></script>
                     <?php
+                }
+                break;
+
+            case 'duplicate':
+                $nonce = is_array( $get_id ) ? 'bulk-' . $this->_args['plural'] : 'duplicate-' . $this->_args['singular'];
+
+                if ( ! wp_verify_nonce( $wpnonce, $nonce ) ) {
+                    Helper::csrf_exception( $get_page );
+                }
+
+                $ids = is_array( $get_id ) ? $get_id : array( $get_id );
+                $ids = array_filter( array_map( 'intval', $ids ) );
+
+                if ( empty( $ids ) ) {
+                    break;
+                }
+
+                $links_table = Helper::get_db_table_name( 'links' );
+                $meta_table  = Helper::get_db_table_name( 'meta' );
+
+                foreach ( $ids as $id ) {
+                    $original = Links_Helper::get_by_id( $id );
+
+                    if ( empty( $original ) ) {
+                        continue;
+                    }
+
+                    do {
+                        $new_slug = Links_Helper::generate_random_slug();
+                    } while ( ! empty( Links_Helper::get_by_slug( $new_slug ) ) );
+
+                    unset( $original['id'], $original['created_at'], $original['updated_at'] );
+                    $original['slug']           = $new_slug;
+                    $original['created_by_api'] = 0;
+                    $original['author']         = get_current_user_id();
+
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+                    $wpdb->insert( $links_table, $original );
+                    $new_id = $wpdb->insert_id;
+
+                    if ( ! $new_id ) {
+                        continue;
+                    }
+
+                    // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+                    $meta_rows = $wpdb->get_results(
+                            $wpdb->prepare( "SELECT meta_key, meta_value FROM {$meta_table} WHERE link_id=%d", $id ),
+                            ARRAY_A
+                    );
+                    // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+                    foreach ( (array) $meta_rows as $meta_row ) {
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+                        $wpdb->insert(
+                                $meta_table,
+                                array(
+                                        'meta_key'    => $meta_row['meta_key'],
+                                        'meta_value'  => $meta_row['meta_value'],
+                                        'link_id'     => $new_id,
+                                        'linkpage_id' => 0,
+                                )
+                        );
+                    }
                 }
                 break;
 

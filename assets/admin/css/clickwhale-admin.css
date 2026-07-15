@@ -1646,11 +1646,6 @@ table.smart-displays.fixed .column-title {
     white-space: nowrap;
 }
 
-#smart-display-edit #form_edit_smart_display .wp-picker-container.cw-disabled .wp-color-result,
-#smart-display-edit #form_edit_smart_display .wp-picker-container.cw-disabled .wp-picker-clear {
-    opacity: 0.5;
-}
-
 /* SMART DISPLAY PREVIEW STYLES */
 
 .cw-smart-display-preview--wrap {
@@ -2056,9 +2051,14 @@ body[class*="page_clickwhale-edit"] #poststuff > h3,
     }
 }
 
+.clickwhale-settings-wrap input[type="text"],
+.clickwhale-settings-wrap select {
+    min-width: 300px;
+}
+
 .clickwhale-settings-wrap form textarea {
-    width: 300px;
-    max-width: 25rem;
+    width: 100%;
+    max-width: 500px;
 }
 
 .clickwhale-settings-wrap form .clickwhale-label-header th {
@@ -2613,6 +2613,15 @@ body[class*="page_clickwhale-edit"] #poststuff > h3,
 #poststuff .postbox.clickwhale-admin-widget .inside .clickwhale-pro-button a:hover {
     background-color: #1a1c1d;
     color: #ffffff;
+}
+
+.button-link.cw-color-reset {
+    margin-left: 1rem;
+    font-size: .75rem;
+}
+
+.clr-field button {
+    border: 1px solid #949494;
 }
 
 /* @media */

@@ -4,6 +4,50 @@
     /* global clickwhale_admin */
 
     /**
+     * Shared "unsaved changes" dirty-tracking, used by every Clickwhale admin
+     * edit screen (Links, Link Categories, Link Pages, Tracking Codes, Smart
+     * Displays) to warn the user before they navigate away with unsaved data.
+     */
+    window.clickwhaleUnsavedChanges = (function () {
+        let isDirty = false,
+            beforeUnloadBound = false;
+
+        function bindBeforeUnload() {
+            if (beforeUnloadBound) {
+                return;
+            }
+
+            beforeUnloadBound = true;
+
+            window.addEventListener('beforeunload', function (e) {
+                if (isDirty) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        return {
+            /* Track any change to visible form fields inside `$form`. */
+            track: function ($form) {
+                bindBeforeUnload();
+
+                $form.on('input change', ':input:not([type="hidden"])', function () {
+                    isDirty = true;
+                });
+            },
+            /* For changes that don't fire a native `input`/`change` event
+             * (drag reorder, add/remove row, media library selection, etc). */
+            markDirty: function () {
+                bindBeforeUnload();
+                isDirty = true;
+            },
+            markClean: function () {
+                isDirty = false;
+            }
+        };
+    })();
+
+    /**
      * All of the code for your admin-facing JavaScript source
      * should reside in this file.
      *

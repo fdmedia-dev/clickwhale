@@ -293,11 +293,14 @@ final class Clickwhale {
 		$this->loader->add_action( 'wp_ajax_nopriv_clickwhale/public/track_custom_link', $this->public_ajax, 'track_custom_link' );
 
 		$this->loader->add_shortcode( 'cw_smart_display', $this->public, 'render_smart_display_shortcode' );
+		$this->loader->add_shortcode( 'cw_link_disclosure', $this->public, 'render_disclosure_shortcode' );
 
 		/**
 		 * FILTERS
 		 */
 		$this->loader->add_filter( 'the_content', $this->public, 'add_target_to_clickwhale_link' );
+		$this->loader->add_filter( 'the_content', $this->public, 'maybe_add_disclosure_to_content', 12 );
+		$this->loader->add_action( 'wp_head', $this->public, 'output_disclosure_tooltip_css' );
 	}
 
 	/**
@@ -355,19 +358,24 @@ final class Clickwhale {
 				'name'    => __( 'Link Pages Options', 'clickwhale' ),
 				'text'    => __( 'Global settings for the Link Pages.', 'clickwhale' ),
 				'options' => array(
-					'show_linkpage_credits' => 0
+					'show_linkpage_credits' => 0,
+					'custom_css'            => '',
+					'custom_js'             => ''
 				)
 			),
 			'link_manager'   => array(
 				'name'    => __( 'Link Manager Options', 'clickwhale' ),
 				'text'    => __( 'Global settings for ClickWhale Links.', 'clickwhale' ),
 				'options' => array(
-					'redirect_type' => 301,
-					'link_target'   => 'blank',
-					'nofollow'      => 1,
-					'sponsored'     => 0,
-					'slug'          => '',
-					'random_slug'   => 0
+					'redirect_type'        => 301,
+					'link_target'          => 'blank',
+					'nofollow'             => 1,
+					'sponsored'            => 0,
+					'slug'                 => '',
+					'random_slug'          => 0,
+					'show_asterisk'        => 0,
+					'disclosure_text'      => 'This post contains affiliate links. I may earn a commission if you click through and make a purchase, at no additional cost to you.',
+					'disclosure_position' => 'none'
 				)
 			),
 			/* @since 2.7.0 */

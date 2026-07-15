@@ -64,7 +64,10 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
             jQuery(document).ready(function () {
                 const
                     title = jQuery('#title'),
-                    slug = jQuery('#slug');
+                    slug = jQuery('#slug'),
+                    form = jQuery('#submit').closest('form');
+
+                clickwhaleUnsavedChanges.track(form);
 
                 /**
                  * Submit action
@@ -123,6 +126,8 @@ class Clickwhale_Category_Edit extends Clickwhale_Instance_Edit {
                     } else {
                         slug.removeClass('error').next().text('');
                     }
+
+                    clickwhaleUnsavedChanges.markClean();
                 });
 
                 /** JS FUNCTIONS */

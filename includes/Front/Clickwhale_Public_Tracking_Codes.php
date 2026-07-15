@@ -198,6 +198,6 @@ class Clickwhale_Public_Tracking_Codes {
 			if ( $credit_after ) {
 				echo PHP_EOL . esc_html( $credit_after ) . PHP_EOL;
 			}
-		} );
+		}, 20 );
 	}
 }

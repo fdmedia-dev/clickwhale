@@ -56,6 +56,16 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 				$id,
 				__( 'Edit', 'clickwhale' )
 			),
+			'duplicate' => sprintf(
+				'<a href="%s">%s</a>',
+				esc_url(
+					wp_nonce_url(
+						admin_url( 'admin.php?page=' . sanitize_key( $_GET['page'] ) . '&action=duplicate&id=' . $id ),
+						'duplicate-' . $this->_args['singular']
+					)
+				),
+				__( 'Duplicate', 'clickwhale' )
+			),
 			'delete' => sprintf(
 				'<a href="%s">%s</a>',
 				esc_url(
@@ -142,7 +152,9 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 	 * @throws Exception
 	 */
 	public function process_bulk_action() {
-		if ( 'delete' !== $this->current_action() ) {
+		$action = $this->current_action();
+
+		if ( ! in_array( $action, array( 'delete', 'duplicate' ), true ) ) {
 			return;
 		}
 
@@ -156,7 +168,7 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 			Helper::csrf_exception( $page_slug );
 		}
 
-		$nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+		$nonce = is_array( $_GET['id'] ) ? 'bulk-' . $this->_args['plural'] : $action . '-' . $this->_args['singular'];
 
 		if ( ! wp_verify_nonce( $_GET['_wpnonce'], $nonce ) ) {
 			Helper::csrf_exception( $page_slug );
@@ -174,6 +186,54 @@ class Clickwhale_Smart_Displays_List_Table extends WP_List_Table {
 		global $wpdb;
 		$table      = Helper::get_db_table_name( 'smart_displays' );
 		$data_table = Helper::get_db_table_name( 'smart_display_data' );
+
+		if ( 'duplicate' === $action ) {
+			foreach ( $ids as $id ) {
+				$original = Smart_Displays_Helper::get_by_id( $id );
+
+				if ( empty( $original ) ) {
+					continue;
+				}
+
+				unset( $original['id'], $original['created_at'] );
+
+				if ( ! empty( $original['name'] ) ) {
+					/* translators: %s: original smart display name */
+					$original['name'] = sprintf( __( '%s (copy)', 'clickwhale' ), $original['name'] );
+				} elseif ( ! empty( $original['title'] ) ) {
+					/* translators: %s: original smart display title */
+					$original['title'] = sprintf( __( '%s (copy)', 'clickwhale' ), $original['title'] );
+				}
+
+				$wpdb->insert( $table, $original );
+				$new_id = $wpdb->insert_id;
+
+				if ( ! $new_id ) {
+					continue;
+				}
+
+				$data_rows = $wpdb->get_results(
+					$wpdb->prepare( "SELECT integration, is_active, params, raw_data FROM $data_table WHERE smart_display_id=%d", $id ),
+					ARRAY_A
+				);
+
+				foreach ( (array) $data_rows as $data_row ) {
+					$wpdb->insert(
+						$data_table,
+						array(
+							'smart_display_id' => $new_id,
+							'integration'       => $data_row['integration'],
+							'is_active'         => $data_row['is_active'],
+							'params'            => $data_row['params'],
+							'raw_data'          => $data_row['raw_data'],
+						)
+					);
+				}
+			}
+
+			return;
+		}
+
 		$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
 		$wpdb->query(

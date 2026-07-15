@@ -51,6 +51,11 @@ final class Clickwhale_Public {
 	public Clickwhale_Public_Tracking_Codes $tracking_codes;
 
 	/**
+	 * @var bool
+	 */
+	private bool $content_has_cw_links = false;
+
+	/**
 	 * @return Clickwhale_Public
 	 * @since    1.0.0
 	 */
@@ -71,6 +76,10 @@ final class Clickwhale_Public {
 		$this->path           = Helper::get_public_path();
 		$this->linkpages      = new Clickwhale_Public_Linkpages();
 		$this->tracking_codes = new Clickwhale_Public_Tracking_Codes( $this->path );
+
+		add_action( 'clickwhale/front/cw_link_found', function() {
+			$this->content_has_cw_links = true;
+		} );
 	}
 
 	/**
@@ -245,8 +254,14 @@ final class Clickwhale_Public {
 	}
 
 	public function add_target_to_clickwhale_link( string $content ): string {
+		$this->content_has_cw_links = false;
 
-		return preg_replace_callback( '/<a(.*?)?href=[\'"]?[\'"]?(.*?)?>/i', function ( $m ) {
+		$link_manager_options = get_option( 'clickwhale_link_manager_options' );
+		$show_asterisk        = ! empty( $link_manager_options['show_asterisk'] );
+		$disclosure_position  = $link_manager_options['disclosure_position'] ?? 'none';
+		$disclosure_text      = $link_manager_options['disclosure_text'] ?? '';
+
+		$content = preg_replace_callback( '/<a(.*?)?href=[\'"]?[\'"]?(.*?)?>/i', function ( $m ) use ( $link_manager_options, $show_asterisk, $disclosure_position, $disclosure_text ) {
 			$tpl = array_shift( $m );
 			$hrf = $m[1] ?? null;
 
@@ -298,15 +313,17 @@ final class Clickwhale_Public {
 				if ( empty( $link ) ) {
 					return $tpl;
 				}
+
+				$this->content_has_cw_links = true;
+				do_action( 'clickwhale/front/cw_link_found' );
 			}
 
 			// Get `target` attr
 			if ( isset( $link['link_target'] ) ) {
 				$target_arg = $link['link_target'];
 			} else {
-				$link_manager_options = get_option( 'clickwhale_link_manager_options' );
-				$defaults             = clickwhale()->settings->default_options();
-				$target_arg           = $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'];
+				$defaults   = clickwhale()->settings->default_options();
+				$target_arg = $link_manager_options['link_target'] ?? $defaults['link_manager']['options']['link_target'];
 			}
 
 			$target_arg = esc_attr( $target_arg );
@@ -333,8 +350,63 @@ final class Clickwhale_Public {
 				}
 			}
 
+			if ( $show_asterisk ) {
+				$tpl = substr( $tpl, 0, -1 ) . ' data-cw-asterisk="1">';
+			}
+
+			if ( $disclosure_position === 'tooltip' && ! empty( $disclosure_text ) ) {
+				$tpl = substr( $tpl, 0, -1 ) . ' data-cw-tip="' . esc_attr( $disclosure_text ) . '">';
+			}
+
 			return $tpl;
 
 		}, $content );
+
+		if ( $show_asterisk ) {
+			$content = preg_replace( '/(<a\s[^>]*data-cw-asterisk="1"[^>]*>)(.*?)(<\/a>)/is', '$1$2$3*', $content );
+			$content = str_replace( ' data-cw-asterisk="1"', '', $content );
+		}
+
+		return $content;
+	}
+
+	public function maybe_add_disclosure_to_content( string $content ): string {
+		$options  = get_option( 'clickwhale_link_manager_options' );
+		$position = $options['disclosure_position'] ?? 'none';
+		$text     = $options['disclosure_text'] ?? '';
+
+		if ( ! in_array( $position, array( 'before', 'after' ), true ) || empty( $text ) || ! $this->content_has_cw_links ) {
+			return $content;
+		}
+
+		$disclosure = '<div class="cw-disclosure">' . esc_html( $text ) . '</div>';
+
+		return $position === 'before' ? $disclosure . $content : $content . $disclosure;
+	}
+
+	public function output_disclosure_tooltip_css(): void {
+		$options  = get_option( 'clickwhale_link_manager_options' );
+		$position = $options['disclosure_position'] ?? 'none';
+		$text     = $options['disclosure_text'] ?? '';
+		?>
+		<style id="cw-disclosure-styles">
+		:where(.cw-disclosure){font-size:.75rem;background:rgba(0,0,0,.03);padding:.25rem .55rem;line-height:1.25;border-radius:4px}
+		<?php if ( $position === 'tooltip' && ! empty( $text ) ) : ?>
+		[data-cw-tip]{position:relative}
+		[data-cw-tip]:hover::after{content:attr(data-cw-tip);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:4px 8px;border-radius:3px;font-size:12px;font-style:normal;font-weight:400;width:20rem;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;z-index:9999;pointer-events:none}
+		<?php endif; ?>
+		</style>
+		<?php
+	}
+
+	public function render_disclosure_shortcode(): string {
+		$options = get_option( 'clickwhale_link_manager_options' );
+		$text    = $options['disclosure_text'] ?? '';
+
+		if ( empty( $text ) ) {
+			return '';
+		}
+
+		return '<div class="cw-custom-disclosure">' . esc_html( $text ) . '</div>';
 	}
 }

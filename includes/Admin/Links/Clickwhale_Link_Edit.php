@@ -194,6 +194,8 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                     scanTfoot = scanTable.find('tfoot')
                 ;
 
+                clickwhaleUnsavedChanges.track(form);
+
                 $tabs.tabs();
 
                 if (activeTab && 'link_scanner' === activeTab) {
@@ -392,6 +394,7 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
                         url.removeClass('error').next().text('');
                     }
 
+                    clickwhaleUnsavedChanges.markClean();
                     submit.trigger('clickwhale.link.save', {formEvent: e});
                 });
 

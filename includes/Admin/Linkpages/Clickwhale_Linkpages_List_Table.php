@@ -49,12 +49,22 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 				$id,
 				__( 'Edit', 'clickwhale' )
 			),
-			'view'   => sprintf(
+			'view'      => sprintf(
 				'<a href="%s" target="_blank">%s</a>',
 				esc_url( trailingslashit( home_url( $item['slug'] ) ) ),
 				__( 'View', 'clickwhale' )
 			),
-			'delete' => sprintf(
+			'duplicate' => sprintf(
+				'<a href="%s">%s</a>',
+				esc_url(
+					wp_nonce_url(
+						admin_url( 'admin.php?page=' . sanitize_key( (string) filter_input( INPUT_GET, 'page' ) ) . '&action=duplicate&id=' . $id ),
+						'duplicate-' . $this->_args['singular']
+					)
+				),
+				__( 'Duplicate', 'clickwhale' )
+			),
+			'delete'    => sprintf(
 				'<a href="%s">%s</a>',
 				esc_url(
 					wp_nonce_url(
@@ -204,7 +214,9 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 	public function process_bulk_action() {
 		global $wpdb;
 
-		if ( 'delete' !== $this->current_action() ) {
+		$action = $this->current_action();
+
+		if ( ! in_array( $action, array( 'delete', 'duplicate' ), true ) ) {
 			return;
 		}
 
@@ -225,7 +237,7 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 		}
 
 		$post_id = $get_id;
-		$nonce   = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : 'delete-' . $this->_args['singular'];
+		$nonce   = is_array( $post_id ) ? 'bulk-' . $this->_args['plural'] : $action . '-' . $this->_args['singular'];
 
 		if ( empty( $wpnonce ) || ! wp_verify_nonce( $wpnonce, $nonce ) ) {
 			Helper::csrf_exception( $page_slug );
@@ -240,8 +252,62 @@ class Clickwhale_Linkpages_List_Table extends WP_List_Table {
 			return;
 		}
 
-		$table        = Helper::get_db_table_name( 'linkpages' );
-		$meta_table   = Helper::get_db_table_name( 'meta' );
+		$table      = Helper::get_db_table_name( 'linkpages' );
+		$meta_table = Helper::get_db_table_name( 'meta' );
+
+		if ( 'duplicate' === $action ) {
+			foreach ( $ids as $id ) {
+				$original = Linkpages_Helper::get_by_id( $id );
+
+				if ( empty( $original ) ) {
+					continue;
+				}
+
+				$base_slug = $original['slug'] . '-copy';
+				$new_slug  = $base_slug;
+				$counter   = 1;
+
+				while ( ! empty( Linkpages_Helper::get_by_slug( $new_slug ) ) ) {
+					$new_slug = $base_slug . '-' . ( ++$counter );
+				}
+
+				unset( $original['id'], $original['created_at'] );
+				$original['slug']   = $new_slug;
+				$original['author'] = get_current_user_id();
+
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->insert( $table, $original );
+				$new_id = $wpdb->insert_id;
+
+				if ( ! $new_id ) {
+					continue;
+				}
+
+				// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter
+				$meta_rows = $wpdb->get_results(
+					$wpdb->prepare( "SELECT meta_key, meta_value FROM {$meta_table} WHERE linkpage_id=%d", $id ),
+					ARRAY_A
+				);
+				// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+				foreach ( (array) $meta_rows as $meta_row ) {
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+					$wpdb->insert(
+						$meta_table,
+						array(
+							'meta_key'    => $meta_row['meta_key'],
+							'meta_value'  => $meta_row['meta_value'],
+							'link_id'     => 0,
+							'linkpage_id' => $new_id,
+						)
+					);
+				}
+			}
+
+			return;
+		}
+
 		$placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
 
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare

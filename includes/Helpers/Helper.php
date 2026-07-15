@@ -234,7 +234,7 @@ class Helper {
 		}
 
 		if ( isset( $args['description'] ) ) {
-			$item .= '<p class="description ">' . wp_kses_post( $args['description'] ) . '</p>';
+			$item .= '<p class="description ">' . wp_kses( $args['description'], self::get_allowed_tags() ) . '</p>';
 		}
 
 		if ( $row ) {

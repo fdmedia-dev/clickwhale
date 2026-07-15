@@ -264,7 +264,12 @@ final class Clickwhale_Admin {
             return;
         }
 
-        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_style(
+                'coloris',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/css/coloris.min.css',
+                array(),
+                CLICKWHALE_VERSION
+        );
         wp_enqueue_style(
                 'clickwhale_select2',
                 CLICKWHALE_ADMIN_ASSETS_DIR . '/css/select2/select2.min.css',
@@ -301,7 +306,6 @@ final class Clickwhale_Admin {
             wp_enqueue_script( 'jquery-ui-sortable' );
             wp_enqueue_media();
             wp_enqueue_editor();
-            wp_enqueue_script( 'wp-color-picker' );
         }
 
         if ( $page === CLICKWHALE_SLUG . '-edit-link' ) {
@@ -312,18 +316,24 @@ final class Clickwhale_Admin {
             wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
         }
 
+        if ( $page === CLICKWHALE_SLUG . '-settings'
+             && isset( $_GET['tab'] ) && sanitize_key( $_GET['tab'] ) === 'linkpages_options'
+        ) {
+            wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+        }
+
         if ( $page === CLICKWHALE_SLUG . '-edit-smart-display' ) {
             wp_enqueue_media();
             wp_enqueue_editor();
-            wp_enqueue_script( 'wp-color-picker' );
         }
 
-        if ( $page === CLICKWHALE_SLUG . '-settings'
-             && ( empty( $_GET['tab'] ) || sanitize_key( $_GET['tab'] ) === 'smart_displays_options' )
-        ) {
-            wp_enqueue_script( 'wp-color-picker' );
-        }
-
+        wp_enqueue_script(
+                'coloris',
+                CLICKWHALE_ADMIN_ASSETS_DIR . '/js/coloris.min.js',
+                array(),
+                CLICKWHALE_VERSION,
+                true
+        );
         wp_enqueue_script(
                 'clickwhale_select2',
                 CLICKWHALE_ADMIN_ASSETS_DIR . '/js/select2/select2.min.js',
@@ -890,6 +900,29 @@ public function admin_sidebar_begin() {
                 <?php
                 }
 
+                if ( $page === CLICKWHALE_SLUG . '-settings'
+                     && isset( $_GET['tab'] ) && sanitize_key( $_GET['tab'] ) === 'link_manager_options'
+                ) {
+                ?>
+                jQuery('#cw-shortcode--text').on('click', function (e) {
+                    e.preventDefault();
+
+                    jQuery('.copied').remove();
+
+                    const $temp = jQuery('<input>');
+                    let textToCopy = jQuery('#cw-shortcode').text();
+
+                    jQuery('body').append($temp);
+                    $temp.val(textToCopy).trigger('select');
+                    document.execCommand("copy");
+                    $temp.remove();
+
+                    jQuery(this).append('<span class="copied"><?php echo esc_js( __( 'Copied!', 'clickwhale' ) ); ?></span>');
+                    setTimeout(function () { jQuery('.copied').remove(); }, 2000);
+                });
+                <?php
+                }
+
                 if ( $page === CLICKWHALE_SLUG . '-smart-displays' ) {
                 ?>
                 jQuery('.shortcode-input--btn').on('click', function (e) {
@@ -943,14 +976,6 @@ public function admin_sidebar_begin() {
                     defaults = <?php echo json_encode( clickwhale()->settings->default_options() ); ?>,
                     pickers = [
                         {
-                            selector: '#title_color',
-                            defaultColor: defaults.smart_displays.options.title.color
-                        },
-                        {
-                            selector: '#title_color_hover',
-                            defaultColor: defaults.smart_displays.options.title.color_hover
-                        },
-                        {
                             selector: '#container_border_color',
                             defaultColor: defaults.smart_displays.options.container.border.color
                         },
@@ -984,6 +1009,8 @@ public function admin_sidebar_begin() {
                         }
                     ];
 
+                const swatches = ['#000000', '#ffffff', '#f8fafc', '#64748b', '#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+
                 pickers.forEach((picker) => {
                     const
                         $field = jQuery(picker.selector),
@@ -991,46 +1018,29 @@ public function admin_sidebar_begin() {
 
                     if (!$field.length) return;
 
-                    $field.wpColorPicker({
-                        clear() {
-                            resetToDefaultColor($field, defaultColor);
-                        },
-                        change(event, ui) {
-                            updateColorResultButton($field, ui.color.toString());
-                        },
-                        create() {
-                            const iris = $field.data('a8cIris');
+                    if (!validateHexColor($field.val())) {
+                        $field.val(defaultColor);
+                    }
 
-                            // Check if hex color is valid on page load because `wpColorPicker` doesn't sometimes
-                            if (!validateHexColor($field.val())) {
-                                resetToDefaultColor($field, defaultColor);
-                            }
-
-                            $field.on('input', debounce(function () {
-                                const
-                                    val = jQuery(this).val(),
-                                    color = validateHexColor(val) ? val : 'transparent';
-
-                                iris._setOption('color', color);
-                                updateColorResultButton($field, color);
-                            }));
-                        }
-                    });
+                    $field.addClass('cw-color-picker');
+                    $field.after('<button type="button" class="button-link cw-color-reset" data-default="' + defaultColor + '"><?php echo esc_js( __( 'Reset', 'clickwhale' ) ); ?></button>');
                 });
 
-                // Rename color picker `Clear` button
-                setTimeout(() => {
-                    jQuery('.wp-picker-clear')
-                        .val('<?php echo esc_js( __( 'Reset', 'clickwhale' ) ); ?>')
-                        .attr('aria-label', '<?php echo esc_js( __( 'Reset color', 'clickwhale' ) ); ?>');
-                }, 0);
+                Coloris({
+                    el: '.cw-color-picker',
+                    format: 'hex',
+                    alpha: true,
+                    swatches: swatches,
+                });
 
-                /**
-                 * FUNCTIONS
-                 */
+                jQuery(document).on('click', '.cw-color-reset', function (e) {
+                    e.preventDefault();
+                    const defaultColor = jQuery(this).data('default');
+                    const $wrapper = jQuery(this).prev('.clr-field');
+                    $wrapper.find('.cw-color-picker').val(defaultColor);
+                    $wrapper.css('color', defaultColor);
+                });
 
-                // Debounce function to limit the frequency of function calls
-                // e.g. for handling user input events from color picker
                 function debounce(func, delay = 300) {
                     let timer;
                     return function (...args) {
@@ -1039,23 +1049,34 @@ public function admin_sidebar_begin() {
                     };
                 }
 
-                // Validate hex color
                 function validateHexColor(val) {
-                    return /^#([0-9A-F]{3}){1,2}$/i.test(val);
+                    return /^#([0-9A-F]{3,4}){1,2}$/i.test(val);
+                }
+                <?php
                 }
 
-                function resetToDefaultColor($field, defaultColor) {
-                    const iris = $field.data('a8cIris');
-                    $field.val(defaultColor);
-                    iris._setOption('color', defaultColor);
-                    updateColorResultButton($field, defaultColor);
+                if ( $page === CLICKWHALE_SLUG . '-settings'
+                     && isset( $_GET['tab'] ) && sanitize_key( $_GET['tab'] ) === 'linkpages_options'
+                ){
+                ?>
+                if (jQuery('#linkpages_custom_css').length) {
+                    let cssEditorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+                    cssEditorSettings.codemirror = _.extend({}, cssEditorSettings.codemirror, {
+                        mode: 'text/css',
+                        indentUnit: 2,
+                        tabSize: 2,
+                    });
+                    wp.codeEditor.initialize(jQuery('#linkpages_custom_css'), cssEditorSettings);
                 }
 
-                function updateColorResultButton($field, color) {
-                    $field
-                        .closest('.wp-picker-container')
-                        .find('button.wp-color-result')
-                        .css('background', color);
+                if (jQuery('#linkpages_custom_js').length) {
+                    let jsEditorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+                    jsEditorSettings.codemirror = _.extend({}, jsEditorSettings.codemirror, {
+                        mode: 'text/html',
+                        indentUnit: 2,
+                        tabSize: 2,
+                    });
+                    wp.codeEditor.initialize(jQuery('#linkpages_custom_js'), jsEditorSettings);
                 }
                 <?php
                 }

@@ -68,6 +68,26 @@ class Clickwhale_Public_Linkpage {
 
         // Replace site icon for link page
         add_action( 'wp_head', array( $this, 'replace_wp_site_icon' ), 1 );
+
+        // Custom CSS / JS from Settings → Link Pages
+        add_action( 'wp_head', array( $this, 'output_custom_css' ), 20 );
+        add_action( 'wp_footer', array( $this, 'output_custom_js' ), 20 );
+    }
+
+    public function output_custom_css(): void {
+        $options = get_option( 'clickwhale_linkpages_options', array() );
+        $css     = $options['custom_css'] ?? '';
+        if ( ! empty( trim( $css ) ) ) {
+            echo '<style id="clickwhale-linkpage-custom-css">' . $css . '</style>' . "\n";
+        }
+    }
+
+    public function output_custom_js(): void {
+        $options = get_option( 'clickwhale_linkpages_options', array() );
+        $js      = $options['custom_js'] ?? '';
+        if ( ! empty( trim( $js ) ) ) {
+            echo $js . "\n";
+        }
     }
 
     /**

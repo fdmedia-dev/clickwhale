@@ -353,6 +353,8 @@ class Clickwhale_Smart_Display_Edit extends Clickwhale_Instance_Edit {
                     amzOverrideDesc = <?php echo wp_json_encode( $sd_override_desc ); ?>,
                     originalData = {};
 
+                clickwhaleUnsavedChanges.track($form);
+
                 // Rename color picker `Clear` button
                 setTimeout(() => {
                     jQuery('.wp-picker-clear')
@@ -411,6 +413,7 @@ class Clickwhale_Smart_Display_Edit extends Clickwhale_Instance_Edit {
                             .trigger('change');
 
                         currentImageUrl = attachment.url;
+                        clickwhaleUnsavedChanges.markDirty();
                         showPreviewImage();
                     });
 
@@ -432,6 +435,8 @@ class Clickwhale_Smart_Display_Edit extends Clickwhale_Instance_Edit {
                         .prev()
                         .addClass('button')
                         .html(uploadBtnText);
+
+                    clickwhaleUnsavedChanges.markDirty();
 
                     currentImageUrl = null;
                     hidePreviewImage();
@@ -585,6 +590,8 @@ class Clickwhale_Smart_Display_Edit extends Clickwhale_Instance_Edit {
                             editorSubmit.save();
                         }
                     }
+
+                    clickwhaleUnsavedChanges.markClean();
                 });
 
                 /**
