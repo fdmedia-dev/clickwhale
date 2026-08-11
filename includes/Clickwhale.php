@@ -215,11 +215,16 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'filter_settings_tabs_capability' );
-		$this->loader->add_action( 'admin_head', $this->admin, 'hide_notice_on_upgrade_to_pro_page', 99 );
+		$this->loader->add_action( 'admin_head', $this->admin, 'hide_notices_on_clickwhale_pages', 99 );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_print_footer_scripts', $this->admin, 'admin_scripts' );
 		$this->loader->add_action( 'clickwhale_admin_banner', $this->admin, 'admin_banner' );
+		if ( function_exists( 'clickwhale_fs' ) ) {
+			$fs_affix = clickwhale_fs()->get_unique_affix();
+			$this->loader->add_filter( "fs_templates/account.php_{$fs_affix}", $this->admin, 'prepend_admin_banner' );
+			$this->loader->add_filter( "fs_/forms/affiliation.php_{$fs_affix}", $this->admin, 'prepend_admin_banner' );
+		}
 		$this->loader->add_action( 'clickwhale_admin_banner_pro_button', $this->admin, 'admin_banner_pro_button' );
 		$this->loader->add_action( 'clickwhale_admin_pro_message', $this->admin, 'admin_pro_message' );
 		$this->loader->add_action( 'clickwhale_admin_sidebar_begin', $this->admin, 'admin_sidebar_begin' );

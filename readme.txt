@@ -1,11 +1,11 @@
 === ClickWhale ===
-Contributors: clickwhale, flowdee, petrokrupenia, webdj, liquiemm, freemius
+Contributors: clickwhale, flowdee, petrokrupenia, webdj, liquiemm
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 6.0
 Requires PHP: 7.4
-Tested up to: 7.0.1
-Stable tag: 2.8.1
+Tested up to: 7.0
+Stable tag: 2.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,17 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.8.2 (11th August 2026) =
+* New: Option to add custom social profile in Link Pages
+* Tweak: Allow WhatsApp username on social profile validation
+* Tweak: Add plugin version in admin pages header for quick trobuleshooting
+* Tweak: Supress admin notices on all admin pages
+* Tweak: Avoid dependency on plugin directory for slugs
+* Tweak: Remove unnessary guards against Action Scheduler
+* Tweak: Remove rating on wp.org
+* Fix: Missing header bar in License and Affiliation pages
+* Info: WordPress 7.0.3 compatibility
 
 = Version 2.8.1 (15th July 2026) =
 * New: Option to append asterisk to ClikcWhale links on frontend

@@ -32,10 +32,6 @@ class Clickwhale_Smart_Display_Scheduler {
 	 * Schedule the daily recurring action if not already scheduled.
 	 */
 	public function maybe_schedule_daily(): void {
-		if ( ! function_exists( 'as_has_scheduled_action' ) ) {
-			return;
-		}
-
 		if ( ! as_has_scheduled_action( self::DAILY_ACTION, [], self::AS_GROUP ) ) {
 			as_schedule_recurring_action( time(), DAY_IN_SECONDS, self::DAILY_ACTION, [], self::AS_GROUP, true );
 		}

@@ -10,11 +10,7 @@
     --clickwhale-brand-green: #28a745;
 }
 
-body.toplevel_page_clickwhale #wpbody-content,
-body.toplevel_page_clickwhale-pro #wpbody-content,
-body[class*="clickwhale_page_clickwhale"] #wpbody-content,
-body[class*="admin_page_clickwhale-edit"] #wpbody-content,
-body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
+body[class*="clickwhale"] #wpbody-content {
     padding-top: 80px;
 }
 
@@ -472,11 +468,30 @@ ion-icon {
     box-sizing: border-box;
 }
 
+.clickwhale-banner--logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .clickwhale-banner--logo img {
     display: block;
     width: 120px;
     height: auto;
     margin-top: -17px;
+}
+
+.clickwhale-banner--version {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #978642;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4em;
+    letter-spacing: .02em;
+    white-space: nowrap;
 }
 
 .clickwhale-banner--links {
@@ -546,19 +561,6 @@ ion-icon {
     color: #ffffff;
     background: #1a1c1d;
     border-color: #1a1c1d;
-}
-
-.clickwhale-banner--link-review--rating {
-    display: inline-flex;
-    justify-content: flex-end;
-    align-items: baseline;
-}
-
-.clickwhale-banner--link-review span.dashicons {
-    position: relative;
-    font-size: 16px;
-    line-height: 1em;
-    top: 2px;
 }
 
 #lp-tab-settings .logo-field,
@@ -2659,11 +2661,7 @@ body[class*="page_clickwhale-edit"] #poststuff > h3,
         text-align: center;
     }
 
-    body.toplevel_page_clickwhale #wpbody-content,
-    body.toplevel_page_clickwhale-pro #wpbody-content,
-    body[class*="clickwhale_page_clickwhale"] #wpbody-content,
-    body[class*="admin_page_clickwhale-edit"] #wpbody-content,
-    body[class*="admin_page_clickwhale-pro-edit"] #wpbody-content {
+    body[class*="clickwhale"] #wpbody-content {
         padding-top: 180px;
     }
 
@@ -2681,23 +2679,6 @@ body[class*="page_clickwhale-edit"] #poststuff > h3,
     .clickwhale-banner--links {
         margin: 0 -10px;
         flex-flow: row wrap;
-    }
-
-    .clickwhale-banner--link-review {
-        text-align: center;
-    }
-
-    .clickwhale-banner--link-review {
-        flex: 0 1 100%;
-        width: 100%;
-    }
-
-    .clickwhale-banner--link-review--rating {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-flow: row nowrap;
-        margin-top: 5px;
     }
 
     .clickwhale-banner--links a.clickwhale-banner--button {

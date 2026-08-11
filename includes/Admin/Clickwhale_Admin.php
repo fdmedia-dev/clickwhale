@@ -518,7 +518,6 @@ final class Clickwhale_Admin {
     public function admin_banner() {
         $link_logo     = 'https://clickwhale.pro/?utm_source=users&utm_medium=admin+pages&utm_campaign=ClickWhale+-+Free+Version&utm_term=logo-link';
         $link_helpdesk = 'https://clickwhale.pro/docs/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_need_help';
-        $link_review   = 'https://wordpress.org/support/plugin/clickwhale/reviews/#new-post';
         ?>
 
         <div class="clickwhale-banner">
@@ -529,31 +528,11 @@ final class Clickwhale_Admin {
                 ><img src="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR ) . '/images/wordmark.svg'; ?>"
                       alt="clickwhale"
                     ></a>
+                <span class="clickwhale-banner--version"
+                      title="<?php esc_attr_e( 'ClickWhale version', 'clickwhale' ); ?>"
+                >v<?php echo esc_html( CLICKWHALE_VERSION ); ?></span>
             </div>
             <div class="clickwhale-banner--links">
-                <div class="clickwhale-banner--link-review">
-                    <?php echo wp_kses(
-                            sprintf(
-                            /* translators: %s: review link URL */
-                                    __( 'You like ClickWhale? Then please <a href="%s" target="_blank">leave a review here</a>', 'clickwhale' ),
-                                    esc_url( $link_review )
-                            ),
-                            array(
-                                    'a' => array(
-                                            'href'   => array(),
-                                            'target' => array( '_blank' )
-                                    )
-                            )
-                    );
-                    ?>
-                    <span class="clickwhale-banner--link-review--rating">
-                        <span class="dashicons dashicons-star-filled"></span>
-                        <span class="dashicons dashicons-star-filled"></span>
-                        <span class="dashicons dashicons-star-filled"></span>
-                        <span class="dashicons dashicons-star-filled"></span>
-                        <span class="dashicons dashicons-star-filled"></span>
-                    </span>
-                </div>
                 <a href="<?php echo esc_url( $link_helpdesk ); ?>"
                    class="clickwhale-banner--button outlined dark"
                    target="_blank"
@@ -564,6 +543,27 @@ final class Clickwhale_Admin {
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * The Freemius-rendered "License" (account) and "Affiliation" pages don't
+     * include our templates, so `clickwhale_admin_banner` never fires on them.
+     * Freemius wraps each of its own templates' rendered HTML in a
+     * `fs_templates/{template}_{affix}` filter specifically so callers can
+     * wrap it, so we prepend our banner there rather than via a WP admin
+     * hook: `in_admin_header` fires before `#wpbody` opens, losing the
+     * `position: relative` context `#wpbody` provides and leaving the
+     * banner positioned relative to `#wpwrap` instead (hidden behind the
+     * sidebar); `admin_notices` has that context but Freemius clears it via
+     * `remove_all_actions()` on the Affiliation page.
+     *
+     * @since 2.8.2
+     */
+    public function prepend_admin_banner( string $html ): string {
+        ob_start();
+        $this->admin_banner();
+
+        return ob_get_clean() . $html;
     }
 
     public function admin_banner_pro_button() {
@@ -776,9 +776,9 @@ public function admin_sidebar_begin() {
      * @return void
      * @since 1.4.1
      */
-    public function hide_notice_on_upgrade_to_pro_page() {
+    public function hide_notices_on_clickwhale_pages() {
         $page = sanitize_key( (string) filter_input( INPUT_GET, 'page' ) );
-        if ( $page === CLICKWHALE_SLUG . '-pro' ) {
+        if ( $page !== '' && strpos( $page, CLICKWHALE_SLUG ) === 0 ) {
             remove_all_actions( 'user_admin_notices' );
             remove_all_actions( 'admin_notices' );
         }
@@ -790,9 +790,6 @@ public function admin_sidebar_begin() {
         }
 
         $meta[] = '<a href="https://clickwhale.pro/docs/" target="_blank" rel="nofollow" title="' . esc_attr__( 'Documentation', 'clickwhale' ) . '">' . esc_html__( 'Documentation', 'clickwhale' ) . '</a>';
-        $meta[] = '<a href="https://wordpress.org/support/plugin/clickwhale/reviews/#new-post" rel="nofollow" target="_blank" title="' . esc_attr__( 'Rate ClickWhale on WordPress.org', 'clickwhale' ) . '" style="color: #ffb900">'
-                  . str_repeat( '<span class="dashicons dashicons-star-filled" style="font-size: 16px; width:16px; height: 16px"></span>', 5 )
-                  . '</a>';
 
         return $meta;
     }

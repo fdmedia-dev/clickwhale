@@ -9,7 +9,7 @@
  * Plugin Name:       ClickWhale
  * Plugin URI:        https://clickwhale.pro
  * Description:       Link Manager, Link Shortener, Click Tracker for Affiliate Links & Link Pages.
- * Version:           2.8.1
+ * Version:           2.8.2
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            ClickWhale
@@ -19,18 +19,10 @@
  * Text Domain:       clickwhale
  * Domain Path:       /languages
  */
-require_once __DIR__ . '/vendor/autoload.php';
-/**
- * @since 2.8.0
- */
-if ( file_exists( __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php' ) ) {
-    require_once __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
-}
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 use Clickwhale\{Clickwhale, Clickwhale_Activator, Clickwhale_Deactivator};
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-if ( !defined( 'ABSPATH' ) ) {
-    exit;
-}
 /**
  * Note from Freemius docs:
  * The SDK comes with a special mechanism to auto deactivate the free version when activating the paid one.
@@ -42,12 +34,12 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     /**
      * Current plugin version.
      */
-    define( 'CLICKWHALE_VERSION', '2.8.1' );
+    define( 'CLICKWHALE_VERSION', '2.8.2' );
     /**
      * @since 1.4.1
      */
     // `<plugin-dir>`
-    define( 'CLICKWHALE_SLUG', plugin_basename( __DIR__ ) );
+    define( 'CLICKWHALE_SLUG', 'clickwhale' );
     // `<plugin-dir>/<plugin-file>.php`
     define( 'CLICKWHALE_ID', plugin_basename( __FILE__ ) );
     define( 'CLICKWHALE_DIR', plugin_dir_path( __FILE__ ) );
@@ -60,6 +52,8 @@ if ( function_exists( 'clickwhale_fs' ) ) {
     define( 'CLICKWHALE_TEMPLATES_DIR', CLICKWHALE_DIR . 'templates' );
     define( 'CLICKWHALE_ADMIN_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/admin' );
     define( 'CLICKWHALE_PUBLIC_ASSETS_DIR', CLICKWHALE_DIR_URL . 'assets/public' );
+    require_once __DIR__ . '/vendor/autoload.php';
+    require_once __DIR__ . '/vendor/woocommerce/action-scheduler/action-scheduler.php';
     /**
      * DO NOT REMOVE THIS IF, IT IS ESSENTIAL FOR THE
      * `function_exists` CALL ABOVE TO PROPERLY WORK.
@@ -84,7 +78,7 @@ if ( function_exists( 'clickwhale_fs' ) ) {
                     'is_org_compliant' => false,
                     'has_affiliation'  => 'all',
                     'menu'             => array(
-                        'slug'    => esc_attr( CLICKWHALE_SLUG ),
+                        'slug'    => 'clickwhale',
                         'contact' => false,
                         'pricing' => false,
                         'support' => false,
