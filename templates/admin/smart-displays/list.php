@@ -43,12 +43,7 @@ do_action( 'clickwhale_admin_banner' );
 	<?php } ?>
 
 	<?php if ( Smart_Displays_Helper::get_count() >= $limit ) { ?>
-		<div class="notice notice-info">
-			<p>
-				<?php echo Smart_Displays_Helper::get_limitation_notice(); ?>
-				<?php echo Helper::get_pro_message(); ?>
-			</p>
-		</div>
+		<?php echo wp_kses( Helper::render_limit_notice( Smart_Displays_Helper::get_limitation_notice(), 'smart_displays_list_limit_notice' ), Helper::get_allowed_tags() ); ?>
 		<hr class="wp-header-end">
 	<?php } ?>
 

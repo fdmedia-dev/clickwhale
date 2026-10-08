@@ -1,11 +1,11 @@
 === ClickWhale ===
-Contributors: clickwhale, flowdee, petrokrupenia, webdj, liquiemm
+Contributors: clickwhale, flowdee, petrokrupenia, webdj, liquiemm, freemius
 Donate link: https://github.com/sponsors/flowdee
 Tags: link manager, link shortener, link in bio, affiliate links, link tracker
 Requires at least: 6.0
 Requires PHP: 7.4
 Tested up to: 7.0
-Stable tag: 2.8.2
+Stable tag: 2.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,13 @@ This plugin utilizes third-party services to ensure proper licensing, provide op
 8. Tracking Code Edit Screen
 
 == Changelog ==
+
+= Version 2.8.3 (8th October 2026) =
+* New: Dashboard widget to quickly add links
+* New: Minn Admin compatibility for Links and Smart Displays
+* Tweak: Preview Pro features in the free version
+* Tweak: Redesigned free plan limit notices
+* Info: Update Freemius WP SDK to version 2.13.5
 
 = Version 2.8.2 (11th August 2026) =
 * New: Option to add custom social profile in Link Pages

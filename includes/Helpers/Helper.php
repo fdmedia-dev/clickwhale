@@ -547,7 +547,9 @@ class Helper {
 				'name'     => true,
 			] ),
 			'span'       => array_merge( $common_global, $common_aria, [
-				'title' => true,
+				'title'    => true,
+				'role'     => true,
+				'tabindex' => true,
 			] ),
 			'strong'     => array_merge( $common_global, $common_aria ),
 			'svg'        => array_merge( $common_global, $common_aria, [
@@ -610,19 +612,23 @@ class Helper {
 	}
 
 	/**
+	 * @param string $utm_content
+	 *
 	 * @return string
 	 * @since 1.4.0
 	 */
-	private static function pro_link(): string {
-		return 'https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=header_upgrade_to_pro_button';
+	private static function pro_link( string $utm_content = 'header_upgrade_to_pro_button' ): string {
+		return 'https://clickwhale.pro/upgrade/?utm_source=users&utm_medium=button&utm_campaign=plugin_admin&utm_content=' . rawurlencode( $utm_content );
 	}
 
 	/**
+	 * @param string $utm_content Identifies which teaser/CTA the click came from.
+	 *
 	 * @return string
 	 * @since 1.4.0
 	 */
-	public static function get_pro_link(): string {
-		return self::pro_link();
+	public static function get_pro_link( string $utm_content = 'header_upgrade_to_pro_button' ): string {
+		return self::pro_link( $utm_content );
 	}
 
 	public static function get_pro_message( $prompt = '' ) {
@@ -640,6 +646,49 @@ class Helper {
 			) . '</strong>';
 
 		return apply_filters( 'clickwhale_get_pro_message', $pro_link );
+	}
+
+	/**
+	 * Branded "you've reached the free limit" banner, replacing the plain WP
+	 * admin notice box previously used on the Categories, Link Pages, Smart
+	 * Displays and Tracking Codes list screens.
+	 *
+	 * @param string $message     The limitation text, e.g. Linkpages_Helper::get_limitation_notice().
+	 * @param string $utm_content Passed to get_pro_link() for per-surface click tracking.
+	 * @param string $id          Optional element id. Tracking Codes toggles this notice via JS.
+	 *
+	 * @return string
+	 * @since 2.8.3
+	 */
+	public static function render_limit_notice( string $message, string $utm_content = 'list_limit_notice', string $id = '' ): string {
+		return sprintf(
+			'<div%1$s class="clickwhale-limit-notice"><svg class="clickwhale-limit-notice--icon" viewBox="0 0 36 36" aria-hidden="true"><path d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834c-.693.496-1.623.496-2.312-.008-.689-.499-.979-1.385-.721-2.194l3.034-9.792-8.062-5.681c-.685-.505-.97-1.393-.708-2.203.264-.808 1.016-1.357 1.866-1.363L12.947 13l3.179-9.549c.268-.809 1.023-1.353 1.874-1.353.851 0 1.606.545 1.875 1.353L23 13l10.036.015c.853.006 1.606.556 1.867 1.363.263.81-.022 1.698-.708 2.203l-8.062 5.681 3.034 9.792c.26.809-.033 1.695-.72 2.194-.347.254-.753.379-1.16.379z"/></svg><div class="clickwhale-limit-notice--content"><p>%2$s</p></div><a class="button-get-pro" href="%3$s" target="_blank" rel="noopener">%4$s</a></div>',
+			$id ? ' id="' . esc_attr( $id ) . '"' : '',
+			esc_html( $message ),
+			esc_url( self::get_pro_link( $utm_content ) ),
+			esc_html__( 'Upgrade to PRO', 'clickwhale' )
+		);
+	}
+
+	/**
+	 * Small gold "PRO" badge with a hover/focus tooltip, used to tease Pro-only
+	 * features inside the free version.
+	 *
+	 * @param string $tooltip     Text explaining what upgrading unlocks.
+	 * @param string $extra_class Additional class(es) for placement/spacing tweaks.
+	 *
+	 * @return string
+	 * @since 2.8.3
+	 */
+	public static function pro_badge( string $tooltip, string $extra_class = '' ): string {
+		$class = trim( 'clickwhale-pro-badge ' . $extra_class );
+
+		return sprintf(
+			'<span class="%1$s" tabindex="0"><svg class="clickwhale-pro-badge--icon" viewBox="0 0 36 36" aria-hidden="true"><path d="M27.287 34.627c-.404 0-.806-.124-1.152-.371L18 28.422l-8.135 5.834c-.693.496-1.623.496-2.312-.008-.689-.499-.979-1.385-.721-2.194l3.034-9.792-8.062-5.681c-.685-.505-.97-1.393-.708-2.203.264-.808 1.016-1.357 1.866-1.363L12.947 13l3.179-9.549c.268-.809 1.023-1.353 1.874-1.353.851 0 1.606.545 1.875 1.353L23 13l10.036.015c.853.006 1.606.556 1.867 1.363.263.81-.022 1.698-.708 2.203l-8.062 5.681 3.034 9.792c.26.809-.033 1.695-.72 2.194-.347.254-.753.379-1.16.379z"/></svg><span class="clickwhale-pro-badge--label">%2$s</span><span class="clickwhale-pro-badge--tooltip" role="tooltip">%3$s</span></span>',
+			esc_attr( $class ),
+			esc_html__( 'PRO', 'clickwhale' ),
+			esc_html( $tooltip )
+		);
 	}
 
 	/**

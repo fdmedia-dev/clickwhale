@@ -67,6 +67,90 @@ class Clickwhale_Link_Edit extends Clickwhale_Instance_Edit {
         return $tabs;
     }
 
+    /**
+     * Free-only teaser entries for the Link edit tabs that only exist in
+     * Pro (Keyword Auto Linker, UTM Parameters). Guarded so it never runs
+     * inside the Pro bundle, where `link_tabs()`
+     * (pro/includes/Admin/Links/Clickwhale_Pro_Link_Edit.php) already adds
+     * the real tabs via the same filter.
+     *
+     * @param array $tabs
+     *
+     * @return array
+     * @since 2.8.3
+     */
+    public function add_teaser_tabs( array $tabs ): array {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return $tabs;
+        }
+
+        $tabs['autolinker'] = array(
+                'name'   => __( 'Keyword Auto Linker', 'clickwhale' ),
+                'url'    => 'autolinker',
+                'locked' => true,
+        );
+
+        $tabs['utm'] = array(
+                'name'   => __( 'UTM Parameters', 'clickwhale' ),
+                'url'    => 'utm',
+                'locked' => true,
+        );
+
+        return $tabs;
+    }
+
+    /**
+     * Renders the locked "Keyword Auto Linker" / "UTM Parameters" tab panels
+     * added by add_teaser_tabs() above. Mirrors the panel IDs Pro's
+     * after_tabs_content() would output (#link-tab-autolinker, #link-tab-utm)
+     * so the existing jQuery UI tabs markup in templates/admin/links/edit.php
+     * picks them up without any JS changes.
+     *
+     * @return void
+     * @since 2.8.3
+     */
+    public function render_teaser_tabs_content(): void {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return;
+        }
+
+        $clickwhale_panels = array(
+                'link-tab-autolinker' => array(
+                        'name'   => __( 'Keyword Auto Linker', 'clickwhale' ),
+                        'teaser' => array(
+                                'image'       => 'auto-linker.svg',
+                                'title'       => __( 'Keyword Auto Linker', 'clickwhale' ),
+                                'description' => __( 'Define keywords for this link. Any matching text on your site is automatically turned into a link to it, so you don\'t have to link it manually every time you mention it.', 'clickwhale' ),
+                                'features'    => array(
+                                        __( 'Up to 10 keywords per link', 'clickwhale' ),
+                                        __( 'Toggle each keyword on/off individually', 'clickwhale' ),
+                                        __( 'Combine with the global Auto Linker settings', 'clickwhale' ),
+                                ),
+                                'utm_content' => 'link_autolinker_tab_teaser',
+                        ),
+                ),
+                'link-tab-utm'        => array(
+                        'name'   => __( 'UTM Parameters', 'clickwhale' ),
+                        'teaser' => array(
+                                'image'       => 'utm-tracking.svg',
+                                'title'       => __( 'UTM Parameters', 'clickwhale' ),
+                                'description' => __( 'Attach UTM campaign parameters to this link so its clicks show up clearly in Google Analytics and other campaign reports.', 'clickwhale' ),
+                                'features'    => array(
+                                        __( 'Set source, medium, campaign, term and content per link', 'clickwhale' ),
+                                        __( 'Parameters are appended automatically on redirect', 'clickwhale' ),
+                                ),
+                                'utm_content' => 'link_utm_tab_teaser',
+                        ),
+                ),
+        );
+
+        foreach ( $clickwhale_panels as $clickwhale_panel_id => $clickwhale_active_tab ) {
+            echo '<div id="' . esc_attr( $clickwhale_panel_id ) . '">';
+            include CLICKWHALE_TEMPLATES_DIR . '/admin/pro-tab-teaser.php';
+            echo '</div>';
+        }
+    }
+
     public function link_scanner_html( $item ) {
         $id        = intval( $item['id'] );
         $cached    = ( $id ) ? get_transient( 'clickwhale_scanned_link_' . $id ) : array();

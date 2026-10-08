@@ -110,7 +110,12 @@ do_action( 'clickwhale_admin_banner' );
                     <ul>
                         <?php foreach ( $tabs as $tab ) { ?>
                             <li>
-                                <a href="#lp-tab-<?php echo esc_attr( $tab['url'] ); ?>"><?php echo esc_html( $tab['name'] ); ?></a>
+                                <a href="#lp-tab-<?php echo esc_attr( $tab['url'] ); ?>"><?php
+                                    echo esc_html( $tab['name'] );
+                                    if ( ! empty( $tab['locked'] ) ) {
+                                        echo wp_kses( Helper::pro_badge( __( 'Available in ClickWhale PRO', 'clickwhale' ) ), Helper::get_allowed_tags() );
+                                    }
+                                ?></a>
                             </li>
                         <?php } ?>
                     </ul>
@@ -310,17 +315,26 @@ do_action( 'clickwhale_admin_banner' );
                                             <h3><?php echo esc_html( $clickwhale_group['label'] ); ?>
                                                 (<?php echo esc_html( count( $clickwhale_group['options'] ) ); ?>)</h3>
                                             <div class="cw-content--items">
-                                                <?php foreach ( $clickwhale_group['options'] as $clickwhale_value => $clickwhale_options ) { ?>
+                                                <?php foreach ( $clickwhale_group['options'] as $clickwhale_value => $clickwhale_options ) {
+                                                    $clickwhale_locked = ! empty( $clickwhale_options['locked'] );
+                                                    // Locked Pro teasers aren't real blocks, so the block limit never disables them.
+                                                    $clickwhale_item_class = $clickwhale_locked ? 'cw-content--item--pro' : $clickwhale_disabled;
+                                                    ?>
                                                     <div id="cw-content--<?php echo esc_attr( $clickwhale_value ); ?>"
-                                                         class="cw-content--item <?php echo esc_attr( $clickwhale_disabled ); ?>"
+                                                         class="cw-content--item <?php echo esc_attr( trim( $clickwhale_item_class ) ); ?>"
                                                          data-content="<?php echo esc_attr( $clickwhale_value ); ?>"
+                                                         <?php echo $clickwhale_locked ? 'data-clickwhale-pro-link="' . esc_url( Helper::get_pro_link( 'linkpage_pro_blocks_teaser' ) ) . '"' : ''; ?>
                                                     ><?php
                                                         if ( isset( $clickwhale_options['icon'] ) && $clickwhale_options['icon'] ) {
                                                             ?>
                                                             <svg class="feather"><use href="<?php echo esc_url( CLICKWHALE_ADMIN_ASSETS_DIR . '/images/feather-sprite.svg#' . $clickwhale_options['icon'] ); ?>"></use></svg>
                                                             <?php
                                                         }
-                                                        echo esc_html( $clickwhale_options['name'] ); ?>
+                                                        echo esc_html( $clickwhale_options['name'] );
+                                                        if ( $clickwhale_locked ) {
+                                                            echo wp_kses( Helper::pro_badge( __( 'Available in ClickWhale PRO', 'clickwhale' ) ), Helper::get_allowed_tags() );
+                                                        }
+                                                    ?>
                                                     </div>
                                                 <?php } ?>
                                             </div>

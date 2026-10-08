@@ -48,12 +48,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php } ?>
 
     <?php if ( Categories_Helper::get_count() >= $clickwhale_limit ) { ?>
-        <div class="notice notice-info">
-            <p>
-                <?php echo esc_html( Categories_Helper::get_limitation_notice() ); ?>
-                <?php echo wp_kses( Helper::get_pro_message(), Helper::get_allowed_tags() ); ?>
-            </p>
-        </div>
+        <?php echo wp_kses( Helper::render_limit_notice( Categories_Helper::get_limitation_notice(), 'categories_list_limit_notice' ), Helper::get_allowed_tags() ); ?>
         <hr class="wp-header-end">
     <?php } ?>
 

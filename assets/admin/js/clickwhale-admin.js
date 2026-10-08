@@ -644,4 +644,26 @@
         syncOverflow();
     })();
 
+    /**
+     * Pro badge tooltips open on hover/focus via CSS alone, but touch devices
+     * have no hover state, so toggle them open on tap instead.
+     */
+    (function () {
+        $(document).on('click', '.clickwhale-pro-badge', function (e) {
+            var $badge = $(this);
+
+            if ($badge.hasClass('is-open')) {
+                return;
+            }
+
+            e.stopPropagation();
+            $('.clickwhale-pro-badge.is-open').not($badge).removeClass('is-open');
+            $badge.addClass('is-open');
+        });
+
+        $(document).on('click', function () {
+            $('.clickwhale-pro-badge.is-open').removeClass('is-open');
+        });
+    })();
+
 })(jQuery);

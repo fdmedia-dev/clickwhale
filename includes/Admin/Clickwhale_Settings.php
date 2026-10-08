@@ -632,6 +632,34 @@ final class Clickwhale_Settings {
         );
 
         /**
+         * "Powered by ClickWhale" credit teaser.
+         * Free always shows the credit on every Smart Display; this checkbox
+         * exists purely to tease that Pro can turn it off.
+         * @since 2.8.3
+         */
+        if ( ! function_exists( 'clickwhale_fs' ) || ! clickwhale_fs()->can_use_premium_code() ) {
+            add_settings_field(
+                    'smart_display_credits',
+                    __( 'Credits', 'clickwhale' ),
+                    array( $this, 'render_controls' ),
+                    'clickwhale_smart_displays_options',
+                    'smart_displays_settings_section',
+                    array(
+                            'control'     => 'checkbox',
+                            'id'          => 'smart_display_credits',
+                            'value'       => 1,
+                            'disabled'    => true,
+                            'label'       => esc_html__( 'Show Smart Display credits.', 'clickwhale' ),
+                            'description' => Helper::pro_badge( __( 'Available in ClickWhale PRO', 'clickwhale' ) ) . ' ' . sprintf(
+                            /* translators: %s: ClickWhale PRO link URL */
+                                    __( 'With <a href="%s" target="_blank" rel="noopener">ClickWhale PRO</a> you can remove this credit.', 'clickwhale' ),
+                                    esc_url( Helper::get_pro_link( 'smart_display_credits_teaser' ) )
+                            )
+                    )
+            );
+        }
+
+        /**
          * integrations options
          * @since 2.8.0
          */
@@ -853,6 +881,64 @@ final class Clickwhale_Settings {
                         'url'  => 'integrations_options'
                 )
         ) );
+    }
+
+    /**
+     * Free-only teaser entries for settings tabs that only exist in Pro
+     * (Keyword Auto Linker, Tracking Codes). Each carries a `teaser` payload
+     * that templates/admin/settings/teaser-tab.php renders instead of a real
+     * settings form. Guarded so it never runs inside the Pro bundle, where
+     * `settings_tabs()` (pro/includes/Admin/Clickwhale_Pro_Settings.php)
+     * already adds the real tabs via the same filter.
+     *
+     * @param array $tabs
+     *
+     * @return array
+     * @since 2.8.3
+     */
+    public function add_teaser_tabs( array $tabs ): array {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return $tabs;
+        }
+
+        $tabs['autolinker'] = array(
+            'name'   => __( 'Keyword Auto Linker', 'clickwhale' ),
+            'url'    => 'autolinker_options',
+            'locked' => true,
+            'teaser' => array(
+                'image'       => 'auto-linker.svg',
+                'title'       => __( 'Keyword Auto Linker', 'clickwhale' ),
+                'description' => __( 'Define keywords that get automatically turned into links throughout your posts, pages and custom post types. No more manually linking the same product or brand name every time you mention it.', 'clickwhale' ),
+                'features'    => array(
+                    __( 'Automatically link chosen keywords across your whole site', 'clickwhale' ),
+                    __( 'Set a per-keyword link limit so pages don\'t get over-linked', 'clickwhale' ),
+                    __( 'Case-sensitive matching and whole-word options', 'clickwhale' ),
+                    __( 'Exclude specific posts, pages or post types', 'clickwhale' ),
+                ),
+                'utm_content' => 'autolinker_tab_teaser',
+            ),
+        );
+
+        // Free currently has no Tracking Codes settings, so the whole tab is a teaser.
+        // If a free setting is ever added here, this must become a real tab instead.
+        $tabs['tracking_codes'] = array(
+            'name'   => __( 'Tracking Codes', 'clickwhale' ),
+            'url'    => 'tracking_codes_options',
+            'locked' => true,
+            'teaser' => array(
+                'image'       => 'remove-credits.svg',
+                'title'       => __( 'Tracking Codes Settings', 'clickwhale' ),
+                'description' => __( 'Fine-tune how your tracking codes behave. Hide the ClickWhale credit added to active tracking codes and unlock WooCommerce / Easy Digital Downloads conversion tracking in the code editor.', 'clickwhale' ),
+                'features'    => array(
+                    __( 'Hide plugin credits on active tracking codes', 'clickwhale' ),
+                    __( 'WooCommerce & Easy Digital Downloads conversion tracking', 'clickwhale' ),
+                    __( 'Unlimited active tracking codes', 'clickwhale' ),
+                ),
+                'utm_content' => 'tracking_codes_tab_teaser',
+            ),
+        );
+
+        return $tabs;
     }
 
     /**

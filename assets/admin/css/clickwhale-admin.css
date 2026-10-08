@@ -678,6 +678,36 @@ ion-icon {
     opacity: .7;
 }
 
+.cw-content--item--pro {
+    background: #fbf8f2;
+    border-color: #f0ddb0;
+}
+
+.cw-content--item--pro svg.feather {
+    opacity: .35;
+}
+
+.cw-content--item--pro .clickwhale-pro-badge {
+    margin: 6px 0 0;
+}
+
+/* Keep the badge star at badge size, not the 16px block icon size above */
+.cw-content--item--pro svg.clickwhale-pro-badge--icon {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    opacity: 1;
+}
+
+/* Locked cards carry an extra badge line, so let every card in the group share the tallest height */
+.cw-content--items:has(.cw-content--item--pro) {
+    grid-auto-rows: 1fr;
+}
+
+.cw-content--items:has(.cw-content--item--pro) .cw-content--item {
+    aspect-ratio: auto;
+}
+
 .contents-main {
     min-width: 0;
 }
@@ -1874,6 +1904,133 @@ table.smart-displays.fixed .column-title {
     font-style: normal;
 }
 
+.clickwhale-pro-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: .35rem;
+    padding: 1px 6px 1px 4px;
+    border-radius: 10px;
+    background: #FFF6E0;
+    color: #B8790A;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: .02em;
+    vertical-align: middle;
+    cursor: inherit;
+}
+
+.clickwhale-pro-badge--icon {
+    width: 10px;
+    height: 10px;
+    fill: #FFAC33;
+    flex-shrink: 0;
+}
+
+.clickwhale-pro-badge--label {
+    white-space: nowrap;
+}
+
+.clickwhale-pro-badge--tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: max-content;
+    max-width: 220px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #1d2327;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-align: left;
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+    z-index: 10;
+}
+
+.clickwhale-pro-badge--tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1d2327;
+}
+
+.clickwhale-pro-badge:hover .clickwhale-pro-badge--tooltip,
+.clickwhale-pro-badge:focus .clickwhale-pro-badge--tooltip,
+.clickwhale-pro-badge:focus-within .clickwhale-pro-badge--tooltip,
+.clickwhale-pro-badge.is-open .clickwhale-pro-badge--tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* "You've reached the free limit" banner (Categories, Link Pages, Smart Displays, Tracking Codes lists) */
+
+.clickwhale-limit-notice {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0;
+    padding: 16px 20px;
+    background: #FFF9EC;
+    border: 1px solid #F5DFA6;
+    border-left: 4px solid #FFAC33;
+    border-radius: 8px;
+}
+
+.clickwhale-limit-notice--icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: #FFAC33;
+}
+
+.clickwhale-limit-notice--content {
+    flex: 1;
+}
+
+.clickwhale-limit-notice--content p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #3c434a;
+}
+
+.clickwhale-limit-notice .button-get-pro {
+    flex-shrink: 0;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 13px;
+    line-height: 1em;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: all .3s;
+}
+
+.clickwhale-limit-notice .button-get-pro:hover,
+.clickwhale-limit-notice .button-get-pro:focus {
+    background-color: #1a1c1d;
+    color: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .clickwhale-limit-notice {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 /* SETTINGS PAGE MENU */
 
 .nav-tab-wrapper {
@@ -2328,6 +2485,108 @@ body[class*="page_clickwhale-edit"] #poststuff > h3,
     max-width: 800px;
     border-radius: 25px;
     font-size: 17px;
+}
+
+/* Locked settings-tab teaser (Keyword Auto Linker, Tracking Codes) */
+
+.clickwhale-teaser-tab {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    max-width: 960px;
+    margin-top: 20px;
+    padding: 40px;
+    background: #ffffff;
+    border: 1px solid #dcdcde;
+    border-radius: 10px;
+}
+
+.clickwhale-teaser-tab--content {
+    flex: 1;
+}
+
+.clickwhale-teaser-tab--content h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 12px;
+    font-size: 22px;
+}
+
+.clickwhale-teaser-tab--content h2 em {
+    font-style: normal;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--clickwhale-brand-blue);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.clickwhale-teaser-tab--content p {
+    color: #5b7184;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 46em;
+}
+
+.clickwhale-teaser-tab--features {
+    margin: 20px 0 28px;
+    padding: 0;
+    list-style: none;
+}
+
+.clickwhale-teaser-tab--features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.clickwhale-teaser-tab--features li svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--clickwhale-brand-green);
+}
+
+.clickwhale-teaser-tab--content .button-get-pro {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 14px;
+    line-height: 1em;
+    border-radius: 8px;
+    transition: all .3s;
+}
+
+.clickwhale-teaser-tab--content .button-get-pro:hover,
+.clickwhale-teaser-tab--content .button-get-pro:focus {
+    background-color: #1a1c1d;
+    color: #ffffff;
+}
+
+.clickwhale-teaser-tab--preview {
+    flex-shrink: 0;
+    width: 220px;
+}
+
+.clickwhale-teaser-tab--preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width: 782px) {
+    .clickwhale-teaser-tab {
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .clickwhale-teaser-tab--preview {
+        width: 100%;
+        max-width: 220px;
+    }
 }
 
 /* IMPORT */

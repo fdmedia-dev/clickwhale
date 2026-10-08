@@ -43,5 +43,6 @@ $primary_button = $template->get_primary_button();
                 <div class="cw-smart-display-public--disclosure"><?php echo $disclosure; ?></div>
             <?php endif; ?>
         </div>
+        <?php echo $template->get_credits(); ?>
     </div>
 </div>

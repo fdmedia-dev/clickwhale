@@ -23,7 +23,8 @@ use Clickwhale\Admin\{Clickwhale_Admin,
 	Clickwhale_Settings,
 	Clickwhale_Tools,
 	Clickwhale_WP_User,
-	Clickwhale_Rest_Controller
+	Clickwhale_Rest_Controller,
+	Clickwhale_Dashboard_Widget
 };
 
 use Clickwhale\Admin\Reset\Clickwhale_Reset;
@@ -98,6 +99,11 @@ final class Clickwhale {
 	public Clickwhale_Reset $reset;
 
 	/**
+	 * @var Clickwhale_Dashboard_Widget
+	 */
+	public Clickwhale_Dashboard_Widget $dashboard_widget;
+
+	/**
 	 * @var Clickwhale_Ajax
 	 */
 	public Clickwhale_Ajax $ajax;
@@ -161,6 +167,9 @@ final class Clickwhale {
 	 */
 	public static function get_instance(): Clickwhale {
 		if ( empty( self::$instance ) ) {
+			// Third-party integrations.
+			require_once CLICKWHALE_DIR . 'includes/minn-admin.php';
+
 			self::$instance                      = new self();
 			self::$instance->loader              = new Clickwhale_Loader();
 			self::$instance->user                = new Clickwhale_WP_User();
@@ -168,6 +177,7 @@ final class Clickwhale {
 			self::$instance->settings            = Clickwhale_Settings::get_instance();
 			self::$instance->tools               = new Clickwhale_Tools();
 			self::$instance->reset               = Clickwhale_Reset::get_instance();
+			self::$instance->dashboard_widget    = new Clickwhale_Dashboard_Widget();
 			self::$instance->ajax                = Clickwhale_Ajax::get_instance();
 			self::$instance->link                = new Clickwhale_Link_Edit();
 			self::$instance->category            = new Clickwhale_Category_Edit();
@@ -211,6 +221,7 @@ final class Clickwhale {
 		 * ACTIONS
 		 */
 		$this->loader->add_action( 'admin_menu', $this->admin, 'add_plugin_menu' );
+		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_widget, 'add_widget' );
 		$this->loader->add_action( 'clickwhale_menu_after_all', $this->admin, 'show_pro_menu_item' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_default_options' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'add_settings_fields' );
@@ -261,6 +272,7 @@ final class Clickwhale {
 		$this->loader->add_action( 'admin_print_footer_scripts', $this->reset, 'admin_scripts' );
 		$this->loader->add_action( 'clickwhale_link_after_tabs_content', $this->link, 'after_tabs_content', 25 );
 		$this->loader->add_action( 'rest_api_init', $this->rest_api, 'register_routes' );
+		$this->loader->add_action( 'rest_api_init', $this->dashboard_widget, 'register_route' );
 		$this->loader->add_action( 'init', $this->smart_display_block, 'register' );
 		$this->loader->add_action( 'enqueue_block_editor_assets', $this->smart_display_block, 'enqueue_block_editor_assets' );
 		$this->loader->add_filter( 'block_categories_all', $this->smart_display_block, 'register_block_category' );
@@ -276,6 +288,12 @@ final class Clickwhale {
 		$this->loader->add_filter( 'plugin_row_meta', $this->admin, 'plugin_meta_links', 10, 2 );
 		$this->loader->add_filter( 'sanitize_option_clickwhale_link_manager_options', $this->settings, 'sanitize_link_manager_options' );
 		$this->loader->add_filter( 'sanitize_option_clickwhale_smart_displays_options', $this->settings, 'sanitize_smart_displays_options' );
+		$this->loader->add_filter( 'clickwhale_settings_tabs', $this->settings, 'add_teaser_tabs' );
+		$this->loader->add_filter( 'clickwhale_linkpage_select', $this->linkpage, 'add_teaser_blocks' );
+		$this->loader->add_filter( 'clickwhale_link_tabs', $this->link, 'add_teaser_tabs' );
+		$this->loader->add_action( 'clickwhale_link_after_tabs_content', $this->link, 'render_teaser_tabs_content' );
+		$this->loader->add_filter( 'clickwhale_linkpage_tabs', $this->linkpage, 'add_teaser_tab' );
+		$this->loader->add_action( 'clickwhale_linkpage_after_tabs_content', $this->linkpage, 'render_teaser_tab_content' );
 	}
 
 	/**

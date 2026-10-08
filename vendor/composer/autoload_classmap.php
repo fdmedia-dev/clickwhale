@@ -39,6 +39,7 @@ return array(
     'Clickwhale\\Admin\\Categories\\Clickwhale_Category_Edit' => $baseDir . '/includes/Admin/Categories/Clickwhale_Category_Edit.php',
     'Clickwhale\\Admin\\Clickwhale_Admin' => $baseDir . '/includes/Admin/Clickwhale_Admin.php',
     'Clickwhale\\Admin\\Clickwhale_Ajax' => $baseDir . '/includes/Admin/Clickwhale_Ajax.php',
+    'Clickwhale\\Admin\\Clickwhale_Dashboard_Widget' => $baseDir . '/includes/Admin/Clickwhale_Dashboard_Widget.php',
     'Clickwhale\\Admin\\Clickwhale_Instance_Edit' => $baseDir . '/includes/Admin/Clickwhale_Instance_Edit.php',
     'Clickwhale\\Admin\\Clickwhale_Rest_Controller' => $baseDir . '/includes/Admin/Clickwhale_Rest_Controller.php',
     'Clickwhale\\Admin\\Clickwhale_Settings' => $baseDir . '/includes/Admin/Clickwhale_Settings.php',

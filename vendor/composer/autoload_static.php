@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit99b7b5556ed1680452335b3790b451ce
+class ComposerStaticInit076cba7d44ec44ca85ea7ffab364b4a3
 {
     public static $files = array (
         '8d50dc88e56bace65e1e72f6017983ed' => __DIR__ . '/..' . '/freemius/wordpress-sdk/start.php',
@@ -69,6 +69,7 @@ class ComposerStaticInit99b7b5556ed1680452335b3790b451ce
         'Clickwhale\\Admin\\Categories\\Clickwhale_Category_Edit' => __DIR__ . '/../..' . '/includes/Admin/Categories/Clickwhale_Category_Edit.php',
         'Clickwhale\\Admin\\Clickwhale_Admin' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Admin.php',
         'Clickwhale\\Admin\\Clickwhale_Ajax' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Ajax.php',
+        'Clickwhale\\Admin\\Clickwhale_Dashboard_Widget' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Dashboard_Widget.php',
         'Clickwhale\\Admin\\Clickwhale_Instance_Edit' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Instance_Edit.php',
         'Clickwhale\\Admin\\Clickwhale_Rest_Controller' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Rest_Controller.php',
         'Clickwhale\\Admin\\Clickwhale_Settings' => __DIR__ . '/../..' . '/includes/Admin/Clickwhale_Settings.php',
@@ -239,9 +240,9 @@ class ComposerStaticInit99b7b5556ed1680452335b3790b451ce
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit99b7b5556ed1680452335b3790b451ce::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit99b7b5556ed1680452335b3790b451ce::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit99b7b5556ed1680452335b3790b451ce::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit076cba7d44ec44ca85ea7ffab364b4a3::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit076cba7d44ec44ca85ea7ffab364b4a3::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit076cba7d44ec44ca85ea7ffab364b4a3::$classMap;
 
         }, null, ClassLoader::class);
     }

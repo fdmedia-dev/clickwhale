@@ -48,15 +48,7 @@ do_action( 'clickwhale_admin_banner' );
     <?php } ?>
 
     <?php if ( Tracking_Codes_Helper::is_limit() ) { ?>
-        <div id="clickwhale_tracking_codes_list_limit_notice"
-             class="notice notice-info"
-             style="display: block"
-        >
-            <p>
-                <?php echo esc_html( Tracking_Codes_Helper::get_limitation_notice() ); ?>
-                <?php echo wp_kses( Helper::get_pro_message(), Helper::get_allowed_tags() ); ?>
-            </p>
-        </div>
+        <?php echo wp_kses( Helper::render_limit_notice( Tracking_Codes_Helper::get_limitation_notice(), 'tracking_codes_list_limit_notice', 'clickwhale_tracking_codes_list_limit_notice' ), Helper::get_allowed_tags() ); ?>
         <hr class="wp-header-end">
     <?php } ?>
 

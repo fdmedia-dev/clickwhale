@@ -75,6 +75,64 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
     }
 
     /**
+     * Free-only teaser entry for the "Social Profiles" Link Page tab, which
+     * only exists in Pro (pro/includes/Admin/Linkpages/Clickwhale_Pro_Linkpage_Edit.php).
+     * Guarded so it never runs inside the Pro bundle.
+     *
+     * @param array $tabs
+     *
+     * @return array
+     * @since 2.8.3
+     */
+    public function add_teaser_tab( array $tabs ): array {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return $tabs;
+        }
+
+        $tabs['social'] = array(
+                'name'   => __( 'Social Profiles', 'clickwhale' ),
+                'url'    => 'social',
+                'locked' => true,
+        );
+
+        return $tabs;
+    }
+
+    /**
+     * Renders the locked "Social Profiles" tab panel added by
+     * add_teaser_tab() above (#lp-tab-social), matching the panel ID Pro's
+     * linkpage_tabs()/social settings would output.
+     *
+     * @return void
+     * @since 2.8.3
+     */
+    public function render_teaser_tab_content(): void {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return;
+        }
+
+        $clickwhale_active_tab = array(
+                'name'   => __( 'Social Profiles', 'clickwhale' ),
+                'teaser' => array(
+                        'image'       => 'social-media-profiles.svg',
+                        'title'       => __( 'Social Profiles', 'clickwhale' ),
+                        'description' => __( 'Add your social network profiles to this link page as icon links, so visitors can also follow you on your favorite platforms.', 'clickwhale' ),
+                        'features'    => array(
+                                __( 'Icons for all major social networks', 'clickwhale' ),
+                                __( 'Drag to reorder profiles', 'clickwhale' ),
+                                __( 'Show/hide individual profiles', 'clickwhale' ),
+                        ),
+                        'utm_content' => 'linkpage_social_tab_teaser',
+                ),
+        );
+        ?>
+        <div id="lp-tab-social">
+            <?php include CLICKWHALE_TEMPLATES_DIR . '/admin/pro-tab-teaser.php'; ?>
+        </div>
+        <?php
+    }
+
+    /**
      * @return array
      * @since 1.3.0
      */
@@ -135,6 +193,51 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
         $values[] = $formatting;
 
         return apply_filters( 'clickwhale_linkpage_select', $values );
+    }
+
+    /**
+     * Free-only "Pro Blocks" teaser group in the Contents block picker,
+     * mirroring the real group Pro adds via the same filter
+     * (pro/includes/Admin/Linkpages/Clickwhale_Pro_Linkpage_Edit.php).
+     * Guarded so it never runs inside the Pro bundle.
+     *
+     * @param array $select
+     *
+     * @return array
+     * @since 2.8.3
+     */
+    public function add_teaser_blocks( array $select ): array {
+        if ( ! function_exists( 'clickwhale_fs' ) || clickwhale_fs()->is__premium_only() ) {
+            return $select;
+        }
+
+        $select[] = array(
+                'label'   => __( 'Pro Blocks', 'clickwhale' ),
+                'options' => array(
+                        'cw_feed'   => array(
+                                'name'   => __( 'Blog Posts Feed', 'clickwhale' ),
+                                'icon'   => 'rss',
+                                'locked' => true,
+                        ),
+                        'cw_social' => array(
+                                'name'   => __( 'Social Profiles', 'clickwhale' ),
+                                'icon'   => 'share-2',
+                                'locked' => true,
+                        ),
+                        'cw_forms'  => array(
+                                'name'   => __( 'Forms', 'clickwhale' ),
+                                'icon'   => 'clipboard',
+                                'locked' => true,
+                        ),
+                        'cw_image'  => array(
+                                'name'   => __( 'Image', 'clickwhale' ),
+                                'icon'   => 'image',
+                                'locked' => true,
+                        ),
+                )
+        );
+
+        return $select;
     }
 
     /**
@@ -371,11 +474,19 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                     contentWrap = jQuery('.cw-links-list-wrap'),
                     contentItems = jQuery('.cw-content--items');
 
-                jQuery(".cw-content--item", contentItems).draggable({
+                jQuery(".cw-content--item:not(.cw-content--item--pro)", contentItems).draggable({
                     containment: "document",
                     connectToSortable: ".connectedSortable",
                     helper: "clone",
                     revert: "invalid"
+                });
+
+                // Pro Blocks are shown as a teaser only: clicking one opens the upgrade page instead of inserting a block.
+                jQuery(".cw-content--item--pro", contentItems).on("click", function () {
+                    var proLink = jQuery(this).data("clickwhale-pro-link");
+                    if (proLink) {
+                        window.open(proLink, "_blank", "noopener");
+                    }
                 });
 
                 contentWrap
@@ -412,7 +523,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
 
                                     if (count_links() >= limit) {
                                         links_limit_warning();
-                                        jQuery('.cw-content--item').addClass('disabled').draggable('disable');
+                                        jQuery('.cw-content--item:not(.cw-content--item--pro)').addClass('disabled').draggable('disable');
                                     }
                                 }
                             });
@@ -506,7 +617,7 @@ class Clickwhale_Linkpage_Edit extends Clickwhale_Instance_Edit {
                         jQuery(this).closest('.cw-linkpage-row').remove();
                         if (count_links() < limit) {
                             jQuery('.cw-links-info').remove();
-                            jQuery('.cw-content--item').removeClass('disabled').draggable('enable');
+                            jQuery('.cw-content--item:not(.cw-content--item--pro)').removeClass('disabled').draggable('enable');
                         }
                     })
 

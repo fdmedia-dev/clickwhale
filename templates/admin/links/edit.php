@@ -75,7 +75,12 @@ do_action( 'clickwhale_admin_banner' );
                     <ul>
                         <?php foreach ( $clickwhale_tabs as $clickwhale_tab ) { ?>
                             <li>
-                                <a href="#link-tab-<?php echo esc_attr( $clickwhale_tab['url'] ); ?>"><?php echo esc_html( $clickwhale_tab['name'] ); ?></a>
+                                <a href="#link-tab-<?php echo esc_attr( $clickwhale_tab['url'] ); ?>"><?php
+                                    echo esc_html( $clickwhale_tab['name'] );
+                                    if ( ! empty( $clickwhale_tab['locked'] ) ) {
+                                        echo wp_kses( Helper::pro_badge( __( 'Available in ClickWhale PRO', 'clickwhale' ) ), Helper::get_allowed_tags() );
+                                    }
+                                ?></a>
                             </li>
                         <?php } ?>
                     </ul>

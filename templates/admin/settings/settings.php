@@ -1,6 +1,7 @@
 <?php
 
 use Clickwhale\Admin\Clickwhale_Settings;
+use Clickwhale\Helpers\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,6 +20,13 @@ do_action( 'clickwhale_admin_banner' );
     if ( $tabs ) {
         $clickwhale_get_tab_raw = (string) filter_input( INPUT_GET, 'tab' );
         $clickwhale_get_tab = $clickwhale_get_tab_raw !== '' && $clickwhale_get_tab_raw !== null ? sanitize_text_field( $clickwhale_get_tab_raw ) : 'general_options';
+        $clickwhale_active_tab = null;
+        foreach ( $tabs as $clickwhale_tab_data ) {
+            if ( $clickwhale_tab_data['url'] === $clickwhale_get_tab ) {
+                $clickwhale_active_tab = $clickwhale_tab_data;
+                break;
+            }
+        }
         ?>
         <div class="nav-tab-wrapper">
             <?php foreach ( $tabs as $tab ) {
@@ -27,17 +35,26 @@ do_action( 'clickwhale_admin_banner' );
                 ?>
                 <a href="<?php echo esc_url( $clickwhale_url ); ?>"
                    class="nav-tab <?php echo esc_attr( $clickwhale_active ); ?>"
-                ><?php echo esc_html( $tab['name'] ); ?></a>
+                ><?php
+                    echo esc_html( $tab['name'] );
+                    if ( ! empty( $tab['locked'] ) ) {
+                        echo wp_kses( Helper::pro_badge( __( 'Available in ClickWhale PRO', 'clickwhale' ) ), Helper::get_allowed_tags() );
+                    }
+                ?></a>
             <?php } ?>
         </div>
 
-        <form method="post" action="options.php">
-            <?php
-            settings_fields( 'clickwhale_' . $clickwhale_get_tab );
-            do_settings_sections( 'clickwhale_' . $clickwhale_get_tab );
-            submit_button( __( 'Save changes', 'clickwhale' ) );
-            ?>
-        </form>
+        <?php if ( $clickwhale_active_tab && ! empty( $clickwhale_active_tab['locked'] ) ) : ?>
+            <?php include CLICKWHALE_TEMPLATES_DIR . '/admin/pro-tab-teaser.php'; ?>
+        <?php else : ?>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields( 'clickwhale_' . $clickwhale_get_tab );
+                do_settings_sections( 'clickwhale_' . $clickwhale_get_tab );
+                submit_button( __( 'Save changes', 'clickwhale' ) );
+                ?>
+            </form>
+        <?php endif; ?>
     <?php } ?>
 
     <?php do_action( 'clickwhale_admin_sidebar_end' ); ?>
